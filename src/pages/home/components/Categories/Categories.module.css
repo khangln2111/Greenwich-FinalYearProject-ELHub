@@ -1,0 +1,47 @@
+.wrapper {
+  margin-bottom: calc(var(--mantine-spacing-xl) * 4);
+}
+
+.card {
+  border: rem(1px) solid
+    light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  height: 100%;
+  overflow: hidden;
+
+  /* @media (min-width: $mantine-breakpoint-sm) {
+    width: 300px;
+  } */
+  /* make scale when hover smoothly */
+}
+
+.card__title {
+  font-size: rem(24px);
+  font-weight: 900;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.card__decorator {
+  content: "";
+  display: block;
+  background-color: var(--mantine-primary-color-filled);
+  width: rem(45px);
+  height: rem(2px);
+  margin-top: var(--mantine-spacing-sm);
+  margin-bottom: var(--mantine-spacing-sm);
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+  padding: var(--mantine-spacing-sm);
+}
+
+.swiper__slide {
+  transition: transform 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}

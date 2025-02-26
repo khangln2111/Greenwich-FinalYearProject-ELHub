@@ -1,0 +1,16 @@
+.container {
+  margin-bottom: calc(var(--mantine-spacing-xl) * 2);
+}
+
+.anchor__allCourses {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  text-align: center;
+}
+
+.modal__content {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
