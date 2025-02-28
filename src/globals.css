@@ -1,3 +1,4 @@
+/* @import "tailwindcss" source(none); */
 @import "tailwind-preset-mantine";
 @import "./theme.css";
 
@@ -7,37 +8,31 @@
 
 @config "../tailwind.config.ts";
 
-/* Create grid auto fit column */
-/* @utility grid-cols-fit-* {
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(calc(--value(integer) * 1px), 100%), 1fr)
-  );
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(calc(--value([integer]) * 1px), 100%), 1fr)
-  );
-} */
-
-/* Create grid auto fill column */
-/* @utility grid-cols-fill-* {
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(min(calc(--value(integer) * 1px), 100%), 1fr)
-  );
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(min(calc(--value([integer]) * 1px), 100%), 1fr)
-  );
-} */
-
 /* To hide scrollbar */
-/* @utility hide-scrollbar {
+@utility hide-scrollbar {
   &::-webkit-scrollbar {
     display: none;
   }
-} */
-/* 
-@variant umd (
-  @media (max-width: 768px)
-); */
+}
+
+@utility grid-cols-fit-* {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(calc(--value(integer) * 1px), 100%), 1fr)
+  );
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(--value([length]), 100%), 1fr)
+  );
+}
+
+@utility grid-cols-fill-* {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(calc(--value(integer) * 1px), 100%), 1fr)
+  );
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(--value([length]), 100%), 1fr)
+  );
+}

@@ -46,7 +46,7 @@ const PopularCourses = () => {
         can choose from a variety of categories to learn from.
       </Text>
       {/* Auto column grid */}
-      <div className="gap-lg grid-cols-fill-[250px] mx-auto my-[25px] grid">
+      <div className="grid grid-cols-fill-[250px] gap-lg mx-auto my-[25px]">
         <CourseCard />
         <CourseCard />
         <CourseCard />

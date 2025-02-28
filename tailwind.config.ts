@@ -24,12 +24,14 @@ const hideScrollbar = ({ addUtilities }) => {
   });
 };
 
+const customPlugins = [hideScrollbar, createGridAuto];
+
 const config = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./src/**/*.{html,js}",
-    "./public/index.html",
-  ],
-  plugins: [hideScrollbar, createGridAuto],
+  // content: [
+  //   "./src/**/*.{js,ts,jsx,tsx}",
+  //   "./src/**/*.{html,js}",
+  //   "./public/index.html",
+  // ],
+  // plugins: [...customPlugins],
 };
 export default config;

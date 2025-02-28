@@ -35,7 +35,7 @@ const CourseCard = () => {
   return (
     <Card withBorder radius="lg" className={classes.card}>
       <Card.Section className={classes.imageSection}>
-        <Image src={CourseImage} alt="Tesla Model S" />
+        <Image src={CourseImage} alt="Tesla Model S" className="size-auto" />
       </Card.Section>
 
       <Group justify="space-between" mt="md">
