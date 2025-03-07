@@ -104,9 +104,6 @@ const RegisterPage = () => {
             leftSection={<IconAt size={16} stroke={1.5} />}
             {...form.getInputProps("email")}
             radius="xl"
-            classNames={{
-              input: "text placeholder:italic placeholder:text-slate-400",
-            }}
           />
           <PasswordStrength
             withAsterisk
