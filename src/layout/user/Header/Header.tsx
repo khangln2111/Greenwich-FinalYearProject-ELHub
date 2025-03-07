@@ -88,7 +88,7 @@ const Header = () => {
           />
         </ThemeIcon>
         <div>
-          <Text size="sm" fw={500}>
+          <Text size="sm" fw={600}>
             {item.title}
           </Text>
           <Text size="xs" c="dimmed">

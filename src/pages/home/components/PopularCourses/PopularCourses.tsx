@@ -31,15 +31,18 @@ const PopularCourses = () => {
           c="blue"
           fz="lg"
           underline="hover"
+          fw={600}
           gradient={{ from: "pink", to: "yellow" }}
-          fw={500}
           className={classes.anchor__allCourses}
           to="/courses"
           component={Link}
         >
-          View all courses
+          View more courses
           <IconArrowRight size="1.2rem" style={{ marginLeft: 5 }} />
         </Anchor>
+        {/* <p className="font-bold text-xl text-blue-500 font-[Poppins]">
+          View all courses
+        </p> */}
       </Group>
       <Text c="dimmed" mt="md">
         Several popular categories of courses are available on the platform. You
@@ -90,7 +93,7 @@ const PopularCourses = () => {
         onClose={close}
         centered
         classNames={{ content: "flex flex-col" }}
-        size="70%"
+        size="100%"
         transitionProps={{
           transition: "fade",
           duration: 400,
@@ -108,7 +111,6 @@ const PopularCourses = () => {
           </Group>
           {/* Scrollable Content */}
           <ScrollArea.Autosize
-            mah={400}
             classNames={{
               root: "flex-grow",
               viewport: "p-4",
@@ -117,7 +119,7 @@ const PopularCourses = () => {
             {content}
           </ScrollArea.Autosize>
           {/* Footer */}
-          <Group justify="flex-end" className="border-t-2 p-4">
+          <Group justify="flex-end" className="border-t-2 p-4 space-x-0.">
             <Button
               variant="gradient"
               gradient={{ from: "pink", to: "yellow" }}

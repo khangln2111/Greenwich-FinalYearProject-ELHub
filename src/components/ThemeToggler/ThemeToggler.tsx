@@ -8,7 +8,9 @@ import cx from "clsx";
 import classes from "./ThemeToggler.module.css";
 
 const ThemeToggler = () => {
-  const { setColorScheme } = useMantineColorScheme();
+  const { setColorScheme } = useMantineColorScheme({
+    keepTransitions: true,
+  });
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   });

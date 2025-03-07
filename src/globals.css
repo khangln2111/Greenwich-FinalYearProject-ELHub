@@ -2,11 +2,26 @@
 @import "tailwind-preset-mantine";
 @import "./theme.css";
 
-@theme {
-  --spacing: 0.25rem;
+@theme theme {
+  /* --spacing: 0.25rem; 4px */
+  --spacing: 0.063rem;
 }
 
-@config "../tailwind.config.ts";
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--mantine-color-default-border, currentColor);
+  }
+}
+
+/* @config "../tailwind.config.ts"; */
+
+@utility container {
+  margin-inline: auto;
+}
 
 /* To hide scrollbar */
 @utility hide-scrollbar {
