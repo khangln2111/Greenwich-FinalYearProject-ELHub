@@ -1,4 +1,9 @@
-import { MantineColorsTuple, createTheme } from "@mantine/core";
+import {
+  DEFAULT_THEME,
+  MantineColorsTuple,
+  createTheme,
+  mergeMantineTheme,
+} from "@mantine/core";
 // import { DEFAULT_THEME } from "@mantine/core";
 
 const primary: MantineColorsTuple = [
@@ -95,6 +100,6 @@ export const themeOverride = createTheme({
   defaultRadius: "xl",
 });
 
-// const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);
-const theme = themeOverride;
+const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);
+// const theme = themeOverride;
 export default theme;

@@ -7,5 +7,5 @@
         "**/*.less",
         "node_modules/@mantine/core/styles.css"
     ],
-    "tailwindCSS.experimental.configFile": "src/globals.css",
+    "tailwindCSS.experimental.configFile": "src/styles/globals.css",
 }

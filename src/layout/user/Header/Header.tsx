@@ -76,7 +76,7 @@ const Header = () => {
   const links = mockdata.map((item) => (
     <UnstyledButton
       // className={classes.subLink}
-      className="px-xs py-md dark:hover:bg-dark-700 w-full rounded-md hover:bg-gray-50"
+      className="px-xs py-md dark:hover:bg-dark-7 w-full rounded-md hover:bg-gray-50"
       key={item.title}
     >
       <Group wrap="nowrap" align="flex-start">
@@ -102,7 +102,7 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className="px-md dark:border-dark-400 dark:bg-dark-700 sticky top-0
+      className="px-md dark:border-dark-4 dark:bg-dark-7 sticky top-0
         z-[calc(var(--mantine-z-index-app)+1)] min-h-[60px] content-center border-b
         border-gray-300 bg-white shadow-sm"
     >

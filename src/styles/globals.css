@@ -1,10 +1,11 @@
 /* @import "tailwindcss" source(none); */
 @import "tailwind-preset-mantine";
 @import "./theme.css";
+@import "./colors.css";
 
 @theme theme {
   /* --spacing: 0.25rem; 4px */
-  --spacing: 0.063rem;
+  --spacing: 0.0625rem; /* 1px */
 }
 
 @layer base {

@@ -66,15 +66,17 @@ const PasswordStrength = ({
           />
         </div>
       </Popover.Target>
-      <Popover.Dropdown>
+      <Popover.Dropdown className="shadow-2xl">
         <Progress color={color} value={strength} size={5} mb="xs" />
-        {requirements.map((requirement, index) => (
-          <PasswordRequirement
-            key={index}
-            label={requirement.label}
-            meets={requirement.validate(password)}
-          />
-        ))}
+        <div className="flex flex-col gap-9">
+          {requirements.map((requirement, index) => (
+            <PasswordRequirement
+              key={index}
+              label={requirement.label}
+              meets={requirement.validate(password)}
+            />
+          ))}
+        </div>
       </Popover.Dropdown>
     </Popover>
   );

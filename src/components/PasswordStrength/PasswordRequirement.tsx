@@ -13,7 +13,7 @@ export function PasswordRequirement({
   return (
     <Text
       c={meets ? "teal" : "red"}
-      style={{ display: "flex", alignItems: "center" }}
+      className="flex items-center"
       mt={7}
       size="sm"
     >

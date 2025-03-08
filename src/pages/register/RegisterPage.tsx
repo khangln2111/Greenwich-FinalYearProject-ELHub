@@ -97,13 +97,13 @@ const RegisterPage = () => {
             />
           </Group>
           <TextInput
-            mt="md"
             required
             placeholder="Your email"
             label="Email"
             leftSection={<IconAt size={16} stroke={1.5} />}
             {...form.getInputProps("email")}
             radius="xl"
+            className="mt-md"
           />
           <PasswordStrength
             withAsterisk
