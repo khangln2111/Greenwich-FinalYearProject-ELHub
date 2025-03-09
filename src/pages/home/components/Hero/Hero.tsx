@@ -11,8 +11,7 @@ import {
   Box,
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
-import image from "../../../../assets/homePageImages/HeroImage-transformed.webp";
-
+import image1 from "../../../../assets/homePageImages/HeroImage2.png";
 const Hero = () => {
   return (
     <Container>
@@ -76,7 +75,7 @@ const Hero = () => {
           </Group>
         </Box>
         <Image
-          src={image}
+          src={image1}
           className="hidden h-auto w-full md:block md:h-[356px] md:w-[376px]"
         />
       </Box>
