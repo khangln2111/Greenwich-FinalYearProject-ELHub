@@ -7,6 +7,7 @@ import {
   Modal,
   rem,
   ScrollArea,
+  SimpleGrid,
   Text,
   TextInput,
   Title,
@@ -16,6 +17,7 @@ import { IconArrowRight, IconAt, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import CourseCard from "./CourseCard";
 import classes from "./PopularCourses.module.css";
+import TestCard from "./TestCard";
 
 const PopularCourses = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -57,14 +59,14 @@ const PopularCourses = () => {
         <CourseCard />
         <CourseCard />
       </div>
-      {/* <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg" my={25}>
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-      </SimpleGrid> */}
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg" my={25}>
+        <TestCard />
+        <TestCard />
+        <TestCard />
+        <TestCard />
+        <TestCard />
+        <TestCard />
+      </SimpleGrid>
       {/* beautiful button to view all courses */}
       <Button
         variant="gradient"

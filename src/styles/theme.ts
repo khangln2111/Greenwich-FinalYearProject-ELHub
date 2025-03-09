@@ -38,6 +38,7 @@ export const themeOverride = createTheme({
     primary,
   },
   primaryColor: "primary",
+  cursorType: "pointer",
   breakpoints: {
     xs: "40em", // Custom: sm (640px)
     sm: "48em", // Custom: md (768px)
@@ -85,17 +86,15 @@ export const themeOverride = createTheme({
   radius: {
     xs: "0.125rem", // 2px
     sm: "0.25rem", // 4px
-    md: "0.5rem", // 8px
-    lg: "1rem", // 16px
-    xl: "2rem", // 32px
-    "2xl": "3rem", // 48px
-    "3xl": "4rem", // 64px
-    "4xl": "5rem", // 80px
-    "5xl": "6rem", // 96px
-    "6xl": "7rem", // 112px
-    "7xl": "8rem", // 128px
-    "8xl": "9rem", // 144px
-    "9xl": "10rem", // 160px
+    md: "0.375rem", // 6px
+    lg: "0.5rem", // 8px
+    xl: "0.75rem", // 12px
+    "2xl": "1rem", // 16px
+    "3xl": "1.5rem", // 24px
+    "4xl": "2rem", // 32px
+    "5xl": "3rem", // 48px
+    none: "0",
+    full: "max(50%, 9999px)", // absolutely full
   },
   defaultRadius: "xl",
 });

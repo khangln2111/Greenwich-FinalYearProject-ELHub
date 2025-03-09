@@ -4,8 +4,12 @@
 @import "./colors.css";
 
 @theme theme {
-  /* --spacing: 0.25rem; 4px */
-  --spacing: 0.0625rem; /* 1px */
+  --spacing: 0.25rem;
+  /* --spacing: 0.0625rem; */
+  --bg-auth-light: url("../assets/authImages/auth-background-light-1.webp");
+  --bg-auth-dark: url("../assets/authImages/auth-background-dark-1.webp");
+  --bgi-auth-light: url("../assets/authImages/auth-background-light-1.webp");
+  --bgi-auth-dark: url("../assets/authImages/auth-background-dark-1.webp");
 }
 
 @layer base {
@@ -15,6 +19,11 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--mantine-color-default-border, currentColor);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
@@ -51,4 +60,8 @@
     auto-fill,
     minmax(min(--value([length]), 100%), 1fr)
   );
+}
+
+@utility bgi-* {
+  background-image: --value(--bgi- *);
 }

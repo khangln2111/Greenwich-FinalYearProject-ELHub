@@ -33,7 +33,7 @@ const CourseCard = () => {
   ));
 
   return (
-    <Card withBorder radius="lg" className={classes.card}>
+    <Card withBorder radius="xl" className={classes.card}>
       <Card.Section className={classes.imageSection}>
         <Image src={CourseImage} alt="Tesla Model S" className="size-auto" />
       </Card.Section>
