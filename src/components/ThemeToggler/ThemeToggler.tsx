@@ -15,7 +15,6 @@ const ThemeToggler = () => {
 
   return (
     <ActionIcon
-      radius="lg"
       onClick={() =>
         setColorScheme(computedColorScheme === "light" ? "dark" : "light")
       }

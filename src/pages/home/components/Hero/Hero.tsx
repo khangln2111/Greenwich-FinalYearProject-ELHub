@@ -38,7 +38,7 @@ const Hero = () => {
             spacing="sm"
             size="sm"
             icon={
-              <ThemeIcon size={20} radius="xl">
+              <ThemeIcon size={20} className="rounded-full">
                 <IconCheck
                   style={{ width: rem(12), height: rem(12) }}
                   stroke={1.5}
@@ -61,12 +61,11 @@ const Hero = () => {
           </List>
 
           <Group mt={30}>
-            <Button radius="xl" size="md" className="flex-1 sm:flex-initial">
+            <Button size="md" className="flex-1 sm:flex-initial">
               Get started
             </Button>
             <Button
               variant="default"
-              radius="xl"
               size="md"
               className="flex-1 sm:flex-initial"
             >

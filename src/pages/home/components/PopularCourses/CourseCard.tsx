@@ -33,7 +33,7 @@ const CourseCard = () => {
   ));
 
   return (
-    <Card withBorder radius="xl" className={classes.card}>
+    <Card withBorder radius={"2xl"} className={classes.card}>
       <Card.Section className={classes.imageSection}>
         <Image src={CourseImage} alt="Tesla Model S" className="size-auto" />
       </Card.Section>
@@ -65,7 +65,7 @@ const CourseCard = () => {
               $168.00
             </Text>
           </div>
-          <Button radius="xl" style={{ flex: 1 }} color="primary.5">
+          <Button style={{ flex: 1 }} color="primary.5">
             Add to cart
           </Button>
         </Flex>
