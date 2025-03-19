@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
-import UserLayout from "./layout/user/UserLayout";
-import CoursesPage from "./pages/courses/CoursesPage";
-import ErrorPage from "./pages/error/ErrorPage";
-import HomePage from "./pages/home/HomePage";
-import LoginPage from "./pages/login/LoginPage";
-import RegisterPage from "./pages/register/RegisterPage";
+import UserLayout from "../layout/user/UserLayout";
+import CoursesPage from "../pages/courses/CoursesPage";
+import ErrorPage from "../pages/error/ErrorPage";
+import HomePage from "../pages/home/HomePage";
+import LoginPage from "../pages/login/LoginPage";
+import RegisterPage from "../pages/register/RegisterPage";
 
 // Using TSX syntax for defining routes
 // const userRoutes = (
@@ -28,6 +28,7 @@ import RegisterPage from "./pages/register/RegisterPage";
 const userRoute: RouteObject = {
   path: "/",
   element: <UserLayout />, // To set the layout for the user routes
+  errorElement: <h1>Error, please check</h1>, // Error page for the user routes
   children: [
     { index: true, element: <HomePage /> }, // Homepage as the default route
     { path: "courses", element: <CoursesPage /> },

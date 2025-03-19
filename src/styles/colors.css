@@ -377,4 +377,5 @@
   /* custom */
   --color-body: var(--mantine-color-body);
   --color-text: var(--mantine-color-text);
+  --color-dimmed: var(--mantine-color-dimmed);
 }

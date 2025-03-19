@@ -35,9 +35,9 @@ const CoursesPage = () => {
           <Paper py="lg" px="sm" withBorder radius="md" shadow="md">
             <Group align="center">
               <IconFilterCog />
-              <Text fw={700} size="lg">
+              <Title order={3} fw={700}>
                 Advanced filters
-              </Text>
+              </Title>
             </Group>
             {/* stretching divider to take up all the horizontal space */}
             <Divider my="lg" mx="-sm" />

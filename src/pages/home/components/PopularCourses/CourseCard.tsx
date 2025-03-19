@@ -65,9 +65,7 @@ const CourseCard = () => {
               $168.00
             </Text>
           </div>
-          <Button style={{ flex: 1 }} color="primary.5">
-            Add to cart
-          </Button>
+          <Button style={{ flex: 1 }}>Add to cart</Button>
         </Flex>
       </Card.Section>
     </Card>
