@@ -31,8 +31,8 @@ import {
 } from "@tabler/icons-react";
 import { ShoppingCart } from "lucide-react";
 import classes from "./Header.module.css";
-import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { Link } from "react-router-dom";
+import ThemeToggler from "../../../components/ThemeToggler";
 
 const mockdata = [
   {
@@ -81,11 +81,7 @@ const Header = () => {
     >
       <Group wrap="nowrap" align="flex-start">
         <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon
-            // className="w-[22px] h-[22px]"
-            style={{ width: rem(22), height: rem(22) }}
-            color={theme.colors[theme.primaryColor][6]}
-          />
+          <item.icon className="size-[22px] text-blue-6" />
         </ThemeIcon>
         <div>
           <Text size="sm" fw={600}>
@@ -102,17 +98,20 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className="px-md dark:border-dark-4 dark:bg-dark-7 sticky top-0
-        z-[calc(var(--mantine-z-index-app)+1)] min-h-[60px] content-center border-b
-        border-gray-300 bg-white shadow-sm"
+      className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white
+        dark:bg-dark-7 sticky top-0 z-[calc(var(--mantine-z-index-app)+1)]
+        content-center shadow-sm"
     >
       <Group justify="space-between" h="100%">
-        <Link to="/" className={classes.logo}>
-          <MantineLogo color={theme.colors[theme.primaryColor][6]} size={30} />
+        <Link
+          to="/"
+          className="no-underline select-none flex items-center text-black dark:text-white"
+        >
+          <MantineLogo color="primary" size={30} />
         </Link>
 
-        {/* Nav links */}
-        <Group h="100%" gap={0} visibleFrom="sm">
+        {/* Nav links (desktop) */}
+        <Group h="100%" gap={0} visibleFrom="md">
           <a href="#" className={classes.link}>
             Home
           </a>
@@ -125,19 +124,16 @@ const Header = () => {
           >
             <HoverCard.Target>
               <a href="#" className={classes.link}>
-                <Center inline>
-                  <Box component="span" mr={5}>
+                <div className="inline-flex items-center">
+                  <Box component="span" className="mr-[5px]">
                     Features
                   </Box>
-                  <IconChevronDown
-                    style={{ width: rem(16), height: rem(16) }}
-                    color={theme.colors[theme.primaryColor][6]}
-                  />
-                </Center>
+                  <IconChevronDown className="size-[16px] text-blue-6" />
+                </div>
               </a>
             </HoverCard.Target>
 
-            <HoverCard.Dropdown style={{ overflow: "hidden" }}>
+            <HoverCard.Dropdown className="overflow-hidden">
               <Group justify="space-between" px="md">
                 <Text fw={500}>Features</Text>
                 <Anchor href="#" fz="xs">
@@ -151,7 +147,10 @@ const Header = () => {
                 {links}
               </SimpleGrid>
 
-              <div className={classes.dropdownFooter}>
+              <div
+                className="bg-gray-0 dark:bg-gray-7 border-t border-gray-1 dark:border-dark-5 -m-md mt-sm
+                  p-xl pb-xl"
+              >
                 <Group justify="space-between">
                   <div>
                     <Text fw={500} fz="sm">
@@ -174,7 +173,7 @@ const Header = () => {
           </a>
         </Group>
 
-        <Group visibleFrom="sm">
+        <Group visibleFrom="md">
           <Button variant="default">Log in</Button>
           <Button to="/register" component={Link}>
             Sign up
@@ -189,7 +188,7 @@ const Header = () => {
           </ActionIcon>
         </Group>
 
-        <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+        <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
       </Group>
 
       <Drawer
@@ -203,7 +202,7 @@ const Header = () => {
         size="100%"
         padding="md"
         title="Navigation"
-        hiddenFrom="sm"
+        hiddenFrom="md"
         zIndex={1000000}
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">

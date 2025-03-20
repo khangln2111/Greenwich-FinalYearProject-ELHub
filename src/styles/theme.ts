@@ -19,33 +19,33 @@ import {
 //   "#00973c",
 // ];
 
-const primary: MantineColorsTuple = [
-  "#f3f1ff",
-  "#ebe5ff",
-  "#d9ceff",
-  "#bea6ff",
-  "#9f75ff",
-  "#843dff",
-  "#7916ff",
-  "#6b04fd",
-  "#5a03d5",
-  "#4b05ad",
-  "#2c0076",
-];
+// const primary: MantineColorsTuple = [
+//   "#f3f1ff",
+//   "#ebe5ff",
+//   "#d9ceff",
+//   "#bea6ff",
+//   "#9f75ff",
+//   "#843dff",
+//   "#7916ff",
+//   "#6b04fd",
+//   "#5a03d5",
+//   "#4b05ad",
+//   "#2c0076",
+// ];
 
 export const themeOverride = createTheme({
   colors: {
-    primary,
+    primary: [...DEFAULT_THEME.colors.blue],
   },
-  primaryColor: "blue",
+  primaryColor: "primary",
   primaryShade: { dark: 8, light: 6 },
   cursorType: "pointer",
   breakpoints: {
-    xs: "40em", // Custom: sm (640px)
-    sm: "48em", // Custom: md (768px)
-    md: "64em", // Custom: lg (1024px)
-    lg: "80em", // Custom: xl (1280px)
-    xl: "96em", // Custom: 2xl (1536px)
+    sm: "40em", // 640px
+    md: "48em", // 768px
+    lg: "64em", // 1024px
+    xl: "80em", // 1280px
+    "2xl": "96em", // 1536px
   },
   fontSizes: {
     xs: "0.75rem", // 12px

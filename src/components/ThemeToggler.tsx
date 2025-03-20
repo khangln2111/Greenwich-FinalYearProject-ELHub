@@ -25,7 +25,7 @@ const ThemeToggler = () => {
         stroke={1.5}
       />
       <IconMoon
-        className="size-[22px] block dark:hidden fill-blue-3"
+        className="size-[22px] block dark:hidden fill-blue-3 hidde-from"
         stroke={1.5}
       />
     </ActionIcon>

@@ -27,7 +27,7 @@
         "node_modules": true,
         "src/main.tsx": true,
         ".gitignore": true,
-        "tailwind.config.ts": true,
+        "tailwind.config.ts": false,
         "index.html": true,
         ".vscode": true
     },
