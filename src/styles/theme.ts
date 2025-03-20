@@ -37,7 +37,8 @@ export const themeOverride = createTheme({
   colors: {
     primary,
   },
-  primaryColor: "primary",
+  primaryColor: "blue",
+  primaryShade: { dark: 8, light: 6 },
   cursorType: "pointer",
   breakpoints: {
     xs: "40em", // Custom: sm (640px)
