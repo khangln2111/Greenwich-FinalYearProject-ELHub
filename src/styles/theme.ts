@@ -97,7 +97,7 @@ export const themeOverride = createTheme({
     none: "0",
     full: "max(50%, 9999px)", // absolutely full
   },
-  defaultRadius: "2xl",
+  defaultRadius: "md",
 });
 
 const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);

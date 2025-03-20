@@ -161,7 +161,7 @@ const Header = () => {
                       Their food sources have decreased, and their numbers
                     </Text>
                   </div>
-                  <Button>Get started</Button>
+                  <Button variant="default">Get started</Button>
                 </Group>
               </div>
             </HoverCard.Dropdown>
