@@ -1,11 +1,6 @@
-import { Text, Container, ActionIcon, Group, rem } from "@mantine/core";
-import {
-  IconBrandTwitter,
-  IconBrandYoutube,
-  IconBrandInstagram,
-} from "@tabler/icons-react";
+import { Text, Container, ActionIcon, Group } from "@mantine/core";
+import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from "@tabler/icons-react";
 import { MantineLogo } from "@mantinex/mantine-logo";
-import classes from "./Footer.module.css";
 
 const data = [
   {
@@ -42,62 +37,59 @@ const Footer = () => {
     const links = group.links.map((link, index) => (
       <Text<"a">
         key={index}
-        className={classes.link}
         component="a"
         href={link.link}
         onClick={(event) => event.preventDefault()}
+        className="block text-gray-7/80 dark:text-dark-1 text-sm md:text-sm/relaxed py-[3px] hover:underline"
       >
         {link.label}
       </Text>
     ));
 
     return (
-      <div className={classes.wrapper} key={group.title}>
-        <Text className={classes.title}>{group.title}</Text>
+      <div key={group.title} className="w-[160px]">
+        <Text
+          className="text-lg font-bold font-[Greycliff_CF,_var(--mantine-font-family)] mb-[5px] text-black
+            dark:text-white"
+        >
+          {group.title}
+        </Text>
         {links}
       </div>
     );
   });
 
   return (
-    <footer className={classes.footer}>
-      <Container className={classes.inner}>
-        <div className={classes.logo}>
+    <footer className="mt-auto pt-[64px] bg-gray-0 dark:bg-dark-6 border-t border-gray-2 dark:border-dark-5">
+      <Container className="flex flex-col items-center lg:flex-row lg:justify-between lg:items-normal">
+        {/* Logo & Description */}
+        <div className="max-w-[200px] flex flex-col items-center lg:block">
           <MantineLogo size={30} />
-          <Text size="xs" c="dimmed" className={classes.description}>
+          <Text size="xs" c="dimmed" className="mt-[10px] text-center lg:mt-[5px] lg:text-left">
             Build fully functional accessible web applications faster than ever
           </Text>
         </div>
-        <div className={classes.groups}>{groups}</div>
+
+        {/* Groups (ẩn trên mobile) */}
+        <div className="hidden lg:flex lg:flex-wrap">{groups}</div>
       </Container>
-      <Container className={classes.afterFooter}>
+
+      <Container
+        className="flex flex-col items-center justify-between mt-[32px] py-[32px] border-t border-gray-2
+          dark:border-dark-4 lg:flex-row"
+      >
         <Text c="dimmed" size="sm">
           © 2020 mantine.dev. All rights reserved.
         </Text>
-
-        <Group
-          gap={0}
-          className={classes.social}
-          justify="flex-end"
-          wrap="nowrap"
-        >
+        <Group gap={0} className="mt-[10px] lg:mt-0" justify="flex-end" wrap="nowrap">
           <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandTwitter
-              style={{ width: rem(18), height: rem(18) }}
-              stroke={1.5}
-            />
+            <IconBrandTwitter className="size-[18px]" stroke={1.5} />
           </ActionIcon>
           <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandYoutube
-              style={{ width: rem(18), height: rem(18) }}
-              stroke={1.5}
-            />
+            <IconBrandYoutube className="size-[18px]" stroke={1.5} />
           </ActionIcon>
           <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandInstagram
-              style={{ width: rem(18), height: rem(18) }}
-              stroke={1.5}
-            />
+            <IconBrandInstagram className="size-[18px]" stroke={1.5} />
           </ActionIcon>
         </Group>
       </Container>

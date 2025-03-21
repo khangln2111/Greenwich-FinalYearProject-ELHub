@@ -28,10 +28,7 @@ const schema = z
       .regex(/[0-9]/, "Password must include at least one number")
       .regex(/[a-z]/, "Password must include at least one lowercase letter")
       .regex(/[A-Z]/, "Password must include at least one uppercase letter")
-      .regex(
-        /[$&+,:;=?@#|'<>.^*()%!-]/,
-        "Password must include at least one special symbol",
-      ),
+      .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Password must include at least one special symbol"),
     confirmPassword: z.string(),
   })
   .refine(
@@ -72,14 +69,7 @@ const RegisterPage = () => {
             Login
           </Anchor>
         </Text>
-        <Paper
-          withBorder
-          shadow="md"
-          p={30}
-          mt={20}
-          radius="md"
-          className={classes.glass}
-        >
+        <Paper withBorder shadow="md" p={30} mt={20} radius="md" className={classes.glass}>
           <Group grow>
             <TextInput
               label="First Name"
@@ -131,12 +121,7 @@ const RegisterPage = () => {
               label={
                 <>
                   I accept{" "}
-                  <Anchor
-                    c="blue"
-                    href="https://mantine.dev"
-                    target="_blank"
-                    inherit
-                  >
+                  <Anchor c="blue" href="https://mantine.dev" target="_blank" inherit>
                     terms and conditions
                   </Anchor>
                 </>
@@ -174,9 +159,7 @@ function getPasswordRequirements(
 
   if (passwordSchema instanceof z.ZodString) {
     // Check for .min() validation
-    const minLength = passwordSchema._def.checks.find(
-      (check) => check.kind === "min",
-    );
+    const minLength = passwordSchema._def.checks.find((check) => check.kind === "min");
     if (minLength) {
       requirements.push({
         label: `${minLength.message} characters`,

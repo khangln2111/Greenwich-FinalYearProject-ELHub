@@ -4,5 +4,6 @@
   "tailwindAttributes": ["classNames"],
   "tailwindFunctions": ["clsx"],
   "customAttributes": ["classNames"],
-  "customFunctions": ["clsx"]
+  "customFunctions": ["clsx"],
+  "printWidth": 90
 }

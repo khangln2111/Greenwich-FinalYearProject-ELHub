@@ -29,7 +29,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.26.2",
     "swiper": "^11.1.14",
-    "tailwind-preset-mantine": "^2.0.3",
+    "tailwind-preset-mantine": "^2.0.5",
     "zod": "^3.23.8",
     "zustand": "^5.0.3"
   },

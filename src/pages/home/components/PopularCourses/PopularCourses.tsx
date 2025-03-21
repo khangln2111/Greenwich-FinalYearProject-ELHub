@@ -47,8 +47,8 @@ const PopularCourses = () => {
         </p> */}
       </Group>
       <Text c="dimmed" mt="md">
-        Several popular categories of courses are available on the platform. You
-        can choose from a variety of categories to learn from.
+        Several popular categories of courses are available on the platform. You can choose from a
+        variety of categories to learn from.
       </Text>
       {/* Auto column grid */}
       <div className="grid grid-cols-fill-[250px] gap-lg mx-auto my-[25px]">
@@ -78,30 +78,15 @@ const PopularCourses = () => {
       >
         View all courses
       </Button>
-      <div className="flex justify-center flex-col items-center gap-5">
-        <button
-          className="bg-red-700/60 visible-from-2xl rounded-md text-white flex px-5 py-2.5
-            items-center justify-center mt-5"
-        >
-          Haaha
-        </button>
-        <button
-          type="button"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
-            font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600
-            dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        >
-          Default
-        </button>
-      </div>
+
       <TextInput
         leftSectionPointerEvents="none"
         leftSection={<IconAt style={{ width: rem(16), height: rem(16) }} />}
         label="Your email"
         placeholder="Your email"
         classNames={{
-          input: `text-pink mt-4 border-2 border-gray-300 transition duration-300 ease-in
-          hover:scale-110 hover:border-red-500`,
+          input: `text-pink mt-4 border-2 border-gray-300 transition duration-300 ease-in hover:scale-110
+          hover:border-red-500`,
           root: "mt-52",
         }}
       />
@@ -137,10 +122,7 @@ const PopularCourses = () => {
           </ScrollArea.Autosize>
           {/* Footer */}
           <Group justify="flex-end" className="border-t-2 p-4 space-x-0.">
-            <Button
-              variant="gradient"
-              gradient={{ from: "pink", to: "yellow" }}
-            >
+            <Button variant="gradient" gradient={{ from: "pink", to: "yellow" }}>
               Save
             </Button>
             <Button onClick={close}>Close</Button>

@@ -1,38 +1,37 @@
 import {
-  HoverCard,
-  Group,
-  Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
+  ActionIcon,
   Anchor,
-  Divider,
-  Center,
   Box,
   Burger,
-  Drawer,
+  Button,
+  Center,
   Collapse,
+  Divider,
+  Drawer,
+  Group,
+  HoverCard,
   ScrollArea,
+  SimpleGrid,
+  Text,
+  ThemeIcon,
+  UnstyledButton,
   rem,
-  useMantineTheme,
-  ActionIcon,
 } from "@mantine/core";
-import { MantineLogo } from "@mantinex/mantine-logo";
 import { useDisclosure } from "@mantine/hooks";
+import { MantineLogo } from "@mantinex/mantine-logo";
 import {
-  IconNotification,
-  IconCode,
   IconBook,
   IconChartPie3,
-  IconFingerprint,
-  IconCoin,
   IconChevronDown,
+  IconCode,
+  IconCoin,
+  IconFingerprint,
+  IconNotification,
 } from "@tabler/icons-react";
 import { ShoppingCart } from "lucide-react";
-import classes from "./Header.module.css";
 import { Link } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
+import CustomNavLink from "./CustomNavLink";
 
 const mockdata = [
   {
@@ -68,15 +67,12 @@ const mockdata = [
 ];
 
 const Header = () => {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false);
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const theme = useMantineTheme();
 
   const links = mockdata.map((item) => (
     <UnstyledButton
-      // className={classes.subLink}
-      className="px-xs py-md dark:hover:bg-dark-7 w-full rounded-md hover:bg-gray-50"
+      className="px-md py-xs dark:hover:bg-dark-7 w-full rounded-md hover:bg-gray-50"
       key={item.title}
     >
       <Group wrap="nowrap" align="flex-start">
@@ -98,9 +94,8 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white
-        dark:bg-dark-7 sticky top-0 z-[calc(var(--mantine-z-index-app)+1)]
-        content-center shadow-sm"
+      className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
+        z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-sm"
     >
       <Group justify="space-between" h="100%">
         <Link
@@ -112,25 +107,17 @@ const Header = () => {
 
         {/* Nav links (desktop) */}
         <Group h="100%" gap={0} visibleFrom="md">
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <HoverCard
-            width={600}
-            position="bottom"
-            radius="md"
-            shadow="md"
-            withinPortal
-          >
+          <CustomNavLink to="/">Home</CustomNavLink>
+          <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
             <HoverCard.Target>
-              <a href="#" className={classes.link}>
+              <CustomNavLink to="/">
                 <div className="inline-flex items-center">
                   <Box component="span" className="mr-[5px]">
                     Features
                   </Box>
                   <IconChevronDown className="size-[16px] text-blue-6" />
                 </div>
-              </a>
+              </CustomNavLink>
             </HoverCard.Target>
 
             <HoverCard.Dropdown className="overflow-hidden">
@@ -147,10 +134,7 @@ const Header = () => {
                 {links}
               </SimpleGrid>
 
-              <div
-                className="bg-gray-0 dark:bg-gray-7 border-t border-gray-1 dark:border-dark-5 -m-md mt-sm
-                  p-xl pb-xl"
-              >
+              <div className="bg-gray-0 dark:bg-gray-7 border-t border-gray-1 dark:border-dark-5 -m-md mt-sm p-xl pb-xl">
                 <Group justify="space-between">
                   <div>
                     <Text fw={500} fz="sm">
@@ -165,12 +149,8 @@ const Header = () => {
               </div>
             </HoverCard.Dropdown>
           </HoverCard>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
+          <CustomNavLink to="/">Learn</CustomNavLink>
+          <CustomNavLink to="/">Academy</CustomNavLink>
         </Group>
 
         <Group visibleFrom="md">
@@ -179,11 +159,7 @@ const Header = () => {
             Sign up
           </Button>
           <ThemeToggler />
-          <ActionIcon
-            variant="default"
-            size="lg"
-            aria-label="Shopping cart trigger"
-          >
+          <ActionIcon variant="default" size="lg" aria-label="Shopping cart trigger">
             <ShoppingCart size={19} strokeWidth={1.5} />
           </ActionIcon>
         </Group>
@@ -208,27 +184,18 @@ const Header = () => {
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
+          <CustomNavLink to="/">Home</CustomNavLink>
+          <CustomNavLink onClick={toggleLinks}>
             <Center inline>
               <Box component="span" mr={5}>
                 Features
               </Box>
-              <IconChevronDown
-                style={{ width: rem(16), height: rem(16) }}
-                color={theme.colors[theme.primaryColor][6]}
-              />
+              <IconChevronDown className="size-[16px] text-primary-6" />
             </Center>
-          </UnstyledButton>
+          </CustomNavLink>
           <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
+          <CustomNavLink to="/">Learn</CustomNavLink>
+          <CustomNavLink to="/">Academy</CustomNavLink>
 
           <Divider my="sm" />
 
