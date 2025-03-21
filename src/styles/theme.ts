@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, MantineColorsTuple, createTheme, mergeMantineTheme } from "@mantine/core";
+import { DEFAULT_THEME, createTheme, mergeMantineTheme } from "@mantine/core";
 // import { DEFAULT_THEME } from "@mantine/core";
 
 // const primary: MantineColorsTuple = [
