@@ -57,6 +57,13 @@ export const themeOverride = createTheme({
     "8xl": "6rem", // 96px
     "9xl": "8rem", // 128px
   },
+  lineHeights: {
+    xs: (1 / 0.75).toString(),
+    sm: (1.25 / 0.875).toString(),
+    md: (1.5 / 1).toString(),
+    lg: (1.75 / 1.125).toString(),
+    xl: (1.75 / 1.25).toString(),
+  },
   spacing: {
     xs: "0.625rem", // 10px
     sm: "0.75rem", // 12px

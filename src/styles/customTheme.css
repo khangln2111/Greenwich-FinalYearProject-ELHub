@@ -433,6 +433,10 @@
   --text-h5--line-height: var(--mantine-h5-line-height); /* 1.5 */
   --text-h6--line-height: var(--mantine-h6-line-height); /* 1.5 */
 
+  /* TEMP: fix library mistake */
+  --text-base--line-height: initial;
+  --text-base--line-height: var(--mantine-line-height-md); /* 1.5 */
+
   /* font weight */
   --font-weight-h1: var(--mantine-h1-font-weight);
   --font-weight-h2: var(--mantine-h2-font-weight);
