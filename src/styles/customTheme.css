@@ -374,15 +374,37 @@
   --color-primary-9: var(--mantine-color-primary-9);
   --color-primary: var(--mantine-color-primary-filled);
 
-  /* custom color */
-  --color-body: var(--mantine-color-body); /* body bg-color light: #fff; dark: dark-7 */
+  /* specific text colors */
+  --color-dark-text: var(--mantine-color-dark-text); /* l:dark-6; d:dark-4 */
+  --color-gray-text: var(--mantine-color-gray-text); /* l:gray-6; d:gray-4 */
+  --color-red-text: var(--mantine-color-red-text); /* l:red-6; d:red-4 */
+  --color-pink-text: var(--mantine-color-pink-text); /* l:pink-6; d:pink-4 */
+  --color-grape-text: var(--mantine-color-grape-text); /* l:grape-6; d:grape-4 */
+  --color-violet-text: var(--mantine-color-violet-text); /* l:violet-6; d:violet-4 */
+  --color-indigo-text: var(--mantine-color-indigo-text); /* l:indigo-6; d:indigo-4 */
+  --color-blue-text: var(--mantine-color-blue-text); /* l:blue-6; d:blue-4 */
+  --color-cyan-text: var(--mantine-color-cyan-text); /* l:cyan-6; d:cyan-4 */
+  --color-teal-text: var(--mantine-color-teal-text); /* l:teal-6; d:teal-4 */
+  --color-green-text: var(--mantine-color-green-text); /* l:green-6; d:green-4 */
+  --color-lime-text: var(--mantine-color-lime-text); /* l:lime-6; d:lime-4 */
+  --color-yellow-text: var(--mantine-color-yellow-text); /* l:yellow-6; d:yellow-4 */
+  --color-orange-text: var(--mantine-color-orange-text); /* l:orange-6; d:orange-4 */
+
+  /* default specific variants */
+  --color-default: var(--mantine-color-default-color); /* defaultVari bgColor */
+  --color-default-hover: var(--mantine-color-default-hover); /* defaultVari HovBgColor */
+  --color-default-color: var(--mantine-color-default-color); /* defaultVari text color */
+  --color-default-border: var(--mantine-color-default-border); /* defaultVari bdrColor */
+
+  /* theme-based fundamental colors */
+  --color-body: var(--mantine-color-body); /* body bgColor light: #fff; dark: dark-7 */
   --color-text: var(--mantine-color-text); /* text color light: #000; dark: dark-0 */
-  --color-dimmed: var(--mantine-color-dimmed); /* dimmed text color */
+  --color-dimmed: var(--mantine-color-dimmed); /* dimmed text color l:gray-6; d:dark-2 */
   --color-white: var(--mantine-color-white); /* white color #fff */
   --color-black: var(--mantine-color-black); /* black color #000 */
-  --color-bright: var(--mantine-color-bright); /* bright color light: dark; dark: white */
-  --color-error: var(--mantine-color-error); /* error color light: red-6; dark: red-8 */
-  --color-placeholder: var(--mantine-color-placeholder); /* l:gray-5; d:dark-3 */
+  --color-bright: var(--mantine-color-bright); /* brightColor light: dark; dark: white */
+  --color-error: var(--mantine-color-error); /* errorColor light: red-6; dark: red-8 */
+  --color-placeholder: var(--mantine-color-placeholder); /* plchdr l:gray-5; d:dark-3 */
   --color-anchor: var(--mantine-color-anchor); /* anchor color l:blue-6; d:blue-4 */
 
   /* font size */
@@ -419,6 +441,7 @@
   --font-weight-h5: var(--mantine-h5-font-weight);
   --font-weight-h6: var(--mantine-h6-font-weight);
 
+  /* Spacing */
   --spacing-xs: 0.625rem; /* 10px */
   --spacing-sm: 0.75rem; /* 12px */
   --spacing-md: 1rem; /* 16px */
@@ -450,10 +473,4 @@
   --radius-3xl: 1.5rem; /* 24px */
   --radius-4xl: 2rem; /* 32px */
   --radius-5xl: 3rem; /* 48px */
-
-  /* default specific variants */
-  --color-default: var(--mantine-color-default-color); /* defaultVari bgColor */
-  --color-default-hover: var(--mantine-color-default-hover); /* defaultVari HovBgColor */
-  --color-default-color: var(--mantine-color-default-color); /* defaultVari text color */
-  --color-default-border: var(--mantine-color-default-border); /* defaultVari bdrColor */
 }
