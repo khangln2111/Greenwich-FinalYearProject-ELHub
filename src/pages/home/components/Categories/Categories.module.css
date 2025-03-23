@@ -7,11 +7,6 @@
     light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
   height: 100%;
   overflow: hidden;
-
-  /* @media (min-width: $mantine-breakpoint-sm) {
-    width: 300px;
-  } */
-  /* make scale when hover smoothly */
 }
 
 .card__title {

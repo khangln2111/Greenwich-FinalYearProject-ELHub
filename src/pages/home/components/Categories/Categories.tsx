@@ -10,9 +10,8 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import classes from "./Categories.module.css";
 import image from "../../../../assets/homePageImages/CategoryImage.webp";
+import classes from "./Categories.module.css";
 
 // Sample data for categories (you can replace this with actual data from your API)
 const categories = [
@@ -63,13 +62,13 @@ const categories = [
 
 const Categories = () => {
   return (
-    <Container className={classes.wrapper}>
+    <Container className="mb-[128px]">
       <Title order={1} ta="start">
         Categories
       </Title>
       <Text c="dimmed" mt="md">
-        Several popular categories of courses are available on the platform. You
-        can choose from a variety of categories to learn from.
+        Several popular categories of courses are available on the platform. You can
+        choose from a variety of categories to learn from.
       </Text>
       <Swiper
         spaceBetween={50}
@@ -88,21 +87,29 @@ const Categories = () => {
             spaceBetween: 20,
           },
         }}
-        className={classes.swiper}
+        className="size-full p-sm"
       >
         {categories.map((category) => (
-          <SwiperSlide key={category.id} className={classes.swiper__slide}>
-            <Card shadow="md" radius="md" withBorder className={classes.card}>
+          <SwiperSlide
+            key={category.id}
+            className="transition-transform duration-300 cursor-pointer hover:scale-105"
+          >
+            <Card
+              shadow="md"
+              radius="md"
+              withBorder
+              className="h-full overflow-hidden border border-gray-2 dark:border-dark-5"
+            >
               <Card.Section>
                 <Image src={category.image} height={160} alt={category.name} />
               </Card.Section>
               <Stack mb="xs" justify="space-between" align="center" h="100%">
-                <Box className={classes.card__decorator}></Box>
+                <Box className="content-[''] block bg-primary-filled w-[45px] h-[2px] my-sm"></Box>
                 <Tooltip label={category.name}>
                   <Text
                     ta="center"
                     fw="500"
-                    className={classes.card__title}
+                    className="text-[24px] font-black line-clamp-1"
                     style={{ textWrap: "wrap" }}
                     variant="gradient"
                     gradient={{ from: "indigo", to: "cyan", deg: 90 }}

@@ -1,7 +1,7 @@
-/* @import "tailwindcss" source(none); */
 @import "tailwind-preset-mantine";
 @import "./theme.css";
 @import "./customTheme.css";
+@import "swiper/css" layer(components);
 
 @theme theme {
   --spacing: 0.25rem;
