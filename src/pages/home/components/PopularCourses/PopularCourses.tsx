@@ -16,7 +16,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconAt, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import CourseCard from "./CourseCard";
-import classes from "./PopularCourses.module.css";
 import TestCard from "./TestCard";
 
 const PopularCourses = () => {
@@ -26,7 +25,7 @@ const PopularCourses = () => {
     .map((_, index) => <p key={index}>Modal with scroll</p>);
 
   return (
-    <Container className={classes.container}>
+    <Container className="mb-64">
       <Group justify="space-between">
         <Title order={1}>Popular Courses</Title>
         <Anchor
@@ -35,7 +34,7 @@ const PopularCourses = () => {
           underline="hover"
           fw={600}
           gradient={{ from: "pink", to: "yellow" }}
-          className={classes.anchor__allCourses}
+          className="flex items-center text-center"
           to="/courses"
           component={Link}
         >
@@ -59,7 +58,8 @@ const PopularCourses = () => {
         <CourseCard />
         <CourseCard />
       </div>
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg" my={25}>
+
+      <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25} className="mx-">
         <TestCard />
         <TestCard />
         <TestCard />
