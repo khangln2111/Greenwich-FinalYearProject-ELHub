@@ -6,12 +6,12 @@ const config = {
     },
     "postcss-simple-vars": {
       variables: {
-        "mantine-breakpoint-xs": "40em", // Custom:  640px / 16 = 40em
-        "mantine-breakpoint-sm": "48em", // Custom: 768px / 16 = 48em
-        "mantine-breakpoint-md": "64em", // Custom: 1024px / 16 = 64em
-        "mantine-breakpoint-lg": "80em", // Custom: 1280px / 16 = 80em
-        "mantine-breakpoint-xl": "96em", // Custom: 1536px / 16 = 96em
-        "mantine-breakpoint-2xl": "128em", // Custom: 2048px / 16 = 128em
+        "mantine-breakpoint-xs": "36em", // Custom:  576px / 16 = 36em
+        "mantine-breakpoint-sm": "40em", // Custom:  640px / 16 = 40em
+        "mantine-breakpoint-md": "48em", // Custom: 768px / 16 = 48em
+        "mantine-breakpoint-lg": "64em", // Custom: 1024px / 16 = 64em
+        "mantine-breakpoint-xl": "80em", // Custom: 1280px / 16 = 80em
+        "mantine-breakpoint-2xl": "96em", // Custom: 1536px / 16 = 96em
       },
     },
     "postcss-pxtorem": {

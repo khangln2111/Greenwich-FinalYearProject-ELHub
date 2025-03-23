@@ -17,7 +17,6 @@ import {
 } from "@mantine/core";
 import { IconFilterCog } from "@tabler/icons-react";
 import CourseCard from "../home/components/PopularCourses/CourseCard";
-import classes from "./CoursesPage.module.css";
 import { useState } from "react";
 
 const CoursesPage = () => {
@@ -25,13 +24,13 @@ const CoursesPage = () => {
 
   return (
     <Paper
-      className={classes.container}
+      className="bg-gray-1 dark:bg-dark-6"
       radius={0}
-      px={{ base: "15px", sm: "20px", md: "40px", lg: "90px" }}
+      px={{ base: "15px", md: "20px", lg: "40px", xl: "90px" }}
       py="xl"
     >
       <Grid py="md" gutter="xl">
-        <Grid.Col visibleFrom="md" span={2.8}>
+        <Grid.Col visibleFrom="lg" span={2.8}>
           <Paper py="lg" px="sm" withBorder radius="md" shadow="md">
             <Group align="center">
               <IconFilterCog />
@@ -115,10 +114,9 @@ const CoursesPage = () => {
                   </Text>
                 </Accordion.Control>
                 <Accordion.Panel>
-                  Crisp and refreshing fruit. Apples are known for their
-                  versatility and nutritional benefits. They come in a variety
-                  of flavors and are great for snacking, baking, or adding to
-                  salads
+                  Crisp and refreshing fruit. Apples are known for their versatility and
+                  nutritional benefits. They come in a variety of flavors and are great
+                  for snacking, baking, or adding to salads
                 </Accordion.Panel>
               </Accordion.Item>
               <Accordion.Item value="Banana">
@@ -128,10 +126,9 @@ const CoursesPage = () => {
                   </Text>
                 </Accordion.Control>
                 <Accordion.Panel>
-                  Crisp and refreshing fruit. Apples are known for their
-                  versatility and nutritional benefits. They come in a variety
-                  of flavors and are great for snacking, baking, or adding to
-                  salads
+                  Crisp and refreshing fruit. Apples are known for their versatility and
+                  nutritional benefits. They come in a variety of flavors and are great
+                  for snacking, baking, or adding to salads
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
@@ -154,11 +151,7 @@ const CoursesPage = () => {
               </Chip>
             </Group>
           </Group>
-          <SimpleGrid
-            cols={{ base: 1, sm: 2, md: 3, lg: 3 }}
-            spacing="md"
-            my={25}
-          >
+          <SimpleGrid cols={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing="md" my={25}>
             {/* Courses Card */}
             <CourseCard />
             <CourseCard />

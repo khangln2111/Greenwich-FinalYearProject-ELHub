@@ -1,36 +1,25 @@
-import {
-  SimpleGrid,
-  Title,
-  Button,
-  Text,
-  Image,
-  Container,
-} from "@mantine/core";
-import classes from "./ErrorPage.module.css";
+import { SimpleGrid, Title, Button, Text, Image, Container } from "@mantine/core";
 import image from "../../assets/NotFoundImage.svg";
 
 const ErrorPage = () => {
   return (
-    <Container className={classes.root}>
-      <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
-        <Image src={image} className={classes.mobileImage} />
+    <Container className="py-[80px]">
+      <SimpleGrid spacing={{ base: 40, md: 80 }} cols={{ base: 1, md: 2 }}>
+        <Image src={image} className="block md:hidden" />
         <div>
-          <Title className={classes.title}>Something is not right...</Title>
+          <Title className="font-black text-[32px] mb-md md:text-[34px] font-[GreyCliff_CF,var(--mantine-font-family)]">
+            Something is not right...
+          </Title>
           <Text c="dimmed" size="lg">
-            Page you are trying to open does not exist. You may have mistyped
-            the address, or the page has been moved to another URL. If you think
-            this is an error contact support.
+            Page you are trying to open does not exist. You may have mistyped the address,
+            or the page has been moved to another URL. If you think this is an error
+            contact support.
           </Text>
-          <Button
-            variant="outline"
-            size="md"
-            mt="xl"
-            className={classes.control}
-          >
+          <Button variant="outline" size="md" mt="xl" className="w-full md:w-auto">
             Get back to home page
           </Button>
         </div>
-        <Image src={image} className={classes.desktopImage} />
+        <Image src={image} className="hidden md:block" />
       </SimpleGrid>
     </Container>
   );

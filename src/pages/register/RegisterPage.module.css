@@ -39,8 +39,5 @@
     var(--mantine-font-family);
   font-weight: 500;
   font-size: 1.2rem;
-  color: light-dark(
-    --mantine-color-gray-0,
-    --mantine-color-var(--mantine-color-dark-0)
-  );
+  color: light-dark(--mantine-color-gray-0, --mantine-color-var(--mantine-color-dark-0));
 }

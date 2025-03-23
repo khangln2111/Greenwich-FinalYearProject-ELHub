@@ -1,10 +1,6 @@
+"use client";
 import { useState } from "react";
-import {
-  PasswordInput,
-  Progress,
-  Popover,
-  PasswordInputProps,
-} from "@mantine/core";
+import { PasswordInput, Progress, Popover, PasswordInputProps } from "@mantine/core";
 import { PasswordRequirement } from "./PasswordRequirement"; // Adjust the path as necessary
 
 // Type for password requirements
@@ -57,11 +53,7 @@ const PasswordStrength = ({
           <PasswordInput
             value={password}
             onChange={(event) => onPasswordChange(event.currentTarget.value)}
-            error={
-              strength < 100 && password.length > 0
-                ? "Password is too weak"
-                : null
-            }
+            error={strength < 100 && password.length > 0 ? "Password is too weak" : null}
             {...rest}
           />
         </div>

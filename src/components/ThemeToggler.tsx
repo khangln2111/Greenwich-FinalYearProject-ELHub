@@ -1,9 +1,6 @@
-import {
-  ActionIcon,
-  useComputedColorScheme,
-  useMantineColorScheme,
-} from "@mantine/core";
-import { IconMoon, IconSun } from "@tabler/icons-react";
+"use client";
+import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from "@mantine/core";
+import { IconMoonStars, IconSun } from "@tabler/icons-react";
 
 const ThemeToggler = () => {
   const { setColorScheme } = useMantineColorScheme();
@@ -13,21 +10,16 @@ const ThemeToggler = () => {
 
   return (
     <ActionIcon
-      onClick={() =>
-        setColorScheme(computedColorScheme === "light" ? "dark" : "light")
-      }
+      onClick={() => setColorScheme(computedColorScheme === "light" ? "dark" : "light")}
       variant="default"
       size="lg"
       aria-label="Toggle color scheme"
     >
       <IconSun
-        className="size-[22px] hidden dark:block text-yellow-3"
+        className="size-[22px] hidden dark:block text-yellow-3 fill-yellow-3"
         stroke={1.5}
       />
-      <IconMoon
-        className="size-[22px] block dark:hidden fill-blue-3 hidde-from"
-        stroke={1.5}
-      />
+      <IconMoonStars className="size-[22px] block dark:hidden fill-blue-3" stroke={1.5} />
     </ActionIcon>
   );
 };

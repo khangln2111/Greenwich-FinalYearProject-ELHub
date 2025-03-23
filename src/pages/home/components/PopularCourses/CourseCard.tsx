@@ -1,13 +1,4 @@
-import {
-  Card,
-  Image,
-  Text,
-  Group,
-  Badge,
-  Center,
-  Button,
-  Flex,
-} from "@mantine/core";
+import { Card, Image, Text, Group, Badge, Center, Button, Flex } from "@mantine/core";
 import {
   IconGasStation,
   IconGauge,
