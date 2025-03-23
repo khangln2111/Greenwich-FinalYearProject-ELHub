@@ -1,17 +1,16 @@
 import {
-  Container,
-  Title,
-  Text,
-  Card,
-  Image,
   Badge,
   Box,
+  Card,
+  Container,
+  Image,
   Stack,
+  Text,
+  Title,
   Tooltip,
 } from "@mantine/core";
 import { Swiper, SwiperSlide } from "swiper/react";
 import image from "../../../../assets/homePageImages/CategoryImage.webp";
-import classes from "./Categories.module.css";
 
 // Sample data for categories (you can replace this with actual data from your API)
 const categories = [
