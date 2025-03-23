@@ -1,16 +1,5 @@
-import {
-  Badge,
-  Group,
-  Title,
-  Text,
-  Card,
-  SimpleGrid,
-  Container,
-  rem,
-  useMantineTheme,
-} from "@mantine/core";
+import { Badge, Group, Title, Text, Card, SimpleGrid, Container } from "@mantine/core";
 import { IconGauge, IconUser, IconCookie } from "@tabler/icons-react";
-import classes from "./Features.module.css";
 
 const mockdata = [
   {
@@ -34,22 +23,18 @@ const mockdata = [
 ];
 
 const Features = () => {
-  const theme = useMantineTheme();
   const features = mockdata.map((feature) => (
     <Card
       key={feature.title}
       shadow="md"
       radius="md"
-      className={classes.card}
+      className="border border-gray-1 dark:border-dark-5"
       padding="xl"
     >
-      <feature.icon
-        style={{ width: rem(50), height: rem(50) }}
-        stroke={2}
-        color={theme.colors[theme.primaryColor][6]}
-      />
-      <Text fz="lg" fw={500} className={classes.cardTitle} mt="md">
+      <feature.icon stroke={2} className="text-primary-6 size-[50px]" />
+      <Text fz="lg" fw={500} mt="md">
         {feature.title}
+        <div className="bg-primary-filled w-[45px] h-[2px] mt-sm"></div>
       </Text>
       <Text fz="sm" c="dimmed" mt="sm">
         {feature.description}
@@ -65,16 +50,22 @@ const Features = () => {
         </Badge>
       </Group>
 
-      <Title order={2} className={classes.title} ta="center" mt="sm">
+      <Title
+        order={2}
+        className="text-[24px] lg:text-[34px] font-black"
+        ta="center"
+        mt="sm"
+      >
         Integrate effortlessly with any technology stack
       </Title>
 
-      <Text c="dimmed" className={classes.description} ta="center" mt="md">
-        Every once in a while, you’ll see a Golbat that’s missing some fangs.
-        This happens when hunger drives it to try biting a Steel-type Pokémon.
+      <Text c="dimmed" className="m-auto max-w-[600px]" ta="center" mt="md">
+        Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens
+        when hunger drives it to try biting a Steel-type Pokémon.
       </Text>
+      <div className="bg-primary-filled w-[45px] h-[2px] mt-sm mx-auto"></div>
 
-      <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl" mt={50}>
+      <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xl" mt={50}>
         {features}
       </SimpleGrid>
     </Container>
