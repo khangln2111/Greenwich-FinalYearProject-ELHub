@@ -1,10 +1,5 @@
 import { Badge, Button, Card, Center, Flex, Group, Image, Text } from "@mantine/core";
-import {
-  IconGasStation,
-  IconGauge,
-  IconManualGearbox,
-  IconUsers,
-} from "@tabler/icons-react";
+import { IconGasStation, IconGauge, IconManualGearbox, IconUsers } from "@tabler/icons-react";
 import CourseImage from "../../../../assets/react-course-image.svg";
 
 const mockdata = [
@@ -17,11 +12,7 @@ const mockdata = [
 const CourseCard = () => {
   const features = mockdata.map((feature) => (
     <Center key={feature.label}>
-      <feature.icon
-        size="1.05rem"
-        className="mr-[5px] text-gray-5 dark:text-dark-2"
-        stroke={1.5}
-      />
+      <feature.icon size="1.05rem" className="mr-[5px] text-gray-5 dark:text-dark-2" stroke={1.5} />
       <Text size="xs">{feature.label}</Text>
     </Center>
   ));

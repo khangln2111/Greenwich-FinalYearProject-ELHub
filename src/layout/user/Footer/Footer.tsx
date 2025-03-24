@@ -1,9 +1,5 @@
 import { Text, Container, ActionIcon, Group } from "@mantine/core";
-import {
-  IconBrandTwitter,
-  IconBrandYoutube,
-  IconBrandInstagram,
-} from "@tabler/icons-react";
+import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from "@tabler/icons-react";
 import { MantineLogo } from "@mantinex/mantine-logo";
 
 const data = [
@@ -69,11 +65,7 @@ const Footer = () => {
         {/* Logo & Description */}
         <div className="max-w-[200px] flex flex-col items-center lg:block">
           <MantineLogo size={30} />
-          <Text
-            size="xs"
-            c="dimmed"
-            className="mt-[10px] text-center lg:mt-[5px] lg:text-left"
-          >
+          <Text size="xs" c="dimmed" className="mt-[10px] text-center lg:mt-[5px] lg:text-left">
             Build fully functional accessible web applications faster than ever
           </Text>
         </div>

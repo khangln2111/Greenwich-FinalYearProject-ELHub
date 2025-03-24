@@ -18,10 +18,7 @@ const LoginPage = () => {
   return (
     <Box className="flex justify-center pt-[100px] bg-gradient-to-br from-cyan-200 to-pink-300 min-h-screen">
       <Container size={500} flex={1}>
-        <Title
-          ta="center"
-          className="font-black font-[Greycliff_CF,var(--mantine-font-family)]"
-        >
+        <Title ta="center" className="font-black font-[Greycliff_CF,var(--mantine-font-family)]">
           Welcome back!
         </Title>
         <Text c="dimmed" size="md" ta="center" mt={5}>
