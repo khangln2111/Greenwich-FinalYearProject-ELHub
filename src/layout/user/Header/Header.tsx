@@ -155,7 +155,9 @@ const Header = () => {
         </Group>
 
         <Group visibleFrom="md">
-          <Button variant="default">Log in</Button>
+          <Button variant="default" to="/login" component={Link}>
+            Log in
+          </Button>
           <Button to="/register" component={Link}>
             Sign up
           </Button>

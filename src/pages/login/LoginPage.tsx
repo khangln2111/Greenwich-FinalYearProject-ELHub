@@ -11,15 +11,14 @@ import {
   Button,
   Box,
 } from "@mantine/core";
-import classes from "./LoginPage.module.css";
 import { Link } from "react-router-dom";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 
 const LoginPage = () => {
   return (
-    <Box className={classes.container}>
+    <Box className="flex justify-center pt-[100px] bg-gradient-to-br from-cyan-200 to-pink-300 min-h-screen">
       <Container size={500} flex={1}>
-        <Title ta="center" className={classes.title}>
+        <Title ta="center" className="font-black font-[Greycliff_CF,var(--mantine-font-family)]">
           Welcome back!
         </Title>
         <Text c="dimmed" size="md" ta="center" mt={5}>
