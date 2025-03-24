@@ -1,4 +1,14 @@
-import { Badge, Box, Card, Container, Image, Stack, Text, Title, Tooltip } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Card,
+  Container,
+  Image,
+  Stack,
+  Text,
+  Title,
+  Tooltip,
+} from "@mantine/core";
 import { Swiper, SwiperSlide } from "swiper/react";
 import image from "../../../../assets/homePageImages/CategoryImage.webp";
 
@@ -56,8 +66,8 @@ const Categories = () => {
         Categories
       </Title>
       <Text c="dimmed" mt="md">
-        Several popular categories of courses are available on the platform. You can choose from a
-        variety of categories to learn from.
+        Several popular categories of courses are available on the platform. You can
+        choose from a variety of categories to learn from.
       </Text>
       <Swiper
         spaceBetween={50}

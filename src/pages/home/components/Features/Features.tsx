@@ -50,13 +50,18 @@ const Features = () => {
         </Badge>
       </Group>
 
-      <Title order={2} className="text-[24px] lg:text-[34px] font-black" ta="center" mt="sm">
+      <Title
+        order={2}
+        className="text-[24px] lg:text-[34px] font-black"
+        ta="center"
+        mt="sm"
+      >
         Integrate effortlessly with any technology stack
       </Title>
 
       <Text c="dimmed" className="m-auto max-w-[600px]" ta="center" mt="md">
-        Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-        hunger drives it to try biting a Steel-type Pokémon.
+        Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens
+        when hunger drives it to try biting a Steel-type Pokémon.
       </Text>
       <div className="bg-primary-filled w-[45px] h-[2px] mt-sm mx-auto"></div>
 

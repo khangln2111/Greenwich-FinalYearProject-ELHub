@@ -17,7 +17,12 @@ const _CustomNavLink = forwardRef<HTMLAnchorElement, CustomNavLinkProps>(
       "flex items-center w-full md:w-auto h-[42px] md:h-full px-md no-underline text-black dark:text-white font-semibold text-md hover:bg-gray-50 dark:hover:bg-dark-7 cursor-pointer";
 
     return (
-      <Box component="a" ref={ref} {...props} className={`${baseClass} ${className || ""}`.trim()}>
+      <Box
+        component="a"
+        ref={ref}
+        {...props}
+        className={`${baseClass} ${className || ""}`.trim()}
+      >
         {children}
       </Box>
     );

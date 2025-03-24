@@ -46,8 +46,8 @@ const PopularCourses = () => {
         </p> */}
       </Group>
       <Text c="dimmed" mt="md">
-        Several popular categories of courses are available on the platform. You can choose from a
-        variety of categories to learn from.
+        Several popular categories of courses are available on the platform. You can
+        choose from a variety of categories to learn from.
       </Text>
       {/* Auto column grid */}
       <div className="grid grid-cols-fill-[250px] gap-lg mx-auto my-[25px]">

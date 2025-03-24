@@ -114,9 +114,9 @@ const CoursesPage = () => {
                   </Text>
                 </Accordion.Control>
                 <Accordion.Panel>
-                  Crisp and refreshing fruit. Apples are known for their versatility and nutritional
-                  benefits. They come in a variety of flavors and are great for snacking, baking, or
-                  adding to salads
+                  Crisp and refreshing fruit. Apples are known for their versatility and
+                  nutritional benefits. They come in a variety of flavors and are great
+                  for snacking, baking, or adding to salads
                 </Accordion.Panel>
               </Accordion.Item>
               <Accordion.Item value="Banana">
@@ -126,9 +126,9 @@ const CoursesPage = () => {
                   </Text>
                 </Accordion.Control>
                 <Accordion.Panel>
-                  Crisp and refreshing fruit. Apples are known for their versatility and nutritional
-                  benefits. They come in a variety of flavors and are great for snacking, baking, or
-                  adding to salads
+                  Crisp and refreshing fruit. Apples are known for their versatility and
+                  nutritional benefits. They come in a variety of flavors and are great
+                  for snacking, baking, or adding to salads
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>

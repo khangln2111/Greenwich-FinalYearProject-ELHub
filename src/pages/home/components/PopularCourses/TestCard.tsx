@@ -27,8 +27,8 @@ const TestCard = () => {
 
         {/* Short Description */}
         <p className="text-sm text-gray-700 mt-2 line-clamp-2">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea architecto sequi provident,
-          molestiae quae libero! Error mollitia nam ipsum cumque?
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea architecto sequi
+          provident, molestiae quae libero! Error mollitia nam ipsum cumque?
         </p>
 
         {/* Additional Info */}

@@ -7,16 +7,19 @@ const Hero = () => {
       <div className="flex justify-center py-[128px]">
         <div className="mr-0 max-w-full xl:mr-[96px] xl:max-w-[480px]">
           <Title
-            className="text-black dark:text-white font-['Greycliff_CF',var(--mantine-font-family)] leading-[1.2] font-black
-              text-[28px] md:text-[44px]"
+            className="text-black dark:text-white font-['Greycliff_CF',var(--mantine-font-family)] leading-[1.2]
+              font-black text-[28px] md:text-[44px]"
           >
             A{" "}
-            <span className="relative bg-primary-light rounded-sm py-[4px] px-[12px]">modern</span>{" "}
+            <span className="relative bg-primary-light rounded-sm py-[4px] px-[12px]">
+              modern
+            </span>{" "}
             E-learning <br /> platform
           </Title>
           <Text c="dimmed" mt="md">
-            Build fully functional accessible web applications faster than ever – Mantine includes
-            more than 120 customizable components and hooks to cover you in any situation
+            Build fully functional accessible web applications faster than ever – Mantine
+            includes more than 120 customizable components and hooks to cover you in any
+            situation
           </Text>
 
           <List
@@ -30,16 +33,16 @@ const Hero = () => {
             }
           >
             <List.Item>
-              <b>Project based</b> – build type safe applications, all components and hooks export
-              types
+              <b>Project based</b> – build type safe applications, all components and
+              hooks export types
             </List.Item>
             <List.Item>
-              <b>Affordable and economy</b> – all packages have MIT license, you can use Mantine in
-              any project
+              <b>Affordable and economy</b> – all packages have MIT license, you can use
+              Mantine in any project
             </List.Item>
             <List.Item>
-              <b>No annoying focus ring</b> – focus ring will appear only when user navigates with
-              keyboard
+              <b>No annoying focus ring</b> – focus ring will appear only when user
+              navigates with keyboard
             </List.Item>
           </List>
 
