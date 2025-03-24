@@ -16,7 +16,6 @@ import { IconAt, IconLock, IconRegistered } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
-import classes from "./RegisterPage.module.css";
 
 //Zod schema for form validation
 const schema = z
@@ -36,7 +35,7 @@ const schema = z
       return values.password === values.confirmPassword;
     },
     {
-      message: "Confirm passwords must match!",
+      message: "Confirm passwords must match password",
       path: ["confirmPassword"],
     },
   );
@@ -58,9 +57,12 @@ const RegisterPage = () => {
   const passwordRequirements = getPasswordRequirements(schema._def.schema);
 
   return (
-    <Box className={classes.container}>
+    <Box
+      className="flex items-center justify-center min-h-dvh bgi-auth-light dark:bgi-auth-dark bg-cover bg-center
+        bg-no-repeat"
+    >
       <Container size={500} flex={1}>
-        <Title ta="center" className={classes.title}>
+        <Title ta="center" className="font-black font-[Greycliff_CF,var(--mantine-font-family)]">
           Welcome to ELearning Hub
         </Title>
         <Text c="dimmed" size="md" ta="center" mt={5}>
@@ -69,7 +71,14 @@ const RegisterPage = () => {
             Login
           </Anchor>
         </Text>
-        <Paper withBorder shadow="md" p={30} mt={20} radius="md" className={classes.glass}>
+        <Paper
+          withBorder
+          shadow="md"
+          p={30}
+          mt={20}
+          radius="md"
+          className="rounded-[15px] bg-white/80 dark:bg-neutral-900/80 border border-white/30 backdrop-blur-md"
+        >
           <Group grow>
             <TextInput
               label="First Name"
@@ -77,6 +86,9 @@ const RegisterPage = () => {
               required
               {...form.getInputProps("firstName")}
               radius="xl"
+              classNames={{
+                error: "font-bold dark:text-red-500",
+              }}
             />
             <TextInput
               label="Last Name"
@@ -84,6 +96,9 @@ const RegisterPage = () => {
               required
               {...form.getInputProps("lastName")}
               radius="xl"
+              classNames={{
+                error: "font-bold dark:text-red-500",
+              }}
             />
           </Group>
           <TextInput
@@ -94,6 +109,9 @@ const RegisterPage = () => {
             {...form.getInputProps("email")}
             radius="xl"
             className="mt-md"
+            classNames={{
+              error: "font-bold dark:text-red-500",
+            }}
           />
           <PasswordStrength
             withAsterisk
@@ -105,6 +123,9 @@ const RegisterPage = () => {
             onPasswordChange={(value) => form.setFieldValue("password", value)}
             radius="xl"
             mt="md"
+            classNames={{
+              error: "font-bold dark:text-red-500",
+            }}
           />
           <PasswordInput
             mt="md"
@@ -114,6 +135,9 @@ const RegisterPage = () => {
             leftSection={<IconLock size={16} stroke={1.5} />}
             {...form.getInputProps("confirmPassword")}
             radius="xl"
+            classNames={{
+              error: "font-bold dark:text-red-500",
+            }}
           />
 
           <Group justify="space-between" mt="lg">
