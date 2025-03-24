@@ -16,7 +16,10 @@ import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 
 const LoginPage = () => {
   return (
-    <Box className="flex justify-center pt-[100px] bg-gradient-to-br from-cyan-200 to-pink-300 min-h-screen">
+    <Box
+      className="flex justify-center pt-[100px] min-h-screen bg-linear-to-br from-cyan-200 to-pink-300
+        dark:bg-linear-to-r dark:from-gray-900 dark:to-slate-900"
+    >
       <Container size={500} flex={1}>
         <Title ta="center" className="font-black font-[Greycliff_CF,var(--mantine-font-family)]">
           Welcome back!
