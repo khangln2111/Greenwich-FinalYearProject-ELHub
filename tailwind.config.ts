@@ -27,9 +27,7 @@ const hideScrollbar = ({ addUtilities }) => {
 const visibility = ({ matchUtilities, theme }) => {
   // Lọc bỏ __CSS_VALUES__ khỏi theme.screens
   const screens = Object.fromEntries(
-    Object.entries(theme("screens")).filter(
-      ([key]) => key !== "__CSS_VALUES__",
-    ),
+    Object.entries(theme("screens")).filter(([key]) => key !== "__CSS_VALUES__"),
   );
 
   matchUtilities(

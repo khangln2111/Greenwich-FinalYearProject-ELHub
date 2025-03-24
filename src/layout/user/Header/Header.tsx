@@ -67,8 +67,7 @@ const mockdata = [
 ];
 
 const Header = () => {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false);
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
 
   const links = mockdata.map((item) => (
@@ -95,8 +94,8 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white dark:bg-dark-7
-        sticky top-0 z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-sm"
+      className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
+        z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-sm"
     >
       <Group justify="space-between" h="100%">
         <Link

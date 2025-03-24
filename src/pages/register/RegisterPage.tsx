@@ -28,10 +28,7 @@ const schema = z
       .regex(/[0-9]/, "Password must include at least one number")
       .regex(/[a-z]/, "Password must include at least one lowercase letter")
       .regex(/[A-Z]/, "Password must include at least one uppercase letter")
-      .regex(
-        /[$&+,:;=?@#|'<>.^*()%!-]/,
-        "Password must include at least one special symbol",
-      ),
+      .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Password must include at least one special symbol"),
     confirmPassword: z.string(),
   })
   .refine(
@@ -72,14 +69,7 @@ const RegisterPage = () => {
             Login
           </Anchor>
         </Text>
-        <Paper
-          withBorder
-          shadow="md"
-          p={30}
-          mt={20}
-          radius="md"
-          className={classes.glass}
-        >
+        <Paper withBorder shadow="md" p={30} mt={20} radius="md" className={classes.glass}>
           <Group grow>
             <TextInput
               label="First Name"

@@ -15,10 +15,7 @@ const ThemeToggler = () => {
       size="lg"
       aria-label="Toggle color scheme"
     >
-      <IconSun
-        className="size-[22px] hidden dark:block text-yellow-3 fill-yellow-3"
-        stroke={1.5}
-      />
+      <IconSun className="size-[22px] hidden dark:block text-yellow-3 fill-yellow-3" stroke={1.5} />
       <IconMoonStars className="size-[22px] block dark:hidden fill-blue-3" stroke={1.5} />
     </ActionIcon>
   );

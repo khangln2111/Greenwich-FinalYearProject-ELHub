@@ -6,17 +6,9 @@ interface PasswordRequirementProps {
   label: string;
 }
 
-export function PasswordRequirement({
-  meets,
-  label,
-}: PasswordRequirementProps) {
+export function PasswordRequirement({ meets, label }: PasswordRequirementProps) {
   return (
-    <Text
-      c={meets ? "teal" : "red"}
-      className="flex items-center"
-      mt={7}
-      size="sm"
-    >
+    <Text c={meets ? "teal" : "red"} className="flex items-center" mt={7} size="sm">
       {meets ? (
         <IconCheck style={{ width: rem(14), height: rem(14) }} />
       ) : (
