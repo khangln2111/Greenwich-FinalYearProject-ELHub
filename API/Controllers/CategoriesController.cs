@@ -12,7 +12,6 @@ public class CategoriesController(ICategoryService categoryService) : Controller
 {
     // GET: api/Categories
     [HttpGet]
-    [Authorize]
     [ProducesResponseType<Paging<CategoryVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
     {

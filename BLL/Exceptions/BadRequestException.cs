@@ -1,23 +1,31 @@
-﻿using FluentValidation.Results;
+﻿using System.Net;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Exceptions;
 
-public class BadRequestException : Exception
+public class BadRequestException : HttpException
 {
-    public IDictionary<string, string[]> ValidationErrors { get; set; } = new Dictionary<string, string[]>();
+    public IDictionary<string, string[]> ValidationErrors { get; } = new Dictionary<string, string[]>();
 
     public override string Message { get; } = "One or more validation errors occurred.";
 
-    public BadRequestException(ValidationResult validationResult)
+    public BadRequestException(ValidationResult validationResult) : base(StatusCodes.Status400BadRequest,
+        "One or more validation errors occurred.", 0)
     {
         ValidationErrors = validationResult.ToDictionary();
     }
 
-    public BadRequestException(IEnumerable<IdentityError> identityErrors)
+    public BadRequestException(string message) : base(StatusCodes.Status400BadRequest, message,
+        ErrorCode.ValidationError)
     {
-        // ValidationErrors = identityErrors.ToDictionary(x => x.Code, x => new[] { x.Description });
+        Message = message;
+    }
 
+    public BadRequestException(IEnumerable<IdentityError> identityErrors) : base(StatusCodes.Status400BadRequest,
+        "One or more identity errors occurred.", ErrorCode.IdentityError)
+    {
         foreach (var error in identityErrors)
         {
             string[] newDescriptions;
@@ -37,16 +45,12 @@ public class BadRequestException : Exception
         }
     }
 
-    public BadRequestException(IdentityError identityError)
+    public BadRequestException(IdentityError identityError) : base(StatusCodes.Status400BadRequest,
+        "Identity validation error", ErrorCode.IdentityError)
     {
         ValidationErrors = new Dictionary<string, string[]>
         {
             { identityError.Code, new[] { identityError.Description } }
         };
-    }
-
-    public BadRequestException(string message) : base(message)
-    {
-        Message = message;
     }
 }

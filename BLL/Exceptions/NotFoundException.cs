@@ -1,12 +1,16 @@
-﻿namespace BLL.Exceptions;
+﻿using System.Net;
+using Microsoft.AspNetCore.Http;
 
-public class NotFoundException : Exception
+namespace BLL.Exceptions;
+
+public class NotFoundException : HttpException
 {
-    public NotFoundException(string name, object key) : base($"{name} with the given id ({key}) was not found.")
+    public NotFoundException(string name, object id) : base(StatusCodes.Status404NotFound,
+        $"{name} with the given id ({id}) was not found.", 0)
     {
     }
 
-    public NotFoundException(string message) : base(message)
+    public NotFoundException(string message) : base(StatusCodes.Status404NotFound, message, ErrorCode.NotFound)
     {
     }
 }

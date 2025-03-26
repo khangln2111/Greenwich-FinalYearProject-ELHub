@@ -12,6 +12,7 @@ using DAL.Utilities.CurrentUserUtility;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
 using DAL.Utilities.PaymentUtility;
+using Microsoft.AspNetCore.Http;
 
 namespace BLL.BusinessServices.Concrete;
 
@@ -66,7 +67,7 @@ public class OrderService(
         {
             order.Status = OrderStatus.Cancelled;
             await context.SaveChangesAsync();
-            throw new PaymentFailedException("Payment failed");
+            throw new HttpException(StatusCodes.Status402PaymentRequired, "Payment failed", ErrorCode.PaymentFailed);
         }
 
         order.Status = OrderStatus.Completed;

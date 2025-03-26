@@ -1,4 +1,5 @@
-﻿using BLL.BusinessServices.Abstract;
+﻿using System.Net;
+using BLL.BusinessServices.Abstract;
 using BLL.DTOs.IdentityDTOs;
 using BLL.Exceptions;
 using BLL.Validations;
@@ -7,6 +8,7 @@ using DAL.Data.Entities;
 using DAL.Utilities.EmailUtility;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -27,7 +29,8 @@ public class IdentityService(
         await validationService.ValidateAsync(command);
 
         if (await userManager.FindByEmailAsync(command.Email) is not null)
-            throw new ConflictException("Email is already taken");
+            throw new HttpException(StatusCodes.Status409Conflict, "Email already exists",
+                ErrorCode.EmailAlreadyExists);
 
         var user = new ApplicationUser
         {
