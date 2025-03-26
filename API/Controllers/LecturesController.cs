@@ -28,7 +28,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return Ok(course);
     }
 
-    // POST: api/Sections
+    // POST: api/Lectures
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,7 +38,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
-    // PUT: api/Sections
+    // PUT: api/Lectures
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

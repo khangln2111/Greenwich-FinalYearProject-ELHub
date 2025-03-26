@@ -10,6 +10,8 @@ public class CreateLectureCommandValidator : AbstractValidator<CreateLectureComm
 {
     public CreateLectureCommandValidator(IMediaManager mediaManager)
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+
         RuleFor(x => x.Title)
             .NotEmpty()
             .MaximumLength(255);

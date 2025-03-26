@@ -18,8 +18,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 ex.ValidationErrors),
             NotFoundException ex => CreateResponse(httpContext, ex.StatusCode, ex.Message, ex.ErrorCode),
             HttpException ex => CreateResponse(httpContext, ex.StatusCode, ex.Message, ex.ErrorCode),
-            // _ => HandleUnexpectedError(httpContext, exception) // Gọi hàm log và xử lý lỗi không mong muốn
-            _ => throw exception
+            // _ => HandleUnexpectedError(httpContext, exception) // (Production mode only)
+            _ => throw exception // (Development mode only)
         };
 
         var json = JsonSerializer.Serialize(response, JsonSerializerOptions);
@@ -52,13 +52,13 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
             statusCode,
             errorCode,
             message,
-            errors = validationErrors // Chỉ có trong BadRequestException
+            errors = validationErrors // Only in BadRequestException
         };
     }
 
     private object HandleUnexpectedError(HttpContext context, Exception exception)
     {
-        // Ghi log lỗi không mong muốn
+        // logging unexpected error
         logger.LogError(exception, "Unexpected error occurred: {Message}", exception.Message);
 
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

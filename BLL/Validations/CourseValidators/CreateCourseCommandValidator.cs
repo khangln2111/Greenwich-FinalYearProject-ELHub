@@ -10,6 +10,8 @@ public class CreateCourseCommandValidator : AbstractValidator<CreateCourseComman
 {
     public CreateCourseCommandValidator(IMediaManager mediaManager)
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+
         RuleFor(x => x.Title)
             .NotEmpty()
             .MaximumLength(CourseConstants.TitleMaxLength);

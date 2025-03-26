@@ -21,7 +21,6 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 
 // Configure max file size for upload to 500MB
@@ -42,10 +41,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors();
+app.UseExceptionHandler();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseExceptionHandler();
 
 app.MapControllers();
 

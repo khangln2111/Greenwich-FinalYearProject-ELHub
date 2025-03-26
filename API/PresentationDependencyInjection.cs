@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
+using API.Middlewares;
 using BLL;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,12 +12,10 @@ public static class PresentationDependencyInjection
 {
     public static IServiceCollection AddPresentationLayer(this IServiceCollection services)
     {
-        services.AddControllers().AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        });
+        services.AddControllers()
+            .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
+            .ConfigureApiBehaviorOptions(opts => { opts.SuppressModelStateInvalidFilter = true; });
         services.AddHttpContextAccessor();
-        services.AddProblemDetails();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(o =>
@@ -54,6 +53,8 @@ public static class PresentationDependencyInjection
 
 
         services.AddFluentValidationRulesToSwagger();
+        services.AddProblemDetails();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
 
         return services;
     }
