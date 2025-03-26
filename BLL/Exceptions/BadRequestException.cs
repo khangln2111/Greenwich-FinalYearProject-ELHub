@@ -11,13 +11,14 @@ public class BadRequestException : HttpException
 
     public override string Message { get; } = "One or more validation errors occurred.";
 
+    // Constructor using FluentValidation's ValidationResult to build errors.
     public BadRequestException(ValidationResult validationResult) : base(StatusCodes.Status400BadRequest,
         "One or more validation errors occurred.", 0)
     {
         ValidationErrors = validationResult.ToDictionary();
     }
 
-
+    // Constructor using multiple IdentityError items to build errors.
     public BadRequestException(IEnumerable<IdentityError> identityErrors) : base(StatusCodes.Status400BadRequest,
         "One or more identity errors occurred.", ErrorCode.IdentityError)
     {
@@ -40,6 +41,7 @@ public class BadRequestException : HttpException
         }
     }
 
+    // Constructor using a single IdentityError.
     public BadRequestException(IdentityError identityError) : base(StatusCodes.Status400BadRequest,
         "Identity validation error", ErrorCode.IdentityError)
     {
@@ -47,5 +49,12 @@ public class BadRequestException : HttpException
         {
             { identityError.Code, new[] { identityError.Description } }
         };
+    }
+
+    // Constructor using a pre-built dictionary of validation errors.
+    public BadRequestException(IDictionary<string, string[]> validationErrors) : base(StatusCodes.Status400BadRequest,
+        "One or more validation errors occurred.", 0)
+    {
+        ValidationErrors = validationErrors;
     }
 }

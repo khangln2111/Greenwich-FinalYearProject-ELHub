@@ -2,8 +2,10 @@
 using System.Text.Json.Serialization;
 using API.Middlewares;
 using BLL;
+using BLL.Exceptions;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 
 namespace API;
@@ -14,7 +16,20 @@ public static class PresentationDependencyInjection
     {
         services.AddControllers()
             .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
-            .ConfigureApiBehaviorOptions(opts => { opts.SuppressModelStateInvalidFilter = true; });
+            .ConfigureApiBehaviorOptions(opts =>
+            {
+                opts.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = context.ModelState
+                        .Where(x => x.Value?.Errors is { Count: > 0 })
+                        .ToDictionary(
+                            kvp => kvp.Key,
+                            kvp => kvp.Value?.Errors?.Select(e => e.ErrorMessage).ToArray() ?? Array.Empty<string>()
+                        );
+
+                    throw new BadRequestException(errors);
+                };
+            });
         services.AddHttpContextAccessor();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
