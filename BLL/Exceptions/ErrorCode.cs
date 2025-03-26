@@ -9,7 +9,11 @@ public enum ErrorCode
     IdentityError,
     NotFound,
     EmailNotConfirmed,
-    EmailAlreadyExists,
+    EmailAlreadyTaken,
     PaymentFailed,
-    Unexpected
+    Unexpected,
+    InvalidBehavior,
+    EmailAlreadyConfirmed,
+    EmailOrPasswordIncorrect,
+    InvalidToken
 }

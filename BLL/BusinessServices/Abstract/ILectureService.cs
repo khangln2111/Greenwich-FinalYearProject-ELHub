@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.LectureDTOs;
+using BLL.Models;
 using Gridify;
 
 namespace BLL.BusinessServices.Abstract;
@@ -11,7 +12,7 @@ public interface ILectureService
 
     Task<Guid> Create(CreateLectureCommand command);
 
-    Task<string> Update(UpdateLectureCommand command);
+    Task<Success> Update(UpdateLectureCommand command);
 
-    Task<string> Delete(Guid id);
+    Task<Success> Delete(Guid id);
 }

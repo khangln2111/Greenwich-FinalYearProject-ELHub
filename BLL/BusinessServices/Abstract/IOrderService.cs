@@ -1,13 +1,14 @@
 ﻿using BLL.DTOs.OrderDTOs;
+using BLL.Models;
 using Gridify;
 
 namespace BLL.BusinessServices.Abstract;
 
 public interface IOrderService
 {
-    Task<string> CreateOrder();
+    Task<Success<string>> CreateOrder();
 
-    Task<string> ConfirmOrder(ConfirmOrderCommand command);
+    Task<Success> ConfirmOrder(ConfirmOrderCommand command);
 
     Task<Paging<ListOrderVm>> GetList(GridifyQuery query);
 

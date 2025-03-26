@@ -4,6 +4,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.SectionDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
@@ -52,7 +53,7 @@ public class SectionService(
         return sectionEntity.Id;
     }
 
-    public async Task<string> Update(UpdateSectionCommand command)
+    public async Task<Success> Update(UpdateSectionCommand command)
     {
         await validationService.ValidateAsync(command);
         if (command.CourseId.HasValue) await EnsureRelatedCourseExistsAsync(command.CourseId.Value);
@@ -60,15 +61,15 @@ public class SectionService(
         if (section == null) throw new NotFoundException(nameof(Section), command.Id);
         mapper.Map(command, section);
         await context.SaveChangesAsync();
-        return "Updated section successfully";
+        return new Success("Updated section successfully");
     }
 
-    public async Task<string> Delete(Guid id)
+    public async Task<Success> Delete(Guid id)
     {
         var section = await context.Sections.FirstOrDefaultAsync(s => s.Id == id);
         if (section == null) throw new NotFoundException(nameof(Section), id);
         context.Sections.Remove(section);
-        return "Deleted section successfully";
+        return new Success("Deleted section successfully");
     }
 
     //Check if the related Course with the Section exists

@@ -4,6 +4,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.OrderDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
@@ -26,14 +27,14 @@ public class OrderService(
     : IOrderService
 {
     //Create order with Stripe
-    public async Task<string> CreateOrder()
+    public async Task<Success<string>> CreateOrder()
     {
         var cart = await context.Carts
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course)
             .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUserUtility.GetId());
 
-        if (cart == null) throw new NotFoundException("Cart not found");
+        if (cart == null) throw new NotFoundException("Cart belongs to user not found");
 
         var order = new Order
         {
@@ -52,16 +53,16 @@ public class OrderService(
         //Handling payment with Stripe using StripePaymentUtility
         var amount = (long)order.OrderItems.Sum(x => x.Course.Price * x.Quantity * 100)!;
         var paymentIntent = await stripePaymentUtility.CreatePaymentIntent(amount, "usd", order.Id.ToString());
-        return paymentIntent.ClientSecret;
+        return new Success<string>("Success", paymentIntent.ClientSecret);
     }
 
     //Confirm payment for an order
-    public async Task<string> ConfirmOrder(ConfirmOrderCommand command)
+    public async Task<Success> ConfirmOrder(ConfirmOrderCommand command)
     {
         var paymentIntent = await stripePaymentUtility.GetPaymentIntent(command.PaymentIntentId);
         var orderId = paymentIntent.Metadata["order_id"];
         var order = await context.Orders.FirstOrDefaultAsync(x => x.Id.ToString() == orderId);
-        if (order == null) throw new NotFoundException("Order not found");
+        if (order == null) throw new NotFoundException("Order - payment intent not found");
 
         if (paymentIntent.Status != "succeeded")
         {
@@ -72,7 +73,7 @@ public class OrderService(
 
         order.Status = OrderStatus.Completed;
         await context.SaveChangesAsync();
-        return "Payment succeeded";
+        return new Success("Payment succeeded");
     }
 
     public Task<Paging<ListOrderVm>> GetList(GridifyQuery query)

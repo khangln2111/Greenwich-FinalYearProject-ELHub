@@ -2,6 +2,7 @@
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CartDTOs;
 using BLL.Exceptions;
+using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
@@ -29,7 +30,7 @@ public class CartService(
         return mapper.Map<CartVm>(cart);
     }
 
-    public async Task<string> AddCartItem(AddCartItemCommand command)
+    public async Task<Success> AddCartItem(AddCartItemCommand command)
     {
         await validationService.ValidateAsync(command);
         var course = await context.Courses.FirstOrDefaultAsync(x => x.Id == command.CourseId);
@@ -57,10 +58,10 @@ public class CartService(
         }
 
         await context.SaveChangesAsync();
-        return "Item added to cart successfully";
+        return new Success("Item added to cart successfully");
     }
 
-    public async Task<string> UpdateCartItem(UpdateCartItemCommand command)
+    public async Task<Success> UpdateCartItem(UpdateCartItemCommand command)
     {
         await validationService.ValidateAsync(command);
         var cartItem = await context.CartItems.FirstOrDefaultAsync(x => x.Id == command.Id);
@@ -68,10 +69,10 @@ public class CartService(
 
         cartItem.Quantity = command.Quantity;
         await context.SaveChangesAsync();
-        return "Cart item updated successfully";
+        return new Success("Cart item updated successfully");
     }
 
-    public async Task<string> DeleteCartItem(DeleteCartItemCommand command)
+    public async Task<Success> DeleteCartItem(DeleteCartItemCommand command)
     {
         await validationService.ValidateAsync(command);
         var cartItem = await context.CartItems.FirstOrDefaultAsync(x => x.Id == command.Id);
@@ -79,7 +80,7 @@ public class CartService(
 
         context.CartItems.Remove(cartItem);
         await context.SaveChangesAsync();
-        return "Cart item deleted successfully";
+        return new Success("Cart item deleted successfully");
     }
 
     // Ensures the user's cart exists, creates it if not, and includes cart items.

@@ -3,6 +3,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CategoryDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
@@ -41,23 +42,23 @@ public class CategoryService(
         return categoryEntity.Id;
     }
 
-    public async Task<string> Update(UpdateCategoryCommand command)
+    public async Task<Success> Update(UpdateCategoryCommand command)
     {
         await validationService.ValidateAsync(command);
         var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == command.Id);
         if (category == null) throw new NotFoundException(nameof(Category), command.Id);
         mapper.Map(command, category);
         await context.SaveChangesAsync();
-        return "Updated category successfully";
+        return new Success("Updated category successfully");
     }
 
 
-    public async Task<string> Delete(Guid id)
+    public async Task<Success> Delete(Guid id)
     {
         var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id);
         if (category == null) throw new NotFoundException(nameof(Category), id);
         context.Categories.Remove(category);
         await context.SaveChangesAsync();
-        return "Deleted category successfully";
+        return new Success("Deleted category successfully");
     }
 }

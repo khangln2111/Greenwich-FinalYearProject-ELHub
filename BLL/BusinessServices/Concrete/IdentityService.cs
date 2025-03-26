@@ -1,7 +1,9 @@
 ﻿using System.Net;
+using System.Runtime.InteropServices.JavaScript;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.IdentityDTOs;
 using BLL.Exceptions;
+using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
@@ -24,13 +26,13 @@ public class IdentityService(
     ApplicationDbContext context)
     : IIdentityService
 {
-    public async Task<string> RegisterAsync(RegisterCommand command)
+    public async Task<Success> RegisterAsync(RegisterCommand command)
     {
         await validationService.ValidateAsync(command);
 
         if (await userManager.FindByEmailAsync(command.Email) is not null)
-            throw new HttpException(StatusCodes.Status409Conflict, "Email already exists",
-                ErrorCode.EmailAlreadyExists);
+            throw new HttpException(StatusCodes.Status409Conflict, "Email already taken",
+                ErrorCode.EmailAlreadyTaken);
 
         var user = new ApplicationUser
         {
@@ -47,7 +49,7 @@ public class IdentityService(
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
         await emailUtility.SendConfirmationEmailAsync(user.Email, token);
 
-        return "Registered successfully, please check your email to confirm your account";
+        return new Success("Registered successfully, please check your email to confirm your account");
     }
 
     public async Task LoginAsync(LoginCommand command)
@@ -56,10 +58,16 @@ public class IdentityService(
         signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
 
         var user = await userManager.FindByEmailAsync(command.Email);
-        if (user == null) throw new UnauthorizedAccessException("Email or password wrong");
-        if (!user.EmailConfirmed) throw new UnauthorizedAccessException("Email is not confirmed");
+        if (user == null)
+            throw new HttpException(StatusCodes.Status401Unauthorized, "Email or password wrong",
+                ErrorCode.EmailOrPasswordIncorrect);
+        if (!user.EmailConfirmed)
+            throw new HttpException(StatusCodes.Status403Forbidden, "Email is not confirmed",
+                ErrorCode.EmailNotConfirmed);
         var result = await signInManager.PasswordSignInAsync(command.Email, command.Password, false, false);
-        if (!result.Succeeded) throw new UnauthorizedAccessException("Email or password wrong");
+        if (!result.Succeeded)
+            throw new HttpException(StatusCodes.Status401Unauthorized, "Email or password wrong",
+                ErrorCode.EmailOrPasswordIncorrect);
     }
 
     public async Task GoogleLoginAsync(GoogleLoginCommand command)
@@ -82,7 +90,7 @@ public class IdentityService(
         await signInManager.SignInAsync(user, false);
     }
 
-    public async Task<string> ConfirmEmailAsync(ConfirmEmailCommand command)
+    public async Task<Success> ConfirmEmailAsync(ConfirmEmailCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
@@ -90,24 +98,28 @@ public class IdentityService(
 
         var result = await userManager.ConfirmEmailAsync(user, command.Code);
 
-        if (!result.Succeeded) throw new UnauthorizedAccessException("Please provide a valid token");
+        if (!result.Succeeded)
+            throw new HttpException(StatusCodes.Status400BadRequest, "Please provide a valid token",
+                ErrorCode.InvalidToken);
 
-        return "Email confirmed successfully";
+        return new Success("Email confirmed successfully, now you can log in");
     }
 
-    public async Task<string> ResendConfirmationEmailAsync(ResendConfirmationEmailCommand command)
+    public async Task<Success> ResendConfirmationEmailAsync(ResendConfirmationEmailCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
         if (user == null) throw new NotFoundException("Email not found");
-        if (user.EmailConfirmed) throw new UnauthorizedAccessException("Email is already confirmed");
+        if (user.EmailConfirmed)
+            throw new HttpException(StatusCodes.Status400BadRequest, "Email is already confirmed",
+                ErrorCode.EmailAlreadyConfirmed);
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
         await emailUtility.SendConfirmationEmailAsync(command.Email, token);
-        return "Confirmation email has been resent, please check your email";
+        return new Success("Confirmation email has been sent, please check your email");
     }
 
 
-    public async Task<string> ForgotPasswordAsync(ForgotPasswordCommand command)
+    public async Task<Success> ForgotPasswordAsync(ForgotPasswordCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
@@ -116,11 +128,11 @@ public class IdentityService(
         var token = await userManager.GeneratePasswordResetTokenAsync(user);
         await emailUtility.SendForgotPasswordEmailAsync(command.Email, token);
 
-        return "Reset password code has been sent, please check your email";
+        return new Success("Reset password email has been sent, please check your email");
     }
 
 
-    public async Task<string> ResetPasswordAsync(ResetPasswordCommand request)
+    public async Task<Success> ResetPasswordAsync(ResetPasswordCommand request)
     {
         await validationService.ValidateAsync(request);
         var user = await userManager.FindByEmailAsync(request.Email);
@@ -129,7 +141,8 @@ public class IdentityService(
         var result = await userManager.ResetPasswordAsync(user, request.Code, request.NewPassword);
 
         if (!result.Succeeded) throw new BadRequestException(result.Errors);
-        return "Password reset successfully, now you can log in with your new password";
+
+        return new Success("Password reset successfully, now you can log in with new password");
     }
 
     public async Task RefreshTokenAsync(RefreshTokenCommand command)
@@ -143,7 +156,7 @@ public class IdentityService(
         if (refreshTicket?.Properties.ExpiresUtc is not { } expiresUtc ||
             timeProvider.GetUtcNow() >= expiresUtc ||
             await signInManager.ValidateSecurityStampAsync(refreshTicket.Principal) is not { } user)
-            throw new UnauthorizedAccessException("Invalid refresh token");
+            throw new HttpException(StatusCodes.Status400BadRequest, "Invalid refresh token", ErrorCode.InvalidToken);
 
         var newPrincipal = await signInManager.CreateUserPrincipalAsync(user);
         signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;

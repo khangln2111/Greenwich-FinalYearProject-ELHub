@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.SectionDTOs;
+using BLL.Models;
 using Gridify;
 
 namespace BLL.BusinessServices.Abstract;
@@ -11,7 +12,7 @@ public interface ISectionService
 
     Task<Guid> Create(CreateSectionCommand command);
 
-    Task<string> Update(UpdateSectionCommand command);
+    Task<Success> Update(UpdateSectionCommand command);
 
-    Task<string> Delete(Guid id);
+    Task<Success> Delete(Guid id);
 }

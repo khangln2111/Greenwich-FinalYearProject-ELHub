@@ -17,11 +17,6 @@ public class BadRequestException : HttpException
         ValidationErrors = validationResult.ToDictionary();
     }
 
-    public BadRequestException(string message) : base(StatusCodes.Status400BadRequest, message,
-        ErrorCode.ValidationError)
-    {
-        Message = message;
-    }
 
     public BadRequestException(IEnumerable<IdentityError> identityErrors) : base(StatusCodes.Status400BadRequest,
         "One or more identity errors occurred.", ErrorCode.IdentityError)

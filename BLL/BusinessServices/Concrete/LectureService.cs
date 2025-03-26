@@ -4,6 +4,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.LectureDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
@@ -57,7 +58,7 @@ public class LectureService(
     }
 
 
-    public async Task<string> Update(UpdateLectureCommand command)
+    public async Task<Success> Update(UpdateLectureCommand command)
     {
         await validationService.ValidateAsync(command);
         if (command.SectionId.HasValue) await EnsureRelatedSectionExistsAsync(command.SectionId.Value);
@@ -69,15 +70,15 @@ public class LectureService(
         if (command.Video != null && lecture.Video != null)
             await mediaManager.UpdateFileAsync(lecture.Video, command.Video);
         await context.SaveChangesAsync();
-        return "Updated the lecture successfully";
+        return new Success("Updated the lecture successfully");
     }
 
-    public async Task<string> Delete(Guid id)
+    public async Task<Success> Delete(Guid id)
     {
         var lecture = await context.Lectures.FirstOrDefaultAsync(l => l.Id == id);
         if (lecture == null) throw new NotFoundException(nameof(Lecture), id);
         context.Lectures.Remove(lecture);
-        return "Deleted the lecture successfully";
+        return new Success("Deleted the lecture successfully");
     }
 
     private async Task EnsureRelatedSectionExistsAsync(Guid sectionId)
