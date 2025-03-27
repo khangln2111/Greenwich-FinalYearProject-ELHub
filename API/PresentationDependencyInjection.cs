@@ -24,7 +24,7 @@ public static class PresentationDependencyInjection
                         .Where(x => x.Value?.Errors is { Count: > 0 })
                         .ToDictionary(
                             kvp => kvp.Key,
-                            kvp => kvp.Value?.Errors?.Select(e => e.ErrorMessage).ToArray() ?? Array.Empty<string>()
+                            kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray() ?? []
                         );
 
                     throw new BadRequestException(errors);

@@ -8,7 +8,7 @@ public interface ICategoryService
 {
     Task<CategoryVm> GetById(Guid id);
     Task<Paging<CategoryVm>> GetList(GridifyQuery query);
-    Task<Guid> Create(CreateCategoryCommand command);
+    Task<Success> Create(CreateCategoryCommand command);
     Task<Success> Update(UpdateCategoryCommand command);
 
     Task<Success> Delete(Guid id);

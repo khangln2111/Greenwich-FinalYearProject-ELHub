@@ -26,7 +26,7 @@ public class IdentityService(
     ApplicationDbContext context)
     : IIdentityService
 {
-    public async Task<Success> RegisterAsync(RegisterCommand command)
+    public async Task<Success> Register(RegisterCommand command)
     {
         await validationService.ValidateAsync(command);
 
@@ -52,7 +52,7 @@ public class IdentityService(
         return new Success("Registered successfully, please check your email to confirm your account");
     }
 
-    public async Task LoginAsync(LoginCommand command)
+    public async Task Login(LoginCommand command)
     {
         await validationService.ValidateAsync(command);
         signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
@@ -70,11 +70,14 @@ public class IdentityService(
                 ErrorCode.EmailOrPasswordIncorrect);
     }
 
-    public async Task GoogleLoginAsync(GoogleLoginCommand command)
+    public async Task GoogleLogin(GoogleLoginCommand command)
     {
         await validationService.ValidateAsync(command);
         var payload = await GoogleJsonWebSignature.ValidateAsync(command.IdToken);
+
         var user = await userManager.FindByEmailAsync(payload.Email);
+
+        // If user not found, create a new user
         if (user == null)
         {
             user = new ApplicationUser
@@ -90,7 +93,7 @@ public class IdentityService(
         await signInManager.SignInAsync(user, false);
     }
 
-    public async Task<Success> ConfirmEmailAsync(ConfirmEmailCommand command)
+    public async Task<Success> ConfirmEmail(ConfirmEmailCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
@@ -105,7 +108,7 @@ public class IdentityService(
         return new Success("Email confirmed successfully, now you can log in");
     }
 
-    public async Task<Success> ResendConfirmationEmailAsync(ResendConfirmationEmailCommand command)
+    public async Task<Success> ResendConfirmationEmail(ResendConfirmationEmailCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
@@ -119,7 +122,7 @@ public class IdentityService(
     }
 
 
-    public async Task<Success> ForgotPasswordAsync(ForgotPasswordCommand command)
+    public async Task<Success> ForgotPassword(ForgotPasswordCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
@@ -132,7 +135,7 @@ public class IdentityService(
     }
 
 
-    public async Task<Success> ResetPasswordAsync(ResetPasswordCommand request)
+    public async Task<Success> ResetPassword(ResetPasswordCommand request)
     {
         await validationService.ValidateAsync(request);
         var user = await userManager.FindByEmailAsync(request.Email);
@@ -145,7 +148,7 @@ public class IdentityService(
         return new Success("Password reset successfully, now you can log in with new password");
     }
 
-    public async Task RefreshTokenAsync(RefreshTokenCommand command)
+    public async Task RefreshToken(RefreshTokenCommand command)
     {
         await validationService.ValidateAsync(command);
         //refresh token logic

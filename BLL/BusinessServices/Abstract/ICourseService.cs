@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.CourseDTOs;
+using BLL.Models;
 using Gridify;
 
 namespace BLL.BusinessServices.Abstract;
@@ -9,9 +10,9 @@ public interface ICourseService
 
     Task<Paging<CourseVm>> GetList(GridifyQuery query);
 
-    Task<Guid> Create(CreateCourseCommand command);
+    Task<Success> Create(CreateCourseCommand command);
 
-    Task<string> Update(UpdateCourseCommand command);
+    Task<Success> Update(UpdateCourseCommand command);
 
     Task<string> Delete(Guid id);
 }

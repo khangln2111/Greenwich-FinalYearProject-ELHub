@@ -1,12 +1,21 @@
 ﻿namespace BLL.Models;
 
-public class Success(string message)
+public class Success
 {
-    public string Message { get; } = message;
-}
+    public string Message { get; }
+    public object? Data { get; }
 
-public class Success<T>(string message, T data)
-{
-    public string Message { get; } = message;
-    public T Data { get; } = data;
+    // Constructor without data
+    public Success(string message)
+    {
+        Message = message;
+        Data = null;
+    }
+
+    // Constructor with data
+    public Success(string message, object data)
+    {
+        Message = message;
+        Data = data;
+    }
 }

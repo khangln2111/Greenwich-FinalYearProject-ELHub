@@ -3,6 +3,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CourseDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
@@ -43,7 +44,7 @@ public class CourseService(
     }
 
 
-    public async Task<Guid> Create(CreateCourseCommand command)
+    public async Task<Success> Create(CreateCourseCommand command)
     {
         await validationService.ValidateAsync(command);
         await EnsuredRelatedCategoryExistsAsync(command.CategoryId);
@@ -59,10 +60,10 @@ public class CourseService(
         // Add the course to the context and save the changes
         await context.Courses.AddAsync(course);
         await context.SaveChangesAsync();
-        return course.Id;
+        return new Success("Created course successfully", new { id = course.Id });
     }
 
-    public async Task<string> Update(UpdateCourseCommand command)
+    public async Task<Success> Update(UpdateCourseCommand command)
     {
         await validationService.ValidateAsync(command);
         // Check if the course exists
@@ -81,7 +82,7 @@ public class CourseService(
 
         mapper.Map(command, course);
         await context.SaveChangesAsync();
-        return "Updated course successfully";
+        return new Success("Updated course successfully");
     }
 
     public async Task<string> Delete(Guid id)

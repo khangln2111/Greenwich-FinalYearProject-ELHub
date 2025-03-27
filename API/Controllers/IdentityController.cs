@@ -14,7 +14,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterCommand command)
     {
-        var result = await identityService.RegisterAsync(command);
+        var result = await identityService.Register(command);
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
@@ -25,7 +25,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Login([FromBody] LoginCommand command)
     {
-        await identityService.LoginAsync(command);
+        await identityService.Login(command);
         return Empty;
     }
 
@@ -34,7 +34,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [HttpPost("GoogleLogin")]
     public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginCommand command)
     {
-        await identityService.GoogleLoginAsync(command);
+        await identityService.GoogleLogin(command);
         return Empty;
     }
 
@@ -46,7 +46,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand command)
     {
-        var result = await identityService.ConfirmEmailAsync(command);
+        var result = await identityService.ConfirmEmail(command);
         return Ok(result);
     }
 
@@ -57,7 +57,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendConfirmationEmailCommand command)
     {
-        var result = await identityService.ResendConfirmationEmailAsync(command);
+        var result = await identityService.ResendConfirmationEmail(command);
         return Ok(result);
     }
 
@@ -68,7 +68,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
     {
-        var result = await identityService.ForgotPasswordAsync(command);
+        var result = await identityService.ForgotPassword(command);
         return Ok(result);
     }
 
@@ -78,7 +78,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
     {
-        var result = await identityService.ResetPasswordAsync(command);
+        var result = await identityService.ResetPassword(command);
         return Ok(result);
     }
 
@@ -88,7 +88,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
     {
-        await identityService.RefreshTokenAsync(command);
+        await identityService.RefreshToken(command);
         return Empty;
     }
 }

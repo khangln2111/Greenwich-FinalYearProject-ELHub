@@ -6,7 +6,7 @@ namespace BLL.BusinessServices.Abstract;
 
 public interface IOrderService
 {
-    Task<Success<string>> CreateOrder();
+    Task<Success> CreateOrder();
 
     Task<Success> ConfirmOrder(ConfirmOrderCommand command);
 

@@ -5,20 +5,20 @@ namespace BLL.BusinessServices.Abstract;
 
 public interface IIdentityService
 {
-    Task<Success> RegisterAsync(RegisterCommand command);
+    Task<Success> Register(RegisterCommand command);
 
-    Task LoginAsync(LoginCommand command);
+    Task Login(LoginCommand command);
 
-    Task GoogleLoginAsync(GoogleLoginCommand command);
+    Task GoogleLogin(GoogleLoginCommand command);
 
-    Task<Success> ConfirmEmailAsync(ConfirmEmailCommand command);
+    Task<Success> ConfirmEmail(ConfirmEmailCommand command);
 
-    Task<Success> ResendConfirmationEmailAsync(ResendConfirmationEmailCommand command);
+    Task<Success> ResendConfirmationEmail(ResendConfirmationEmailCommand command);
 
-    Task RefreshTokenAsync(RefreshTokenCommand command);
+    Task RefreshToken(RefreshTokenCommand command);
 
 
-    Task<Success> ForgotPasswordAsync(ForgotPasswordCommand command);
+    Task<Success> ForgotPassword(ForgotPasswordCommand command);
 
-    Task<Success> ResetPasswordAsync(ResetPasswordCommand command);
+    Task<Success> ResetPassword(ResetPasswordCommand command);
 }

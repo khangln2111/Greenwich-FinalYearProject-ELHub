@@ -27,7 +27,7 @@ public class OrderService(
     : IOrderService
 {
     //Create order with Stripe
-    public async Task<Success<string>> CreateOrder()
+    public async Task<Success> CreateOrder()
     {
         var cart = await context.Carts
             .Include(x => x.CartItems)
@@ -53,7 +53,7 @@ public class OrderService(
         //Handling payment with Stripe using StripePaymentUtility
         var amount = (long)order.OrderItems.Sum(x => x.Course.Price * x.Quantity * 100)!;
         var paymentIntent = await stripePaymentUtility.CreatePaymentIntent(amount, "usd", order.Id.ToString());
-        return new Success<string>("Success", paymentIntent.ClientSecret);
+        return new Success("Order created successfully", new { paymentIntent.ClientSecret });
     }
 
     //Confirm payment for an order

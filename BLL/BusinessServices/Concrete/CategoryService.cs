@@ -33,13 +33,13 @@ public class CategoryService(
     }
 
 
-    public async Task<Guid> Create(CreateCategoryCommand command)
+    public async Task<Success> Create(CreateCategoryCommand command)
     {
         await validationService.ValidateAsync(command);
         var categoryEntity = mapper.Map<Category>(command);
         await context.Categories.AddAsync(categoryEntity);
         await context.SaveChangesAsync();
-        return categoryEntity.Id;
+        return new Success("Created category successfully", new { id = categoryEntity.Id });
     }
 
     public async Task<Success> Update(UpdateCategoryCommand command)
