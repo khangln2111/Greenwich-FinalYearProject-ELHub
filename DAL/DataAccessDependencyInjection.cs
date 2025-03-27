@@ -65,14 +65,27 @@ public static class DataAccessDependencyInjection
 
         services.AddAuthentication(opts =>
             {
-                opts.DefaultSignInScheme = IdentityConstants.BearerScheme;
+                opts.DefaultScheme = IdentityConstants.BearerScheme;
                 opts.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
                 opts.DefaultChallengeScheme = IdentityConstants.BearerScheme;
+                opts.DefaultSignInScheme = IdentityConstants.BearerScheme;
+                opts.DefaultForbidScheme = IdentityConstants.BearerScheme;
+                opts.DefaultSignOutScheme = IdentityConstants.BearerScheme;
             })
-            .AddBearerToken(IdentityConstants.BearerScheme);
+            .AddBearerToken(IdentityConstants.BearerScheme, options =>
+            {
+                options.BearerTokenExpiration = TimeSpan.FromDays(1);
+                options.RefreshTokenExpiration = TimeSpan.FromDays(30);
+            });
+
+        services.Configure<BearerTokenOptions>(opts =>
+        {
+            opts.BearerTokenExpiration = TimeSpan.FromDays(1);
+            opts.RefreshTokenExpiration = TimeSpan.FromDays(30);
+        });
 
 
-        services.AddAuthenticationCore();
+        // services.AddAuthenticationCore();
         services.AddAuthorization();
 
         services.Configure<IdentityOptions>(options =>
@@ -116,10 +129,5 @@ public static class DataAccessDependencyInjection
         });
 
         //configure bearer token options
-        services.Configure<BearerTokenOptions>(options =>
-        {
-            options.BearerTokenExpiration = TimeSpan.FromDays(1);
-            options.RefreshTokenExpiration = TimeSpan.FromDays(30);
-        });
     }
 }

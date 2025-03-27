@@ -29,7 +29,17 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Empty;
     }
 
-    //Login with google
+    [HttpPost("LoginCustom")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> LoginCustom([FromBody] LoginCommand command)
+    {
+        var result = await identityService.LoginCustom(command);
+        return Ok(result);
+    }
+
+    //Login with Google
     // POST: api/Identity/GoogleLogin
     [HttpPost("GoogleLogin")]
     public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginCommand command)

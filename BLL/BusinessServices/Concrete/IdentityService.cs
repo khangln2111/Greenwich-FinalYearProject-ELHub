@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Runtime.InteropServices.JavaScript;
+using System.Security.Claims;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.IdentityDTOs;
 using BLL.Exceptions;
@@ -9,6 +10,7 @@ using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Utilities.EmailUtility;
 using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +25,7 @@ public class IdentityService(
     TimeProvider timeProvider,
     IValidationService validationService,
     IEmailUtility emailUtility,
-    ApplicationDbContext context)
+    IOptions<BearerTokenOptions> options)
     : IIdentityService
 {
     public async Task<Success> Register(RegisterCommand command)
@@ -165,5 +167,64 @@ public class IdentityService(
         signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
         await signInManager.SignInWithClaimsAsync(user, false, newPrincipal.Claims);
         // await signInManager.RefreshSignInAsync(user);
+    }
+
+    public async Task<Success> LoginCustom(LoginCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
+
+        var user = await userManager.FindByEmailAsync(command.Email);
+
+        if (user == null)
+            throw new HttpException(StatusCodes.Status401Unauthorized, "Email or password wrong",
+                ErrorCode.EmailOrPasswordIncorrect);
+
+        if (!user.EmailConfirmed)
+            throw new HttpException(StatusCodes.Status403Forbidden, "Email is not confirmed",
+                ErrorCode.EmailNotConfirmed);
+
+        var result = await signInManager.CheckPasswordSignInAsync(user, command.Password, false);
+        if (!result.Succeeded)
+            throw new HttpException(StatusCodes.Status401Unauthorized, "Email or password wrong",
+                ErrorCode.EmailOrPasswordIncorrect);
+
+        //get user principal to create tokens
+        var principal = await signInManager.CreateUserPrincipalAsync(user);
+        var accessToken = CreateAccessToken(principal);
+        var refreshToken = CreateRefreshToken(principal);
+
+
+        return new Success("Logged in successfully",
+            new
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
+                AccessTokenExpiresIn = options.Value.BearerTokenExpiration.TotalSeconds,
+                RefreshTokenExpiresIn = options.Value.RefreshTokenExpiration.TotalSeconds
+            });
+    }
+
+
+    private string CreateAccessToken(ClaimsPrincipal principal)
+    {
+        var issueAt = timeProvider.GetUtcNow();
+        var properties = new AuthenticationProperties
+        {
+            ExpiresUtc = issueAt + options.Value.BearerTokenExpiration
+        };
+        var ticket = new AuthenticationTicket(principal, properties, IdentityConstants.BearerScheme);
+        return options.Value.BearerTokenProtector.Protect(ticket);
+    }
+
+    private string CreateRefreshToken(ClaimsPrincipal principal)
+    {
+        var issuedAt = timeProvider.GetUtcNow();
+        var refreshProperties = new AuthenticationProperties
+        {
+            ExpiresUtc = issuedAt + options.Value.RefreshTokenExpiration
+        };
+        var ticket = new AuthenticationTicket(principal, refreshProperties, IdentityConstants.BearerScheme);
+        return options.Value.RefreshTokenProtector.Protect(ticket);
     }
 }

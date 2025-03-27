@@ -9,6 +9,8 @@ public interface IIdentityService
 
     Task Login(LoginCommand command);
 
+    Task<Success> LoginCustom(LoginCommand command);
+
     Task GoogleLogin(GoogleLoginCommand command);
 
     Task<Success> ConfirmEmail(ConfirmEmailCommand command);
