@@ -1,17 +1,16 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Header/Header";
-import { Flex } from "@mantine/core";
-import Footer from "./Footer/Footer";
+import Footer from "./Footer";
+import Header from "./Header";
 
 const UserLayout = () => {
   return (
-    <Flex direction="column" mih="100vh">
+    <div className="flex flex-col min-h-dvh">
       <Header />
       <main>
         <Outlet />
       </main>
       <Footer /> {/* Sử dụng margin-top: auto */}
-    </Flex>
+    </div>
   );
 };
 export default UserLayout;

@@ -1,7 +1,6 @@
-"use client";
 import { useState } from "react";
 import { PasswordInput, Progress, Popover, PasswordInputProps } from "@mantine/core";
-import { PasswordRequirement } from "./PasswordRequirement"; // Adjust the path as necessary
+import { PasswordRequirement } from "./PasswordRequirement";
 
 // Type for password requirements
 type Requirement = {

@@ -34,8 +34,8 @@ const Features = () => {
       <feature.icon stroke={2} className="text-primary-6 size-[50px]" />
       <Text fz="lg" fw={500} mt="md">
         {feature.title}
-        <div className="bg-primary-filled w-[45px] h-[2px] mt-sm"></div>
       </Text>
+      <div className="bg-primary-filled w-[45px] h-[2px] mt-sm"></div>
       <Text fz="sm" c="dimmed" mt="sm">
         {feature.description}
       </Text>

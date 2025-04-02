@@ -14,9 +14,9 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconAt, IconX } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
 import CourseCard from "./CourseCard";
 import TestCard from "./TestCard";
+import { Link } from "react-router-dom";
 
 const PopularCourses = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -128,7 +128,9 @@ const PopularCourses = () => {
             <Button variant="gradient" gradient={{ from: "pink", to: "yellow" }}>
               Save
             </Button>
-            <Button onClick={close}>Close</Button>
+            <Button variant="light" color="red" onClick={close}>
+              Close
+            </Button>
           </Group>
         </Modal.Content>
       </Modal.Root>

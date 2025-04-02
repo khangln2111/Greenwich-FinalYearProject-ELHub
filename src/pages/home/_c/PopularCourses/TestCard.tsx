@@ -1,10 +1,11 @@
 import { Star } from "lucide-react";
+import { Image } from "@mantine/core";
 import image from "../../../../assets/react-course-image.svg";
 const TestCard = () => {
   return (
     <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
       {/* Course Image */}
-      <img src={image} alt="haha" className="w-full h-48 object-cover" />
+      <Image src={image} alt="haha" className="w-full h-auto object-cover" />
 
       <div className="p-4">
         {/* Course Name */}

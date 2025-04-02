@@ -2,6 +2,7 @@
 @import "./theme.css";
 @import "./customTheme.css";
 @import "swiper/css" layer(components);
+@import "mantine-vaul/style.css" layer(components);
 
 @theme theme {
   --spacing: 0.25rem;

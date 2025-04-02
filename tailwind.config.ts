@@ -57,6 +57,7 @@ const visibility = ({ matchUtilities, theme }) => {
 };
 const customPlugins = [visibility];
 
+/** @type {import('tailwindcss').Config} */
 const config = {
   // content: [
   //   "./src/**/*.{js,ts,jsx,tsx}",

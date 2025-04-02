@@ -1,7 +1,7 @@
-import Features from "./components/Features/Features";
-import Hero from "./components/Hero/Hero";
-import PopularCourses from "./components/PopularCourses/PopularCourses";
-import Categories from "./components/Categories/Categories";
+import Categories from "./_c/Categories";
+import Features from "./_c/Features";
+import Hero from "./_c/Hero";
+import PopularCourses from "./_c/PopularCourses/PopularCourses";
 
 const HomePage = () => {
   return (

@@ -6,6 +6,30 @@ import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 
+const userRoute: RouteObject = {
+  element: <UserLayout />,
+  errorElement: <h1>[Error boundary] Error occured, please check</h1>, // Error page for the user routes
+  children: [
+    { path: "*", element: <ErrorPage /> },
+    { index: true, element: <HomePage /> },
+    { path: "courses", element: <CoursesPage /> },
+    { path: "courses/:courseId", element: <p>Course Detail Page</p> },
+    { path: "cart", element: <p>Cart Page</p> },
+  ],
+};
+
+const authRoutes: RouteObject[] = [
+  { path: "/login", element: <LoginPage /> },
+  { path: "/register", element: <RegisterPage /> },
+  { path: "/forgot-password", element: <p>Forgot Password Page</p> },
+  { path: "/reset-password", element: <p>Reset Password Page</p> },
+  { path: "/verify-email", element: <p>Verify Email Page</p> },
+];
+
+const router = createBrowserRouter([userRoute, ...authRoutes]);
+
+export default router;
+
 // Using TSX syntax for defining routes
 // const userRoutes = (
 //   <Route path="/" element={<UserLayout />} key="user">
@@ -24,32 +48,26 @@ import RegisterPage from "../pages/register/RegisterPage";
 //   createRoutesFromElements([userRoutes, ...authRoutes]),
 // );
 
-// Using Typescript objects for defining routes
-const userRoute: RouteObject = {
-  path: "/",
-  element: <UserLayout />, // To set the layout for the user routes
-  errorElement: <h1>Error, please check</h1>, // Error page for the user routes
-  children: [
-    { index: true, element: <HomePage /> }, // Homepage as the default route
-    { path: "courses", element: <CoursesPage /> },
-    {
-      path: "*", // Catch all route for 404 errors
-      element: <ErrorPage />, //ErrorPage will be wrapped in the UserLayout
-    },
-  ],
-};
-
-const authRoutes: RouteObject[] = [
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-];
-
-const router = createBrowserRouter([userRoute, ...authRoutes]);
-
-export default router;
+// const routes: RouteObject[] = [
+//   {
+//     path: "/",
+//     element: <UserLayout />, // To set the layout for the user routes
+//     errorElement: <h1>[Error boundary] Error occured, please check</h1>, // Error page for the user routes
+//     children: [
+//       { index: true, element: <HomePage /> }, // Homepage as the default route
+//       { path: "courses", element: <CoursesPage /> },
+//       {
+//         path: "*", // Catch all route for 404 errors
+//         element: <ErrorPage />, //ErrorPage will be wrapped in the UserLayout
+//       },
+//     ],
+//   },
+//   {
+//     path: "/login",
+//     element: <LoginPage />,
+//   },
+//   {
+//     path: "/register",
+//     element: <RegisterPage />,
+//   },
+// ];

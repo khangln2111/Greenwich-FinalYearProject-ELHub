@@ -1,6 +1,7 @@
 import { Button, Container, Image, List, Text, ThemeIcon, Title } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
-import image1 from "../../../../assets/homePageImages/HeroImage2.png";
+import image1 from "../../../assets/homePageImages/HeroImage2.png";
+
 const Hero = () => {
   return (
     <Container size="md">
@@ -58,7 +59,7 @@ const Hero = () => {
             </Button>
           </div>
         </div>
-        <Image src={image1} className="w-[376px] h-[356px] hidden lg:block" />
+        <Image src={image1} alt="" className="w-[376px] h-[356px] hidden lg:block" />
       </div>
     </Container>
   );

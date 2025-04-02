@@ -1,171 +1,145 @@
-import {
-  Accordion,
-  Checkbox,
-  Chip,
-  Divider,
-  Flex,
-  Grid,
-  Group,
-  Pagination,
-  Paper,
-  Select,
-  SimpleGrid,
-  Slider,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { IconFilterCog } from "@tabler/icons-react";
-import CourseCard from "../home/components/PopularCourses/CourseCard";
-import { useState } from "react";
+import { Grid, GridCol, Paper } from "@mantine/core";
+import CourseList from "./_c/CourseList";
+import MobileFilter from "./_c/MobileFilter";
+import SidebarFilter from "./_c/SidebarFilter";
+import { Course } from "../../types/course";
+
+const mockCourses: Course[] = [
+  {
+    id: "1",
+    title: "Introduction to React",
+    summary: "Learn the basics of React.js and build dynamic user interfaces.",
+    description:
+      "This course covers the fundamentals of React including components, state, props, and hooks.",
+    sectionCount: 8,
+    imageUrl: "/images/react-course.jpg", // sử dụng đường dẫn ảnh mẫu
+    promoVideoUrl: "https://www.example.com/react-intro.mp4",
+    price: 120.0,
+    discountPercentage: 20,
+    discountedPrice: 96.0,
+    durationInSeconds: 3600,
+    language: "English",
+    level: "Beginner",
+    categoryName: "Web Development",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "2",
+    title: "Advanced React Patterns",
+    summary: "Dive deep into advanced concepts of React.",
+    description:
+      "This course explores advanced patterns in React such as higher-order components, render props, and custom hooks.",
+    sectionCount: 10,
+    imageUrl: "/images/advanced-react.jpg",
+    promoVideoUrl: "https://www.example.com/advanced-react.mp4",
+    price: 150.0,
+    discountPercentage: 15,
+    discountedPrice: 127.5,
+    durationInSeconds: 5400,
+    language: "English",
+    level: "Advanced",
+    categoryName: "Web Development",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "3",
+    title: "Fullstack Development with Next.js",
+    summary: "Master fullstack development using Next.js and React.",
+    description:
+      "Learn how to build performant, SEO-friendly web applications with Next.js, API routes, and server-side rendering.",
+    sectionCount: 12,
+    imageUrl: "/images/nextjs-course.jpg",
+    promoVideoUrl: "https://www.example.com/nextjs-course.mp4",
+    price: 200.0,
+    discountPercentage: 10,
+    discountedPrice: 180.0,
+    durationInSeconds: 7200,
+    language: "English",
+    level: "Intermediate",
+    categoryName: "Fullstack Development",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "4",
+    title: "TypeScript for Beginners",
+    summary: "A comprehensive guide to TypeScript.",
+    description:
+      "This course introduces TypeScript from scratch, helping you write safer and more scalable JavaScript code.",
+    sectionCount: 6,
+    imageUrl: "/images/typescript-course.jpg",
+    promoVideoUrl: "https://www.example.com/typescript-course.mp4",
+    price: 100.0,
+    discountPercentage: 0,
+    discountedPrice: 100.0,
+    durationInSeconds: 3000,
+    language: "English",
+    level: "Beginner",
+    categoryName: "Programming Languages",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "5",
+    title: "Modern CSS Techniques",
+    summary: "Master modern CSS for responsive designs.",
+    description:
+      "Explore advanced CSS concepts including Flexbox, Grid, animations, and responsive design strategies.",
+    sectionCount: 7,
+    imageUrl: "/images/css-course.jpg",
+    promoVideoUrl: "https://www.example.com/css-course.mp4",
+    price: 90.0,
+    discountPercentage: 5,
+    discountedPrice: 85.5,
+    durationInSeconds: 2700,
+    language: "English",
+    level: "Intermediate",
+    categoryName: "Design",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "6",
+    title: "Node.js & Express",
+    summary: "Build robust backend services using Node.js and Express.",
+    description:
+      "Learn how to create RESTful APIs, handle middleware, and manage databases using Node.js and Express.",
+    sectionCount: 9,
+    imageUrl: "/images/nodejs-course.jpg",
+    promoVideoUrl: "https://www.example.com/nodejs-course.mp4",
+    price: 130.0,
+    discountPercentage: 10,
+    discountedPrice: 117.0,
+    durationInSeconds: 4800,
+    language: "English",
+    level: "Intermediate",
+    categoryName: "Backend Development",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
 
 const CoursesPage = () => {
-  const [value, setValue] = useState<string[]>(["Apple", "Banana"]);
-
   return (
     <Paper
-      className="bg-gray-1 dark:bg-dark-6"
+      className="bg-gray-2 dark:bg-dark-6"
       radius={0}
-      px={{ base: "15px", md: "20px", lg: "40px", xl: "90px" }}
+      px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
       py="xl"
     >
       <Grid py="md" gutter="xl">
-        <Grid.Col visibleFrom="lg" span={2.8}>
-          <Paper py="lg" px="sm" withBorder radius="md" shadow="md">
-            <Group align="center">
-              <IconFilterCog />
-              <Title order={3} fw={700}>
-                Advanced filters
-              </Title>
-            </Group>
-            {/* stretching divider to take up all the horizontal space */}
-            <Divider my="lg" mx="-sm" />
-            {/* Price Range Filter */}
-            <Stack>
-              <Text fw={500} size="sm" mb={5}>
-                Price Range:
-              </Text>
-              <Slider
-                min={0}
-                max={100}
-                step={1}
-                marks={[
-                  { value: 0, label: "$0" },
-                  { value: 100, label: "$100" },
-                ]}
-              />
-            </Stack>
-
-            <Divider my="xl" />
-
-            {/* Duration Filter */}
-            <Stack mb="xl">
-              <Text fw={500} size="sm" mb={5}>
-                Duration (minutes):
-              </Text>
-              <Slider
-                min={0}
-                max={120}
-                step={1}
-                marks={[
-                  { value: 0, label: "0" },
-                  { value: 120, label: "120" },
-                ]}
-              />
-            </Stack>
-
-            <Divider my="xl" />
-
-            {/* Category Filter */}
-            <Stack>
-              <Text fw={500} size="sm" mb={5}>
-                Category
-              </Text>
-              <Select placeholder="Select category" />
-            </Stack>
-
-            <Divider my="xl" />
-
-            {/* Rating Filter */}
-            <Checkbox label="Show only high-rated items" />
-
-            <Accordion
-              my="lg"
-              mx="-sm"
-              multiple
-              value={value}
-              onChange={setValue}
-              transitionDuration={400}
-            >
-              <Accordion.Item value="Price range">
-                <Accordion.Control>
-                  <Text fw={500} size="sm" mb={5}>
-                    Price Range
-                  </Text>
-                </Accordion.Control>
-                <Accordion.Panel my="50">
-                  <Select placeholder="Select category" />
-                </Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item value="Apple">
-                <Accordion.Control>
-                  <Text fw={500} size="sm" mb={5}>
-                    Apple
-                  </Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  Crisp and refreshing fruit. Apples are known for their versatility and nutritional
-                  benefits. They come in a variety of flavors and are great for snacking, baking, or
-                  adding to salads
-                </Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item value="Banana">
-                <Accordion.Control>
-                  <Text fw={500} size="sm" mb={5}>
-                    Banana
-                  </Text>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  Crisp and refreshing fruit. Apples are known for their versatility and nutritional
-                  benefits. They come in a variety of flavors and are great for snacking, baking, or
-                  adding to salads
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-          </Paper>
-        </Grid.Col>
-        <Grid.Col span="auto">
-          <Group justify="space-between">
-            <Title order={2}>Courses List</Title>
-            {/* //Sort by */}
-            <Group align="center">
-              <Text c="dimmed">Sort by:</Text>
-              <Chip defaultChecked variant="outline">
-                Popularity
-              </Chip>
-              <Chip defaultChecked variant="outline">
-                Price (low to high)
-              </Chip>
-              <Chip defaultChecked variant="outline">
-                Price (high to low)
-              </Chip>
-            </Group>
-          </Group>
-          <SimpleGrid cols={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing="md" my={25}>
-            {/* Courses Card */}
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-          </SimpleGrid>
-          <Flex justify="center" mt="50">
-            <Pagination total={10} withEdges />
-          </Flex>
-        </Grid.Col>
+        {/* Sidebar Filters cố định */}
+        <GridCol visibleFrom="lg" span={{ lg: 3.5, xl: 2.8 }}>
+          <SidebarFilter categories={[]} />
+        </GridCol>
+        <MobileFilter categories={[]} />
+        {/* Nội dung thay đổi (course list, pagination, …) */}
+        <GridCol span="auto">
+          <CourseList courses={mockCourses} />
+        </GridCol>
       </Grid>
-      {/* Pagination */}
     </Paper>
   );
 };
