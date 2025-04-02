@@ -8,7 +8,7 @@ import RegisterPage from "../pages/register/RegisterPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
-  errorElement: <h1>[Error boundary] Error occured, please check</h1>, // Error page for the user routes
+  // errorElement: <h1>[Error boundary] Error occured, please check</h1>, // Error page for the user routes
   children: [
     { path: "*", element: <ErrorPage /> },
     { index: true, element: <HomePage /> },

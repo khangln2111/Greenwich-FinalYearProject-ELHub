@@ -1,15 +1,18 @@
 // app/courses/components/CourseList.tsx
 import { ActionIcon, Flex, Group, SimpleGrid, TextInput, Title } from "@mantine/core";
-import { LayoutGrid, List, Search } from "lucide-react";
+import { LayoutGrid, List, ListFilter, Search } from "lucide-react";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import PaginationComponent from "./Pagination";
 import { Course } from "../../../types/course";
+import { useAppStore } from "../../../zustand/store";
 
 type CourseListProps = {
   courses: Course[];
 };
 
-export default function CourseList({ courses }: CourseListProps) {
+const CourseList = ({ courses }: CourseListProps) => {
+  const toggleMobileFilter = useAppStore((state) => state.toggleMobileFilter);
+
   return (
     <>
       <Group justify="space-between">
@@ -21,6 +24,10 @@ export default function CourseList({ courses }: CourseListProps) {
           </ActionIcon>
           <ActionIcon size={35} variant="default">
             <List strokeWidth={1.5} />
+          </ActionIcon>
+          {/* Mobile filter toggler */}
+          <ActionIcon size={35} onClick={toggleMobileFilter} hiddenFrom="lg">
+            <ListFilter strokeWidth={1.5} />
           </ActionIcon>
           {/* <Select
             data={[
@@ -57,4 +64,6 @@ export default function CourseList({ courses }: CourseListProps) {
       </Flex>
     </>
   );
-}
+};
+
+export default CourseList;

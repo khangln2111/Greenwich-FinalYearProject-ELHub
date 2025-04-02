@@ -129,12 +129,12 @@ const CoursesPage = () => {
       px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
       py="xl"
     >
+      <MobileFilter categories={[]} />
       <Grid py="md" gutter="xl">
         {/* Sidebar Filters cố định */}
         <GridCol visibleFrom="lg" span={{ lg: 3.5, xl: 2.8 }}>
           <SidebarFilter categories={[]} />
         </GridCol>
-        <MobileFilter categories={[]} />
         {/* Nội dung thay đổi (course list, pagination, …) */}
         <GridCol span="auto">
           <CourseList courses={mockCourses} />
