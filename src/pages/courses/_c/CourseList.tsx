@@ -1,5 +1,5 @@
 // app/courses/components/CourseList.tsx
-import { ActionIcon, Flex, Group, SimpleGrid, TextInput, Title } from "@mantine/core";
+import { ActionIcon, Button, Flex, Group, SimpleGrid, TextInput, Title } from "@mantine/core";
 import { LayoutGrid, List, ListFilter, Search } from "lucide-react";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import PaginationComponent from "./Pagination";
@@ -11,7 +11,9 @@ type CourseListProps = {
 };
 
 const CourseList = ({ courses }: CourseListProps) => {
-  const toggleMobileFilter = useAppStore((state) => state.toggleMobileFilter);
+  const toggleMobileFilter = useAppStore.use.toggleMobileFilter();
+  const toggleDesktopFilter = useAppStore.use.toggleDesktopFilter();
+  const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
 
   return (
     <>
@@ -19,6 +21,14 @@ const CourseList = ({ courses }: CourseListProps) => {
         <Title order={2}>Courses List</Title>
         {/* Sort Options */}
         <Group align="center">
+          <Button
+            variant={isDesktopFilterOpen ? "filled" : "default"}
+            visibleFrom="lg"
+            leftSection={<ListFilter />}
+            onClick={toggleDesktopFilter}
+          >
+            Filter
+          </Button>
           <ActionIcon size={35}>
             <LayoutGrid strokeWidth={1.5} />
           </ActionIcon>
@@ -29,6 +39,8 @@ const CourseList = ({ courses }: CourseListProps) => {
           <ActionIcon size={35} onClick={toggleMobileFilter} hiddenFrom="lg">
             <ListFilter strokeWidth={1.5} />
           </ActionIcon>
+          {/* Desktop filter toggler */}
+
           {/* <Select
             data={[
               { value: "newest", label: "Newest" },

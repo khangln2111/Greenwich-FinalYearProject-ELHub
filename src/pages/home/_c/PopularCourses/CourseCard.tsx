@@ -49,9 +49,9 @@ const CourseCard = () => {
         </Text>
         <div className="flex gap-2 items-center text-wrap mt-2">
           <Avatar color="initials" size="sm" className="border-1" name="Nguyen Khang"></Avatar>
-          <p className="text-gray-500 text-sm block dark:text-gray-5">
+          <Text className="text-gray-500 text-sm block dark:text-gray-5">
             by <span className="font-semibold">Nguyen Khang</span>
-          </p>
+          </Text>
         </div>
         <div className="flex gap-1 mt-1 items-center">
           <Rating

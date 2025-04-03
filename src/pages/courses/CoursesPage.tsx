@@ -1,8 +1,9 @@
 import { Grid, GridCol, Paper } from "@mantine/core";
 import CourseList from "./_c/CourseList";
 import MobileFilter from "./_c/MobileFilter";
-import SidebarFilter from "./_c/SidebarFilter";
+import DesktopFilter from "./_c/DesktopFilter";
 import { Course } from "../../types/course";
+import { useAppStore } from "../../zustand/store";
 
 const mockCourses: Course[] = [
   {
@@ -122,6 +123,7 @@ const mockCourses: Course[] = [
 ];
 
 const CoursesPage = () => {
+  const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
   return (
     <Paper
       className="bg-gray-2 dark:bg-dark-6"
@@ -130,10 +132,15 @@ const CoursesPage = () => {
       py="xl"
     >
       <MobileFilter categories={[]} />
-      <Grid py="md" gutter="xl">
+      <Grid py="md" gutter="xl" className="transition-all duration-600">
         {/* Sidebar Filters cố định */}
-        <GridCol visibleFrom="lg" span={{ lg: 3.5, xl: 2.8 }}>
-          <SidebarFilter categories={[]} />
+        <GridCol
+          visibleFrom="lg"
+          span={{ lg: 3.5, xl: 2.8 }}
+          className={`transition-all duration-300
+            ${isDesktopFilterOpen ? "opacity-100 translate-x-0" : "max-w-0 opacity-0 overflow-hidden"} `}
+        >
+          <DesktopFilter categories={[]} />
         </GridCol>
         {/* Nội dung thay đổi (course list, pagination, …) */}
         <GridCol span="auto">
