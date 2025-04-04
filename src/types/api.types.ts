@@ -17,7 +17,7 @@ export interface FetchListRequest {
   filter?: string; // Filter criteria
 }
 
-export interface ErrorResponse {
+export interface ApiErrorResponse {
   errorCode: ErrorCode; // Error code
   message: string; // Error message
   statusCode: number; // HTTP status code

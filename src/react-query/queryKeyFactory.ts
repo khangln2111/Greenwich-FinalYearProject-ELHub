@@ -1,5 +1,5 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { CourseQueryCriteria } from "../types/course";
+import { CourseQueryCriteria } from "../types/course.types";
 
 export const keyFactory = createQueryKeyStore({
   courses: {

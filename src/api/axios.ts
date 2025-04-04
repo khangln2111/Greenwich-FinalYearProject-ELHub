@@ -1,8 +1,7 @@
 // src/api/client.ts
 import axios, { InternalAxiosRequestConfig } from "axios";
 
-const API_BASE_URL = import.meta.env.API_BASE_URL; // Thay đổi URL phù hợp
-
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://localhost:7014/api"; // Thay đổi URL phù hợp
 const apiClient = axios.create({
   baseURL: API_BASE_URL, // Thay đổi URL phù hợp
   headers: {

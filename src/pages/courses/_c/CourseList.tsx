@@ -3,7 +3,7 @@ import { ActionIcon, Button, Flex, Group, SimpleGrid, TextInput, Title } from "@
 import { LayoutGrid, List, ListFilter, Search } from "lucide-react";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import PaginationComponent from "./Pagination";
-import { Course } from "../../../types/course";
+import { Course } from "../../../types/course.types";
 import { useAppStore } from "../../../zustand/store";
 
 type CourseListProps = {

@@ -16,7 +16,7 @@ import {
 import { IconFilterCog } from "@tabler/icons-react";
 import { RotateCcw } from "lucide-react";
 import Sorting from "./Sorting";
-import { Category } from "../../../types/category";
+import { Category } from "../../../types/category.types";
 import { useSearchParams } from "react-router-dom";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];

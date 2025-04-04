@@ -1,22 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { createCourse, getCourse, getCourses } from "../api/courseApi";
-import { ErrorCode, ErrorResponse } from "../types/api";
-import { CourseQueryCriteria, CreateCourseRequest } from "../types/course";
+import { createCourse, getCourseDetail, getCourses } from "../api/courseApi";
+import { CourseQueryCriteria, CreateCourseRequest } from "../types/course.types";
 import { keyFactory } from "./queryKeyFactory";
 import { showErrorToast, showSuccessToast } from "./toastHelper";
+import { ErrorCode, ApiErrorResponse } from "../types/api.types";
 
-export const useGetCourses = (query: CourseQueryCriteria) => {
+export const useGetCourses = (query: CourseQueryCriteria = {}) => {
   return useQuery({
     queryKey: keyFactory.courses.list(query).queryKey,
     queryFn: () => getCourses(query),
   });
 };
 
-export const useGetCourse = (id: string) => {
+export const useGetCourseDetail = (id: string) => {
   return useQuery({
     queryKey: keyFactory.courses.detail(id).queryKey,
-    queryFn: () => getCourse(id),
+    queryFn: () => getCourseDetail(id),
   });
 };
 
@@ -34,7 +34,7 @@ export const useCreateCourse = (course: CreateCourseRequest) => {
         "Course created successfully, you can check it in the list",
       );
     },
-    onError: (error: AxiosError<ErrorResponse>) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       if (error.response) {
         const { status, data } = error.response;
         if (status === 400 && data.errorCode === ErrorCode.ValidationError) {

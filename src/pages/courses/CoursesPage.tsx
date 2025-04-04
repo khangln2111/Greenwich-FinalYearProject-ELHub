@@ -2,8 +2,9 @@ import { Grid, GridCol, Paper } from "@mantine/core";
 import CourseList from "./_c/CourseList";
 import MobileFilter from "./_c/MobileFilter";
 import DesktopFilter from "./_c/DesktopFilter";
-import { Course } from "../../types/course";
+import { Course } from "../../types/course.types";
 import { useAppStore } from "../../zustand/store";
+import { useGetCourses } from "../../react-query/courseHooks";
 
 const mockCourses: Course[] = [
   {
@@ -124,6 +125,14 @@ const mockCourses: Course[] = [
 
 const CoursesPage = () => {
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
+
+  const { isError, data } = useGetCourses();
+
+  if (isError) {
+    return <div>Error loading courses</div>;
+  }
+  console.log("Courses data:", data?.items);
+
   return (
     <Paper
       className="bg-gray-2 dark:bg-dark-6"

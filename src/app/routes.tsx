@@ -5,6 +5,7 @@ import ErrorPage from "../pages/error/ErrorPage";
 import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
+import CourseDetailPage from "../pages/courseDetail/CourseDetailPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -13,7 +14,8 @@ const userRoute: RouteObject = {
     { path: "*", element: <ErrorPage /> },
     { index: true, element: <HomePage /> },
     { path: "courses", element: <CoursesPage /> },
-    { path: "courses/:courseId", element: <p>Course Detail Page</p> },
+    // { path: "courses/:courseId", element: <CourseDetailPage /> },
+    { path: "coursedetail", element: <CourseDetailPage /> },
     { path: "cart", element: <p>Cart Page</p> },
   ],
 };

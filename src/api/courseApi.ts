@@ -1,9 +1,9 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
-import { ListData } from "../types/api";
+import { ListData } from "../types/api.types";
 import apiClient from "./axios";
-import { Course, CourseQueryCriteria, CreateCourseRequest } from "../types/course";
+import { Course, CourseQueryCriteria, CreateCourseRequest } from "../types/course.types";
 
-export const getCourses = async (query: CourseQueryCriteria) => {
+export const getCourses = async (query: CourseQueryCriteria = {}) => {
   // Xây dựng query bằng GridifyQueryBuilder
   const queryBuilder = new GridifyQueryBuilder().addOrderBy("createdAt", false);
 
@@ -39,11 +39,12 @@ export const getCourses = async (query: CourseQueryCriteria) => {
   });
 
   console.log("Fetched courses");
+  //log request data included api links full link
 
   return response.data;
 };
 
-export const getCourse = async (id: string) => {
+export const getCourseDetail = async (id: string) => {
   const response = await apiClient.get<Course>(`/courses/${id}`);
   return response.data;
 };
