@@ -137,7 +137,8 @@ const CoursesPage = () => {
         <GridCol
           visibleFrom="lg"
           span={{ lg: 3.5, xl: 2.8 }}
-          className={`transition-all duration-300 ${isDesktopFilterOpen ? "opacity-100" : "max-w-0 opacity-0 -mr-xl"} `}
+          className={`transition-all transition-discrete duration-300
+            ${isDesktopFilterOpen ? " opacity-100 " : "-translate-x-full opacity-0 hidden starting:translate-x-0"} `}
         >
           <DesktopFilter categories={[]} />
         </GridCol>
