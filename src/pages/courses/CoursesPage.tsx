@@ -132,13 +132,13 @@ const CoursesPage = () => {
       py="xl"
     >
       <MobileFilter categories={[]} />
-      <Grid py="md" gutter="xl" className="transition-all duration-600">
+      <Grid py="md" gutter="xl">
         {/* Sidebar Filters cố định */}
         <GridCol
           visibleFrom="lg"
           span={{ lg: 3.5, xl: 2.8 }}
-          className={`transition-all duration-300
-            ${isDesktopFilterOpen ? "opacity-100 translate-x-0" : "max-w-0 opacity-0 overflow-hidden"} `}
+          className={`transition-[flex,transform,opacity] duration-500 ease-in-out
+            ${isDesktopFilterOpen ? "flex-1 opacity-100" : "flex-0 opacity-0 overflow-hidden"} `}
         >
           <DesktopFilter categories={[]} />
         </GridCol>
