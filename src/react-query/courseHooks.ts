@@ -3,18 +3,19 @@ import { AxiosError } from "axios";
 import { createCourse, getCourse, getCourses } from "../api/courseApi";
 import { ErrorCode, ErrorResponse } from "../types/api";
 import { CourseQueryCriteria, CreateCourseRequest } from "../types/course";
-import { queries } from "./query-key-factory";
+import { keyFactory } from "./queryKeyFactory";
+import { showErrorToast, showSuccessToast } from "./toastHelper";
 
 export const useGetCourses = (query: CourseQueryCriteria) => {
   return useQuery({
-    queryKey: queries.courses.list(query).queryKey,
+    queryKey: keyFactory.courses.list(query).queryKey,
     queryFn: () => getCourses(query),
   });
 };
 
 export const useGetCourse = (id: string) => {
   return useQuery({
-    queryKey: queries.courses.detail(id).queryKey,
+    queryKey: keyFactory.courses.detail(id).queryKey,
     queryFn: () => getCourse(id),
   });
 };
@@ -26,22 +27,27 @@ export const useCreateCourse = (course: CreateCourseRequest) => {
     mutationFn: () => createCourse(course),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queries.courses.list._def,
+        queryKey: keyFactory.courses.list._def,
       });
+      showSuccessToast(
+        "Course Created",
+        "Course created successfully, you can check it in the list",
+      );
     },
     onError: (error: AxiosError<ErrorResponse>) => {
       if (error.response) {
-        // check status and error code
         const { status, data } = error.response;
         if (status === 400 && data.errorCode === ErrorCode.ValidationError) {
-          console.log("Validation error:", data.message);
+          showErrorToast("Validation Error", data.message);
+        } else if (status === 401) {
+          showErrorToast("Unauthorized", data.message);
+        } else if (status === 403) {
+          showErrorToast("Forbidden", data.message);
+        } else {
+          showErrorToast("Error", data.message);
         }
-        if (status === 401) {
-          console.log("Unauthorized error:", data.message);
-        }
-        if (status === 403 && data.errorCode) {
-          console.log("Forbidden error:", data.message);
-        }
+      } else {
+        showErrorToast("Network Error", "No response from the server. Please try again later.");
       }
     },
   });

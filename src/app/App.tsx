@@ -5,6 +5,7 @@ import theme from "../styles/theme";
 import "../styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ms from "ms";
+import { Notifications } from "@mantine/notifications";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,6 +19,7 @@ const App = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       <QueryClientProvider client={queryClient}>
+        <Notifications />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </MantineProvider>
