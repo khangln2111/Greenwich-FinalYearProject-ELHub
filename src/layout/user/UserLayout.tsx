@@ -6,7 +6,7 @@ const UserLayout = () => {
   return (
     <div className="flex flex-col min-h-dvh">
       <Header />
-      <main>
+      <main className="flex flex-col flex-1">
         <Outlet />
       </main>
       <Footer /> {/* Sử dụng margin-top: auto */}
