@@ -34,5 +34,6 @@ public static class BusinessLogicDependencyInjection
     {
         services.AddGridifyMappers(Assembly.GetExecutingAssembly());
         GridifyGlobalConfiguration.IgnoreNotMappedFields = false;
+        GridifyGlobalConfiguration.EnableEntityFrameworkCompatibilityLayer();
     }
 }

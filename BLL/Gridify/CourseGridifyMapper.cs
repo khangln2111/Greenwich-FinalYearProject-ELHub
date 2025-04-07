@@ -12,11 +12,11 @@ public class CourseGridifyMapper : GridifyMapper<Course>
         AddMap("Title", c => c.Title);
         AddMap("Description", c => c.Description);
         AddMap("Summary", c => c.Summary);
+        AddMap("DurationInSeconds",
+            c => c.Sections.SelectMany(s => s.Lectures).Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0));
         AddMap("CategoryId", c => c.CategoryId);
-        // AddMap("Duration", c => c.Sections.SelectMany(s => s.Lectures).Select(l => l.Duration)
-        //     .Aggregate(TimeSpan.Zero, (total, next) => total.Add(next)));
         AddMap("SectionCount", c => c.Sections.Count);
-        AddMap("LessonCount", c => c.Sections.SelectMany(s => s.Lectures).Count());
+        AddMap("LectureCount", c => c.Sections.SelectMany(s => s.Lectures).Count());
         AddMap("CreatedAt", c => c.CreatedAt);
         AddMap("UpdatedAt", c => c.UpdatedAt);
     }

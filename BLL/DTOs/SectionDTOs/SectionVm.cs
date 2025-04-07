@@ -2,15 +2,15 @@
 
 public class SectionVm
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public required string Title { get; set; }
+    public required string Title { get; init; }
 
-    public required string Description { get; set; }
+    public required string Description { get; init; }
 
-    public int LectureCount { get; set; }
+    public int LectureCount { get; init; }
 
-    public int DurationInSeconds { get; set; }
+    public int DurationInSeconds { get; init; }
 
-    public Guid CourseId { get; set; }
+    public Guid CourseId { get; init; }
 }

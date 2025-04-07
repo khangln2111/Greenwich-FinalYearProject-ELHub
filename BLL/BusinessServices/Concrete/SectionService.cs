@@ -37,8 +37,8 @@ public class SectionService(
     public async Task<Paged<SectionVm>> GetList(GridifyQuery query)
     {
         return await context.Sections
+            .Include(s => s.Lectures).ThenInclude(l => l.Video)
             .AsNoTracking()
-            .Include(s => s.Lectures)
             .GridifyToAsync<Section, SectionVm>(query, mapper, gridifyMapper);
     }
 
