@@ -22,7 +22,7 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.LectureCount,
                 opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
             .ForMember(dest => dest.DiscountedPrice,
-                opt => opt.MapFrom(src => (src.Price - src.Price * src.DiscountPercentage) / 100));
+                opt => opt.MapFrom(src => src.Price - src.Price * src.DiscountPercentage / 100));
 
         // CreateMap<Course, CourseVm>();
 

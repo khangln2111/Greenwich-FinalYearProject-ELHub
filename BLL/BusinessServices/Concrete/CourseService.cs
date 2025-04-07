@@ -37,7 +37,6 @@ public class CourseService(
     public async Task<Paged<CourseVm>> GetList(GridifyQuery query)
     {
         return await context.Courses
-          
             .AsNoTracking()
             .GridifyToAsync<Course, CourseVm>(query, mapper, gridifyMapper);
     }

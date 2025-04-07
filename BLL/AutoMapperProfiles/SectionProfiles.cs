@@ -11,7 +11,7 @@ public class SectionProfiles : Profile
         CreateMap<Section, SectionVm>()
             .ForMember(dest => dest.LectureCount, opt => opt.MapFrom(src => src.Lectures.Count))
             .ForMember(dest => dest.DurationInSeconds, opt => opt.MapFrom(src =>
-                src.Lectures.Select(l => l.Video != null ? l.Video.DurationInSeconds : default).Sum()));
+                src.Lectures.Select(l => l.Video != null ? l.Video.DurationInSeconds : 0).Sum()));
 
         CreateMap<CreateSectionCommand, Section>()
             .ForMember(dest => dest.Id, opt => opt.Ignore());
