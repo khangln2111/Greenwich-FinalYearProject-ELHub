@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.SectionDTOs;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using Gridify;
 
@@ -8,7 +9,7 @@ public interface ISectionService
 {
     Task<SectionVm> GetById(Guid id);
 
-    Task<Paging<SectionVm>> GetList(GridifyQuery query);
+    Task<Paged<SectionVm>> GetList(GridifyQuery query);
 
     Task<Guid> Create(CreateSectionCommand command);
 

@@ -4,6 +4,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.LectureDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
@@ -35,7 +36,7 @@ public class LectureService(
         return lecture;
     }
 
-    public Task<Paging<LectureVm>> GetList(GridifyQuery query)
+    public Task<Paged<LectureVm>> GetList(GridifyQuery query)
     {
         return context.Lectures
             .AsNoTracking()

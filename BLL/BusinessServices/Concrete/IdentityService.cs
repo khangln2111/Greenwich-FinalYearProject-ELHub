@@ -36,6 +36,7 @@ public class IdentityService(
             throw new HttpException(StatusCodes.Status409Conflict, "Email already taken",
                 ErrorCode.EmailAlreadyTaken);
 
+
         var user = new ApplicationUser
         {
             UserName = command.Email,

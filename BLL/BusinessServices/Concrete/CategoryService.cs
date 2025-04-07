@@ -3,6 +3,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CategoryDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
@@ -19,7 +20,7 @@ public class CategoryService(
     IGridifyMapper<Category> gridifyMapper)
     : ICategoryService
 {
-    public async Task<Paging<CategoryVm>> GetList(GridifyQuery query)
+    public async Task<Paged<CategoryVm>> GetList(GridifyQuery query)
     {
         return await context.Categories.AsNoTracking()
             .GridifyToAsync<Category, CategoryVm>(query, mapper, gridifyMapper);

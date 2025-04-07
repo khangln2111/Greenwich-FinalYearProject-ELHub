@@ -13,6 +13,8 @@ public class CourseVm
 
     public int SectionCount { get; init; }
 
+    public int LectureCount { get; init; }
+
     public string? ImageUrl { get; init; }
 
     public string? PromoVideoUrl { get; init; }
@@ -30,6 +32,7 @@ public class CourseVm
     public string? Level { get; init; }
 
     public required string CategoryName { get; init; }
+
 
     public DateTime CreatedAt { get; init; }
 

@@ -4,6 +4,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.SectionDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
@@ -33,7 +34,7 @@ public class SectionService(
         return section;
     }
 
-    public async Task<Paging<SectionVm>> GetList(GridifyQuery query)
+    public async Task<Paged<SectionVm>> GetList(GridifyQuery query)
     {
         return await context.Sections
             .AsNoTracking()

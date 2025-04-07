@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.LectureDTOs;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using Gridify;
 
@@ -8,7 +9,7 @@ public interface ILectureService
 {
     Task<LectureVm> GetById(Guid id);
 
-    Task<Paging<LectureVm>> GetList(GridifyQuery query);
+    Task<Paged<LectureVm>> GetList(GridifyQuery query);
 
     Task<Guid> Create(CreateLectureCommand command);
 

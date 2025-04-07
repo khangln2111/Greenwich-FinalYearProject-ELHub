@@ -68,6 +68,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendConfirmationEmailCommand command)
     {
         var result = await identityService.ResendConfirmationEmail(command);
+
         return Ok(result);
     }
 
@@ -79,6 +80,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
     {
         var result = await identityService.ForgotPassword(command);
+
+
         return Ok(result);
     }
 

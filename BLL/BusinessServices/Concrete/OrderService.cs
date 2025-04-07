@@ -4,6 +4,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.OrderDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
@@ -76,7 +77,7 @@ public class OrderService(
         return new Success("Payment succeeded");
     }
 
-    public Task<Paging<ListOrderVm>> GetList(GridifyQuery query)
+    public Task<Paged<ListOrderVm>> GetList(GridifyQuery query)
     {
         return context.Orders
             .AsNoTracking()

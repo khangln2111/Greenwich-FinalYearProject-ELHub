@@ -113,7 +113,7 @@ public class MediaManager(
     private string GetUrl(MediaType mediaType, string fileName)
     {
         var request = httpContextAccessor.HttpContext?.Request;
-        var baseUrl = request != null ? $"{request.Scheme}://{request.Host}" : "http://localhost";
+        var baseUrl = request != null ? $"{request.Scheme}://{request.Host}" : "https://localhost";
         var mediaDirectory = GetMediaDirectory(mediaType)
             .Replace('\\', '/'); // Replace backslashes with forward slashes for windows
         return $"{baseUrl}/{mediaDirectory}/{fileName}";

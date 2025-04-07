@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.OrderDTOs;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using Gridify;
 
@@ -10,7 +11,7 @@ public interface IOrderService
 
     Task<Success> ConfirmOrder(ConfirmOrderCommand command);
 
-    Task<Paging<ListOrderVm>> GetList(GridifyQuery query);
+    Task<Paged<ListOrderVm>> GetList(GridifyQuery query);
 
     Task<ListOrderVm> GetById(Guid id);
 }

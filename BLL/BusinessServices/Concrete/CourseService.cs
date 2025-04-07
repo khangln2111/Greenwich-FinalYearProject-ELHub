@@ -3,6 +3,7 @@ using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CourseDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
@@ -33,13 +34,11 @@ public class CourseService(
         return mapper.Map<CourseVm>(course);
     }
 
-    public async Task<Paging<CourseVm>> GetList(GridifyQuery query)
+    public async Task<Paged<CourseVm>> GetList(GridifyQuery query)
     {
         return await context.Courses
-            .Include(c => c.Category)
-            .Include(c => c.Image)
-            .Include(c => c.PromoVideo)
-            .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
+          
+            .AsNoTracking()
             .GridifyToAsync<Course, CourseVm>(query, mapper, gridifyMapper);
     }
 
@@ -55,7 +54,7 @@ public class CourseService(
         // Add Image and PromoVideo to the context
         await context.Media.AddRangeAsync(image, promoVideo);
         // Set the relationship
-        course.Image = image as DurationMedia;
+        course.Image = image as Media;
         course.PromoVideo = promoVideo as DurationMedia;
         // Add the course to the context and save the changes
         await context.Courses.AddAsync(course);

@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.CategoryDTOs;
+using BLL.Gridify.CustomModels;
 using BLL.Models;
 using Gridify;
 
@@ -7,7 +8,7 @@ namespace BLL.BusinessServices.Abstract;
 public interface ICategoryService
 {
     Task<CategoryVm> GetById(Guid id);
-    Task<Paging<CategoryVm>> GetList(GridifyQuery query);
+    Task<Paged<CategoryVm>> GetList(GridifyQuery query);
     Task<Success> Create(CreateCategoryCommand command);
     Task<Success> Update(UpdateCategoryCommand command);
 
