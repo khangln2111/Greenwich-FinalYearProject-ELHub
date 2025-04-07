@@ -15,6 +15,7 @@ public class CategoryProfiles : Profile
 
         CreateMap<UpdateCategoryCommand, Category>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();

@@ -23,6 +23,7 @@ public class SectionProfiles : Profile
             {
                 if (src.CourseId.HasValue) dest.CourseId = src.CourseId.Value;
             })
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();

@@ -44,6 +44,7 @@ public class CourseProfiles : Profile
                 if (src.Price.HasValue) dest.Price = src.Price.Value;
                 if (src.DiscountPercentage.HasValue) dest.DiscountPercentage = src.DiscountPercentage.Value;
             })
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();
