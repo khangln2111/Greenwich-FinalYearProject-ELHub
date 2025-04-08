@@ -1,4 +1,12 @@
-import { Paper, Title, Image, Tabs } from "@mantine/core";
+import {
+  Paper,
+  Title,
+  Image,
+  Tabs,
+  SegmentedControl,
+  Button,
+  FloatingIndicator,
+} from "@mantine/core";
 import image from "../../assets/placeholder/courseDetail.jpg";
 import { IconPhoto, IconMessageCircle, IconSettings } from "@tabler/icons-react";
 const CourseDetailPage = () => {
@@ -52,44 +60,60 @@ const CourseDetailPage = () => {
             </Tabs.List>
 
             {/* Tab Content */}
-            <Tabs.Panel value="personal-info" pt="md">
-              <h2 className="text-2xl font-bold text-gray-800">
-                Unmatched Service Quality for Over 10 Years
-              </h2>
-              <p className="text-gray-600 mt-2">
-                I specialize in crafting intuitive websites with cutting-edge technology, delivering
-                dynamic and engaging user experiences.
-              </p>
+            <Paper className="mt-5">
+              <Tabs.Panel value="personal-info" pt="md">
+                <h2 className="text-2xl font-bold text-gray-800">
+                  Unmatched Service Quality for Over 10 Years
+                </h2>
+                <p className="text-gray-600 mt-2">
+                  I specialize in crafting intuitive websites with cutting-edge technology,
+                  delivering dynamic and engaging user experiences.
+                </p>
 
-              {/* Information Section */}
-              <div className="mt-4 space-y-3 text-gray-700">
-                <div className="flex items-center gap-2">
-                  <IconPhoto className="text-red-500 w-5 h-5" />
-                  <span className="font-medium">Ryan Davis</span>
+                {/* Information Section */}
+                <div className="mt-4 space-y-3 text-gray-700">
+                  <div className="flex items-center gap-2">
+                    <IconPhoto className="text-red-500 w-5 h-5" />
+                    <span className="font-medium">Ryan Davis</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <IconMessageCircle className="text-red-500 w-5 h-5" />
+                    <span className="font-medium">youremail@gmail.com</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <IconSettings className="text-red-500 w-5 h-5" />
+                    <span className="font-medium">Master in Computer Science</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <IconMessageCircle className="text-red-500 w-5 h-5" />
-                  <span className="font-medium">youremail@gmail.com</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <IconSettings className="text-red-500 w-5 h-5" />
-                  <span className="font-medium">Master in Computer Science</span>
-                </div>
-              </div>
 
-              {/* Language Skills */}
-              <h3 className="text-red-500 font-semibold mt-6">Language skill</h3>
-              <p className="text-gray-700">English, French, Spanish, Italian</p>
-            </Tabs.Panel>
+                {/* Language Skills */}
+                <h3 className="text-red-500 font-semibold mt-6">Language skill</h3>
+                <p className="text-gray-700">English, French, Spanish, Italian</p>
+              </Tabs.Panel>
 
-            <Tabs.Panel value="qualifications" pt="md">
-              <p className="text-gray-600">Qualification content goes here...</p>
-            </Tabs.Panel>
+              <Tabs.Panel value="qualifications" pt="md">
+                <p className="text-gray-600">Qualification content goes here...</p>
+              </Tabs.Panel>
 
-            <Tabs.Panel value="skills" pt="md">
-              <p className="text-gray-600">Skills content goes here...</p>
-            </Tabs.Panel>
+              <Tabs.Panel value="skills" pt="md">
+                <p className="text-gray-600">Skills content goes here...</p>
+              </Tabs.Panel>
+            </Paper>
           </Tabs>
+
+          <SegmentedControl
+            size="md"
+            radius="3xl"
+            variant="gradient"
+            data={["Overview", "Curriculum", "FAQ", "Reviews", "Instructor"]}
+            className="w-full flex-wrap"
+            classNames={{
+              root: "bg-white dark:bg-dark-6 shadow-md border border-gray-1 dark:border-dark-4 p-[10px]",
+              indicator: "bg-linear-to-r from-blue to-cyan",
+              control: "before:hidden",
+              label: "data-active:text-white hover:data-active:text-white",
+            }}
+          />
         </div>
         {/* 2nd column */}
         <Paper className="h-600"></Paper>

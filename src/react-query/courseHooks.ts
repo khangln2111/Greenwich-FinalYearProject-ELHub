@@ -2,20 +2,20 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { createCourse, getCourseDetail, getCourses } from "../api/courseApi";
 import { CourseQueryCriteria, CreateCourseRequest } from "../types/course.types";
-import { keyFactory } from "./queryKeyFactory";
+import { keyFac } from "./queryKeyFactory";
 import { showErrorToast, showSuccessToast } from "./toastHelper";
 import { ErrorCode, ApiErrorResponse } from "../types/api.types";
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
   return useQuery({
-    queryKey: keyFactory.courses.list(query).queryKey,
+    queryKey: keyFac.courses.list(query).queryKey,
     queryFn: () => getCourses(query),
   });
 };
 
 export const useGetCourseDetail = (id: string) => {
   return useQuery({
-    queryKey: keyFactory.courses.detail(id).queryKey,
+    queryKey: keyFac.courses.detail(id).queryKey,
     queryFn: () => getCourseDetail(id),
   });
 };
@@ -27,7 +27,7 @@ export const useCreateCourse = (course: CreateCourseRequest) => {
     mutationFn: () => createCourse(course),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFactory.courses.list._def,
+        queryKey: keyFac.courses.list._def,
       });
       showSuccessToast(
         "Course Created",
