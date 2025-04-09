@@ -1,15 +1,12 @@
 import { Paper } from "@mantine/core";
 import Filter from "./Filter";
-import { Category } from "../../../react-query/category/category.types";
 
-type DesktopFilterProps = {
-  categories: Category[];
-};
+type DesktopFilterProps = {};
 
-export default function DesktopFilter({ categories }: DesktopFilterProps) {
+export default function DesktopFilter({}: DesktopFilterProps) {
   return (
     <Paper withBorder className="pt-lg px-sm xl:px-lg">
-      <Filter categories={categories} />
+      <Filter />
     </Paper>
   );
 }

@@ -1,32 +1,32 @@
 import {
-  Title,
-  Divider,
-  Text,
-  Stack,
   Accordion,
-  AccordionItem,
   AccordionControl,
+  AccordionItem,
   AccordionPanel,
+  Checkbox,
+  Chip,
+  Divider,
   Select,
   Slider,
-  Checkbox,
+  Stack,
+  Text,
+  Title,
   Tooltip,
-  Chip,
 } from "@mantine/core";
 import { IconFilterCog } from "@tabler/icons-react";
 import { RotateCcw } from "lucide-react";
-import Sorting from "./Sorting";
-import { Category } from "../../../react-query/category/category.types";
 import { useSearchParams } from "react-router-dom";
+import { useGetCategories } from "../../../react-query/category/categoryHooks";
+import Sorting from "./Sorting";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
-type FilterProps = {
-  categories: Category[];
-};
+type FilterProps = {};
 
-const Filter = ({ categories }: FilterProps) => {
+const Filter = ({}: FilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const { data: categories, isPending, isError } = useGetCategories(); // Lấy danh sách category từ API
 
   // Hàm để thay đổi search params
   const handleFilterChange = (param: string, value: string) => {
@@ -79,10 +79,13 @@ const Filter = ({ categories }: FilterProps) => {
           </AccordionControl>
           <AccordionPanel>
             <Select
-              placeholder="Select category"
-              data={categories.map((category) => {
+              placeholder={
+                isPending ? "Loading categories..." : isError ? "Failed to load" : "Select category"
+              }
+              data={categories?.items.map((category) => {
                 return { value: category.id, label: category.name };
               })}
+              disabled={isPending || isError}
               searchable
               checkIconPosition="right"
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}

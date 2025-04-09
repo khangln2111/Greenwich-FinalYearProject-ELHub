@@ -140,7 +140,7 @@ const CoursesPage = () => {
       px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
       py="xl"
     >
-      <MobileFilter categories={[]} />
+      <MobileFilter />
       <Grid py="md" gutter="xl">
         {/* Sidebar Filters cố định */}
         <GridCol
@@ -149,7 +149,7 @@ const CoursesPage = () => {
           className={`transition-all transition-discrete duration-300
             ${isDesktopFilterOpen ? " opacity-100 " : "-translate-x-full opacity-0 hidden starting:translate-x-0"} `}
         >
-          <DesktopFilter categories={[]} />
+          <DesktopFilter />
         </GridCol>
         {/* Nội dung thay đổi (course list, pagination, …) */}
         <GridCol span="auto">

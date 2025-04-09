@@ -1,22 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
-import { CourseQueryCriteria, CreateCourseRequest, UpdateCourseRequest } from "./course.types";
+import { ApiErrorResponse, ErrorCode } from "../../httpClient/api.types";
 import { keyFac } from "../queryKeyFactory";
 import { showErrorToast, showSuccessToast } from "../toastHelper";
-import { createCourse, deleteCourse, getCourseDetail, getCourses, updateCourse } from "./courseApi";
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-
-export const courseKeyFac = createQueryKeys("courses", {
-  list: (query?: CourseQueryCriteria) => ({
-    queryKey: [query],
-    queryFn: () => getCourses(query),
-  }),
-  detail: (id: string) => ({
-    queryKey: [id],
-    queryFn: () => getCourseDetail(id),
-  }),
-});
+import { CourseQueryCriteria, CreateCourseRequest, UpdateCourseRequest } from "./course.types";
+import { createCourse, deleteCourse, updateCourse } from "./courseApi";
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
   return useQuery(keyFac.courses.list(query));

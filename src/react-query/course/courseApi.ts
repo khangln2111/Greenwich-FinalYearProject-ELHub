@@ -1,6 +1,6 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
-import { ListData } from "../../http-client/api.types";
-import apiClient from "../../http-client/axios";
+import { ListData } from "../../httpClient/api.types";
+import apiClient from "../../httpClient/axios";
 import {
   Course,
   CourseQueryCriteria,

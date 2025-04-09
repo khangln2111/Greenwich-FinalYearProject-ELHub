@@ -1,4 +1,5 @@
 import { mergeQueryKeys } from "@lukemorales/query-key-factory";
-import { courseKeyFac } from "./course/courseHooks";
+import { categoryKeyFac } from "./category/categoryKeyFac";
+import { courseKeyFac } from "./course/courseKeyFac";
 
-export const keyFac = mergeQueryKeys(courseKeyFac);
+export const keyFac = mergeQueryKeys(courseKeyFac, categoryKeyFac);

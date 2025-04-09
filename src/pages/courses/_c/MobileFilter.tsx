@@ -1,15 +1,12 @@
 import { Stack, Text } from "@mantine/core";
-import { Vaul } from "mantine-vaul";
-import Filter from "./Filter";
-import { Category } from "../../../react-query/category/category.types";
-import { useAppStore } from "../../../zustand/store";
 import { useMediaQuery } from "@mantine/hooks";
+import { Vaul } from "mantine-vaul";
+import { useAppStore } from "../../../zustand/store";
+import Filter from "./Filter";
 
-type MobileFilterProps = {
-  categories: Category[];
-};
+type MobileFilterProps = {};
 
-export default function MobileFilter({ categories }: MobileFilterProps) {
+export default function MobileFilter({}: MobileFilterProps) {
   const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
   const closeMobileFilter = useAppStore.use.closeMobileFilter();
   const matches = useMediaQuery("(min-width: 1024px)");
@@ -30,7 +27,7 @@ export default function MobileFilter({ categories }: MobileFilterProps) {
       }}
     >
       <Stack className="pt-lg px-sm xl:px-lg mx-auto">
-        <Filter categories={categories} />
+        <Filter />
       </Stack>
     </Vaul>
   );
