@@ -2,7 +2,7 @@ import { Grid, GridCol, Paper } from "@mantine/core";
 import CourseList from "./_c/CourseList";
 import MobileFilter from "./_c/MobileFilter";
 import DesktopFilter from "./_c/DesktopFilter";
-import { Course } from "../../types/course.types";
+import { Course } from "../../react-query/course/course.types";
 import { useAppStore } from "../../zustand/store";
 import { useGetCourses } from "../../react-query/course/courseHooks";
 

@@ -1,6 +1,6 @@
 import { Paper } from "@mantine/core";
 import Filter from "./Filter";
-import { Category } from "../../../types/category.types";
+import { Category } from "../../../react-query/category/category.types";
 
 type DesktopFilterProps = {
   categories: Category[];

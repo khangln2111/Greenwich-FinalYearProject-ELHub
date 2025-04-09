@@ -1,31 +1,28 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
-import { ListData } from "../../types/api.types";
-import apiClient from "../../api/axios";
+import { ListData } from "../../http-client/api.types";
+import apiClient from "../../http-client/axios";
 import {
   Course,
   CourseQueryCriteria,
   CreateCourseRequest,
   UpdateCourseRequest,
-} from "../../types/course.types";
+} from "./course.types";
 
-export const getCourses = async (query: CourseQueryCriteria = {}) => {
-  // Xây dựng query bằng GridifyQueryBuilder
+const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   const queryBuilder = new GridifyQueryBuilder().addOrderBy("createdAt", false);
 
-  // Nếu có các tiêu chí filter, thêm chúng vào query
-  if (!query.page) queryBuilder.setPage(1); // Đặt page mặc định là 1 nếu không có giá trị
-  if (!query.pageSize) queryBuilder.setPageSize(10); // Đặt pageSize mặc định là 10 nếu không có giá trị
-  if (query.page) queryBuilder.setPage(query.page);
-  if (query.pageSize) queryBuilder.setPageSize(query.pageSize);
+  queryBuilder.setPage(query.page ?? 1);
+  queryBuilder.setPageSize(query.pageSize ?? 10);
 
   if (query.search) {
-    queryBuilder.startGroup();
-    queryBuilder.addCondition("title", op.Contains, query.search);
-    queryBuilder.or();
-    queryBuilder.addCondition("summary", op.Contains, query.search);
-    queryBuilder.or();
-    queryBuilder.addCondition("description", op.Contains, query.search);
-    queryBuilder.endGroup();
+    queryBuilder
+      .startGroup()
+      .addCondition("title", op.Contains, query.search)
+      .or()
+      .addCondition("summary", op.Contains, query.search)
+      .or()
+      .addCondition("description", op.Contains, query.search)
+      .endGroup();
   }
 
   if (query.minPrice) queryBuilder.addCondition("price", op.GreaterThanOrEqual, query.minPrice);
@@ -35,17 +32,13 @@ export const getCourses = async (query: CourseQueryCriteria = {}) => {
   if (query.durationInSeconds)
     queryBuilder.addCondition("durationInSeconds", op.Equal, query.durationInSeconds);
 
-  // Build searchParams từ queryBuilder
-  const searchParams = queryBuilder.build();
+  return queryBuilder.build();
+};
 
-  // Gọi apiClient với các searchParams đã xây dựng, sử dụng axios
+export const getCourses = async (query: CourseQueryCriteria = {}) => {
   const response = await apiClient.get<ListData<Course>>("/courses", {
-    params: searchParams, // Axios tự động xử lý việc chuyển đổi params thành query string
+    params: buildCourseQuery(query),
   });
-
-  console.log("Fetched courses");
-  //log request data included api links full link
-
   return response.data;
 };
 

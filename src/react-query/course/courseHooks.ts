@@ -1,27 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ApiErrorResponse, ErrorCode } from "../../types/api.types";
-import {
-  CourseQueryCriteria,
-  CreateCourseRequest,
-  UpdateCourseRequest,
-} from "../../types/course.types";
+import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
+import { CourseQueryCriteria, CreateCourseRequest, UpdateCourseRequest } from "./course.types";
 import { keyFac } from "../queryKeyFactory";
 import { showErrorToast, showSuccessToast } from "../toastHelper";
 import { createCourse, deleteCourse, getCourseDetail, getCourses, updateCourse } from "./courseApi";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+
+export const courseKeyFac = createQueryKeys("courses", {
+  list: (query?: CourseQueryCriteria) => ({
+    queryKey: [query],
+    queryFn: () => getCourses(query),
+  }),
+  detail: (id: string) => ({
+    queryKey: [id],
+    queryFn: () => getCourseDetail(id),
+  }),
+});
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
-  return useQuery({
-    queryKey: keyFac.courses.list(query).queryKey,
-    queryFn: () => getCourses(query),
-  });
+  return useQuery(keyFac.courses.list(query));
 };
 
 export const useGetCourseDetail = (id: string) => {
-  return useQuery({
-    queryKey: keyFac.courses.detail(id).queryKey,
-    queryFn: () => getCourseDetail(id),
-  });
+  return useQuery(keyFac.courses.detail(id));
 };
 
 export const useCreateCourse = (course: CreateCourseRequest) => {
@@ -29,8 +31,8 @@ export const useCreateCourse = (course: CreateCourseRequest) => {
 
   return useMutation({
     mutationFn: () => createCourse(course),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
       showSuccessToast(
         "Course Created",
         "Course created successfully, you can check it in the list",

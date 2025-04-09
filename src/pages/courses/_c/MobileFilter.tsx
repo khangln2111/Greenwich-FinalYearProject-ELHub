@@ -1,7 +1,7 @@
 import { Stack, Text } from "@mantine/core";
 import { Vaul } from "mantine-vaul";
 import Filter from "./Filter";
-import { Category } from "../../../types/category.types";
+import { Category } from "../../../react-query/category/category.types";
 import { useAppStore } from "../../../zustand/store";
 import { useMediaQuery } from "@mantine/hooks";
 
