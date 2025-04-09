@@ -79,6 +79,7 @@ const Filter = ({}: FilterProps) => {
           </AccordionControl>
           <AccordionPanel>
             <Select
+              value={searchParams.get("categoryId")}
               placeholder={
                 isPending ? "Loading categories..." : isError ? "Failed to load" : "Select category"
               }
@@ -96,7 +97,7 @@ const Filter = ({}: FilterProps) => {
                   "bg-[#f0f0f0] border border-[#ccc] shadow-[0_4px_6px_rbga(0,0,0,0.1)] dark:bg-dark-6",
                 input: "border-2",
               }}
-              onChange={(value) => handleFilterChange("category", value as string)}
+              onChange={(value) => handleFilterChange("categoryId", value as string)}
             />
           </AccordionPanel>
         </AccordionItem>

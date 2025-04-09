@@ -14,6 +14,7 @@ const CourseList = ({ courses }: CourseListProps) => {
   const toggleMobileFilter = useAppStore.use.toggleMobileFilter();
   const toggleDesktopFilter = useAppStore.use.toggleDesktopFilter();
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
+  const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
 
   return (
     <>
@@ -36,7 +37,12 @@ const CourseList = ({ courses }: CourseListProps) => {
             <List strokeWidth={1.5} />
           </ActionIcon>
           {/* Mobile filter toggler */}
-          <ActionIcon size={35} onClick={toggleMobileFilter} hiddenFrom="lg">
+          <ActionIcon
+            size={35}
+            onClick={toggleMobileFilter}
+            hiddenFrom="lg"
+            variant={isMobileFilterOpen ? "filled" : "default"}
+          >
             <ListFilter strokeWidth={1.5} />
           </ActionIcon>
           {/* Desktop filter toggler */}
