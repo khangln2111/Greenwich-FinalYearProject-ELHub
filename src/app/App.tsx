@@ -10,7 +10,7 @@ import { Notifications } from "@mantine/notifications";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: ms("15m"),
+      staleTime: ms("5m"),
     },
   },
 });

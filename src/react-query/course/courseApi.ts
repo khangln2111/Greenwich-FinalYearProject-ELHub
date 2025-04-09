@@ -1,7 +1,12 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
-import { ListData } from "../types/api.types";
-import apiClient from "./axios";
-import { Course, CourseQueryCriteria, CreateCourseRequest } from "../types/course.types";
+import { ListData } from "../../types/api.types";
+import apiClient from "../../api/axios";
+import {
+  Course,
+  CourseQueryCriteria,
+  CreateCourseRequest,
+  UpdateCourseRequest,
+} from "../../types/course.types";
 
 export const getCourses = async (query: CourseQueryCriteria = {}) => {
   // Xây dựng query bằng GridifyQueryBuilder
@@ -54,7 +59,7 @@ export const createCourse = async (course: CreateCourseRequest) => {
   return response.data;
 };
 
-export const updateCourse = async (course: Course) => {
+export const updateCourse = async (course: UpdateCourseRequest) => {
   const response = await apiClient.put<Course>(`/courses/${course.id}`, course);
   return response.data;
 };

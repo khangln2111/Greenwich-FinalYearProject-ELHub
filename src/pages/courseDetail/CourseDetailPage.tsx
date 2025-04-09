@@ -1,15 +1,9 @@
-import {
-  Paper,
-  Title,
-  Image,
-  Tabs,
-  SegmentedControl,
-  Button,
-  FloatingIndicator,
-} from "@mantine/core";
+import { Image, Paper, SegmentedControl, Tabs, Title } from "@mantine/core";
+import { IconMessageCircle, IconPhoto, IconSettings } from "@tabler/icons-react";
 import image from "../../assets/placeholder/courseDetail.jpg";
-import { IconPhoto, IconMessageCircle, IconSettings } from "@tabler/icons-react";
+import { useState } from "react";
 const CourseDetailPage = () => {
+  const [activeTab, setActiveTab] = useState("overview");
   return (
     <Paper
       className="bg-gray-1 dark:bg-dark-6 flex-1"
@@ -102,10 +96,19 @@ const CourseDetailPage = () => {
           </Tabs>
 
           <SegmentedControl
+            value={activeTab}
+            onChange={setActiveTab}
+            transitionDuration={400}
             size="md"
             radius="3xl"
             variant="gradient"
-            data={["Overview", "Curriculum", "FAQ", "Reviews", "Instructor"]}
+            data={[
+              { label: "Overview", value: "overview" },
+              { label: "Curriculum", value: "curriculum" },
+              { label: "FAQ", value: "faq" },
+              { label: "Reviews", value: "reviews" },
+              { label: "Instructor", value: "instructor" },
+            ]}
             className="w-full flex-wrap"
             classNames={{
               root: "bg-white dark:bg-dark-6 shadow-md border border-gray-1 dark:border-dark-4 p-[10px]",
@@ -114,6 +117,15 @@ const CourseDetailPage = () => {
               label: "data-active:text-white hover:data-active:text-white",
             }}
           />
+
+          {/* Tabs.Panel thay vì TabPanel */}
+          <Tabs value={activeTab}>
+            <Tabs.Panel value="overview">📌 Nội dung Overview</Tabs.Panel>
+            <Tabs.Panel value="curriculum">📖 Nội dung Curriculum</Tabs.Panel>
+            <Tabs.Panel value="faq">❓ Nội dung FAQ</Tabs.Panel>
+            <Tabs.Panel value="reviews">⭐ Nội dung Reviews</Tabs.Panel>
+            <Tabs.Panel value="instructor">👨‍🏫 Nội dung Instructor</Tabs.Panel>
+          </Tabs>
         </div>
         {/* 2nd column */}
         <Paper className="h-600"></Paper>

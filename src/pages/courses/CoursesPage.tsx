@@ -4,7 +4,7 @@ import MobileFilter from "./_c/MobileFilter";
 import DesktopFilter from "./_c/DesktopFilter";
 import { Course } from "../../types/course.types";
 import { useAppStore } from "../../zustand/store";
-import { useGetCourses } from "../../react-query/courseHooks";
+import { useGetCourses } from "../../react-query/course/courseHooks";
 
 const mockCourses: Course[] = [
   {
