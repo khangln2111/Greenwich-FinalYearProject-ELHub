@@ -96,6 +96,19 @@ public class IdentityService(
         await signInManager.SignInAsync(user, false);
     }
 
+    public async Task<Success> ResendConfirmationEmailOtp(ResendConfirmationEmailCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        var user = await userManager.FindByEmailAsync(command.Email);
+        if (user == null) throw new NotFoundException("Email not found");
+        if (user.EmailConfirmed)
+            throw new HttpException(StatusCodes.Status400BadRequest, "Email is already confirmed",
+                ErrorCode.EmailAlreadyConfirmed);
+        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+        await emailUtility.SendConfirmationEmailAsync(command.Email, token);
+        return new Success("Confirmation email has been sent, please check your email");
+    }
+
     public async Task<Success> ConfirmEmail(ConfirmEmailCommand command)
     {
         await validationService.ValidateAsync(command);
@@ -111,21 +124,8 @@ public class IdentityService(
         return new Success("Email confirmed successfully, now you can log in");
     }
 
-    public async Task<Success> ResendConfirmationEmail(ResendConfirmationEmailCommand command)
-    {
-        await validationService.ValidateAsync(command);
-        var user = await userManager.FindByEmailAsync(command.Email);
-        if (user == null) throw new NotFoundException("Email not found");
-        if (user.EmailConfirmed)
-            throw new HttpException(StatusCodes.Status400BadRequest, "Email is already confirmed",
-                ErrorCode.EmailAlreadyConfirmed);
-        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-        await emailUtility.SendConfirmationEmailAsync(command.Email, token);
-        return new Success("Confirmation email has been sent, please check your email");
-    }
 
-
-    public async Task<Success> ForgotPassword(ForgotPasswordCommand command)
+    public async Task<Success> SendResetPasswordOtp(SendResetPasswordOtpCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
@@ -144,11 +144,29 @@ public class IdentityService(
         var user = await userManager.FindByEmailAsync(request.Email);
         if (user == null) throw new NotFoundException("Email not found");
 
-        var result = await userManager.ResetPasswordAsync(user, request.Code, request.NewPassword);
+        var result = await userManager.ResetPasswordAsync(user, request.Otp, request.NewPassword);
 
         if (!result.Succeeded) throw new BadRequestException(result.Errors);
 
         return new Success("Password reset successfully, now you can log in with new password");
+    }
+
+    public async Task<Success> ValidateResetPasswordOtp(ValidateResetPasswordOtpCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        var user = await userManager.FindByEmailAsync(command.Email);
+        if (user == null) throw new NotFoundException("Email not found");
+
+        var result = await userManager.VerifyUserTokenAsync(user, "Phone",
+            "ResetPassword", command.Otp);
+
+        Console.WriteLine("Token provider:" + userManager.Options.Tokens.PasswordResetTokenProvider);
+        Console.WriteLine("Token purpose:" + UserManager<ApplicationUser>.ResetPasswordTokenPurpose);
+        if (result == false)
+            throw new HttpException(StatusCodes.Status400BadRequest, "Invalid or expired token",
+                ErrorCode.InvalidToken);
+
+        return new Success("Otp is valid");
     }
 
     public async Task RefreshToken(RefreshTokenCommand command)

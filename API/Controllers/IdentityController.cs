@@ -67,21 +67,29 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendConfirmationEmailCommand command)
     {
-        var result = await identityService.ResendConfirmationEmail(command);
+        var result = await identityService.ResendConfirmationEmailOtp(command);
 
         return Ok(result);
     }
 
 
-    // POST: api/Identity/ForgotPassword
-    [HttpPost("ForgotPassword")]
+    // POST: api/Identity/SendResetPasswordToken
+    [HttpPost("SendResetPasswordOtp")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+    public async Task<IActionResult> SendResetPasswordToken([FromBody] SendResetPasswordOtpCommand otpCommand)
     {
-        var result = await identityService.ForgotPassword(command);
+        var result = await identityService.SendResetPasswordOtp(otpCommand);
 
 
+        return Ok(result);
+    }
+
+    //POST: api/Identity/ValidateResetPasswordOtp
+    [HttpPost("ValidateResetPasswordOtp")]
+    public async Task<IActionResult> ValidateResetPasswordOtp([FromBody] ValidateResetPasswordOtpCommand command)
+    {
+        var result = await identityService.ValidateResetPasswordOtp(command);
         return Ok(result);
     }
 

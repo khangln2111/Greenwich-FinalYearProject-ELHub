@@ -15,12 +15,13 @@ public interface IIdentityService
 
     Task<Success> ConfirmEmail(ConfirmEmailCommand command);
 
-    Task<Success> ResendConfirmationEmail(ResendConfirmationEmailCommand command);
+    Task<Success> ResendConfirmationEmailOtp(ResendConfirmationEmailCommand command);
 
     Task RefreshToken(RefreshTokenCommand command);
 
+    Task<Success> SendResetPasswordOtp(SendResetPasswordOtpCommand command);
 
-    Task<Success> ForgotPassword(ForgotPasswordCommand command);
+    Task<Success> ValidateResetPasswordOtp(ValidateResetPasswordOtpCommand command);
 
     Task<Success> ResetPassword(ResetPasswordCommand command);
 }

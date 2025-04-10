@@ -6,10 +6,10 @@ namespace DAL.Utilities.EmailUtility;
 
 public class EmailUtility : IEmailUtility
 {
-    private readonly string _smtpHost = "smtp.mailersend.net";
+    private readonly string _smtpHost = "smtp.gmail.com";
     private readonly int _smtpPort = 587;
-    private readonly string _smtpUsername = "MS_cAZaiO@trial-3z0vklodyjvg7qrx.mlsender.net";
-    private readonly string _smtpPassword = "sslIoGbW5mo2L9O9";
+    private readonly string _smtpUsername = "legendofrain2111@gmail.com";
+    private readonly string _smtpPassword = "hmwr nnzx tyjk czbh";
     private readonly SmtpClient _client;
 
     public EmailUtility()
