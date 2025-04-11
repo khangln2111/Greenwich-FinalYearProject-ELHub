@@ -8,10 +8,7 @@ import {
 import { useState } from "react";
 import image from "../../assets/placeholder/courseDetail.jpg";
 const CourseDetailPage = () => {
-  const [activeTab, setActiveTab] = useState<
-    "overview" | "curriculum" | "faq" | "reviews" | "instructor"
-  >("overview");
-  const [section, setSection] = useState<"account" | "general">("account");
+  const [activeTab, setActiveTab] = useState("overview");
   return (
     <Paper
       className="flex-1"
@@ -28,9 +25,8 @@ const CourseDetailPage = () => {
           </Paper>
           <SegmentedControl
             value={activeTab}
-            onChange={(value: any) => setActiveTab(value)}
+            onChange={setActiveTab}
             transitionDuration={400}
-            transitionTimingFunction="ease"
             size="md"
             variant="gradient"
             data={[
@@ -47,17 +43,6 @@ const CourseDetailPage = () => {
               control: "before:hidden",
               label: "data-active:text-white hover:data-active:text-white",
             }}
-          />
-
-          <SegmentedControl
-            value={section}
-            onChange={(value: any) => setSection(value)}
-            transitionTimingFunction="ease"
-            fullWidth
-            data={[
-              { label: "Account", value: "account" },
-              { label: "System", value: "general" },
-            ]}
           />
 
           {/* Tab Content */}
@@ -86,7 +71,7 @@ const CourseDetailPage = () => {
                 </Text>
 
                 {/* Information Section */}
-                <div className="mt-6">
+                <div className="mt-4">
                   <List
                     spacing="xs"
                     size="sm"
