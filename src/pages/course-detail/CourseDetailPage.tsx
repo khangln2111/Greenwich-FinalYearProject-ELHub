@@ -3,6 +3,7 @@ import { useState } from "react";
 import image from "../../assets/placeholder/courseDetail.jpg";
 import OverviewTab from "./_c/OverviewTab";
 import CurriculumTab from "./_c/CurriculumTab";
+import ReviewTab from "./_c/ReviewTab";
 
 const CourseDetailPage = () => {
   const [activeTab, setActiveTab] = useState("curriculum");
@@ -43,7 +44,7 @@ const CourseDetailPage = () => {
 
           {/* Tab Content */}
           <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-5">
-            <Paper className="p-md">
+            <Paper>
               {/* overview about course */}
               <Tabs.Panel value="overview">
                 <OverviewTab />
@@ -54,8 +55,18 @@ const CourseDetailPage = () => {
                 <CurriculumTab />
               </Tabs.Panel>
 
-              <Tabs.Panel value="faq">
-                <p className="text-gray-600">Skills content goes here...</p>
+              <Tabs.Panel value="reviews">
+                <ReviewTab
+                  rating={4.6}
+                  totalReviews={2533}
+                  stars={[
+                    { stars: 5, percentage: 77 },
+                    { stars: 4, percentage: 54 },
+                    { stars: 3, percentage: 14 },
+                    { stars: 2, percentage: 5 },
+                    { stars: 1, percentage: 2 },
+                  ]}
+                />
               </Tabs.Panel>
             </Paper>
           </Tabs>

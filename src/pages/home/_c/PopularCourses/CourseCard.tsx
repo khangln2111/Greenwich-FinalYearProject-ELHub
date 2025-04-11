@@ -53,12 +53,12 @@ const CourseCard = () => {
             by <span className="font-semibold">Nguyen Khang</span>
           </Text>
         </div>
-        <div className="flex gap-1 mt-1 items-center">
+        <div className="flex gap-1 mt-2 items-center">
           <Rating
             defaultValue={4.7}
             fractions={3}
             readOnly
-            className="flex items-center justify-center mt-[1px]"
+            className="flex items-center justify-center"
           />
           <p className="text-yellow-6 font-bold">4.7</p>
           <p className="text-dimmed">(458)</p>

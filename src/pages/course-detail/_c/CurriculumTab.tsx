@@ -61,8 +61,9 @@ const CurriculumTab = () => {
         chevron={<ChevronDownIcon size={26} />}
         classNames={{
           root: "flex flex-col gap-4",
-          item: "border-0 ",
+          item: "border-0",
           control: "bg-gray-1 dark:bg-dark-5 rounded-xl",
+          content: "shadow-lg rounded-lg",
         }}
       >
         {sections.map((section, secIndex) => (
