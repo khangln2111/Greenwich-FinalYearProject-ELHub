@@ -135,7 +135,7 @@ const CoursesPage = () => {
 
   return (
     <Paper
-      className="bg-gray-1 dark:bg-dark-4 flex-1"
+      className="bg-gray-1 dark:bg-dark-5 flex-1"
       radius={0}
       px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
       py="xl"
