@@ -5,8 +5,8 @@ import {
   CreateCategoryRequest,
   UpdateCategoryRequest,
 } from "./category.types";
-import { ListData } from "../../httpClient/api.types";
-import apiClient from "../../httpClient/axios";
+import { ListData } from "../../http-client/api.types";
+import apiClient from "../../http-client/axios";
 
 const buildCategoryQuery = (query: CategoryQueryCriteria = {}) => {
   const queryBuilder = new GridifyQueryBuilder();

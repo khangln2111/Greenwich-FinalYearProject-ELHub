@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ApiErrorResponse, ErrorCode } from "../../httpClient/api.types";
+import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
 import { keyFac } from "../queryKeyFactory";
 import { showErrorToast, showSuccessToast } from "../toastHelper";
 import { CourseQueryCriteria, CreateCourseRequest, UpdateCourseRequest } from "./course.types";

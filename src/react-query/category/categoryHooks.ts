@@ -6,7 +6,7 @@ import {
   UpdateCategoryRequest,
 } from "./category.types";
 
-import { ApiErrorResponse, ErrorCode } from "../../httpClient/api.types";
+import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
 import { showErrorToast, showSuccessToast } from "../toastHelper";
 import { keyFac } from "../queryKeyFactory";
 import { createCategory, deleteCategory, updateCategory } from "./categoryApi";

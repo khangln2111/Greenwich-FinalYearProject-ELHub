@@ -5,7 +5,7 @@ import ErrorPage from "../pages/error/ErrorPage";
 import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
-import CourseDetailPage from "../pages/courseDetail/CourseDetailPage";
+import CourseDetailPage from "../pages/course-detail/CourseDetailPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,

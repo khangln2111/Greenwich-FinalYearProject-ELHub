@@ -22,7 +22,7 @@ const CourseCard = () => {
   ));
 
   return (
-    <div className="bg-body transition-transform hover:scale-103 duration-200 rounded-2xl overflow-hidden shadow-sm">
+    <div className="bg-body transition-transform hover:scale-103 duration-200 rounded-2xl overflow-hidden shadow-2xl">
       {/* Image section */}
       <div className="flex items-center justify-center relative">
         <Image src={CourseImage} alt="Tesla Model S" className="size-auto" />

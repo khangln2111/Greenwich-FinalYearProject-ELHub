@@ -25,7 +25,6 @@ type FilterProps = {};
 
 const Filter = ({}: FilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const { data: categories, isPending, isError } = useGetCategories(); // Lấy danh sách category từ API
 
   // Hàm để thay đổi search params
@@ -39,6 +38,10 @@ const Filter = ({}: FilterProps) => {
     setSearchParams(newParams); // Thay đổi URL mà không cần navigate
   };
 
+  const handleResetFilters = () => {
+    setSearchParams(new URLSearchParams()); // Xóa hết params trên URL
+  };
+
   return (
     <>
       <div className="flex justify-between">
@@ -48,7 +51,7 @@ const Filter = ({}: FilterProps) => {
             Filters
           </Title>
         </div>
-        <div className="flex gap-1 cursor-pointer items-center group">
+        <div className="flex gap-1 cursor-pointer items-center group" onClick={handleResetFilters}>
           <p className="font-semibold text-primary-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             Reset
           </p>
@@ -88,6 +91,7 @@ const Filter = ({}: FilterProps) => {
               })}
               disabled={isPending || isError}
               searchable
+              clearable
               checkIconPosition="right"
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
               classNames={{

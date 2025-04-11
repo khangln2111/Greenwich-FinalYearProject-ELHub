@@ -14,9 +14,8 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconAt, IconX } from "@tabler/icons-react";
-import CourseCard from "./CourseCard";
-import TestCard from "./TestCard";
 import { Link } from "react-router-dom";
+import CourseCard from "./CourseCard";
 
 const PopularCourses = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -50,23 +49,24 @@ const PopularCourses = () => {
         variety of categories to learn from.
       </Text>
       {/* Auto column grid */}
-      <div className="grid grid-cols-fill-[250px] gap-lg mx-auto my-[25px]">
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-      </div>
 
-      <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25} className="mx-">
-        <TestCard />
-        <TestCard />
-        <TestCard />
-        <TestCard />
-        <TestCard />
-        <TestCard />
+      <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
+        <CourseCard />
+        <CourseCard />
+        <CourseCard />
+        <CourseCard />
+        <CourseCard />
+        <CourseCard />
       </SimpleGrid>
+
+      {/* <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
+        <TestCard />
+        <TestCard />
+        <TestCard />
+        <TestCard />
+        <TestCard />
+        <TestCard />
+      </SimpleGrid> */}
       {/* beautiful button to view all courses */}
       <Button
         variant="gradient"
