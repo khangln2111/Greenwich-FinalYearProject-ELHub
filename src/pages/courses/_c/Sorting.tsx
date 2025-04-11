@@ -35,7 +35,7 @@ const Sorting = () => {
     params.set("orderBy", orderBy);
     params.set("acs", asc ? "true" : "false");
 
-    setSearchParams(params);
+    setSearchParams(params, { preventScrollReset: true });
   };
 
   return (

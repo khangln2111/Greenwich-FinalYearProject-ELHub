@@ -35,7 +35,7 @@ const Filter = ({}: FilterProps) => {
     } else {
       newParams.delete(param);
     }
-    setSearchParams(newParams); // Thay đổi URL mà không cần navigate
+    setSearchParams(newParams, { preventScrollReset: true }); // Thay đổi URL mà không cần navigate
   };
 
   const handleResetFilters = () => {
@@ -119,7 +119,7 @@ const Filter = ({}: FilterProps) => {
                 { value: 0, label: "$0" },
                 { value: 100, label: "$100" },
               ]}
-              value={parseInt(searchParams.get("price_range") || "0", 10)}
+              defaultValue={parseInt(searchParams.get("price_range") || "0")}
               className="my-xl"
               onChangeEnd={(value) => handleFilterChange("price_range", value.toString())}
             />
@@ -139,7 +139,7 @@ const Filter = ({}: FilterProps) => {
                 { value: 0, label: "0" },
                 { value: 120, label: "120" },
               ]}
-              value={parseInt(searchParams.get("duration") || "0", 10)}
+              defaultValue={parseInt(searchParams.get("duration") || "0", 10)}
               className="my-[30px]"
               onChangeEnd={(value) => handleFilterChange("duration", value.toString())}
             />
