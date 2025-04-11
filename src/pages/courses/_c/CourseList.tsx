@@ -67,7 +67,7 @@ const CourseList = ({ courses }: CourseListProps) => {
           />
         </Group>
       </Group>
-      <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" my={25}>
+      <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" my={25} className="auto-rows-auto">
         {courses.map((course) => (
           <CourseCard key={course.id} />
         ))}

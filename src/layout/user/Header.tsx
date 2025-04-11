@@ -107,7 +107,9 @@ const Header = () => {
 
         {/* Nav links (desktop) */}
         <Group h="100%" gap={0} visibleFrom="md">
-          <CustomNavLink to="/">Home</CustomNavLink>
+          <CustomNavLink component={Link} to="/">
+            Home
+          </CustomNavLink>
           <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
             <HoverCard.Target>
               <CustomNavLink to="/">
@@ -149,7 +151,9 @@ const Header = () => {
               </div>
             </HoverCard.Dropdown>
           </HoverCard>
-          <CustomNavLink to="/">Learn</CustomNavLink>
+          <CustomNavLink component={Link} to="/courses" preventScrollReset={false}>
+            Learn
+          </CustomNavLink>
           <CustomNavLink to="/">Academy</CustomNavLink>
         </Group>
 
@@ -186,7 +190,9 @@ const Header = () => {
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <CustomNavLink to="/">Home</CustomNavLink>
+          <CustomNavLink component={Link} to="/">
+            Home
+          </CustomNavLink>
           <CustomNavLink onClick={toggleLinks}>
             <Center inline>
               <Box component="span" mr={5}>

@@ -9,7 +9,7 @@ interface FeedbackProps {
 
 const ReviewTab = ({ rating, totalReviews, stars }: FeedbackProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 shadow-lg border rounded-lg border-gray-200 py-15 px-4">
       {/* Left section */}
       <div className="flex flex-col items-center md:items-start col-span-1">
         <div className="text-orange-500 text-5xl font-bold">{rating.toFixed(1)}</div>

@@ -1,5 +1,5 @@
 import { MantineProvider } from "@mantine/core";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider, ScrollRestoration } from "react-router-dom";
 import router from "./routes";
 import theme from "../styles/theme";
 import "../styles/globals.css";

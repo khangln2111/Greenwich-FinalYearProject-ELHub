@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 
@@ -8,6 +8,7 @@ const UserLayout = () => {
       <Header />
       <main className="flex flex-col flex-1">
         <Outlet />
+        <ScrollRestoration />
       </main>
       <Footer /> {/* Sử dụng margin-top: auto */}
     </div>

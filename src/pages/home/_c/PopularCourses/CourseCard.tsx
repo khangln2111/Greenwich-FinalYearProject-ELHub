@@ -22,7 +22,10 @@ const CourseCard = () => {
   ));
 
   return (
-    <div className="bg-body transition-transform hover:scale-103 duration-200 rounded-2xl overflow-hidden shadow-2xl">
+    <div
+      className="bg-body transition-transform hover:scale-103 duration-200 rounded-2xl overflow-hidden shadow-2xl
+        grid grid-rows-subgrid row-span-7 gap-y-0"
+    >
       {/* Image section */}
       <div className="flex items-center justify-center relative">
         <Image src={CourseImage} alt="Tesla Model S" className="size-auto" />
@@ -44,25 +47,27 @@ const CourseCard = () => {
         >
           Beginner
         </Badge>
-        <Text className="font-bold text-lg line-clamp-3 mt-3 text-left cursor-pointer">
+      </div>
+      <div className="px-md mt-3">
+        <Text className="font-bold text-lg text-left cursor-pointer">
           Spring Boot: Mastering the Fundamentals Spring Boot
         </Text>
-        <div className="flex gap-2 items-center text-wrap mt-2">
-          <Avatar color="initials" size="sm" className="border-1" name="Nguyen Khang"></Avatar>
-          <Text className="text-gray-500 text-sm block dark:text-gray-5">
-            by <span className="font-semibold">Nguyen Khang</span>
-          </Text>
-        </div>
-        <div className="flex gap-1 mt-2 items-center">
-          <Rating
-            defaultValue={4.7}
-            fractions={3}
-            readOnly
-            className="flex items-center justify-center"
-          />
-          <p className="text-yellow-6 font-bold">4.7</p>
-          <p className="text-dimmed">(458)</p>
-        </div>
+      </div>
+      <div className="flex gap-2 items-center text-wrap mt-2 px-md">
+        <Avatar color="initials" size="sm" className="border-1" name="Nguyen Khang"></Avatar>
+        <Text className="text-gray-500 text-sm block dark:text-gray-5">
+          by <span className="font-semibold">Nguyen Khang</span>
+        </Text>
+      </div>
+      <div className="flex gap-1 mt-2 items-center px-md">
+        <Rating
+          defaultValue={4.7}
+          fractions={3}
+          readOnly
+          className="flex items-center justify-center"
+        />
+        <p className="text-yellow-6 font-bold">4.7</p>
+        <p className="text-dimmed">(458)</p>
       </div>
 
       {/* Icons section */}

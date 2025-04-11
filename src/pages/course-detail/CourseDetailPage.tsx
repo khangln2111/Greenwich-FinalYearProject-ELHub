@@ -24,18 +24,17 @@ const CourseDetailPage = () => {
           <SegmentedControl
             value={activeTab}
             onChange={setActiveTab}
-            transitionDuration={400}
-            size="lg"
-            variant="gradient"
+            transitionDuration={200}
             data={[
               { label: "Overview", value: "overview" },
               { label: "Curriculum", value: "curriculum" },
               { label: "Reviews", value: "reviews" },
               { label: "Instructor", value: "instructor" },
             ]}
+            size="md"
             className="w-full mt-5 grid grid-cols-2 md:grid-flow-col md:auto-cols-fr"
             classNames={{
-              root: "bg-white dark:bg-dark-6 shadow-md border border-gray-1 dark:border-dark-4 p-[10px]",
+              root: "bg-white dark:bg-dark-6 shadow-sm border border-gray-1 dark:border-dark-4 p-[10px]",
               indicator: "bg-linear-to-r from-blue to-cyan",
               control: "before:hidden",
               label: "data-active:text-white hover:data-active:text-white",
@@ -43,7 +42,7 @@ const CourseDetailPage = () => {
           />
 
           {/* Tab Content */}
-          <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-5">
+          <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-2xl">
             <Paper>
               {/* overview about course */}
               <Tabs.Panel value="overview">
