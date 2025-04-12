@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ms from "ms";
 import { Notifications } from "@mantine/notifications";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,9 +21,11 @@ const App = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       <QueryClientProvider client={queryClient}>
-        <Notifications />
-        <ReactQueryDevtools />
-        <RouterProvider router={router} />
+        <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">
+          <Notifications />
+          <ReactQueryDevtools />
+          <RouterProvider router={router} />
+        </GoogleOAuthProvider>
       </QueryClientProvider>
     </MantineProvider>
   );

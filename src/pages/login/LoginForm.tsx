@@ -1,8 +1,13 @@
-import { Paper, TextInput, PasswordInput, Checkbox, Button, Group, Anchor } from "@mantine/core";
+import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from "@mantine/core";
+import { useGoogleLogin } from "@react-oauth/google";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 import GoogleIcon from "../../components/IconSvg/GoogleIcon";
 
 const LoginForm = () => {
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
+  });
+
   return (
     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
       <TextInput
@@ -34,7 +39,13 @@ const LoginForm = () => {
       >
         Sign in
       </Button>
-      <Button fullWidth variant="default" className="mt-5" leftSection={<GoogleIcon />}>
+      <Button
+        fullWidth
+        variant="default"
+        className="mt-5"
+        leftSection={<GoogleIcon />}
+        onClick={() => login()}
+      >
         Continue with Google
       </Button>
     </Paper>
