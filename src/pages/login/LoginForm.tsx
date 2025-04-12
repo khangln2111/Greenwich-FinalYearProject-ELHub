@@ -1,5 +1,6 @@
 import { Paper, TextInput, PasswordInput, Checkbox, Button, Group, Anchor } from "@mantine/core";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
+import GoogleIcon from "../../components/IconSvg/GoogleIcon";
 
 const LoginForm = () => {
   return (
@@ -32,6 +33,9 @@ const LoginForm = () => {
         rightSection={<IconLogin2 />}
       >
         Sign in
+      </Button>
+      <Button fullWidth variant="default" className="mt-5" leftSection={<GoogleIcon />}>
+        Continue with Google
       </Button>
     </Paper>
   );

@@ -22,7 +22,6 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <Notifications />
         <ReactQueryDevtools />
-
         <RouterProvider router={router} />
       </QueryClientProvider>
     </MantineProvider>
