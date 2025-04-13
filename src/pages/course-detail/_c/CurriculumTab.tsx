@@ -62,7 +62,7 @@ const CurriculumTab = () => {
         classNames={{
           root: "flex flex-col gap-6",
           item: "border-0",
-          control: "bg-gray-1 dark:bg-dark-5 rounded-xl",
+          control: "bg-gray-2 dark:bg-dark-5 rounded-xl",
           content: "shadow-lg rounded-lg dark:bg-zinc-900",
         }}
       >

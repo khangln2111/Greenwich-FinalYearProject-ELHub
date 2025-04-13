@@ -20,8 +20,10 @@ const ReviewTab = ({ rating, totalReviews, stars }: FeedbackProps) => {
         >
           <div className="text-orange-500 text-5xl font-bold">{rating.toFixed(1)}</div>
           <Rating value={rating} readOnly size="lg" />
-          <span className="text-gray-500 text-sm">({totalReviews.toLocaleString()})</span>
-          <span className="text-gray-500 text-xs">Course Rating</span>
+          <span className="text-gray-500 text-sm dark:text-neutral-300">
+            ({totalReviews.toLocaleString()})
+          </span>
+          <span className="text-gray-500 text-xs dark:text-neutral-300">Course Rating</span>
         </div>
         {/* Right section */}
         <div className="grid grid-rows-5 gap-y-5 gap-x-3 grid-cols-[auto_1fr_auto] md:col-span-9">
@@ -32,13 +34,17 @@ const ReviewTab = ({ rating, totalReviews, stars }: FeedbackProps) => {
             >
               {/* Stars */}
               <div className="flex items-center justify-center text-yellow-500 gap-2">
-                <p className="text-gray-600 text-sm font-medium leading-none">{stars}</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm font-medium leading-none">
+                  {stars}
+                </p>
                 <IconStarFilled size={16} />
               </div>
               {/* Progress Bar */}
               <Progress value={percentage} size="lg" color="orange" striped />
               {/* Percentage */}
-              <span className="text-gray-500 text-sm text-left leading-none">{percentage}%</span>
+              <span className="text-gray-500 dark:text-gray-400 text-sm text-left leading-none">
+                {percentage}%
+              </span>
             </div>
           ))}
         </div>
