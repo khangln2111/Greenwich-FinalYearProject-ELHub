@@ -1,6 +1,6 @@
-import { Image, Progress, Rating, Select, TextInput, Title } from "@mantine/core";
+import { Progress, Rating, Select, TextInput, Title } from "@mantine/core";
 import { IconStarFilled } from "@tabler/icons-react";
-import { SearchIcon, Star } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import avatar from "../../../assets/placeholder/avatar-placeholder.jpg";
 interface FeedbackProps {
   rating: number;
@@ -59,7 +59,7 @@ const ReviewTab = ({ rating, totalReviews, stars }: FeedbackProps) => {
             <div className="flex items-center gap-4">
               <img src={avatar} alt="User avatar" className="w-16 h-16 rounded-full object-cover" />
               <div>
-                <p className="text-lg font-medium">Jura Hujaor</p>
+                <p className="text-lg font-medium">Jura Hujaor Jura Hujao</p>
                 <p className="text-sm text-gray-500 dark:text-dark-2">2 Days ago</p>
               </div>
             </div>

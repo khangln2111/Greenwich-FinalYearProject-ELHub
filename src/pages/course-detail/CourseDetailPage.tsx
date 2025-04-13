@@ -4,6 +4,7 @@ import image from "../../assets/placeholder/courseDetail.jpg";
 import OverviewTab from "./_c/OverviewTab";
 import CurriculumTab from "./_c/CurriculumTab";
 import ReviewTab from "./_c/ReviewTab";
+import InstructorTab from "./_c/InstructorTab";
 
 const CourseDetailPage = () => {
   const [activeTab, setActiveTab] = useState("curriculum");
@@ -66,6 +67,10 @@ const CourseDetailPage = () => {
                     { stars: 1, percentage: 2 },
                   ]}
                 />
+              </Tabs.Panel>
+
+              <Tabs.Panel value="instructor">
+                <InstructorTab />
               </Tabs.Panel>
             </Paper>
           </Tabs>
