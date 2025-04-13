@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices.JavaScript;
 using System.Security.Claims;
+using System.Text.Json;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.IdentityDTOs;
 using BLL.Exceptions;
@@ -10,6 +12,10 @@ using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Utilities.EmailUtility;
 using Google.Apis.Auth;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Oauth2.v2;
+using Google.Apis.Oauth2.v2.Data;
+using Google.Apis.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http;
@@ -76,7 +82,12 @@ public class IdentityService(
     public async Task GoogleLogin(GoogleLoginCommand command)
     {
         await validationService.ValidateAsync(command);
-        var payload = await GoogleJsonWebSignature.ValidateAsync(command.IdToken);
+
+        var payload = await GetGoogleUserInfoAsync(command.IdToken);
+        if (payload == null || string.IsNullOrEmpty(payload.Email))
+            throw new HttpException(StatusCodes.Status401Unauthorized, "Invalid Google token",
+                ErrorCode.InvalidToken);
+
 
         var user = await userManager.FindByEmailAsync(payload.Email);
 
@@ -94,6 +105,28 @@ public class IdentityService(
 
         signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
         await signInManager.SignInAsync(user, false);
+    }
+
+    private async Task<Userinfo?> GetGoogleUserInfoAsync(string accessToken)
+    {
+        using var httpClient = new HttpClient();
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://www.googleapis.com/oauth2/v2/userinfo");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+        var response = await httpClient.SendAsync(request);
+
+        // ✅ Kiểm tra mã lỗi trả về
+        if (response.StatusCode == HttpStatusCode.Unauthorized ||
+            response.StatusCode == HttpStatusCode.Forbidden) return null;
+
+        // ✅ Chỉ ném lỗi khi lỗi bất thường (ví dụ server error 500)
+        response.EnsureSuccessStatusCode();
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        // Deserialize the JSON response to a Userinfo object
+        return JsonSerializer.Deserialize<Userinfo>(json, new JsonSerializerOptions
+            { PropertyNameCaseInsensitive = true });
     }
 
     public async Task<Success> ResendConfirmationEmailOtp(ResendConfirmationEmailCommand command)
