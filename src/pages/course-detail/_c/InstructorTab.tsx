@@ -8,7 +8,7 @@ const InstructorTab = () => {
       <div className="mx-auto p-6 bg-white dark:bg-zinc-900 rounded-lg shadow-lg mt-5">
         <div className="flex flex-col md:flex-row gap-6">
           {/* left section */}
-          <div className="flex justify-between md:justify-normal md:flex-col gap-4">
+          <div className="flex justify-between md:justify-normal md:flex-col gap-4 md:flex-1 items-center">
             {/* avatar */}
             <div className="max-w-33">
               <img
@@ -49,7 +49,7 @@ const InstructorTab = () => {
             </div>
           </div>
           {/* right section: detail Info */}
-          <div className="flex-1">
+          <div className="md:flex-3">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Tim Buchalka</h3>
             <p className="font-medium text-gray-500 dark:text-zinc-400">
               Java Python Android and C# Expert Developer

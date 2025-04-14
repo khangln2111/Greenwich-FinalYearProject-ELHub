@@ -12,7 +12,7 @@ const CourseDetailPage = () => {
     <Paper
       className="flex-1"
       radius={0}
-      px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
+      px={{ base: "15px", md: "20px", lg: "30px", xl: "100px" }}
       py="xl"
     >
       <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[9fr_3fr]">
