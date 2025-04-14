@@ -9,14 +9,12 @@ const InstructorTab = () => {
       <div className="mx-auto p-6 bg-gray-50 dark:bg-zinc-900 rounded-lg shadow-lg mt-5">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left column: Avatar */}
-          <div className="flex">
-            <div className="size-50">
-              <img
-                src={image}
-                alt="Instructor Avatar"
-                className="max-w-full aspect-square object-cover rounded-md"
-              />
-            </div>
+          <div className="size-50">
+            <img
+              src={image}
+              alt="Instructor Avatar"
+              className="max-w-full aspect-square object-cover rounded-md"
+            />
           </div>
 
           {/* Right column: Instructor Info */}
@@ -27,7 +25,7 @@ const InstructorTab = () => {
             </p>
 
             {/* Stats */}
-            <div className="flex flex-col gap-2 text-sm text-zinc-700 dark:text-zinc-300 mt-5">
+            <div className="grid grid-cols-1 gap-2 text-sm text-zinc-700 dark:text-zinc-300 mt-5">
               <div className="flex items-center gap-2">
                 <Star className="text-yellow-500" size={16} fill="currentColor" stroke="none" />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
@@ -56,7 +54,7 @@ const InstructorTab = () => {
           </div>
         </div>
         {/* Description with Spoiler */}
-        <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
+        <Spoiler maxHeight={100} showLabel="Show more" hideLabel="Hide">
           <p className="mt-3 text-gray-800 dark:text-gray-400 leading-loose">
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
             has been the industry's standard dummy text ever since the 1500s, when an unknown
