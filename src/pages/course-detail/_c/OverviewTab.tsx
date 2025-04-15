@@ -4,8 +4,8 @@ import { IconCircleCheckFilled } from "@tabler/icons-react";
 const OverviewTab = () => {
   return (
     <div>
-      <Title order={2}>Course Description</Title>
-      <Text className="mt-2 text-lg leading-">
+      <Title order={2}>About The Course</Title>
+      <Text className="mt-2 text-lg leading-relaxed">
         UX/UI design focuses on creating user-friendly and visually appealing digital experiences,
         ensuring that products such as websites and apps are both intuitive and enjoyable UX (User
         Experience) Design involves understanding the needs, behaviors, and pain points of users to
@@ -18,7 +18,7 @@ const OverviewTab = () => {
       </Text>
       <div className="mt-10">
         <Title order={2}>What you'll learn in this course?</Title>
-        <Text className="mt-2 dark:text-dark-1 text-lg">
+        <Text className="mt-2 text-lg">
           Together, UX and UI design ensure that digital products are not only functional and
           accessible but also engaging and visually coherent, enhancing both usability and overall
           user satisfaction

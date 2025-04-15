@@ -5,7 +5,7 @@ import image from "../../../assets/placeholder/avatar-placeholder.jpg";
 const InstructorTab = () => {
   return (
     <div>
-      <Title order={2}>About the instructor</Title>
+      <Title order={2}>Meet Your Instructor</Title>
       <div className="mx-auto p-6 bg-gray-50 dark:bg-zinc-900 rounded-lg shadow-lg mt-5">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left column: Avatar */}
@@ -25,7 +25,7 @@ const InstructorTab = () => {
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 gap-2 text-sm text-zinc-700 dark:text-zinc-300 mt-5">
+            <div className="grid grid-cols-1 gap-2 text-sm text-zinc-700 dark:text-zinc-300 mt-5 md:mt-auto">
               <div className="flex items-center gap-2">
                 <Star className="text-yellow-500" size={16} fill="currentColor" stroke="none" />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">

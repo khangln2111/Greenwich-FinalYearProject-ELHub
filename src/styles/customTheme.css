@@ -478,3 +478,7 @@
   --radius-4xl: 2rem; /* 32px */
   --radius-5xl: 3rem; /* 48px */
 }
+
+/* :where([data-mantine-color-scheme="dark"]) {
+  --mantine-color-text: var(--mantine-color-gray-0);
+} */

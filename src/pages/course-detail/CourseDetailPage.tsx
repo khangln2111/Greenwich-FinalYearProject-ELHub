@@ -5,6 +5,8 @@ import OverviewTab from "./_c/OverviewTab";
 import CurriculumTab from "./_c/CurriculumTab";
 import ReviewTab from "./_c/ReviewTab";
 import InstructorTab from "./_c/InstructorTab";
+import ReactPlayer from "react-player";
+import { Star } from "lucide-react";
 
 const CourseDetailPage = () => {
   const [activeTab, setActiveTab] = useState("curriculum");
@@ -12,14 +14,56 @@ const CourseDetailPage = () => {
     <Paper
       className="flex-1"
       radius={0}
-      px={{ base: "15px", md: "20px", lg: "30px", xl: "100px" }}
+      px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
       py="xl"
     >
-      <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[9fr_3fr]">
+      <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr]">
         {/* 1st column */}
         <div>
           <Paper>
             <Title>Complete Guide to UI/UX Design with Figma</Title>
+            <div
+              className="flex items-center justify-between gap-6 border-y border-gray-200 dark:border-dark-4 py-6 px-4
+                text-sm mt-xl"
+            >
+              {/* Instructor */}
+              <div className="flex items-center gap-3">
+                <img src={image} alt="Instructor" className="w-10 h-10 rounded-full object-cover" />
+                <div>
+                  <div className="font-semibold">Edupls</div>
+                  <div className="text-gray-500">Instructor</div>
+                </div>
+              </div>
+
+              {/* Category */}
+              <div className="border-l border-gray-200 dark:border-dark-4 pl-6">
+                <div className="font-semibold">Category</div>
+                <div className="text-blue-500 cursor-pointer hover:underline">SEO</div>
+              </div>
+
+              {/* Last Update */}
+              <div className="border-l border-gray-200 dark:border-dark-4 pl-6">
+                <div className="font-semibold">17 Apr, 2024</div>
+                <div className="text-gray-500">Last Update</div>
+              </div>
+
+              {/* Review */}
+              <div className="border-l border-gray-200 dark:border-dark-4 pl-6">
+                <div className="font-semibold">Review</div>
+                <div className="flex items-center gap-1 text-yellow-400">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      size={16}
+                      fill={i < 4.5 ? "#FACC15" : i === 4 ? "#FACC15" : "none"}
+                      stroke="#FACC15"
+                    />
+                  ))}
+                  <span className="text-blue-500 text-sm ml-1">4.5</span>
+                  <span className="text-gray-500 text-sm">(2)</span>
+                </div>
+              </div>
+            </div>
             <Image className="rounded-lg mt-xl" src={image}></Image>
           </Paper>
           <SegmentedControl
@@ -76,7 +120,18 @@ const CourseDetailPage = () => {
           </Tabs>
         </div>
         {/* 2nd column */}
-        <Paper className="h-300 shadow-xl border border-gray-200"></Paper>
+        <Paper className="h-300 shadow-xl border overflow-hidden p-[30px]">
+          <div className="aspect-video rounded-2xl">
+            <ReactPlayer
+              url="https://www.youtube.com/watch?v=acRSApuOlkk"
+              width="100%"
+              height="100%"
+              pip={true}
+              controls={true}
+              light="https://i.ytimg.com/vi/acRSApuOlkk/hqdefault.jpg"
+            />
+          </div>
+        </Paper>
       </div>
     </Paper>
   );
