@@ -77,7 +77,7 @@ const CurriculumTab = () => {
                 </Text>
               </div>
             </Accordion.Control>
-            {/* Accordion header */}
+            {/* Accordion body */}
             <Accordion.Panel>
               <ul className="grid gap-y-10 capitalize pt-4 md:px-3">
                 {section.lectures.map((lecture, index) => (

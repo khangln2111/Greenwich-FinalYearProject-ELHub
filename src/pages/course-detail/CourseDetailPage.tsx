@@ -1,12 +1,11 @@
-import { Image, Paper, SegmentedControl, Tabs, Title } from "@mantine/core";
+import { Image, Paper, Rating, SegmentedControl, Tabs, Title } from "@mantine/core";
 import { useState } from "react";
-import image from "../../assets/placeholder/courseDetail.jpg";
-import OverviewTab from "./_c/OverviewTab";
-import CurriculumTab from "./_c/CurriculumTab";
-import ReviewTab from "./_c/ReviewTab";
-import InstructorTab from "./_c/InstructorTab";
 import ReactPlayer from "react-player";
-import { Star } from "lucide-react";
+import image from "../../assets/placeholder/courseDetail.jpg";
+import CurriculumTab from "./_c/CurriculumTab";
+import InstructorTab from "./_c/InstructorTab";
+import OverviewTab from "./_c/OverviewTab";
+import ReviewTab from "./_c/ReviewTab";
 
 const CourseDetailPage = () => {
   const [activeTab, setActiveTab] = useState("curriculum");
@@ -22,45 +21,37 @@ const CourseDetailPage = () => {
         <div>
           <Paper>
             <Title>Complete Guide to UI/UX Design with Figma</Title>
-            <div
-              className="flex items-center justify-between gap-6 border-y border-gray-200 dark:border-dark-4 py-6 px-4
-                text-sm mt-xl"
-            >
+            <div className="flex items-center justify-between gap-6 border-y dark:border-dark-4 py-6 px-4 text-sm mt-xl">
               {/* Instructor */}
               <div className="flex items-center gap-3">
                 <img src={image} alt="Instructor" className="w-10 h-10 rounded-full object-cover" />
                 <div>
-                  <div className="font-semibold">Edupls</div>
-                  <div className="text-gray-500">Instructor</div>
+                  <div className="">Created By</div>
+                  <div className="font-semibold text-md">Edupls</div>
                 </div>
               </div>
 
               {/* Category */}
-              <div className="border-l border-gray-200 dark:border-dark-4 pl-6">
-                <div className="font-semibold">Category</div>
-                <div className="text-blue-500 cursor-pointer hover:underline">SEO</div>
+              <div className="border-l pl-6">
+                <div>Category</div>
+                <div className="text-blue-500 cursor-pointer hover:underline font-semibold text-md">
+                  SEO
+                </div>
               </div>
 
               {/* Last Update */}
-              <div className="border-l border-gray-200 dark:border-dark-4 pl-6">
-                <div className="font-semibold">17 Apr, 2024</div>
-                <div className="text-gray-500">Last Update</div>
+              <div className="border-l pl-6">
+                <div>Last Update</div>
+                <div className="font-semibold text-md">17 Apr, 2024</div>
               </div>
 
               {/* Review */}
-              <div className="border-l border-gray-200 dark:border-dark-4 pl-6">
-                <div className="font-semibold">Review</div>
-                <div className="flex items-center gap-1 text-yellow-400">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      size={16}
-                      fill={i < 4.5 ? "#FACC15" : i === 4 ? "#FACC15" : "none"}
-                      stroke="#FACC15"
-                    />
-                  ))}
-                  <span className="text-blue-500 text-sm ml-1">4.5</span>
-                  <span className="text-gray-500 text-sm">(2)</span>
+              <div className="border-l pl-6">
+                <div>Review</div>
+                <div className="flex items-center gap-1 text-md">
+                  <Rating value={4.5} fractions={4} />
+                  <span className="text-blue-500 ml-1">4.5</span>
+                  <span className="text-dimmed">(2)</span>
                 </div>
               </div>
             </div>
@@ -121,7 +112,7 @@ const CourseDetailPage = () => {
         </div>
         {/* 2nd column */}
         <Paper className="h-300 shadow-xl border overflow-hidden p-[30px]">
-          <div className="aspect-video rounded-2xl">
+          <div className="aspect-video rounded-2xl overflow-hidden">
             <ReactPlayer
               url="https://www.youtube.com/watch?v=acRSApuOlkk"
               width="100%"
