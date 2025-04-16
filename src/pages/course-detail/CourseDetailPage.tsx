@@ -1,4 +1,14 @@
-import { Container, Image, Paper, Rating, SegmentedControl, Tabs, Title } from "@mantine/core";
+import {
+  Anchor,
+  Breadcrumbs,
+  Container,
+  Image,
+  Paper,
+  Rating,
+  SegmentedControl,
+  Tabs,
+  Title,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
   BadgeCheck,
@@ -19,6 +29,39 @@ import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
+import { Link } from "react-router-dom";
+
+const items = [
+  { title: "Home", href: "/" },
+  { title: "Courses", href: "/courses" },
+  { title: "use-id", href: "/courses/id" },
+].map((item, index) => (
+  <Anchor to={item.href} key={index} component={Link}>
+    {item.title}
+  </Anchor>
+));
+
+function CourseStat({
+  icon: Icon,
+  label,
+  value,
+  iconClassName = "text-primary",
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  iconClassName?: string;
+}) {
+  return (
+    <li className="flex justify-between items-center py-5 text-md">
+      <span className="flex items-center gap-2">
+        <Icon className={`size-6 ${iconClassName}`} />
+        {label}
+      </span>
+      <span className="font-medium text-gray-900 dark:text-white">{value}</span>
+    </li>
+  );
+}
 
 const CourseDetailPage = () => {
   const handleOpenVideoPreview = () => {
@@ -52,7 +95,10 @@ const CourseDetailPage = () => {
         {/* 1st column */}
         <div>
           <Paper>
-            <Title>Complete Guide to UI/UX Design with Figma</Title>
+            <Breadcrumbs separator="→" separatorMargin="md" mt="xs">
+              {items}
+            </Breadcrumbs>
+            <Title className="mt-5">Complete Guide to UI/UX Design with Figma</Title>
             {/* Course stats */}
             <div
               className="grid grid-cols-2 md:grid-cols-4 items-center justify-between gap-6 border-y dark:border-dark-4 py-6
@@ -90,7 +136,7 @@ const CourseDetailPage = () => {
 
             {/* course preview */}
             <div
-              className="aspect-video relative rounded-lg overflow-hidden cursor-pointer"
+              className="aspect-video relative rounded-lg overflow-hidden cursor-pointer mt-10"
               onClick={handleOpenVideoPreview}
             >
               {/* Placeholder image */}
@@ -216,25 +262,3 @@ const CourseDetailPage = () => {
   );
 };
 export default CourseDetailPage;
-
-function CourseStat({
-  icon: Icon,
-  label,
-  value,
-  iconClassName = "text-primary",
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: string;
-  iconClassName?: string;
-}) {
-  return (
-    <li className="flex justify-between items-center py-5 text-md">
-      <span className="flex items-center gap-2">
-        <Icon className={`size-6 ${iconClassName}`} />
-        {label}
-      </span>
-      <span className="font-medium text-gray-900 dark:text-white">{value}</span>
-    </li>
-  );
-}
