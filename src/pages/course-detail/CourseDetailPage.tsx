@@ -1,11 +1,4 @@
 import { Container, Image, Paper, Rating, SegmentedControl, Tabs, Title } from "@mantine/core";
-import { useState } from "react";
-import ReactPlayer from "react-player";
-import image from "../../assets/placeholder/courseDetail.jpg";
-import CurriculumTab from "./_c/CurriculumTab";
-import InstructorTab from "./_c/InstructorTab";
-import OverviewTab from "./_c/OverviewTab";
-import ReviewTab from "./_c/ReviewTab";
 import { modals } from "@mantine/modals";
 import {
   ArrowRight,
@@ -15,8 +8,18 @@ import {
   Clock,
   GraduationCap,
   HelpCircle,
+  InfinityIcon,
+  LanguagesIcon,
   Play,
+  ShoppingCart,
 } from "lucide-react";
+import { useState } from "react";
+import ReactPlayer from "react-player";
+import image from "../../assets/placeholder/courseDetail.jpg";
+import CurriculumTab from "./_c/CurriculumTab";
+import InstructorTab from "./_c/InstructorTab";
+import OverviewTab from "./_c/OverviewTab";
+import ReviewTab from "./_c/ReviewTab";
 
 const CourseDetailPage = () => {
   const handleOpenVideoPreview = () => {
@@ -42,9 +45,9 @@ const CourseDetailPage = () => {
   return (
     <Container
       className="flex-1"
-      px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
+      px={{ base: "15px", md: "20px", lg: "30px", xl: "0px" }}
       py="xl"
-      size="2xl"
+      size="xl"
     >
       <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[9fr_3fr]">
         {/* 1st column */}
@@ -108,8 +111,10 @@ const CourseDetailPage = () => {
             }}
           />
 
+          <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
+
           {/* Tab Content */}
-          <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-2xl">
+          <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-3">
             <Paper>
               {/* overview about course */}
               <Tabs.Panel value="overview">
@@ -142,7 +147,7 @@ const CourseDetailPage = () => {
           </Tabs>
         </div>
         {/* 2nd column */}
-        <Paper className="shadow-xl border p-[30px] h-fit">
+        <Paper className="shadow-2xl border p-[30px] h-fit">
           <div
             className="aspect-video relative rounded-lg overflow-hidden cursor-pointer"
             onClick={handleOpenVideoPreview}
@@ -179,48 +184,27 @@ const CourseDetailPage = () => {
           {/* Course Details */}
           <div className="mt-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Course includes:
+              Course Features:
             </h3>
-            <ul className="space-y-3 divide-y text-sm text-gray-700 dark:text-gray-300">
-              <CourseDetail
-                icon={<BarChart2 className="size-6 text-primary" />}
-                label="Level"
-                value="Expert"
-              />
-              <CourseDetail
-                icon={<Clock className="size-6 text-primary" />}
-                label="Duration"
-                value="11h 20m"
-              />
-              <CourseDetail
-                icon={<BookOpen className="size-6 text-primary" />}
-                label="Lessons"
-                value="12"
-              />
-              <CourseDetail
-                icon={<HelpCircle className="size-6 text-primary" />}
-                label="Quizzes"
-                value="145"
-              />
-              <CourseDetail
-                icon={<BadgeCheck className="size-6 text-primary" />}
-                label="Certifications"
-                value="Yes"
-              />
-              <CourseDetail
-                icon={<GraduationCap className="size-6 text-primary" />}
-                label="Graduation"
-                value="25K"
-              />
+            <ul className="flex flex-col gap-y-3 divide-y text-sm text-gray-700 dark:text-gray-300">
+              <CourseStat icon={BarChart2} label="Level" value="Expert" />
+              <CourseStat icon={Clock} label="Duration" value="11h 20m" />
+              <CourseStat icon={BookOpen} label="Lectures" value="12" />
+              <CourseStat icon={HelpCircle} label="Quizzes" value="145" />
+              <CourseStat icon={InfinityIcon} label="Lifetime Access" value="Yes" />
+              <CourseStat icon={BadgeCheck} label="Certifications" value="Yes" />
+              <CourseStat icon={GraduationCap} label="Enrolled" value="25K" />
+              <CourseStat icon={LanguagesIcon} label="Language" value="English" />
             </ul>
           </div>
 
           <button
-            className="mt-6 w-full flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black
-              font-semibold px-5 py-3 rounded-full shadow-md transition"
+            className="mt-6 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500
+              hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg
+              transition-all duration-200 group text-lg"
           >
-            See All Instructors
-            <ArrowRight className="size-" />
+            <span className="group-hover:scale-105 transition-transform">Add to Cart</span>
+            <ShoppingCart className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </Paper>
       </div>
@@ -229,19 +213,21 @@ const CourseDetailPage = () => {
 };
 export default CourseDetailPage;
 
-function CourseDetail({
-  icon,
+function CourseStat({
+  icon: Icon,
   label,
   value,
+  iconClassName = "text-primary",
 }: {
-  icon: React.ReactNode;
+  icon: React.ElementType;
   label: string;
   value: string;
+  iconClassName?: string;
 }) {
   return (
     <li className="flex justify-between items-center py-5 text-md">
       <span className="flex items-center gap-2">
-        {icon}
+        <Icon className={`size-6 ${iconClassName}`} />
         {label}
       </span>
       <span className="font-medium text-gray-900 dark:text-white">{value}</span>
