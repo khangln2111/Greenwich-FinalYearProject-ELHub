@@ -74,7 +74,7 @@ const CourseDetailPage = () => {
                 </div>
               </div>
 
-              <div className="pl-6 border-r">
+              <div className="md:pl-6 border-r">
                 <div>Last Update</div>
                 <div className="font-semibold text-md">17 Apr, 2024</div>
               </div>
@@ -184,7 +184,7 @@ const CourseDetailPage = () => {
           {/* Course Details */}
           <div className="mt-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Course Features:
+              This course includes
             </h3>
             <ul className="flex flex-col gap-y-3 divide-y text-sm text-gray-700 dark:text-gray-300">
               <CourseStat icon={BarChart2} label="Level" value="Expert" />
