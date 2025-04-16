@@ -1,4 +1,4 @@
-import { Image, Paper, Rating, SegmentedControl, Tabs, Title } from "@mantine/core";
+import { Container, Image, Paper, Rating, SegmentedControl, Tabs, Title } from "@mantine/core";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import image from "../../assets/placeholder/courseDetail.jpg";
@@ -40,11 +40,11 @@ const CourseDetailPage = () => {
 
   const [activeTab, setActiveTab] = useState("curriculum");
   return (
-    <Paper
+    <Container
       className="flex-1"
-      radius={0}
       px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
       py="xl"
+      size="2xl"
     >
       <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[9fr_3fr]">
         {/* 1st column */}
@@ -224,7 +224,7 @@ const CourseDetailPage = () => {
           </button>
         </Paper>
       </div>
-    </Paper>
+    </Container>
   );
 };
 export default CourseDetailPage;
