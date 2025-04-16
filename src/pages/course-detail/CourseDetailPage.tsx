@@ -7,6 +7,7 @@ import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
 import { modals } from "@mantine/modals";
+import { Play } from "lucide-react";
 
 const CourseDetailPage = () => {
   const handleOpenVideoPreview = () => {
@@ -17,15 +18,13 @@ const CourseDetailPage = () => {
       withCloseButton: false,
       overlayProps: { blur: 4 },
       children: (
-        <div className="aspect-video">
-          <ReactPlayer
-            url="https://res.cloudinary.com/codewithmosh/video/upload/f_auto:video,q_auto/v1/promo-videos/spring-boot-part1"
-            width="100%"
-            height="100%"
-            controls
-            playing
-          />
-        </div>
+        <ReactPlayer
+          url="https://res.cloudinary.com/codewithmosh/video/upload/f_auto:video,q_auto/v1/promo-videos/spring-boot-part1"
+          width="100%"
+          height="100%"
+          controls
+          playing
+        />
       ),
     });
   };
@@ -44,8 +43,11 @@ const CourseDetailPage = () => {
           <Paper>
             <Title>Complete Guide to UI/UX Design with Figma</Title>
             {/* Course stats */}
-            <div className="flex items-center justify-between gap-6 border-y dark:border-dark-4 py-6 px-4 text-sm mt-xl">
-              <div className="flex items-center gap-3">
+            <div
+              className="grid grid-cols-2 md:grid-cols-4 items-center justify-between gap-6 border-y dark:border-dark-4 py-6
+                px-4 text-sm mt-xl"
+            >
+              <div className="flex items-center gap-3 border-r">
                 <img src={image} alt="Instructor" className="w-10 h-10 rounded-full object-cover" />
                 <div>
                   <div className="">Created By</div>
@@ -53,19 +55,19 @@ const CourseDetailPage = () => {
                 </div>
               </div>
 
-              <div className="border-l pl-6">
+              <div className="pl-6 md:border-r">
                 <div>Category</div>
                 <div className="text-blue-500 cursor-pointer hover:underline font-semibold text-md">
                   SEO
                 </div>
               </div>
 
-              <div className="border-l pl-6">
+              <div className="pl-6 border-r">
                 <div>Last Update</div>
                 <div className="font-semibold text-md">17 Apr, 2024</div>
               </div>
 
-              <div className="border-l pl-6">
+              <div className="pl-6">
                 <div>Review</div>
                 <div className="flex items-center gap-1 text-md">
                   <Rating value={4.5} fractions={4} />
@@ -139,25 +141,31 @@ const CourseDetailPage = () => {
             {/* Placeholder image */}
             <img src={image} alt="Course Preview" className="w-full h-full object-cover" />
 
+            <div className="absolute inset-0 bg-black/40" />
             {/* Overlay Play Button - luôn hiển thị */}
-            <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
-              <div className="bg-white bg-opacity-80 hover:bg-opacity-100 p-4 rounded-full shadow-lg transition">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 text-black"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M14.752 11.168l-5.197-3.027A1 1 0 008 9v6a1 1 0 001.555.832l5.197-3.027a1 1 0 000-1.664z"
-                  />
-                </svg>
-              </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="relative flex size-16">
+                {/* Ping ring */}
+                <span
+                  className="animate-[ping_1.5s_ease-out_infinite] absolute inline-flex h-full w-full rounded-full bg-blue-500
+                    opacity-75 scale-120"
+                ></span>
+
+                {/* Play button */}
+                <span className="relative inline-flex rounded-full size-full bg-blue-500 items-center justify-center">
+                  <Play className="text-white size-6" />
+                </span>
+              </span>
             </div>
+          </div>
+          <div className="aspect-video mt-50">
+            <ReactPlayer
+              url="https://youtu.be/wKajpIyy_yA"
+              width="100%"
+              height="100%"
+              controls
+              light="true"
+            />
           </div>
         </Paper>
       </div>
