@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "buildNoCheck": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -14,6 +15,7 @@
     "@mantine/core": "^7.17.4",
     "@mantine/form": "^7.17.4",
     "@mantine/hooks": "^7.17.4",
+    "@mantine/modals": "^7.17.4",
     "@mantine/notifications": "^7.17.4",
     "@mantinex/mantine-logo": "^1.1.0",
     "@react-oauth/google": "^0.12.1",

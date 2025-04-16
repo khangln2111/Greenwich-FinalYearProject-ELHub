@@ -14,10 +14,7 @@ const ReviewTab = ({ rating, totalReviews, stars }: FeedbackProps) => {
       <Title order={2}>What our student are saying</Title>
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg mt-10">
         {/* Left section */}
-        <div
-          className="flex flex-col items-center justify-center md:col-span-3 gap-3 p-sm shadow-lg border border-gray-200
-            dark:border-default-border rounded-lg md:aspect-square"
-        >
+        <div className="flex flex-col items-center justify-center md:col-span-3 gap-3 p-sm border-r md:aspect-square">
           <div className="text-orange-500 text-5xl font-bold">{rating.toFixed(1)}</div>
           <Rating value={rating} readOnly size="lg" />
           <span className="text-gray-500 text-sm dark:text-neutral-300">

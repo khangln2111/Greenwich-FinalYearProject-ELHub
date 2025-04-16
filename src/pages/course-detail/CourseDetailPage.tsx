@@ -6,8 +6,30 @@ import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
+import { modals } from "@mantine/modals";
 
 const CourseDetailPage = () => {
+  const handleOpenVideoPreview = () => {
+    modals.open({
+      size: "xl",
+      centered: true,
+      padding: 0,
+      withCloseButton: false,
+      overlayProps: { blur: 4 },
+      children: (
+        <div className="aspect-video">
+          <ReactPlayer
+            url="https://res.cloudinary.com/codewithmosh/video/upload/f_auto:video,q_auto/v1/promo-videos/spring-boot-part1"
+            width="100%"
+            height="100%"
+            controls
+            playing
+          />
+        </div>
+      ),
+    });
+  };
+
   const [activeTab, setActiveTab] = useState("curriculum");
   return (
     <Paper
@@ -21,8 +43,8 @@ const CourseDetailPage = () => {
         <div>
           <Paper>
             <Title>Complete Guide to UI/UX Design with Figma</Title>
+            {/* Course stats */}
             <div className="flex items-center justify-between gap-6 border-y dark:border-dark-4 py-6 px-4 text-sm mt-xl">
-              {/* Instructor */}
               <div className="flex items-center gap-3">
                 <img src={image} alt="Instructor" className="w-10 h-10 rounded-full object-cover" />
                 <div>
@@ -31,7 +53,6 @@ const CourseDetailPage = () => {
                 </div>
               </div>
 
-              {/* Category */}
               <div className="border-l pl-6">
                 <div>Category</div>
                 <div className="text-blue-500 cursor-pointer hover:underline font-semibold text-md">
@@ -39,13 +60,11 @@ const CourseDetailPage = () => {
                 </div>
               </div>
 
-              {/* Last Update */}
               <div className="border-l pl-6">
                 <div>Last Update</div>
                 <div className="font-semibold text-md">17 Apr, 2024</div>
               </div>
 
-              {/* Review */}
               <div className="border-l pl-6">
                 <div>Review</div>
                 <div className="flex items-center gap-1 text-md">
@@ -55,6 +74,7 @@ const CourseDetailPage = () => {
                 </div>
               </div>
             </div>
+            {/* course image */}
             <Image className="rounded-lg mt-xl" src={image}></Image>
           </Paper>
           <SegmentedControl
@@ -111,16 +131,33 @@ const CourseDetailPage = () => {
           </Tabs>
         </div>
         {/* 2nd column */}
-        <Paper className="h-300 shadow-xl border overflow-hidden p-[30px]">
-          <div className="aspect-video rounded-2xl overflow-hidden">
-            <ReactPlayer
-              url="https://www.youtube.com/watch?v=acRSApuOlkk"
-              width="100%"
-              height="100%"
-              pip={true}
-              controls={true}
-              light="https://i.ytimg.com/vi/acRSApuOlkk/hqdefault.jpg"
-            />
+        <Paper className="h-300 shadow-xl border p-[30px]">
+          <div
+            className="aspect-video relative rounded-lg overflow-hidden cursor-pointer"
+            onClick={handleOpenVideoPreview}
+          >
+            {/* Placeholder image */}
+            <img src={image} alt="Course Preview" className="w-full h-full object-cover" />
+
+            {/* Overlay Play Button - luôn hiển thị */}
+            <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
+              <div className="bg-white bg-opacity-80 hover:bg-opacity-100 p-4 rounded-full shadow-lg transition">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-black"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14.752 11.168l-5.197-3.027A1 1 0 008 9v6a1 1 0 001.555.832l5.197-3.027a1 1 0 000-1.664z"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         </Paper>
       </div>
