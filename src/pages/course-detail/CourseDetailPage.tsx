@@ -1,7 +1,6 @@
 import { Container, Image, Paper, Rating, SegmentedControl, Tabs, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
-  ArrowRight,
   BadgeCheck,
   BarChart2,
   BookOpen,
@@ -88,8 +87,35 @@ const CourseDetailPage = () => {
                 </div>
               </div>
             </div>
-            {/* course image */}
-            <Image className="rounded-lg mt-xl" src={image}></Image>
+
+            {/* course preview */}
+            <div
+              className="aspect-video relative rounded-lg overflow-hidden cursor-pointer"
+              onClick={handleOpenVideoPreview}
+            >
+              {/* Placeholder image */}
+              <Image
+                className="size-full object-cover"
+                src="https://kinsta.com/wp-content/uploads/2023/04/react-must-be-in-scope-when-using-jsx.jpg"
+              ></Image>
+
+              <div className="absolute inset-0 bg-black/40" />
+              {/* Overlay Play Button - luôn hiển thị */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="relative flex size-16">
+                  {/* Ping ring */}
+                  <span
+                    className="animate-[ping_1.5s_ease-out_infinite] absolute inline-flex h-full w-full rounded-full bg-blue-500
+                      opacity-75 scale-120"
+                  ></span>
+
+                  {/* Play button */}
+                  <span className="relative inline-flex rounded-full size-full bg-blue-500 items-center justify-center">
+                    <Play className="text-white size-6" />
+                  </span>
+                </span>
+              </div>
+            </div>
           </Paper>
           <SegmentedControl
             value={activeTab}
@@ -148,36 +174,14 @@ const CourseDetailPage = () => {
         </div>
         {/* 2nd column */}
         <Paper className="shadow-2xl border p-[30px] h-fit">
-          <div
-            className="aspect-video relative rounded-lg overflow-hidden cursor-pointer"
-            onClick={handleOpenVideoPreview}
-          >
-            {/* Placeholder image */}
-            <img src={image} alt="Course Preview" className="size-full object-cover" />
-
-            <div className="absolute inset-0 bg-black/40" />
-            {/* Overlay Play Button - luôn hiển thị */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="relative flex size-16">
-                {/* Ping ring */}
-                <span
-                  className="animate-[ping_1.5s_ease-out_infinite] absolute inline-flex h-full w-full rounded-full bg-blue-500
-                    opacity-75 scale-120"
-                ></span>
-
-                {/* Play button */}
-                <span className="relative inline-flex rounded-full size-full bg-blue-500 items-center justify-center">
-                  <Play className="text-white size-6" />
-                </span>
-              </span>
-            </div>
-          </div>
           {/* Price box */}
-          <div className="bg-violet-600 text-white mt-6 p-4 rounded-xl shadow-xl">
+          <div className="bg-violet-600 text-white p-4 rounded-xl shadow-xl flex flex-col items-center lg:item-center">
             <p className="text-md font-semibold">This Course Fee:</p>
-            <div className="flex items-center gap-2 leading-none">
-              <span className="text-4xl font-bold">$18.00</span>
-              <span className="line-through opacity-60 text-xl font-semibold">$32.00</span>
+            <div className="flex items-center gap-2">
+              <span className="text-4xl font-bold leading-normal">$18.00</span>
+              <span className="line-through opacity-60 text-xl font-semibold leading-normal">
+                $32.00
+              </span>
             </div>
           </div>
 
