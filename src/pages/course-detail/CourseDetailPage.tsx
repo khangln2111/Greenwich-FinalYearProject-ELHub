@@ -7,7 +7,16 @@ import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
 import { modals } from "@mantine/modals";
-import { Play } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  BarChart2,
+  BookOpen,
+  Clock,
+  GraduationCap,
+  HelpCircle,
+  Play,
+} from "lucide-react";
 
 const CourseDetailPage = () => {
   const handleOpenVideoPreview = () => {
@@ -37,7 +46,7 @@ const CourseDetailPage = () => {
       px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
       py="xl"
     >
-      <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr]">
+      <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[9fr_3fr]">
         {/* 1st column */}
         <div>
           <Paper>
@@ -133,13 +142,13 @@ const CourseDetailPage = () => {
           </Tabs>
         </div>
         {/* 2nd column */}
-        <Paper className="h-300 shadow-xl border p-[30px]">
+        <Paper className="shadow-xl border p-[30px] h-fit">
           <div
             className="aspect-video relative rounded-lg overflow-hidden cursor-pointer"
             onClick={handleOpenVideoPreview}
           >
             {/* Placeholder image */}
-            <img src={image} alt="Course Preview" className="w-full h-full object-cover" />
+            <img src={image} alt="Course Preview" className="size-full object-cover" />
 
             <div className="absolute inset-0 bg-black/40" />
             {/* Overlay Play Button - luôn hiển thị */}
@@ -158,18 +167,84 @@ const CourseDetailPage = () => {
               </span>
             </div>
           </div>
-          <div className="aspect-video mt-50">
-            <ReactPlayer
-              url="https://youtu.be/wKajpIyy_yA"
-              width="100%"
-              height="100%"
-              controls
-              light="true"
-            />
+          {/* Price box */}
+          <div className="bg-violet-600 text-white mt-6 p-4 rounded-xl shadow-xl">
+            <p className="text-md font-semibold">This Course Fee:</p>
+            <div className="flex items-center gap-2 leading-none">
+              <span className="text-4xl font-bold">$18.00</span>
+              <span className="line-through opacity-60 text-xl font-semibold">$32.00</span>
+            </div>
           </div>
+
+          {/* Course Details */}
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              Course includes:
+            </h3>
+            <ul className="space-y-3 divide-y text-sm text-gray-700 dark:text-gray-300">
+              <CourseDetail
+                icon={<BarChart2 className="size-6 text-primary" />}
+                label="Level"
+                value="Expert"
+              />
+              <CourseDetail
+                icon={<Clock className="size-6 text-primary" />}
+                label="Duration"
+                value="11h 20m"
+              />
+              <CourseDetail
+                icon={<BookOpen className="size-6 text-primary" />}
+                label="Lessons"
+                value="12"
+              />
+              <CourseDetail
+                icon={<HelpCircle className="size-6 text-primary" />}
+                label="Quizzes"
+                value="145"
+              />
+              <CourseDetail
+                icon={<BadgeCheck className="size-6 text-primary" />}
+                label="Certifications"
+                value="Yes"
+              />
+              <CourseDetail
+                icon={<GraduationCap className="size-6 text-primary" />}
+                label="Graduation"
+                value="25K"
+              />
+            </ul>
+          </div>
+
+          <button
+            className="mt-6 w-full flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black
+              font-semibold px-5 py-3 rounded-full shadow-md transition"
+          >
+            See All Instructors
+            <ArrowRight className="size-" />
+          </button>
         </Paper>
       </div>
     </Paper>
   );
 };
 export default CourseDetailPage;
+
+function CourseDetail({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <li className="flex justify-between items-center py-5 text-md">
+      <span className="flex items-center gap-2">
+        {icon}
+        {label}
+      </span>
+      <span className="font-medium text-gray-900 dark:text-white">{value}</span>
+    </li>
+  );
+}
