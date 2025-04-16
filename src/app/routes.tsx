@@ -6,6 +6,7 @@ import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/register/RegisterPage";
 import CourseDetailPage from "../pages/course-detail/CourseDetailPage";
+import CartPage from "../pages/cart/CartPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -16,7 +17,7 @@ const userRoute: RouteObject = {
     { path: "courses", element: <CoursesPage /> },
     // { path: "courses/:courseId", element: <CourseDetailPage /> },
     { path: "coursedetail", element: <CourseDetailPage /> },
-    { path: "cart", element: <p>Cart Page</p> },
+    { path: "cart", element: <CartPage /> },
   ],
 };
 

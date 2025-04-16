@@ -1,4 +1,4 @@
-import { Grid, GridCol, Paper } from "@mantine/core";
+import { Container, Grid, GridCol, Paper } from "@mantine/core";
 import CourseList from "./_c/CourseList";
 import MobileFilter from "./_c/MobileFilter";
 import DesktopFilter from "./_c/DesktopFilter";
@@ -134,29 +134,26 @@ const CoursesPage = () => {
   console.log("Courses data:", data?.items);
 
   return (
-    <Paper
-      className="bg-gray-1 dark:bg-dark-5 flex-1"
-      radius={0}
-      px={{ base: "15px", md: "20px", lg: "30px", xl: "80px" }}
-      py="xl"
-    >
-      <MobileFilter />
-      <Grid py="md" gutter="xl">
-        {/* Sidebar Filters cố định */}
-        <GridCol
-          visibleFrom="lg"
-          span={{ lg: 3.5, xl: 2.8 }}
-          className={`transition-all transition-discrete duration-300
-            ${isDesktopFilterOpen ? " opacity-100 " : "-translate-x-full opacity-0 hidden starting:translate-x-0"} `}
-        >
-          <DesktopFilter />
-        </GridCol>
-        {/* Nội dung thay đổi (course list, pagination, …) */}
-        <GridCol span="auto">
-          <CourseList courses={mockCourses} />
-        </GridCol>
-      </Grid>
-    </Paper>
+    <div className="flex-1 bg-gray-1 dark:bg-dark-5">
+      <Container className="" px={{ base: "15px", md: "20px", lg: "30px" }} py="xl" size="xl">
+        <MobileFilter />
+        <Grid py="md" gutter="xl">
+          {/* Sidebar Filters cố định */}
+          <GridCol
+            visibleFrom="lg"
+            span={{ lg: 3.5, xl: 2.8 }}
+            className={`transition-all transition-discrete duration-300
+              ${isDesktopFilterOpen ? " opacity-100 " : "-translate-x-full opacity-0 hidden starting:translate-x-0"} `}
+          >
+            <DesktopFilter />
+          </GridCol>
+          {/* Nội dung thay đổi (course list, pagination, …) */}
+          <GridCol span="auto">
+            <CourseList courses={mockCourses} />
+          </GridCol>
+        </Grid>
+      </Container>
+    </div>
   );
 };
 export default CoursesPage;
