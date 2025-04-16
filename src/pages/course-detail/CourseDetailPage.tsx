@@ -88,10 +88,10 @@ const CourseDetailPage = () => {
     <Container
       className="flex-1"
       px={{ base: "15px", md: "20px", lg: "30px", xl: "0px" }}
-      py="xl"
+      py="5xl"
       size="xl"
     >
-      <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[9fr_3fr]">
+      <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr]">
         {/* 1st column */}
         <div>
           <Paper>
