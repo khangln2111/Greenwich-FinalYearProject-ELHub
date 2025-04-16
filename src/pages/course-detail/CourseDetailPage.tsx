@@ -100,7 +100,10 @@ const CourseDetailPage = () => {
             </Breadcrumbs>
             <Title className="mt-5">Complete Guide to UI/UX Design with Figma</Title>
             {/* Course stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 items-center justify-between gap-6 border py-6 px-4 text-sm mt-xl">
+            <div
+              className="grid grid-cols-2 md:grid-cols-4 items-center justify-between gap-6 border py-6 px-4 text-sm mt-xl
+                rounded-lg shadow-lg"
+            >
               <div className="flex items-center gap-3 border-r">
                 <img src={image} alt="Instructor" className="w-10 h-10 rounded-full object-cover" />
                 <div>
