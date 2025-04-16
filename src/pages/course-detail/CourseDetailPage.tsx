@@ -1,5 +1,6 @@
 import {
   Anchor,
+  Box,
   Breadcrumbs,
   Container,
   Image,
@@ -86,7 +87,7 @@ const CourseDetailPage = () => {
   const [activeTab, setActiveTab] = useState("curriculum");
   return (
     <div className="flex-1">
-      <Container px={{ base: "15px", md: "20px", lg: "30px", xl: "0px" }} py="5xl" size="xl">
+      <Box className="container" px={{ base: "15px", md: "20px", lg: "30px", xl: "90px" }} py="5xl">
         <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr]">
           {/* 1st column */}
           <div>
@@ -97,7 +98,7 @@ const CourseDetailPage = () => {
               <Title className="mt-5">Complete Guide to UI/UX Design with Figma</Title>
               {/* Course stats */}
               <div
-                className="grid grid-cols-2 md:grid-cols-4 items-center justify-between gap-x-10 border py-6 px-4 text-sm mt-xl
+                className="grid grid-cols-2 md:grid-cols-4 items-center justify-between gap-6 border py-6 px-4 text-sm mt-xl
                   rounded-lg shadow-lg"
               >
                 <div className="flex items-center gap-3 border-r">
@@ -245,7 +246,7 @@ const CourseDetailPage = () => {
             </button>
           </Paper>
         </div>
-      </Container>
+      </Box>
     </div>
   );
 };

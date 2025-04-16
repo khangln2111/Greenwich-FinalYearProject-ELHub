@@ -1,10 +1,10 @@
-import { Container, Grid, GridCol, Paper } from "@mantine/core";
-import CourseList from "./_c/CourseList";
-import MobileFilter from "./_c/MobileFilter";
-import DesktopFilter from "./_c/DesktopFilter";
+import { Box, Grid, GridCol } from "@mantine/core";
 import { Course } from "../../react-query/course/course.types";
-import { useAppStore } from "../../zustand/store";
 import { useGetCourses } from "../../react-query/course/courseHooks";
+import { useAppStore } from "../../zustand/store";
+import CourseList from "./_c/CourseList";
+import DesktopFilter from "./_c/DesktopFilter";
+import MobileFilter from "./_c/MobileFilter";
 
 const mockCourses: Course[] = [
   {
@@ -135,7 +135,12 @@ const CoursesPage = () => {
 
   return (
     <div className="flex-1 bg-gray-1 dark:bg-dark-5">
-      <Container className="" px={{ base: "15px", md: "20px", lg: "30px" }} py="xl" size="xl">
+      <Box
+        className="container"
+        px={{ base: "15px", md: "20px", lg: "30px", xl: "90px" }}
+        py="xl"
+        size="xl"
+      >
         <MobileFilter />
         <Grid py="md" gutter="xl">
           {/* Sidebar Filters cố định */}
@@ -152,7 +157,7 @@ const CoursesPage = () => {
             <CourseList courses={mockCourses} />
           </GridCol>
         </Grid>
-      </Container>
+      </Box>
     </div>
   );
 };
