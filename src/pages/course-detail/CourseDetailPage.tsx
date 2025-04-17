@@ -208,7 +208,7 @@ const CourseDetailPage = () => {
             </Tabs>
           </div>
           {/* 2nd column */}
-          <Paper className="shadow-2xl border p-[30px] h-fit">
+          <Paper className="shadow-2xl border p-[30px] h-fit dark:bg-dark-6">
             {/* Price box */}
             <div className="bg-violet-600 text-white p-4 rounded-xl shadow-xl flex flex-col items-center lg:item-center">
               <p className="text-md font-semibold">This Course Fee:</p>

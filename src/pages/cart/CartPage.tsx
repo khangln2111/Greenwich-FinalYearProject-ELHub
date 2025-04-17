@@ -10,7 +10,8 @@ const cartItems = [
     price: 4050000,
     quantity: 3,
     unit: "Hộp",
-    image: "/images/may-xong.jpg",
+    image:
+      "https://hoidanit.vn/_next/image?url=https%3A%2F%2Fhoidanit.vn%2Fimages%2Fc1d33e4e76fee563c29bd4101ca7651910.png&w=3840&q=75",
   },
   {
     id: 2,
@@ -19,7 +20,8 @@ const cartItems = [
     price: 378000,
     quantity: 3,
     unit: "Tuýp",
-    image: "/images/kudos-vitamin.jpg",
+    image:
+      "https://hoidanit.vn/_next/image?url=https%3A%2F%2Fhoidanit.vn%2Fimages%2Fc1d33e4e76fee563c29bd4101ca7651910.png&w=3840&q=75",
   },
 ];
 
@@ -41,10 +43,11 @@ export default function CartPage() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
+    <div className="flex-1 px-6 py-[80px] bg-gray-1 dark:bg-dark-5">
       <h2 className="text-xl font-semibold mb-4">Tiếp tục mua sắm</h2>
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="bg-white rounded-2xl shadow p-4 flex-1">
+      <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+        {/* left part */}
+        <div className="bg-body rounded-2xl shadow-lg p-4 flex-1">
           <div className="flex items-center mb-4 font-medium">
             <input type="checkbox" checked readOnly className="mr-2" />
             Chọn tất cả ({items.length})
@@ -58,7 +61,7 @@ export default function CartPage() {
                 <p className="text-sm text-gray-500">{item.description}</p>
                 <p className="text-blue-600 font-semibold mt-1">{item.price.toLocaleString()}₫</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="items-center gap-2 hidden md:flex">
                 <Button
                   variant="outline"
                   size="xs"
@@ -85,10 +88,17 @@ export default function CartPage() {
             </div>
           ))}
         </div>
-        <div className="bg-white rounded-2xl shadow p-4 w-full lg:w-[360px]">
-          <div className="bg-blue-100 text-blue-600 p-3 rounded-xl text-sm font-medium cursor-pointer">
+        {/* right part */}
+        <div className="bg-body rounded-2xl shadow p-4 w-full lg:w-[360px]">
+          {/* <div
+            className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-200 p-3 rounded-xl text-sm font-medium
+              cursor-pointer"
+          >
             Áp dụng ưu đãi để được giảm giá
-          </div>
+          </div> */}
+          <Button variant="light" autoContrast size="md" className="rounded-xl text-start w-full">
+            Áp dụng ưu đãi để được giảm giá
+          </Button>
           <div className="mt-4 space-y-2 text-md">
             <div className="flex justify-between">
               <span>Tổng tiền</span>
@@ -107,7 +117,9 @@ export default function CartPage() {
             <span>Thành tiền</span>
             <span className="text-blue-600">{total.toLocaleString()}₫</span>
           </div>
-          <Button className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-700">Mua hàng</Button>
+          <Button className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-800 dark:bg-blue-700">
+            Mua hàng
+          </Button>
           <p className="text-xs text-center mt-3 text-gray-500">
             Bằng việc tiến hành đặt mua hàng, bạn đồng ý với <br />
             <span className="underline">Điều khoản dịch vụ</span> và{" "}
