@@ -24,7 +24,7 @@ const PopularCourses = () => {
     .map((_, index) => <p key={index}>Modal with scroll</p>);
 
   return (
-    <Container className="mb-64">
+    <Container className="mb-64" size="lg">
       <Group justify="space-between">
         <Title order={1}>Popular Courses</Title>
         <Anchor

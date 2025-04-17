@@ -4,9 +4,9 @@ import image1 from "../../../assets/homePageImages/HeroImage2.png";
 
 const Hero = () => {
   return (
-    <Container size="md">
-      <div className="flex justify-center py-[128px]">
-        <div className="mr-0 max-w-full xl:mr-[96px] xl:max-w-[480px]">
+    <Container size="lg">
+      <div className="mx-auto items-center grid grid-cols-1 lg:grid-cols-2 gap-10 py-[50px]">
+        <div className="mr-0">
           <Title
             className="text-black dark:text-white font-['Greycliff_CF',var(--mantine-font-family)] leading-[1.2] font-black
               text-[28px] md:text-[44px]"
@@ -59,7 +59,7 @@ const Hero = () => {
             </Button>
           </div>
         </div>
-        <Image src={image1} alt="" className="w-[376px] h-[356px] hidden lg:block" />
+        <Image src={image1} alt="" width={800} height={800} className="hidden lg:block mx-auto" />
       </div>
     </Container>
   );

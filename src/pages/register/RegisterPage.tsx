@@ -12,9 +12,9 @@ const RegisterPage = () => {
         <Title ta="center" className="font-black font-[Greycliff_CF,var(--mantine-font-family)]">
           Welcome to ELearning Hub
         </Title>
-        <Text c="dimmed" size="md" ta="center" mt={5}>
+        <Text size="md" ta="center" mt={5} className="text-gray-8 dark:text-dark-1">
           Already have an account?{" "}
-          <Anchor size="sm" c="blue" component={Link} to="/login">
+          <Anchor size="sm" c="blue" component={Link} className="font-semibold" to="/login">
             Login
           </Anchor>
         </Text>

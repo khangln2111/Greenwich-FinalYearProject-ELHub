@@ -43,7 +43,7 @@ const Features = () => {
   ));
 
   return (
-    <Container mb="100">
+    <Container mb="100" size="lg">
       <Group justify="center">
         <Badge variant="filled" size="lg">
           Best company ever

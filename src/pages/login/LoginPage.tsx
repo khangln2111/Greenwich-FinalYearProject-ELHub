@@ -12,9 +12,9 @@ const LoginPage = () => {
         <Title ta="center" className="font-black font-[Greycliff_CF,var(--mantine-font-family)]">
           Welcome back!
         </Title>
-        <Text c="dimmed" size="md" ta="center" mt={5}>
+        <Text size="md" ta="center" mt={5} className="text-gray-8 dark:text-dark-1">
           Do not have an account yet?{" "}
-          <Anchor size="sm" c="blue" component={Link} to="/register">
+          <Anchor size="sm" c="blue" component={Link} to="/register" className="font-semibold">
             Create account
           </Anchor>
         </Text>

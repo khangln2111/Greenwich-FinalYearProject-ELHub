@@ -51,7 +51,7 @@ const categories = [
 
 const Categories = () => {
   return (
-    <Container className="mb-[128px]">
+    <Container className="mb-[128px]" size="lg">
       <Title order={1} ta="start">
         Categories
       </Title>
