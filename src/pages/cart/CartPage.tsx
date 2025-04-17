@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Trash2 } from "lucide-react";
-import { Button } from "@mantine/core";
+import { MinusIcon, PlusIcon, Trash2 } from "lucide-react";
+import { ActionIcon, Button } from "@mantine/core";
 
 const cartItems = [
   {
@@ -55,30 +55,34 @@ export default function CartPage() {
           {items.map((item) => (
             <div key={item.id} className="flex border-t py-4 gap-4 items-center">
               <input type="checkbox" checked readOnly />
-              <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-16 h-16 object-cover rounded border"
+              />
               <div className="flex-1">
                 <p className="font-medium">{item.name}</p>
                 <p className="text-sm text-gray-500">{item.description}</p>
                 <p className="text-blue-600 font-semibold mt-1">{item.price.toLocaleString()}₫</p>
               </div>
               <div className="items-center gap-2 hidden md:flex">
-                <Button
+                <ActionIcon
                   variant="outline"
-                  size="xs"
+                  size="md"
                   className="rounded-full"
                   onClick={() => handleQuantityChange(item.id, -1)}
                 >
-                  -
-                </Button>
+                  <MinusIcon />
+                </ActionIcon>
                 <span className="w-6 text-center">{item.quantity}</span>
-                <Button
+                <ActionIcon
                   variant="outline"
-                  size="xs"
+                  size="md"
                   className="rounded-full"
                   onClick={() => handleQuantityChange(item.id, 1)}
                 >
-                  +
-                </Button>
+                  <PlusIcon />
+                </ActionIcon>
               </div>
 
               <Trash2
@@ -117,7 +121,10 @@ export default function CartPage() {
             <span>Thành tiền</span>
             <span className="text-blue-600">{total.toLocaleString()}₫</span>
           </div>
-          <Button className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-800 dark:bg-blue-700">
+          <Button
+            size="lg"
+            className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-800 dark:bg-blue-700 rounded-full"
+          >
             Mua hàng
           </Button>
           <p className="text-xs text-center mt-3 text-gray-500">

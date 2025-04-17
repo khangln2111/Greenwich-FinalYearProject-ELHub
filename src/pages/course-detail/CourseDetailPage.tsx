@@ -132,15 +132,15 @@ const CourseDetailPage = () => {
               </div>
               {/* course preview */}
               <div
-                className="aspect-video relative rounded-lg overflow-hidden cursor-pointer mt-10"
+                className="aspect-video relative rounded-lg overflow-hidden cursor-pointer mt-10 border"
                 onClick={handleOpenVideoPreview}
               >
                 {/* Placeholder image */}
                 <Image
-                  className="size-full object-cover"
+                  className="size-full object-cover inset-shadow-2xs"
                   src="https://kinsta.com/wp-content/uploads/2023/04/react-must-be-in-scope-when-using-jsx.jpg"
                 ></Image>
-                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 bg-black/20" />
                 {/* Overlay Play Button - luôn hiển thị */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="relative flex size-16">
