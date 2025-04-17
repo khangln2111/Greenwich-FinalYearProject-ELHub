@@ -119,7 +119,7 @@ export default function CartPage() {
           </div>
           <div className="border-t mt-4 pt-4 flex justify-between items-center text-lg font-semibold">
             <span>Thành tiền</span>
-            <span className="text-blue-600">{total.toLocaleString()}₫</span>
+            <span className="text-primary">{total.toLocaleString()}₫</span>
           </div>
           <Button
             size="lg"
