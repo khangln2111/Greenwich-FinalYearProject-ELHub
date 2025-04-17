@@ -5,12 +5,12 @@ import PopularCourses from "./_c/PopularCourses/PopularCourses";
 
 const HomePage = () => {
   return (
-    <>
+    <div className="flex-1">
       <Hero />
       <Features />
       <Categories />
       <PopularCourses />
-    </>
+    </div>
   );
 };
 export default HomePage;
