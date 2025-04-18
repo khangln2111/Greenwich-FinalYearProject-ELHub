@@ -51,7 +51,7 @@ export default function CartPage() {
         <Anchor className="text-xl font-semibold mb-4 flex items-center ml-5 lg:ml-0">
           <ArrowLeft className="inline-block mr-2" /> Continue to shopping
         </Anchor>
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] items-start gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] items-start gap-6">
           {/* left part */}
           <div className="bg-body lg:rounded-2xl shadow-lg p-4">
             <div className="flex items-center mb-4 font-medium">
@@ -60,6 +60,7 @@ export default function CartPage() {
             </div>
             {items.map((item) => (
               <div key={item.id} className="flex items-start border-t py-4 gap-4">
+                {/* image of cart item */}
                 <div className="flex gap-5 items-center">
                   <Checkbox defaultChecked />
                   <img
@@ -68,67 +69,67 @@ export default function CartPage() {
                     className="size-20 object-cover rounded-md border"
                   />
                 </div>
-                <div className="flex-1 flex flex-col justify-between gap-3">
-                  <p className="font-medium leading-tight">{item.name}</p>
-                  <p className="text-sm text-gray-500">{item.description}</p>
-                  <div className="flex items-center justify-between">
-                    <Text className="text-blue-600 font-semibold leading-none">
-                      ${item.price.toLocaleString("en-US")}
-                    </Text>
-                    <div className="flex items-center md:hidden">
-                      <ActionIcon
-                        variant="outline"
-                        size="xs"
-                        className="rounded-full"
-                        onClick={() => handleQuantityChange(item.id, -1)}
-                      >
-                        <MinusIcon />
-                      </ActionIcon>
-                      <span className="w-6 text-center">{item.quantity}</span>
-                      <ActionIcon
-                        variant="outline"
-                        size="xs"
-                        className="rounded-full"
-                        onClick={() => handleQuantityChange(item.id, 1)}
-                      >
-                        <PlusIcon />
-                      </ActionIcon>
+                {/* content of cart item */}
+                <div className="flex-1 flex flex-col gap-2 lg:flex-row lg:gap-4 lg:self-stretch justify-between">
+                  {/* information */}
+                  <div className="flex lg:block items-center">
+                    <div className="flex-1 flex flex-col">
+                      <div className="flex items-end justify-between">
+                        <p className="font-medium">{item.name}</p>
+                        {/* delete icon on mobile */}
+                        <Trash2
+                          className="text-dimmed cursor-pointer lg:hidden"
+                          onClick={() => handleRemove(item.id)}
+                          size={20}
+                        />
+                      </div>
+                      <p className="text-sm text-gray-500">{item.description}</p>
                     </div>
                   </div>
-                </div>
-                <div className="items-center gap-2 hidden md:flex self-center">
-                  <div
-                    className="inline-flex items-center border rounded-full overflow-hidden divide-x divide-gray-200
-                      dark:divide-gray-700 h-8"
-                  >
-                    <button
-                      onClick={() => handleQuantityChange(item.id, -1)}
-                      className="w-10 h-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100
-                        dark:hover:bg-gray-800"
+                  {/* price - controls - delete */}
+                  <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center lg:gap-6 lg:self-center">
+                    <div className="flex flex-row items-baseline gap-3 lg:gap-1 lg:flex-col lg:items-end lg:self-center">
+                      <Text className="text-blue-500 font-semibold">
+                        ${item.price.toLocaleString("en-US")}
+                      </Text>
+                      {/* Discount price */}
+                      <Text className="text-sm text-dimmed font-semibold line-through">
+                        ${item.price.toLocaleString("en-US")}
+                      </Text>
+                    </div>
+                    <div
+                      className="inline-flex items-center border rounded-md overflow-hidden divide-x divide-gray-200
+                        dark:divide-gray-700 h-8 lg:self-center"
                     >
-                      <Minus size={16} />
-                    </button>
-                    <input
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleQuantityChange(item.id, Number(e.target.value) - item.quantity)
-                      }
-                      className="w-12 h-full flex items-center text-center justify-center font-semibold text-gray-800
-                        dark:text-gray-100"
+                      <button
+                        onClick={() => handleQuantityChange(item.id, -1)}
+                        className="w-8 h-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100
+                          dark:hover:bg-gray-800"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <input
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleQuantityChange(item.id, Number(e.target.value) - item.quantity)
+                        }
+                        className="w-8 h-full flex items-center text-center justify-center font-semibold text-gray-800
+                          dark:text-gray-100"
+                      />
+                      <button
+                        onClick={() => handleQuantityChange(item.id, 1)}
+                        className="w-8 h-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100
+                          dark:hover:bg-gray-800"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                    <Trash2
+                      className="text-dimmed cursor-pointer hidden lg:block self-center"
+                      onClick={() => handleRemove(item.id)}
+                      size={20}
                     />
-                    <button
-                      onClick={() => handleQuantityChange(item.id, 1)}
-                      className="w-10 h-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100
-                        dark:hover:bg-gray-800"
-                    >
-                      <Plus size={16} />
-                    </button>
                   </div>
-                  <Trash2
-                    className="text-dimmed cursor-pointer"
-                    onClick={() => handleRemove(item.id)}
-                    size={20}
-                  />
                 </div>
               </div>
             ))}
