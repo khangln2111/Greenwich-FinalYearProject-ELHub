@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { MinusIcon, PlusIcon, Trash2 } from "lucide-react";
-import { ActionIcon, Button } from "@mantine/core";
+import { ArrowLeft, MinusIcon, PlusIcon, Trash2 } from "lucide-react";
+import { ActionIcon, Anchor, Button, Checkbox, Text } from "@mantine/core";
 
 const cartItems = [
   {
     id: 1,
-    name: "Máy xông khí dung nén khí Yuwell 403M",
-    description: "chuyển thuốc dạng dung dịch thành sương mù cho niêm mạc hô hấp",
+    name: "100 Days of Code: The Complete Python Pro Bootcamp",
+    description: "By Khakha khakha",
     price: 4050000,
     quantity: 3,
     unit: "Hộp",
@@ -15,8 +15,8 @@ const cartItems = [
   },
   {
     id: 2,
-    name: "Viên sủi Kudos Vitamin C 1000mg",
-    description: "hương chanh giúp bổ sung vitamin C cho cơ thể (20 viên)",
+    name: "Automate the Boring Stuff with Python Programming",
+    description: "By John Doe",
     price: 378000,
     quantity: 3,
     unit: "Tuýp",
@@ -43,29 +43,56 @@ export default function CartPage() {
   };
 
   return (
-    <div className="flex-1 px-6 py-[80px] bg-gray-1 dark:bg-dark-5">
-      <h2 className="text-xl font-semibold mb-4">Tiếp tục mua sắm</h2>
+    <div className="flex-1 px-3 md:px-20 py-[30px] bg-[#EDF0F3] dark:bg-dark-5">
+      <Anchor className="text-xl font-semibold mb-4 flex items-center">
+        <ArrowLeft className="inline-block mr-2" /> Continue to shopping
+      </Anchor>
       <div className="flex flex-col lg:flex-row lg:items-start gap-6">
         {/* left part */}
         <div className="bg-body rounded-2xl shadow-lg p-4 flex-1">
           <div className="flex items-center mb-4 font-medium">
-            <input type="checkbox" checked readOnly className="mr-2" />
-            Chọn tất cả ({items.length})
+            <Checkbox defaultChecked className="mr-4" />
+            Select all ({items.length})
           </div>
           {items.map((item) => (
-            <div key={item.id} className="flex border-t py-4 gap-4 items-center">
-              <input type="checkbox" checked readOnly />
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-16 h-16 object-cover rounded border"
-              />
-              <div className="flex-1">
-                <p className="font-medium">{item.name}</p>
-                <p className="text-sm text-gray-500">{item.description}</p>
-                <p className="text-blue-600 font-semibold mt-1">{item.price.toLocaleString()}₫</p>
+            <div key={item.id} className="flex items-start border-t py-4 gap-4">
+              <div className="flex gap-5 items-center">
+                <Checkbox defaultChecked />
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="size-20 object-cover rounded-md border"
+                />
               </div>
-              <div className="items-center gap-2 hidden md:flex">
+              <div className="flex-1 flex flex-col justify-between gap-3">
+                <p className="font-medium leading-tight">{item.name}</p>
+                <p className="text-sm text-gray-500">{item.description}</p>
+                <div className="flex items-center justify-between">
+                  <Text className="text-blue-600 font-semibold leading-none">
+                    ${item.price.toLocaleString()}
+                  </Text>
+                  <div className="flex items-center md:hidden">
+                    <ActionIcon
+                      variant="outline"
+                      size="xs"
+                      className="rounded-full"
+                      onClick={() => handleQuantityChange(item.id, -1)}
+                    >
+                      <MinusIcon />
+                    </ActionIcon>
+                    <span className="w-6 text-center">{item.quantity}</span>
+                    <ActionIcon
+                      variant="outline"
+                      size="xs"
+                      className="rounded-full"
+                      onClick={() => handleQuantityChange(item.id, 1)}
+                    >
+                      <PlusIcon />
+                    </ActionIcon>
+                  </div>
+                </div>
+              </div>
+              <div className="items-center gap-2 hidden md:flex self-center">
                 <ActionIcon
                   variant="outline"
                   size="md"
@@ -83,12 +110,12 @@ export default function CartPage() {
                 >
                   <PlusIcon />
                 </ActionIcon>
+                <Trash2
+                  className="text-dimmed cursor-pointer"
+                  onClick={() => handleRemove(item.id)}
+                  size={20}
+                />
               </div>
-
-              <Trash2
-                className="ml-4 text-gray-500 cursor-pointer"
-                onClick={() => handleRemove(item.id)}
-              />
             </div>
           ))}
         </div>
@@ -103,7 +130,7 @@ export default function CartPage() {
           <Button variant="light" autoContrast size="md" className="rounded-xl text-start w-full">
             Áp dụng ưu đãi để được giảm giá
           </Button>
-          <div className="mt-4 space-y-2 text-md">
+          <div className="mt-4 space-y-2 text-lg">
             <div className="flex justify-between">
               <span>Tổng tiền</span>
               <span className="font-semibold">{total.toLocaleString()}₫</span>
