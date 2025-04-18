@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, MinusIcon, PlusIcon, Trash2 } from "lucide-react";
+import { ArrowLeft, Minus, MinusIcon, Plus, PlusIcon, Trash2 } from "lucide-react";
 import { ActionIcon, Anchor, Button, Checkbox, Text } from "@mantine/core";
 
 const cartItems = [
@@ -93,23 +93,35 @@ export default function CartPage() {
                 </div>
               </div>
               <div className="items-center gap-2 hidden md:flex self-center">
-                <ActionIcon
-                  variant="outline"
-                  size="md"
-                  className="rounded-full"
-                  onClick={() => handleQuantityChange(item.id, -1)}
+                <div
+                  className="inline-flex items-center border rounded-full overflow-hidden divide-x divide-gray-200
+                    dark:divide-gray-700 h-8"
                 >
-                  <MinusIcon />
-                </ActionIcon>
-                <span className="w-6 text-center">{item.quantity}</span>
-                <ActionIcon
-                  variant="outline"
-                  size="md"
-                  className="rounded-full"
-                  onClick={() => handleQuantityChange(item.id, 1)}
-                >
-                  <PlusIcon />
-                </ActionIcon>
+                  <button
+                    onClick={() => handleQuantityChange(item.id, -1)}
+                    className="w-10 h-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100
+                      dark:hover:bg-gray-800"
+                  >
+                    <Minus size={16} />
+                  </button>
+
+                  <input
+                    value={item.quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(item.id, Number(e.target.value) - item.quantity)
+                    }
+                    className="w-12 h-full flex items-center text-center justify-center font-semibold text-gray-800
+                      dark:text-gray-100"
+                  />
+
+                  <button
+                    onClick={() => handleQuantityChange(item.id, 1)}
+                    className="w-10 h-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100
+                      dark:hover:bg-gray-800"
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
                 <Trash2
                   className="text-dimmed cursor-pointer"
                   onClick={() => handleRemove(item.id)}
