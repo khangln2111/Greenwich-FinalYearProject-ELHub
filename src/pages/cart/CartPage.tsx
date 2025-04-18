@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { ArrowLeft, Minus, MinusIcon, Plus, PlusIcon, Trash2 } from "lucide-react";
 import { ActionIcon, Anchor, Button, Checkbox, Text } from "@mantine/core";
+import { IconArrowRight } from "@tabler/icons-react";
+import { ArrowLeft, Minus, MinusIcon, Plus, PlusIcon, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 const cartItems = [
   {
@@ -43,13 +44,13 @@ export default function CartPage() {
   };
 
   return (
-    <div className="flex-1 px-3 md:px-20 py-[30px] bg-[#EDF0F3] dark:bg-dark-5">
+    <div className="flex-1 px-3 md:px-20 pt-[20px] pb-[100px] bg-[#EDF0F3] dark:bg-dark-5">
       <Anchor className="text-xl font-semibold mb-4 flex items-center">
         <ArrowLeft className="inline-block mr-2" /> Continue to shopping
       </Anchor>
-      <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] items-start gap-6">
         {/* left part */}
-        <div className="bg-body rounded-2xl shadow-lg p-4 flex-1">
+        <div className="bg-body rounded-2xl shadow-lg p-4">
           <div className="flex items-center mb-4 font-medium">
             <Checkbox defaultChecked className="mr-4" />
             Select all ({items.length})
@@ -69,7 +70,7 @@ export default function CartPage() {
                 <p className="text-sm text-gray-500">{item.description}</p>
                 <div className="flex items-center justify-between">
                   <Text className="text-blue-600 font-semibold leading-none">
-                    ${item.price.toLocaleString()}
+                    ${item.price.toLocaleString("en-US")}
                   </Text>
                   <div className="flex items-center md:hidden">
                     <ActionIcon
@@ -132,7 +133,7 @@ export default function CartPage() {
           ))}
         </div>
         {/* right part */}
-        <div className="bg-body rounded-2xl shadow p-4 w-full lg:w-[360px]">
+        <div className="bg-body rounded-2xl shadow p-4">
           {/* <div
             className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-200 p-3 rounded-xl text-sm font-medium
               cursor-pointer"
@@ -140,37 +141,38 @@ export default function CartPage() {
             Áp dụng ưu đãi để được giảm giá
           </div> */}
           <Button variant="light" autoContrast size="md" className="rounded-xl text-start w-full">
-            Áp dụng ưu đãi để được giảm giá
+            Apply voucher to get discount
           </Button>
           <div className="mt-4 space-y-2 text-lg">
             <div className="flex justify-between">
-              <span>Tổng tiền</span>
-              <span className="font-semibold">{total.toLocaleString()}₫</span>
+              <span>Provisional</span>
+              <span className="font-semibold">${total.toLocaleString("en-US")}</span>
             </div>
             <div className="flex justify-between">
-              <span>Giảm giá trực tiếp</span>
-              <span className="text-orange-500">0₫</span>
+              <span>Direct discount</span>
+              <span className="text-orange-500">$0</span>
             </div>
             <div className="flex justify-between">
-              <span>Giảm giá voucher</span>
-              <span className="text-orange-500">0₫</span>
+              <span>Voucher discount</span>
+              <span className="text-orange-500">$0</span>
             </div>
           </div>
           <div className="border-t mt-4 pt-4 flex justify-between items-center text-lg font-semibold">
-            <span>Thành tiền</span>
-            <span className="text-primary">{total.toLocaleString()}₫</span>
+            <span>Total Amount</span>
+            <span className="text-primary">${total.toLocaleString("en-US")}</span>
           </div>
           <Button
             size="lg"
             className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-800 dark:bg-blue-700 rounded-full"
+            rightSection={<IconArrowRight className="ml-2" />}
           >
-            Mua hàng
+            Proceed to checkout
           </Button>
           <p className="text-xs text-center mt-3 text-gray-500">
-            Bằng việc tiến hành đặt mua hàng, bạn đồng ý với <br />
-            <span className="underline">Điều khoản dịch vụ</span> và{" "}
-            <span className="underline">Chính sách xử lý dữ liệu cá nhân</span>
-            <br /> của Nhà thuốc FPT Long Châu
+            By proceeding with your purchase, you agree to the <br />
+            <span className="underline">Terms of Service</span> and{" "}
+            <span className="underline">Privacy Policy</span>
+            <br /> of ElearningHub.
           </p>
         </div>
       </div>
