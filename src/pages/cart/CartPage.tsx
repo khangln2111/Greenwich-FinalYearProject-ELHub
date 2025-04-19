@@ -1,6 +1,6 @@
-import { ActionIcon, Anchor, Box, Button, Checkbox, Text } from "@mantine/core";
+import { Anchor, Box, Button, Checkbox, Text } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
-import { ArrowLeft, Minus, MinusIcon, Plus, PlusIcon, Trash2 } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 const cartItems = [
@@ -70,7 +70,7 @@ export default function CartPage() {
                   />
                 </div>
                 {/* content of cart item */}
-                <div className="flex-1 flex flex-col gap-2 lg:flex-row lg:gap-4 lg:self-stretch justify-between">
+                <div className="flex-1 flex flex-col justify-between gap-2 lg:flex-row lg:gap-4 lg:self-stretch lg:items-center">
                   {/* information */}
                   <div className="flex lg:block items-center">
                     <div className="flex-1 flex flex-col">
