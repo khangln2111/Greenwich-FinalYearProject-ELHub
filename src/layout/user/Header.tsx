@@ -4,11 +4,11 @@ import {
   Burger,
   Button,
   Center,
-  CloseIcon,
   Collapse,
   Divider,
   Drawer,
   Group,
+  Modal,
   ScrollArea,
   Text,
   TextInput,
@@ -30,11 +30,12 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
-import CustomNavLink from "./CustomNavLink";
-import { useState } from "react";
-import { div } from "framer-motion/client";
+import CustomNavLink from "./_c/CustomNavLink";
+import AvatarMenu from "./_c/AvatarMenu";
+import SearchBox from "./_c/SearchBox";
 
 const mockdata = [
   {
@@ -72,6 +73,8 @@ const mockdata = [
 const Header = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
+    useDisclosure(false);
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
   const handleSearch = () => {
@@ -107,6 +110,25 @@ const Header = () => {
       className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
         z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-sm"
     >
+      <Modal
+        opened={mobileSearchOpened}
+        onClose={closeMobileSearch}
+        withCloseButton={false}
+        transitionProps={{
+          transition: "fade",
+        }}
+        size="100%"
+        className="md:hidden"
+        yOffset={"25%"}
+      >
+        <SearchBox
+          autoFocus
+          onSearch={closeMobileSearch}
+          size="lg"
+          placeholder="Search courses..."
+          radius="3xl"
+        />
+      </Modal>
       <div className="flex items-center justify-between h-full gap-2 md:gap-10">
         <Link
           to="/"
@@ -117,65 +139,31 @@ const Header = () => {
         </Link>
 
         {/* Nav links (desktop) */}
-        <Group h="100%" gap={0} className="flex-1 justify-center">
-          <TextInput
-            radius="3xl"
-            type="search"
-            size="md"
-            placeholder="Search questions"
-            value={searchValue}
-            onChange={(event) => setSearchValue(event.currentTarget.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                handleSearch();
-              }
-            }}
-            rightSection={
-              <div className="flex items-center justify-end gap-1 max-w-full pr-2">
-                {searchValue && (
-                  <ActionIcon
-                    size={28}
-                    variant="subtle"
-                    color="gray"
-                    radius="3xl"
-                    onMouseDown={(e) => {
-                      e.preventDefault(); // prevent losing focus
-                      setSearchValue("");
-                    }}
-                    aria-label="Clear search"
-                  >
-                    <IconX size={18} />
-                  </ActionIcon>
-                )}
-                <ActionIcon
-                  size={32}
-                  radius="3xl"
-                  color="primary"
-                  variant="filled"
-                  onClick={handleSearch}
-                  aria-label="Search"
-                >
-                  <IconSearch size={18} stroke={1.5} />
-                </ActionIcon>
-              </div>
-            }
-            className="flex-1 max-w-120 h-full"
-          />
+        <Group h="100%" gap={0} className="flex-1 justify-center visible-from-md">
+          <SearchBox size="lg" placeholder="Search courses..." radius="3xl" />
         </Group>
 
-        <Group visibleFrom="md">
-          <Button
+        <Group>
+          {/* <Button
             to="/login"
             component={Link}
             variant="gradient"
             gradient={{ from: "blue", to: "cyan" }}
           >
             Log in
-          </Button>
+          </Button> */}
           {/* <Button to="/register" component={Link}>
             Sign up
           </Button> */}
-          <ThemeToggler />
+          <ActionIcon
+            onClick={openMobileSearch}
+            className="md:hidden"
+            variant="default"
+            size="lg"
+            aria-label="Open search"
+          >
+            <IconSearch size={20} />
+          </ActionIcon>
           <ActionIcon
             variant="default"
             size="lg"
@@ -185,9 +173,11 @@ const Header = () => {
           >
             <ShoppingCart size={19} strokeWidth={1.5} />
           </ActionIcon>
-        </Group>
+          <ThemeToggler />
 
-        <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
+          <AvatarMenu />
+          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
+        </Group>
       </div>
 
       <Drawer
