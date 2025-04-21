@@ -11,7 +11,6 @@ import {
   Modal,
   ScrollArea,
   Text,
-  TextInput,
   ThemeIcon,
   UnstyledButton,
   rem,
@@ -27,14 +26,13 @@ import {
   IconFingerprint,
   IconNotification,
   IconSearch,
-  IconX,
 } from "@tabler/icons-react";
 import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
-import CustomNavLink from "./_c/CustomNavLink";
 import AvatarMenu from "./_c/AvatarMenu";
+import CustomNavLink from "./_c/CustomNavLink";
 import SearchBox from "./_c/SearchBox";
 
 const mockdata = [
@@ -83,6 +81,8 @@ const Header = () => {
     }
   };
 
+  const targetRef = useRef<HTMLDivElement>(null);
+
   const links = mockdata.map((item) => (
     <UnstyledButton
       className="px-md py-xs dark:hover:bg-dark-7 w-full rounded-md hover:bg-gray-50"
@@ -120,6 +120,7 @@ const Header = () => {
         size="100%"
         className="md:hidden"
         yOffset={"25%"}
+        xOffset={5}
       >
         <SearchBox
           autoFocus
@@ -140,7 +141,7 @@ const Header = () => {
 
         {/* Nav links (desktop) */}
         <Group h="100%" gap={0} className="flex-1 justify-center visible-from-md">
-          <SearchBox size="lg" placeholder="Search courses..." radius="3xl" />
+          <SearchBox size="md" placeholder="Search courses..." radius="3xl" />
         </Group>
 
         <Group>

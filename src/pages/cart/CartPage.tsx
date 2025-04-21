@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import CartItem from "./_c/CartItem";
 import CartSummary from "./_c/CartSummary";
+import { Link } from "react-router-dom";
 
 const cartItems = [
   {
@@ -49,7 +50,11 @@ export default function CartPage() {
         px={{ base: "0px", lg: "30px", xl: "90px" }}
         size="xl"
       >
-        <Anchor className="text-xl font-semibold mb-4 flex items-center ml-5 lg:ml-0">
+        <Anchor
+          className="text-xl font-semibold mb-4 flex items-center ml-5 lg:ml-0"
+          component={Link}
+          to="/courses"
+        >
           <ArrowLeft className="inline-block mr-2" /> Continue to shopping
         </Anchor>
 

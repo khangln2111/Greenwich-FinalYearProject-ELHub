@@ -22,7 +22,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
       trigger="click-hover"
     >
       <Menu.Target>
-        <Indicator offset={5}>
+        <Indicator offset={5} processing>
           <Avatar
             className={cn("cursor-pointer", className)}
             color="initials"
