@@ -1,18 +1,17 @@
 import {
   ActionIcon,
-  Anchor,
   Box,
   Burger,
   Button,
   Center,
+  CloseIcon,
   Collapse,
   Divider,
   Drawer,
   Group,
-  HoverCard,
   ScrollArea,
-  SimpleGrid,
   Text,
+  TextInput,
   ThemeIcon,
   UnstyledButton,
   rem,
@@ -27,11 +26,15 @@ import {
   IconCoin,
   IconFingerprint,
   IconNotification,
+  IconSearch,
+  IconX,
 } from "@tabler/icons-react";
 import { ShoppingCart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
 import CustomNavLink from "./CustomNavLink";
+import { useState } from "react";
+import { div } from "framer-motion/client";
 
 const mockdata = [
   {
@@ -69,6 +72,13 @@ const mockdata = [
 const Header = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
+  const handleSearch = () => {
+    if (searchValue.trim()) {
+      navigate(`/courses?search=${encodeURIComponent(searchValue.trim())}`);
+    }
+  };
 
   const links = mockdata.map((item) => (
     <UnstyledButton
@@ -97,81 +107,88 @@ const Header = () => {
       className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
         z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-sm"
     >
-      <Group justify="space-between" h="100%">
+      <div className="flex items-center justify-between h-full gap-2 md:gap-10">
         <Link
           to="/"
           className="no-underline select-none flex items-center text-black dark:text-white"
         >
-          <MantineLogo color="primary" size={30} />
+          <MantineLogo color="primary" size={30} className="visible-from-md" />
+          <MantineLogo color="primary" size={30} type="mark" className="hidden-from-md" />
         </Link>
 
         {/* Nav links (desktop) */}
-        <Group h="100%" gap={0} visibleFrom="md">
-          <CustomNavLink component={Link} to="/">
-            Home
-          </CustomNavLink>
-          <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
-            <HoverCard.Target>
-              <CustomNavLink to="/">
-                <div className="inline-flex items-center">
-                  <Box component="span" className="mr-[5px]">
-                    Features
-                  </Box>
-                  <IconChevronDown className="size-[16px] text-blue-6" />
-                </div>
-              </CustomNavLink>
-            </HoverCard.Target>
-
-            <HoverCard.Dropdown className="overflow-hidden">
-              <Group justify="space-between" px="md">
-                <Text fw={500}>Features</Text>
-                <Anchor href="#" fz="xs">
-                  View all
-                </Anchor>
-              </Group>
-
-              <Divider my="sm" />
-
-              <SimpleGrid cols={2} spacing={0}>
-                {links}
-              </SimpleGrid>
-
-              <div className="bg-gray-0 dark:bg-gray-7 border-t border-gray-1 dark:border-dark-5 -m-md mt-sm p-xl pb-xl">
-                <Group justify="space-between">
-                  <div>
-                    <Text fw={500} fz="sm">
-                      Get started
-                    </Text>
-                    <Text size="xs" c="dimmed">
-                      Their food sources have decreased, and their numbers
-                    </Text>
-                  </div>
-                  <Button variant="default">Get started</Button>
-                </Group>
+        <Group h="100%" gap={0} className="flex-1 justify-center">
+          <TextInput
+            radius="3xl"
+            type="search"
+            size="md"
+            placeholder="Search questions"
+            value={searchValue}
+            onChange={(event) => setSearchValue(event.currentTarget.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleSearch();
+              }
+            }}
+            rightSection={
+              <div className="flex items-center justify-end gap-1 max-w-full pr-2">
+                {searchValue && (
+                  <ActionIcon
+                    size={28}
+                    variant="subtle"
+                    color="gray"
+                    radius="3xl"
+                    onMouseDown={(e) => {
+                      e.preventDefault(); // prevent losing focus
+                      setSearchValue("");
+                    }}
+                    aria-label="Clear search"
+                  >
+                    <IconX size={18} />
+                  </ActionIcon>
+                )}
+                <ActionIcon
+                  size={32}
+                  radius="3xl"
+                  color="primary"
+                  variant="filled"
+                  onClick={handleSearch}
+                  aria-label="Search"
+                >
+                  <IconSearch size={18} stroke={1.5} />
+                </ActionIcon>
               </div>
-            </HoverCard.Dropdown>
-          </HoverCard>
-          <CustomNavLink component={Link} to="/courses" preventScrollReset={false}>
-            Learn
-          </CustomNavLink>
-          <CustomNavLink to="/">Academy</CustomNavLink>
+            }
+            className="flex-1 max-w-120 h-full"
+          />
         </Group>
 
         <Group visibleFrom="md">
-          <Button variant="default" to="/login" component={Link}>
+          <Button
+            to="/login"
+            component={Link}
+            variant="gradient"
+            gradient={{ from: "blue", to: "cyan" }}
+          >
             Log in
           </Button>
-          <Button to="/register" component={Link}>
+          {/* <Button to="/register" component={Link}>
             Sign up
-          </Button>
+          </Button> */}
           <ThemeToggler />
-          <ActionIcon variant="default" size="lg" aria-label="Shopping cart trigger">
+          <ActionIcon
+            variant="default"
+            size="lg"
+            aria-label="Shopping cart trigger"
+            component={Link}
+            to="/cart"
+          >
             <ShoppingCart size={19} strokeWidth={1.5} />
           </ActionIcon>
         </Group>
 
         <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
-      </Group>
+      </div>
 
       <Drawer
         opened={drawerOpened}
@@ -208,11 +225,21 @@ const Header = () => {
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button to="/register" component={Link}>
-              Sign up
+            <Button variant="default" component={Link} to="/login">
+              Log in
             </Button>
+
             <ThemeToggler />
+            <ActionIcon
+              variant="default"
+              size="lg"
+              aria-label="Shopping cart trigger"
+              component={Link}
+              to="/cart"
+              onClick={closeDrawer}
+            >
+              <ShoppingCart size={19} strokeWidth={1.5} />
+            </ActionIcon>
           </Group>
         </ScrollArea>
       </Drawer>
