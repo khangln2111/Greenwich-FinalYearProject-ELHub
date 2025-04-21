@@ -16,7 +16,7 @@ interface AvatarMenuProps {
 const AvatarMenu = ({ className }: AvatarMenuProps) => {
   return (
     <Menu
-      transitionProps={{ transition: "pop-top-left" }}
+      transitionProps={{ transition: "pop-top-right" }}
       withArrow
       position="bottom-end"
       trigger="click-hover"
