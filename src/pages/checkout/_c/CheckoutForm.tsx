@@ -19,8 +19,9 @@ export default function CheckoutForm() {
       stripe={stripePromise}
       options={{
         mode: "payment",
-        amount: 1099, // Optional
+        amount: 1099, // Optionalz
         currency: "usd",
+        paymentMethodCreation: "manual",
         locale: "en",
         appearance: {
           theme: stripeTheme,
