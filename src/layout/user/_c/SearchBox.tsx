@@ -1,23 +1,27 @@
-import { ActionIcon, TextInput, TextInputProps } from "@mantine/core";
-import { IconSearch, IconX } from "@tabler/icons-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { TextInputProps, TextInput, ActionIcon } from "@mantine/core";
+import { IconX, IconSearch } from "@tabler/icons-react";
 import { cn } from "../../../utils/cn";
 
 type SearchBoxProps = {
-  autoFocus?: boolean;
+  value: string;
+  onChange: (val: string) => void;
   onSearch?: () => void;
+  onClear?: () => void;
+  autoFocus?: boolean;
 } & Omit<TextInputProps, "rightSection" | "value" | "onChange" | "onKeyDown">;
-// Omit để tránh xung đột những thứ bạn đã custom cứng
 
-const SearchBox = ({ autoFocus = false, onSearch, className, ...rest }: SearchBoxProps) => {
-  const [searchValue, setSearchValue] = useState("");
-  const navigate = useNavigate();
-
+const SearchBox = ({
+  autoFocus = false,
+  onSearch,
+  onClear,
+  value,
+  onChange,
+  className,
+  ...rest
+}: SearchBoxProps) => {
   const handleSearch = () => {
-    const query = searchValue.trim();
+    const query = value.trim();
     if (!query) return;
-    navigate(`/courses?search=${encodeURIComponent(query)}`);
     onSearch?.();
   };
 
@@ -25,14 +29,14 @@ const SearchBox = ({ autoFocus = false, onSearch, className, ...rest }: SearchBo
     <TextInput
       autoFocus={autoFocus}
       type="search"
-      value={searchValue}
-      onChange={(e) => setSearchValue(e.currentTarget.value)}
+      value={value}
+      onChange={(e) => onChange(e.currentTarget.value)}
       onKeyDown={(e) => {
         if (e.key === "Enter") handleSearch();
       }}
       rightSection={
         <div className="flex items-center justify-end gap-1 max-w-full pr-2">
-          {searchValue && (
+          {value && (
             <ActionIcon
               size={28}
               variant="subtle"
@@ -40,7 +44,10 @@ const SearchBox = ({ autoFocus = false, onSearch, className, ...rest }: SearchBo
               radius="3xl"
               onMouseDown={(e) => {
                 e.preventDefault();
-                setSearchValue("");
+              }}
+              onClick={() => {
+                onChange("");
+                onClear?.();
               }}
               aria-label="Clear search"
             >

@@ -124,7 +124,13 @@ const Header = () => {
       >
         <SearchBox
           autoFocus
-          onSearch={closeMobileSearch}
+          value={searchValue}
+          onChange={setSearchValue}
+          onSearch={() => {
+            handleSearch();
+            closeMobileSearch();
+          }}
+          onClear={() => setSearchValue("")}
           size="lg"
           placeholder="Search courses..."
           radius="3xl"
@@ -141,7 +147,15 @@ const Header = () => {
 
         {/* Nav links (desktop) */}
         <Group h="100%" gap={0} className="flex-1 justify-center visible-from-md">
-          <SearchBox size="md" placeholder="Search courses..." radius="3xl" />
+          <SearchBox
+            value={searchValue}
+            onChange={setSearchValue}
+            onSearch={handleSearch}
+            onClear={() => setSearchValue("")}
+            size="md"
+            placeholder="Search courses..."
+            radius="3xl"
+          />
         </Group>
 
         <Group>
