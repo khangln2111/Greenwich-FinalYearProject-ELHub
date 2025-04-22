@@ -13,9 +13,16 @@ public class BadRequestException : HttpException
 
     // Constructor using FluentValidation's ValidationResult to build errors.
     public BadRequestException(ValidationResult validationResult) : base(StatusCodes.Status400BadRequest,
-        "One or more validation errors occurred.", 0)
+        "One or more validation errors occurred.", ErrorCode.ValidationError)
     {
         ValidationErrors = validationResult.ToDictionary();
+    }
+
+    // Constructor using a pre-built dictionary of validation errors.
+    public BadRequestException(IDictionary<string, string[]> validationErrors) : base(StatusCodes.Status400BadRequest,
+        "One or more validation errors occurred.", ErrorCode.ValidationError)
+    {
+        ValidationErrors = validationErrors;
     }
 
     // Constructor using multiple IdentityError items to build errors.
@@ -49,12 +56,5 @@ public class BadRequestException : HttpException
         {
             { identityError.Code, new[] { identityError.Description } }
         };
-    }
-
-    // Constructor using a pre-built dictionary of validation errors.
-    public BadRequestException(IDictionary<string, string[]> validationErrors) : base(StatusCodes.Status400BadRequest,
-        "One or more validation errors occurred.", 0)
-    {
-        ValidationErrors = validationErrors;
     }
 }

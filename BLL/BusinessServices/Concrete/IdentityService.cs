@@ -85,7 +85,7 @@ public class IdentityService(
 
         var payload = await GetGoogleUserInfoAsync(command.IdToken);
         if (payload == null || string.IsNullOrEmpty(payload.Email))
-            throw new HttpException(StatusCodes.Status401Unauthorized, "Invalid Google token",
+            throw new HttpException(StatusCodes.Status400BadRequest, "Invalid Google token",
                 ErrorCode.InvalidToken);
 
 
@@ -147,6 +147,9 @@ public class IdentityService(
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
         if (user == null) throw new NotFoundException("Email not found");
+        if (user.EmailConfirmed)
+            throw new HttpException(StatusCodes.Status400BadRequest, "Email is already confirmed",
+                ErrorCode.EmailAlreadyConfirmed);
 
         var result = await userManager.ConfirmEmailAsync(user, command.Code);
 
