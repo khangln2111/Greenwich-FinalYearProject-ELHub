@@ -1,6 +1,7 @@
 import { TextInputProps, TextInput, ActionIcon } from "@mantine/core";
 import { IconX, IconSearch } from "@tabler/icons-react";
 import { cn } from "../../../utils/cn";
+import { ArrowRightIcon } from "lucide-react";
 
 type SearchBoxProps = {
   value: string;
@@ -34,6 +35,7 @@ const SearchBox = ({
       onKeyDown={(e) => {
         if (e.key === "Enter") handleSearch();
       }}
+      leftSection={<IconSearch size={20} strokeWidth={1.5} />}
       rightSection={
         <div className="flex items-center justify-end gap-1 max-w-full pr-2">
           {value && (
@@ -62,7 +64,7 @@ const SearchBox = ({
             onClick={handleSearch}
             aria-label="Search"
           >
-            <IconSearch size={18} stroke={1.5} />
+            <ArrowRightIcon size={18} strokeWidth={1.5} />
           </ActionIcon>
         </div>
       }

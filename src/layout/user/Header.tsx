@@ -28,8 +28,8 @@ import {
   IconNotification,
   IconSearch,
 } from "@tabler/icons-react";
-import { BellIcon, ShoppingCart } from "lucide-react";
-import { useRef, useState } from "react";
+import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
 import AvatarMenu from "./_c/AvatarMenu";
@@ -81,8 +81,6 @@ const Header = () => {
       navigate(`/courses?search=${encodeURIComponent(searchValue.trim())}`);
     }
   };
-
-  const targetRef = useRef<HTMLDivElement>(null);
 
   const links = mockdata.map((item) => (
     <UnstyledButton
@@ -160,14 +158,14 @@ const Header = () => {
         </Group>
 
         <Group>
-          {/* <Button
+          <Button
             to="/login"
             component={Link}
             variant="gradient"
             gradient={{ from: "blue", to: "cyan" }}
           >
             Log in
-          </Button> */}
+          </Button>
           {/* <Button to="/register" component={Link}>
             Sign up
           </Button> */}

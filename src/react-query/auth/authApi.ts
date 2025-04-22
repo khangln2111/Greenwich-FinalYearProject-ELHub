@@ -1,0 +1,70 @@
+import apiClient from "../../http-client/axios";
+import {
+  AuthResponse,
+  ConfirmEmailRequest,
+  GoogleLoginRequest,
+  LoginRequest,
+  RefreshTokenRequest,
+  RegisterRequest,
+  ResendConfirmationEmailRequest,
+  ResetPasswordRequest,
+  SendResetPasswordOtpRequest,
+  ValidateResetPasswordOtpRequest,
+} from "./auth.types";
+import { ApiSuccessResponse } from "../../http-client/api.types";
+
+const baseUrl = "/identity";
+
+export const register = async (data: RegisterRequest) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${baseUrl}/Register`, data);
+  return response.data;
+};
+
+export const login = async (data: LoginRequest) => {
+  const response = await apiClient.post<AuthResponse>(`${baseUrl}/LoginCustom`, data);
+  return response.data;
+};
+
+export const googleLogin = async (data: GoogleLoginRequest) => {
+  const response = await apiClient.post<AuthResponse>(`${baseUrl}/GoogleLogin`, data);
+  return response.data;
+};
+
+export const confirmEmail = async (data: ConfirmEmailRequest) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${baseUrl}/ConfirmEmail`, data);
+  return response.data;
+};
+
+export const resendConfirmationEmail = async (data: ResendConfirmationEmailRequest) => {
+  const response = await apiClient.post<ApiSuccessResponse>(
+    `${baseUrl}/ResendConfirmationEmail`,
+    data,
+  );
+  return response.data;
+};
+
+export const sendResetPasswordOtp = async (data: SendResetPasswordOtpRequest) => {
+  const response = await apiClient.post<ApiSuccessResponse>(
+    `${baseUrl}/SendResetPasswordOtp`,
+    data,
+  );
+  return response.data;
+};
+
+export const validateResetPasswordOtp = async (data: ValidateResetPasswordOtpRequest) => {
+  const response = await apiClient.post<ApiSuccessResponse>(
+    `${baseUrl}/ValidateResetPasswordOtp`,
+    data,
+  );
+  return response.data;
+};
+
+export const resetPassword = async (data: ResetPasswordRequest) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${baseUrl}/ResetPassword`, data);
+  return response.data;
+};
+
+export const refreshToken = async (data: RefreshTokenRequest) => {
+  const response = await apiClient.post<AuthResponse>(`${baseUrl}/RefreshToken`, data);
+  return response.data;
+};

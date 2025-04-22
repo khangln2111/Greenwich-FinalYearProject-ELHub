@@ -1,8 +1,6 @@
-export interface Result<T> {
-  success: boolean; // Indicates if the operation was successful
-  message?: string; // Optional message providing additional information
-  status?: number; // HTTP status code
-  data?: T; // Optional data returned from the operation
+export interface ApiSuccessResponse<T = unknown> {
+  message: string;
+  data?: T;
 }
 
 export interface ListData<T> {
@@ -35,4 +33,5 @@ export enum ErrorCode {
   EmailAlreadyConfirmed = "EmailAlreadyConfirmed",
   EmailOrPasswordIncorrect = "EmailOrPasswordIncorrect",
   InvalidToken = "InvalidToken",
+  InvalidOtp = "InvalidOtp",
 }

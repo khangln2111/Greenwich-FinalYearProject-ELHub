@@ -14,6 +14,7 @@ export default function CheckoutSummary({ total, className }: CheckoutSummary) {
       <Title order={3} className="text-xl font-semibold mb-4">
         Order Summary
       </Title>
+      <div className="bg-primary-filled w-[45px] h-[2px] mt-sm"></div>
 
       <div className="mt-4 space-y-2 text-lg">
         <div className="flex justify-between">
