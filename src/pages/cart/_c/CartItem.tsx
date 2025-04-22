@@ -43,10 +43,10 @@ export default function CartItem({ item, onChangeQuantity, onRemove, className }
 
         <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center lg:gap-6 lg:self-center">
           <div className="flex flex-row items-baseline gap-3 lg:gap-1 lg:flex-col lg:items-end lg:self-center">
-            <Text className="text-blue-500 font-semibold">
+            <Text className="text-sm text-dimmed font-semibold line-through">
               ${item.price.toLocaleString("en-US")}
             </Text>
-            <Text className="text-sm text-dimmed font-semibold line-through">
+            <Text className="text-blue-500 font-semibold">
               ${item.price.toLocaleString("en-US")}
             </Text>
           </div>

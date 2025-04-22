@@ -18,6 +18,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import {
+  IconBell,
   IconBook,
   IconChartPie3,
   IconChevronDown,
@@ -27,7 +28,7 @@ import {
   IconNotification,
   IconSearch,
 } from "@tabler/icons-react";
-import { ShoppingCart } from "lucide-react";
+import { BellIcon, ShoppingCart } from "lucide-react";
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
@@ -178,6 +179,9 @@ const Header = () => {
             aria-label="Open search"
           >
             <IconSearch size={20} />
+          </ActionIcon>
+          <ActionIcon variant="default" size="lg" aria-label="Notification trigger">
+            <IconBell size={19} strokeWidth={1.5} />
           </ActionIcon>
           <ActionIcon
             variant="default"

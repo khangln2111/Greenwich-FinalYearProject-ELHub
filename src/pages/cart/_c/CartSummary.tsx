@@ -31,7 +31,9 @@ export default function CartSummary({ total, className }: CartSummaryProps) {
 
       <div className="border-t mt-4 pt-4 flex justify-between items-center text-lg font-semibold">
         <span>Total Amount</span>
-        <span className="text-primary">${total.toLocaleString("en-US")}</span>
+        <span className="text-blue-500 dark:text-blue-600 text-xl font-bold">
+          ${total.toLocaleString("en-US")}
+        </span>
       </div>
 
       <Button

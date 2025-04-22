@@ -19,7 +19,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
       transitionProps={{ transition: "pop-top-right" }}
       withArrow
       position="bottom-end"
-      trigger="click-hover"
+      trigger="click"
     >
       <Menu.Target>
         <Indicator offset={5} processing>
