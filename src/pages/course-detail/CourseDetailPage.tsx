@@ -1,13 +1,4 @@
-import {
-  Anchor,
-  Box,
-  Breadcrumbs,
-  Image,
-  Paper,
-  SegmentedControl,
-  Tabs,
-  Title,
-} from "@mantine/core";
+import { Anchor, Box, Breadcrumbs, Image, SegmentedControl, Tabs, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
   BadgeCheck,
@@ -87,7 +78,7 @@ const CourseDetailPage = () => {
   return (
     <div className="flex-1">
       <Box className="container" px={{ base: "15px", md: "20px", lg: "30px", xl: "90px" }} py="5xl">
-        <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr]">
+        <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr] items-start">
           {/* 1st column */}
           <div>
             <div>
@@ -208,42 +199,47 @@ const CourseDetailPage = () => {
             </Tabs>
           </div>
           {/* 2nd column */}
-          <Paper className="shadow-2xl border p-[30px] h-fit dark:bg-dark-6">
-            {/* Price box */}
-            <div className="bg-violet-600 text-white p-4 rounded-xl shadow-xl flex flex-col items-center lg:item-center">
-              <p className="text-md font-semibold">This Course Fee:</p>
-              <div className="flex items-center gap-2">
-                <span className="text-4xl font-bold leading-normal">$18.00</span>
-                <span className="line-through opacity-60 text-xl font-semibold leading-normal">
-                  $32.00
-                </span>
+          <div
+            className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-2xl
+              overflow-hidden"
+          >
+            <div className="p-6 size-full dark:bg-dark-6 bg-white rounded-[inherit]">
+              {/* Price box */}
+              <div className="bg-violet-600 text-white p-4 rounded-xl shadow-xl flex flex-col items-center lg:item-center">
+                <p className="text-md font-semibold">This Course Fee:</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-4xl font-bold leading-normal">$18.00</span>
+                  <span className="line-through opacity-60 text-xl font-semibold leading-normal">
+                    $32.00
+                  </span>
+                </div>
               </div>
+              {/* Course Details */}
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  This course includes
+                </h3>
+                <ul className="flex flex-col gap-y-3 divide-y text-sm text-gray-700 dark:text-gray-300">
+                  <CourseStat icon={BarChart2} label="Level" value="Expert" />
+                  <CourseStat icon={Clock} label="Duration" value="11h 20m" />
+                  <CourseStat icon={BookOpen} label="Lectures" value="12" />
+                  <CourseStat icon={HelpCircle} label="Quizzes" value="145" />
+                  <CourseStat icon={InfinityIcon} label="Lifetime Access" value="Yes" />
+                  <CourseStat icon={BadgeCheck} label="Certifications" value="Yes" />
+                  <CourseStat icon={GraduationCap} label="Enrolled" value="25K" />
+                  <CourseStat icon={LanguagesIcon} label="Language" value="English" />
+                </ul>
+              </div>
+              <button
+                className="mt-6 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500
+                  hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg
+                  transition-all duration-200 group text-lg"
+              >
+                <span className="group-hover:scale-105 transition-transform">Add to Cart</span>
+                <ShoppingCart className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
-            {/* Course Details */}
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                This course includes
-              </h3>
-              <ul className="flex flex-col gap-y-3 divide-y text-sm text-gray-700 dark:text-gray-300">
-                <CourseStat icon={BarChart2} label="Level" value="Expert" />
-                <CourseStat icon={Clock} label="Duration" value="11h 20m" />
-                <CourseStat icon={BookOpen} label="Lectures" value="12" />
-                <CourseStat icon={HelpCircle} label="Quizzes" value="145" />
-                <CourseStat icon={InfinityIcon} label="Lifetime Access" value="Yes" />
-                <CourseStat icon={BadgeCheck} label="Certifications" value="Yes" />
-                <CourseStat icon={GraduationCap} label="Enrolled" value="25K" />
-                <CourseStat icon={LanguagesIcon} label="Language" value="English" />
-              </ul>
-            </div>
-            <button
-              className="mt-6 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500
-                hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg
-                transition-all duration-200 group text-lg"
-            >
-              <span className="group-hover:scale-105 transition-transform">Add to Cart</span>
-              <ShoppingCart className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </Paper>
+          </div>
         </div>
       </Box>
     </div>
