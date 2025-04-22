@@ -13,6 +13,7 @@ public enum ErrorCode
     PaymentFailed,
     Unexpected,
     InvalidBehavior,
+    InvalidOtp,
     EmailAlreadyConfirmed,
     EmailOrPasswordIncorrect,
     InvalidToken

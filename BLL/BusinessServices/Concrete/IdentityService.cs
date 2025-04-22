@@ -151,8 +151,8 @@ public class IdentityService(
         var result = await userManager.ConfirmEmailAsync(user, command.Code);
 
         if (!result.Succeeded)
-            throw new HttpException(StatusCodes.Status400BadRequest, "Please provide a valid token",
-                ErrorCode.InvalidToken);
+            throw new HttpException(StatusCodes.Status400BadRequest, "Please provide a valid Otp",
+                ErrorCode.InvalidOtp);
 
         return new Success("Email confirmed successfully, now you can log in");
     }
@@ -179,7 +179,9 @@ public class IdentityService(
 
         var result = await userManager.ResetPasswordAsync(user, request.Otp, request.NewPassword);
 
-        if (!result.Succeeded) throw new BadRequestException(result.Errors);
+        if (!result.Succeeded)
+            throw new HttpException(StatusCodes.Status400BadRequest, "Invalid or expired OTP",
+                ErrorCode.InvalidOtp);
 
         return new Success("Password reset successfully, now you can log in with new password");
     }
@@ -196,8 +198,8 @@ public class IdentityService(
         Console.WriteLine("Token provider:" + userManager.Options.Tokens.PasswordResetTokenProvider);
         Console.WriteLine("Token purpose:" + UserManager<ApplicationUser>.ResetPasswordTokenPurpose);
         if (result == false)
-            throw new HttpException(StatusCodes.Status400BadRequest, "Invalid or expired token",
-                ErrorCode.InvalidToken);
+            throw new HttpException(StatusCodes.Status400BadRequest, "Invalid or expired OTP",
+                ErrorCode.InvalidOtp);
 
         return new Success("Otp is valid");
     }
