@@ -36,18 +36,18 @@ export const useRegister = async (data: RegisterRequest) => {
       );
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 400 && data.errorCode === ErrorCode.ValidationError) {
-          showErrorToast("Validation Error", data.message);
-        } else if (status === 409 && data.errorCode === ErrorCode.EmailAlreadyTaken) {
-          showErrorToast("Email Already Taken", "The email address is already in use.");
-        } else {
-          showErrorToast("Unexpected Error", error.message);
-        }
-      } else {
+      if (!error.response) {
         console.error("Axios Error:", error);
         showErrorToast("Network Error", "No response from the server. Please try again later.");
+        return;
+      }
+      const { status, data } = error.response;
+      if (status === 400 && data.errorCode === ErrorCode.ValidationError) {
+        showErrorToast("Validation Error", data.message);
+      } else if (status === 409 && data.errorCode === ErrorCode.EmailAlreadyTaken) {
+        showErrorToast("Email Already Taken", "The email address is already in use.");
+      } else {
+        showErrorToast("Unexpected Error", error.message);
       }
     },
   });
@@ -60,23 +60,23 @@ export const useLogin = async (data: LoginRequest) => {
       showSuccessToast("Logged In", "You are now logged in.");
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 400 && data.errorCode === ErrorCode.ValidationError) {
-          showErrorToast("Validation Error", data.message);
-        } else if (status === 401 && data.errorCode === ErrorCode.EmailOrPasswordIncorrect) {
-          showErrorToast("Login Failed", "The email or password is incorrect.");
-        } else if (status === 403 && data.errorCode === ErrorCode.EmailNotConfirmed) {
-          showErrorToast(
-            "Email Not Confirmed",
-            "Please confirm your email address before logging in.",
-          );
-        } else {
-          showErrorToast("Unexpected Error", error.message);
-        }
-      } else {
+      if (!error.response) {
         console.error("Axios Error:", error);
         showErrorToast("Network Error", "No response from the server. Please try again later.");
+        return;
+      }
+      const { status, data } = error.response;
+      if (status === 400 && data.errorCode === ErrorCode.ValidationError) {
+        showErrorToast("Validation Error", data.message);
+      } else if (status === 401 && data.errorCode === ErrorCode.EmailOrPasswordIncorrect) {
+        showErrorToast("Login Failed", "The email or password is incorrect.");
+      } else if (status === 403 && data.errorCode === ErrorCode.EmailNotConfirmed) {
+        showErrorToast(
+          "Email Not Confirmed",
+          "Please confirm your email address before logging in.",
+        );
+      } else {
+        showErrorToast("Unexpected Error", error.message);
       }
     },
   });
@@ -89,14 +89,14 @@ export const useGoogleLogin = async (data: GoogleLoginRequest) => {
       showSuccessToast("Logged In", "You are now logged in.");
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 400 && data.errorCode === ErrorCode.InvalidToken) {
-          showErrorToast(
-            "Invalid Token",
-            "The token is invalid or has expired. Please login again.",
-          );
-        }
+      if (!error.response) {
+        console.error("Axios Error:", error);
+        showErrorToast("Network Error", "No response from the server. Please try again later.");
+        return;
+      }
+      const { status, data } = error.response;
+      if (status === 400 && data.errorCode === ErrorCode.InvalidToken) {
+        showErrorToast("Invalid Token", "The token is invalid or has expired. Please login again.");
       }
     },
   });
@@ -109,23 +109,20 @@ export const useConfirmEmail = async (data: ConfirmEmailRequest) => {
       showSuccessToast("Email Confirmed", "Your email has been confirmed successfully.");
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 404) {
-          showErrorToast("Email not found", "The email address does not exist.");
-        } else if (status === 400 && data.errorCode === ErrorCode.EmailAlreadyConfirmed) {
-          showErrorToast(
-            "Email Already Confirmed",
-            "The email address has already been confirmed.",
-          );
-        } else if (status === 400 && data.errorCode === ErrorCode.InvalidOtp) {
-          showErrorToast("Invalid OTP", "The OTP is invalid or has expired. Please try again.");
-        } else {
-          showErrorToast("Unexpected Error", error.message);
-        }
-      } else {
+      if (!error.response) {
         console.error("Axios Error:", error);
         showErrorToast("Network Error", "No response from the server. Please try again later.");
+        return;
+      }
+      const { status, data } = error.response;
+      if (status === 404) {
+        showErrorToast("Email not found", "The email address does not exist.");
+      } else if (status === 400 && data.errorCode === ErrorCode.EmailAlreadyConfirmed) {
+        showErrorToast("Email Already Confirmed", "The email address has already been confirmed.");
+      } else if (status === 400 && data.errorCode === ErrorCode.InvalidOtp) {
+        showErrorToast("Invalid OTP", "The OTP is invalid or has expired. Please try again.");
+      } else {
+        showErrorToast("Unexpected Error", error.message);
       }
     },
   });
@@ -138,21 +135,18 @@ export const useResendConfirmationEmail = async (data: ResendConfirmationEmailRe
       showSuccessToast("Email Resent", "Confirmation email has been resent successfully.");
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 404) {
-          showErrorToast("Email not found", "The email address does not exist.");
-        } else if (status === 400 && data.errorCode === ErrorCode.EmailAlreadyConfirmed) {
-          showErrorToast(
-            "Email Already Confirmed",
-            "The email address has already been confirmed.",
-          );
-        } else {
-          showErrorToast("Unexpected Error", error.message);
-        }
-      } else {
+      if (!error.response) {
         console.error("Axios Error:", error);
         showErrorToast("Network Error", "No response from the server. Please try again later.");
+        return;
+      }
+      const { status, data } = error.response;
+      if (status === 404) {
+        showErrorToast("Email not found", "The email address does not exist.");
+      } else if (status === 400 && data.errorCode === ErrorCode.EmailAlreadyConfirmed) {
+        showErrorToast("Email Already Confirmed", "The email address has already been confirmed.");
+      } else {
+        showErrorToast("Unexpected Error", error.message);
       }
     },
   });
