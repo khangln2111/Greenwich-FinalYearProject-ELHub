@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { ErrorCode } from "../../http-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
@@ -28,6 +28,7 @@ import {
 import { handleApiError } from "../common-service/handleApiError";
 import { useAppStore } from "../../zustand/store";
 import { keyFac } from "../common-service/queryKeyFactory";
+import { useNavigate } from "react-router-dom";
 
 export const useCurrentUser = () => {
   const accessToken = useAppStore.use.accessToken();
@@ -35,8 +36,29 @@ export const useCurrentUser = () => {
     queryKey: keyFac.identity.currentUser.queryKey,
     queryFn: getCurrentUser,
     enabled: !!accessToken,
-    retry: false,
   });
+};
+
+export const useLogout = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const logout = useAppStore.use.logout();
+
+  const handleLogout = () => {
+    // Xóa toàn bộ user-related query (nếu bạn có thêm key khác thì remove thêm)
+    queryClient.removeQueries({ queryKey: keyFac.identity.currentUser.queryKey });
+
+    // Xoá toàn bộ query nếu bạn muốn clean tất cả cache (tuỳ chọn)
+    // queryClient.clear();
+
+    // Xoá token, user info khỏi store
+    logout();
+
+    // Điều hướng về trang chủ hoặc trang login
+    navigate("/", { replace: true });
+  };
+
+  return handleLogout;
 };
 
 export const useRegister = async (data: RegisterRequest) => {
@@ -63,6 +85,7 @@ export const useRegister = async (data: RegisterRequest) => {
 };
 
 export const useLogin = () => {
+  const queryClient = useQueryClient();
   const setTokens = useAppStore.use.setTokens();
   return useMutation({
     mutationFn: (data: LoginRequest) => login(data),
@@ -70,6 +93,7 @@ export const useLogin = () => {
       showSuccessToast("Logged In", "You are now logged in successfully.");
       const { accessToken, refreshToken } = data;
       setTokens(accessToken, refreshToken);
+      await queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
     },
     onError: (error) =>
       handleApiError(error, {
@@ -94,13 +118,17 @@ export const useLogin = () => {
 };
 
 export const useLoginWithGoogle = () => {
+  const queryClient = useQueryClient();
   const setTokens = useAppStore.use.setTokens();
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: LoginWithGoogleRequest) => loginWithGoogle(data),
     onSuccess: async (data) => {
       showSuccessToast("Logged In with google", "You are now logged in.");
       const { accessToken, refreshToken } = data;
       setTokens(accessToken, refreshToken);
+      await queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
+      navigate("/");
     },
     onError: (error) =>
       handleApiError(error, {

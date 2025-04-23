@@ -14,8 +14,8 @@ interface AuthSlice {
   accessToken: string | null;
   refreshToken: string | null;
   setTokens: (accessToken: string, refreshToken: string) => void;
-  clearTokens: () => void;
-  user: CurrentUser | null;
+  logout: () => void;
+  currentUser: CurrentUser | null;
   setUser: (user: CurrentUser) => void;
 }
 
@@ -31,14 +31,18 @@ export const createCourseFilterSlice: StateCreator<CourseFilterSlice> = (set) =>
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   accessToken: localStorage.getItem("accessToken"),
   refreshToken: localStorage.getItem("refreshToken"),
-  user: null,
+  currentUser: null,
   setTokens: (accessToken, refreshToken) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
     set({ accessToken, refreshToken });
   },
-  clearTokens: () => set({ accessToken: null, refreshToken: null, user: null }),
-  setUser: (user) => set({ user }),
+  logout: () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    set({ accessToken: null, refreshToken: null, currentUser: null });
+  },
+  setUser: (user) => set({ currentUser: user }),
 });
 
 type AppStore = CourseFilterSlice & AuthSlice;

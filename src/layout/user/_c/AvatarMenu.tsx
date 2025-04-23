@@ -1,19 +1,24 @@
 import { Avatar, Indicator, Menu, Text } from "@mantine/core";
 import {
-  IconSettings,
+  IconArrowsLeftRight,
   IconMessageCircle,
   IconPhoto,
   IconSearch,
-  IconArrowsLeftRight,
+  IconSettings,
   IconTrash,
 } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { useLogout } from "../../../react-query/auth/identityHooks";
 import { cn } from "../../../utils/cn";
+import { useAppStore } from "../../../zustand/store";
 
 interface AvatarMenuProps {
   className?: string;
 }
 
 const AvatarMenu = ({ className }: AvatarMenuProps) => {
+  const handleLogout = useLogout();
   return (
     <Menu
       transitionProps={{ transition: "pop-top-right" }}
@@ -52,8 +57,14 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
 
         <Menu.Label>Danger zone</Menu.Label>
         <Menu.Item leftSection={<IconArrowsLeftRight size={14} />}>Transfer my data</Menu.Item>
-        <Menu.Item color="red" leftSection={<IconTrash size={14} />}>
-          Delete my account
+        <Menu.Item
+          color="red"
+          leftSection={<IconTrash size={14} />}
+          onClick={() => {
+            handleLogout();
+          }}
+        >
+          Logout
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

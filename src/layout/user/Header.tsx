@@ -35,6 +35,7 @@ import ThemeToggler from "../../components/ThemeToggler";
 import AvatarMenu from "./_c/AvatarMenu";
 import CustomNavLink from "./_c/CustomNavLink";
 import SearchBox from "./_c/SearchBox";
+import { useAppStore } from "../../zustand/store";
 
 const mockdata = [
   {
@@ -70,6 +71,7 @@ const mockdata = [
 ];
 
 const Header = () => {
+  const currentUser = useAppStore.use.currentUser();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
@@ -158,14 +160,16 @@ const Header = () => {
         </Group>
 
         <Group>
-          <Button
-            to="/login"
-            component={Link}
-            variant="gradient"
-            gradient={{ from: "blue", to: "cyan" }}
-          >
-            Log in
-          </Button>
+          {currentUser === null && (
+            <Button
+              to="/login"
+              component={Link}
+              variant="gradient"
+              gradient={{ from: "blue", to: "cyan" }}
+            >
+              Log in
+            </Button>
+          )}
           {/* <Button to="/register" component={Link}>
             Sign up
           </Button> */}
@@ -191,8 +195,7 @@ const Header = () => {
             <ShoppingCart size={19} strokeWidth={1.5} />
           </ActionIcon>
           <ThemeToggler />
-
-          <AvatarMenu />
+          {currentUser && <AvatarMenu />}
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
         </Group>
       </div>

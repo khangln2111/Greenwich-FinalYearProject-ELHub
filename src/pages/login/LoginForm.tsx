@@ -5,10 +5,12 @@ import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 import GoogleIcon from "../../components/IconSvg/GoogleIcon";
 import { LoginRequest, loginSchema } from "../../react-query/auth/identity.types";
 import { useLogin, useLoginWithGoogle } from "../../react-query/auth/identityHooks";
+import { useNavigate } from "react-router-dom";
 
 // Zod schema for login form validation
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const form = useForm<LoginRequest>({
     mode: "uncontrolled",
     initialValues: {
@@ -34,7 +36,11 @@ const LoginForm = () => {
   });
 
   const handleSubmit = (values: typeof form.values) => {
-    loginMutate(values);
+    loginMutate(values, {
+      onSuccess: () => {
+        navigate("/");
+      },
+    });
   };
 
   return (
