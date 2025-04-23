@@ -2,7 +2,7 @@ import apiClient from "../../http-client/axios";
 import {
   AuthResponse,
   ConfirmEmailRequest,
-  GoogleLoginRequest,
+  LoginWithGoogleRequest,
   LoginRequest,
   RefreshTokenRequest,
   RegisterRequest,
@@ -10,7 +10,8 @@ import {
   ResetPasswordRequest,
   SendResetPasswordOtpRequest,
   ValidateResetPasswordOtpRequest,
-} from "./auth.types";
+  User,
+} from "./identity.types";
 import { ApiSuccessResponse } from "../../http-client/api.types";
 
 const baseUrl = "/identity";
@@ -25,7 +26,7 @@ export const login = async (data: LoginRequest) => {
   return response.data;
 };
 
-export const googleLogin = async (data: GoogleLoginRequest) => {
+export const loginWithGoogle = async (data: LoginWithGoogleRequest) => {
   const response = await apiClient.post<AuthResponse>(`${baseUrl}/GoogleLogin`, data);
   return response.data;
 };
@@ -66,5 +67,10 @@ export const resetPassword = async (data: ResetPasswordRequest) => {
 
 export const refreshToken = async (data: RefreshTokenRequest) => {
   const response = await apiClient.post<AuthResponse>(`${baseUrl}/RefreshToken`, data);
+  return response.data;
+};
+
+export const getCurrentUser = async () => {
+  const response = await apiClient.get<ApiSuccessResponse<User>>(`${baseUrl}/me`);
   return response.data;
 };

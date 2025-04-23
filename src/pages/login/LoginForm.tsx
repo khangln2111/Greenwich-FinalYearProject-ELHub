@@ -21,7 +21,6 @@ const LoginForm = () => {
     },
     validate: zodResolver(loginSchema),
     validateInputOnChange: true,
-    validateInputOnBlur: true,
   });
 
   const login = useGoogleLogin({

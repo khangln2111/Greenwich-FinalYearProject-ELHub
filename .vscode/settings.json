@@ -32,7 +32,6 @@
     "vite.config.ts": true,
     "public": true,
     "tsconfig.json": true,
-    "tsconfig.app.json": true,
     "tsconfig.node.json": true
   },
   "explorerExclude.backup": {}

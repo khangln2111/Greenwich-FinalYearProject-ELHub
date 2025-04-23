@@ -20,7 +20,7 @@ export interface RegisterRequest {
 }
 
 // Google Login
-export interface GoogleLoginRequest {
+export interface LoginWithGoogleRequest {
   idToken: string;
 }
 
@@ -56,4 +56,13 @@ export interface ResetPasswordRequest {
 // Refresh Token
 export interface RefreshTokenRequest {
   refreshToken: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
+  roles: string[]; // ["Admin", "User"]
 }

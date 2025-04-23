@@ -1,5 +1,7 @@
 // src/api/client.ts
-import axios, { InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
+import { showErrorToast } from "../utils/toastHelper";
+import { ApiErrorResponse, ErrorCode } from "./api.types";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://localhost:7014/api"; // Thay đổi URL phù hợp
 const apiClient = axios.create({
@@ -49,5 +51,81 @@ apiClient.interceptors.request.use(
 //     return Promise.reject(error);
 //   },
 // );
+
+apiClient.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem("accessToken");
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError<ApiErrorResponse>) => {
+    if (!error.response) {
+      showErrorToast("Network Error", "No response from the server. Please try again later.");
+      return Promise.reject(error);
+    }
+    const { status, data } = error.response;
+    const errorCode = data?.errorCode;
+    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+
+    // ✅ Chỉ show toast với các lỗi đặc biệt, còn lại trả ra để hook xử lý
+    if (status === 403) {
+      showErrorToast("Access Denied", "You do not have permission to access this resource.");
+      return Promise.reject(error);
+    }
+    if (status === 400 && errorCode === ErrorCode.ValidationError && data?.errors) {
+      const validationMessages = Object.entries(data.errors)
+        .map(([field, messages]) => {
+          return `${field}: ${messages.join(", ")}`;
+        })
+        .join("\n");
+
+      showErrorToast(
+        "Bad request - invalid input",
+        `The following invalid rules occurred:\n${validationMessages}`,
+      );
+      return Promise.reject(error);
+    }
+
+    // ✅ Refresh token nếu gặp lỗi 401 và có tokens trong localStorage
+    if (
+      status === 401 &&
+      !originalRequest._retry &&
+      localStorage.getItem("accessToken") &&
+      localStorage.getItem("refreshToken")
+    ) {
+      originalRequest._retry = true;
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+        const { data } = await axios.post<{ accessToken: string }>(
+          `${API_BASE_URL}/identity/refresh`,
+          {
+            refreshToken,
+          },
+        );
+
+        localStorage.setItem("accessToken", data.accessToken);
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        }
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        showErrorToast("Session Expired", "Please log in again to continue.");
+        localStorage.clear();
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      }
+    }
+
+    // ❌ Không xử lý gì thêm — để react-query tự quản
+    return Promise.reject(error);
+  },
+);
 
 export default apiClient;

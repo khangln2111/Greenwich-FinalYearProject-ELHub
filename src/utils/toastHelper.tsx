@@ -9,6 +9,8 @@ export const showErrorToast = (title: string, message?: string) => {
     icon: <IconX size={20} />,
     autoClose: ms("8s"),
     color: "red",
+    withBorder: true,
+    position: "top-right",
   });
 };
 
@@ -18,5 +20,6 @@ export const showSuccessToast = (title: string, message?: string) => {
     message: message || "Operation completed successfully.",
     icon: <IconCheck size={20} />,
     color: "green",
+    withBorder: true,
   });
 };

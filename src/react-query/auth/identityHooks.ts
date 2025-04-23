@@ -1,10 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { ErrorCode } from "../../http-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import {
   ConfirmEmailRequest,
-  GoogleLoginRequest,
+  LoginWithGoogleRequest,
   LoginRequest,
   RefreshTokenRequest,
   RegisterRequest,
@@ -12,10 +12,10 @@ import {
   ResetPasswordRequest,
   SendResetPasswordOtpRequest,
   ValidateResetPasswordOtpRequest,
-} from "./auth.types";
+} from "./identity.types";
 import {
   confirmEmail,
-  googleLogin,
+  loginWithGoogle,
   login,
   refreshToken,
   register,
@@ -23,8 +23,19 @@ import {
   resetPassword,
   sendResetPasswordOtp,
   validateResetPasswordOtp,
-} from "./authApi";
+  getCurrentUser,
+} from "./identityApi";
 import { handleApiError } from "../common-service/handleApiError";
+import { useAppStore } from "../../zustand/store";
+import { keyFac } from "../common-service/queryKeyFactory";
+
+export const useCurrentUser = async () => {
+  return useQuery({
+    queryKey: keyFac.identity.currentUser.queryKey,
+    queryFn: getCurrentUser,
+    retry: false,
+  });
+};
 
 export const useRegister = async (data: RegisterRequest) => {
   return useMutation({
@@ -50,10 +61,13 @@ export const useRegister = async (data: RegisterRequest) => {
 };
 
 export const useLogin = async (data: LoginRequest) => {
+  const setTokens = useAppStore.use.setTokens();
   return useMutation({
     mutationFn: () => login(data),
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       showSuccessToast("Logged In", "You are now logged in.");
+      const { accessToken, refreshToken } = data;
+      setTokens(accessToken, refreshToken);
     },
     onError: (error) =>
       handleApiError(error, {
@@ -77,9 +91,9 @@ export const useLogin = async (data: LoginRequest) => {
   });
 };
 
-export const useGoogleLogin = async (data: GoogleLoginRequest) => {
+export const useLoginWithGoogle = async (data: LoginWithGoogleRequest) => {
   return useMutation({
-    mutationFn: () => googleLogin(data),
+    mutationFn: () => loginWithGoogle(data),
     onSuccess: async () => {
       showSuccessToast("Logged In", "You are now logged in.");
     },
