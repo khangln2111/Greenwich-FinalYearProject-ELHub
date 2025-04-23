@@ -21,5 +21,6 @@ export const showSuccessToast = (title: string, message?: string) => {
     icon: <IconCheck size={20} />,
     color: "green",
     withBorder: true,
+    position: "top-right",
   });
 };

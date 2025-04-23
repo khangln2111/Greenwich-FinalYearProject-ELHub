@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 // Auth tokens + user info
 export interface AuthResponse {
   accessToken: string;
@@ -6,11 +8,12 @@ export interface AuthResponse {
   refreshTokenExpiresIn: number; // in seconds
 }
 
-// Login
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
+export const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export type LoginRequest = z.infer<typeof loginSchema>;
 
 // Register
 export interface RegisterRequest {

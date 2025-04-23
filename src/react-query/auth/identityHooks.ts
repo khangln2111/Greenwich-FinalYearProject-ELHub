@@ -60,12 +60,12 @@ export const useRegister = async (data: RegisterRequest) => {
   });
 };
 
-export const useLogin = async (data: LoginRequest) => {
+export const useLogin = () => {
   const setTokens = useAppStore.use.setTokens();
   return useMutation({
-    mutationFn: () => login(data),
+    mutationFn: (data: LoginRequest) => login(data),
     onSuccess: async (data) => {
-      showSuccessToast("Logged In", "You are now logged in.");
+      showSuccessToast("Logged In", "You are now logged in successfully.");
       const { accessToken, refreshToken } = data;
       setTokens(accessToken, refreshToken);
     },
@@ -91,11 +91,14 @@ export const useLogin = async (data: LoginRequest) => {
   });
 };
 
-export const useLoginWithGoogle = async (data: LoginWithGoogleRequest) => {
+export const useLoginWithGoogle = () => {
+  const setTokens = useAppStore.use.setTokens();
   return useMutation({
-    mutationFn: () => loginWithGoogle(data),
-    onSuccess: async () => {
-      showSuccessToast("Logged In", "You are now logged in.");
+    mutationFn: (data: LoginWithGoogleRequest) => loginWithGoogle(data),
+    onSuccess: async (data) => {
+      showSuccessToast("Logged In with google", "You are now logged in.");
+      const { accessToken, refreshToken } = data;
+      setTokens(accessToken, refreshToken);
     },
     onError: (error) =>
       handleApiError(error, {

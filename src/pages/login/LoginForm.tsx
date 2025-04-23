@@ -1,15 +1,13 @@
 import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { z } from "zod";
+import { object, z } from "zod";
 import { useGoogleLogin } from "@react-oauth/google";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 import GoogleIcon from "../../components/IconSvg/GoogleIcon";
+import { LoginRequest, loginSchema } from "../../react-query/auth/identity.types";
+import { useLogin, useLoginWithGoogle } from "../../react-query/auth/identityHooks";
 
 // Zod schema for login form validation
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
 
 const LoginForm = () => {
   const form = useForm({
@@ -17,19 +15,28 @@ const LoginForm = () => {
     initialValues: {
       email: "",
       password: "",
-      rememberMe: false,
     },
     validate: zodResolver(loginSchema),
-    validateInputOnChange: true,
+    validateInputOnChange: false,
   });
 
+  const { isPending: isLoginPending, mutate: loginMutate } = useLogin();
+  const { isPending: isLoginWithGooglePending, mutate: loginWithGoogleMutate } =
+    useLoginWithGoogle();
+
   const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
+    onSuccess: (tokenResponse) => {
+      if (tokenResponse) {
+        loginWithGoogleMutate({ idToken: tokenResponse.access_token });
+      } else {
+        console.error("Google login failed: No token response received.");
+      }
+    },
   });
 
   const handleSubmit = (values: typeof form.values) => {
     console.log("Login form values:", values);
-    // TODO: Call login API here
+    loginMutate(values);
   };
 
   return (
@@ -87,6 +94,7 @@ const LoginForm = () => {
           variant="gradient"
           gradient={{ from: "red", to: "pink", deg: 90 }}
           rightSection={<IconLogin2 />}
+          loading={isLoginPending || isLoginWithGooglePending}
         >
           Sign in
         </Button>
