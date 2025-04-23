@@ -1,6 +1,5 @@
 import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { object, z } from "zod";
 import { useGoogleLogin } from "@react-oauth/google";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 import GoogleIcon from "../../components/IconSvg/GoogleIcon";
@@ -10,7 +9,7 @@ import { useLogin, useLoginWithGoogle } from "../../react-query/auth/identityHoo
 // Zod schema for login form validation
 
 const LoginForm = () => {
-  const form = useForm({
+  const form = useForm<LoginRequest>({
     mode: "uncontrolled",
     initialValues: {
       email: "",
@@ -35,7 +34,6 @@ const LoginForm = () => {
   });
 
   const handleSubmit = (values: typeof form.values) => {
-    console.log("Login form values:", values);
     loginMutate(values);
   };
 
@@ -94,7 +92,7 @@ const LoginForm = () => {
           variant="gradient"
           gradient={{ from: "red", to: "pink", deg: 90 }}
           rightSection={<IconLogin2 />}
-          loading={isLoginPending || isLoginWithGooglePending}
+          loading={isLoginPending}
         >
           Sign in
         </Button>
@@ -106,6 +104,7 @@ const LoginForm = () => {
         className="mt-5"
         leftSection={<GoogleIcon />}
         onClick={() => login()}
+        loading={isLoginWithGooglePending}
       >
         Continue with Google
       </Button>

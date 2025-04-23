@@ -9,6 +9,7 @@ import "../styles/globals.css";
 import theme from "../styles/theme";
 import router from "./routes";
 import { ModalsProvider } from "@mantine/modals";
+import IdentityProvider from "./providers/IdentityProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,13 +24,15 @@ const App = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       <QueryClientProvider client={queryClient}>
-        <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">
-          <ModalsProvider>
-            <Notifications />
-            <ReactQueryDevtools />
-            <RouterProvider router={router} />
-          </ModalsProvider>
-        </GoogleOAuthProvider>
+        <IdentityProvider>
+          <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">
+            <ModalsProvider>
+              <Notifications />
+              <ReactQueryDevtools />
+              <RouterProvider router={router} />
+            </ModalsProvider>
+          </GoogleOAuthProvider>
+        </IdentityProvider>
       </QueryClientProvider>
     </MantineProvider>
   );

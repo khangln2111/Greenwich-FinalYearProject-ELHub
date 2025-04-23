@@ -10,7 +10,7 @@ import {
   ResetPasswordRequest,
   SendResetPasswordOtpRequest,
   ValidateResetPasswordOtpRequest,
-  User,
+  CurrentUser,
 } from "./identity.types";
 import { ApiSuccessResponse } from "../../http-client/api.types";
 
@@ -27,7 +27,7 @@ export const login = async (data: LoginRequest) => {
 };
 
 export const loginWithGoogle = async (data: LoginWithGoogleRequest) => {
-  const response = await apiClient.post<AuthResponse>(`${baseUrl}/GoogleLogin`, data);
+  const response = await apiClient.post<AuthResponse>(`${baseUrl}/LoginWithGoogle`, data);
   return response.data;
 };
 
@@ -71,6 +71,6 @@ export const refreshToken = async (data: RefreshTokenRequest) => {
 };
 
 export const getCurrentUser = async () => {
-  const response = await apiClient.get<ApiSuccessResponse<User>>(`${baseUrl}/me`);
+  const response = await apiClient.get<CurrentUser>(`${baseUrl}/me`);
   return response.data;
 };

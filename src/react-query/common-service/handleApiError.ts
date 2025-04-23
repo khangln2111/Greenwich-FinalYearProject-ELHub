@@ -26,8 +26,8 @@ export const handleApiError = (
   const { matchers, fallback } = options;
 
   if (!error.response) {
-    console.error("Axios Network Error:", error);
-    showErrorToast("Network Error", "No response from the server. Please try again later.");
+    // console.error("Axios Network Error:", error);
+    // showErrorToast("Network Error haha", "No response from the server. Please try again later.");
     return;
   }
 

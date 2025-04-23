@@ -1,6 +1,6 @@
 import { create, StateCreator } from "zustand";
 import { createSelectors } from "./auto-selectors";
-import { User } from "../react-query/auth/identity.types";
+import { CurrentUser } from "../react-query/auth/identity.types";
 
 interface CourseFilterSlice {
   isDesktopFilterOpen: boolean;
@@ -15,8 +15,8 @@ interface AuthSlice {
   refreshToken: string | null;
   setTokens: (accessToken: string, refreshToken: string) => void;
   clearTokens: () => void;
-  user: User | null;
-  setUser: (user: User) => void;
+  user: CurrentUser | null;
+  setUser: (user: CurrentUser) => void;
 }
 
 // Slice for managing the state of the course filter

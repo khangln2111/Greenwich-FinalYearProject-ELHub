@@ -29,10 +29,12 @@ import { handleApiError } from "../common-service/handleApiError";
 import { useAppStore } from "../../zustand/store";
 import { keyFac } from "../common-service/queryKeyFactory";
 
-export const useCurrentUser = async () => {
+export const useCurrentUser = () => {
+  const accessToken = useAppStore.use.accessToken();
   return useQuery({
     queryKey: keyFac.identity.currentUser.queryKey,
     queryFn: getCurrentUser,
+    enabled: !!accessToken,
     retry: false,
   });
 };
