@@ -17,6 +17,7 @@ interface AuthSlice {
   logout: () => void;
   currentUser: CurrentUser | null;
   setUser: (user: CurrentUser) => void;
+  setAccessToken: () => void;
 }
 
 // Slice for managing the state of the course filter
@@ -36,6 +37,10 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
     set({ accessToken, refreshToken });
+  },
+  setAccessToken: () => {
+    localStorage.setItem("accessToken", "fdsfs");
+    set({ accessToken: "fdsfs" });
   },
   logout: () => {
     localStorage.removeItem("accessToken");
