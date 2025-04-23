@@ -45,16 +45,8 @@ export const useLogout = () => {
   const logout = useAppStore.use.logout();
 
   const handleLogout = () => {
-    // Xóa toàn bộ user-related query (nếu bạn có thêm key khác thì remove thêm)
     queryClient.removeQueries({ queryKey: keyFac.identity.currentUser.queryKey });
-
-    // Xoá toàn bộ query nếu bạn muốn clean tất cả cache (tuỳ chọn)
-    // queryClient.clear();
-
-    // Xoá token, user info khỏi store
     logout();
-
-    // Điều hướng về trang chủ hoặc trang login
     navigate("/", { replace: true });
   };
 

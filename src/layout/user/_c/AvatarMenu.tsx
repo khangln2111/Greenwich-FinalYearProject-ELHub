@@ -7,11 +7,8 @@ import {
   IconSettings,
   IconTrash,
 } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../../react-query/auth/identityHooks";
 import { cn } from "../../../utils/cn";
-import { useAppStore } from "../../../zustand/store";
 
 interface AvatarMenuProps {
   className?: string;

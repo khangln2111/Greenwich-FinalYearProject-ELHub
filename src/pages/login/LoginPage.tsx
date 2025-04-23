@@ -1,8 +1,11 @@
 import { Anchor, Box, Container, Text, Title } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
+import { useAppStore } from "../../zustand/store";
 
 const LoginPage = () => {
+  const currentUser = useAppStore.use.currentUser();
+  if (currentUser) return <Navigate to="/" replace={true} />;
   return (
     <Box
       className="flex justify-center pt-[100px] min-h-screen bg-linear-to-br from-cyan-200 to-pink-300
