@@ -9,6 +9,7 @@ import {
 } from "@tabler/icons-react";
 import { useLogout } from "../../../react-query/auth/identityHooks";
 import { cn } from "../../../utils/cn";
+import { useAppStore } from "../../../zustand/store";
 
 interface AvatarMenuProps {
   className?: string;
@@ -16,6 +17,7 @@ interface AvatarMenuProps {
 
 const AvatarMenu = ({ className }: AvatarMenuProps) => {
   const handleLogout = useLogout();
+  const currentUser = useAppStore.use.currentUser();
   return (
     <Menu
       transitionProps={{ transition: "pop-top-right" }}
@@ -28,7 +30,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           <Avatar
             className={cn("cursor-pointer", className)}
             color="initials"
-            name="Nguyen Khang"
+            name={currentUser?.firstName || "haha"}
             allowedInitialsColors={["blue", "red"]}
           />
         </Indicator>

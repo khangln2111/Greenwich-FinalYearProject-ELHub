@@ -22,7 +22,7 @@ export const register = async (data: RegisterRequest) => {
 };
 
 export const login = async (data: LoginRequest) => {
-  const response = await apiClient.post<AuthResponse>(`${baseUrl}/LoginCustom`, data);
+  const response = await apiClient.post<AuthResponse>(`${baseUrl}/Login`, data);
   return response.data;
 };
 

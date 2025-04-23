@@ -83,7 +83,6 @@ const Header = () => {
       navigate(`/courses?search=${encodeURIComponent(searchValue.trim())}`);
     }
   };
-  const setAccessToken = useAppStore.use.setAccessToken();
 
   const links = mockdata.map((item) => (
     <UnstyledButton

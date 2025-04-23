@@ -79,6 +79,7 @@ export const useRegister = async (data: RegisterRequest) => {
 export const useLogin = () => {
   const queryClient = useQueryClient();
   const setTokens = useAppStore.use.setTokens();
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: LoginRequest) => login(data),
     onSuccess: async (data) => {
@@ -86,6 +87,7 @@ export const useLogin = () => {
       const { accessToken, refreshToken } = data;
       setTokens(accessToken, refreshToken);
       await queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
+      navigate("/");
     },
     onError: (error) =>
       handleApiError(error, {
