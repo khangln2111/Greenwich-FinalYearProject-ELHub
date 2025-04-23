@@ -1,6 +1,7 @@
 import { create, StateCreator } from "zustand";
 import { createSelectors } from "./auto-selectors";
 import { CurrentUser } from "../react-query/auth/identity.types";
+import { authStorage } from "../utils/authStorage";
 
 interface CourseFilterSlice {
   isDesktopFilterOpen: boolean;
@@ -17,7 +18,6 @@ interface AuthSlice {
   logout: () => void;
   currentUser: CurrentUser | null;
   setUser: (user: CurrentUser) => void;
-  setAccessToken: () => void;
 }
 
 // Slice for managing the state of the course filter
@@ -30,21 +30,17 @@ export const createCourseFilterSlice: StateCreator<CourseFilterSlice> = (set) =>
 });
 
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
-  accessToken: localStorage.getItem("accessToken"),
-  refreshToken: localStorage.getItem("refreshToken"),
+  accessToken: authStorage.getAccessToken(),
+  refreshToken: authStorage.getRefreshToken(),
   currentUser: null,
   setTokens: (accessToken, refreshToken) => {
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
+    authStorage.setAccessToken(accessToken);
+    authStorage.setRefreshToken(refreshToken);
     set({ accessToken, refreshToken });
   },
-  setAccessToken: () => {
-    localStorage.setItem("accessToken", "fdsfs");
-    set({ accessToken: "fdsfs" });
-  },
+
   logout: () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    authStorage.clearTokens();
     set({ accessToken: null, refreshToken: null, currentUser: null });
   },
   setUser: (user) => set({ currentUser: user }),

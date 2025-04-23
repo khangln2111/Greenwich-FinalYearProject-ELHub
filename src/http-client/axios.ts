@@ -2,6 +2,7 @@
 import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 import { showErrorToast } from "../utils/toastHelper";
 import { ApiErrorResponse, ErrorCode } from "./api.types";
+import { authStorage } from "../utils/authStorage";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://localhost:7014/api"; // Thay đổi URL phù hợp
 const apiClient = axios.create({
@@ -14,7 +15,7 @@ const apiClient = axios.create({
 // Interceptor cho request: chèn token vào header nếu có
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("accessToken");
+    const token = authStorage.getAccessToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -54,7 +55,7 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("accessToken");
+    const token = authStorage.getAccessToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -97,12 +98,12 @@ apiClient.interceptors.response.use(
     if (
       status === 401 &&
       !originalRequest._retry &&
-      localStorage.getItem("accessToken") &&
-      localStorage.getItem("refreshToken")
+      authStorage.getAccessToken() &&
+      authStorage.getRefreshToken()
     ) {
       originalRequest._retry = true;
       try {
-        const refreshToken = localStorage.getItem("refreshToken");
+        const refreshToken = authStorage.getRefreshToken();
         const { data } = await axios.post<{ accessToken: string }>(
           `${API_BASE_URL}/identity/RefreshToken`,
           {
@@ -110,14 +111,14 @@ apiClient.interceptors.response.use(
           },
         );
 
-        localStorage.setItem("accessToken", data.accessToken);
+        authStorage.setAccessToken(data.accessToken);
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         }
         return apiClient(originalRequest);
       } catch (refreshError) {
         showErrorToast("Session Expired", "Please log in again to continue.");
-        localStorage.clear();
+        authStorage.clearTokens();
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }
