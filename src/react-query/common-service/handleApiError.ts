@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
-import { showErrorToast } from "../toastHelper";
+import { showErrorToast } from "../../utils/toastHelper";
 
 type ErrorHandler = (error: AxiosError<ApiErrorResponse>) => void;
 
@@ -26,7 +26,7 @@ export const handleApiError = (
   const { matchers, fallback } = options;
 
   if (!error.response) {
-    console.error("Axios Error:", error);
+    console.error("Axios Network Error:", error);
     showErrorToast("Network Error", "No response from the server. Please try again later.");
     return;
   }

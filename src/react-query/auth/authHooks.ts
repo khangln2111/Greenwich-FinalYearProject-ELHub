@@ -1,8 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { ErrorCode } from "../../http-client/api.types";
-import { handleApiError } from "../common/handleApiError";
-import { showErrorToast, showSuccessToast } from "../toastHelper";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import {
   ConfirmEmailRequest,
   GoogleLoginRequest,
@@ -25,6 +24,7 @@ import {
   sendResetPasswordOtp,
   validateResetPasswordOtp,
 } from "./authApi";
+import { handleApiError } from "../common-service/handleApiError";
 
 export const useRegister = async (data: RegisterRequest) => {
   return useMutation({
@@ -38,11 +38,6 @@ export const useRegister = async (data: RegisterRequest) => {
     onError: (error) =>
       handleApiError(error, {
         matchers: [
-          {
-            status: 400,
-            errorCode: ErrorCode.ValidationError,
-            handler: (e) => showErrorToast("Validation Error", e.response?.data.message),
-          },
           {
             status: 409,
             errorCode: ErrorCode.EmailAlreadyTaken,
@@ -63,11 +58,6 @@ export const useLogin = async (data: LoginRequest) => {
     onError: (error) =>
       handleApiError(error, {
         matchers: [
-          {
-            status: 400,
-            errorCode: ErrorCode.ValidationError,
-            handler: (e) => showErrorToast("Validation Error", e.response?.data.message),
-          },
           {
             status: 401,
             errorCode: ErrorCode.EmailOrPasswordIncorrect,

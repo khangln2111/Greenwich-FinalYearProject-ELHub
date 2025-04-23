@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
-import { keyFac } from "../queryKeyFactory";
-import { showErrorToast, showSuccessToast } from "../toastHelper";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { CourseQueryCriteria, CreateCourseRequest, UpdateCourseRequest } from "./course.types";
 import { createCourse, deleteCourse, updateCourse } from "./courseApi";
+import { keyFac } from "../common-service/queryKeyFactory";
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
   return useQuery(keyFac.courses.list(query));

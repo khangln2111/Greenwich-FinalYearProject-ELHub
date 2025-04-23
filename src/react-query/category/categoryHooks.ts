@@ -7,9 +7,9 @@ import {
 } from "./category.types";
 
 import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
-import { showErrorToast, showSuccessToast } from "../toastHelper";
-import { keyFac } from "../queryKeyFactory";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { createCategory, deleteCategory, updateCategory } from "./categoryApi";
+import { keyFac } from "../common-service/queryKeyFactory";
 
 export const useGetCategories = (query: CategoryQueryCriteria = {}) => {
   return useQuery(keyFac.categories.list(query));

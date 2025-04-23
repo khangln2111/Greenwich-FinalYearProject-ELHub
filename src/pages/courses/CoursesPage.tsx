@@ -126,10 +126,18 @@ const mockCourses: Course[] = [
 const CoursesPage = () => {
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
 
-  const { isError, data } = useGetCourses();
+  const { isError, data, error } = useGetCourses();
 
   if (isError) {
-    return <div>Error loading courses</div>;
+    let message = "An error occurred while fetching courses.";
+    if (error.status === 401) {
+      message = "Unauthorized access. Please log in.";
+    }
+    if (error.status === 403) {
+      message = "Forbidden access. You do not have permission to view this resource.";
+    }
+
+    return <div>Error loading courses, {message}</div>;
   }
   console.log("Courses data:", data?.items);
 

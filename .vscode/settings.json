@@ -29,11 +29,11 @@
     "src/main.tsx": true,
     "src/vite-env.d.ts": true,
     "tailwind.config.ts": true,
-    "tsconfig.app.json": true,
-    "tsconfig.json": true,
-    "tsconfig.node.json": true,
     "vite.config.ts": true,
-    "public": true
+    "public": true,
+    "tsconfig.json": true,
+    "tsconfig.app.json": true,
+    "tsconfig.node.json": true
   },
   "explorerExclude.backup": {}
 }
