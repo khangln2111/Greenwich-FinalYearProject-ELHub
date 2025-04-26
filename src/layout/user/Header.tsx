@@ -30,7 +30,7 @@ import {
 } from "@tabler/icons-react";
 import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
 import AvatarMenu from "./_c/AvatarMenu";
 import CustomNavLink from "./_c/CustomNavLink";
@@ -76,7 +76,10 @@ const Header = () => {
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
-  const [searchValue, setSearchValue] = useState("");
+  // get search value from url
+  const [searchParams] = useSearchParams();
+
+  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
   const navigate = useNavigate();
   const handleSearch = () => {
     if (searchValue.trim()) {

@@ -78,21 +78,7 @@ const PopularCourses = () => {
       >
         View all courses
       </Button>
-      <Button variant="light" className="text-dark-light">
-        Helo
-      </Button>
 
-      <TextInput
-        leftSectionPointerEvents="none"
-        leftSection={<IconAt style={{ width: rem(16), height: rem(16) }} />}
-        label="Your email"
-        placeholder="Your email"
-        classNames={{
-          input: `text-pink mt-4 border-2 border-gray-300 transition duration-300 ease-in hover:scale-110
-          hover:border-red-500`,
-          root: "mt-52",
-        }}
-      />
       <Modal.Root
         opened={opened}
         onClose={close}

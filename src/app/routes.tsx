@@ -8,6 +8,8 @@ import RegisterPage from "../pages/register/RegisterPage";
 import CourseDetailPage from "../pages/course-detail/CourseDetailPage";
 import CartPage from "../pages/cart/CartPage";
 import CheckoutPage from "../pages/checkout/CheckoutPage";
+import InstructorLayout from "../layout/instructor/InstructorLayout";
+import InstructorDashboard from "../pages/instructor/InstructorDashboard";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -23,6 +25,12 @@ const userRoute: RouteObject = {
   ],
 };
 
+const instructorRoute: RouteObject = {
+  element: <InstructorLayout />,
+  path: "/instructor",
+  children: [{ index: true, element: <InstructorDashboard /> }],
+};
+
 const authRoutes: RouteObject[] = [
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
@@ -31,7 +39,7 @@ const authRoutes: RouteObject[] = [
   { path: "/verify-email", element: <p>Verify Email Page</p> },
 ];
 
-const router = createBrowserRouter([userRoute, ...authRoutes]);
+const router = createBrowserRouter([userRoute, instructorRoute, ...authRoutes]);
 
 export default router;
 

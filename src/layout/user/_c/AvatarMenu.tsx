@@ -26,14 +26,16 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
       trigger="click"
     >
       <Menu.Target>
-        <Indicator offset={5} processing>
-          <Avatar
-            className={cn("cursor-pointer", className)}
-            color="initials"
-            name={currentUser?.firstName || "haha"}
-            allowedInitialsColors={["blue", "red"]}
-          />
-        </Indicator>
+        <div className="px-3 hover:bg-blue-light-hover py-1 rounded-md">
+          <Indicator offset={5} processing>
+            <Avatar
+              className={cn("cursor-pointer", className)}
+              color="initials"
+              name={currentUser?.firstName || "haha"}
+              allowedInitialsColors={["blue", "red"]}
+            />
+          </Indicator>
+        </div>
       </Menu.Target>
 
       <Menu.Dropdown className="shadow-xl">
