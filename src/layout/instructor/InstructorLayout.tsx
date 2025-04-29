@@ -2,7 +2,6 @@ import { rem } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import { IconBellRinging, IconFingerprint, IconReceipt2 } from "@tabler/icons-react";
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { useAppStore } from "../../zustand/store";
@@ -59,8 +58,8 @@ const InstructorLayout = () => {
                 to={item.href}
                 data-active={isActive || undefined}
                 className={cn(
-                  `flex items-center gap-3 text-sm font-medium rounded-md px-3 py-2 transition-all group justify-start
-                  text-gray-7 dark:text-dark-1 hover:bg-gray-1 dark:hover:bg-dark-6 hover:text-text
+                  `flex items-center gap-3 text-sm font-medium rounded-md px-3 py-2 transition-all duration-300 group
+                  justify-start text-gray-7 dark:text-dark-1 hover:bg-gray-1 dark:hover:bg-dark-6 hover:text-text
                   data-active:bg-primary-light data-active:text-primary-light-color data-active:font-bold
                   data-active:border-e-3 data-active:border-e-primary data-active:rounded-e-none`,
                   {
@@ -84,15 +83,6 @@ const InstructorLayout = () => {
             );
           })}
         </nav>
-
-        <div className="p-4">
-          <button
-            className="w-full flex items-center justify-center p-2 bg-white dark:bg-dark-6 text-primary-6 rounded
-              hover:bg-gray-100 dark:hover:bg-dark-5 transition"
-          >
-            {sidebarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
-          </button>
-        </div>
       </aside>
 
       {/* Content */}

@@ -68,7 +68,7 @@ const InstructorSidebar = ({ inDrawer = false }: { inDrawer?: boolean }) => {
                 )}
               />
               {!sidebarCollapsed && (
-                <p className="origin-left starting:opacity-0 starting:-translate-x-full transition-all">
+                <p className="starting:opacity-0 starting:-translate-x-full transition-all">
                   {item.label}
                 </p>
               )}
