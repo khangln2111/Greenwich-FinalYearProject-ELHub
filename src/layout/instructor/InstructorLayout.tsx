@@ -30,9 +30,10 @@ const InstructorLayout = () => {
           {!sidebarCollapsed && <h1 className="text-2xl font-bold">Instructor</h1>}
           <button
             onClick={toggleSidebar}
-            className="p-2 bg-white text-purple-600 rounded hover:bg-gray-100 transition ml-auto"
+            className="p-2 bg-white text-purple-600 rounded hover:bg-gray-100 transition ml-auto justify-center
+              items-center flex"
           >
-            {sidebarCollapsed ? "›" : "‹"}
+            {sidebarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
           </button>
         </div>
 
@@ -49,7 +50,10 @@ const InstructorLayout = () => {
             >
               <item.icon className="w-6 h-6 shrink-0" />
               {!sidebarCollapsed && (
-                <span className="ml-3 text-base group-hover:underline transition-all duration-300 origin-left starting:opacity-0">
+                <span
+                  className="ml-3 text-base group-hover:underline transition-all duration-300 origin-left starting:opacity-0
+                    starting:-translate-x-0"
+                >
                   {item.label}
                 </span>
               )}
