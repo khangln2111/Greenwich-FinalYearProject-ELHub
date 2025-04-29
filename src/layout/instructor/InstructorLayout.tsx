@@ -22,7 +22,7 @@ const InstructorLayout = () => {
     <div className="h-screen flex relative">
       {/* Sidebar */}
       <aside
-        className="fixed top-0 left-0 h-full bg-purple-600 text-white transition-all duration-300 ease-in-out flex
+        className="fixed top-0 left-0 h-full bg-primary-5 text-white transition-all duration-300 ease-in-out flex
           flex-col"
         style={{ width: `${rem(sidebarWidth)}` }}
       >
@@ -31,7 +31,7 @@ const InstructorLayout = () => {
           {!sidebarCollapsed && <h1 className="text-2xl font-bold">Instructor</h1>}
           <button
             onClick={toggleSidebar}
-            className="p-2 bg-white text-purple-600 rounded hover:bg-gray-100 transition ml-auto flex justify-center
+            className="p-2 bg-white text-primary-6 rounded hover:bg-gray-100 transition ml-auto flex justify-center
               items-center"
           >
             {sidebarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
@@ -45,15 +45,15 @@ const InstructorLayout = () => {
               key={item.label}
               href={item.href}
               className={cn(
-                "flex items-center p-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 group",
+                "flex items-center p-2 rounded-lg hover:bg-primary-6 transition-colors duration-200 group",
                 sidebarCollapsed ? "justify-center" : "justify-start",
               )}
             >
               <item.icon className="w-6 h-6 shrink-0" />
               {!sidebarCollapsed && (
                 <span
-                  className="ml-3 text-base group-hover:underline transition-all duration-300 origin-left starting:opacity-0
-                    starting:-translate-x-full"
+                  className="ml-3 text-base group-hover:underline transition-all duration-300 origin-left
+                    starting:-translate-x-full starting:opacity-0"
                 >
                   {item.label}
                 </span>
@@ -65,7 +65,7 @@ const InstructorLayout = () => {
         <div className="p-4">
           <button
             onClick={toggleSidebar}
-            className="w-full flex items-center justify-center p-2 bg-white text-purple-600 rounded hover:bg-gray-100
+            className="w-full flex items-center justify-center p-2 bg-white text-primary-6 rounded hover:bg-gray-100
               transition"
           >
             {sidebarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
