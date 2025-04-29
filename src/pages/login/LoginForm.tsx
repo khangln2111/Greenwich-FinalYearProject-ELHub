@@ -2,7 +2,7 @@ import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from
 import { useForm, zodResolver } from "@mantine/form";
 import { useGoogleLogin } from "@react-oauth/google";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
-import GoogleIcon from "../../components/IconSvg/GoogleIcon";
+import GoogleIcon from "../../components/svg-icons/GoogleIcon";
 import { LoginRequest, loginSchema } from "../../react-query/auth/identity.types";
 import { useLogin, useLoginWithGoogle } from "../../react-query/auth/identityHooks";
 
