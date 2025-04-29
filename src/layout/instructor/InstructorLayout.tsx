@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { cn } from "../../utils/cn";
-import { Home, BookOpen, Users, ChevronsLeft, ChevronsRight } from "lucide-react"; // Icons from lucide-react
+import { Home, BookOpen, Users, ChevronsLeft, ChevronsRight } from "lucide-react";
 import Header from "../user/Header";
+import { rem } from "@mantine/core";
 
 const InstructorLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => setSidebarCollapsed((prev) => !prev);
+
+  const sidebarWidth = sidebarCollapsed ? 80 : 256; // px
 
   const navItems = [
     { label: "Dashboard", icon: Home, href: "#" },
@@ -16,22 +19,20 @@ const InstructorLayout = () => {
   ];
 
   return (
-    <div className="h-screen relative">
+    <div className="h-screen flex relative">
       {/* Sidebar */}
       <aside
-        className={cn(
-          `fixed top-0 left-0 h-screen bg-purple-600 text-white transition-all duration-300 ease-in-out flex
-          flex-col`,
-          sidebarCollapsed ? "w-20" : "w-64",
-        )}
+        className="fixed top-0 left-0 h-full bg-purple-600 text-white transition-all duration-300 ease-in-out flex
+          flex-col"
+        style={{ width: `${rem(sidebarWidth)}` }}
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between p-4">
           {!sidebarCollapsed && <h1 className="text-2xl font-bold">Instructor</h1>}
           <button
             onClick={toggleSidebar}
-            className="p-2 bg-white text-purple-600 rounded hover:bg-gray-100 transition ml-auto justify-center
-              items-center flex"
+            className="p-2 bg-white text-purple-600 rounded hover:bg-gray-100 transition ml-auto flex justify-center
+              items-center"
           >
             {sidebarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
           </button>
@@ -60,6 +61,7 @@ const InstructorLayout = () => {
             </a>
           ))}
         </nav>
+
         <div className="p-4">
           <button
             onClick={toggleSidebar}
@@ -71,17 +73,12 @@ const InstructorLayout = () => {
         </div>
       </aside>
 
-      {/* Content area */}
+      {/* Content */}
       <div
-        className={cn(
-          "flex flex-col h-full transition-all duration-300",
-          sidebarCollapsed ? "ml-20" : "ml-64",
-        )}
+        className="flex flex-col flex-1 h-full transition-all duration-300"
+        style={{ marginLeft: `${rem(sidebarWidth)}` }}
       >
-        {/* Header */}
         <Header />
-
-        {/* Main content */}
         <main className="flex-1 overflow-y-auto bg-blue-50">
           <div className="p-6">
             <Outlet />

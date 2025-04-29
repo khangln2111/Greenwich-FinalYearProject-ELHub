@@ -150,7 +150,7 @@ const Header = () => {
         </Link>
 
         {/* Nav links (desktop) */}
-        <Group h="100%" gap={0} className="flex-1 justify-center visible-from-md">
+        <div className="flex flex-1 justify-center items-center visible-from-md">
           <SearchBox
             value={searchValue}
             onChange={setSearchValue}
@@ -160,7 +160,7 @@ const Header = () => {
             placeholder="Search courses..."
             radius="3xl"
           />
-        </Group>
+        </div>
 
         <Group>
           {currentUser === null && (
