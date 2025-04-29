@@ -22,12 +22,13 @@ const userRoute: RouteObject = {
     { path: "coursedetail", element: <CourseDetailPage /> },
     { path: "cart", element: <CartPage /> },
     { path: "checkout", element: <CheckoutPage /> },
-    {
-      path: "instructor",
-      element: <InstructorLayout />,
-      children: [{ index: true, element: <InstructorDashboard /> }],
-    },
   ],
+};
+
+const instructorRoute: RouteObject = {
+  element: <InstructorLayout />,
+  path: "/instructor",
+  children: [{ index: true, element: <InstructorDashboard /> }],
 };
 
 const authRoutes: RouteObject[] = [
@@ -38,7 +39,7 @@ const authRoutes: RouteObject[] = [
   { path: "/verify-email", element: <p>Verify Email Page</p> },
 ];
 
-const router = createBrowserRouter([userRoute, ...authRoutes]);
+const router = createBrowserRouter([userRoute, instructorRoute, ...authRoutes]);
 
 export default router;
 

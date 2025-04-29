@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { Home, BookOpen, Users, ChevronsLeft, ChevronsRight } from "lucide-react"; // Icons from lucide-react
+import Header from "../user/Header";
 
 const InstructorLayout = () => {
-  const [navbarCollapsed, setNavbarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  const toggleSidebar = () => setNavbarCollapsed((prev) => !prev);
+  const toggleSidebar = () => setSidebarCollapsed((prev) => !prev);
 
   const navItems = [
     { label: "Dashboard", icon: Home, href: "#" },
@@ -21,17 +22,17 @@ const InstructorLayout = () => {
         className={cn(
           `fixed top-0 left-0 h-screen bg-purple-600 text-white transition-all duration-300 ease-in-out flex
           flex-col`,
-          navbarCollapsed ? "w-20" : "w-64",
+          sidebarCollapsed ? "w-20" : "w-64",
         )}
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between p-4">
-          {!navbarCollapsed && <h1 className="text-2xl font-bold">Instructor</h1>}
+          {!sidebarCollapsed && <h1 className="text-2xl font-bold">Instructor</h1>}
           <button
             onClick={toggleSidebar}
             className="p-2 bg-white text-purple-600 rounded hover:bg-gray-100 transition ml-auto"
           >
-            {navbarCollapsed ? "›" : "‹"}
+            {sidebarCollapsed ? "›" : "‹"}
           </button>
         </div>
 
@@ -42,13 +43,15 @@ const InstructorLayout = () => {
               key={item.label}
               href={item.href}
               className={cn(
-                "flex items-center p-2 rounded-lg hover:bg-purple-700 transition-colors duration-200",
-                navbarCollapsed ? "justify-center" : "justify-start",
+                "flex items-center p-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 group",
+                sidebarCollapsed ? "justify-center" : "justify-start",
               )}
             >
-              <item.icon className="w-6 h-6" />
-              {!navbarCollapsed && (
-                <span className="ml-3 text-base group-hover:underline">{item.label}</span>
+              <item.icon className="w-6 h-6 shrink-0" />
+              {!sidebarCollapsed && (
+                <span className="ml-3 text-base group-hover:underline transition-all duration-300 origin-left starting:opacity-0">
+                  {item.label}
+                </span>
               )}
             </a>
           ))}
@@ -59,20 +62,28 @@ const InstructorLayout = () => {
             className="w-full flex items-center justify-center p-2 bg-white text-purple-600 rounded hover:bg-gray-100
               transition"
           >
-            {navbarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
+            {sidebarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
           </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main
+      {/* Content area */}
+      <div
         className={cn(
-          "h-full overflow-y-auto p-6 bg-blue-50 transition-all duration-300",
-          navbarCollapsed ? "ml-20" : "ml-64",
+          "flex flex-col h-full transition-all duration-300",
+          sidebarCollapsed ? "ml-20" : "ml-64",
         )}
       >
-        <Outlet />
-      </main>
+        {/* Header */}
+        <Header />
+
+        {/* Main content */}
+        <main className="flex-1 overflow-y-auto bg-blue-50">
+          <div className="p-6">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   );
 };
