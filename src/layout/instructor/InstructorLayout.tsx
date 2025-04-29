@@ -52,7 +52,7 @@ const InstructorLayout = () => {
               {!sidebarCollapsed && (
                 <span
                   className="ml-3 text-base group-hover:underline transition-all duration-300 origin-left starting:opacity-0
-                    starting:-translate-x-0"
+                    starting:-translate-x-full"
                 >
                   {item.label}
                 </span>

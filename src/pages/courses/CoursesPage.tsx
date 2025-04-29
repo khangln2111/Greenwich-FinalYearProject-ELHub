@@ -150,7 +150,7 @@ const CoursesPage = () => {
         size="xl"
       >
         <MobileFilter />
-        <Grid py="md" gutter="xl" className="transition-all duration-300">
+        <Grid py="md" gutter="xl">
           {/* Sidebar Filters cố định */}
           <GridCol
             visibleFrom="lg"
