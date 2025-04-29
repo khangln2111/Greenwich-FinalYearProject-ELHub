@@ -9,9 +9,9 @@ type MobileFilterProps = {};
 export default function MobileFilter({}: MobileFilterProps) {
   const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
   const closeMobileFilter = useAppStore.use.closeMobileFilter();
-  const matches = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  if (matches) {
+  if (isDesktop) {
     return null; // Don't render on larger screens
   }
 

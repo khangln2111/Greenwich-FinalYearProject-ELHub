@@ -1,36 +1,21 @@
 // components/instructor/InstructorHeader.tsx
-import {
-  ActionIcon,
-  Box,
-  Burger,
-  Button,
-  Center,
-  Collapse,
-  Divider,
-  Drawer,
-  Group,
-  Modal,
-  rem,
-  ScrollArea,
-  ThemeIcon,
-  UnstyledButton,
-} from "@mantine/core";
-import { MantineLogo } from "@mantinex/mantine-logo";
-import { IconBell, IconChevronDown, IconSearch } from "@tabler/icons-react";
-import { ShoppingCart } from "lucide-react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useAppStore } from "../../../zustand/store";
-import ThemeToggler from "../../../components/ThemeToggler";
+import { ActionIcon, Box, Button, Drawer, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconBell, IconSearch } from "@tabler/icons-react";
+import { PanelLeftCloseIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import ThemeToggler from "../../../components/ThemeToggler";
+import { useAppStore } from "../../../zustand/store";
 import AvatarMenu from "../../user/_c/AvatarMenu";
-import CustomNavLink from "../../user/_c/CustomNavLink";
 import SearchBox from "../../user/_c/SearchBox";
 
 const InstructorHeader = () => {
   const currentUser = useAppStore.use.currentUser();
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const sidebarCollapsed = useAppStore.use.sidebarCollapsed();
+  const toggleSidebar = useAppStore.use.toggleSidebar();
+  const [mobileDrawerOpened, { open: openMobileDrawer, close: closeMobileDrawer }] =
+    useDisclosure();
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
   // get search value from url
@@ -47,8 +32,8 @@ const InstructorHeader = () => {
   return (
     <Box
       component="header"
-      className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
-        z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-sm"
+      className="min-h-[60px] px-md border-b border-gray-200 dark:border-dark-5 bg-white dark:bg-dark-7 sticky top-0
+        z-[calc(var(--mantine-z-index-app)+1)] content-center"
     >
       <Modal
         opened={mobileSearchOpened}
@@ -76,7 +61,23 @@ const InstructorHeader = () => {
           radius="3xl"
         />
       </Modal>
-      <div className="flex items-center justify-between h-full gap-2 md:gap-10">
+      <div className="flex items-center justify-between h-full gap-2 md:gap-5">
+        {/* toggle sidebar */}
+        <Button
+          onClick={toggleSidebar}
+          className="p-2 bg-white dark:bg-dark-6 text-dark-6 rounded hover:bg-gray-100 dark:hover:bg-dark-5 transition
+            justify-center items-center visible-from-lg"
+        >
+          {sidebarCollapsed ? <PanelRightCloseIcon size={20} /> : <PanelLeftCloseIcon size={20} />}
+        </Button>
+        <Button
+          onClick={openMobileDrawer}
+          className="p-2 bg-white dark:bg-dark-6 text-dark-6 rounded hover:bg-gray-100 dark:hover:bg-dark-5 transition
+            justify-center items-center hidden-from-lg"
+        >
+          <PanelRightCloseIcon size={20} />
+        </Button>
+
         {/* Nav links (desktop) */}
         <div className="flex flex-1 items-center visible-from-md">
           <SearchBox
@@ -128,13 +129,12 @@ const InstructorHeader = () => {
           </ActionIcon>
           <ThemeToggler />
           {currentUser && <AvatarMenu />}
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
         </Group>
       </div>
 
       <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
+        opened={mobileDrawerOpened}
+        onClose={closeMobileDrawer}
         transitionProps={{
           transition: "fade-right",
           duration: 200,
@@ -143,7 +143,7 @@ const InstructorHeader = () => {
         size="100%"
         padding="md"
         title="Navigation"
-        hiddenFrom="md"
+        hiddenFrom="lg"
         zIndex={1000000}
       ></Drawer>
     </Box>

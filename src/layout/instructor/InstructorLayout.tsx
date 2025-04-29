@@ -1,20 +1,20 @@
 import { rem } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { MantineLogo } from "@mantinex/mantine-logo";
 import { IconBellRinging, IconFingerprint, IconReceipt2 } from "@tabler/icons-react";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { cn } from "../../utils/cn";
-import Header from "../user/Header";
+import { useAppStore } from "../../zustand/store";
 import InstructorHeader from "./_c/InstructorHeader";
-import { MantineLogo } from "@mantinex/mantine-logo";
 
 const InstructorLayout = () => {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const sidebarCollapsed = useAppStore.use.sidebarCollapsed();
   const location = useLocation();
 
-  const toggleSidebar = () => setSidebarCollapsed((prev) => !prev);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  const sidebarWidth = sidebarCollapsed ? 70 : 256;
+  const sidebarWidth = isDesktop ? (sidebarCollapsed ? 70 : 256) : 0;
 
   const navItems = [
     { href: "/instructor", label: "Notifications", icon: IconBellRinging },
@@ -27,13 +27,17 @@ const InstructorLayout = () => {
       {/* Sidebar */}
       <aside
         className="fixed top-0 left-0 h-full bg-body transition-all duration-300 ease-in-out flex flex-col border-r
-          border-gray-200 dark:border-dark-5"
+          border-gray-200 dark:border-dark-5 visible-from-lg"
         style={{ width: `${rem(sidebarWidth)}` }}
       >
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between p-4">
+        <div
+          className={cn("flex items-center p-4", {
+            "justify-center": sidebarCollapsed,
+          })}
+        >
           <Link
-            to="/"
+            to="/instructor"
             className="no-underline select-none flex items-center text-black dark:text-white"
           >
             {sidebarCollapsed ? (
@@ -42,13 +46,6 @@ const InstructorLayout = () => {
               <MantineLogo color="primary" size={30} className="visible-from-md" />
             )}
           </Link>
-          <button
-            onClick={toggleSidebar}
-            className="p-2 bg-white dark:bg-dark-6 text-dark-6 rounded hover:bg-gray-100 dark:hover:bg-dark-5 transition
-              ml-auto flex justify-center items-center"
-          >
-            {sidebarCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
-          </button>
         </div>
 
         {/* Sidebar Body */}
@@ -90,7 +87,6 @@ const InstructorLayout = () => {
 
         <div className="p-4">
           <button
-            onClick={toggleSidebar}
             className="w-full flex items-center justify-center p-2 bg-white dark:bg-dark-6 text-primary-6 rounded
               hover:bg-gray-100 dark:hover:bg-dark-5 transition"
           >

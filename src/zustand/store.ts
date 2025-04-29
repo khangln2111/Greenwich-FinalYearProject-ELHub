@@ -3,6 +3,18 @@ import { createSelectors } from "./auto-selectors";
 import { CurrentUser } from "../react-query/auth/identity.types";
 import { authStorage } from "../utils/authStorage";
 
+// Slice for managing the state of the instructor layout
+interface InstructorLayoutSlice {
+  sidebarCollapsed: boolean;
+  toggleSidebar: () => void;
+}
+
+export const createInstructorLayoutSlice: StateCreator<InstructorLayoutSlice> = (set) => ({
+  sidebarCollapsed: false,
+  toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
+});
+
+// Slice for managing the state of the course filter
 interface CourseFilterSlice {
   isDesktopFilterOpen: boolean;
   isMobileFilterOpen: boolean;
@@ -11,6 +23,15 @@ interface CourseFilterSlice {
   closeMobileFilter: () => void;
 }
 
+export const createCourseFilterSlice: StateCreator<CourseFilterSlice> = (set) => ({
+  isDesktopFilterOpen: true,
+  isMobileFilterOpen: false,
+  toggleDesktopFilter: () => set((state) => ({ isDesktopFilterOpen: !state.isDesktopFilterOpen })),
+  toggleMobileFilter: () => set((state) => ({ isMobileFilterOpen: !state.isMobileFilterOpen })),
+  closeMobileFilter: () => set({ isMobileFilterOpen: false }),
+});
+
+// Slice for managing the state of the sidebar
 interface AuthSlice {
   accessToken: string | null;
   refreshToken: string | null;
@@ -19,15 +40,6 @@ interface AuthSlice {
   currentUser: CurrentUser | null;
   setUser: (user: CurrentUser) => void;
 }
-
-// Slice for managing the state of the course filter
-export const createCourseFilterSlice: StateCreator<CourseFilterSlice> = (set) => ({
-  isDesktopFilterOpen: true,
-  isMobileFilterOpen: false,
-  toggleDesktopFilter: () => set((state) => ({ isDesktopFilterOpen: !state.isDesktopFilterOpen })),
-  toggleMobileFilter: () => set((state) => ({ isMobileFilterOpen: !state.isMobileFilterOpen })),
-  closeMobileFilter: () => set({ isMobileFilterOpen: false }),
-});
 
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   accessToken: authStorage.getAccessToken(),
@@ -46,11 +58,12 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   setUser: (user) => set({ currentUser: user }),
 });
 
-type AppStore = CourseFilterSlice & AuthSlice;
+type AppStore = CourseFilterSlice & AuthSlice & InstructorLayoutSlice;
 
 const useAppStoreBase = create<AppStore>()((...a) => ({
   ...createCourseFilterSlice(...a),
   ...createAuthSlice(...a),
+  ...createInstructorLayoutSlice(...a),
 }));
 
 export const useAppStore = createSelectors(useAppStoreBase);
