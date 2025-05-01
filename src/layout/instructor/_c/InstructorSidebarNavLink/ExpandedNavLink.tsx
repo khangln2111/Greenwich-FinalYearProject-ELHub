@@ -42,7 +42,7 @@ export const ExpandedNavLink = ({
         `flex items-center gap-3 text-sm font-medium rounded-md px-3 py-2 transition-all duration-300 group
         justify-start text-gray-7 dark:text-dark-1 hover:bg-primary-light-hover
         hover:text-primary-light-color data-active:bg-primary-light data-active:text-primary-light-color
-        data-active:font-semibold cursor-pointer transition-discrete`,
+        data-active:font-semibold cursor-pointer`,
       )}
       data-active={isActive || undefined}
     >
