@@ -28,7 +28,10 @@ const userRoute: RouteObject = {
 const instructorRoute: RouteObject = {
   element: <InstructorLayout />,
   path: "/instructor",
-  children: [{ index: true, element: <InstructorDashboard /> }],
+  children: [
+    { index: true, element: <InstructorDashboard /> },
+    { path: "courses", element: <p>Instructor Courses Page</p> },
+  ],
 };
 
 const authRoutes: RouteObject[] = [

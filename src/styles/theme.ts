@@ -32,6 +32,7 @@ export const themeOverride = createTheme({
   colors: {
     primary: [...DEFAULT_THEME.colors.blue],
   },
+  fontFamily: `Roboto, ${DEFAULT_THEME.fontFamily}`,
   primaryColor: "primary",
   primaryShade: { dark: 8, light: 6 },
   cursorType: "pointer",
