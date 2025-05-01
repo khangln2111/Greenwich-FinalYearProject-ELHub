@@ -16,7 +16,7 @@ const navItems = [
     icon: IconReceipt2,
     subLinks: [
       { label: "All Courses", href: "/instructor/courses" },
-      { label: "Create Course", href: "/instructor/create" },
+      { label: "Create Course", href: "/instructor/courses/create" },
       { label: "Drafts", href: "/instructor/drafts" },
     ],
   },

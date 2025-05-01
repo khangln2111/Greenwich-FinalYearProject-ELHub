@@ -30,7 +30,11 @@ const instructorRoute: RouteObject = {
   path: "/instructor",
   children: [
     { index: true, element: <InstructorDashboard /> },
-    { path: "courses", element: <p>Instructor Courses Page</p> },
+    {
+      path: "courses",
+      element: <p>Instructor Courses Page</p>,
+      children: [{ path: "create", element: <p>Create</p> }],
+    },
   ],
 };
 

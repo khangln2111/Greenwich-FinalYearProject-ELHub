@@ -39,10 +39,11 @@ export const ExpandedNavLink = ({
     <div
       onClick={handleClick}
       className={cn(
-        `flex items-center gap-3 text-sm font-medium rounded-md px-3 py-2 transition-all duration-300 group
-        justify-start text-gray-7 dark:text-dark-1 hover:bg-primary-light-hover
-        hover:text-primary-light-color data-active:bg-primary-light data-active:text-primary-light-color
-        data-active:font-semibold cursor-pointer`,
+        `flex items-center gap-3 text-sm font-medium rounded-md px-3 py-2 transition-all duration-500
+        ease-in-out starting:opacity-0 starting:-translate-x-full group justify-start text-gray-7
+        dark:text-dark-1 hover:bg-primary-light-hover hover:text-primary-light-color
+        data-active:bg-primary-light data-active:text-primary-light-color data-active:font-semibold
+        cursor-pointer s`,
       )}
       data-active={isActive || undefined}
     >
@@ -54,9 +55,7 @@ export const ExpandedNavLink = ({
           iconProps?.className,
         )}
       />
-      <p className="origin-left starting:opacity-0 starting:-translate-x-full transition-all">
-        {label}
-      </p>
+      <p className="origin-left">{label}</p>
       {hasSubLinks && (
         <IconChevronRight
           className={cn("transition-transform duration-200 ease ml-auto", {
@@ -78,7 +77,6 @@ export const ExpandedNavLink = ({
           {content}
         </Link>
       )}
-
       {hasSubLinks && (
         <Collapse in={opened} className="mt-2">
           {subLinks?.map((link) => {
@@ -90,7 +88,8 @@ export const ExpandedNavLink = ({
                 key={link.label}
                 className={cn(
                   `font-medium block no-underline px-md py-xs pl-md ml-xl text-sm border-l border-l-gray-3
-                  dark:border-l-dark-4 hover:text-primary`,
+                  dark:border-l-dark-4 hover:text-primary transition-all duration-500 ease-in-out starting:opacity-0
+                  starting:-translate-x-full`,
                   isCurrent ? "text-primary font-semibold" : "text-gray-7 dark:text-dark-0",
                 )}
               >
