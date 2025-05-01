@@ -2,7 +2,7 @@ import { MantineLogo } from "@mantinex/mantine-logo";
 import { IconBellRinging, IconFingerprint, IconReceipt2 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { cn } from "../../../utils/cn";
-import SidebarNavLink from "./InstructorSidebarNavLinks";
+import SidebarNavLink from "./InstructorSidebarNavLink/SidebarNavLink";
 
 type InstructorSidebarProps = {
   collapsedToIcon?: boolean;
