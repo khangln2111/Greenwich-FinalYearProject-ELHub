@@ -5,13 +5,14 @@ import { authStorage } from "../utils/authStorage";
 
 // Slice for managing the state of the instructor layout
 interface InstructorLayoutSlice {
-  sidebarCollapsed: boolean;
-  toggleSidebar: () => void;
+  desktopSidebarCollapsed: boolean;
+  toggleDesktopSidebar: () => void;
 }
 
 export const createInstructorLayoutSlice: StateCreator<InstructorLayoutSlice> = (set) => ({
-  sidebarCollapsed: false,
-  toggleSidebar: () => set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
+  desktopSidebarCollapsed: false,
+  toggleDesktopSidebar: () =>
+    set((state) => ({ desktopSidebarCollapsed: !state.desktopSidebarCollapsed })),
 });
 
 // Slice for managing the state of the course filter

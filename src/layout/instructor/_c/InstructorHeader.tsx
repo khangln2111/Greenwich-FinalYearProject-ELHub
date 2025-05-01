@@ -1,33 +1,20 @@
 // components/instructor/InstructorHeader.tsx
 import { ActionIcon, Box, Button, Drawer, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { MantineLogo } from "@mantinex/mantine-logo";
-import {
-  IconBell,
-  IconBellRinging,
-  IconFingerprint,
-  IconReceipt2,
-  IconSearch,
-} from "@tabler/icons-react";
+import { IconBell, IconSearch } from "@tabler/icons-react";
 import { PanelLeftCloseIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
-import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/store";
 import AvatarMenu from "../../user/_c/AvatarMenu";
 import SearchBox from "../../user/_c/SearchBox";
-
-const navItems = [
-  { href: "/instructor", label: "Notifications", icon: IconBellRinging },
-  { href: "", label: "Billing", icon: IconReceipt2 },
-  { href: "", label: "Security", icon: IconFingerprint },
-];
+import InstructorSidebar from "./InstructorSideBar";
 
 const InstructorHeader = () => {
   const currentUser = useAppStore.use.currentUser();
-  const sidebarCollapsed = useAppStore.use.sidebarCollapsed();
-  const toggleSidebar = useAppStore.use.toggleSidebar();
+  const sidebarCollapsed = useAppStore.use.desktopSidebarCollapsed();
+  const toggleSidebar = useAppStore.use.toggleDesktopSidebar();
   const [mobileDrawerOpened, { open: openMobileDrawer, close: closeMobileDrawer }] =
     useDisclosure();
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
@@ -149,56 +136,19 @@ const InstructorHeader = () => {
       <Drawer
         opened={mobileDrawerOpened}
         onClose={closeMobileDrawer}
+        withCloseButton={false}
         transitionProps={{
           transition: "fade-right",
           duration: 200,
           timingFunction: "ease-out",
         }}
         size={260}
-        padding="sm"
-        title={<MantineLogo color="primary" size={30} />}
+        padding={0}
         hiddenFrom="lg"
         zIndex={1000000}
       >
         <aside className="h-full bg-body transition-all duration-300 ease-in-out flex flex-col w-full">
-          {/* Sidebar Header */}
-
-          {/* Sidebar Body */}
-          <nav className="flex-1 py-2 space-y-2 -mx-sm">
-            {navItems.map((item) => {
-              const isActive = location.pathname === item.href;
-
-              return (
-                <Link
-                  key={item.label}
-                  to={item.href}
-                  data-active={isActive || undefined}
-                  className={cn(
-                    `flex items-center gap-3 text-sm font-medium rounded-md px-3 py-2 transition-all group justify-start
-                    text-gray-7 dark:text-dark-1 hover:bg-gray-1 dark:hover:bg-dark-6 hover:text-text
-                    data-active:bg-primary-light data-active:text-primary-light-color data-active:font-bold
-                    data-active:border-e-3 data-active:border-e-primary data-active:rounded-e-none`,
-                    {
-                      "justify-center aspect-square": sidebarCollapsed,
-                    },
-                  )}
-                >
-                  <item.icon
-                    stroke={1.5}
-                    className={cn(
-                      `size-[25px] shrink-0 text-gray-6 dark:text-dark-2 group-hover:text-text
-                      group-data-active:text-primary-light-color`,
-                    )}
-                  />
-                  {!sidebarCollapsed && (
-                    <p className="origin-left starting:opacity-0 starting:-translate-x-full transition-all">
-                      {item.label}
-                    </p>
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
+          <InstructorSidebar />
         </aside>
       </Drawer>
     </Box>
