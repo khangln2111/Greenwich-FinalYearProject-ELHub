@@ -73,7 +73,7 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
             href={item.href}
             label={item.label}
             icon={item.icon}
-            collapsed={collapsedToIcon}
+            collapsedToIcon={collapsedToIcon}
             subLinks={item.subLinks}
           />
         ))}

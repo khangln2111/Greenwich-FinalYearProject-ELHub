@@ -1,16 +1,18 @@
-import { Link, useLocation } from "react-router-dom";
-import { Collapse } from "@mantine/core";
+import { Collapse, Text } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
-import { useState, ElementType, SVGProps } from "react";
-import { SubLinkList } from "./SubLinkList";
+import { ElementType, SVGProps, useState } from "react";
+import { Link } from "react-router-dom";
 import { cn } from "../../../../utils/cn";
 
-type Props = {
+type ExpandedNavLinkProps = {
   href: string;
   label: string;
   icon: ElementType;
   iconProps?: SVGProps<SVGSVGElement>;
   subLinks?: { label: string; href: string }[];
+  hasSubLinks: boolean;
+  isActive: boolean;
+  isSubLinkActive: boolean;
   initiallyOpened?: boolean;
 };
 
@@ -20,23 +22,27 @@ export const ExpandedNavLink = ({
   icon: Icon,
   iconProps,
   subLinks,
-  initiallyOpened,
-}: Props) => {
-  const location = useLocation();
-  const isSubLinkActive = subLinks?.some((l) => location.pathname === l.href) ?? false;
-  const isActive = location.pathname === href || isSubLinkActive;
-
+  hasSubLinks,
+  isActive,
+  isSubLinkActive,
+  initiallyOpened = false,
+}: ExpandedNavLinkProps) => {
   const [opened, setOpened] = useState(() => initiallyOpened || isSubLinkActive);
-  const hasSubLinks = subLinks && subLinks.length > 0;
+
+  const handleClick = () => {
+    if (hasSubLinks) {
+      setOpened((prev) => !prev);
+    }
+  };
 
   const content = (
     <div
-      onClick={() => hasSubLinks && setOpened((prev) => !prev)}
+      onClick={handleClick}
       className={cn(
         `flex items-center gap-3 text-sm font-medium rounded-md px-3 py-2 transition-all duration-300 group
         justify-start text-gray-7 dark:text-dark-1 hover:bg-primary-light-hover
         hover:text-primary-light-color data-active:bg-primary-light data-active:text-primary-light-color
-        data-active:font-semibold cursor-pointer`,
+        data-active:font-semibold cursor-pointer transition-discrete`,
       )}
       data-active={isActive || undefined}
     >
@@ -48,7 +54,9 @@ export const ExpandedNavLink = ({
           iconProps?.className,
         )}
       />
-      <p>{label}</p>
+      <p className="origin-left starting:opacity-0 starting:-translate-x-full transition-all">
+        {label}
+      </p>
       {hasSubLinks && (
         <IconChevronRight
           className={cn("transition-transform duration-200 ease ml-auto", {
@@ -70,9 +78,26 @@ export const ExpandedNavLink = ({
           {content}
         </Link>
       )}
+
       {hasSubLinks && (
         <Collapse in={opened} className="mt-2">
-          <SubLinkList subLinks={subLinks} />
+          {subLinks?.map((link) => {
+            const isCurrent = location.pathname === link.href;
+            return (
+              <Text
+                component={Link}
+                to={link.href}
+                key={link.label}
+                className={cn(
+                  `font-medium block no-underline px-md py-xs pl-md ml-xl text-sm border-l border-l-gray-3
+                  dark:border-l-dark-4 hover:text-primary`,
+                  isCurrent ? "text-primary font-semibold" : "text-gray-7 dark:text-dark-0",
+                )}
+              >
+                {link.label}
+              </Text>
+            );
+          })}
         </Collapse>
       )}
     </div>

@@ -24,13 +24,8 @@ export const CollapsedNavLink = ({
 
   const icon = (
     <div
-      className={cn(
-        `flex items-center justify-center aspect-square size-[45px] rounded-md cursor-pointer transition-all
-        hover:bg-primary-light-hover group`,
-        {
-          "data-active:bg-primary-light": isActive,
-        },
-      )}
+      className="flex items-center justify-center aspect-square rounded-md cursor-pointer transition-all
+        hover:bg-primary-light-hover group data-active:bg-primary-light"
       data-active={isActive || undefined}
     >
       <Icon
@@ -74,7 +69,7 @@ export const CollapsedNavLink = ({
 
   return (
     <Tooltip label={label} position="right" offset={8}>
-      <Link to={href} className="no-underline">
+      <Link to={href} className="no-underline block">
         {icon}
       </Link>
     </Tooltip>
