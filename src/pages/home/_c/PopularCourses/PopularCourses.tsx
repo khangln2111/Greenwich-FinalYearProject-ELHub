@@ -5,15 +5,13 @@ import {
   Container,
   Group,
   Modal,
-  rem,
   ScrollArea,
   SimpleGrid,
   Text,
-  TextInput,
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconArrowRight, IconAt, IconX } from "@tabler/icons-react";
+import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import CourseCard from "./CourseCard";
 

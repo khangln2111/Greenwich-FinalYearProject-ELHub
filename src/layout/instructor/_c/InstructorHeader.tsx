@@ -1,5 +1,5 @@
 // components/instructor/InstructorHeader.tsx
-import { ActionIcon, Box, Button, Drawer, Group, Modal } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { PanelLeftCloseIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
@@ -9,14 +9,13 @@ import ThemeToggler from "../../../components/ThemeToggler";
 import { useAppStore } from "../../../zustand/store";
 import AvatarMenu from "../../user/_c/AvatarMenu";
 import SearchBox from "../../user/_c/SearchBox";
-import InstructorSidebar from "./InstructorSideBar";
 
 const InstructorHeader = () => {
   const currentUser = useAppStore.use.currentUser();
-  const sidebarCollapsed = useAppStore.use.desktopSidebarCollapsed();
-  const toggleSidebar = useAppStore.use.toggleDesktopSidebar();
-  const [mobileDrawerOpened, { open: openMobileDrawer, close: closeMobileDrawer }] =
-    useDisclosure();
+  const desktopInstructorSidebarCollapsed = useAppStore.use.desktopInstructorSidebarCollapsed();
+  const toggleDesktopInstructorSidebar = useAppStore.use.toggleDesktopInstructorSidebar();
+  const openMobileInstructorSidebar = useAppStore.use.openMobileInstructorSidebar();
+
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
   // get search value from url
@@ -36,6 +35,7 @@ const InstructorHeader = () => {
       className="min-h-[60px] px-md border-b border-gray-200 dark:border-dark-5 bg-white dark:bg-dark-7 sticky top-0
         z-[calc(var(--mantine-z-index-app)+1)] content-center"
     >
+      {/* mobile search box */}
       <Modal
         opened={mobileSearchOpened}
         onClose={closeMobileSearch}
@@ -63,17 +63,22 @@ const InstructorHeader = () => {
         />
       </Modal>
       <div className="flex items-center justify-between h-full gap-2 md:gap-5">
-        {/* toggle sidebar */}
+        {/* desktop sidebar toggler */}
         <Button
-          onClick={toggleSidebar}
-          className="p-2 bg-white dark:bg-dark-6 text-dark-6 rounded hover:bg-gray-100 dark:hover:bg-dark-5 transition
+          onClick={toggleDesktopInstructorSidebar}
+          className="p-2 bg-white dark:bg-dark-6 text-bright rounded hover:bg-gray-200 dark:hover:bg-dark-5 transition
             justify-center items-center visible-from-lg"
         >
-          {sidebarCollapsed ? <PanelRightCloseIcon size={20} /> : <PanelLeftCloseIcon size={20} />}
+          {desktopInstructorSidebarCollapsed ? (
+            <PanelRightCloseIcon size={20} />
+          ) : (
+            <PanelLeftCloseIcon size={20} />
+          )}
         </Button>
+        {/* mobile sidebar toggler */}
         <Button
-          onClick={openMobileDrawer}
-          className="p-2 bg-white dark:bg-dark-6 text-dark-6 rounded hover:bg-gray-100 dark:hover:bg-dark-5 transition
+          onClick={openMobileInstructorSidebar}
+          className="p-2 bg-white dark:bg-dark-6 text-bright rounded hover:bg-gray-100 dark:hover:bg-dark-5 transition
             justify-center items-center hidden-from-lg"
         >
           <PanelRightCloseIcon size={20} />
@@ -132,25 +137,6 @@ const InstructorHeader = () => {
           {currentUser && <AvatarMenu />}
         </Group>
       </div>
-
-      <Drawer
-        opened={mobileDrawerOpened}
-        onClose={closeMobileDrawer}
-        withCloseButton={false}
-        transitionProps={{
-          transition: "fade-right",
-          duration: 200,
-          timingFunction: "ease-out",
-        }}
-        size={260}
-        padding={0}
-        hiddenFrom="lg"
-        zIndex={1000000}
-      >
-        <aside className="h-full bg-body transition-all duration-300 ease-in-out flex flex-col w-full">
-          <InstructorSidebar />
-        </aside>
-      </Drawer>
     </Box>
   );
 };

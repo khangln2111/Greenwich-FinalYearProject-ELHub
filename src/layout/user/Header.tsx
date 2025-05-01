@@ -114,6 +114,7 @@ const Header = () => {
       className="min-h-[60px] px-md border-b border-gray-300 dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
         z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-sm"
     >
+      {/* mobile search box */}
       <Modal
         opened={mobileSearchOpened}
         onClose={closeMobileSearch}
@@ -140,6 +141,7 @@ const Header = () => {
           radius="3xl"
         />
       </Modal>
+      {/* Logo */}
       <div className="flex items-center justify-between h-full gap-2 md:gap-10">
         <Link
           to="/"
@@ -173,10 +175,6 @@ const Header = () => {
               Log in
             </Button>
           )}
-
-          {/* <Button to="/register" component={Link}>
-            Sign up
-          </Button> */}
           <ActionIcon
             onClick={openMobileSearch}
             className="md:hidden"
