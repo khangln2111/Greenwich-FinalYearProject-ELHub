@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "../../../utils/cn";
 import { ElementType, SVGProps, useState } from "react";
-import { Collapse, Text } from "@mantine/core";
+import { Collapse, Text, Menu, Tooltip } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 
 type SidebarNavLinkProps = {
@@ -24,7 +24,6 @@ const SidebarNavLink = ({
   initiallyOpened = false,
 }: SidebarNavLinkProps) => {
   const location = useLocation();
-  const [opened, setOpened] = useState(initiallyOpened);
   const hasSubLinks = Array.isArray(subLinks) && subLinks.length > 0;
 
   const isSubLinkActive = hasSubLinks
@@ -33,12 +32,93 @@ const SidebarNavLink = ({
 
   const isActive = location.pathname === href || isSubLinkActive;
 
+  const [opened, setOpened] = useState(() => initiallyOpened || isSubLinkActive);
+
   const handleClick = () => {
     if (hasSubLinks) {
       setOpened((prev) => !prev);
     }
   };
 
+  if (collapsed) {
+    if (hasSubLinks) {
+      // Render dropdown menu when collapsed + sublinks
+      return (
+        <Menu
+          position="right-start"
+          trigger="click-hover"
+          offset={5}
+          transitionProps={{ transition: "pop-top-left", duration: 150 }}
+        >
+          <Menu.Target>
+            <div
+              className={cn(
+                `flex items-center justify-center aspect-square size-[45px] rounded-md cursor-pointer transition-all
+                hover:bg-primary-light-hover group`,
+                {
+                  "data-active:bg-primary-light": isActive,
+                },
+              )}
+              data-active={isActive || undefined}
+            >
+              <Icon
+                {...iconProps}
+                className={cn(
+                  `size-[25px] text-gray-6 dark:text-dark-2 group-hover:text-primary-light-color
+                  group-data-active:text-primary-light-color stroke-[1.5]`,
+                  iconProps?.className,
+                )}
+              />
+            </div>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Label>{label}</Menu.Label>
+            {subLinks.map((link) => (
+              <Menu.Item
+                key={link.label}
+                component={Link}
+                to={link.href}
+                className={cn({
+                  "font-semibold text-primary": location.pathname === link.href,
+                })}
+              >
+                {link.label}
+              </Menu.Item>
+            ))}
+          </Menu.Dropdown>
+        </Menu>
+      );
+    } else {
+      // Render Tooltip for simple navlink when collapsed
+      return (
+        <Tooltip label={label} position="right" offset={8}>
+          <Link to={href} className="no-underline">
+            <div
+              className={cn(
+                `flex items-center justify-center aspect-square size-[45px] rounded-md cursor-pointer transition-all
+                hover:bg-primary-light-hover group`,
+                {
+                  "data-active:bg-primary-light": isActive,
+                },
+              )}
+              data-active={isActive || undefined}
+            >
+              <Icon
+                {...iconProps}
+                className={cn(
+                  `size-[25px] text-gray-6 dark:text-dark-2 group-hover:text-primary-light-color
+                  group-data-active:text-primary-light-color stroke-[1.5]`,
+                  iconProps?.className,
+                )}
+              />
+            </div>
+          </Link>
+        </Tooltip>
+      );
+    }
+  }
+
+  // Render full link with label when not collapsed
   const content = (
     <div
       onClick={handleClick}
@@ -47,9 +127,6 @@ const SidebarNavLink = ({
         justify-start text-gray-7 dark:text-dark-1 hover:bg-primary-light-hover
         hover:text-primary-light-color data-active:bg-primary-light data-active:text-primary-light-color
         data-active:font-semibold cursor-pointer`,
-        {
-          "justify-center aspect-square": collapsed,
-        },
       )}
       data-active={isActive || undefined}
     >
@@ -61,11 +138,9 @@ const SidebarNavLink = ({
           iconProps?.className,
         )}
       />
-      {!collapsed && (
-        <p className="origin-left starting:opacity-0 starting:-translate-x-full transition-all">
-          {label}
-        </p>
-      )}
+      <p className="origin-left starting:opacity-0 starting:-translate-x-full transition-all">
+        {label}
+      </p>
       {hasSubLinks && (
         <IconChevronRight
           className={cn("transition-transform duration-200 ease ml-auto", {
