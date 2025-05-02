@@ -57,8 +57,8 @@ const InstructorLayout = () => {
           </aside>
         </Drawer>
         <InstructorHeader />
-        <main className="flex-1 overflow-y-auto bg-body">
-          <div className="p-lg">
+        <main className="flex-1 overflow-y-auto bg-body flex flex-col">
+          <div className="p-lg bg-gray-1 dark:bg-dark-8 flex-1">
             <Outlet />
           </div>
         </main>

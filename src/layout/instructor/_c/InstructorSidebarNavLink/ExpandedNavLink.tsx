@@ -43,7 +43,7 @@ export const ExpandedNavLink = ({
         ease-in-out starting:opacity-0 starting:-translate-x-full group justify-start text-gray-7
         dark:text-dark-1 hover:bg-primary-light-hover hover:text-primary-light-color
         data-active:bg-primary-light data-active:text-primary-light-color data-active:font-semibold
-        cursor-pointer s`,
+        cursor-pointer`,
       )}
       data-active={isActive || undefined}
     >
@@ -78,25 +78,27 @@ export const ExpandedNavLink = ({
         </Link>
       )}
       {hasSubLinks && (
-        <Collapse in={opened} className="mt-2">
-          {subLinks?.map((link) => {
-            const isCurrent = location.pathname === link.href;
-            return (
-              <Text
-                component={Link}
-                to={link.href}
-                key={link.label}
-                className={cn(
-                  `font-medium block no-underline px-md py-xs pl-md ml-xl text-sm border-l border-l-gray-3
-                  dark:border-l-dark-4 hover:text-primary transition-all duration-500 ease-in-out starting:opacity-0
-                  starting:-translate-x-full`,
-                  isCurrent ? "text-primary font-semibold" : "text-gray-7 dark:text-dark-0",
-                )}
-              >
-                {link.label}
-              </Text>
-            );
-          })}
+        <Collapse in={opened}>
+          <div className="pt-2">
+            {subLinks?.map((link) => {
+              const isCurrent = location.pathname === link.href;
+              return (
+                <Text
+                  component={Link}
+                  to={link.href}
+                  key={link.label}
+                  className={cn(
+                    `font-medium block no-underline px-md py-xs pl-md ml-xl text-sm border-l border-l-gray-3
+                    dark:border-l-dark-4 hover:text-primary transition-all duration-500 ease-in-out starting:opacity-0
+                    starting:-translate-x-full`,
+                    isCurrent ? "text-primary font-semibold" : "text-gray-7 dark:text-dark-0",
+                  )}
+                >
+                  {link.label}
+                </Text>
+              );
+            })}
+          </div>
         </Collapse>
       )}
     </div>

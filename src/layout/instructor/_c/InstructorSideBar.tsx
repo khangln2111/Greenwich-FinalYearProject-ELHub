@@ -66,7 +66,7 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
       </div>
 
       {/* Sidebar Body */}
-      <nav className="flex-1 p-2 space-y-2">
+      <nav className="flex-1 p-2 flex flex-col gap-2">
         {navItems.map((item) => (
           <SidebarNavLink
             key={item.label}
