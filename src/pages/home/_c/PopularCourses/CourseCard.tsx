@@ -84,7 +84,7 @@ const CourseCard = () => {
             <Text className="font-bold text-xl leading-none">$168.00</Text>
             <Text className="text-dimmed line-through text-md">$200.00</Text>
           </div>
-          <Button className="w-fit shrink-0 font-medium" size="sm">
+          <Button className="w-fit shrink-0 text-sm font-medium" size="xs">
             View More
           </Button>
         </div>

@@ -10,16 +10,11 @@ type InstructorSidebarProps = {
 };
 
 const navItems = [
-  { href: "/instructor", label: "Dashboard", icon: LayoutDashboardIcon },
+  { href: "/instructor/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   {
-    href: "#",
+    href: "/instructor/courses",
     label: "Course Management",
     icon: ScreenShareIcon,
-    subLinks: [
-      { label: "All Courses", href: "/instructor/courses" },
-      { label: "Create Course", href: "/instructor/courses/create" },
-      { label: "Drafts", href: "/instructor/drafts" },
-    ],
   },
   {
     href: "#",
