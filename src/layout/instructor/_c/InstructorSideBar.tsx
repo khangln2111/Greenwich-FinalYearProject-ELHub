@@ -1,5 +1,6 @@
 import { MantineLogo } from "@mantinex/mantine-logo";
 import { IconBellRinging, IconFingerprint, IconReceipt2 } from "@tabler/icons-react";
+import { LayoutDashboardIcon, ScreenShareIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "../../../utils/cn";
 import SidebarNavLink from "./InstructorSidebarNavLink/SidebarNavLink";
@@ -9,11 +10,11 @@ type InstructorSidebarProps = {
 };
 
 const navItems = [
-  { href: "/instructor", label: "Dashboard", icon: IconBellRinging },
+  { href: "/instructor", label: "Dashboard", icon: LayoutDashboardIcon },
   {
     href: "#",
     label: "Course Management",
-    icon: IconReceipt2,
+    icon: ScreenShareIcon,
     subLinks: [
       { label: "All Courses", href: "/instructor/courses" },
       { label: "Create Course", href: "/instructor/courses/create" },

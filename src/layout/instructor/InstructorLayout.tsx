@@ -26,8 +26,8 @@ const InstructorLayout = () => {
     >
       {/* Desktop Sidebar */}
       <aside
-        className="fixed top-0 left-0 h-full bg-body transition-all duration-300 ease-in-out border-r border-gray-200
-          dark:border-dark-5 w-(--sidebar-width) visible-from-lg"
+        className="fixed top-0 left-0 h-full bg-neutral-50 dark:bg-neutral-800 transition-all duration-300 ease-in-out
+          border-r border-gray-200 dark:border-dark-5 w-(--sidebar-width) visible-from-lg"
       >
         <InstructorSidebar collapsedToIcon={desktopSidebarCollapsed} />
       </aside>
@@ -58,7 +58,7 @@ const InstructorLayout = () => {
         </Drawer>
         <InstructorHeader />
         <main className="flex-1 overflow-y-auto bg-body flex flex-col">
-          <div className="p-lg bg-gray-1 dark:bg-dark-8 flex-1">
+          <div className="p-lg bg-body flex-1">
             <Outlet />
           </div>
         </main>
