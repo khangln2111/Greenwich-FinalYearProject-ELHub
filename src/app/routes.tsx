@@ -10,6 +10,7 @@ import CartPage from "../pages/cart/CartPage";
 import CheckoutPage from "../pages/checkout/CheckoutPage";
 import InstructorLayout from "../layout/instructor/InstructorLayout";
 import InstructorDashboard from "../pages/instructor/InstructorDashboard";
+import InstructorCoursesPage from "../pages/instructor/courses/InstructorCoursesPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -33,7 +34,7 @@ const instructorRoute: RouteObject = {
     { path: "students", element: <p>Instructor Students Page</p> },
     {
       path: "courses",
-      element: <p>Instructor Courses Page</p>,
+      element: <InstructorCoursesPage />,
       children: [{ path: "create", element: <p>Create</p> }],
     },
   ],
