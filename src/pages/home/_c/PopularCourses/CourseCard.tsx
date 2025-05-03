@@ -10,21 +10,16 @@ const mockdata = [
 const CourseCard = () => {
   const features = mockdata.map((feature) => (
     <Center key={feature.label} className="w-fit">
-      <feature.icon
-        size={20}
-        className="mr-[5px] text-primary-3 dark:text-primary-5"
-        strokeWidth={2.5}
-      />
-      <Text className="font-semibold text-xs text-gray-500 dark:text-gray-400">
-        {feature.label}
-      </Text>
+      <feature.icon size={20} className="mr-[5px] text-primary-3 dark:text-primary-5" />
+      <Text className="font-medium text-xs text-gray-500 dark:text-gray-400">{feature.label}</Text>
     </Center>
   ));
 
   return (
     <div
-      className="bg-body transition-transform hover:scale-103 duration-200 rounded-2xl overflow-hidden shadow-2xl
-        grid grid-rows-subgrid row-span-7 gap-y-0"
+      className="bg-white dark:bg-dark-6 transition-transform hover:scale-103 duration-200 rounded-2xl
+        overflow-hidden border shadow-sm grid grid-rows-subgrid row-span-7 gap-y-0 border-gray-200
+        dark:border-dark-4"
     >
       {/* Image section */}
       <div className="flex items-center justify-center relative">
@@ -71,7 +66,7 @@ const CourseCard = () => {
       </div>
 
       {/* Icons section */}
-      <div className="p-md border-t border-gray-3 dark:border-dark-4 mt-md">
+      <div className="p-md">
         {/* <Text
           fz="sm"
           c="dimmed"
@@ -89,7 +84,9 @@ const CourseCard = () => {
             <Text className="font-bold text-xl leading-none">$168.00</Text>
             <Text className="text-dimmed line-through text-md">$200.00</Text>
           </div>
-          <Button className="w-fit shrink-0">View More</Button>
+          <Button className="w-fit shrink-0 font-medium" size="sm">
+            View More
+          </Button>
         </div>
       </div>
     </div>
