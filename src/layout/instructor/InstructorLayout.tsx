@@ -17,7 +17,7 @@ const InstructorLayout = () => {
 
   return (
     <div
-      className="h-screen flex relative bg-body text-gray-800 dark:text-white"
+      className="min-h-dvh flex relative bg-body text-gray-800 dark:text-white"
       style={
         {
           "--sidebar-width": `${rem(sidebarWidth)}`,
@@ -57,10 +57,8 @@ const InstructorLayout = () => {
           </aside>
         </Drawer>
         <InstructorHeader />
-        <main className="flex-1 overflow-y-auto bg-body flex flex-col">
-          <div className="p-lg bg-body flex-1">
-            <Outlet />
-          </div>
+        <main className="flex flex-col flex-1">
+          <Outlet />
         </main>
       </div>
     </div>

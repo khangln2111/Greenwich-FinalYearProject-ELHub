@@ -31,18 +31,19 @@ export default function InstructorCoursesPage() {
     filter === "all" ? mockCourses : mockCourses.filter((c) => c.status === filter);
 
   return (
-    <div className="p-6">
+    <div className="flex-1 p-6 xl:p-8">
       <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">My Courses</h1>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-4">
           <Button
             onClick={open}
             leftSection={<Plus className="size-4" />}
             size="sm"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow px-4 py-2 transition-colors"
+            className="flex-1"
           >
             Add New Course
           </Button>
+
           <Select
             data={[
               { label: "All", value: "all" },
@@ -54,7 +55,7 @@ export default function InstructorCoursesPage() {
             allowDeselect={false}
             onChange={(val) => setFilter(val as CourseStatus | "all")}
             placeholder="Filter by status"
-            className="w-[200px]"
+            className="flex-1"
           />
         </div>
       </div>
@@ -70,14 +71,7 @@ export default function InstructorCoursesPage() {
         ))}
       </div>
 
-      <Modal
-        opened={opened}
-        onClose={close}
-        title="Create New Course"
-        centered
-        size="55%"
-        className="overflow-hidden min-h-0"
-      >
+      <Modal opened={opened} onClose={close} title="Create New Course" centered size="xl">
         <div className="space-y-4">
           <TextInput
             size="md"
