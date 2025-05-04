@@ -1,11 +1,11 @@
-import { Button, Modal, Select, TextInput, Textarea } from "@mantine/core";
+import { Button, Select, TextInput, Textarea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import CusModal from "../../../components/CusModal";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
-import CustomModal from "../../../components/CustomModal";
 
 export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
@@ -72,7 +72,7 @@ export default function InstructorCoursesPage() {
         ))}
       </div>
 
-      <CustomModal
+      <CusModal
         opened={opened}
         onClose={close}
         title="Create New Course"
@@ -114,22 +114,8 @@ export default function InstructorCoursesPage() {
             value={newCourse.videoUrl}
             onChange={(e) => handleInputChange("videoUrl", e.currentTarget.value)}
           />
-          <TextInput
-            size="md"
-            label="imageUrl URL"
-            placeholder="https://example.com/image.jpg"
-            value={newCourse.imageUrl}
-            onChange={(e) => handleInputChange("imageUrl", e.currentTarget.value)}
-          />
-          <TextInput
-            size="md"
-            label="Intro Video URL"
-            placeholder="https://example.com/video.mp4"
-            value={newCourse.videoUrl}
-            onChange={(e) => handleInputChange("videoUrl", e.currentTarget.value)}
-          />
         </div>
-      </CustomModal>
+      </CusModal>
     </div>
   );
 }

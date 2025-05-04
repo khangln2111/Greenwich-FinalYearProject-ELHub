@@ -1,9 +1,8 @@
 import { Portal, rem, ScrollArea, Transition } from "@mantine/core";
 import { X } from "lucide-react";
-import { RemoveScroll } from "react-remove-scroll";
 import { createContext, useContext } from "react";
+import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils/cn";
-import { footer } from "framer-motion/client";
 
 interface CustomModalProps {
   opened: boolean;
@@ -50,7 +49,7 @@ function Body({ children }: { children: React.ReactNode }) {
   const { classNames } = useContext(ModalContext);
   return (
     <ScrollArea.Autosize className="max-h-(--modal-body-max-height)">
-      <div className={cn("p-4", classNames?.body)}>{children}</div>
+      <div className={cn("px-4 py-6", classNames?.body)}>{children}</div>
     </ScrollArea.Autosize>
   );
 }
@@ -64,7 +63,7 @@ function Footer({ children }: { children: React.ReactNode }) {
   );
 }
 
-function CustomModal({
+function CusModal({
   opened,
   onClose,
   title,
@@ -125,8 +124,8 @@ function CustomModal({
   );
 }
 
-CustomModal.Header = Header;
-CustomModal.Body = Body;
-CustomModal.Footer = Footer;
+CusModal.Header = Header;
+CusModal.Body = Body;
+CusModal.Footer = Footer;
 
-export default CustomModal;
+export default CusModal;
