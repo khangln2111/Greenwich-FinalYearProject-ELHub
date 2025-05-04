@@ -6,20 +6,6 @@ import { CourseStatus } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 
-export type InstructorCourse = {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  status: CourseStatus;
-  price: number;
-  stats: {
-    students: number;
-    lectures: number;
-    duration: string;
-  };
-};
-
 export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
   const [opened, { open, close }] = useDisclosure(false);
