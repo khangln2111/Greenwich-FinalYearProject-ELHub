@@ -5,6 +5,7 @@ import { useState } from "react";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
+import CustomModal from "../../../components/CustomModal";
 
 export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
@@ -71,7 +72,19 @@ export default function InstructorCoursesPage() {
         ))}
       </div>
 
-      <Modal opened={opened} onClose={close} title="Create New Course" centered size="xl">
+      <CustomModal
+        opened={opened}
+        onClose={close}
+        title="Create New Course"
+        footer={
+          <Button
+            onClick={handleCreateCourse}
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold w-full"
+          >
+            Create Course
+          </Button>
+        }
+      >
         <div className="space-y-4">
           <TextInput
             size="md"
@@ -101,14 +114,22 @@ export default function InstructorCoursesPage() {
             value={newCourse.videoUrl}
             onChange={(e) => handleInputChange("videoUrl", e.currentTarget.value)}
           />
-          <Button
-            onClick={handleCreateCourse}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold w-full mt-4"
-          >
-            Create Course
-          </Button>
+          <TextInput
+            size="md"
+            label="imageUrl URL"
+            placeholder="https://example.com/image.jpg"
+            value={newCourse.imageUrl}
+            onChange={(e) => handleInputChange("imageUrl", e.currentTarget.value)}
+          />
+          <TextInput
+            size="md"
+            label="Intro Video URL"
+            placeholder="https://example.com/video.mp4"
+            value={newCourse.videoUrl}
+            onChange={(e) => handleInputChange("videoUrl", e.currentTarget.value)}
+          />
         </div>
-      </Modal>
+      </CustomModal>
     </div>
   );
 }
