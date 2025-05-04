@@ -21,20 +21,22 @@ export default function InstructorCourseCard({ course, onEdit, onDelete }: Props
       className="bg-white dark:bg-dark-6 border border-gray-200 dark:border-dark-4 rounded-2xl shadow p-4 flex
         flex-col relative transition-colors"
     >
-      <div className="relative mb-4 aspect-video rounded-xl overflow-hidden">
-        <img
-          src={course.imageUrl || "haha"}
-          alt={course.title}
-          className="object-cover w-full h-full"
-        />
-        <div
-          className="absolute top-2 right-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded-full border-2
-            border-white"
-        >
-          ${course.price.toFixed(2)}
-        </div>
+      <div className="absolute top-2 right-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded-full">
+        {/* Hiển thị giá */}
+        {course.discountedPrice ? (
+          <>
+            <span className="line-through text-gray-400">${course.price.toFixed(2)}</span>{" "}
+            <span className="font-bold">${course.discountedPrice.toFixed(2)}</span>
+          </>
+        ) : (
+          `$${course.price.toFixed(2)}`
+        )}
       </div>
-
+      <img
+        src={course.imageUrl || "haha"}
+        alt={course.title}
+        className="rounded-xl h-40 object-cover mb-4 aspect-video"
+      />
       <div className="flex-1">
         <h2 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">{course.title}</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">

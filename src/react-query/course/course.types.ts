@@ -13,6 +13,8 @@ export interface CourseVm {
   imageUrl: string | null;
   promoVideoUrl: string | null;
   price: number;
+  rating: number;
+  ratingCount: number;
   discountPercentage: number;
   discountedPrice: number;
   language: string | null;
