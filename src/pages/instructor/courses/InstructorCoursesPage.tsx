@@ -51,6 +51,7 @@ export default function InstructorCoursesPage() {
               { label: "Pending", value: CourseStatus.Pending },
             ]}
             value={filter}
+            allowDeselect={false}
             onChange={(val) => setFilter(val as CourseStatus | "all")}
             placeholder="Filter by status"
             className="w-[200px]"
@@ -74,28 +75,33 @@ export default function InstructorCoursesPage() {
         onClose={close}
         title="Create New Course"
         centered
-        overlayProps={{ blur: 5, backgroundOpacity: 0.4 }}
+        size="55%"
+        className="overflow-hidden min-h-0"
       >
         <div className="space-y-4">
           <TextInput
+            size="md"
             label="Title"
             placeholder="Enter course title"
             value={newCourse.title}
             onChange={(e) => handleInputChange("title", e.currentTarget.value)}
           />
           <Textarea
+            size="md"
             label="Description"
             placeholder="Enter course description"
             value={newCourse.description}
             onChange={(e) => handleInputChange("description", e.currentTarget.value)}
           />
           <TextInput
+            size="md"
             label="imageUrl URL"
             placeholder="https://example.com/image.jpg"
             value={newCourse.imageUrl}
             onChange={(e) => handleInputChange("imageUrl", e.currentTarget.value)}
           />
           <TextInput
+            size="md"
             label="Intro Video URL"
             placeholder="https://example.com/video.mp4"
             value={newCourse.videoUrl}

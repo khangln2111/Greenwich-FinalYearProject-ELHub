@@ -14,6 +14,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import CourseCard from "./CourseCard";
+import { mockCourses } from "../../../../react-query/mockData";
 
 const PopularCourses = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -49,12 +50,9 @@ const PopularCourses = () => {
       {/* Auto column grid */}
 
       <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
+        {mockCourses.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
       </SimpleGrid>
 
       {/* <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
