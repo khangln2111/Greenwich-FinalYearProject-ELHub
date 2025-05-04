@@ -7,17 +7,20 @@ export enum CourseStatus {
 export interface Course {
   id: string;
   title: string;
+  status: CourseStatus;
   summary: string;
   description: string;
-  sectionCount: number;
   imageUrl: string | null;
   promoVideoUrl: string | null;
   price: number;
   discountPercentage: number;
   discountedPrice: number;
-  durationInSeconds: number;
   language: string | null;
   level: string | null;
+  studentEnrollmentCount: number;
+  lectureCount: number;
+  sectionCount: number;
+  durationInSeconds: number;
   categoryName: string;
   createdAt: string;
   updatedAt: string;
