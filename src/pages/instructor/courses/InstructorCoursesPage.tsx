@@ -1,15 +1,16 @@
-import { useState } from "react";
-import { Plus } from "lucide-react";
 import { Button, Modal, Select, TextInput, Textarea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { CourseStatus } from "../../../react-query/course/course.types";
+import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 
 export type InstructorCourse = {
   id: string;
   title: string;
   description: string;
-  thumbnail: string;
+  imageUrl: string;
   status: CourseStatus;
   price: number;
   stats: {
@@ -19,55 +20,13 @@ export type InstructorCourse = {
   };
 };
 
-const sampleCourses: InstructorCourse[] = [
-  {
-    id: "1",
-    title: "React for Beginners",
-    description: "Learn the basics of React from scratch.",
-    thumbnail: "https://cdn.pixabay.com/photo/2025/04/17/12/03/girl-9540346_1280.jpg",
-    status: CourseStatus.Draft,
-    price: 49.99,
-    stats: {
-      students: 1240,
-      lectures: 25,
-      duration: "5h 30m",
-    },
-  },
-  {
-    id: "2",
-    title: "Advanced TypeScript",
-    description: "Deep dive into TypeScript features.",
-    thumbnail: "https://cdn.pixabay.com/photo/2025/03/30/13/01/fairy-tale-9502808_1280.jpg",
-    status: CourseStatus.Published,
-    price: 79.0,
-    stats: {
-      students: 980,
-      lectures: 18,
-      duration: "4h 10m",
-    },
-  },
-  {
-    id: "3",
-    title: "UI/UX Design Basics",
-    description: "Design fundamentals for web apps.",
-    thumbnail: "https://cdn.pixabay.com/photo/2025/01/18/14/05/architecture-9342358_1280.jpg",
-    status: CourseStatus.Pending,
-    price: 59.5,
-    stats: {
-      students: 675,
-      lectures: 12,
-      duration: "3h 20m",
-    },
-  },
-];
-
 export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
   const [opened, { open, close }] = useDisclosure(false);
   const [newCourse, setNewCourse] = useState({
     title: "",
     description: "",
-    thumbnail: "",
+    imageUrl: "",
     videoUrl: "",
   });
 
@@ -79,11 +38,11 @@ export default function InstructorCoursesPage() {
     console.log("Creating course:", newCourse);
     // TODO: Replace with API call
     close();
-    setNewCourse({ title: "", description: "", thumbnail: "", videoUrl: "" });
+    setNewCourse({ title: "", description: "", imageUrl: "", videoUrl: "" });
   };
 
   const filteredCourses =
-    filter === "all" ? sampleCourses : sampleCourses.filter((c) => c.status === filter);
+    filter === "all" ? mockCourses : mockCourses.filter((c) => c.status === filter);
 
   return (
     <div className="p-6">
@@ -145,10 +104,10 @@ export default function InstructorCoursesPage() {
             onChange={(e) => handleInputChange("description", e.currentTarget.value)}
           />
           <TextInput
-            label="Thumbnail URL"
+            label="imageUrl URL"
             placeholder="https://example.com/image.jpg"
-            value={newCourse.thumbnail}
-            onChange={(e) => handleInputChange("thumbnail", e.currentTarget.value)}
+            value={newCourse.imageUrl}
+            onChange={(e) => handleInputChange("imageUrl", e.currentTarget.value)}
           />
           <TextInput
             label="Intro Video URL"

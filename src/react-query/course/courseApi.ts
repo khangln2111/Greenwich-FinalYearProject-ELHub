@@ -2,7 +2,7 @@ import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/axios";
 import {
-  Course,
+  CourseVm,
   CourseQueryCriteria,
   CreateCourseRequest,
   UpdateCourseRequest,
@@ -36,28 +36,28 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
 };
 
 export const getCourses = async (query: CourseQueryCriteria = {}) => {
-  const response = await apiClient.get<ListData<Course>>("/courses", {
+  const response = await apiClient.get<ListData<CourseVm>>("/courses", {
     params: buildCourseQuery(query),
   });
   return response.data;
 };
 
 export const getCourseDetail = async (id: string) => {
-  const response = await apiClient.get<Course>(`/courses/${id}`);
+  const response = await apiClient.get<CourseVm>(`/courses/${id}`);
   return response.data;
 };
 
 export const createCourse = async (course: CreateCourseRequest) => {
-  const response = await apiClient.post<Course>("/courses", course);
+  const response = await apiClient.post<CourseVm>("/courses", course);
   return response.data;
 };
 
 export const updateCourse = async (course: UpdateCourseRequest) => {
-  const response = await apiClient.put<Course>(`/courses/${course.id}`, course);
+  const response = await apiClient.put<CourseVm>(`/courses/${course.id}`, course);
   return response.data;
 };
 
 export const deleteCourse = async (id: string) => {
-  const response = await apiClient.delete<Course>(`/courses/${id}`);
+  const response = await apiClient.delete<CourseVm>(`/courses/${id}`);
   return response.data;
 };

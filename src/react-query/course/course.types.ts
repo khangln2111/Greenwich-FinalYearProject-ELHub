@@ -4,7 +4,7 @@ export enum CourseStatus {
   Pending = "pending",
 }
 
-export interface Course {
+export interface CourseVm {
   id: string;
   title: string;
   status: CourseStatus;
@@ -22,8 +22,8 @@ export interface Course {
   sectionCount: number;
   durationInSeconds: number;
   categoryName: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
 
 export interface CreateCourseRequest {

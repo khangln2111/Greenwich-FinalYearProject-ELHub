@@ -1,12 +1,12 @@
 import { Box, Grid, GridCol } from "@mantine/core";
-import { Course } from "../../react-query/course/course.types";
+import { CourseVm } from "../../react-query/course/course.types";
 import { useGetCourses } from "../../react-query/course/courseHooks";
 import { useAppStore } from "../../zustand/store";
 import CourseList from "./_c/CourseList";
 import DesktopFilter from "./_c/DesktopFilter";
 import MobileFilter from "./_c/MobileFilter";
 
-const mockCourses: Course[] = [
+const mockCourses: CourseVm[] = [
   {
     id: "1",
     title: "Introduction to React",
