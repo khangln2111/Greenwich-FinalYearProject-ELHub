@@ -1,4 +1,4 @@
-import { CourseStatus } from "./course/course.types";
+import { CourseStatus, CourseVm } from "./course/course.types";
 
 export const mockCourses: CourseVm[] = [
   {

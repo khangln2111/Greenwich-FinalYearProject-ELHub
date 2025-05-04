@@ -5,16 +5,18 @@ import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import PaginationComponent from "./Pagination";
 import { CourseVm } from "../../../react-query/course/course.types";
 import { useAppStore } from "../../../zustand/store";
+import { mockCourses } from "../../../react-query/mockData";
 
 type CourseListProps = {
-  courses: CourseVm[];
+  courses?: CourseVm[];
 };
 
-const CourseList = ({ courses }: CourseListProps) => {
+const CourseList = ({}: CourseListProps) => {
   const toggleMobileFilter = useAppStore.use.toggleMobileFilter();
   const toggleDesktopFilter = useAppStore.use.toggleDesktopFilter();
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
   const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
+  const courses = mockCourses;
 
   return (
     <>
@@ -69,7 +71,7 @@ const CourseList = ({ courses }: CourseListProps) => {
       </Group>
       <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" my={25} className="auto-rows-auto">
         {courses.map((course) => (
-          <CourseCard key={course.id} />
+          <CourseCard key={course.id} course={course} />
         ))}
       </SimpleGrid>
       {/* <div className="grid grid-cols-fill-[250px] gap-lg mx-auto my-[25px]">
