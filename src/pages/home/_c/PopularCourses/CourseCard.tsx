@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Center, Image, Rating, Text } from "@mantine/core";
+import { Avatar, Badge, Button, Center, Image, Rating, Text, Tooltip } from "@mantine/core";
 import { Clock, LibraryBig, Users } from "lucide-react";
 import { CourseVm } from "../../../../react-query/course/course.types";
 
@@ -69,7 +69,16 @@ const CourseCard = ({ course }: CourseCardProps) => {
 
       {/* Title */}
       <div className="px-md mt-3">
-        <Text className="font-bold text-lg text-left cursor-pointer">{course.title}</Text>
+        <Tooltip
+          label={course.title}
+          withArrow
+          position="bottom"
+          transitionProps={{ duration: 200 }}
+        >
+          <Text className="font-bold text-xl text-left cursor-pointer md:line-clamp-2 xl:line-clamp-1">
+            {course.title}
+          </Text>
+        </Tooltip>
       </div>
 
       {/* Author (mocked for now) */}

@@ -3,7 +3,7 @@ import { CourseStatus, CourseVm } from "./course/course.types";
 export const mockCourses: CourseVm[] = [
   {
     id: "course-1",
-    title: "Mastering TypeScript from Scratch",
+    title: "Modern JavaScript From The Beginning 2.0 (2024)",
     status: CourseStatus.Published,
     summary: "A practical guide to learning TypeScript effectively.",
     description: "Covers everything from basic types to advanced generics and utility types.",
