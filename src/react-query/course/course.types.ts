@@ -1,3 +1,9 @@
+export enum CourseStatus {
+  Draft = "draft",
+  Published = "published",
+  Pending = "pending",
+}
+
 export interface Course {
   id: string;
   title: string;
