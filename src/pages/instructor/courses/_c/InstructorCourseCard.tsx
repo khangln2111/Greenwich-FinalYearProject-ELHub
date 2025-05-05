@@ -1,5 +1,5 @@
 // components/InstructorCourseCard.tsx
-import { Button } from "@mantine/core";
+import { Button, Rating } from "@mantine/core";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
 
@@ -39,9 +39,14 @@ export default function InstructorCourseCard({ course, onEdit, onDelete }: Props
       />
       <div className="flex-1">
         <h2 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">{course.title}</h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+        {/* <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
           {course.description}
-        </p>
+        </p> */}
+        {/* rating */}
+        <div className="flex items-center mt-2 mb-4 gap-2">
+          <Rating value={course.rating} />
+          <span className="text-sm text-gray-500 dark:text-gray-400">({course.ratingCount})</span>
+        </div>
 
         <div className="mt-4 flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
           <div className="flex items-center gap-2">

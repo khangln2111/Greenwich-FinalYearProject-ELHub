@@ -1,4 +1,4 @@
-import { Button, Select, TextInput, Textarea } from "@mantine/core";
+import { Button, NumberInput, Select, TextInput, Textarea } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { useDisclosure } from "@mantine/hooks";
 import { Plus, ImageIcon, VideoIcon, UploadIcon } from "lucide-react";
@@ -11,32 +11,43 @@ import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 
 // Zod schema with file validation
-const createCourseSchema = z.object({
-  title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
-  description: z
-    .string({ message: "Description is required" })
-    .min(10, "Description must be at least 10 characters"),
-  image: z
-    .instanceof(File, { message: "Course image is required" })
-    .refine((file) => file !== null, "Course image is required.")
-    .refine((file) => file.type.startsWith("image/"), "File must be an image")
-    .refine(
-      (file) => file.size <= 5 * 1024 * 1024, // 5MB max size
-      "Image must be less than 5MB",
-    ),
-  video: z
-    .instanceof(File, { message: "Course video is required" })
-    .refine((file) => file !== null, "Promotional video is required.")
-    .refine((file) => file.type.startsWith("video/"), "File must be a video")
-    .refine(
-      (file) => ["video/mp4", "video/webm"].includes(file.type),
-      "Only MP4/WebM videos are allowed",
-    )
-    .refine(
-      (file) => file.size <= 50 * 1024 * 1024, // 50MB max size
-      "Video must be less than 50MB",
-    ),
-});
+const createCourseSchema = z
+  .object({
+    title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
+    description: z
+      .string({ message: "Description is required" })
+      .min(10, "Description must be at least 10 characters"),
+    price: z
+      .number({ message: "Price is required" })
+      .min(0, { message: "Price must be greater than or equal to 0" }),
+
+    discountedPrice: z
+      .number({ message: "Discounted Price is required" })
+      .min(0, { message: "Discounted Price must be greater than or equal to 0" }),
+    image: z
+      .instanceof(File, { message: "Course image is required" })
+      .refine((file) => file !== null, "Course image is required.")
+      .refine((file) => file.type.startsWith("image/"), "File must be an image")
+      .refine(
+        (file) => file.size <= 5 * 1024 * 1024, // 5MB max size
+        "Image must be less than 5MB",
+      ),
+    video: z
+      .instanceof(File, { message: "Course video is required" })
+      .refine((file) => file !== null, "Promotional video is required.")
+      .refine((file) => file.type.startsWith("video/"), "File must be a video")
+      .refine(
+        (file) => ["video/mp4", "video/webm"].includes(file.type),
+        "Only MP4/WebM videos are allowed",
+      )
+      .refine(
+        (file) => file.size <= 50 * 1024 * 1024, // 50MB max size
+        "Video must be less than 50MB",
+      ),
+  })
+  .refine((data) => data.price >= data.discountedPrice, {
+    message: "Discounted price must be less than or equal to the original price",
+  });
 
 type CreateCourseFormValues = z.infer<typeof createCourseSchema>;
 
@@ -143,6 +154,21 @@ export default function InstructorCoursesPage() {
             placeholder="Enter course description"
             {...form.getInputProps("description")}
           />
+          {/* Price Fields */}
+          <div className="flex gap-4">
+            <NumberInput
+              size="md"
+              label="Price"
+              placeholder="Enter course price"
+              {...form.getInputProps("price")}
+            />
+            <NumberInput
+              size="md"
+              label="Discounted Price"
+              placeholder="Enter discounted price"
+              {...form.getInputProps("discountedPrice")}
+            />
+          </div>
 
           {/* Course Image */}
           <div>
@@ -173,7 +199,7 @@ export default function InstructorCoursesPage() {
                     form.setFieldValue("image", files[0]);
                   }}
                   onReject={() => form.setFieldError("image", "Invalid file")}
-                  maxFiles={1}
+                  multiple={false}
                   accept={{ "image/*": [] }}
                   p={0}
                 >
@@ -230,7 +256,7 @@ export default function InstructorCoursesPage() {
                     form.setFieldValue("video", files[0]);
                   }}
                   onReject={() => form.setFieldError("video", "Invalid video file")}
-                  maxFiles={1}
+                  multiple={false}
                   p={0}
                   accept={{ "video/*": [] }}
                 >
