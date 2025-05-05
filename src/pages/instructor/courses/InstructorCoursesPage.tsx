@@ -2,69 +2,70 @@ import { Button, Select, TextInput, Textarea } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { useDisclosure } from "@mantine/hooks";
 import { Plus, ImageIcon, VideoIcon, UploadIcon } from "lucide-react";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
+import { useForm, zodResolver } from "@mantine/form";
+import { z } from "zod";
 import CusModal from "../../../components/CusModal";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 
+// Zod schema with file validation
+const createCourseSchema = z.object({
+  title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
+  description: z
+    .string({ message: "Description is required" })
+    .min(10, "Description must be at least 10 characters"),
+  image: z
+    .instanceof(File, { message: "Course image is required" })
+    .refine((file) => file !== null, "Course image is required.")
+    .refine((file) => file.type.startsWith("image/"), "File must be an image")
+    .refine(
+      (file) => file.size <= 5 * 1024 * 1024, // 5MB max size
+      "Image must be less than 5MB",
+    ),
+  video: z
+    .instanceof(File, { message: "Course video is required" })
+    .refine((file) => file !== null, "Promotional video is required.")
+    .refine((file) => file.type.startsWith("video/"), "File must be a video")
+    .refine(
+      (file) => ["video/mp4", "video/webm"].includes(file.type),
+      "Only MP4/WebM videos are allowed",
+    )
+    .refine(
+      (file) => file.size <= 50 * 1024 * 1024, // 50MB max size
+      "Video must be less than 50MB",
+    ),
+});
+
+type CreateCourseFormValues = z.infer<typeof createCourseSchema>;
+
 export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
   const [opened, { open, close }] = useDisclosure(false);
 
-  const [newCourse, setNewCourse] = useState({
-    title: "",
-    description: "",
+  // Form setup
+  const form = useForm<CreateCourseFormValues>({
+    validate: zodResolver(createCourseSchema),
   });
-
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [videoPreview, setVideoPreview] = useState<string | null>(null);
-
-  const [imageError, setImageError] = useState<string | null>(null);
-  const [videoError, setVideoError] = useState<string | null>(null);
 
   const imageOpenRef = useRef<() => void>(null);
   const videoOpenRef = useRef<() => void>(null);
 
-  const handleInputChange = (field: string, value: string) => {
-    setNewCourse((prev) => ({ ...prev, [field]: value }));
-  };
-
   const handleCreateCourse = async () => {
-    let hasError = false;
-    if (!imageFile) {
-      setImageError("Course image is required.");
-      hasError = true;
-    } else {
-      setImageError(null);
-    }
-
-    if (!videoFile) {
-      setVideoError("Promotional video is required.");
-      hasError = true;
-    } else {
-      setVideoError(null);
-    }
-
-    if (hasError) return;
+    const formValidation = form.validate();
+    if (formValidation.hasErrors) return;
 
     const formData = new FormData();
-    formData.append("title", newCourse.title);
-    formData.append("description", newCourse.description);
-    if (imageFile) formData.append("image", imageFile);
-    if (videoFile) formData.append("video", videoFile);
+    formData.append("title", form.values.title);
+    formData.append("description", form.values.description);
+    if (form.values.image) formData.append("image", form.values.image);
+    if (form.values.video) formData.append("video", form.values.video);
 
     try {
-      // TODO: Replace with actual API call
       console.log("Submitting course:", Object.fromEntries(formData));
       close();
-      setNewCourse({ title: "", description: "" });
-      setImageFile(null);
-      setVideoFile(null);
-      setImagePreview(null);
-      setVideoPreview(null);
+      form.reset();
     } catch (error) {
       console.error("Error submitting course", error);
     }
@@ -129,20 +130,18 @@ export default function InstructorCoursesPage() {
           </div>
         }
       >
-        <div className="space-y-6">
+        <form className="space-y-6" onSubmit={form.onSubmit(handleCreateCourse)}>
           <TextInput
             size="md"
             label="Title"
             placeholder="Enter course title"
-            value={newCourse.title}
-            onChange={(e) => handleInputChange("title", e.currentTarget.value)}
+            {...form.getInputProps("title")}
           />
           <Textarea
             size="md"
             label="Description"
             placeholder="Enter course description"
-            value={newCourse.description}
-            onChange={(e) => handleInputChange("description", e.currentTarget.value)}
+            {...form.getInputProps("description")}
           />
 
           {/* Course Image */}
@@ -153,11 +152,11 @@ export default function InstructorCoursesPage() {
                 className="w-full lg:w-64 h-36 border border-gray-300 dark:border-gray-600 flex items-center justify-center
                   bg-gray-50 dark:bg-gray-800"
               >
-                {imagePreview ? (
+                {form.values.image ? (
                   <img
-                    src={imagePreview}
+                    src={URL.createObjectURL(form.values.image)}
                     alt="Course Preview"
-                    className="object-cover w-full h-full"
+                    className="object-cover size-full"
                   />
                 ) : (
                   <ImageIcon className="text-gray-400 w-10 h-10" />
@@ -168,25 +167,25 @@ export default function InstructorCoursesPage() {
                   Upload your course image here. It must be 750x422px (.jpg, .png, .gif). No text on
                   the image.
                 </p>
-
                 <Dropzone
                   openRef={imageOpenRef}
                   onDrop={(files) => {
-                    const file = files[0];
-                    setImageFile(file);
-                    setImagePreview(URL.createObjectURL(file));
-                    setImageError(null);
+                    form.setFieldValue("image", files[0]);
                   }}
-                  onReject={() => setImageError("Invalid file")}
+                  onReject={() => form.setFieldError("image", "Invalid file")}
                   maxFiles={1}
                   accept={{ "image/*": [] }}
                   p={0}
                 >
                   <div
-                    className={`border rounded-md px-4 py-2 flex justify-between items-center ${
-                      imageError ? "border-red-500" : "border-gray-300" }`}
+                    className={`border rounded-md px-4 py-2 grid grid-cols-[1fr_auto] items-center ${
+                      form.errors.image ? "border-red-500" : "border-gray-300" }`}
                   >
-                    <span className="text-sm">{imageFile?.name ?? "No file selected"}</span>
+                    <div className="min-w-0">
+                      <p className="text-sm truncate overflow-hidden whitespace-nowrap">
+                        {form.values.image?.name ?? "No file selected"}
+                      </p>
+                    </div>
                     <Button
                       variant="outline"
                       size="xs"
@@ -197,7 +196,7 @@ export default function InstructorCoursesPage() {
                     </Button>
                   </div>
                 </Dropzone>
-                {imageError && <p className="text-sm text-red-500">{imageError}</p>}
+                {form.errors.image && <p className="text-sm text-red-500">{form.errors.image}</p>}
               </div>
             </div>
           </div>
@@ -210,8 +209,12 @@ export default function InstructorCoursesPage() {
                 className="w-full lg:w-64 h-36 border border-gray-300 dark:border-gray-600 flex items-center justify-center
                   bg-gray-50 dark:bg-gray-800"
               >
-                {videoPreview ? (
-                  <video src={videoPreview} controls className="w-full h-full object-contain" />
+                {form.values.video ? (
+                  <video
+                    src={URL.createObjectURL(form.values.video)}
+                    controls
+                    className="w-full h-full object-contain"
+                  />
                 ) : (
                   <VideoIcon className="text-gray-400 w-10 h-10" />
                 )}
@@ -221,25 +224,23 @@ export default function InstructorCoursesPage() {
                   Upload a promotional video to help students preview your course. MP4/WebM
                   preferred.
                 </p>
-
                 <Dropzone
                   openRef={videoOpenRef}
                   onDrop={(files) => {
-                    const file = files[0];
-                    setVideoFile(file);
-                    setVideoPreview(URL.createObjectURL(file));
-                    setVideoError(null);
+                    form.setFieldValue("video", files[0]);
                   }}
-                  onReject={() => setVideoError("Invalid video file")}
+                  onReject={() => form.setFieldError("video", "Invalid video file")}
                   maxFiles={1}
                   p={0}
                   accept={{ "video/*": [] }}
                 >
                   <div
-                    className={`border rounded-md px-4 py-2 flex justify-between items-center ${
-                      videoError ? "border-red-500" : "border-gray-300" }`}
+                    className={`border rounded-md px-4 py-2 grid grid-cols-[1fr_auto] items-center ${
+                      form.errors.video ? "border-red-500" : "border-gray-300" }`}
                   >
-                    <span className="text-sm">{videoFile?.name ?? "No file selected"}</span>
+                    <span className="text-sm line-clamp-1">
+                      {form.values.video?.name ?? "No file selected"}
+                    </span>
                     <Button
                       variant="outline"
                       size="xs"
@@ -250,11 +251,11 @@ export default function InstructorCoursesPage() {
                     </Button>
                   </div>
                 </Dropzone>
-                {videoError && <p className="text-sm text-red-500">{videoError}</p>}
+                {form.errors.video && <p className="text-sm text-red-500">{form.errors.video}</p>}
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </CusModal>
     </div>
   );
