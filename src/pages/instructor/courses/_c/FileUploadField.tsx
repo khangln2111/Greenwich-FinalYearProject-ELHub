@@ -1,18 +1,52 @@
 import { Dropzone } from "@mantine/dropzone";
 import { Button } from "@mantine/core";
-import { UploadIcon } from "lucide-react";
-import { ReactNode, useRef } from "react";
+import { ImageIcon, UploadIcon, VideoIcon } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
 import { useUncontrolled } from "@mantine/hooks";
 
 interface FileUploadFieldProps {
   label: string;
   description?: string;
-  error?: ReactNode;
+  error?: string;
   accept: Record<string, string[]>;
   value?: File;
   defaultValue?: File;
   onChange: (file: File) => void;
-  preview?: ReactNode;
+  preview?: string; // Made optional
+  previewMediaType: "image" | "video";
+}
+
+function MediaPreview({ url, type }: { url: string | null; type: "image" | "video" }) {
+  if (url) {
+    if (type === "image") {
+      return <img src={url} alt="Preview" className="size-full object-cover" />;
+    }
+    if (type === "video") {
+      return <video src={url} controls className="size-full object-cover" />;
+    }
+
+    return <span className="text-sm text-gray-400">Unsupported media type</span>;
+  }
+
+  if (type === "image") {
+    return (
+      <div className="flex flex-col items-center text-gray-400">
+        <ImageIcon className="w-10 h-10 mb-1" />
+        <span className="text-sm">No image selected</span>
+      </div>
+    );
+  }
+
+  if (type === "video") {
+    return (
+      <div className="flex flex-col items-center text-gray-400">
+        <VideoIcon className="w-10 h-10 mb-1" />
+        <span className="text-sm">No video selected</span>
+      </div>
+    );
+  }
+
+  return <span className="text-sm text-gray-400">No preview available</span>;
 }
 
 export default function FileUploadField({
@@ -23,32 +57,46 @@ export default function FileUploadField({
   value,
   defaultValue,
   onChange,
-  preview,
+  preview, // Optional preview
+  previewMediaType,
 }: FileUploadFieldProps) {
   const openRef = useRef<() => void>(null);
-
   const [_value, handleChange] = useUncontrolled({
     value,
     defaultValue,
     onChange,
   });
 
+  const [previewMediaUrl, setPreviewMediaUrl] = useState<string | null>(preview ?? null);
+
+  useEffect(() => {
+    setPreviewMediaUrl(preview ?? null);
+  }, [preview]);
+
+  const handleFileSelect = (files: File[]) => {
+    const file = files[0];
+    if (file) {
+      handleChange(file);
+      setPreviewMediaUrl(URL.createObjectURL(file));
+    }
+  };
+
   return (
     <div>
       <label className="block text-md font-medium mb-1">{label}</label>
       <div className="flex flex-col lg:flex-row gap-4">
-        <div className="w-full lg:w-64 h-36 border flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-          {preview}
+        <div
+          className="w-full lg:w-64 h-36 border flex items-center justify-center bg-gray-50 dark:bg-gray-800
+            overflow-hidden"
+        >
+          <MediaPreview url={previewMediaUrl} type={previewMediaType} />
         </div>
 
         <div className="flex-1 space-y-2">
           {description && <p className="text-sm">{description}</p>}
           <Dropzone
             openRef={openRef}
-            onDrop={(files) => {
-              const file = files[0];
-              if (file) handleChange(file);
-            }}
+            onDrop={handleFileSelect}
             onReject={() => console.log("Invalid file")}
             multiple={false}
             accept={accept}
@@ -63,7 +111,7 @@ export default function FileUploadField({
                 variant="outline"
                 size="xs"
                 onClick={() => openRef.current?.()}
-                leftSection={<UploadIcon className="w-4 h-4" />}
+                leftSection={<UploadIcon className="size-4" />}
               >
                 Upload
               </Button>

@@ -9,6 +9,7 @@ import CusModal from "../../../components/CusModal";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
+import FileUploadField from "./_c/FileUploadField";
 
 // Zod schema with file validation
 const createCourseSchema = z
@@ -40,12 +41,6 @@ export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
   const [opened, { open, close }] = useDisclosure(false);
 
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [previewVideo, setPreviewVideo] = useState<string | null>(null);
-
-  const imageOpenRef = useRef<() => void>(null);
-  const videoOpenRef = useRef<() => void>(null);
-
   const form = useForm<CreateCourseFormValues>({
     mode: "uncontrolled",
 
@@ -68,8 +63,6 @@ export default function InstructorCoursesPage() {
       console.log("Submitting course:", Object.fromEntries(formData));
       close();
       form.reset();
-      setPreviewImage(null);
-      setPreviewVideo(null);
     } catch (error) {
       console.error("Error submitting course", error);
     }
@@ -163,106 +156,22 @@ export default function InstructorCoursesPage() {
           </div>
 
           {/* Image Upload */}
-          <div>
-            <label className="block text-md font-medium mb-1">Course image</label>
-            <div className="flex flex-col lg:flex-row gap-4">
-              <div className="w-full lg:w-64 h-36 border flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-                {previewImage ? (
-                  <img src={previewImage} alt="Preview" className="object-cover size-full" />
-                ) : (
-                  <ImageIcon className="text-gray-400 w-10 h-10" />
-                )}
-              </div>
-              <div className="flex-1 space-y-2">
-                <p className="text-sm">
-                  Upload your course image here. It must be 750x422px (.jpg, .png, .gif).
-                </p>
-                <Dropzone
-                  openRef={imageOpenRef}
-                  onDrop={(files) => {
-                    const file = files[0];
-                    if (file) {
-                      setPreviewImage(URL.createObjectURL(file));
-                      form.setFieldValue("image", file);
-                    }
-                  }}
-                  onReject={() => form.setFieldError("image", "Invalid file")}
-                  multiple={false}
-                  accept={{ "image/*": [] }}
-                  p={0}
-                >
-                  <div
-                    className={`border rounded-md px-4 py-2 grid grid-cols-[1fr_auto] items-center ${
-                      form.errors.image ? "border-red-500" : "border-gray-300" }`}
-                  >
-                    <p className="text-sm truncate">
-                      {form.getInputProps("image").defaultValue?.name ?? "No file selected"}
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      onClick={() => imageOpenRef.current?.()}
-                      leftSection={<UploadIcon className="w-4 h-4" />}
-                    >
-                      Upload
-                    </Button>
-                  </div>
-                </Dropzone>
-                {form.errors.image && <p className="text-sm text-red-500">{form.errors.image}</p>}
-              </div>
-            </div>
-          </div>
+          <FileUploadField
+            {...form.getInputProps("image")}
+            label={"Course Image"}
+            accept={{ "image/*": [] }}
+            previewMediaType="image"
+            description="Upload a promotional video (MP4 or WebM preferred)."
+          />
 
           {/* Video Upload */}
-          <div>
-            <label className="block text-md font-medium mb-1">Promotional video</label>
-            <div className="flex flex-col lg:flex-row gap-4">
-              <div className="w-full lg:w-64 h-36 border flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-                {previewVideo ? (
-                  <video src={previewVideo} controls className="w-full h-full object-contain" />
-                ) : (
-                  <VideoIcon className="text-gray-400 w-10 h-10" />
-                )}
-              </div>
-              <div className="flex-1 space-y-2">
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Upload a promotional video (MP4 or WebM preferred).
-                </p>
-                <Dropzone
-                  openRef={videoOpenRef}
-                  onDrop={(files) => {
-                    const file = files[0];
-                    if (file) {
-                      setPreviewVideo(URL.createObjectURL(file));
-                      form.setFieldValue("video", file);
-                    }
-                  }}
-                  onReject={() => form.setFieldError("video", "Invalid video")}
-                  multiple={false}
-                  accept={{ "video/*": [] }}
-                  p={0}
-                >
-                  <div
-                    className={`border rounded-md px-4 py-2 grid grid-cols-[1fr_auto] items-center ${
-                      form.errors.video ? "border-red-500" : "border-gray-300" }`}
-                  >
-                    <p className="text-sm truncate">
-                      {form.getInputProps("video").defaultValue?.name ?? "No file selected"}
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      onClick={() => videoOpenRef.current?.()}
-                      leftSection={<UploadIcon className="w-4 h-4" />}
-                    >
-                      Upload
-                    </Button>
-                  </div>
-                </Dropzone>
-                {form.errors.video && <p className="text-sm text-red-500">{form.errors.video}</p>}
-              </div>
-            </div>
-          </div>
+          <FileUploadField
+            {...form.getInputProps("video")}
+            label={"Promotional video"}
+            accept={{ "video/*": [] }}
+            previewMediaType="video"
+            description="Upload your course image here. It must be 750x422px (.jpg, .png, .gif)."
+          />
         </form>
       </CusModal>
     </div>
