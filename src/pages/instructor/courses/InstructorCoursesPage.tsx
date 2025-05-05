@@ -1,11 +1,17 @@
 import { Button, NumberInput, Select, TextInput, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { DollarSign, FileText, Info, Plus, Tag, Video } from "lucide-react";
+import { DollarSign, FileText, Info, Plus, Tag } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import CusModal from "../../../components/CusModal";
 import FileUploadField from "../../../components/FileUploadField";
+import {
+  ALLOWED_IMAGE_TYPES,
+  ALLOWED_VIDEO_TYPES,
+  MAX_IMAGE_SIZE_MB,
+  MAX_VIDEO_SIZE_MB,
+} from "../../../constants/ValidationConstants";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
@@ -23,16 +29,20 @@ const createCourseSchema = z
       .min(0, { message: "Discounted price must be >= 0" }),
     image: z
       .instanceof(File, { message: "Course image is required" })
-      .refine((file) => file.type.startsWith("image/"), "File must be an image")
-      .refine((file) => file.size <= 5 * 1024 * 1024, "Image must be less than 5MB"),
+      .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
+        message: "Only JPG, PNG, WEBP images are allowed",
+      })
+      .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
+        message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
+      }),
     video: z
       .instanceof(File, { message: "Promotional video is required" })
-      .refine((file) => file.type.startsWith("video/"), "File must be a video")
-      .refine(
-        (file) => ["video/mp4", "video/webm"].includes(file.type),
-        "Only MP4/WebM videos are allowed",
-      )
-      .refine((file) => file.size <= 50 * 1024 * 1024, "Video must be less than 50MB"),
+      .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
+        message: "Only MP4, WebM, or OGG videos are allowed",
+      })
+      .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
+        message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
+      }),
   })
   .refine((data) => data.price >= data.discountedPrice, {
     message: "Discounted price must be less than or equal to the original price",
@@ -171,18 +181,20 @@ export default function InstructorCoursesPage() {
           <FileUploadField
             {...form.getInputProps("image")}
             label="Course Image"
-            accept={{ "image/*": [] }}
+            accept={ALLOWED_IMAGE_TYPES}
             previewMediaType="image"
-            description="Upload your course image here (max 5MB). Recommended size: 750x422px."
+            description={`Upload an image (JPG, PNG, WEBP - max ${MAX_IMAGE_SIZE_MB}MB)`}
+            maxSize={MAX_IMAGE_SIZE_MB * 1024 * 1024}
           />
 
           {/* Video Upload */}
           <FileUploadField
             {...form.getInputProps("video")}
             label="Promotional Video"
-            accept={{ "video/*": [] }}
+            accept={ALLOWED_VIDEO_TYPES}
             previewMediaType="video"
-            description="Upload a promotional video (MP4/WebM, max 50MB)."
+            description={`Upload a video (MP4, WebM, OGG - max ${MAX_VIDEO_SIZE_MB}MB)`}
+            maxSize={MAX_VIDEO_SIZE_MB * 1024 * 1024}
           />
         </form>
       </CusModal>
