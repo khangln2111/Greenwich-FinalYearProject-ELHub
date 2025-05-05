@@ -1,23 +1,26 @@
 import { Button, NumberInput, Select, TextInput, Textarea } from "@mantine/core";
-import { Dropzone } from "@mantine/dropzone";
-import { useDisclosure } from "@mantine/hooks";
-import { Plus, ImageIcon, VideoIcon, UploadIcon } from "lucide-react";
-import { useRef, useState } from "react";
 import { useForm, zodResolver } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
+import { DollarSign, FileText, Info, Plus, Tag, Video } from "lucide-react";
+import { useState } from "react";
 import { z } from "zod";
 import CusModal from "../../../components/CusModal";
+import FileUploadField from "../../../components/FileUploadField";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
-import FileUploadField from "./_c/FileUploadField";
 
 // Zod schema with file validation
 const createCourseSchema = z
   .object({
-    title: z.string().min(3, "Title must be at least 3 characters"),
-    description: z.string().min(10, "Description must be at least 10 characters"),
-    price: z.number().min(0, { message: "Price must be >= 0" }),
-    discountedPrice: z.number().min(0, { message: "Discounted price must be >= 0" }),
+    title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
+    description: z
+      .string({ message: "Description is required" })
+      .min(10, "Description must be at least 10 characters"),
+    price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
+    discountedPrice: z
+      .number({ message: "Discounted price is required" })
+      .min(0, { message: "Discounted price must be >= 0" }),
     image: z
       .instanceof(File, { message: "Course image is required" })
       .refine((file) => file.type.startsWith("image/"), "File must be an image")
@@ -132,45 +135,54 @@ export default function InstructorCoursesPage() {
             size="md"
             label="Title"
             placeholder="Enter course title"
+            leftSection={<FileText className="size-4 text-gray-500" />}
             {...form.getInputProps("title")}
           />
+
           <Textarea
             size="md"
             label="Description"
             placeholder="Enter course description"
+            autosize
+            leftSection={<Info className="size-4 text-gray-500" />}
             {...form.getInputProps("description")}
           />
-          <div className="flex gap-4">
+
+          <div className="flex flex-col sm:flex-row gap-4">
             <NumberInput
               size="md"
               label="Price"
               placeholder="Enter course price"
+              leftSection={<DollarSign className="size-4 text-gray-500" />}
               {...form.getInputProps("price")}
+              className="flex-1"
             />
             <NumberInput
               size="md"
               label="Discounted Price"
               placeholder="Enter discounted price"
+              leftSection={<Tag className="size-4 text-gray-500" />}
               {...form.getInputProps("discountedPrice")}
+              className="flex-1"
             />
           </div>
 
           {/* Image Upload */}
           <FileUploadField
             {...form.getInputProps("image")}
-            label={"Course Image"}
+            label="Course Image"
             accept={{ "image/*": [] }}
             previewMediaType="image"
-            description="Upload a promotional video (MP4 or WebM preferred)."
+            description="Upload your course image here (max 5MB). Recommended size: 750x422px."
           />
 
           {/* Video Upload */}
           <FileUploadField
             {...form.getInputProps("video")}
-            label={"Promotional video"}
+            label="Promotional Video"
             accept={{ "video/*": [] }}
             previewMediaType="video"
-            description="Upload your course image here. It must be 750x422px (.jpg, .png, .gif)."
+            description="Upload a promotional video (MP4/WebM, max 50MB)."
           />
         </form>
       </CusModal>
