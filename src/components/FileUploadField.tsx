@@ -33,7 +33,7 @@ function MediaPreview({ url, type }: { url: string | null; type: "image" | "vide
   if (type === "image") {
     return (
       <div className="flex flex-col items-center text-gray-400">
-        <ImageIcon className="w-10 h-10 mb-1" />
+        <ImageIcon className="size-10 text-primary-3 dark:text-primary-8 mb-1" />
         <span className="text-sm">No image selected</span>
       </div>
     );
@@ -42,7 +42,7 @@ function MediaPreview({ url, type }: { url: string | null; type: "image" | "vide
   if (type === "video") {
     return (
       <div className="flex flex-col items-center text-gray-400">
-        <VideoIcon className="w-10 h-10 mb-1" />
+        <VideoIcon className="size-10 text-primary-3 dark:text-primary-8 mb-1" />
         <span className="text-sm">No video selected</span>
       </div>
     );

@@ -5,7 +5,6 @@ import {
   ArrowUpNarrowWide,
   DollarSign,
   FileText,
-  GaugeIcon,
   Info,
   Plus,
   TagsIcon,
@@ -143,6 +142,7 @@ export default function InstructorCoursesPage() {
 
       <CusModal
         opened={opened}
+        keepMounted={true}
         onClose={close}
         title="Create New Course"
         footer={

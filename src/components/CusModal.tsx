@@ -19,6 +19,7 @@ interface CustomModalProps {
   };
   size?: string; // ex: "600px", "40rem"
   bodyMaxHeight?: string; // ex: "80vh", "700px"
+  keepMounted?: boolean; // Keep mounted when closed
 }
 
 const ModalContext = createContext<Pick<CustomModalProps, "title" | "onClose" | "classNames">>({
@@ -73,6 +74,7 @@ function CusModal({
   classNames = {},
   size = "1000px",
   bodyMaxHeight = "70dvh",
+  keepMounted = false,
 }: CustomModalProps) {
   const hasCustomHeader = (children as any)?.type === Header;
   const hasCustomBody = (children as any)?.type === Body;
@@ -80,7 +82,13 @@ function CusModal({
 
   return (
     <Portal>
-      <Transition mounted={opened} transition="fade" duration={200} timingFunction="ease">
+      <Transition
+        mounted={opened}
+        transition="fade"
+        duration={200}
+        timingFunction="ease"
+        keepMounted={keepMounted}
+      >
         {(styles) => (
           <RemoveScroll enabled={opened}>
             <div
