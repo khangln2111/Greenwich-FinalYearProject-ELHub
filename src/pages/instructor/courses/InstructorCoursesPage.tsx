@@ -1,7 +1,16 @@
 import { Button, NumberInput, Select, TextInput, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { DollarSign, FileText, Info, Plus, Tag } from "lucide-react";
+import {
+  ArrowUpNarrowWide,
+  DollarSign,
+  FileText,
+  GaugeIcon,
+  Info,
+  Plus,
+  TagsIcon,
+  TicketPercent,
+} from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import CusModal from "../../../components/CusModal";
@@ -12,51 +21,58 @@ import {
   MAX_IMAGE_SIZE_MB,
   MAX_VIDEO_SIZE_MB,
 } from "../../../constants/ValidationConstants";
-import { CourseStatus } from "../../../react-query/course/course.types";
+import { useGetCategories } from "../../../react-query/category/categoryHooks";
+import { CourseLevel, CourseStatus } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 
 // Zod schema with file validation
-const createCourseSchema = z
-  .object({
-    title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
-    description: z
-      .string({ message: "Description is required" })
-      .min(10, "Description must be at least 10 characters"),
-    price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
-    discountedPrice: z
-      .number({ message: "Discounted price is required" })
-      .min(0, { message: "Discounted price must be >= 0" }),
-    image: z
-      .instanceof(File, { message: "Course image is required" })
-      .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-        message: "Only JPG, PNG, WEBP images are allowed",
-      })
-      .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
-        message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
-      }),
-    video: z
-      .instanceof(File, { message: "Promotional video is required" })
-      .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
-        message: "Only MP4, WebM, or OGG videos are allowed",
-      })
-      .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
-        message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
-      }),
-  })
-  .refine((data) => data.price >= data.discountedPrice, {
-    message: "Discounted price must be less than or equal to the original price",
-  });
 
 type CreateCourseFormValues = z.infer<typeof createCourseSchema>;
+
+const createCourseSchema = z.object({
+  title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
+  description: z
+    .string({ message: "Description is required" })
+    .min(10, "Description must be at least 10 characters"),
+  price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
+  discountPercentage: z
+    .number({ message: "Discount percentage is required" })
+    .min(0, { message: "Discount must be >= 0%" })
+    .max(100, { message: "Discount must be <= 100%" }),
+  image: z
+    .instanceof(File, { message: "Course image is required" })
+    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
+      message: "Only JPG, PNG, WEBP images are allowed",
+    })
+    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
+      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
+    }),
+  video: z
+    .instanceof(File, { message: "Promotional video is required" })
+    .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
+      message: "Only MP4, WebM, or OGG videos are allowed",
+    })
+    .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
+      message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
+    }),
+  categoryId: z.string({ message: "Category is required" }).min(1, "Select a category"),
+  level: z.enum(
+    [CourseLevel.Beginner, CourseLevel.Intermediate, CourseLevel.Advanced, CourseLevel.All],
+    {
+      required_error: "Level is required",
+      invalid_type_error: "Invalid level selected",
+    },
+  ),
+});
 
 export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
   const [opened, { open, close }] = useDisclosure(false);
+  const { data: categories, isPending, isError } = useGetCategories();
 
   const form = useForm<CreateCourseFormValues>({
     mode: "uncontrolled",
-
     validate: zodResolver(createCourseSchema),
   });
 
@@ -68,7 +84,7 @@ export default function InstructorCoursesPage() {
     formData.append("title", form.getValues().title);
     formData.append("description", form.getValues().description);
     formData.append("price", String(form.getValues().price));
-    formData.append("discountedPrice", String(form.getValues().discountedPrice));
+    formData.append("discountPercentage", String(form.getValues().discountPercentage));
     formData.append("image", form.getValues().image);
     formData.append("video", form.getValues().video);
 
@@ -158,22 +174,66 @@ export default function InstructorCoursesPage() {
             {...form.getInputProps("description")}
           />
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+            {/* Price */}
             <NumberInput
+              {...form.getInputProps("price")}
               size="md"
+              min={0}
+              clampBehavior="strict"
               label="Price"
               placeholder="Enter course price"
               leftSection={<DollarSign className="size-4 text-gray-500" />}
-              {...form.getInputProps("price")}
-              className="flex-1"
             />
             <NumberInput
+              {...form.getInputProps("discountPercentage")}
               size="md"
-              label="Discounted Price"
-              placeholder="Enter discounted price"
-              leftSection={<Tag className="size-4 text-gray-500" />}
-              {...form.getInputProps("discountedPrice")}
-              className="flex-1"
+              label="Discount (%)"
+              allowDecimal={false}
+              clampBehavior="strict"
+              min={0}
+              max={100}
+              placeholder="Enter discount percentage"
+              leftSection={<TicketPercent className="size-4 text-gray-500" />}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+            {/* Course category */}
+            <Select
+              {...form.getInputProps("categoryId")}
+              placeholder={
+                isPending
+                  ? "Loading categories..."
+                  : isError
+                    ? "Failed to load"
+                    : "Select category for course"
+              }
+              data={categories?.items.map((category) => {
+                return { value: category.id, label: category.name };
+              })}
+              disabled={isPending || isError}
+              label="Category"
+              size="md"
+              searchable
+              clearable
+              checkIconPosition="right"
+              leftSection={<TagsIcon className="size-4" />}
+              comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
+            />
+            {/* Course level */}
+            <Select
+              {...form.getInputProps("level")}
+              data={[
+                { label: "Beginner", value: CourseLevel.Beginner },
+                { label: "Intermediate", value: CourseLevel.Intermediate },
+                { label: "Advanced", value: CourseLevel.Advanced },
+                { label: "All Levels", value: CourseLevel.All },
+              ]}
+              size="md"
+              label="Course level"
+              placeholder="Levels: Beginner, Intermediate, Advanced, All Levels"
+              leftSection={<ArrowUpNarrowWide className="size-4" />}
             />
           </div>
 

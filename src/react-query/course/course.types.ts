@@ -4,6 +4,12 @@ export enum CourseStatus {
   Pending = "pending",
 }
 
+export enum CourseLevel {
+  Beginner = "beginner",
+  Intermediate = "intermediate",
+  Advanced = "advanced",
+  All = "all",
+}
 export interface CourseVm {
   id: string;
   title: string;
@@ -18,7 +24,7 @@ export interface CourseVm {
   discountPercentage: number;
   discountedPrice: number;
   language: string | null;
-  level: string | null;
+  level: CourseLevel;
   studentEnrollmentCount: number;
   lectureCount: number;
   sectionCount: number;

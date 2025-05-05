@@ -90,7 +90,8 @@ export default function FileUploadField({
       <div className="flex flex-col lg:flex-row gap-4">
         <div
           className="w-full lg:w-64 h-36 border flex items-center justify-center bg-gray-50 dark:bg-gray-800
-            overflow-hidden"
+            overflow-hidden rounded-lg cursor-pointer"
+          onClick={() => openRef.current?.()}
         >
           <MediaPreview url={previewMediaUrl} type={previewMediaType} />
         </div>
