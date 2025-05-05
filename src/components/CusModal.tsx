@@ -49,7 +49,7 @@ function Body({ children }: { children: React.ReactNode }) {
   const { classNames } = useContext(ModalContext);
   return (
     <ScrollArea.Autosize className="max-h-(--modal-body-max-height)">
-      <div className={cn("px-4 py-6", classNames?.body)}>{children}</div>
+      <div className={cn("p-4", classNames?.body)}>{children}</div>
     </ScrollArea.Autosize>
   );
 }
@@ -72,7 +72,7 @@ function CusModal({
   className,
   classNames = {},
   size = "1000px",
-  bodyMaxHeight = "90vh",
+  bodyMaxHeight = "70dvh",
 }: CustomModalProps) {
   const hasCustomHeader = (children as any)?.type === Header;
   const hasCustomBody = (children as any)?.type === Body;
