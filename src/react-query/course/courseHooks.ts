@@ -19,8 +19,8 @@ export const useCreateCourse = () => {
 
   return useMutation({
     mutationFn: (course: CreateCourseRequest) => createCourse(course),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["courses", "list"] });
       showSuccessToast(
         "Course Created",
         "Course created successfully, you can check it in the list",
@@ -52,7 +52,7 @@ export const useUpdateCourse = (course: UpdateCourseRequest) => {
   return useMutation({
     mutationFn: () => updateCourse(course),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
+      queryClient.invalidateQueries({ queryKey: ["courses", "list"] });
       showSuccessToast("Course Updated", "The course was updated successfully.");
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
@@ -77,11 +77,11 @@ export const useUpdateCourse = (course: UpdateCourseRequest) => {
   });
 };
 
-export const useDeleteCourse = (id: string) => {
+export const useDeleteCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => deleteCourse(id),
+    mutationFn: (id: string) => deleteCourse(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
       showSuccessToast("Course Deleted", "The course was deleted successfully.");

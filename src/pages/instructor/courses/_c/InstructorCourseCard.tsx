@@ -3,6 +3,8 @@ import { Button, Rating } from "@mantine/core";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
 import { modals } from "@mantine/modals";
+import { formatCurrency } from "../../../../utils/formatCurrency";
+import { useDeleteCourse } from "../../../../react-query/course/courseHooks";
 
 const statusBadgeMap: Record<CourseStatus, string> = {
   [CourseStatus.Draft]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900",
@@ -17,7 +19,9 @@ interface Props {
   onDelete?: (courseId: string) => void;
 }
 
-export default function InstructorCourseCard({ course, onEdit, onDelete }: Props) {
+export default function InstructorCourseCard({ course, onEdit }: Props) {
+  const deleteCourseMutation = useDeleteCourse();
+
   const handleDeleteClick = () => {
     modals.openConfirmModal({
       title: "Confirm deletion",
@@ -30,7 +34,9 @@ export default function InstructorCourseCard({ course, onEdit, onDelete }: Props
       ),
       labels: { confirm: "Delete", cancel: "Cancel" },
       confirmProps: { color: "red" },
-      onConfirm: () => onDelete?.(course.id),
+      onConfirm: () => {
+        deleteCourseMutation.mutate(course.id);
+      },
     });
   };
 
@@ -43,20 +49,22 @@ export default function InstructorCourseCard({ course, onEdit, onDelete }: Props
         {/* Hiển thị giá */}
         {course.discountedPrice ? (
           <>
-            <span className="line-through text-gray-400">${course.price.toFixed(2)}</span>{" "}
-            <span className="font-bold">${course.discountedPrice.toFixed(2)}</span>
+            <span className="line-through text-gray-400">{formatCurrency(course.price)}</span>{" "}
+            <span className="font-bold">{formatCurrency(course.discountedPrice)}</span>
           </>
         ) : (
-          `$${course.price.toFixed(2)}`
+          `${formatCurrency(course.price)}`
         )}
       </div>
       <img
         src={course.imageUrl || "haha"}
         alt={course.title}
-        className="rounded-xl h-40 object-cover mb-4 aspect-video"
+        className="rounded-xl object-cover mb-4 aspect-video"
       />
       <div className="flex-1">
-        <h2 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">{course.title}</h2>
+        <h2 className="text-lg font-bold mb-1 text-gray-900 dark:text-white line-clamp-2">
+          {course.title}
+        </h2>
         {/* <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
           {course.description}
         </p> */}
@@ -69,7 +77,7 @@ export default function InstructorCourseCard({ course, onEdit, onDelete }: Props
         <div className="mt-4 flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
           <div className="flex items-center gap-2">
             <Users className="size-4 text-gray-500 dark:text-gray-400" />
-            <span>{course.studentEnrollmentCount.toLocaleString()} students</span>
+            <span>{course.studentEnrollmentCount} students</span>
           </div>
           <div className="flex items-center gap-2">
             <ListOrdered className="size-4 text-gray-500 dark:text-gray-400" />

@@ -25,53 +25,20 @@ import {
   CourseLevel,
   CourseStatus,
   CreateCourseRequest,
+  createCourseSchema,
 } from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
-import { useCreateCourse } from "../../../react-query/course/courseHooks";
+import { useCreateCourse, useGetCourses } from "../../../react-query/course/courseHooks";
+import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
 
 // Zod schema with file validation
-
-export const createCourseSchema = z.object({
-  title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
-  description: z
-    .string({ message: "Description is required" })
-    .min(10, "Description must be at least 10 characters"),
-  price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
-  discountPercentage: z
-    .number({ message: "Discount percentage is required" })
-    .min(0, { message: "Discount must be >= 0%" })
-    .max(100, { message: "Discount must be <= 100%" }),
-  image: z
-    .instanceof(File, { message: "Course image is required" })
-    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-      message: "Only JPG, PNG, WEBP images are allowed",
-    })
-    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
-      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
-    }),
-  promoVideo: z
-    .instanceof(File, { message: "Promotional video is required" })
-    .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
-      message: "Only MP4, WebM, or OGG videos are allowed",
-    })
-    .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
-      message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
-    }),
-  categoryId: z.string({ message: "Category is required" }).min(1, "Select a category"),
-  level: z.enum(
-    [CourseLevel.Beginner, CourseLevel.Intermediate, CourseLevel.Advanced, CourseLevel.All],
-    {
-      required_error: "Level is required",
-      invalid_type_error: "Invalid level selected",
-    },
-  ),
-});
 
 export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
   const [opened, { open, close }] = useDisclosure(false);
   const { data: categories, isPending, isError } = useGetCategories();
+  const { data: courses, isPending: isCoursesPending, isError: isCourseError } = useGetCourses();
 
   const form = useForm<CreateCourseRequest>({
     mode: "uncontrolled",
@@ -126,7 +93,9 @@ export default function InstructorCoursesPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCourses.map((course) => (
+        {isCoursesPending &&
+          Array.from({ length: 9 }).map((_, i) => <InstructorCourseCardSkeleton key={i} />)}
+        {courses?.items.map((course) => (
           <InstructorCourseCard
             key={course.id}
             course={course}
