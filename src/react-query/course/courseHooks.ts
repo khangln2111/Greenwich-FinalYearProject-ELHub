@@ -14,11 +14,11 @@ export const useGetCourseDetail = (id: string) => {
   return useQuery(keyFac.courses.detail(id));
 };
 
-export const useCreateCourse = (course: CreateCourseRequest) => {
+export const useCreateCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => createCourse(course),
+    mutationFn: (course: CreateCourseRequest) => createCourse(course),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
       showSuccessToast(

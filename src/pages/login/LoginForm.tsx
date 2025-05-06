@@ -16,7 +16,6 @@ const LoginForm = () => {
       password: "",
     },
     validate: zodResolver(loginSchema),
-    validateInputOnChange: false,
   });
 
   const { isPending: isLoginPending, mutate: loginMutate } = useLogin();

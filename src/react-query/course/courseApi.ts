@@ -1,5 +1,5 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
-import { ListData } from "../../http-client/api.types";
+import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/axios";
 import {
   CourseVm,
@@ -48,16 +48,20 @@ export const getCourseDetail = async (id: string) => {
 };
 
 export const createCourse = async (course: CreateCourseRequest) => {
-  const response = await apiClient.post<CourseVm>("/courses", course);
+  const response = await apiClient.post<ApiSuccessResponse>("/courses", course, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 
 export const updateCourse = async (course: UpdateCourseRequest) => {
-  const response = await apiClient.put<CourseVm>(`/courses/${course.id}`, course);
+  const response = await apiClient.put<ApiSuccessResponse>(`/courses/${course.id}`, course);
   return response.data;
 };
 
 export const deleteCourse = async (id: string) => {
-  const response = await apiClient.delete<CourseVm>(`/courses/${id}`);
+  const response = await apiClient.delete<ApiSuccessResponse>(`/courses/${id}`);
   return response.data;
 };

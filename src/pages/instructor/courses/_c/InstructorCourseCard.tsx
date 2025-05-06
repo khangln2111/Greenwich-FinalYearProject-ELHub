@@ -2,11 +2,13 @@
 import { Button, Rating } from "@mantine/core";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
+import { modals } from "@mantine/modals";
 
 const statusBadgeMap: Record<CourseStatus, string> = {
   [CourseStatus.Draft]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900",
   [CourseStatus.Published]: "bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900",
   [CourseStatus.Pending]: "bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-900",
+  [CourseStatus.Archived]: "bg-gray-100 text-gray-800 dark:bg-gray-200 dark:text-gray-900",
 };
 
 interface Props {
@@ -16,6 +18,22 @@ interface Props {
 }
 
 export default function InstructorCourseCard({ course, onEdit, onDelete }: Props) {
+  const handleDeleteClick = () => {
+    modals.openConfirmModal({
+      title: "Confirm deletion",
+      centered: true,
+      children: (
+        <p>
+          Are you sure you want to <strong>delete</strong> the course{" "}
+          <strong>{course.title}</strong>?
+        </p>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: () => onDelete?.(course.id),
+    });
+  };
+
   return (
     <div
       className="bg-white dark:bg-dark-6 border border-gray-200 dark:border-dark-4 rounded-2xl shadow p-4 flex
@@ -76,7 +94,7 @@ export default function InstructorCourseCard({ course, onEdit, onDelete }: Props
             color="red"
             size="xs"
             className="dark:bg-dark-4 dark:text-white"
-            onClick={() => onDelete?.(course.id)}
+            onClick={handleDeleteClick}
           >
             <Trash className="size-4" />
           </Button>

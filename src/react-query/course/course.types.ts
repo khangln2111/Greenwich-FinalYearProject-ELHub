@@ -1,7 +1,11 @@
+import { z } from "zod";
+import { createCourseSchema } from "../../pages/instructor/courses/InstructorCoursesPage";
+
 export enum CourseStatus {
   Draft = "draft",
   Published = "published",
   Pending = "pending",
+  Archived = "archived",
 }
 
 export enum CourseLevel {
@@ -34,21 +38,23 @@ export interface CourseVm {
   updatedAt: string | null;
 }
 
-export interface CreateCourseRequest {
-  title: string;
-  summary: string;
-  description: string;
-  sectionCount: number;
-  imageUrl?: string | null;
-  promoVideoUrl?: string | null;
-  price: number;
-  discountPercentage?: number;
-  discountedPrice?: number;
-  durationInSeconds?: number;
-  language?: string | null;
-  level?: string | null;
-  categoryId: string;
-}
+export type CreateCourseRequest = z.infer<typeof createCourseSchema>;
+
+// export interface CreateCourseRequest {
+//   title: string;
+//   summary: string;
+//   description: string;
+//   sectionCount: number;
+//   imageUrl?: string | null;
+//   promoVideoUrl?: string | null;
+//   price: number;
+//   discountPercentage?: number;
+//   discountedPrice?: number;
+//   durationInSeconds?: number;
+//   language?: string | null;
+//   level?: string | null;
+//   categoryId: string;
+// }
 
 export interface UpdateCourseRequest {
   id: string;

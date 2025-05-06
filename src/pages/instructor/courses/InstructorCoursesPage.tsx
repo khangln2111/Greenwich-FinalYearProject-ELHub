@@ -21,15 +21,18 @@ import {
   MAX_VIDEO_SIZE_MB,
 } from "../../../constants/ValidationConstants";
 import { useGetCategories } from "../../../react-query/category/categoryHooks";
-import { CourseLevel, CourseStatus } from "../../../react-query/course/course.types";
+import {
+  CourseLevel,
+  CourseStatus,
+  CreateCourseRequest,
+} from "../../../react-query/course/course.types";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
+import { useCreateCourse } from "../../../react-query/course/courseHooks";
 
 // Zod schema with file validation
 
-type CreateCourseFormValues = z.infer<typeof createCourseSchema>;
-
-const createCourseSchema = z.object({
+export const createCourseSchema = z.object({
   title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
   description: z
     .string({ message: "Description is required" })
@@ -47,7 +50,7 @@ const createCourseSchema = z.object({
     .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
       message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
     }),
-  video: z
+  promoVideo: z
     .instanceof(File, { message: "Promotional video is required" })
     .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
       message: "Only MP4, WebM, or OGG videos are allowed",
@@ -70,30 +73,23 @@ export default function InstructorCoursesPage() {
   const [opened, { open, close }] = useDisclosure(false);
   const { data: categories, isPending, isError } = useGetCategories();
 
-  const form = useForm<CreateCourseFormValues>({
+  const form = useForm<CreateCourseRequest>({
     mode: "uncontrolled",
     validate: zodResolver(createCourseSchema),
   });
 
-  const handleCreateCourse = async () => {
+  const createCourseMutation = useCreateCourse();
+
+  const handleCreateCourse = async (values: typeof form.values) => {
     const validation = form.validate();
     if (validation.hasErrors) return;
-
-    const formData = new FormData();
-    formData.append("title", form.getValues().title);
-    formData.append("description", form.getValues().description);
-    formData.append("price", String(form.getValues().price));
-    formData.append("discountPercentage", String(form.getValues().discountPercentage));
-    formData.append("image", form.getValues().image);
-    formData.append("video", form.getValues().video);
-
-    try {
-      console.log("Submitting course:", Object.fromEntries(formData));
-      close();
-      form.reset();
-    } catch (error) {
-      console.error("Error submitting course", error);
-    }
+    console.log("Form values:", values);
+    createCourseMutation.mutate(values, {
+      onSuccess: () => {
+        form.reset();
+        close();
+      },
+    });
   };
 
   const filteredCourses =
@@ -150,19 +146,29 @@ export default function InstructorCoursesPage() {
             <Button variant="subtle" onClick={close}>
               Cancel
             </Button>
-            <Button onClick={handleCreateCourse} variant="filled">
+            <Button
+              onClick={() =>
+                form.onSubmit(handleCreateCourse, (errors) => {
+                  const firstErrorPath = Object.keys(errors)[0];
+                  form.getInputNode(firstErrorPath)?.focus();
+                })()
+              }
+              variant="filled"
+              loading={createCourseMutation.isPending}
+            >
               Save
             </Button>
           </div>
         }
       >
-        <form className="space-y-6" onSubmit={form.onSubmit(handleCreateCourse)}>
+        <form className="space-y-6" noValidate>
           <TextInput
             size="md"
             label="Title"
             placeholder="Enter course title"
             leftSection={<FileText className="size-4 text-gray-500" />}
             {...form.getInputProps("title")}
+            key={form.key("title")}
           />
 
           <Textarea
@@ -172,21 +178,22 @@ export default function InstructorCoursesPage() {
             autosize
             leftSection={<Info className="size-4 text-gray-500" />}
             {...form.getInputProps("description")}
+            key={form.key("description")}
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
             {/* Price */}
             <NumberInput
-              {...form.getInputProps("price")}
               size="md"
               min={0}
               clampBehavior="strict"
               label="Price"
               placeholder="Enter course price"
               leftSection={<DollarSign className="size-4 text-gray-500" />}
+              {...form.getInputProps("price")}
+              key={form.key("price")}
             />
             <NumberInput
-              {...form.getInputProps("discountPercentage")}
               size="md"
               label="Discount (%)"
               allowDecimal={false}
@@ -195,13 +202,14 @@ export default function InstructorCoursesPage() {
               max={100}
               placeholder="Enter discount percentage"
               leftSection={<TicketPercent className="size-4 text-gray-500" />}
+              {...form.getInputProps("discountPercentage")}
+              key={form.key("discountPercentage")}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
             {/* Course category */}
             <Select
-              {...form.getInputProps("categoryId")}
               placeholder={
                 isPending
                   ? "Loading categories..."
@@ -220,10 +228,11 @@ export default function InstructorCoursesPage() {
               checkIconPosition="right"
               leftSection={<TagsIcon className="size-4" />}
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
+              {...form.getInputProps("categoryId")}
+              key={form.key("categoryId")}
             />
             {/* Course level */}
             <Select
-              {...form.getInputProps("level")}
               data={[
                 { label: "Beginner", value: CourseLevel.Beginner },
                 { label: "Intermediate", value: CourseLevel.Intermediate },
@@ -234,27 +243,31 @@ export default function InstructorCoursesPage() {
               label="Course level"
               placeholder="Levels: Beginner, Intermediate, Advanced, All Levels"
               leftSection={<ArrowUpNarrowWide className="size-4" />}
+              {...form.getInputProps("level")}
+              key={form.key("level")}
             />
           </div>
 
           {/* Image Upload */}
           <FileUploadField
-            {...form.getInputProps("image")}
             label="Course Image"
             accept={ALLOWED_IMAGE_TYPES}
             previewMediaType="image"
             description={`Upload an image (JPG, PNG, WEBP - max ${MAX_IMAGE_SIZE_MB}MB)`}
             maxSize={MAX_IMAGE_SIZE_MB * 1024 * 1024}
+            {...form.getInputProps("image")}
+            key={form.key("image")}
           />
 
           {/* Video Upload */}
           <FileUploadField
-            {...form.getInputProps("video")}
             label="Promotional Video"
             accept={ALLOWED_VIDEO_TYPES}
             previewMediaType="video"
             description={`Upload a video (MP4, WebM, OGG - max ${MAX_VIDEO_SIZE_MB}MB)`}
             maxSize={MAX_VIDEO_SIZE_MB * 1024 * 1024}
+            {...form.getInputProps("promoVideo")}
+            key={form.key("promoVideo")}
           />
         </form>
       </CusModal>
