@@ -9,10 +9,11 @@ import {
 } from "./course.types";
 
 const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
-  const queryBuilder = new GridifyQueryBuilder().addOrderBy("createdAt", false);
+  const queryBuilder = new GridifyQueryBuilder();
 
   queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
+  queryBuilder.addOrderBy("createdAt", true);
 
   if (query.search) {
     queryBuilder

@@ -111,7 +111,25 @@ export default function InstructorCoursesPage() {
         onClose={close}
         title="Create New Course"
         footer={
-          <div className="flex gap-4 justify-end">
+          <div className="flex gap-4 justify-end items-center">
+            <Button
+              variant="light"
+              size="xs"
+              onClick={() => {
+                const random = mockCourses[Math.floor(Math.random() * mockCourses.length)];
+                form.setValues({
+                  title: random.title,
+                  description: random.description,
+                  price: random.price,
+                  discountPercentage: random.discountPercentage,
+                  level: random.level,
+                  image: undefined,
+                  promoVideo: undefined,
+                });
+              }}
+            >
+              🎲 Fill with random data
+            </Button>
             <Button variant="subtle" onClick={close}>
               Cancel
             </Button>

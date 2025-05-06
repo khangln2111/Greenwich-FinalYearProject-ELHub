@@ -24,11 +24,11 @@ const App = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools buttonPosition="bottom-left" />
         <IdentityProvider>
           <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">
             <ModalsProvider>
               <Notifications />
-              <ReactQueryDevtools />
               <RouterProvider router={router} />
             </ModalsProvider>
           </GoogleOAuthProvider>
