@@ -1,11 +1,11 @@
 // components/InstructorCourseCard.tsx
 import { Button, Rating } from "@mantine/core";
-import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
-import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
 import { modals } from "@mantine/modals";
-import { formatCurrency } from "../../../../utils/formatCurrency";
-import { useDeleteCourse } from "../../../../react-query/course/courseHooks";
+import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
+import { useDeleteCourse } from "../../../../react-query/course/courseHooks";
+import { formatCurrency } from "../../../../utils/formatCurrency";
 
 const statusBadgeMap: Record<CourseStatus, string> = {
   [CourseStatus.Draft]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900",
@@ -16,11 +16,9 @@ const statusBadgeMap: Record<CourseStatus, string> = {
 
 interface Props {
   course: CourseVm;
-  onEdit?: (course: CourseVm) => void;
-  onDelete?: (courseId: string) => void;
 }
 
-export default function InstructorCourseCard({ course, onEdit }: Props) {
+export default function InstructorCourseCard({ course }: Props) {
   const deleteCourseMutation = useDeleteCourse();
   const navigate = useNavigate();
 

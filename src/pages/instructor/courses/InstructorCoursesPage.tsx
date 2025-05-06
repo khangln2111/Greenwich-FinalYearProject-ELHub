@@ -5,8 +5,10 @@ import {
   ArrowUpNarrowWide,
   DollarSign,
   FileText,
+  FileType,
   Info,
   Plus,
+  ScrollText,
   TagsIcon,
   TicketPercent,
 } from "lucide-react";
@@ -94,14 +96,7 @@ export default function InstructorCoursesPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {isCoursesPending &&
           Array.from({ length: 9 }).map((_, i) => <InstructorCourseCardSkeleton key={i} />)}
-        {courses?.items.map((course) => (
-          <InstructorCourseCard
-            key={course.id}
-            course={course}
-            onEdit={(c) => console.log("Edit", c)}
-            onDelete={(id) => console.log("Delete", id)}
-          />
-        ))}
+        {courses?.items.map((course) => <InstructorCourseCard key={course.id} course={course} />)}
       </div>
 
       <CusModal
@@ -150,7 +145,7 @@ export default function InstructorCoursesPage() {
             size="md"
             label="Title"
             placeholder="Enter course title"
-            leftSection={<FileText className="size-4 text-gray-500" />}
+            leftSection={<FileType className="size-4 text-gray-500" />}
             {...form.getInputProps("title")}
             key={form.key("title")}
           />
@@ -160,7 +155,7 @@ export default function InstructorCoursesPage() {
             label="Description"
             placeholder="Enter course description"
             autosize
-            leftSection={<Info className="size-4 text-gray-500" />}
+            leftSection={<ScrollText className="size-4 text-gray-500" />}
             {...form.getInputProps("description")}
             key={form.key("description")}
           />
