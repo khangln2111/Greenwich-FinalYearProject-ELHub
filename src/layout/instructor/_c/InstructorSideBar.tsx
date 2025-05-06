@@ -10,7 +10,7 @@ type InstructorSidebarProps = {
 };
 
 const navItems = [
-  { href: "/instructor/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
+  { href: "/instructor", label: "Dashboard", icon: LayoutDashboardIcon },
   {
     href: "/instructor/courses",
     label: "Course Management",

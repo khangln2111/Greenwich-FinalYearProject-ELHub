@@ -5,6 +5,7 @@ import { CourseStatus, CourseVm } from "../../../../react-query/course/course.ty
 import { modals } from "@mantine/modals";
 import { formatCurrency } from "../../../../utils/formatCurrency";
 import { useDeleteCourse } from "../../../../react-query/course/courseHooks";
+import { useNavigate } from "react-router-dom";
 
 const statusBadgeMap: Record<CourseStatus, string> = {
   [CourseStatus.Draft]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900",
@@ -21,6 +22,7 @@ interface Props {
 
 export default function InstructorCourseCard({ course, onEdit }: Props) {
   const deleteCourseMutation = useDeleteCourse();
+  const navigate = useNavigate();
 
   const handleDeleteClick = () => {
     modals.openConfirmModal({
@@ -111,7 +113,7 @@ export default function InstructorCourseCard({ course, onEdit }: Props) {
             color="primary"
             variant="default"
             className="dark:bg-dark-4 dark:text-white"
-            onClick={() => onEdit?.(course)}
+            onClick={() => navigate(`/instructor/courses/${course.id}/edit`)}
           >
             <Pencil className="size-4" />
           </Button>

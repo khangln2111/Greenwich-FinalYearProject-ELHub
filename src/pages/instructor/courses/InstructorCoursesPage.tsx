@@ -11,7 +11,6 @@ import {
   TicketPercent,
 } from "lucide-react";
 import { useState } from "react";
-import { z } from "zod";
 import CusModal from "../../../components/CusModal";
 import FileUploadField from "../../../components/FileUploadField";
 import {
@@ -27,9 +26,9 @@ import {
   CreateCourseRequest,
   createCourseSchema,
 } from "../../../react-query/course/course.types";
+import { useCreateCourse, useGetCourses } from "../../../react-query/course/courseHooks";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
-import { useCreateCourse, useGetCourses } from "../../../react-query/course/courseHooks";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
 
 // Zod schema with file validation
@@ -123,8 +122,6 @@ export default function InstructorCoursesPage() {
                   price: random.price,
                   discountPercentage: random.discountPercentage,
                   level: random.level,
-                  image: undefined,
-                  promoVideo: undefined,
                 });
               }}
             >
