@@ -8,7 +8,7 @@ import ReviewTab from "../../course-detail/_c/ReviewTab";
 import OverviewForm from "./_c/OverviewForm";
 
 export default function UpdateCoursePage() {
-  const [activeTab, setActiveTab] = useState("curriculum");
+  const [activeTab, setActiveTab] = useState("overview");
 
   return (
     <div className="flex-1 p-6 xl:p-8">
