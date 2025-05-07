@@ -39,7 +39,7 @@ export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
   const [opened, { open, close }] = useDisclosure(false);
   const { data: categories, isPending, isError } = useGetCategories();
-  const { data: courses, isPending: isCoursesPending, isError: isCourseError } = useGetCourses();
+  const { data: courses, isPending: isCoursesPending } = useGetCourses();
 
   const form = useForm<CreateCourseRequest>({
     mode: "uncontrolled",

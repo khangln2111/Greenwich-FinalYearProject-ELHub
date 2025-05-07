@@ -169,7 +169,7 @@ const CourseDetailPage = () => {
             />
             <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
             {/* Tab Content */}
-            <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-3">
+            <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-7">
               <div>
                 {/* overview about course */}
                 <Tabs.Panel value="overview">
