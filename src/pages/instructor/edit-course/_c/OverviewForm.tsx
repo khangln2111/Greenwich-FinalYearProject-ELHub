@@ -1,18 +1,8 @@
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Center,
-  Group,
-  Stack,
-  TextInput,
-  Textarea,
-  Title,
-} from "@mantine/core";
+import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
+import { ActionIcon, Box, Button, Center, Group, Textarea, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconGripVertical, IconPlus, IconTrash } from "@tabler/icons-react";
 import { z } from "zod";
-import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
 
 const overviewSchema = z.object({
   title: z.string().min(1, "Course title is required"),
@@ -66,7 +56,17 @@ const OverviewForm = ({
   };
 
   return (
-    <Box component="form" onSubmit={form.onSubmit(onSubmit || (() => {}))} className="space-y-6">
+    <Box
+      component="form"
+      onSubmit={form.onSubmit(
+        onSubmit ||
+          (() => {
+            // Default submit handler
+            console.log("Form submitted", form.values);
+          }),
+      )}
+      className="flex-1 flex flex-col gap-6"
+    >
       <div>
         <Title order={3}>Course Title</Title>
         <TextInput placeholder="Enter course title" mt="xs" {...form.getInputProps("title")} />
@@ -89,53 +89,40 @@ const OverviewForm = ({
           <Title order={3}>What will students learn in your course?</Title>
           <Droppable droppableId="learningOutcomes" type="learningOutcomes">
             {(provided) => (
-              <div
-                className="flex flex-col gap-2 mt-xs"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {form.values.learningOutcomes.map((_, index) => (
+              <div className="mt-xs" {...provided.droppableProps} ref={provided.innerRef}>
+                {form.getValues().learningOutcomes.map((_, index) => (
                   <Draggable
                     key={`learning-${index}`}
-                    draggableId={`learning-${index}`}
                     index={index}
+                    draggableId={`learning-${index}`}
                   >
                     {(draggableProvided) => (
                       <div
+                        className="mb-4"
                         ref={draggableProvided.innerRef}
                         {...draggableProvided.draggableProps}
-                        style={{
-                          ...draggableProvided.draggableProps.style,
-                          padding: "4px 0",
-                          minHeight: 56,
-                        }}
                       >
-                        <div className="flex items-center gap-2">
-                          <TextInput
-                            placeholder={`Learning Outcome ${index + 1}`}
-                            className="flex-1"
-                            {...form.getInputProps(`learningOutcomes.${index}`)}
-                            leftSection={
-                              <Center
-                                {...draggableProvided.dragHandleProps}
-                                className="cursor-grab"
-                              >
-                                <IconGripVertical size={18} />
-                              </Center>
-                            }
-                            leftSectionPointerEvents="all"
-                            rightSection={
-                              <ActionIcon
-                                onClick={() => removeLearning(index)}
-                                variant="light"
-                                color="red"
-                              >
-                                <IconTrash size={18} />
-                              </ActionIcon>
-                            }
-                            rightSectionPointerEvents="all"
-                          />
-                        </div>
+                        <TextInput
+                          placeholder={`Learning Outcome ${index + 1}`}
+                          {...form.getInputProps(`learningOutcomes.${index}`)}
+                          key={form.key(`learningOutcomes.${index}`)}
+                          leftSection={
+                            <Center {...draggableProvided.dragHandleProps} className="cursor-grab">
+                              <IconGripVertical size={18} />
+                            </Center>
+                          }
+                          leftSectionPointerEvents="all"
+                          rightSection={
+                            <ActionIcon
+                              onClick={() => removeLearning(index)}
+                              variant="light"
+                              color="red"
+                            >
+                              <IconTrash size={18} />
+                            </ActionIcon>
+                          }
+                          rightSectionPointerEvents="all"
+                        />
                       </div>
                     )}
                   </Draggable>
@@ -157,21 +144,26 @@ const OverviewForm = ({
         {/* Prerequisites */}
         <div>
           <Title order={3}>Course Prerequisites</Title>
-          <Droppable droppableId="prerequisites" type="prerequisites">
+          <Droppable droppableId="prerequisites" type="prerequisites" direction="vertical">
             {(provided) => (
-              <div className="space-y-5 mt-xs" {...provided.droppableProps} ref={provided.innerRef}>
-                {form.values.prerequisites.map((_, index) => (
+              <div className="mt-xs" {...provided.droppableProps} ref={provided.innerRef}>
+                {form.getValues().prerequisites.map((_, index) => (
                   <Draggable
                     key={`prerequisite-${index}`}
                     draggableId={`prerequisite-${index}`}
                     index={index}
                   >
                     {(draggableProvided) => (
-                      <div ref={draggableProvided.innerRef} {...draggableProvided.draggableProps}>
+                      <div
+                        className="mb-4"
+                        ref={draggableProvided.innerRef}
+                        {...draggableProvided.draggableProps}
+                      >
                         <TextInput
+                          {...form.getInputProps(`prerequisites.${index}`)}
+                          key={form.key(`prerequisites.${index}`)}
                           placeholder={`Prerequisite ${index + 1}`}
                           className="flex-1"
-                          {...form.getInputProps(`prerequisites.${index}`)}
                           leftSection={
                             <Center {...draggableProvided.dragHandleProps} className="cursor-grab">
                               <IconGripVertical size={18} />
@@ -181,7 +173,7 @@ const OverviewForm = ({
                           rightSection={
                             <ActionIcon
                               onClick={() => removePrerequisite(index)}
-                              variant="light"
+                              variant="subtle"
                               color="red"
                             >
                               <IconTrash size={18} />
@@ -201,7 +193,7 @@ const OverviewForm = ({
             leftSection={<IconPlus size={18} />}
             variant="subtle"
             onClick={addPrerequisite}
-            className="w-fit mt-md"
+            className="w-fit"
           >
             Add Prerequisite
           </Button>
