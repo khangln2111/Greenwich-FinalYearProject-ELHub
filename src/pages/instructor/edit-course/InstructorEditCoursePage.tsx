@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import CurriculumTab from "../../course-detail/_c/CurriculumTab";
 import InstructorTab from "../../course-detail/_c/InstructorTab";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
-import OverviewForm from "./_c/OverviewForm";
+import OverviewForm from "./_c/OverviewForm/OverviewForm";
 
 export default function UpdateCoursePage() {
   const [activeTab, setActiveTab] = useState("overview");
