@@ -14,50 +14,36 @@ import {
   UpdateCourseOverviewFormSchema,
   UpdateCourseOverviewFormValues,
 } from "../../../../../react-query/course/course.schema";
-import { UpdateCourseRequest } from "../../../../../react-query/course/course.types";
-import { useGetCourseDetail, useUpdateCourse } from "../../../../../react-query/course/courseHooks";
+import { CourseVm, UpdateCourseRequest } from "../../../../../react-query/course/course.types";
+import { useUpdateCourse } from "../../../../../react-query/course/courseHooks";
 import SortableInputList from "./SortableInputList";
 
 type CourseOverviewFormProps = {
-  defaultValues?: UpdateCourseOverviewFormValues;
+  courseDetail: CourseVm;
   courseId: string;
 };
 
-const OverviewForm = ({ defaultValues, courseId }: CourseOverviewFormProps) => {
+const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   // using react query to get coruse detail data
-  const { data, isPending, isError } = useGetCourseDetail(courseId);
 
   const updateCourseOverviewMutation = useUpdateCourse();
+  console.log("courseDetail", courseDetail);
+
+  const defaultValues = {
+    title: courseDetail?.title,
+    description: courseDetail?.description,
+    learningOutcomes:
+      courseDetail?.learningOutcomes?.map((value) => ({ id: randomId(), value })) ?? [],
+    prerequisites: courseDetail?.prerequisites?.map((value) => ({ id: randomId(), value })) ?? [],
+    image: courseDetail?.imageUrl ?? "",
+    promoVideo: courseDetail?.promoVideoUrl ?? "",
+  };
 
   const form = useForm<UpdateCourseOverviewFormValues>({
     mode: "uncontrolled",
-    initialValues: defaultValues || {
-      title: "",
-      description: "",
-      learningOutcomes: [{ id: randomId(), value: "" }],
-      prerequisites: [{ id: randomId(), value: "" }],
-      image: "",
-      promoVideo: "",
-    },
+    initialValues: defaultValues,
     validate: zodResolver(UpdateCourseOverviewFormSchema),
   });
-
-  useEffect(() => {
-    if (data) {
-      form.initialize({
-        title: data.title,
-        description: data.description,
-        learningOutcomes: data.learningOutcomes?.map((value) => ({ id: randomId(), value })) ?? [],
-        prerequisites: data.prerequisites?.map((value) => ({ id: randomId(), value })) ?? [],
-        image: data.imageUrl ?? "",
-        promoVideo: data.promoVideoUrl ?? "",
-      });
-    }
-  }, [data]);
-
-  if (isPending) return <div>Loading...</div>;
-
-  console.log("form values", form.getValues());
 
   const addLearning = () => form.insertListItem("learningOutcomes", { id: randomId(), value: "" });
   const removeLearning = (index: number) => form.removeListItem("learningOutcomes", index);
@@ -96,7 +82,11 @@ const OverviewForm = ({ defaultValues, courseId }: CourseOverviewFormProps) => {
       image: values.image instanceof File ? values.image : undefined,
       promoVideo: values.promoVideo instanceof File ? values.promoVideo : undefined,
     };
-    updateCourseOverviewMutation.mutate(payload);
+    updateCourseOverviewMutation.mutate(payload, {
+      onSuccess: () => {
+        form.resetDirty();
+      },
+    });
   };
 
   return (
