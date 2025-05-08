@@ -1,53 +1,52 @@
 import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
 import { ActionIcon, Box, Button, Center, Group, Textarea, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { randomId } from "@mantine/hooks";
 import { IconGripVertical, IconPlus, IconTrash } from "@tabler/icons-react";
-import { z } from "zod";
-
-const overviewSchema = z.object({
-  title: z.string().min(1, "Course title is required"),
-  description: z.string().min(1, "Course description is required"),
-  learningOutcomes: z.array(z.string().min(1, "Cannot be empty")),
-  prerequisites: z.array(z.string().min(1, "Cannot be empty")),
-});
-
-type OverviewFormValues = z.infer<typeof overviewSchema>;
+import {
+  UpdateCourseOverviewFormSchema,
+  UpdateCourseOverviewFormValues,
+  UpdateCourseOverviewRequest,
+  UpdateCourseOverviewRequestSchema,
+} from "../../../../react-query/course/course.schema";
 
 const OverviewForm = ({
   defaultValues,
-  onSubmit,
+  courseId,
 }: {
-  defaultValues?: OverviewFormValues;
-  onSubmit?: (values: OverviewFormValues, event?: React.FormEvent<HTMLFormElement>) => void;
+  defaultValues?: UpdateCourseOverviewFormValues;
+  courseId: string;
 }) => {
-  const form = useForm<OverviewFormValues>({
+  const form = useForm<UpdateCourseOverviewFormValues>({
+    mode: "uncontrolled",
     initialValues: defaultValues || {
       title: "",
       description: "",
-      learningOutcomes: [""],
-      prerequisites: [""],
+      learningOutcomes: [{ id: randomId(), value: "" }],
+      prerequisites: [{ id: randomId(), value: "" }],
+      image: "",
+      promoVideo: "",
     },
-    validate: zodResolver(overviewSchema),
+    validate: zodResolver(UpdateCourseOverviewFormSchema),
   });
 
-  const addLearning = () => form.insertListItem("learningOutcomes", "");
+  const addLearning = () => form.insertListItem("learningOutcomes", { id: randomId(), value: "" });
   const removeLearning = (index: number) => form.removeListItem("learningOutcomes", index);
 
-  const addPrerequisite = () => form.insertListItem("prerequisites", "");
+  const addPrerequisite = () => form.insertListItem("prerequisites", { id: randomId(), value: "" });
   const removePrerequisite = (index: number) => form.removeListItem("prerequisites", index);
 
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
 
-    if (result.type === "learningOutcomes") {
+    const type = result.type;
+    if (type === "learningOutcomes") {
       form.reorderListItem("learningOutcomes", {
         from: source.index,
         to: destination.index,
       });
-    }
-
-    if (result.type === "prerequisites") {
+    } else if (type === "prerequisites") {
       form.reorderListItem("prerequisites", {
         from: source.index,
         to: destination.index,
@@ -55,16 +54,15 @@ const OverviewForm = ({
     }
   };
 
+  const handleSubmit = (values: UpdateCourseOverviewFormValues) => {
+    const payload: UpdateCourseOverviewRequest = UpdateCourseOverviewRequestSchema.parse(values);
+    console.log(payload);
+  };
+
   return (
     <Box
       component="form"
-      onSubmit={form.onSubmit(
-        onSubmit ||
-          (() => {
-            // Default submit handler
-            console.log("Form submitted", form.values);
-          }),
-      )}
+      onSubmit={form.onSubmit(handleSubmit)}
       className="flex-1 flex flex-col gap-6"
     >
       <div>
@@ -90,12 +88,8 @@ const OverviewForm = ({
           <Droppable droppableId="learningOutcomes" type="learningOutcomes">
             {(provided) => (
               <div className="mt-xs" {...provided.droppableProps} ref={provided.innerRef}>
-                {form.getValues().learningOutcomes.map((_, index) => (
-                  <Draggable
-                    key={`learning-${index}`}
-                    index={index}
-                    draggableId={`learning-${index}`}
-                  >
+                {form.getValues().learningOutcomes.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(draggableProvided) => (
                       <div
                         className="mb-4"
@@ -104,8 +98,8 @@ const OverviewForm = ({
                       >
                         <TextInput
                           placeholder={`Learning Outcome ${index + 1}`}
-                          {...form.getInputProps(`learningOutcomes.${index}`)}
-                          key={form.key(`learningOutcomes.${index}`)}
+                          {...form.getInputProps(`learningOutcomes.${index}.value`)}
+                          key={form.key(`learningOutcomes.${index}.value`)}
                           leftSection={
                             <Center {...draggableProvided.dragHandleProps} className="cursor-grab">
                               <IconGripVertical size={18} />
@@ -144,15 +138,11 @@ const OverviewForm = ({
         {/* Prerequisites */}
         <div>
           <Title order={3}>Course Prerequisites</Title>
-          <Droppable droppableId="prerequisites" type="prerequisites" direction="vertical">
+          <Droppable droppableId="prerequisites" type="prerequisites">
             {(provided) => (
               <div className="mt-xs" {...provided.droppableProps} ref={provided.innerRef}>
-                {form.getValues().prerequisites.map((_, index) => (
-                  <Draggable
-                    key={`prerequisite-${index}`}
-                    draggableId={`prerequisite-${index}`}
-                    index={index}
-                  >
+                {form.getValues().prerequisites.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(draggableProvided) => (
                       <div
                         className="mb-4"
@@ -160,10 +150,9 @@ const OverviewForm = ({
                         {...draggableProvided.draggableProps}
                       >
                         <TextInput
-                          {...form.getInputProps(`prerequisites.${index}`)}
-                          key={form.key(`prerequisites.${index}`)}
                           placeholder={`Prerequisite ${index + 1}`}
-                          className="flex-1"
+                          {...form.getInputProps(`prerequisites.${index}.value`)}
+                          key={form.key(`prerequisites.${index}.value`)}
                           leftSection={
                             <Center {...draggableProvided.dragHandleProps} className="cursor-grab">
                               <IconGripVertical size={18} />

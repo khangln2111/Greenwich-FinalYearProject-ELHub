@@ -41,7 +41,7 @@ export default function UpdateCoursePage() {
           { label: "Instructor", value: "instructor" },
         ]}
         size="sm"
-        className="w-full mt-5 grid grid-cols-2 md:grid-flow-col md:auto-cols-fr"
+        className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
         classNames={{
           root: "bg-white dark:bg-dark-6 shadow-sm border p-[10px]",
           indicator: "bg-linear-to-r bg-blue-5",
@@ -55,7 +55,7 @@ export default function UpdateCoursePage() {
         <div>
           {/* overview about course */}
           <Tabs.Panel value="overview">
-            <OverviewForm />
+            <OverviewForm courseId={""} />
           </Tabs.Panel>
           {/* course curriculum */}
           <Tabs.Panel value="curriculum">
