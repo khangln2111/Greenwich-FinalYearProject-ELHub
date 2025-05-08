@@ -28,6 +28,8 @@ export interface CourseVm {
   discountedPrice: number;
   language: string | null;
   level: CourseLevel;
+  learningOutcomes: string[] | null;
+  prerequisites: string[] | null;
   studentEnrollmentCount: number;
   lectureCount: number;
   sectionCount: number;
@@ -49,6 +51,8 @@ export interface UpdateCourseRequest {
   discountPercentage?: number;
   discountedPrice?: number;
   durationInSeconds?: number;
+  learningOutcomes?: string[];
+  prerequisites?: string[];
   language?: string;
   level?: string;
   categoryId?: string;

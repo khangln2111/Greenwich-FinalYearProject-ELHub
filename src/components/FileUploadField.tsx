@@ -6,14 +6,14 @@ import { useUncontrolled } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { Accept } from "react-dropzone-esm";
 interface FileUploadFieldProps {
-  label: string;
+  label?: string;
   description?: string;
   error?: string;
   accept: string[] | Accept;
   value?: File;
   defaultValue?: File;
   onChange: (file: File) => void;
-  preview?: string;
+  previewUrl?: string;
   previewMediaType: "image" | "video";
   maxSize?: number;
 }
@@ -59,7 +59,7 @@ export default function FileUploadField({
   value,
   defaultValue,
   onChange,
-  preview, // Optional preview
+  previewUrl, // Optional preview
   previewMediaType,
   maxSize,
 }: FileUploadFieldProps) {
@@ -70,11 +70,13 @@ export default function FileUploadField({
     onChange,
   });
 
-  const [previewMediaUrl, setPreviewMediaUrl] = useState<string | null>(preview ?? null);
+  const [previewMediaUrl, setPreviewMediaUrl] = useState<string | null>(previewUrl ?? null);
 
   useEffect(() => {
-    setPreviewMediaUrl(preview ?? null);
-  }, [preview]);
+    if (!value && previewUrl) {
+      setPreviewMediaUrl(previewUrl);
+    }
+  }, [previewUrl, value]);
 
   const handleFileSelect = (files: File[]) => {
     const file = files[0];

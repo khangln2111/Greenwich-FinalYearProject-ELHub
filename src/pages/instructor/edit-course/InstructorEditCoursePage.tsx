@@ -1,7 +1,7 @@
 import { Button, SegmentedControl, Tabs } from "@mantine/core";
 import { IconArrowLeft, IconPencil } from "@tabler/icons-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import CurriculumTab from "../../course-detail/_c/CurriculumTab";
 import InstructorTab from "../../course-detail/_c/InstructorTab";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
@@ -9,6 +9,12 @@ import OverviewForm from "./_c/OverviewForm/OverviewForm";
 
 export default function UpdateCoursePage() {
   const [activeTab, setActiveTab] = useState("overview");
+
+  const { courseId } = useParams<{ courseId: string }>();
+
+  if (!courseId) {
+    return <Navigate to="/instructor/courses" replace />;
+  }
 
   return (
     <div className="flex-1 p-6 xl:p-8">
@@ -55,7 +61,7 @@ export default function UpdateCoursePage() {
         <div>
           {/* overview about course */}
           <Tabs.Panel value="overview">
-            <OverviewForm courseId={""} />
+            <OverviewForm courseId={courseId} />
           </Tabs.Panel>
           {/* course curriculum */}
           <Tabs.Panel value="curriculum">

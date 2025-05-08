@@ -83,12 +83,12 @@ export const UpdateCourseOverviewFormSchema = z.object({
 
 export type UpdateCourseOverviewFormValues = z.infer<typeof UpdateCourseOverviewFormSchema>;
 
-export const UpdateCourseOverviewRequestSchema = UpdateCourseOverviewFormSchema.transform(
-  (data) => ({
-    ...data,
-    learningOutcomes: data.learningOutcomes.map((item) => item.value),
-    prerequisites: data.prerequisites.map((item) => item.value),
-  }),
-);
+export const UpdateCourseOverviewRequestSchema = UpdateCourseOverviewFormSchema.extend({
+  id: z.string(),
+}).transform((data) => ({
+  ...data,
+  learningOutcomes: data.learningOutcomes.map((item) => item.value),
+  prerequisites: data.prerequisites.map((item) => item.value),
+}));
 
 export type UpdateCourseOverviewRequest = z.infer<typeof UpdateCourseOverviewRequestSchema>;

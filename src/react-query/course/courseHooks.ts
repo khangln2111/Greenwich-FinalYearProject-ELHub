@@ -2,9 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { CourseQueryCriteria, CreateCourseRequest, UpdateCourseRequest } from "./course.types";
 import { createCourse, deleteCourse, updateCourse } from "./courseApi";
 import { keyFac } from "../common-service/queryKeyFactory";
+import { CreateCourseRequest } from "./course.schema";
+import { CourseQueryCriteria, UpdateCourseRequest } from "./course.types";
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
   return useQuery(keyFac.courses.list(query));
@@ -46,13 +47,14 @@ export const useCreateCourse = () => {
   });
 };
 
-export const useUpdateCourse = (course: UpdateCourseRequest) => {
+export const useUpdateCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => updateCourse(course),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["courses", "list"] });
+    mutationFn: (course: UpdateCourseRequest) => updateCourse(course),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses.detail(variables.id).queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
       showSuccessToast("Course Updated", "The course was updated successfully.");
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {

@@ -1,4 +1,4 @@
-import { Title, Accordion, Button, Text } from "@mantine/core";
+import { Accordion, Button, Text, Title } from "@mantine/core";
 import { ChevronDownIcon, Video } from "lucide-react";
 
 const sections = [
