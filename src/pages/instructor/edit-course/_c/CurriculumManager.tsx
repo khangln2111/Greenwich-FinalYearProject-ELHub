@@ -1,49 +1,170 @@
 import { Accordion, Button, Text, Title } from "@mantine/core";
 import { ChevronDownIcon, Video } from "lucide-react";
+import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
+import { useState } from "react";
+import { randomId } from "@mantine/hooks";
+import { cn } from "../../../../utils/cn";
 
-const sections = [
+const initialSections = [
   {
+    id: randomId(),
     title: "Chapter 1: Building Responsive & Adaptive User Interfaces [EXPENSE TRACKER APP]",
-    totalLectures: 8,
-    totalDuration: "1h 45m",
     lectures: [
-      { title: "Introduction to UX/UI Design", canPreview: true, duration: "5:15" },
-      { title: "UX Writing & Content Strategy", canPreview: false, duration: "10:30" },
-      { title: "Design Thinking & User Research", canPreview: true, duration: "15:45" },
-      { title: "Usability Testing & Iteration", canPreview: true, duration: "18:20:00" },
-      { title: "Submit a pull request once you are done", canPreview: false, duration: "25:00" },
+      {
+        id: randomId(),
+        title: "Introduction to UX/UI Design",
+        canPreview: true,
+        duration: "5:15",
+      },
+      {
+        id: randomId(),
+        title: "UX Writing & Content Strategy",
+        canPreview: false,
+        duration: "10:30",
+      },
+      {
+        id: randomId(),
+        title: "Design Thinking & User Research",
+        canPreview: true,
+        duration: "15:45",
+      },
+      {
+        id: randomId(),
+        title: "Usability Testing & Iteration",
+        canPreview: true,
+        duration: "18:20",
+      },
+      {
+        id: randomId(),
+        title: "Submit a pull request once you are done",
+        canPreview: false,
+        duration: "25:00",
+      },
     ],
   },
   {
+    id: randomId(),
     title: "Chapter 2: Advanced Techniques",
-    totalLectures: 10,
-    totalDuration: "2h 15m",
     lectures: [
-      { title: "Photo Editing Basics", canPreview: true, duration: "5:15" },
-      { title: "Advanced Photoshop Techniques", canPreview: false, duration: "10:30" },
-      { title: "Creating Stunning Visuals", canPreview: false, duration: "15:45" },
-      { title: "Photo Retouching & Restoration", canPreview: true, duration: "20:00" },
-      { title: "Submit a pull request once you are done", canPreview: false, duration: "25:00" },
+      {
+        id: randomId(),
+        title: "Photo Editing Basics",
+        canPreview: true,
+        duration: "5:15",
+      },
+      {
+        id: randomId(),
+        title: "Advanced Photoshop Techniques",
+        canPreview: false,
+        duration: "10:30",
+      },
+      {
+        id: randomId(),
+        title: "Creating Stunning Visuals",
+        canPreview: false,
+        duration: "15:45",
+      },
+      {
+        id: randomId(),
+        title: "Photo Retouching & Restoration",
+        canPreview: true,
+        duration: "20:00",
+      },
+      {
+        id: randomId(),
+        title: "Submit a pull request once you are done",
+        canPreview: false,
+        duration: "25:00",
+      },
     ],
   },
   {
+    id: randomId(),
     title: "Chapter 3: Mockups & Prototypes",
-    totalLectures: 5,
-    totalDuration: "1h 30m",
     lectures: [
-      { title: "Previewing Your Work", canPreview: true, duration: "5:15" },
-      { title: "Sharing with Clients", canPreview: false, duration: "10:30" },
-      { title: "Creating Mockups", canPreview: false, duration: "15:45" },
-      { title: "Feedback & Revisions", canPreview: true, duration: "20:00" },
-      { title: "Submit a pull request once you are done", canPreview: false, duration: "25:00" },
+      {
+        id: randomId(),
+        title: "Previewing Your Work",
+        canPreview: true,
+        duration: "5:15",
+      },
+      {
+        id: randomId(),
+        title: "Sharing with Clients",
+        canPreview: false,
+        duration: "10:30",
+      },
+      {
+        id: randomId(),
+        title: "Creating Mockups",
+        canPreview: false,
+        duration: "15:45",
+      },
+      {
+        id: randomId(),
+        title: "Feedback & Revisions",
+        canPreview: true,
+        duration: "20:00",
+      },
+      {
+        id: randomId(),
+        title: "Submit a pull request once you are done",
+        canPreview: false,
+        duration: "25:00",
+      },
     ],
   },
 ];
 
 const CurriculumManager = () => {
+  const [sections, setSections] = useState(initialSections);
+
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+    if (!destination) return;
+
+    const sourceSectionIndex = sections.findIndex((s) => s.id === source.droppableId);
+    const destSectionIndex = sections.findIndex((s) => s.id === destination.droppableId);
+
+    if (sourceSectionIndex === -1 || destSectionIndex === -1) return;
+
+    const updatedSections = [...sections];
+
+    // Drag trong cùng một section
+    if (sourceSectionIndex === destSectionIndex) {
+      const section = updatedSections[sourceSectionIndex];
+      const updatedLectures = [...section.lectures];
+      const [movedLecture] = updatedLectures.splice(source.index, 1);
+      updatedLectures.splice(destination.index, 0, movedLecture);
+
+      updatedSections[sourceSectionIndex] = {
+        ...section,
+        lectures: updatedLectures,
+      };
+    } else {
+      // Drag sang section khác
+      const sourceLectures = [...updatedSections[sourceSectionIndex].lectures];
+      const [movedLecture] = sourceLectures.splice(source.index, 1);
+
+      const destLectures = [...updatedSections[destSectionIndex].lectures];
+      destLectures.splice(destination.index, 0, movedLecture);
+
+      updatedSections[sourceSectionIndex] = {
+        ...updatedSections[sourceSectionIndex],
+        lectures: sourceLectures,
+      };
+
+      updatedSections[destSectionIndex] = {
+        ...updatedSections[destSectionIndex],
+        lectures: destLectures,
+      };
+    }
+
+    setSections(updatedSections);
+  };
+
   return (
     <>
-      {/* Curriculum header */}
       <div className="flex items-center justify-between">
         <Title order={2}>Course Content</Title>
         <Text className="text-gray-500 dark:text-dark-1">
@@ -51,64 +172,89 @@ const CurriculumManager = () => {
         </Text>
       </div>
 
-      {/* content */}
-      <Accordion
-        multiple={true}
-        className="mt-5"
-        chevronPosition="left"
-        transitionDuration={500}
-        chevronSize={26}
-        chevron={<ChevronDownIcon size={26} />}
-        classNames={{
-          root: "flex flex-col gap-7 ",
-          item: "border-0 ",
-          control: "bg-gray-200 dark:bg-dark-5 rounded-xl data-active:rounded-b-none transition",
-          content: "shadow-lg rounded-lg rounded-t-none dark:bg-zinc-900 py-8",
-        }}
-      >
-        {sections.map((section, secIndex) => (
-          <Accordion.Item key={secIndex} value={section.title}>
-            {/* Accordion header */}
-            <Accordion.Control>
-              <div className="grid md:grid-cols-[1fr_auto] items-center">
-                <Text className="font-semibold md:text-xl">{section.title}</Text>
-                <Text className="text-gray-500 dark:text-dark-1">
-                  {section.lectures.length} lectures
-                </Text>
-              </div>
-            </Accordion.Control>
-            {/* Accordion body */}
-            <Accordion.Panel>
-              <ul className="grid gap-y-6 capitalize md:px-3">
-                {section.lectures.map((lecture, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center justify-between gap-3 border py-4 px-6 rounded-lg shadow-xs"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Video size={20} className="text-blue-500 shrink-0" />
-                      <span className="leading-none md:text-lg">{lecture.title}</span>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      {lecture.canPreview && (
-                        <Button
-                          variant="default"
-                          size="compact-sm"
-                          className="text-primary-4 dark:text-primary-8"
-                        >
-                          Preview
-                        </Button>
-                      )}
-                      <Text className="text-dimmed text-nowrap">{lecture.duration}</Text>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </Accordion.Panel>
-          </Accordion.Item>
-        ))}
-      </Accordion>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Accordion
+          multiple
+          className="mt-5"
+          chevronPosition="left"
+          transitionDuration={400}
+          chevronSize={26}
+          chevron={<ChevronDownIcon size={26} />}
+          classNames={{
+            root: "flex flex-col gap-7 ",
+            item: "border-0 ",
+            control: "bg-gray-200 dark:bg-dark-5 rounded-xl data-active:rounded-b-none transition",
+            content: "shadow-lg rounded-lg rounded-t-none dark:bg-zinc-900 p-0",
+          }}
+        >
+          {sections.map((section) => (
+            <Accordion.Item key={section.id} value={section.id}>
+              <Accordion.Control>
+                <div className="grid md:grid-cols-[1fr_auto] items-center">
+                  <Text className="font-semibold md:text-xl">{section.title}</Text>
+                  <Text className="text-gray-500 dark:text-dark-1">
+                    {section.lectures.length} lectures
+                  </Text>
+                </div>
+              </Accordion.Control>
+              <Accordion.Panel>
+                <Droppable droppableId={section.id}>
+                  {(provided, snapshot) => (
+                    <ul
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className={cn("capitalize transition-colors py-8 px-3 md:px-8", {
+                        "bg-primary-1/40 dark:bg-primary-9/10": snapshot.isDraggingOver,
+                        "bg-gray-100 dark:bg-dark-4": snapshot.draggingFromThisWith,
+                      })}
+                    >
+                      {section.lectures.map((lecture, index) => (
+                        <Draggable key={lecture.id} draggableId={lecture.id} index={index}>
+                          {(dragProvided, snapshot) => (
+                            <li
+                              ref={dragProvided.innerRef}
+                              {...dragProvided.draggableProps}
+                              {...dragProvided.dragHandleProps}
+                              className={cn(
+                                `mb-6 flex items-center justify-between gap-3 border py-4 px-6 rounded-lg shadow-xs bg-white
+                                dark:bg-dark-6`,
+                                {
+                                  "scale-102 shadow-md border-blue-300 dark:border-blue-600":
+                                    snapshot.isDragging,
+                                },
+                              )}
+                            >
+                              <div className="flex items-center gap-3">
+                                <Video size={20} className="text-blue-500 shrink-0" />
+                                <span className="leading-none md:text-lg">{lecture.title}</span>
+                              </div>
+                              <div className="flex items-center gap-2 shrink-0">
+                                {lecture.canPreview && (
+                                  <Button
+                                    variant="default"
+                                    size="compact-sm"
+                                    className="text-primary-4 dark:text-primary-8"
+                                  >
+                                    Preview
+                                  </Button>
+                                )}
+                                <Text className="text-dimmed text-nowrap">{lecture.duration}</Text>
+                              </div>
+                            </li>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </ul>
+                  )}
+                </Droppable>
+              </Accordion.Panel>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+      </DragDropContext>
     </>
   );
 };
+
 export default CurriculumManager;
