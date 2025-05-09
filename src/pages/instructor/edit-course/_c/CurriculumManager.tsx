@@ -219,7 +219,7 @@ const CurriculumManager = () => {
                                 `mb-6 flex items-center justify-between gap-3 border py-4 px-6 rounded-lg shadow-xs bg-white
                                 dark:bg-dark-6`,
                                 {
-                                  "scale-102 shadow-md border-blue-300 dark:border-blue-600":
+                                  "shadow-md border-blue-700 dark:border-blue-600":
                                     snapshot.isDragging,
                                 },
                               )}
