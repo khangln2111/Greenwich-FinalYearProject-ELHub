@@ -7,6 +7,7 @@ import InstructorTab from "../../course-detail/_c/InstructorTab";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
 import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
+import CurriculumManager from "./_c/CurriculumManager";
 
 export default function UpdateCoursePage() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -74,7 +75,7 @@ export default function UpdateCoursePage() {
           </Tabs.Panel>
           {/* course curriculum */}
           <Tabs.Panel value="curriculum">
-            <CurriculumTab />
+            <CurriculumManager />
           </Tabs.Panel>
           <Tabs.Panel value="reviews">
             <ReviewTab

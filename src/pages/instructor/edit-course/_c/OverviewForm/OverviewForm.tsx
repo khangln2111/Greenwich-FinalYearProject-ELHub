@@ -2,7 +2,6 @@ import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Box, Button, Group, Textarea, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { randomId } from "@mantine/hooks";
-import { useEffect } from "react";
 import FileUploadField from "../../../../../components/FileUploadField";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -27,7 +26,6 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   // using react query to get coruse detail data
 
   const updateCourseOverviewMutation = useUpdateCourse();
-  console.log("courseDetail", courseDetail);
 
   const defaultValues = {
     title: courseDetail?.title,
@@ -92,7 +90,10 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   return (
     <Box
       component="form"
-      onSubmit={form.onSubmit(handleSubmit)}
+      onSubmit={form.onSubmit(handleSubmit, (errors) => {
+        const firstErrorPath = Object.keys(errors)[0];
+        form.getInputNode(firstErrorPath)?.focus();
+      })}
       className="flex-1 flex flex-col gap-8"
     >
       <div>
