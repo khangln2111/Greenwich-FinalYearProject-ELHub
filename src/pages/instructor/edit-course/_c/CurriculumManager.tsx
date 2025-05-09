@@ -1,8 +1,8 @@
-import { Accordion, Button, Text, ThemeIcon, Title } from "@mantine/core";
-import { ChevronDownIcon, GripVertical, Move, Video } from "lucide-react";
 import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
-import { useState } from "react";
+import { Accordion, Button, Text, ThemeIcon, Title } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
+import { ChevronDownIcon, Move, Video } from "lucide-react";
+import { useState } from "react";
 import { cn } from "../../../../utils/cn";
 
 const initialSections = [
@@ -161,7 +161,7 @@ const CurriculumManager = () => {
               >
                 {sections.map((section, index) => (
                   <Draggable key={section.id} draggableId={section.id} index={index}>
-                    {(dragProvided) => (
+                    {(dragProvided, snapshot) => (
                       <Accordion.Item
                         value={section.id}
                         ref={dragProvided.innerRef}
@@ -182,8 +182,13 @@ const CurriculumManager = () => {
                               color="gray"
                               size="md"
                               {...dragProvided.dragHandleProps}
-                              onClick={(e) => e.stopPropagation()}
-                              className="cursor-grab active:cursor-grabbing hover:bg-gray-100 dark:hover:bg-dark-4 transition"
+                              className={cn(
+                                `cursor-grab active:cursor-grabbing hover:bg-gray-100 dark:hover:bg-dark-4 active:bg-gray-100
+                                dark:active:bg-dark-4 transition`,
+                                {
+                                  "bg-gray-100 dark:bg-dark-4": snapshot.isDragging,
+                                },
+                              )}
                               title="Drag to reorder section"
                             >
                               <Move className="size-5 text-gray-500 dark:text-gray-400" />
