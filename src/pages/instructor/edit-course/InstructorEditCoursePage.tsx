@@ -2,12 +2,11 @@ import { Button, Loader, SegmentedControl, Tabs } from "@mantine/core";
 import { IconArrowLeft, IconPencil } from "@tabler/icons-react";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import CurriculumTab from "../../course-detail/_c/CurriculumTab";
+import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
 import InstructorTab from "../../course-detail/_c/InstructorTab";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
-import OverviewForm from "./_c/OverviewForm/OverviewForm";
-import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
 import CurriculumManager from "./_c/CurriculumManager";
+import OverviewForm from "./_c/OverviewForm/OverviewForm";
 
 export default function UpdateCoursePage() {
   const [activeTab, setActiveTab] = useState("overview");

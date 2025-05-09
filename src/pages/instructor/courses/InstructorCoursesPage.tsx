@@ -4,9 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import {
   ArrowUpNarrowWide,
   DollarSign,
-  FileText,
   FileType,
-  Info,
   Plus,
   ScrollText,
   TagsIcon,
@@ -22,12 +20,12 @@ import {
   MAX_VIDEO_SIZE_MB,
 } from "../../../constants/ValidationConstants";
 import { useGetCategories } from "../../../react-query/category/categoryHooks";
+import { CreateCourseRequest, createCourseSchema } from "../../../react-query/course/course.schema";
 import { CourseLevel, CourseStatus } from "../../../react-query/course/course.types";
 import { useCreateCourse, useGetCourses } from "../../../react-query/course/courseHooks";
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
-import { CreateCourseRequest, createCourseSchema } from "../../../react-query/course/course.schema";
 
 // Zod schema with file validation
 

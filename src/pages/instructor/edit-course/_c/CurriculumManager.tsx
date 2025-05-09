@@ -182,6 +182,10 @@ const CurriculumManager = () => {
                               color="gray"
                               size="md"
                               {...dragProvided.dragHandleProps}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
                               className={cn(
                                 `cursor-grab active:cursor-grabbing hover:bg-gray-100 dark:hover:bg-dark-4 active:bg-gray-100
                                 dark:active:bg-dark-4 transition`,
