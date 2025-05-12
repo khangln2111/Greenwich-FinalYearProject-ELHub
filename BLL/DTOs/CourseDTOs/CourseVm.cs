@@ -36,4 +36,8 @@ public class CourseVm
     public DateTime CreatedAt { get; init; }
 
     public DateTime UpdatedAt { get; init; }
+
+    public required string InstructorId { get; init; }
+
+    public required string InstructorName { get; init; }
 }

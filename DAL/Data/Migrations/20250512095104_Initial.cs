@@ -263,6 +263,7 @@ namespace DAL.Data.Migrations
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PromoVideoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    InstructorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -273,6 +274,11 @@ namespace DAL.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Courses_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Courses_AspNetUsers_InstructorId",
+                        column: x => x.InstructorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -342,7 +348,7 @@ namespace DAL.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -458,6 +464,7 @@ namespace DAL.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Preview = table.Column<bool>(type: "bit", nullable: false),
                     VideoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -564,6 +571,11 @@ namespace DAL.Data.Migrations
                 name: "IX_Courses_ImageId",
                 table: "Courses",
                 column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_InstructorId",
+                table: "Courses",
+                column: "InstructorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Courses_PromoVideoId",

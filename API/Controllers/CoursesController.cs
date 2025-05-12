@@ -31,6 +31,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
 
     // POST: api/Courses
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromForm] CreateCourseCommand command)

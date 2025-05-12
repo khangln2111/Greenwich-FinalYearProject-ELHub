@@ -7,7 +7,7 @@ namespace BLL.BusinessServices.Abstract;
 
 public interface ICourseService
 {
-    Task<CourseVm> GetById(Guid id);
+    Task<CourseDetailVm> GetById(Guid id);
 
     Task<Paged<CourseVm>> GetList(GridifyQuery query);
 

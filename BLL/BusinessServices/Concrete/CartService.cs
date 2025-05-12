@@ -23,10 +23,16 @@ public class CartService(
     public async Task<CartVm> GetCart()
     {
         await EnsureCartExistsAsync();
+
+        var currentUser = currentUserUtility.GetCurrentUser();
+
+        if (currentUser == null) throw new UnauthorizedException();
+
+
         var cart = await context.Carts
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course)
-            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUserUtility.GetId());
+            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUser.Id);
         return mapper.Map<CartVm>(cart);
     }
 
@@ -37,9 +43,13 @@ public class CartService(
         if (course == null) throw new NotFoundException("Course not found");
         await EnsureCartExistsAsync();
 
+        var currentUser = currentUserUtility.GetCurrentUser();
+
+        if (currentUser == null) throw new UnauthorizedException();
+
         var cart = await context.Carts
             .Include(x => x.CartItems)
-            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUserUtility.GetId());
+            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUser.Id);
 
         var cartItem = cart!.CartItems.FirstOrDefault(x => x.CourseId == command.CourseId);
         if (cartItem == null)
@@ -86,7 +96,11 @@ public class CartService(
     // Ensures the user's cart exists, creates it if not, and includes cart items.
     private async Task EnsureCartExistsAsync()
     {
-        var userId = currentUserUtility.GetId();
+        var currentUser = currentUserUtility.GetCurrentUser();
+
+        if (currentUser == null) throw new UnauthorizedException();
+
+        var userId = currentUser.Id;
 
         var cart = await context.Carts
             .FirstOrDefaultAsync(x => x.ApplicationUserId == userId);

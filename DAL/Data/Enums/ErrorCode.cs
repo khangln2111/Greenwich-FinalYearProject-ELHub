@@ -16,5 +16,7 @@ public enum ErrorCode
     InvalidOtp,
     EmailAlreadyConfirmed,
     EmailOrPasswordIncorrect,
-    InvalidToken
+    InvalidToken,
+    Unauthorized,
+    Forbidden
 }

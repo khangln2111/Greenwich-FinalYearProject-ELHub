@@ -6,6 +6,9 @@ public class Lecture : BaseEntity
 {
     public required string Title { get; set; }
     public required string Description { get; set; }
+
+    public required bool Preview { get; set; } = false;
+
     public DurationMedia? Video { get; set; }
 
     public Guid SectionId { get; set; }

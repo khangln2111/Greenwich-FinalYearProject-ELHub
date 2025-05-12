@@ -11,6 +11,7 @@ using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Data.Entities.MediaEntities;
 using DAL.Data.Enums;
+using DAL.Utilities.CurrentUserUtility;
 using DAL.Utilities.MediaUtility.Abstract;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
@@ -22,15 +23,20 @@ public class CourseService(
     IMapper mapper,
     IGridifyMapper<Course> gridifyMapper,
     IValidationService validationService,
-    IMediaManager mediaManager)
+    IMediaManager mediaManager,
+    ICurrentUserUtility currentUserUtility)
     : ICourseService
 {
-    public async Task<CourseVm> GetById(Guid id)
+    public async Task<CourseDetailVm> GetById(Guid id)
     {
         var course = await context.Courses
             .AsNoTracking()
             .Where(c => c.Id == id)
-            .ProjectTo<CourseVm>(mapper.ConfigurationProvider)
+            .Include(c => c.Category)
+            .Include(c => c.Image)
+            .Include(c => c.PromoVideo)
+            .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
+            .ProjectTo<CourseDetailVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
 
         if (course == null) throw new NotFoundException(nameof(Course), id);
@@ -48,6 +54,8 @@ public class CourseService(
 
     public async Task<Success> Create(CreateCourseCommand command)
     {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
         await validationService.ValidateAsync(command);
         await EnsuredRelatedCategoryExistsAsync(command.CategoryId);
         var course = mapper.Map<Course>(command);
@@ -59,6 +67,7 @@ public class CourseService(
         // Set the relationship
         course.Image = image as Media;
         course.PromoVideo = promoVideo as DurationMedia;
+        course.InstructorId = currentUser.Id;
         // Add the course to the context and save the changes
         await context.Courses.AddAsync(course);
         await context.SaveChangesAsync();

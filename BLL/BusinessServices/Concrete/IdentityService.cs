@@ -1,26 +1,20 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
-using System.Runtime.InteropServices.JavaScript;
 using System.Security.Claims;
-using System.Text.Json;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.IdentityDTOs;
 using BLL.Exceptions;
 using BLL.Models;
 using BLL.Validations;
-using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Utilities.EmailUtility;
-using Google.Apis.Auth;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
-using Google.Apis.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace BLL.BusinessServices.Concrete;
 
@@ -129,8 +123,7 @@ public class IdentityService(
         var json = await response.Content.ReadAsStringAsync();
 
         // Deserialize the JSON response to a Userinfo object
-        return JsonSerializer.Deserialize<Userinfo>(json, new JsonSerializerOptions
-            { PropertyNameCaseInsensitive = true });
+        return JsonConvert.DeserializeObject<Userinfo>(json);
     }
 
     public async Task<Success> ResendConfirmationEmailOtp(ResendConfirmationEmailCommand command)

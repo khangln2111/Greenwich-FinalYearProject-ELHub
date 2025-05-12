@@ -9,6 +9,7 @@ public class Course : BaseEntity
 
     public required string Description { get; set; }
 
+
     public decimal? Price { get; set; }
 
     public int? DiscountPercentage { get; set; }
@@ -33,4 +34,8 @@ public class Course : BaseEntity
     public ICollection<OrderItem> OrderItems { get; } = new List<OrderItem>();
 
     public ICollection<Review> Reviews { get; } = new List<Review>();
+
+    public Guid InstructorId { get; set; }
+
+    public ApplicationUser Instructor { get; set; } = null!;
 }

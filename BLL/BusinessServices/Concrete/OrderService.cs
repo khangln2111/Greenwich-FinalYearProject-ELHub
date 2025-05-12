@@ -30,16 +30,22 @@ public class OrderService(
     //Create order with Stripe
     public async Task<Success> CreateOrder()
     {
+        var currentUser = currentUserUtility.GetCurrentUser();
+
+        if (currentUser == null) throw new UnauthorizedException();
+
+        var currentUserId = currentUser.Id;
         var cart = await context.Carts
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course)
-            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUserUtility.GetId());
+            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUserId);
 
         if (cart == null) throw new NotFoundException("Cart belongs to user not found");
 
+
         var order = new Order
         {
-            ApplicationUserId = currentUserUtility.GetId(),
+            ApplicationUserId = currentUserId,
             Status = OrderStatus.Pending,
             OrderItems = cart.CartItems.Select(x => new OrderItem
             {

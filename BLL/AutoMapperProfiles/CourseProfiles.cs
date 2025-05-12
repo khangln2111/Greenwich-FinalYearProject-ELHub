@@ -8,6 +8,37 @@ public class CourseProfiles : Profile
 {
     public CourseProfiles()
     {
+        CreateMap<Lecture, CourseLectureVm>()
+            .ForMember(dest => dest.VideoUrl,
+                opt => opt.MapFrom(src => src.Video != null ? src.Video.Url : string.Empty))
+            .ForMember(dest => dest.DurationInSeconds,
+                opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0));
+
+        // Ánh xạ Section → CourseSectionVm
+        CreateMap<Section, CourseSectionVm>()
+            .ForMember(dest => dest.LectureCount, opt => opt.MapFrom(src => src.Lectures.Count))
+            .ForMember(dest => dest.DurationInSeconds,
+                opt => opt.MapFrom(src => src.Lectures.Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
+            .ForMember(dest => dest.Lectures, opt => opt.MapFrom(src => src.Lectures));
+
+        CreateMap<Course, CourseDetailVm>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+            .ForMember(dest => dest.DurationInSeconds, opt => opt
+                .MapFrom(src => src.Sections
+                    .SelectMany(s => s.Lectures)
+                    .Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
+            .ForMember(dest => dest.ImageUrl,
+                opt => opt.MapFrom(src => src.Image == null ? null : src.Image.Url))
+            .ForMember(dest => dest.PromoVideoUrl,
+                opt => opt.MapFrom(src => src.PromoVideo == null ? null : src.PromoVideo.Url))
+            .ForMember(dest => dest.SectionCount, opt => opt.MapFrom(src => src.Sections.Count))
+            .ForMember(dest => dest.LectureCount,
+                opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
+            .ForMember(dest => dest.DiscountedPrice,
+                opt => opt.MapFrom(src => src.Price - src.Price * src.DiscountPercentage / 100))
+            .ForMember(dest => dest.InstructorName,
+                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName));
+
         CreateMap<Course, CourseVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
             .ForMember(dest => dest.DurationInSeconds, opt => opt
@@ -22,7 +53,9 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.LectureCount,
                 opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
             .ForMember(dest => dest.DiscountedPrice,
-                opt => opt.MapFrom(src => src.Price - src.Price * src.DiscountPercentage / 100));
+                opt => opt.MapFrom(src => src.Price - src.Price * src.DiscountPercentage / 100))
+            .ForMember(dest => dest.InstructorName,
+                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName));
 
         // CreateMap<Course, CourseVm>();
 

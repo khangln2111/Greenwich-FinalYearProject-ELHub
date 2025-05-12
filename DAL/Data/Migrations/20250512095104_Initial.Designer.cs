@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250508052340_Initial")]
+    [Migration("20250512095104_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -198,7 +198,9 @@ namespace DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -266,6 +268,9 @@ namespace DAL.Data.Migrations
                     b.Property<Guid?>("ImageId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("InstructorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("LearningOutcomes")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
@@ -303,6 +308,8 @@ namespace DAL.Data.Migrations
 
                     b.HasIndex("ImageId");
 
+                    b.HasIndex("InstructorId");
+
                     b.HasIndex("PromoVideoId");
 
                     b.ToTable("Courses");
@@ -324,6 +331,9 @@ namespace DAL.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("Preview")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("SectionId")
                         .HasColumnType("uniqueidentifier");
@@ -740,6 +750,12 @@ namespace DAL.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ImageId");
 
+                    b.HasOne("DAL.Data.Entities.ApplicationUser", "Instructor")
+                        .WithMany()
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("DAL.Data.Entities.MediaEntities.DurationMedia", "PromoVideo")
                         .WithMany()
                         .HasForeignKey("PromoVideoId");
@@ -747,6 +763,8 @@ namespace DAL.Data.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Image");
+
+                    b.Navigation("Instructor");
 
                     b.Navigation("PromoVideo");
                 });

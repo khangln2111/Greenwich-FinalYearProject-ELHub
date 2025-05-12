@@ -3,21 +3,51 @@ using Microsoft.AspNetCore.Http;
 
 namespace DAL.Utilities.CurrentUserUtility;
 
+public class CurrentUser
+{
+    public Guid Id { get; init; }
+    public required string Email { get; init; }
+    public IReadOnlyList<string> Roles { get; init; } = [];
+
+    // No constructor needed, the properties can be initialized using object initializer
+}
+
 public class CurrentUserUtility(IHttpContextAccessor httpContextAccessor) : ICurrentUserUtility
 {
-    public Guid GetId()
+    public CurrentUser? GetCurrentUser()
     {
-        var userIdClaim = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var userId = Guid.TryParse(userIdClaim, out var parsedUserId) ? parsedUserId : Guid.Empty;
-        if (userId == Guid.Empty) throw new UnauthorizedAccessException("User is not authenticated");
-        return userId;
+        if (!IsAuthenticated()) return null;
+        var id = GetSingleClaimValue(ClaimTypes.NameIdentifier);
+        var email = GetSingleClaimValue(ClaimTypes.Email);
+        var roles = GetClaimValues(ClaimTypes.Role);
+        var user = new CurrentUser
+        {
+            Id = Guid.Parse(id),
+            Email = email,
+            Roles = roles
+        };
+        return user;
     }
 
-    public string GetEmail()
+
+    public bool IsAuthenticated()
     {
-        var emailClaim = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
-        var email = emailClaim ?? string.Empty;
-        if (string.IsNullOrEmpty(email)) throw new UnauthorizedAccessException("User is not authenticated");
-        return email;
+        var isAuthenticated = httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
+        return isAuthenticated;
+    }
+
+    private List<string> GetClaimValues(string claimType)
+    {
+        return httpContextAccessor.HttpContext!.User.Claims
+            .Where(claim => claim.Type == claimType)
+            .Select(claim => claim.Value)
+            .ToList();
+    }
+
+    private string GetSingleClaimValue(string claimType)
+    {
+        return httpContextAccessor.HttpContext!.User.Claims
+            .Single(claim => claim.Type == claimType)
+            .Value;
     }
 }

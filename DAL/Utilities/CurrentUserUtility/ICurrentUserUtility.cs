@@ -2,7 +2,6 @@
 
 public interface ICurrentUserUtility
 {
-    Guid GetId();
-
-    string GetEmail();
+    CurrentUser? GetCurrentUser();
+    bool IsAuthenticated();
 }
