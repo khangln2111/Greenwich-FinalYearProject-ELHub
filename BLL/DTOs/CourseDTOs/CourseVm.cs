@@ -7,8 +7,6 @@ public class CourseVm
 
     public required string Title { get; init; }
 
-    public required string Summary { get; init; }
-
     public required string Description { get; init; }
 
     public int SectionCount { get; init; }
@@ -27,9 +25,11 @@ public class CourseVm
 
     public int DurationInSeconds { get; init; }
 
-    public string? Language { get; init; }
+    public string? Status { get; init; }
 
-    public string? Level { get; init; }
+    public string[]? LearningOutcomes { get; init; }
+
+    public string[]? Prerequisites { get; init; }
 
     public required string CategoryName { get; init; }
 

@@ -11,7 +11,6 @@ public class CourseGridifyMapper : GridifyMapper<Course>
         AddMap("CategoryName", c => c.Category.Name);
         AddMap("Title", c => c.Title);
         AddMap("Description", c => c.Description);
-        AddMap("Summary", c => c.Summary);
         AddMap("DurationInSeconds",
             c => c.Sections.SelectMany(s => s.Lectures).Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0));
         AddMap("CategoryId", c => c.CategoryId);

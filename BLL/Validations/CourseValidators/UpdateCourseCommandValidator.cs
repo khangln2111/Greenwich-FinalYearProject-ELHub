@@ -16,10 +16,6 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
             .MaximumLength(CourseConstants.TitleMaxLength)
             .When(x => !string.IsNullOrEmpty(x.Title));
 
-        RuleFor(x => x.Summary)
-            .MaximumLength(CourseConstants.SummaryMaxLength)
-            .When(x => !string.IsNullOrEmpty(x.Summary));
-
         RuleFor(x => x.Description)
             .MaximumLength(CourseConstants.TitleMaxLength)
             .When(x => !string.IsNullOrEmpty(x.Description));
@@ -32,13 +28,17 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
             .InclusiveBetween(0, 100)
             .When(x => x.DiscountPercentage.HasValue);
 
-        RuleFor(x => x.Language)
-            .MaximumLength(CourseConstants.LanguageMaxLength)
-            .When(x => !string.IsNullOrEmpty(x.Language));
 
-        RuleFor(x => x.Level)
-            .MaximumLength(CourseConstants.LevelMaxLength)
-            .When(x => !string.IsNullOrEmpty(x.Level));
+        RuleFor(x => x.LearningOutcomes)
+            .Must(x => x == null || x.All(y => !string.IsNullOrEmpty(y)))
+            .WithMessage("Learning outcomes cannot be null or empty")
+            .When(x => x.LearningOutcomes != null);
+
+        RuleFor(x => x.Prerequisites)
+            .Must(x => x == null || x.All(y => !string.IsNullOrEmpty(y)))
+            .WithMessage("Prerequisites cannot be null or empty")
+            .When(x => x.Prerequisites != null);
+
 
         RuleFor(x => x.Image)
             .Must(file => file == null || mediaManager.FileHasValidExtension(file, MediaConstants.ImageExtensions))

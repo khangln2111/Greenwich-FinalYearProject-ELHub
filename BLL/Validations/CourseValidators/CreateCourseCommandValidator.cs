@@ -12,23 +12,25 @@ public class CreateCourseCommandValidator : AbstractValidator<CreateCourseComman
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
+        RuleFor(x => x.CategoryId)
+            .NotEmpty()
+            .WithMessage("CategoryId cannot be empty.");
+
         RuleFor(x => x.Title)
             .NotEmpty()
             .MaximumLength(CourseConstants.TitleMaxLength);
 
-        RuleFor(x => x.Summary)
-            .MaximumLength(CourseConstants.SummaryMaxLength);
 
         RuleFor(x => x.Description)
             .NotEmpty()
             .MaximumLength(CourseConstants.DescriptionMaxLength);
 
 
-        RuleFor(x => x.Language)
-            .MaximumLength(CourseConstants.LanguageMaxLength);
-
         RuleFor(x => x.Level)
-            .MaximumLength(CourseConstants.LevelMaxLength);
+            .IsInEnum()
+            .When(x => x.Level.HasValue)
+            .WithMessage("Invalid course level value");
+
 
         RuleFor(x => x.Image)
             .NotEmpty()

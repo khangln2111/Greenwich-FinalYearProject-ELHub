@@ -1,13 +1,11 @@
 using DAL.Data.Entities.MediaEntities;
+using DAL.Data.Enums;
 
 namespace DAL.Data.Entities;
 
 public class Course : BaseEntity
-
 {
     public required string Title { get; set; }
-
-    public required string Summary { get; set; }
 
     public required string Description { get; set; }
 
@@ -15,16 +13,13 @@ public class Course : BaseEntity
 
     public int? DiscountPercentage { get; set; }
 
-    public string? Language { get; set; }
+    public CourseLevel? Level { get; set; }
 
-    public string? Level { get; set; }
+    public string[]? Prerequisites { get; set; }
 
-    public string? Requirements { get; set; }
+    public string[]? LearningOutcomes { get; set; }
 
-    public string? WhatYouWillLearn { get; set; }
-
-    public string? TargetAudience { get; set; }
-
+    public CourseStatus Status { get; set; } = CourseStatus.Draft;
 
     //Relationships 
     public Guid CategoryId { get; set; }
@@ -32,7 +27,6 @@ public class Course : BaseEntity
     public Media? Image { get; set; }
     public DurationMedia? PromoVideo { get; set; }
     public ICollection<Section> Sections { get; } = new List<Section>();
-
 
     public ICollection<CartItem> CartItems { get; } = new List<CartItem>();
 

@@ -46,7 +46,9 @@ public class IdentityService(
         var user = new ApplicationUser
         {
             UserName = command.Email,
-            Email = command.Email
+            Email = command.Email,
+            FirstName = command.FirstName,
+            LastName = command.LastName
         };
 
         //create cart for user 
@@ -79,7 +81,7 @@ public class IdentityService(
                 ErrorCode.EmailOrPasswordIncorrect);
     }
 
-    public async Task GoogleLogin(GoogleLoginCommand command)
+    public async Task LoginWithGoogle(GoogleLoginCommand command)
     {
         await validationService.ValidateAsync(command);
 
@@ -98,7 +100,9 @@ public class IdentityService(
             {
                 UserName = payload.Email,
                 Email = payload.Email,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                FirstName = payload.GivenName,
+                LastName = payload.FamilyName
             };
             await userManager.CreateAsync(user);
         }
@@ -260,6 +264,22 @@ public class IdentityService(
                 AccessTokenExpiresIn = options.Value.BearerTokenExpiration.TotalSeconds,
                 RefreshTokenExpiresIn = options.Value.RefreshTokenExpiration.TotalSeconds
             });
+    }
+
+    public async Task<InfoMeVm> GetInfoMe()
+    {
+        var user = await userManager.GetUserAsync(signInManager.Context.User);
+        if (user == null) throw new NotFoundException("Current user not found");
+        // get user roles
+        var roles = await userManager.GetRolesAsync(user);
+        return new InfoMeVm
+        {
+            Id = user.Id,
+            Email = user.Email ?? "",
+            FirstName = user.FirstName ?? "",
+            LastName = user.LastName ?? "",
+            Roles = roles.ToList()
+        };
     }
 
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CourseDTOs;
 using BLL.Exceptions;
@@ -28,10 +29,13 @@ public class CourseService(
     {
         var course = await context.Courses
             .AsNoTracking()
-            .Include(c => c.Category)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .Where(c => c.Id == id)
+            .ProjectTo<CourseVm>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+
         if (course == null) throw new NotFoundException(nameof(Course), id);
-        return mapper.Map<CourseVm>(course);
+
+        return course;
     }
 
     public async Task<Paged<CourseVm>> GetList(GridifyQuery query)

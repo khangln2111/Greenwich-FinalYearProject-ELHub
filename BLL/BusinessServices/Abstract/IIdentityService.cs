@@ -11,7 +11,7 @@ public interface IIdentityService
 
     Task<Success> LoginCustom(LoginCommand command);
 
-    Task GoogleLogin(GoogleLoginCommand command);
+    Task LoginWithGoogle(GoogleLoginCommand command);
 
     Task<Success> ConfirmEmail(ConfirmEmailCommand command);
 
@@ -24,4 +24,6 @@ public interface IIdentityService
     Task<Success> ValidateResetPasswordOtp(ValidateResetPasswordOtpCommand command);
 
     Task<Success> ResetPassword(ResetPasswordCommand command);
+
+    Task<InfoMeVm> GetInfoMe();
 }

@@ -1,5 +1,6 @@
 ﻿using BLL.BusinessServices.Abstract;
 using BLL.DTOs.IdentityDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -41,10 +42,10 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
 
     //Login with Google
     // POST: api/Identity/GoogleLogin
-    [HttpPost("GoogleLogin")]
-    public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginCommand command)
+    [HttpPost("LoginWithGoogle")]
+    public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginCommand command)
     {
-        await identityService.GoogleLogin(command);
+        await identityService.LoginWithGoogle(command);
         return Empty;
     }
 
@@ -111,5 +112,15 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     {
         await identityService.RefreshToken(command);
         return Empty;
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    [ProducesResponseType<InfoMeVm>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetProfile()
+    {
+        var result = await identityService.GetInfoMe();
+        return Ok(result);
     }
 }

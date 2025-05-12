@@ -12,12 +12,8 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
             .IsRequired()
             .HasMaxLength(150); // Limit the length of Title
 
-        builder.Property(c => c.Summary)
-            .HasMaxLength(300); // Limit the length of Summary
-
         builder.Property(c => c.Description)
             .HasMaxLength(1500);
-
 
         builder.Property(c => c.Price)
             .HasColumnType("decimal(18,2)"); // Decimal format for Price
@@ -25,21 +21,13 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.Property(c => c.DiscountPercentage)
             .HasDefaultValue(0); // Default value is 0 if no discount
 
-      
-
-        builder.Property(c => c.Language)
-            .HasMaxLength(50);
-
         builder.Property(c => c.Level)
             .HasMaxLength(50);
 
-        builder.Property(c => c.Requirements)
+        builder.Property(c => c.Prerequisites)
             .HasMaxLength(1000);
 
-        builder.Property(c => c.WhatYouWillLearn)
-            .HasMaxLength(1000);
-
-        builder.Property(c => c.TargetAudience)
+        builder.Property(c => c.LearningOutcomes)
             .HasMaxLength(1000);
     }
 }
