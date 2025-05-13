@@ -18,7 +18,7 @@ export const useCreateCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (course: CreateCourseRequest) => createCourse(course),
+    mutationFn: (command: CreateCourseRequest) => createCourse(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["courses", "list"] });
       showSuccessToast(
@@ -42,7 +42,7 @@ export const useUpdateCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (course: UpdateCourseCommand) => updateCourse(course),
+    mutationFn: (command: UpdateCourseCommand) => updateCourse(command),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses.detail(variables.id).queryKey });
       queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });

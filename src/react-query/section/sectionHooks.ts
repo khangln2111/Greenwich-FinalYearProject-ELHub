@@ -9,12 +9,11 @@ export const useReorderSection = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ section }: { section: ReorderSectionCommand; courseId: string }) =>
-      reorderSection(section),
+    mutationFn: (command: ReorderSectionCommand) => reorderSection(command),
 
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail(variables.courseId).queryKey,
+        queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Section Reordered", "The section was reordered successfully.");
     },
@@ -35,10 +34,10 @@ export const useCreateSection = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (section: CreateSectionCommand) => createSection(section),
-    onSuccess: (_data, variables) => {
+    mutationFn: (command: CreateSectionCommand) => createSection(command),
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail(variables.courseId).queryKey,
+        queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Section Created", "The section was created successfully.");
     },
@@ -57,11 +56,10 @@ export const useCreateSection = () => {
 export const useUpdateSection = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ section }: { section: UpdateSectionCommand; courseId: string }) =>
-      updateSection(section),
-    onSuccess: (_data, variables) => {
+    mutationFn: (command: UpdateSectionCommand) => updateSection(command),
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail(variables.courseId).queryKey,
+        queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Section Updated", "The section was updated successfully.");
     },
@@ -81,11 +79,10 @@ export const useDeleteSection = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ sectionId }: { sectionId: string; courseId: string }) =>
-      deleteSection(sectionId),
-    onSuccess: (_data, variables) => {
+    mutationFn: (sectionId: string) => deleteSection(sectionId),
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail(variables.courseId).queryKey,
+        queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Section Deleted", "The section was deleted successfully.");
     },

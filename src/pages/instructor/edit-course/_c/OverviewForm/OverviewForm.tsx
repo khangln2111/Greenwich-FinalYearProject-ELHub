@@ -31,13 +31,13 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   const updateCourseOverviewMutation = useUpdateCourse();
 
   const defaultValues = {
-    title: courseDetail?.title,
-    description: courseDetail?.description,
+    title: courseDetail.title,
+    description: courseDetail.description,
     learningOutcomes:
-      courseDetail?.learningOutcomes?.map((value) => ({ id: randomId(), value })) ?? [],
-    prerequisites: courseDetail?.prerequisites?.map((value) => ({ id: randomId(), value })) ?? [],
-    image: courseDetail?.imageUrl ?? "",
-    promoVideo: courseDetail?.promoVideoUrl ?? "",
+      courseDetail.learningOutcomes?.map((value) => ({ id: randomId(), value })) ?? [],
+    prerequisites: courseDetail.prerequisites?.map((value) => ({ id: randomId(), value })) ?? [],
+    image: courseDetail.imageUrl ?? "",
+    promoVideo: courseDetail.promoVideoUrl ?? "",
   };
 
   const form = useForm<UpdateCourseOverviewFormValues>({

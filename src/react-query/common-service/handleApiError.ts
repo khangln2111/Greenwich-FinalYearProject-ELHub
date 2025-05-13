@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
 import { showErrorToast } from "../../utils/toastHelper";
+import React from "react";
 
 type ErrorHandler = (error: AxiosError<ApiErrorResponse>) => void;
 
@@ -35,13 +36,24 @@ export const handleApiError = (
   const errorCode = data?.errorCode;
 
   if (status === 400 && errorCode === ErrorCode.ValidationError && data?.errors) {
-    const validationMessages = Object.entries(data.errors)
-      .map(([field, messages]) => {
-        return `• ${field}: ${messages.join(", ")}`;
-      })
-      .join("\n");
+    const listItems = Object.entries(data.errors).map(([field, messages]) =>
+      React.createElement(
+        "li",
+        { key: field },
+        React.createElement("strong", null, field),
+        ": ",
+        messages.join(", "),
+      ),
+    );
 
-    showErrorToast("Validation Error", `The following errors occurred:\n\n${validationMessages}`);
+    const message = React.createElement(
+      "div",
+      null,
+      React.createElement("div", null, "The following errors occurred:"),
+      React.createElement("ul", { className: "list-disc list-inside" }, ...listItems),
+    );
+
+    showErrorToast("Validation Error", message);
     return;
   }
 

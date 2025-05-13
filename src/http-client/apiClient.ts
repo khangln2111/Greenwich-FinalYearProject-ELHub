@@ -76,22 +76,14 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
     // ✅ Chỉ show toast với các lỗi đặc biệt, còn lại trả ra để hook xử lý
-    if (status === 403) {
-      showErrorToast("Access Denied", "You do not have permission to access this resource.");
-      return Promise.reject(error);
+    if (status === 401 && (errorCode === undefined || errorCode === ErrorCode.Unauthorized)) {
+      showErrorToast("Unauthorized", "You must login to perform this action.");
+      return;
     }
-    if (status === 400 && errorCode === ErrorCode.ValidationError && data?.errors) {
-      const validationMessages = Object.entries(data.errors)
-        .map(([field, messages]) => {
-          return `${field}: ${messages.join(", ")}`;
-        })
-        .join("\n");
 
-      showErrorToast(
-        "Bad request - invalid input",
-        `The following invalid rules occurred:\n${validationMessages}`,
-      );
-      return Promise.reject(error);
+    if (status === 403 && (errorCode === undefined || errorCode === ErrorCode.Forbidden)) {
+      showErrorToast("Forbidden", "You do not have permission to perform this action.");
+      return;
     }
 
     // ✅ Refresh token nếu gặp lỗi 401 và có tokens trong localStorage

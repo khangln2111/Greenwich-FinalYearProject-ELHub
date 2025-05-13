@@ -1,6 +1,6 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
-import apiClient from "../../http-client/axios";
+import apiClient from "../../http-client/apiClient";
 import { CourseVm, CourseQueryCriteria, UpdateCourseCommand, CourseDetailVm } from "./course.types";
 import { CreateCourseRequest } from "./course.schema";
 

@@ -11,12 +11,11 @@ export const useReorderLecture = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ command }: { command: ReorderLectureCommand; courseId: string }) =>
-      reorderLecture(command),
+    mutationFn: (command: ReorderLectureCommand) => reorderLecture(command),
 
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail(variables.courseId).queryKey,
+        queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Lecture Reordered", "The lecture was reordered successfully.");
     },
@@ -37,12 +36,11 @@ export const useCreateLecture = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ command }: { command: CreateLectureCommand; courseId: string }) =>
-      createLecture(command),
+    mutationFn: (command: CreateLectureCommand) => createLecture(command),
 
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail(variables.courseId).queryKey,
+        queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Lecture Created", "The lecture was created successfully.");
     },
@@ -63,12 +61,11 @@ export const useUpdateLecture = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ command }: { command: CreateLectureCommand; courseId: string }) =>
-      updateLecture(command),
+    mutationFn: (command: CreateLectureCommand) => updateLecture(command),
 
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail(variables.courseId).queryKey,
+        queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Lecture Updated", "The lecture was updated successfully.");
     },
@@ -89,12 +86,11 @@ export const useDeleteLecture = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ lectureId }: { lectureId: string; courseId: string }) =>
-      deleteLecture(lectureId),
+    mutationFn: (lectureId: string) => deleteLecture(lectureId),
 
-    onSuccess: (_data, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail(variables.courseId).queryKey,
+        queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Lecture Deleted", "The lecture was deleted successfully.");
     },

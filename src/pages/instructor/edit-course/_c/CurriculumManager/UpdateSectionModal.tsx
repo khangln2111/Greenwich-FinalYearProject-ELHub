@@ -4,55 +4,49 @@ import { useForm, zodResolver } from "@mantine/form";
 import { FileType, ScrollText } from "lucide-react";
 import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
-import { CreateSectionCommand } from "../../../../../react-query/section/section.types";
-import { useCreateSection } from "../../../../../react-query/section/sectionHooks";
+import { SectionVm, UpdateSectionCommand } from "../../../../../react-query/section/section.types";
+import { useUpdateSection } from "../../../../../react-query/section/sectionHooks";
 
-interface CreateSectionModalProps {
+interface EditSectionalModalProps {
   opened: boolean;
   onClose: () => void;
-  courseId: string;
+  section: SectionVm;
 }
 
-export const CreateSectionFormSchema = z.object({
+export const EditSectionFormSchema = z.object({
+  id: z.string().min(1, "Section ID is required"),
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  courseId: z.string().min(1), // hidden from user, but still validated
 });
 
-export type CreateSectionFormValues = z.infer<typeof CreateSectionFormSchema>;
+export type UpdateSectionFormValues = z.infer<typeof EditSectionFormSchema>;
 
-export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionModalProps) => {
-  const form = useForm<CreateSectionFormValues>({
+export const EditSectionModal = ({ opened, onClose, section }: EditSectionalModalProps) => {
+  const form = useForm<UpdateSectionFormValues>({
     mode: "uncontrolled",
-    initialValues: {
-      title: "",
-      description: "",
-      courseId: courseId,
-    },
-    validate: zodResolver(CreateSectionFormSchema),
+    initialValues: section,
+    validate: zodResolver(EditSectionFormSchema),
   });
 
-  const createSectionMutation = useCreateSection();
+  const updateSectionMutation = useUpdateSection();
 
-  const handleCreateSection = (values: CreateSectionFormValues) => {
-    const payload: CreateSectionCommand = {
+  const handleUpdateSection = (values: UpdateSectionFormValues) => {
+    const payload: UpdateSectionCommand = {
+      id: values.id,
       title: values.title,
       description: values.description,
-      courseId: values.courseId,
     };
-    console.log("Create section Form values:", values);
-
-    createSectionMutation.mutate(payload, {
+    updateSectionMutation.mutate(payload, {
       onSuccess: () => {
-        form.reset();
+        form.resetDirty();
         onClose();
       },
     });
   };
 
   return (
-    <CusModal opened={opened} onClose={onClose} title="Create New Section" keepMounted>
-      <form className="space-y-6" onSubmit={form.onSubmit(handleCreateSection)} noValidate>
+    <CusModal opened={opened} onClose={onClose} title="Edit Section" keepMounted>
+      <form className="space-y-6" onSubmit={form.onSubmit(handleUpdateSection)} noValidate>
         <TextInput
           size="md"
           label="Title"
@@ -76,7 +70,12 @@ export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionM
           <Button variant="subtle" onClick={onClose} type="button">
             Cancel
           </Button>
-          <Button variant="filled" loading={createSectionMutation.isPending} type="submit">
+          <Button
+            variant="filled"
+            loading={updateSectionMutation.isPending}
+            type="submit"
+            disabled={!form.isDirty()}
+          >
             Save
           </Button>
         </div>

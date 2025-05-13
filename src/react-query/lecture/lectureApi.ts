@@ -1,5 +1,5 @@
 import { ApiSuccessResponse } from "../../http-client/api.types";
-import apiClient from "../../http-client/axios";
+import apiClient from "../../http-client/apiClient";
 import { CreateLectureCommand, ReorderLectureCommand } from "./lecture.types";
 
 const BASE_URL = "/lectures";

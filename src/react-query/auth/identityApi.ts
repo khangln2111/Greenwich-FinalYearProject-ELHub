@@ -1,4 +1,4 @@
-import apiClient from "../../http-client/axios";
+import apiClient from "../../http-client/apiClient";
 import {
   AuthResponse,
   ConfirmEmailRequest,

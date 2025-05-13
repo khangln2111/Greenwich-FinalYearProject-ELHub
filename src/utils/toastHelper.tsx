@@ -1,8 +1,9 @@
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import ms from "ms";
+import { ReactNode } from "react";
 
-export const showErrorToast = (title: string, message?: string) => {
+export const showErrorToast = (title: string, message?: string | ReactNode) => {
   notifications.show({
     title,
     message: message || "An error occurred.",
@@ -14,7 +15,7 @@ export const showErrorToast = (title: string, message?: string) => {
   });
 };
 
-export const showSuccessToast = (title: string, message?: string) => {
+export const showSuccessToast = (title: string, message?: string | ReactNode) => {
   notifications.show({
     title,
     message: message || "Operation completed successfully.",

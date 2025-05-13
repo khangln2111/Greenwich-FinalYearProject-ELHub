@@ -1,17 +1,18 @@
 import { Draggable, Droppable } from "@hello-pangea/dnd";
-import { Accordion, ActionIcon, Button, Menu, Text, ThemeIcon } from "@mantine/core";
+import { Accordion, Button, Menu, Text, ThemeIcon } from "@mantine/core";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { EllipsisVerticalIcon, Move, PlusIcon } from "lucide-react";
 import { SectionVm } from "../../../../../react-query/section/section.types";
 import { cn } from "../../../../../utils/cn";
 import { LectureItem } from "./LectureItem";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
 
 type SectionItemProps = {
   section: SectionVm;
   index: number;
+  onUpdate: (section: SectionVm) => void;
 };
 
-export const SectionItem = ({ section, index }: SectionItemProps) => (
+export const SectionItem = ({ section, index, onUpdate }: SectionItemProps) => (
   <Draggable draggableId={section.id} index={index}>
     {(dragProvided, snapshot) => (
       <Accordion.Item
@@ -48,12 +49,16 @@ export const SectionItem = ({ section, index }: SectionItemProps) => (
               </ThemeIcon>
               <Menu trigger="click-hover">
                 <Menu.Target>
-                  <ActionIcon variant="light" onClick={(e) => e.stopPropagation()}>
+                  <ThemeIcon variant="light" onClick={(e) => e.stopPropagation()}>
                     <EllipsisVerticalIcon />
-                  </ActionIcon>
+                  </ThemeIcon>
                 </Menu.Target>
                 <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
-                  <Menu.Item color="blue" leftSection={<IconPencil size={16} />}>
+                  <Menu.Item
+                    color="blue"
+                    leftSection={<IconPencil size={16} />}
+                    onClick={() => onUpdate(section)}
+                  >
                     Edit
                   </Menu.Item>
                   <Menu.Item color="red" leftSection={<IconTrash size={16} />}>

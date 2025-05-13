@@ -46,7 +46,6 @@ export default function InstructorCoursesPage() {
   const handleCreateCourse = async (values: typeof form.values) => {
     const validation = form.validate();
     if (validation.hasErrors) return;
-    console.log("Form values:", values);
     createCourseMutation.mutate(values, {
       onSuccess: () => {
         form.reset();
@@ -96,7 +95,7 @@ export default function InstructorCoursesPage() {
 
       <CusModal
         opened={createCourseModalOpened}
-        keepMounted={true}
+        keepMounted={false}
         onClose={closeCreateCourseModal}
         title="Create New Course"
         footer={

@@ -6,6 +6,7 @@ import { SectionItem } from "./SectionItem";
 import { randomId, useDisclosure } from "@mantine/hooks";
 import { SectionVm } from "../../../../../react-query/section/section.types";
 import { CreateSectionModal } from "./CreateSectionModal";
+import { EditSectionModal } from "./UpdateSectionModal";
 const initialSections: SectionVm[] = [
   {
     id: "sec-1",
@@ -176,38 +177,36 @@ const initialSections: SectionVm[] = [
 
 type CurriculumManagerProps = {
   courseId: string;
-  sections?: SectionVm[];
+  sections: SectionVm[];
 };
 
-const CurriculumManager = ({ courseId }: CurriculumManagerProps) => {
-  const [sections, setSections] = useState(initialSections);
+const CurriculumManager = ({ courseId, sections }: CurriculumManagerProps) => {
   const [
     createSectionModalOpened,
     { open: openCreateSectionModal, close: closeCreateSectionModal },
   ] = useDisclosure(false);
+  const [
+    updateSectionModalOpened,
+    { open: openUpdateSectionModal, close: closeUpdateSectionModal },
+  ] = useDisclosure(false);
+  const [
+    updateLectureModalOpened,
+    { open: openUpdateLectureModal, close: closeUpdateLectureModal },
+  ] = useDisclosure(false);
+  const [selectedSection, setSelectedSection] = useState<SectionVm | null>(null);
+  const [selectedLecture, setSelectedLecture] = useState<string | null>(null);
 
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination, type } = result;
-    if (!destination) return;
-
-    const updated = [...sections];
-
-    if (type === "section") {
-      const [moved] = updated.splice(source.index, 1);
-      updated.splice(destination.index, 0, moved);
-    } else {
-      const sourceIdx = updated.findIndex((s) => s.id === source.droppableId);
-      const destIdx = updated.findIndex((s) => s.id === destination.droppableId);
-      if (sourceIdx === -1 || destIdx === -1) return;
-
-      if (updated[sourceIdx]?.lectures && updated[destIdx]?.lectures) {
-        const [movedLecture] = updated[sourceIdx].lectures.splice(source.index, 1);
-        updated[destIdx].lectures.splice(destination.index, 0, movedLecture);
-      }
-    }
-
-    setSections(updated);
+  const handleUpdateSection = (section: SectionVm) => {
+    setSelectedSection(section);
+    openUpdateSectionModal();
   };
+
+  const handleUpdateLecture = (lectureId: string) => {
+    setSelectedLecture(lectureId);
+    openUpdateLectureModal();
+  };
+
+  const onDragEnd = (result: DropResult) => {};
 
   return (
     <>
@@ -216,6 +215,15 @@ const CurriculumManager = ({ courseId }: CurriculumManagerProps) => {
         onClose={closeCreateSectionModal}
         courseId={courseId}
       />
+      {selectedSection && (
+        <EditSectionModal
+          opened={updateSectionModalOpened}
+          onClose={closeUpdateSectionModal}
+          section={selectedSection}
+          key={selectedSection.id}
+        />
+      )}
+
       <div className="flex items-center justify-between">
         <Title order={2}>Course Content</Title>
         <div className="flex items-center gap-4">
@@ -248,7 +256,12 @@ const CurriculumManager = ({ courseId }: CurriculumManagerProps) => {
                 }}
               >
                 {sections.map((section, index) => (
-                  <SectionItem key={section.id} section={section} index={index} />
+                  <SectionItem
+                    key={section.id}
+                    section={section}
+                    index={index}
+                    onUpdate={handleUpdateSection}
+                  />
                 ))}
               </Accordion>
               {provided.placeholder}
