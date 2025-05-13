@@ -1,21 +1,16 @@
 import { Avatar, Badge, Button, Center, Image, Rating, Text, Tooltip } from "@mantine/core";
 import { Clock, LibraryBig, Users } from "lucide-react";
 import { CourseVm } from "../../../../react-query/course/course.types";
+import { formatDurationLong } from "../../../../utils/format";
 
 type CourseCardProps = {
   course: CourseVm;
 };
 
-const formatDuration = (seconds: number): string => {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  return `${hours}h ${minutes}m`;
-};
-
 const CourseCard = ({ course }: CourseCardProps) => {
   const features = [
     {
-      label: formatDuration(course.durationInSeconds),
+      label: formatDurationLong(course.durationInSeconds),
       icon: Clock,
     },
     {

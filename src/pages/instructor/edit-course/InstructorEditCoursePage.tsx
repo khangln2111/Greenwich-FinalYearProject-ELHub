@@ -5,7 +5,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
 import InstructorTab from "../../course-detail/_c/InstructorTab";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
-import CurriculumManager from "./_c/CurriculumManager";
+import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
 
 export default function UpdateCoursePage() {

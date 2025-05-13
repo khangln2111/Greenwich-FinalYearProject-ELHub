@@ -23,6 +23,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Programming",
     createdAt: "2024-01-10T08:00:00Z",
     updatedAt: "2024-02-01T09:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-2",
@@ -46,6 +48,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Front-end",
     createdAt: "2024-01-15T08:00:00Z",
     updatedAt: "2024-01-20T09:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-3",
@@ -69,6 +73,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Back-end",
     createdAt: "2024-02-01T08:00:00Z",
     updatedAt: "2024-03-01T09:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-4",
@@ -92,6 +98,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Back-end",
     createdAt: "2024-03-10T10:00:00Z",
     updatedAt: "2024-04-01T08:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-5",
@@ -115,6 +123,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Front-end",
     createdAt: "2024-04-01T07:00:00Z",
     updatedAt: "2024-04-10T10:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-6",
@@ -138,6 +148,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Algorithms",
     createdAt: "2023-12-20T08:00:00Z",
     updatedAt: "2024-01-05T08:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-7",
@@ -161,6 +173,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "DevOps",
     createdAt: "2024-03-05T08:00:00Z",
     updatedAt: "2024-03-15T08:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-8",
@@ -184,6 +198,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Version Control",
     createdAt: "2024-04-01T08:00:00Z",
     updatedAt: "2024-04-01T09:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-9",
@@ -207,6 +223,8 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Software Engineering",
     createdAt: "2023-11-01T08:00:00Z",
     updatedAt: "2023-11-15T08:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
   {
     id: "course-10",
@@ -230,5 +248,7 @@ export const mockCourses: CourseVm[] = [
     categoryName: "Full-stack",
     createdAt: "2024-01-20T08:00:00Z",
     updatedAt: "2024-02-01T08:00:00Z",
+    learningOutcomes: null,
+    prerequisites: null,
   },
 ];

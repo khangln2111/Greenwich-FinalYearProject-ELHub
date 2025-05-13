@@ -5,7 +5,7 @@ import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
 import { useDeleteCourse } from "../../../../react-query/course/courseHooks";
-import { formatCurrency } from "../../../../utils/formatCurrency";
+import { formatCurrency, formatDurationLong } from "../../../../utils/format";
 
 const statusBadgeMap: Record<CourseStatus, string> = {
   [CourseStatus.Draft]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900",
@@ -77,7 +77,7 @@ export default function InstructorCourseCard({ course }: Props) {
         <div className="mt-4 flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
           <div className="flex items-center gap-2">
             <Users className="size-4 text-gray-500 dark:text-gray-400" />
-            <span>{course.studentEnrollmentCount} students</span>
+            <span>{course.studentEnrollmentCount ?? 0} students</span>
           </div>
           <div className="flex items-center gap-2">
             <ListOrdered className="size-4 text-gray-500 dark:text-gray-400" />
@@ -85,7 +85,7 @@ export default function InstructorCourseCard({ course }: Props) {
           </div>
           <div className="flex items-center gap-2">
             <Clock className="size-4 text-gray-500 dark:text-gray-400" />
-            <span>{course.durationInSeconds}</span>
+            <span>{formatDurationLong(course.durationInSeconds)}</span>
           </div>
         </div>
       </div>
