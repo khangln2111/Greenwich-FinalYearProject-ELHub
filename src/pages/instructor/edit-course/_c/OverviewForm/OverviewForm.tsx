@@ -13,12 +13,15 @@ import {
   UpdateCourseOverviewFormSchema,
   UpdateCourseOverviewFormValues,
 } from "../../../../../react-query/course/course.schema";
-import { CourseVm, UpdateCourseRequest } from "../../../../../react-query/course/course.types";
+import {
+  CourseDetailVm,
+  UpdateCourseCommand,
+} from "../../../../../react-query/course/course.types";
 import { useUpdateCourse } from "../../../../../react-query/course/courseHooks";
 import SortableInputList from "./SortableInputList";
 
 type CourseOverviewFormProps = {
-  courseDetail: CourseVm;
+  courseDetail: CourseDetailVm;
   courseId: string;
 };
 
@@ -71,7 +74,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   const promoVideo = form.getValues().promoVideo;
 
   const handleSubmit = (values: UpdateCourseOverviewFormValues) => {
-    const payload: UpdateCourseRequest = {
+    const payload: UpdateCourseCommand = {
       id: courseId,
       title: values.title,
       description: values.description,

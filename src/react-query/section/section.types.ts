@@ -9,3 +9,21 @@ export type SectionVm = {
   courseId: string;
   lectures?: LectureVm[];
 };
+
+export type ReorderSectionCommand = {
+  id: string;
+  newCourseId: string;
+  newOrder: number;
+};
+
+export type CreateSectionCommand = {
+  title: string;
+  description: string;
+  courseId: string;
+};
+
+export type UpdateSectionCommand = {
+  id: string;
+  title?: string;
+  description?: string;
+};

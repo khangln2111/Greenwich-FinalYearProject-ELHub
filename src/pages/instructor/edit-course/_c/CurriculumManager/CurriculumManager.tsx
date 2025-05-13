@@ -3,8 +3,9 @@ import { Accordion, Button, Text, Title } from "@mantine/core";
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { SectionItem } from "./SectionItem";
-import { randomId } from "@mantine/hooks";
+import { randomId, useDisclosure } from "@mantine/hooks";
 import { SectionVm } from "../../../../../react-query/section/section.types";
+import { CreateSectionModal } from "./CreateSectionModal";
 const initialSections: SectionVm[] = [
   {
     id: "sec-1",
@@ -174,12 +175,16 @@ const initialSections: SectionVm[] = [
 ];
 
 type CurriculumManagerProps = {
-  courseId?: string;
-  sections: SectionVm[];
+  courseId: string;
+  sections?: SectionVm[];
 };
 
-const CurriculumManager = ({}) => {
+const CurriculumManager = ({ courseId }: CurriculumManagerProps) => {
   const [sections, setSections] = useState(initialSections);
+  const [
+    createSectionModalOpened,
+    { open: openCreateSectionModal, close: closeCreateSectionModal },
+  ] = useDisclosure(false);
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result;
@@ -206,24 +211,15 @@ const CurriculumManager = ({}) => {
 
   return (
     <>
+      <CreateSectionModal
+        opened={createSectionModalOpened}
+        onClose={closeCreateSectionModal}
+        courseId={courseId}
+      />
       <div className="flex items-center justify-between">
         <Title order={2}>Course Content</Title>
         <div className="flex items-center gap-4">
-          <Button
-            leftSection={<PlusIcon size={16} />}
-            onClick={() => {
-              const newSection: SectionVm = {
-                id: randomId(),
-                title: `Chapter ${sections.length + 1}: New Section`,
-                description: "New section description",
-                courseId: "course-1",
-                lectures: [],
-                lectureCount: 0,
-                durationInSeconds: 0,
-              };
-              setSections((prev) => [...prev, newSection]);
-            }}
-          >
+          <Button leftSection={<PlusIcon size={16} />} onClick={openCreateSectionModal}>
             Add Section
           </Button>
           <Text className="text-gray-500 dark:text-dark-1">

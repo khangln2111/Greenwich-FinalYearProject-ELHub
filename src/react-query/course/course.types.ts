@@ -1,3 +1,5 @@
+import { SectionVm } from "../section/section.types";
+
 // course.type.ts
 export enum CourseStatus {
   Draft = "Draft",
@@ -39,7 +41,40 @@ export interface CourseVm {
   updatedAt: string | null;
 }
 
-export interface UpdateCourseRequest {
+export interface CourseDetailVm {
+  id: string;
+
+  title: string;
+  description: string;
+
+  sectionCount: number;
+  lectureCount: number;
+
+  sections: SectionVm[];
+
+  imageUrl: string;
+  promoVideoUrl: string;
+
+  price: number;
+  discountPercentage: number;
+  discountedPrice: number;
+
+  durationInSeconds: number;
+
+  status: string;
+
+  learningOutcomes: string[];
+  prerequisites: string[];
+
+  categoryName: string;
+  instructorName: string;
+  instructorId: string;
+
+  createdAt: string; // or Date, depending on how you parse it
+  updatedAt: string; // or Date
+}
+
+export interface UpdateCourseCommand {
   id: string;
   title?: string;
   summary?: string;

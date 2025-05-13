@@ -9,7 +9,7 @@ import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
 
 export default function UpdateCoursePage() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("curriculum");
 
   const { courseId } = useParams<{ courseId: string }>();
 
@@ -17,7 +17,7 @@ export default function UpdateCoursePage() {
     return <Navigate to="/instructor/courses" replace />;
   }
 
-  const { data, isPending, isError } = useGetCourseDetail(courseId);
+  const { data, isPending } = useGetCourseDetail(courseId);
 
   return (
     <div className="flex-1 p-6 xl:p-8">
@@ -74,7 +74,7 @@ export default function UpdateCoursePage() {
           </Tabs.Panel>
           {/* course curriculum */}
           <Tabs.Panel value="curriculum">
-            <CurriculumManager />
+            <CurriculumManager courseId={courseId} />
           </Tabs.Panel>
           <Tabs.Panel value="reviews">
             <ReviewTab

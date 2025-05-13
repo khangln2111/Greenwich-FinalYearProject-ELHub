@@ -31,7 +31,8 @@ import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
 
 export default function InstructorCoursesPage() {
   const [filter, setFilter] = useState<CourseStatus | "all">("all");
-  const [opened, { open, close }] = useDisclosure(false);
+  const [createCourseModalOpened, { open: openCreateCourseModal, close: closeCreateCourseModal }] =
+    useDisclosure(false);
   const { data: categories, isPending, isError } = useGetCategories();
   const { data: courses, isPending: isCoursesPending } = useGetCourses();
 
@@ -49,7 +50,7 @@ export default function InstructorCoursesPage() {
     createCourseMutation.mutate(values, {
       onSuccess: () => {
         form.reset();
-        close();
+        closeCreateCourseModal();
       },
     });
   };
@@ -63,7 +64,7 @@ export default function InstructorCoursesPage() {
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">My Courses</h1>
         <div className="flex flex-wrap gap-4">
           <Button
-            onClick={open}
+            onClick={openCreateCourseModal}
             leftSection={<Plus className="size-4" />}
             size="sm"
             className="flex-1"
@@ -94,9 +95,9 @@ export default function InstructorCoursesPage() {
       </div>
 
       <CusModal
-        opened={opened}
+        opened={createCourseModalOpened}
         keepMounted={true}
-        onClose={close}
+        onClose={closeCreateCourseModal}
         title="Create New Course"
         footer={
           <div className="flex gap-4 justify-end items-center">
@@ -116,7 +117,7 @@ export default function InstructorCoursesPage() {
             >
               🎲 Fill with random data
             </Button>
-            <Button variant="subtle" onClick={close}>
+            <Button variant="subtle" onClick={closeCreateCourseModal}>
               Cancel
             </Button>
             <Button

@@ -37,11 +37,21 @@ export const handleApiError = (
   if (status === 400 && errorCode === ErrorCode.ValidationError && data?.errors) {
     const validationMessages = Object.entries(data.errors)
       .map(([field, messages]) => {
-        return `${field}: ${messages.join(", ")}`;
+        return `• ${field}: ${messages.join(", ")}`;
       })
       .join("\n");
 
-    showErrorToast("Validation Error", `The following errors occurred:\n${validationMessages}`);
+    showErrorToast("Validation Error", `The following errors occurred:\n\n${validationMessages}`);
+    return;
+  }
+
+  if (status === 401 && (errorCode === undefined || errorCode === ErrorCode.Unauthorized)) {
+    showErrorToast("Unauthorized", "You must login to perform this action.");
+    return;
+  }
+
+  if (status === 403 && (errorCode === undefined || errorCode === ErrorCode.Forbidden)) {
+    showErrorToast("Forbidden", "You do not have permission to perform this action.");
     return;
   }
 

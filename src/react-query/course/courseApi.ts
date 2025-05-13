@@ -1,8 +1,10 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/axios";
-import { CourseVm, CourseQueryCriteria, UpdateCourseRequest } from "./course.types";
+import { CourseVm, CourseQueryCriteria, UpdateCourseCommand, CourseDetailVm } from "./course.types";
 import { CreateCourseRequest } from "./course.schema";
+
+const BASE_URL = "/courses";
 
 const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   const queryBuilder = new GridifyQueryBuilder();
@@ -33,19 +35,19 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
 };
 
 export const getCourses = async (query: CourseQueryCriteria = {}) => {
-  const response = await apiClient.get<ListData<CourseVm>>("/courses", {
+  const response = await apiClient.get<ListData<CourseVm>>(`${BASE_URL}`, {
     params: buildCourseQuery(query),
   });
   return response.data;
 };
 
 export const getCourseDetail = async (id: string) => {
-  const response = await apiClient.get<CourseVm>(`/courses/${id}`);
+  const response = await apiClient.get<CourseDetailVm>(`/courses/${id}`);
   return response.data;
 };
 
 export const createCourse = async (course: CreateCourseRequest) => {
-  const response = await apiClient.post<ApiSuccessResponse>("/courses", course, {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, course, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -53,8 +55,8 @@ export const createCourse = async (course: CreateCourseRequest) => {
   return response.data;
 };
 
-export const updateCourse = async (course: UpdateCourseRequest) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`/courses`, course, {
+export const updateCourse = async (course: UpdateCourseCommand) => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}`, course, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -63,6 +65,6 @@ export const updateCourse = async (course: UpdateCourseRequest) => {
 };
 
 export const deleteCourse = async (id: string) => {
-  const response = await apiClient.delete<ApiSuccessResponse>(`/courses/${id}`);
+  const response = await apiClient.delete<ApiSuccessResponse>(`${BASE_URL}/${id}`);
   return response.data;
 };

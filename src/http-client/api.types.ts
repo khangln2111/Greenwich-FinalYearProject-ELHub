@@ -35,4 +35,6 @@ export enum ErrorCode {
   EmailOrPasswordIncorrect = "EmailOrPasswordIncorrect",
   InvalidToken = "InvalidToken",
   InvalidOtp = "InvalidOtp",
+  Unauthorized = "Unauthorized",
+  Forbidden = "Forbidden",
 }

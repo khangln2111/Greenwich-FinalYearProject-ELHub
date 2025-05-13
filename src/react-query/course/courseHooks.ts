@@ -1,11 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { createCourse, deleteCourse, updateCourse } from "./courseApi";
+import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CreateCourseRequest } from "./course.schema";
-import { CourseQueryCriteria, UpdateCourseRequest } from "./course.types";
+import { CourseQueryCriteria, UpdateCourseCommand } from "./course.types";
+import { createCourse, deleteCourse, updateCourse } from "./courseApi";
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
   return useQuery(keyFac.courses.list(query));
@@ -27,23 +26,15 @@ export const useCreateCourse = () => {
         "Course created successfully, you can check it in the list",
       );
     },
-    onError: (error: AxiosError<ApiErrorResponse>) => {
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 400 && data.errorCode === ErrorCode.ValidationError) {
-          showErrorToast("Validation Error", data.message);
-        } else if (status === 401) {
-          showErrorToast("Unauthorized", "You must login to perform this action.");
-        } else if (status === 403) {
-          showErrorToast("Forbidden", "You do not have permission to perform this action.");
-        } else {
-          showErrorToast("Unexpected Error", error.message);
-        }
-      } else {
-        console.error("Axios Error:", error);
-        showErrorToast("Network Error", "No response from the server. Please try again later.");
-      }
-    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The category not found"),
+          },
+        ],
+      }),
   });
 };
 
@@ -51,31 +42,22 @@ export const useUpdateCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (course: UpdateCourseRequest) => updateCourse(course),
+    mutationFn: (course: UpdateCourseCommand) => updateCourse(course),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses.detail(variables.id).queryKey });
       queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
       showSuccessToast("Course Updated", "The course was updated successfully.");
     },
-    onError: (error: AxiosError<ApiErrorResponse>) => {
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 400 && data.errorCode === ErrorCode.ValidationError) {
-          showErrorToast("Validation Error", data.message);
-        } else if (status === 401) {
-          showErrorToast("Unauthorized", "You must login to perform this action.");
-        } else if (status === 403) {
-          showErrorToast("Forbidden", "You do not have permission to perform this action.");
-        } else if (status === 404) {
-          showErrorToast("Not Found", "The course you are trying to update does not exist.");
-        } else {
-          showErrorToast("Unexpected Error", error.message);
-        }
-      } else {
-        console.error("Axios Error:", error);
-        showErrorToast("Network Error", "No response from the server. Please try again later.");
-      }
-    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast("Not Found", "The course you are trying to update does not exist."),
+          },
+        ],
+      }),
   });
 };
 
@@ -88,22 +70,15 @@ export const useDeleteCourse = () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
       showSuccessToast("Course Deleted", "The course was deleted successfully.");
     },
-    onError: (error: AxiosError<ApiErrorResponse>) => {
-      if (error.response) {
-        const { status } = error.response;
-        if (status === 401) {
-          showErrorToast("Unauthorized", "You must login to perform this action.");
-        } else if (status === 403) {
-          showErrorToast("Forbidden", "You do not have permission to perform this action.");
-        } else if (status === 404) {
-          showErrorToast("Not Found", "The course you are trying to delete does not exist.");
-        } else {
-          showErrorToast("Unexpected Error", error.message);
-        }
-      } else {
-        console.error("Axios Error:", error);
-        showErrorToast("Network Error", "No response from the server. Please try again later.");
-      }
-    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast("Not Found", "The course you are trying to delete does not exist."),
+          },
+        ],
+      }),
   });
 };
