@@ -1,15 +1,16 @@
-import { Button, Switch, TextInput, Textarea } from "@mantine/core";
+import { Button, Switch, Text, TextInput, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { FileText, ScrollText } from "lucide-react";
+import { EyeIcon, EyeOffIcon, FileText, ScrollText } from "lucide-react";
 import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
-import FileUploadField from "../../../../../components/FileUploadField";
+import FileUploadField from "../../../../../components/media/FileUploadField";
 import {
   ALLOWED_VIDEO_TYPES,
   MAX_VIDEO_SIZE_MB,
 } from "../../../../../constants/ValidationConstants";
 import { LectureVm, UpdateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
 import { useUpdateLecture } from "../../../../../react-query/lecture/lectureHooks";
+import { formSubmitWithFocus } from "../../../../../utils/form";
 
 interface UpdateLectureModalProps {
   opened: boolean;
@@ -61,8 +62,6 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
       preview: values.preview,
     };
 
-    console.log("UpdateLectureModal -> handleUpdateLecture -> payload", payload);
-
     updateLectureMutation.mutate(payload, {
       onSuccess: () => {
         form.resetDirty();
@@ -74,7 +73,28 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
   const video = form.getValues().video;
 
   return (
-    <CusModal opened={opened} onClose={onClose} title="Update Lecture" keepMounted>
+    <CusModal
+      opened={opened}
+      onClose={onClose}
+      title="Edit Lecture"
+      keepMounted
+      footer={
+        <div className="flex gap-4 justify-end items-center">
+          <Button variant="subtle" onClick={onClose} type="button">
+            Cancel
+          </Button>
+          <Button
+            variant="filled"
+            loading={updateLectureMutation.isPending}
+            type="submit"
+            disabled={!form.isDirty()}
+            onClick={() => formSubmitWithFocus(form, handleUpdateLecture)()}
+          >
+            Save
+          </Button>
+        </div>
+      }
+    >
       <form className="space-y-6" onSubmit={form.onSubmit(handleUpdateLecture)} noValidate>
         <TextInput
           size="md"
@@ -95,15 +115,23 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
           key={form.key("description")}
         />
 
-        {/* Preview switcher */}
-        <Switch
-          label="Allow preview for this lecture"
-          description="If enabled, this lecture will be available as a free preview."
-          size="md"
-          {...form.getInputProps("preview", { type: "input" })}
-          key={form.key("preview")}
-          defaultChecked={lecture.preview}
-        />
+        {/* Preview switch */}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2"></div>
+          <Text className="font-medium text-md">Allow preview</Text>
+
+          <Switch
+            color="teal"
+            labelPosition="right"
+            description="If enabled, this lecture will be available as a free preview."
+            size="lg"
+            onLabel={<EyeIcon size={16} />}
+            offLabel={<EyeOffIcon size={16} />}
+            {...form.getInputProps("preview", { type: "input" })}
+            key={form.key("preview")}
+            defaultChecked={form.getValues().preview}
+          />
+        </div>
 
         <FileUploadField
           previewUrl={typeof video === "string" ? video : undefined}
@@ -114,20 +142,6 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
           {...form.getInputProps("video")}
           key={form.key("video")}
         />
-
-        <div className="flex justify-end gap-4 pt-2">
-          <Button variant="subtle" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button
-            variant="filled"
-            loading={updateLectureMutation.isPending}
-            type="submit"
-            disabled={!form.isDirty()}
-          >
-            Save
-          </Button>
-        </div>
       </form>
     </CusModal>
   );

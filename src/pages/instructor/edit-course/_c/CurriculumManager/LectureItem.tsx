@@ -3,9 +3,8 @@ import { ActionIcon, Button, Menu, Text } from "@mantine/core";
 import { EllipsisVerticalIcon, Video } from "lucide-react";
 import { cn } from "../../../../../utils/cn";
 import { LectureVm } from "../../../../../react-query/lecture/lecture.types";
-import { formatDurationHhMm } from "../../../../../utils/format";
+import { formatDurationMmSs } from "../../../../../utils/format";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { section } from "framer-motion/client";
 
 export type LectureItemProps = {
   lecture: LectureVm;
@@ -43,7 +42,7 @@ export const LectureItem = ({ lecture, index, onUpdate }: LectureItemProps) => (
             </Button>
           )}
           <Text className="text-dimmed text-nowrap">
-            {formatDurationHhMm(lecture.durationInSeconds)}
+            {formatDurationMmSs(lecture.durationInSeconds)}
           </Text>
           <Menu trigger="click-hover">
             <Menu.Target>

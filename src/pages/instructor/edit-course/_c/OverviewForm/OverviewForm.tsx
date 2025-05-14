@@ -2,7 +2,7 @@ import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Box, Button, Group, Textarea, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { randomId } from "@mantine/hooks";
-import FileUploadField from "../../../../../components/FileUploadField";
+import FileUploadField from "../../../../../components/media/FileUploadField";
 import {
   ALLOWED_IMAGE_TYPES,
   ALLOWED_VIDEO_TYPES,
@@ -18,6 +18,7 @@ import {
   UpdateCourseCommand,
 } from "../../../../../react-query/course/course.types";
 import { useUpdateCourse } from "../../../../../react-query/course/courseHooks";
+import { formSubmitWithFocus } from "../../../../../utils/form";
 import SortableInputList from "./SortableInputList";
 
 type CourseOverviewFormProps = {
@@ -93,10 +94,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   return (
     <Box
       component="form"
-      onSubmit={form.onSubmit(handleSubmit, (errors) => {
-        const firstErrorPath = Object.keys(errors)[0];
-        form.getInputNode(firstErrorPath)?.focus();
-      })}
+      onSubmit={formSubmitWithFocus(form, handleSubmit)}
       className="flex-1 flex flex-col gap-8"
     >
       <div>

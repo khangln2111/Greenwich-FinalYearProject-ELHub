@@ -6,6 +6,7 @@ import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
 import { SectionVm, UpdateSectionCommand } from "../../../../../react-query/section/section.types";
 import { useUpdateSection } from "../../../../../react-query/section/sectionHooks";
+import { formSubmitWithFocus } from "../../../../../utils/form";
 
 interface EditSectionalModalProps {
   opened: boolean;
@@ -45,7 +46,28 @@ export const UpdateSectionModal = ({ opened, onClose, section }: EditSectionalMo
   };
 
   return (
-    <CusModal opened={opened} onClose={onClose} title={`Edit Section ${section.title}`} keepMounted>
+    <CusModal
+      opened={opened}
+      onClose={onClose}
+      title={`Edit Section ${section.title}`}
+      keepMounted
+      footer={
+        <div className="flex gap-4 justify-end items-center">
+          <Button variant="subtle" onClick={onClose} type="button">
+            Cancel
+          </Button>
+          <Button
+            variant="filled"
+            loading={updateSectionMutation.isPending}
+            type="submit"
+            disabled={!form.isDirty()}
+            onClick={() => formSubmitWithFocus(form, handleUpdateSection)()}
+          >
+            Save
+          </Button>
+        </div>
+      }
+    >
       <form className="space-y-6" onSubmit={form.onSubmit(handleUpdateSection)} noValidate>
         <TextInput
           size="md"
@@ -65,20 +87,6 @@ export const UpdateSectionModal = ({ opened, onClose, section }: EditSectionalMo
           {...form.getInputProps("description")}
           key={form.key("description")}
         />
-
-        <div className="flex justify-end gap-4 pt-2">
-          <Button variant="subtle" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button
-            variant="filled"
-            loading={updateSectionMutation.isPending}
-            type="submit"
-            disabled={!form.isDirty()}
-          >
-            Save
-          </Button>
-        </div>
       </form>
     </CusModal>
   );

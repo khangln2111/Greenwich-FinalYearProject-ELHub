@@ -75,17 +75,6 @@ apiClient.interceptors.response.use(
     const errorCode = data?.errorCode;
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-    // ✅ Chỉ show toast với các lỗi đặc biệt, còn lại trả ra để hook xử lý
-    if (status === 401 && (errorCode === undefined || errorCode === ErrorCode.Unauthorized)) {
-      showErrorToast("Unauthorized", "You must login to perform this action.");
-      return;
-    }
-
-    if (status === 403 && (errorCode === undefined || errorCode === ErrorCode.Forbidden)) {
-      showErrorToast("Forbidden", "You do not have permission to perform this action.");
-      return;
-    }
-
     // ✅ Refresh token nếu gặp lỗi 401 và có tokens trong localStorage
     if (
       status === 401 &&
@@ -114,6 +103,17 @@ apiClient.interceptors.response.use(
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }
+    }
+
+    // ✅ Chỉ show toast với các lỗi đặc biệt, còn lại trả ra để hook xử lý
+    if (status === 401 && (errorCode === undefined || errorCode === ErrorCode.Unauthorized)) {
+      showErrorToast("Unauthorized", "You must login to perform this action.");
+      return;
+    }
+
+    if (status === 403 && (errorCode === undefined || errorCode === ErrorCode.Forbidden)) {
+      showErrorToast("Forbidden", "You do not have permission to perform this action.");
+      return;
     }
 
     // ❌ Không xử lý gì thêm — để react-query tự quản

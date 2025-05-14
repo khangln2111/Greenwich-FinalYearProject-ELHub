@@ -6,6 +6,7 @@ import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
 import { CreateSectionCommand } from "../../../../../react-query/section/section.types";
 import { useCreateSection } from "../../../../../react-query/section/sectionHooks";
+import { formSubmitWithFocus } from "../../../../../utils/form";
 
 interface CreateSectionModalProps {
   opened: boolean;
@@ -14,9 +15,10 @@ interface CreateSectionModalProps {
 }
 
 export const CreateSectionFormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  courseId: z.string().min(1), // hidden from user, but still validated
+  title: z.string({ message: "Title is required" }).min(1, "Title must be at least 1 character"),
+  description: z
+    .string({ message: "Description is required" })
+    .min(1, "Description must be at least 1 character"),
 });
 
 export type CreateSectionFormValues = z.infer<typeof CreateSectionFormSchema>;
@@ -35,7 +37,6 @@ export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionM
       description: values.description,
       courseId: courseId,
     };
-    console.log("Create section Form values:", values);
 
     createSectionMutation.mutate(payload, {
       onSuccess: () => {
@@ -46,7 +47,27 @@ export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionM
   };
 
   return (
-    <CusModal opened={opened} onClose={onClose} title="Create New Section" keepMounted>
+    <CusModal
+      opened={opened}
+      onClose={onClose}
+      title="Create New Section"
+      keepMounted
+      footer={
+        <div className="flex gap-4 justify-end items-center">
+          <Button variant="subtle" onClick={onClose} type="button">
+            Cancel
+          </Button>
+          <Button
+            variant="filled"
+            loading={createSectionMutation.isPending}
+            type="submit"
+            onClick={() => formSubmitWithFocus(form, handleCreateSection)()}
+          >
+            Save
+          </Button>
+        </div>
+      }
+    >
       <form className="space-y-6" onSubmit={form.onSubmit(handleCreateSection)} noValidate>
         <TextInput
           size="md"
@@ -66,15 +87,6 @@ export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionM
           {...form.getInputProps("description")}
           key={form.key("description")}
         />
-
-        <div className="flex justify-end gap-4 pt-2">
-          <Button variant="subtle" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button variant="filled" loading={createSectionMutation.isPending} type="submit">
-            Save
-          </Button>
-        </div>
       </form>
     </CusModal>
   );

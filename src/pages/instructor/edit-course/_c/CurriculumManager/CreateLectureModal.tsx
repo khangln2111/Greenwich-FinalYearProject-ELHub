@@ -1,15 +1,16 @@
-import { Button, TextInput, Textarea } from "@mantine/core";
+import { Button, Switch, TextInput, Textarea, Text } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { FileText, ScrollText } from "lucide-react";
+import { EyeIcon, EyeOffIcon, FileText, ScrollText } from "lucide-react";
 import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
-import FileUploadField from "../../../../../components/FileUploadField";
+import FileUploadField from "../../../../../components/media/FileUploadField";
 import {
   ALLOWED_VIDEO_TYPES,
   MAX_VIDEO_SIZE_MB,
 } from "../../../../../constants/ValidationConstants";
 import { CreateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
 import { useCreateLecture } from "../../../../../react-query/lecture/lectureHooks";
+import { formSubmitWithFocus } from "../../../../../utils/form";
 
 interface CreateLectureModalProps {
   opened: boolean;
@@ -18,8 +19,11 @@ interface CreateLectureModalProps {
 }
 
 const CreateLectureSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
+  title: z.string({ message: "Title is required" }).min(1, "Title must be at least 1 character"),
+  description: z
+    .string({ message: "Description is required" })
+    .min(1, "Description must be at least 1 character"),
+  preview: z.boolean().default(false),
   video: z
     .instanceof(File, { message: "Video is required" })
     .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
@@ -46,6 +50,7 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
       title: values.title,
       description: values.description,
       video: values.video,
+      preview: values.preview,
     };
 
     createLectureMutation.mutate(payload, {
@@ -57,8 +62,32 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
   };
 
   return (
-    <CusModal opened={opened} onClose={onClose} title="Create New Lecture" keepMounted>
-      <form onSubmit={form.onSubmit(handleCreateLecture)} className="space-y-6" noValidate>
+    <CusModal
+      opened={opened}
+      onClose={onClose}
+      title="Create New Lecture"
+      keepMounted
+      footer={
+        <div className="flex gap-4 justify-end items-center">
+          <Button variant="subtle" onClick={onClose} type="button">
+            Cancel
+          </Button>
+          <Button
+            variant="filled"
+            loading={createLectureMutation.isPending}
+            type="submit"
+            onClick={() => formSubmitWithFocus(form, handleCreateLecture)()}
+          >
+            Save
+          </Button>
+        </div>
+      }
+    >
+      <form
+        onSubmit={form.onSubmit(handleCreateLecture)}
+        className="flex flex-col gap-y-6"
+        noValidate
+      >
         <TextInput
           size="md"
           label="Title"
@@ -78,6 +107,24 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
           key={form.key("description")}
         />
 
+        {/* Preview switch */}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2"></div>
+          <Text className="font-medium text-md">Allow preview</Text>
+
+          <Switch
+            color="teal"
+            labelPosition="right"
+            description="If enabled, this lecture will be available as a free preview."
+            size="lg"
+            onLabel={<EyeIcon size={16} />}
+            offLabel={<EyeOffIcon size={16} />}
+            {...form.getInputProps("preview", { type: "input" })}
+            key={form.key("preview")}
+            defaultChecked={form.getValues().preview}
+          />
+        </div>
+
         <FileUploadField
           accept={ALLOWED_VIDEO_TYPES}
           previewMediaType="video"
@@ -86,15 +133,6 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
           {...form.getInputProps("video")}
           key={form.key("video")}
         />
-
-        <div className="flex justify-end gap-4 pt-2">
-          <Button variant="subtle" onClick={onClose} type="button">
-            Cancel
-          </Button>
-          <Button type="submit" variant="filled" loading={createLectureMutation.isPending}>
-            Create
-          </Button>
-        </div>
       </form>
     </CusModal>
   );

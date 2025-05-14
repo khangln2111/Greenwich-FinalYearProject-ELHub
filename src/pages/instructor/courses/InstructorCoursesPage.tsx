@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import CusModal from "../../../components/CusModal";
-import FileUploadField from "../../../components/FileUploadField";
+import FileUploadField from "../../../components/media/FileUploadField";
 import {
   ALLOWED_IMAGE_TYPES,
   ALLOWED_VIDEO_TYPES,
@@ -26,6 +26,7 @@ import { useCreateCourse, useGetCourses } from "../../../react-query/course/cour
 import { mockCourses } from "../../../react-query/mockData";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
+import { formSubmitWithFocus } from "../../../utils/form";
 
 // Zod schema with file validation
 
@@ -120,12 +121,7 @@ export default function InstructorCoursesPage() {
               Cancel
             </Button>
             <Button
-              onClick={() =>
-                form.onSubmit(handleCreateCourse, (errors) => {
-                  const firstErrorPath = Object.keys(errors)[0];
-                  form.getInputNode(firstErrorPath)?.focus();
-                })()
-              }
+              onClick={() => formSubmitWithFocus(form, handleCreateCourse)()}
               variant="filled"
               loading={createCourseMutation.isPending}
             >

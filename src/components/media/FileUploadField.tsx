@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import { useUncontrolled } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { Accept } from "react-dropzone-esm";
+import VideoPlayerWithThumbnail from "./VideoPlayerWithThumbnail";
 interface FileUploadFieldProps {
   label?: string;
   description?: string;
@@ -24,7 +25,7 @@ function MediaPreview({ url, type }: { url: string | null; type: "image" | "vide
       return <img src={url} alt="Preview" className="size-full object-cover" />;
     }
     if (type === "video") {
-      return <video src={url} controls className="size-full object-cover" />;
+      return <VideoPlayerWithThumbnail videoUrl={url} className="size-full object-cover" />;
     }
 
     return <span className="text-sm text-gray-400">Unsupported media type</span>;
@@ -92,8 +93,7 @@ export default function FileUploadField({
       <div className="flex flex-col lg:flex-row gap-4">
         <div
           className="w-full lg:w-64 h-36 border flex items-center justify-center bg-gray-50 dark:bg-gray-800
-            overflow-hidden rounded-lg cursor-pointer"
-          onClick={() => openRef.current?.()}
+            overflow-hidden rounded-lg"
         >
           <MediaPreview url={previewMediaUrl} type={previewMediaType} />
         </div>

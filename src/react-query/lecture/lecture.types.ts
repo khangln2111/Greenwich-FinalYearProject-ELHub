@@ -18,6 +18,7 @@ export interface CreateLectureCommand {
   sectionId: string;
   title: string;
   description: string;
+  preview: boolean;
   video: File;
 }
 
