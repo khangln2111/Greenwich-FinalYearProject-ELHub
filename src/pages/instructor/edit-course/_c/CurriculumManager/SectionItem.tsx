@@ -10,6 +10,8 @@ import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { LectureVm } from "../../../../../react-query/lecture/lecture.types";
 import { UpdateLectureModal } from "./UpdateLectureModal";
+import { modals } from "@mantine/modals";
+import { useDeleteSection } from "../../../../../react-query/section/sectionHooks";
 
 type SectionItemProps = {
   section: lectureVm;
@@ -29,9 +31,34 @@ export const SectionItem = ({ section, index, onUpdate }: SectionItemProps) => {
     { open: openCreateLectureModal, close: closeCreateLectureModal },
   ] = useDisclosure(false);
 
+  const deleteSectionMutation = useDeleteSection();
+
   const handleUpdateLecture = (lecture: LectureVm) => {
     setSelectedLecture(lecture);
     openUpdateLectureModal();
+  };
+
+  const handleDeleteSectionClick = () => {
+    modals.openConfirmModal({
+      title: "Confirm deletion",
+      centered: true,
+      children: (
+        <p>
+          Are you sure you want to <strong>delete</strong> the section{" "}
+          <strong>{section.title}</strong>?
+        </p>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red", loading: deleteSectionMutation.isPending },
+      onConfirm: () => {
+        deleteSectionMutation.mutate(section.id, {
+          onSettled: () => {
+            modals.closeAll();
+          },
+        });
+      },
+      closeOnConfirm: false,
+    });
   };
 
   return (
@@ -103,7 +130,11 @@ export const SectionItem = ({ section, index, onUpdate }: SectionItemProps) => {
                       >
                         Edit
                       </Menu.Item>
-                      <Menu.Item color="red" leftSection={<IconTrash size={16} />}>
+                      <Menu.Item
+                        color="red"
+                        leftSection={<IconTrash size={16} />}
+                        onClick={handleDeleteSectionClick}
+                      >
                         Delete
                       </Menu.Item>
                     </Menu.Dropdown>

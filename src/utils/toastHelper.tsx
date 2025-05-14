@@ -25,3 +25,16 @@ export const showSuccessToast = (title: string, message?: string | ReactNode) =>
     position: "bottom-right",
   });
 };
+
+export const showLoadingToast = (title?: string, message?: string | ReactNode) => {
+  const id = notifications.show({
+    title: title || "Performing action",
+    message: message || "Please wait...",
+    loading: true,
+    withBorder: true,
+    position: "bottom-right",
+    autoClose: false,
+  });
+
+  return id; // Có thể dùng để update hoặc dismiss sau
+};
