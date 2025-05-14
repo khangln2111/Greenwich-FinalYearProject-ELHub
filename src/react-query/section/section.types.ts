@@ -8,11 +8,11 @@ export type SectionVm = {
   durationInSeconds: number;
   courseId: string;
   lectures?: LectureVm[];
+  order: number;
 };
 
 export type ReorderSectionCommand = {
   id: string;
-  newCourseId: string;
   newOrder: number;
 };
 

@@ -6,12 +6,7 @@ export type LectureVm = {
   durationInSeconds: number;
   sectionId: string;
   preview: boolean;
-};
-
-export type ReorderLecture = {
-  id: string;
-  newOrder: number;
-  newSectionId: string;
+  order: number;
 };
 
 export interface CreateLectureCommand {

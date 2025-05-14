@@ -11,8 +11,8 @@ export const useReorderSection = () => {
   return useMutation({
     mutationFn: (command: ReorderSectionCommand) => reorderSection(command),
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: keyFac.courses.detail._def,
       });
       showSuccessToast("Section Reordered", "The section was reordered successfully.");
