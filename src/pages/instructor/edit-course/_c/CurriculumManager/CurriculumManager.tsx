@@ -2,23 +2,20 @@ import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { Accordion, Button, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useReorderLecture } from "../../../../../react-query/lecture/lectureHooks";
 import { SectionVm } from "../../../../../react-query/section/section.types";
+import { useReorderSection } from "../../../../../react-query/section/sectionHooks";
 import { CreateSectionModal } from "./CreateSectionModal";
 import { SectionItem } from "./SectionItem";
 import { UpdateSectionModal } from "./UpdateSectionModal";
-import { useReorderLecture } from "../../../../../react-query/lecture/lectureHooks";
-import { useReorderSection } from "../../../../../react-query/section/sectionHooks";
-import { useQueryClient } from "@tanstack/react-query";
-import { keyFac } from "../../../../../react-query/common-service/queryKeyFactory";
-import { CourseDetailVm } from "../../../../../react-query/course/course.types";
 
 type CurriculumManagerProps = {
   courseId: string;
   sections: SectionVm[];
 };
 
-const CurriculumManager = ({ courseId, sections }: CurriculumManagerProps) => {
+const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumManagerProps) => {
   const [
     createSectionModalOpened,
     { open: openCreateSectionModal, close: closeCreateSectionModal },
@@ -28,9 +25,15 @@ const CurriculumManager = ({ courseId, sections }: CurriculumManagerProps) => {
     { open: openUpdateSectionModal, close: closeUpdateSectionModal },
   ] = useDisclosure(false);
 
-  const queryClient = useQueryClient();
+  const [sections, setSections] = useState<SectionVm[]>(initialSections);
 
   const [selectedSection, setSelectedSection] = useState<SectionVm | null>(null);
+
+  useEffect(() => {
+    if (initialSections.length > 0) {
+      setSections(initialSections);
+    }
+  }, [initialSections]);
 
   const handleUpdateSection = (section: SectionVm) => {
     setSelectedSection(section);
@@ -49,27 +52,18 @@ const CurriculumManager = ({ courseId, sections }: CurriculumManagerProps) => {
     if (type === "section") {
       if (source.index === destination.index) return;
 
-      const previousData = queryClient.getQueryData<CourseDetailVm>(
-        keyFac.courses.detail(courseId).queryKey,
-      );
-
-      if (!previousData) return;
-
-      const updatedSections = [...previousData.sections];
+      const updatedSections = [...sections];
       const [moved] = updatedSections.splice(source.index, 1);
       updatedSections.splice(destination.index, 0, moved);
 
-      // 🧠 Update cache ngay lập tức
-      queryClient.setQueryData<CourseDetailVm>(keyFac.courses.detail(courseId).queryKey, {
-        ...previousData,
-        sections: updatedSections,
-      });
+      // Chỉ cập nhật local state
+      setSections(updatedSections);
 
-      // ✅ Gửi mutation
-      // reorderSectionMutation.mutate({
-      //   id: moved.id,
-      //   newOrder: destination.index,
-      // });
+      // Gửi mutation
+      reorderSectionMutation.mutate({
+        id: moved.id,
+        newOrder: destination.index,
+      });
 
       return;
     }
@@ -88,6 +82,28 @@ const CurriculumManager = ({ courseId, sections }: CurriculumManagerProps) => {
       const movedLecture = sourceSection.lectures?.[source.index];
       if (!movedLecture) return;
 
+      // --- Cập nhật lectures trong localState ---
+      const updatedSections = [...sections];
+      const sourceSectionIndex = updatedSections.findIndex((s) => s.id === sourceSection.id);
+      const destinationSectionIndex = updatedSections.findIndex(
+        (s) => s.id === destinationSection.id,
+      );
+
+      if (sourceSectionIndex !== -1 && destinationSectionIndex !== -1) {
+        // Xóa lecture khỏi source section
+        updatedSections[sourceSectionIndex].lectures?.splice(source.index, 1);
+        // Thêm lecture vào destination section
+        updatedSections[destinationSectionIndex].lectures?.splice(
+          destination.index,
+          0,
+          movedLecture,
+        );
+
+        // Cập nhật lại state sections
+        setSections(updatedSections);
+      }
+
+      // Gửi mutation để cập nhật lectures trên server
       reorderLectureMutation.mutate({
         id: movedLecture.id,
         newOrder: destination.index,

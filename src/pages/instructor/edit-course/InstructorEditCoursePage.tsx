@@ -74,7 +74,11 @@ export default function UpdateCoursePage() {
           </Tabs.Panel>
           {/* course curriculum */}
           <Tabs.Panel value="curriculum">
-            <CurriculumManager courseId={courseId} sections={data?.sections ?? []} />
+            {isPending ? (
+              <Loader />
+            ) : (
+              <CurriculumManager courseId={courseId} sections={data?.sections ?? []} />
+            )}
           </Tabs.Panel>
           <Tabs.Panel value="reviews">
             <ReviewTab
