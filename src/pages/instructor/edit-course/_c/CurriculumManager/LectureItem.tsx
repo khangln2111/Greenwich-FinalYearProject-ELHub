@@ -40,7 +40,7 @@ export const LectureItem = ({ lecture, index, onUpdate }: LectureItemProps) => (
           <Text className="text-dimmed text-nowrap">
             {formatDurationMmSs(lecture.durationInSeconds)}
           </Text>
-          <Menu trigger="click-hover">
+          <Menu trigger="click">
             <Menu.Target>
               <ActionIcon variant="subtle" onClick={(e) => e.stopPropagation()} component="span">
                 <EllipsisVerticalIcon />

@@ -77,7 +77,7 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
       opened={opened}
       onClose={onClose}
       title="Edit Lecture"
-      keepMounted
+      keepMounted={false}
       footer={
         <div className="flex gap-4 justify-end items-center">
           <Button variant="subtle" onClick={onClose} type="button">

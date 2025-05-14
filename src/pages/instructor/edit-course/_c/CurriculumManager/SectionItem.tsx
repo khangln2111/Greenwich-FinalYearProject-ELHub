@@ -112,7 +112,7 @@ export const SectionItem = ({ section, index, onUpdate }: SectionItemProps) => {
                   >
                     <Move className="size-5 text-gray-500 dark:text-gray-400" />
                   </ThemeIcon>
-                  <Menu trigger="click-hover">
+                  <Menu trigger="click">
                     <Menu.Target>
                       <ActionIcon
                         variant="subtle"
