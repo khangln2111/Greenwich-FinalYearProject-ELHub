@@ -5,7 +5,7 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { createLecture, deleteLecture, reorderLecture, updateLecture } from "./lectureApi";
-import { CreateLectureCommand, ReorderLectureCommand } from "./lecture.types";
+import { CreateLectureCommand, ReorderLectureCommand, UpdateLectureCommand } from "./lecture.types";
 
 export const useReorderLecture = () => {
   const queryClient = useQueryClient();
@@ -61,7 +61,7 @@ export const useUpdateLecture = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (command: CreateLectureCommand) => updateLecture(command),
+    mutationFn: (command: UpdateLectureCommand) => updateLecture(command),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

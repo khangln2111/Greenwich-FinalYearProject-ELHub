@@ -26,6 +26,7 @@ export interface UpdateLectureCommand {
   title?: string;
   description?: string;
   video?: File;
+  preview?: boolean;
 }
 
 export interface ReorderLectureCommand {

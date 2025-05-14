@@ -1,10 +1,15 @@
-import { Button, TextInput, Textarea, FileInput } from "@mantine/core";
+import { Button, TextInput, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { FileVideo, ScrollText, FileText } from "lucide-react";
+import { FileText, ScrollText } from "lucide-react";
 import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
-import { useCreateLecture } from "../../../../../react-query/lecture/lectureHooks";
+import FileUploadField from "../../../../../components/FileUploadField";
+import {
+  ALLOWED_VIDEO_TYPES,
+  MAX_VIDEO_SIZE_MB,
+} from "../../../../../constants/ValidationConstants";
 import { CreateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
+import { useCreateLecture } from "../../../../../react-query/lecture/lectureHooks";
 
 interface CreateLectureModalProps {
   opened: boolean;
@@ -15,21 +20,21 @@ interface CreateLectureModalProps {
 const CreateLectureSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  video: z.instanceof(File).refine((file) => file.size > 0, { message: "Video file is required" }),
+  video: z
+    .instanceof(File, { message: "Video is required" })
+    .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
+      message: "Only MP4, WebM, or OGG videos are allowed",
+    })
+    .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
+      message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
+    }),
 });
 
 type CreateLectureFormValues = z.infer<typeof CreateLectureSchema>;
 
-const initialValues: CreateLectureFormValues = {
-  title: "",
-  description: "",
-  video: undefined as unknown as File,
-};
-
 export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLectureModalProps) => {
   const form = useForm<CreateLectureFormValues>({
     mode: "uncontrolled",
-    initialValues,
     validate: zodResolver(CreateLectureSchema),
   });
 
@@ -37,7 +42,7 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
 
   const handleCreateLecture = (values: CreateLectureFormValues) => {
     const payload: CreateLectureCommand = {
-      sectionId,
+      sectionId: sectionId,
       title: values.title,
       description: values.description,
       video: values.video,
@@ -73,12 +78,11 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
           key={form.key("description")}
         />
 
-        <FileInput
-          size="md"
-          label="Video"
-          placeholder="Upload lecture video"
-          leftSection={<FileVideo className="size-4 text-gray-500" />}
-          accept="video/*"
+        <FileUploadField
+          accept={ALLOWED_VIDEO_TYPES}
+          previewMediaType="video"
+          description={`Upload a video (MP4, WebM, OGG - max ${MAX_VIDEO_SIZE_MB}MB)`}
+          maxSize={MAX_VIDEO_SIZE_MB * 1024 * 1024}
           {...form.getInputProps("video")}
           key={form.key("video")}
         />

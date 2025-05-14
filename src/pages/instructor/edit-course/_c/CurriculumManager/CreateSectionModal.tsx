@@ -24,11 +24,6 @@ export type CreateSectionFormValues = z.infer<typeof CreateSectionFormSchema>;
 export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionModalProps) => {
   const form = useForm<CreateSectionFormValues>({
     mode: "uncontrolled",
-    initialValues: {
-      title: "",
-      description: "",
-      courseId: courseId,
-    },
     validate: zodResolver(CreateSectionFormSchema),
   });
 
@@ -38,7 +33,7 @@ export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionM
     const payload: CreateSectionCommand = {
       title: values.title,
       description: values.description,
-      courseId: values.courseId,
+      courseId: courseId,
     };
     console.log("Create section Form values:", values);
 

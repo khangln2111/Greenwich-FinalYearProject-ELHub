@@ -1,12 +1,12 @@
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { Accordion, Button, Text, Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { SectionItem } from "./SectionItem";
-import { randomId, useDisclosure } from "@mantine/hooks";
 import { SectionVm } from "../../../../../react-query/section/section.types";
 import { CreateSectionModal } from "./CreateSectionModal";
-import { EditSectionModal } from "./UpdateSectionModal";
+import { SectionItem } from "./SectionItem";
+import { UpdateSectionModal } from "./UpdateSectionModal";
 const initialSections: SectionVm[] = [
   {
     id: "sec-1",
@@ -189,21 +189,12 @@ const CurriculumManager = ({ courseId, sections }: CurriculumManagerProps) => {
     updateSectionModalOpened,
     { open: openUpdateSectionModal, close: closeUpdateSectionModal },
   ] = useDisclosure(false);
-  const [
-    updateLectureModalOpened,
-    { open: openUpdateLectureModal, close: closeUpdateLectureModal },
-  ] = useDisclosure(false);
+
   const [selectedSection, setSelectedSection] = useState<SectionVm | null>(null);
-  const [selectedLecture, setSelectedLecture] = useState<string | null>(null);
 
   const handleUpdateSection = (section: SectionVm) => {
     setSelectedSection(section);
     openUpdateSectionModal();
-  };
-
-  const handleUpdateLecture = (lectureId: string) => {
-    setSelectedLecture(lectureId);
-    openUpdateLectureModal();
   };
 
   const onDragEnd = (result: DropResult) => {};
@@ -216,7 +207,7 @@ const CurriculumManager = ({ courseId, sections }: CurriculumManagerProps) => {
         courseId={courseId}
       />
       {selectedSection && (
-        <EditSectionModal
+        <UpdateSectionModal
           opened={updateSectionModalOpened}
           onClose={closeUpdateSectionModal}
           section={selectedSection}

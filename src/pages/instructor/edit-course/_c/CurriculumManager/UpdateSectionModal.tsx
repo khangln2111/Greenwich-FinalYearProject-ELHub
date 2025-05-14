@@ -21,7 +21,7 @@ export const EditSectionFormSchema = z.object({
 
 export type UpdateSectionFormValues = z.infer<typeof EditSectionFormSchema>;
 
-export const EditSectionModal = ({ opened, onClose, section }: EditSectionalModalProps) => {
+export const UpdateSectionModal = ({ opened, onClose, section }: EditSectionalModalProps) => {
   const form = useForm<UpdateSectionFormValues>({
     mode: "uncontrolled",
     initialValues: section,
@@ -45,7 +45,7 @@ export const EditSectionModal = ({ opened, onClose, section }: EditSectionalModa
   };
 
   return (
-    <CusModal opened={opened} onClose={onClose} title="Edit Section" keepMounted>
+    <CusModal opened={opened} onClose={onClose} title={`Edit Section ${section.title}`} keepMounted>
       <form className="space-y-6" onSubmit={form.onSubmit(handleUpdateSection)} noValidate>
         <TextInput
           size="md"

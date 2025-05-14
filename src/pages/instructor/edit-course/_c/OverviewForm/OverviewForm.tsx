@@ -30,7 +30,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
 
   const updateCourseOverviewMutation = useUpdateCourse();
 
-  const defaultValues = {
+  const initialValues = {
     title: courseDetail.title,
     description: courseDetail.description,
     learningOutcomes:
@@ -42,7 +42,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
 
   const form = useForm<UpdateCourseOverviewFormValues>({
     mode: "uncontrolled",
-    initialValues: defaultValues,
+    initialValues: initialValues,
     validate: zodResolver(UpdateCourseOverviewFormSchema),
   });
 

@@ -1,6 +1,6 @@
 import { ApiSuccessResponse } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
-import { CreateLectureCommand, ReorderLectureCommand } from "./lecture.types";
+import { CreateLectureCommand, ReorderLectureCommand, UpdateLectureCommand } from "./lecture.types";
 
 const BASE_URL = "/lectures";
 
@@ -18,7 +18,7 @@ export const createLecture = async (command: CreateLectureCommand) => {
   return response.data;
 };
 
-export const updateLecture = async (command: CreateLectureCommand) => {
+export const updateLecture = async (command: UpdateLectureCommand) => {
   const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}`, command, {
     headers: {
       "Content-Type": "multipart/form-data",
