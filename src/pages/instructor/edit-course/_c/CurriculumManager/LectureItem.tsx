@@ -1,10 +1,10 @@
 import { Draggable } from "@hello-pangea/dnd";
-import { ActionIcon, Button, Menu, Text } from "@mantine/core";
-import { EllipsisVerticalIcon, Video } from "lucide-react";
-import { cn } from "../../../../../utils/cn";
-import { LectureVm } from "../../../../../react-query/lecture/lecture.types";
-import { formatDurationMmSs } from "../../../../../utils/format";
+import { ActionIcon, Menu, Text } from "@mantine/core";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { EllipsisVerticalIcon, EyeIcon, Video } from "lucide-react";
+import { LectureVm } from "../../../../../react-query/lecture/lecture.types";
+import { cn } from "../../../../../utils/cn";
+import { formatDurationMmSs } from "../../../../../utils/format";
 
 export type LectureItemProps = {
   lecture: LectureVm;
@@ -20,8 +20,8 @@ export const LectureItem = ({ lecture, index, onUpdate }: LectureItemProps) => (
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         className={cn(
-          `mb-6 flex items-center justify-between gap-3 border py-4 px-2 md:px-6 rounded-lg shadow-xs bg-white
-          dark:bg-dark-6`,
+          `mb-6 flex items-center justify-between gap-1 md:gap-3 border py-3 px-2 md:px-6 rounded-lg shadow-xs
+          bg-white dark:bg-dark-6`,
           {
             "shadow-md border-blue-700 dark:border-blue-600": snapshot.isDragging,
           },
@@ -33,13 +33,9 @@ export const LectureItem = ({ lecture, index, onUpdate }: LectureItemProps) => (
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {lecture.preview && (
-            <Button
-              variant="default"
-              size="compact-sm"
-              className="text-primary-4 dark:text-primary-8"
-            >
-              Preview
-            </Button>
+            <ActionIcon variant="default" className="text-primary-4 dark:text-primary-8">
+              <EyeIcon size={16} />
+            </ActionIcon>
           )}
           <Text className="text-dimmed text-nowrap">
             {formatDurationMmSs(lecture.durationInSeconds)}
