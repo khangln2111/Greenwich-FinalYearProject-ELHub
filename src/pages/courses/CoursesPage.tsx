@@ -3,7 +3,6 @@ import { useGetCourses } from "../../react-query/course/courseHooks";
 import { useAppStore } from "../../zustand/store";
 import CourseList from "./_c/CourseList";
 import DesktopFilter from "./_c/DesktopFilter";
-import MobileFilter from "./_c/MobileFilter";
 
 const CoursesPage = () => {
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
@@ -31,7 +30,6 @@ const CoursesPage = () => {
         py="xl"
         size="xl"
       >
-        <MobileFilter />
         <Grid py="md" gutter="xl">
           {/* Sidebar Filters cố định */}
           <GridCol

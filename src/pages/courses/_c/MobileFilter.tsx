@@ -1,8 +1,9 @@
-import { Stack, Text } from "@mantine/core";
+import { ActionIcon, Stack, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { Vaul } from "mantine-vaul";
 import { useAppStore } from "../../../zustand/store";
 import Filter from "./Filter";
+import { ListFilter } from "lucide-react";
 
 type MobileFilterProps = {};
 
@@ -20,8 +21,14 @@ export default function MobileFilter({}: MobileFilterProps) {
       radius="xl"
       shadow="xl"
       title={<Text className="text-h4 font-h4">Advanced filter</Text>}
-      opened={isMobileFilterOpen}
-      onOpenChange={closeMobileFilter}
+      target={
+        <Vaul.Target>
+          <ActionIcon size={35} hiddenFrom="lg" variant={isMobileFilterOpen ? "filled" : "default"}>
+            <ListFilter strokeWidth={1.5} />
+          </ActionIcon>
+        </Vaul.Target>
+      }
+      onCloseAnimationEnd={closeMobileFilter}
       classNames={{
         footer: "border-t-0",
       }}

@@ -1,21 +1,20 @@
 // app/courses/components/CourseList.tsx
 import { ActionIcon, Button, Flex, Group, SimpleGrid, TextInput, Title } from "@mantine/core";
 import { LayoutGrid, List, ListFilter, Search } from "lucide-react";
-import CourseCard from "../../home/_c/PopularCourses/CourseCard";
-import PaginationComponent from "./Pagination";
 import { CourseVm } from "../../../react-query/course/course.types";
-import { useAppStore } from "../../../zustand/store";
 import { mockCourses } from "../../../react-query/mockData";
+import { useAppStore } from "../../../zustand/store";
+import CourseCard from "../../home/_c/PopularCourses/CourseCard";
+import MobileFilter from "./MobileFilter";
+import PaginationComponent from "./Pagination";
 
 type CourseListProps = {
   courses?: CourseVm[];
 };
 
 const CourseList = ({}: CourseListProps) => {
-  const toggleMobileFilter = useAppStore.use.toggleMobileFilter();
   const toggleDesktopFilter = useAppStore.use.toggleDesktopFilter();
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
-  const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
   const courses = mockCourses;
 
   return (
@@ -39,14 +38,8 @@ const CourseList = ({}: CourseListProps) => {
             <List strokeWidth={1.5} />
           </ActionIcon>
           {/* Mobile filter toggler */}
-          <ActionIcon
-            size={35}
-            onClick={toggleMobileFilter}
-            hiddenFrom="lg"
-            variant={isMobileFilterOpen ? "filled" : "default"}
-          >
-            <ListFilter strokeWidth={1.5} />
-          </ActionIcon>
+          <MobileFilter />
+
           {/* Desktop filter toggler */}
 
           {/* <Select

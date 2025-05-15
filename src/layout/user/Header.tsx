@@ -198,7 +198,7 @@ const Header = () => {
           </ActionIcon>
           <ThemeToggler />
           {currentUser && <AvatarMenu />}
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
+          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" className="hidden" />
         </Group>
       </div>
 

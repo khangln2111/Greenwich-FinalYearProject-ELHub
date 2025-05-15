@@ -14,7 +14,7 @@ interface SortableInputListProps {
   size?: DefaultMantineSize;
 }
 
-const SortableInputList = ({
+const TestSortList = ({
   form,
   field,
   label,
@@ -45,18 +45,21 @@ const SortableInputList = ({
                       {...form.getInputProps(`${field}.${index}.value`)}
                       key={form.key(`${field}.${index}.value`)}
                       size={size}
-                      leftSection={
-                        <Center {...draggableProvided.dragHandleProps} className="cursor-grab">
-                          <IconGripVertical size={18} />
-                        </Center>
-                      }
-                      leftSectionPointerEvents="all"
-                      rightSection={
-                        <ActionIcon onClick={() => onRemove(index)} variant="subtle" color="red">
-                          <IconTrash size={18} />
-                        </ActionIcon>
-                      }
+                      classNames={{
+                        wrapper: "flex-1",
+                      }}
                       rightSectionPointerEvents="all"
+                      inputContainer={(children) => (
+                        <div className="flex items-center gap-2 flex-1 w-full">
+                          {children}
+                          <Center className="cursor-grab" {...draggableProvided.dragHandleProps}>
+                            <IconGripVertical size={18} />
+                          </Center>
+                          <ActionIcon variant="light" color="red" onClick={() => onRemove(index)}>
+                            <IconTrash size={18} />
+                          </ActionIcon>
+                        </div>
+                      )}
                     />
                   </div>
                 )}
@@ -78,4 +81,4 @@ const SortableInputList = ({
   );
 };
 
-export default SortableInputList;
+export default TestSortList;

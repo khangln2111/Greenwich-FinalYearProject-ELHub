@@ -20,6 +20,7 @@ import {
 import { useUpdateCourse } from "../../../../../react-query/course/courseHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import SortableInputList from "./SortableInputList";
+import TestSortList from "./TestSortList";
 
 type CourseOverviewFormProps = {
   courseDetail: CourseDetailVm;
@@ -99,7 +100,12 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
     >
       <div>
         <Title order={3}>Course Title</Title>
-        <TextInput placeholder="Enter course title" mt="xs" {...form.getInputProps("title")} />
+        <TextInput
+          size="md"
+          placeholder="Enter course title"
+          mt="xs"
+          {...form.getInputProps("title")}
+        />
       </div>
 
       <div>
@@ -107,6 +113,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
         <Textarea
           placeholder="Write course overview..."
           autosize
+          size="md"
           minRows={4}
           mt="xs"
           {...form.getInputProps("description")}
@@ -114,7 +121,8 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
       </div>
 
       <DragDropContext onDragEnd={handleDragEnd}>
-        <SortableInputList
+        <TestSortList
+          size="md"
           form={form}
           field="learningOutcomes"
           label="What will students learn in your course?"
@@ -125,6 +133,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
         />
 
         <SortableInputList
+          size="md"
           form={form}
           field="prerequisites"
           label="Course Prerequisites"
