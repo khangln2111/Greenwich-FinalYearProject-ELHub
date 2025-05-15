@@ -1,7 +1,7 @@
 import { create, StateCreator } from "zustand";
 import { createSelectors } from "./auto-selectors";
 import { CurrentUser } from "../react-query/auth/identity.types";
-import { authStorage } from "../utils/authStorage";
+import { authStorageHelper } from "../utils/storageHelper";
 
 // Slice for managing the state of the instructor layout
 interface InstructorLayoutSlice {
@@ -51,17 +51,17 @@ interface AuthSlice {
 }
 
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
-  accessToken: authStorage.getAccessToken(),
-  refreshToken: authStorage.getRefreshToken(),
+  accessToken: authStorageHelper.getAccessToken(),
+  refreshToken: authStorageHelper.getRefreshToken(),
   currentUser: null,
   setTokens: (accessToken, refreshToken) => {
-    authStorage.setAccessToken(accessToken);
-    authStorage.setRefreshToken(refreshToken);
+    authStorageHelper.setAccessToken(accessToken);
+    authStorageHelper.setRefreshToken(refreshToken);
     set({ accessToken, refreshToken });
   },
 
   logout: () => {
-    authStorage.clearTokens();
+    authStorageHelper.clearTokens();
     set({ accessToken: null, refreshToken: null, currentUser: null });
   },
   setUser: (user) => set({ currentUser: user }),

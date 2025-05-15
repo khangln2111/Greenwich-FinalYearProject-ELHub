@@ -2,10 +2,21 @@ import { Anchor, Box, Container, Text, Title } from "@mantine/core";
 import { Link, Navigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import { useAppStore } from "../../zustand/store";
+import { useEffect } from "react";
+import { showErrorToast } from "../../utils/toastHelper";
+import { loginSessionStorageHelper } from "../../utils/storageHelper";
 
 const LoginPage = () => {
   const currentUser = useAppStore.use.currentUser();
   if (currentUser) return <Navigate to="/" replace={true} />;
+
+  useEffect(() => {
+    if (loginSessionStorageHelper.shouldShowSessionExpiredToast()) {
+      showErrorToast("Session Expired", "Please log in again to continue.");
+      loginSessionStorageHelper.clearSessionExpiredToastFlag();
+    }
+  }, []);
+
   return (
     <Box
       className="flex justify-center pt-[100px] min-h-screen bg-linear-to-br from-cyan-200 to-pink-300

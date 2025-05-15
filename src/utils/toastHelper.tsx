@@ -8,7 +8,7 @@ export const showErrorToast = (title: string, message?: string | ReactNode) => {
     title,
     message: message || "An error occurred.",
     icon: <IconX size={20} />,
-    autoClose: ms("8s"),
+    autoClose: ms("10s"),
     color: "red",
     withBorder: true,
     position: "bottom-right",

@@ -36,6 +36,7 @@ export const useCurrentUser = () => {
     queryKey: keyFac.identity.currentUser.queryKey,
     queryFn: getCurrentUser,
     enabled: !!accessToken,
+    refetchOnWindowFocus: false,
   });
 };
 
