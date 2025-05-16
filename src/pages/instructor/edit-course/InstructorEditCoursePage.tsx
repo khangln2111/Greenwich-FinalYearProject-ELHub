@@ -9,7 +9,7 @@ import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
 
 export default function UpdateCoursePage() {
-  const [activeTab, setActiveTab] = useState("curriculum");
+  const [activeTab, setActiveTab] = useState("Curriculum");
 
   const { courseId } = useParams<{ courseId: string }>();
 
@@ -42,13 +42,8 @@ export default function UpdateCoursePage() {
       <SegmentedControl
         value={activeTab}
         onChange={setActiveTab}
-        transitionDuration={200}
-        data={[
-          { label: "Overview", value: "overview" },
-          { label: "Curriculum", value: "curriculum" },
-          { label: "Reviews", value: "reviews" },
-          { label: "Instructor", value: "instructor" },
-        ]}
+        transitionDuration={400}
+        data={["Overview", "Curriculum", "Reviews", "Instructor"]}
         size="sm"
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
         classNames={{
@@ -60,10 +55,10 @@ export default function UpdateCoursePage() {
       />
       <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
       {/* Tab Content */}
-      <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-7">
+      <Tabs variant="pills" value={activeTab} className="mt-7" keepMounted>
         <div>
           {/* overview about course */}
-          <Tabs.Panel value="overview">
+          <Tabs.Panel value="Overview">
             {isPending ? (
               <Loader />
             ) : data ? (
@@ -73,14 +68,14 @@ export default function UpdateCoursePage() {
             )}
           </Tabs.Panel>
           {/* course curriculum */}
-          <Tabs.Panel value="curriculum">
+          <Tabs.Panel value="Curriculum">
             {isPending ? (
               <Loader />
             ) : (
               <CurriculumManager courseId={courseId} sections={data?.sections ?? []} />
             )}
           </Tabs.Panel>
-          <Tabs.Panel value="reviews">
+          <Tabs.Panel value="Reviews">
             <ReviewTab
               rating={4.6}
               totalReviews={2533}
@@ -93,7 +88,7 @@ export default function UpdateCoursePage() {
               ]}
             />
           </Tabs.Panel>
-          <Tabs.Panel value="instructor">
+          <Tabs.Panel value="Instructor">
             <InstructorTab />
           </Tabs.Panel>
         </div>
