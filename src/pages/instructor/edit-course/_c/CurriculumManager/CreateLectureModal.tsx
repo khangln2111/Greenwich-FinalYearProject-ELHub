@@ -39,6 +39,7 @@ type CreateLectureFormValues = z.infer<typeof CreateLectureSchema>;
 export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLectureModalProps) => {
   const form = useForm<CreateLectureFormValues>({
     mode: "uncontrolled",
+
     validate: zodResolver(CreateLectureSchema),
   });
 
@@ -50,8 +51,10 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
       title: values.title,
       description: values.description,
       video: values.video,
-      preview: values.preview,
+      preview: values.preview ?? false,
     };
+
+    console.log("Create lecture payload:", payload);
 
     createLectureMutation.mutate(payload, {
       onSuccess: () => {

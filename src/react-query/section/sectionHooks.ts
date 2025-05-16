@@ -83,9 +83,6 @@ export const useDeleteSection = () => {
   return useMutation({
     mutationFn: (sectionId: string) => deleteSection(sectionId),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
-      });
       showSuccessToast("Section Deleted", "The section was deleted successfully.");
     },
     onError: (error) =>
@@ -97,5 +94,10 @@ export const useDeleteSection = () => {
           },
         ],
       }),
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses.detail._def,
+      });
+    },
   });
 };

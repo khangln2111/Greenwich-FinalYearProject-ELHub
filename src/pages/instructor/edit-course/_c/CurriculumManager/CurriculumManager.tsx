@@ -1,7 +1,7 @@
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { Accordion, Button, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { ChevronDownIcon, PlusIcon } from "lucide-react";
+import { ChevronDownIcon, LayoutListIcon, PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useReorderLecture } from "../../../../../react-query/lecture/lectureHooks";
 import { SectionVm } from "../../../../../react-query/section/section.types";
@@ -30,7 +30,7 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
   const [selectedSection, setSelectedSection] = useState<SectionVm | null>(null);
 
   useEffect(() => {
-    if (initialSections.length > 0) {
+    if (initialSections) {
       setSections(initialSections);
     }
   }, [initialSections]);
@@ -140,39 +140,58 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
         </div>
       </div>
 
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="sections" type="section">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <Accordion
-                multiple
-                className="mt-5"
-                chevronPosition="left"
-                transitionDuration={400}
-                chevronSize={26}
-                chevron={<ChevronDownIcon className="md:size-[26px]" />}
-                classNames={{
-                  root: "flex flex-col",
-                  item: "border-0 mb-7",
-                  control:
-                    "bg-gray-200 dark:bg-dark-5 rounded-xl data-active:rounded-b-none transition",
-                  content: "shadow-lg rounded-lg rounded-t-none dark:bg-zinc-900 p-0",
-                }}
-              >
-                {sections.map((section, index) => (
-                  <SectionItem
-                    key={section.id}
-                    section={section}
-                    index={index}
-                    onUpdate={handleUpdateSection}
-                  />
-                ))}
-              </Accordion>
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      {sections.length > 0 ? (
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="sections" type="section">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <Accordion
+                  multiple
+                  className="mt-5"
+                  chevronPosition="left"
+                  transitionDuration={400}
+                  chevronSize={26}
+                  chevron={<ChevronDownIcon className="md:size-[26px]" />}
+                  classNames={{
+                    root: "flex flex-col",
+                    item: "border-0 mb-7",
+                    control:
+                      "bg-gray-200 dark:bg-dark-5 rounded-xl data-active:rounded-b-none transition",
+                    content: "shadow-lg rounded-lg rounded-t-none dark:bg-zinc-900 p-0",
+                  }}
+                >
+                  {sections.map((section, index) => (
+                    <SectionItem
+                      key={section.id}
+                      section={section}
+                      index={index}
+                      onUpdate={handleUpdateSection}
+                    />
+                  ))}
+                </Accordion>
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      ) : (
+        <div
+          className="mt-10 flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed
+            border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-dark-5 p-10 text-center shadow-sm"
+        >
+          <LayoutListIcon className="size-10 text-gray-400 dark:text-gray-600" />
+          <Title order={4} className="text-gray-700 dark:text-gray-300">
+            Your course doesn't have any sections yet
+          </Title>
+          <Text c="dimmed" size="sm">
+            Start by creating a section to organize your course content. Each section can contain
+            multiple lectures.
+          </Text>
+          <Button leftSection={<PlusIcon size={16} />} onClick={openCreateSectionModal}>
+            Create your first section
+          </Button>
+        </div>
+      )}
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { Portal, rem, ScrollArea, Transition } from "@mantine/core";
 import { X } from "lucide-react";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils/cn";
 
@@ -79,6 +79,20 @@ function CusModal({
   const hasCustomHeader = (children as any)?.type === Header;
   const hasCustomBody = (children as any)?.type === Body;
   const hasCustomFooter = (children as any)?.type === Footer;
+
+  // Logic to close modal when press Escape key
+  useEffect(() => {
+    if (!opened) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [opened, onClose]);
 
   return (
     <Portal>
