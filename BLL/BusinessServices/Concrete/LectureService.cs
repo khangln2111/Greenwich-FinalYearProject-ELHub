@@ -93,8 +93,8 @@ public class LectureService(
         // Delete associated video of the lecture
         if (lecture.Video != null)
         {
-            context.Media.Remove(lecture.Video);
             mediaManager.DeleteFile(lecture.Video);
+            context.Media.Remove(lecture.Video);
         }
 
         context.Lectures.Remove(lecture);

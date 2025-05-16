@@ -101,6 +101,7 @@ public class CourseService(
         var course = await context.Courses
             .Include(c => c.PromoVideo)
             .Include(c => c.Image)
+            .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
             .FirstOrDefaultAsync(c => c.Id == id);
         if (course == null) throw new NotFoundException(nameof(Course), id);
         //Delete related Image
@@ -116,6 +117,19 @@ public class CourseService(
             mediaManager.DeleteFile(course.PromoVideo);
             context.Media.Remove(course.PromoVideo);
         }
+
+        //Delete related video of lectures
+        course.Sections
+            .SelectMany(s => s.Lectures)
+            .Where(l => l.Video != null)
+            .Select(l => l.Video)
+            .ToList()
+            .ForEach(video =>
+            {
+                mediaManager.DeleteFile(video!);
+                context.Media.Remove(video!);
+            });
+
 
         context.Courses.Remove(course);
         await context.SaveChangesAsync();
