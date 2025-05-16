@@ -2,6 +2,7 @@
 using DAL.Constants;
 using DAL.Utilities.MediaUtility.Abstract;
 using FluentValidation;
+using Humanizer;
 
 namespace BLL.Validations.CourseValidators;
 
@@ -44,12 +45,16 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
             .Must(file => file == null || mediaManager.FileHasValidExtension(file, MediaConstants.ImageExtensions))
             .WithMessage(
                 $"Unsupported image file extension. Supported extensions: {string.Join(", ", MediaConstants.ImageExtensions)}.")
+            .Must(file => file != null && mediaManager.IsFileUnderMaxSize(file, CourseConstants.ImageMaxSizeBytes))
+            .WithMessage($"Image size cannot exceed {CourseConstants.ImageMaxSizeBytes.Bytes().Humanize()}.")
             .When(x => x.Image != null);
 
         RuleFor(x => x.PromoVideo)
             .Must(file => file == null || mediaManager.FileHasValidExtension(file, MediaConstants.VideoExtensions))
             .WithMessage(
                 $"Unsupported video file extension. Supported extensions: {string.Join(", ", MediaConstants.VideoExtensions)}.")
+            .Must(file => file != null && mediaManager.IsFileUnderMaxSize(file, CourseConstants.VideoMaxSizeBytes))
+            .WithMessage($"PromoVideo size cannot exceed {CourseConstants.VideoMaxSizeBytes.Bytes().Humanize()}.")
             .When(x => x.PromoVideo != null);
     }
 }

@@ -15,4 +15,6 @@ public class CourseSectionVm
     public Guid CourseId { get; init; }
 
     public CourseLectureVm[]? Lectures { get; init; }
+
+    public int Order { get; init; }
 }

@@ -11,4 +11,6 @@ public class CreateLectureCommand
     public required string Description { get; set; }
 
     public required IFormFile Video { get; set; }
+
+    public required bool Preview { get; set; }
 }

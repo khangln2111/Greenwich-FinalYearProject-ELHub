@@ -22,12 +22,15 @@ public class CreateLectureCommandValidator : AbstractValidator<CreateLectureComm
         RuleFor(x => x.SectionId)
             .NotEmpty();
 
+        RuleFor(x => x.Preview)
+            .NotEmpty();
+
         RuleFor(x => x.Video)
             .NotEmpty()
             .Must(file => mediaManager.FileHasValidExtension(file, MediaConstants.VideoExtensions))
             .WithMessage(
                 $"Unsupported video file extension. Supported extensions: {string.Join(", ", MediaConstants.VideoExtensions)}.")
-            .Must(file => mediaManager.IsFileUnderMaxSize(file, CourseConstants.VideoMaxSizeBytes))
-            .WithMessage($"PromoVideo size cannot exceed {CourseConstants.VideoMaxSizeBytes.Bytes().Megabytes}.");
+            .Must(file => mediaManager.IsFileUnderMaxSize(file, LectureConstant.VideoMaxSizeBytes))
+            .WithMessage($"PromoVideo size cannot exceed {LectureConstant.VideoMaxSizeBytes.Bytes().Megabytes}.");
     }
 }

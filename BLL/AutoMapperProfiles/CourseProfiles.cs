@@ -19,7 +19,7 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.LectureCount, opt => opt.MapFrom(src => src.Lectures.Count))
             .ForMember(dest => dest.DurationInSeconds,
                 opt => opt.MapFrom(src => src.Lectures.Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
-            .ForMember(dest => dest.Lectures, opt => opt.MapFrom(src => src.Lectures));
+            .ForMember(dest => dest.Lectures, opt => opt.MapFrom(src => src.Lectures.OrderBy(l => l.Order)));
 
         CreateMap<Course, CourseDetailVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
@@ -37,7 +37,8 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.DiscountedPrice,
                 opt => opt.MapFrom(src => src.Price - src.Price * src.DiscountPercentage / 100))
             .ForMember(dest => dest.InstructorName,
-                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName));
+                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
+            .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)));
 
         CreateMap<Course, CourseVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))

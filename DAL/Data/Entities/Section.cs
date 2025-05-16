@@ -4,11 +4,13 @@ public class Section : BaseEntity
 {
     public required string Title { get; set; }
 
-    public required string Description { get; set; }
+    public string? Description { get; set; }
 
     public Guid CourseId { get; set; }
 
     public Course Course { get; set; } = null!;
+
+    public int Order { get; set; }
 
     public ICollection<Lecture> Lectures { get; } = new List<Lecture>();
 }

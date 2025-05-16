@@ -99,9 +99,24 @@ public class CourseService(
     public async Task<string> Delete(Guid id)
     {
         var course = await context.Courses
-            .AsNoTracking()
+            .Include(c => c.PromoVideo)
+            .Include(c => c.Image)
             .FirstOrDefaultAsync(c => c.Id == id);
         if (course == null) throw new NotFoundException(nameof(Course), id);
+        //Delete related Image
+        if (course.Image != null)
+        {
+            mediaManager.DeleteFile(course.Image);
+            context.Media.Remove(course.Image);
+        }
+
+        //Delete related PromoVideo
+        if (course.PromoVideo != null)
+        {
+            mediaManager.DeleteFile(course.PromoVideo);
+            context.Media.Remove(course.PromoVideo);
+        }
+
         context.Courses.Remove(course);
         await context.SaveChangesAsync();
         return "Deleted course successfully";

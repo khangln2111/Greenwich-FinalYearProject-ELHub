@@ -19,10 +19,6 @@ public class SectionProfiles : Profile
         CreateMap<UpdateSectionCommand, Section>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CourseId, opt => opt.Ignore())
-            .AfterMap((src, dest) =>
-            {
-                if (src.CourseId.HasValue) dest.CourseId = src.CourseId.Value;
-            })
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForAllMembers(opts =>
             {

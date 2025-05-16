@@ -22,7 +22,6 @@ public class LectureProfiles : Profile
         CreateMap<UpdateLectureCommand, Lecture>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Video, opt => opt.Ignore())
-            .ForMember(dest => dest.SectionId, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForAllMembers(opts =>
             {

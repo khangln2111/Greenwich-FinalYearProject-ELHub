@@ -58,4 +58,15 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
         var result = await sectionService.Delete(id);
         return Ok(result);
     }
+
+    // PUT: api/Sections/ReorderSection
+    [HttpPut("ReorderSection")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ReorderSection([FromBody] ReorderSectionCommand command)
+    {
+        var result = await sectionService.ReorderSection(command);
+        return Ok(result);
+    }
 }

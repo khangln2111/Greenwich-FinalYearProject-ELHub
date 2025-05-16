@@ -12,25 +12,25 @@ public class CourseDetailVm
 
     public int LectureCount { get; init; }
 
-    public CourseSectionVm[]? Sections { get; init; }
+    public required CourseSectionVm[] Sections { get; init; }
 
-    public string? ImageUrl { get; init; }
+    public required string ImageUrl { get; init; }
 
-    public string? PromoVideoUrl { get; init; }
+    public required string PromoVideoUrl { get; init; }
 
-    public decimal? Price { get; init; }
+    public required decimal Price { get; init; }
 
-    public int? DiscountPercentage { get; init; }
+    public required int DiscountPercentage { get; init; }
 
-    public decimal? DiscountedPrice { get; init; }
+    public required decimal DiscountedPrice { get; init; }
 
     public int DurationInSeconds { get; init; }
 
-    public string? Status { get; init; }
+    public required string Status { get; init; }
 
-    public string[]? LearningOutcomes { get; init; }
+    public string[] LearningOutcomes { get; init; } = [];
 
-    public string[]? Prerequisites { get; init; }
+    public string[] Prerequisites { get; init; } = [];
 
     public required string CategoryName { get; init; }
 

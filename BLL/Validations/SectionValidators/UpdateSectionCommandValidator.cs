@@ -12,10 +12,12 @@ public class UpdateSectionCommandValidator : AbstractValidator<UpdateSectionComm
 
         RuleFor(x => x.Title)
             .MaximumLength(200).WithMessage("Title cannot exceed 200 characters.")
-            .When(x => !string.IsNullOrEmpty(x.Title));
+            .NotEmpty().WithMessage("Title cannot be empty.")
+            .When(x => x.Title != null);
 
         RuleFor(x => x.Description)
             .MaximumLength(1000).WithMessage("Description cannot exceed 1000 characters.")
-            .When(x => !string.IsNullOrEmpty(x.Description));
+            .NotEmpty().WithMessage("Description cannot be empty.")
+            .When(x => x.Description != null);
     }
 }

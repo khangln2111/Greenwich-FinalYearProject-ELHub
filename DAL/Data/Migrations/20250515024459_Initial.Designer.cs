@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250512095104_Initial")]
+    [Migration("20250515024459_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -328,9 +328,11 @@ namespace DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Preview")
                         .HasColumnType("bit");
@@ -546,9 +548,11 @@ namespace DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()

@@ -16,4 +16,6 @@ public interface ISectionService
     Task<Success> Update(UpdateSectionCommand command);
 
     Task<Success> Delete(Guid id);
+
+    Task<Success> ReorderSection(ReorderSectionCommand command);
 }

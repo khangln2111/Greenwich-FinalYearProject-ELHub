@@ -16,4 +16,6 @@ public interface ILectureService
     Task<Success> Update(UpdateLectureCommand command);
 
     Task<Success> Delete(Guid id);
+
+    Task<Success> ReorderLecture(ReorderLectureCommand command);
 }

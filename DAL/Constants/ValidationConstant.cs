@@ -18,15 +18,15 @@ public static class CourseConstants
     public const int AudienceMaxLength = 500; // Shortened "TargetAudience" to "Audience"
     private const int Megabyte = 1024 * 1024;
 
-    public const int VideoMaxSizeBytes = 100 * Megabyte; // 100MB
-    public const int ImageMaxSizeBytes = 10 * Megabyte; // 10MB
+    public const int VideoMaxSizeBytes = 500 * Megabyte; // 500MB
+    public const int ImageMaxSizeBytes = 50 * Megabyte; // 50MB
 }
 
 public static class LectureConstant
 {
     private const int Megabyte = 1024 * 1024;
-    public const int VideoMaxSizeBytes = 300 * Megabyte; // 100MB
-    public const int ImageMaxSizeBytes = 10 * Megabyte; // 10MB
+    public const int VideoMaxSizeBytes = 500 * Megabyte; // 500MB
+    public const int ImageMaxSizeBytes = 50 * Megabyte; // 50MB
 }
 
 public static class MediaConstants

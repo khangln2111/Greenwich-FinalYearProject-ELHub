@@ -58,4 +58,15 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         var result = await lectureService.Delete(id);
         return Ok(result);
     }
+
+    // PUT: api/Lectures/ReorderLecture
+    [HttpPut("ReorderLecture")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ReorderLecture([FromBody] ReorderLectureCommand command)
+    {
+        var result = await lectureService.ReorderLecture(command);
+        return Ok(result);
+    }
 }

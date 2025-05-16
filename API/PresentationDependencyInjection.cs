@@ -5,6 +5,7 @@ using BLL;
 using BLL.Exceptions;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 
@@ -14,6 +15,10 @@ public static class PresentationDependencyInjection
 {
     public static IServiceCollection AddPresentationLayer(this IServiceCollection services)
     {
+        services.Configure<FormOptions>(options =>
+        {
+            options.MultipartBodyLengthLimit = 524288000; // 500 MB
+        });
         services.AddControllers()
             .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
             .ConfigureApiBehaviorOptions(opts =>
