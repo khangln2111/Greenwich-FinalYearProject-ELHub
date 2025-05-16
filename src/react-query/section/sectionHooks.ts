@@ -12,9 +12,6 @@ export const useReorderSection = () => {
     mutationFn: (command: ReorderSectionCommand) => reorderSection(command),
 
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
-      });
       showSuccessToast("Section Reordered", "The section was reordered successfully.");
     },
 
@@ -27,6 +24,11 @@ export const useReorderSection = () => {
           },
         ],
       }),
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses.detail._def,
+      });
+    },
   });
 };
 

@@ -42,9 +42,9 @@ export default function UpdateCoursePage() {
       <SegmentedControl
         value={activeTab}
         onChange={setActiveTab}
-        transitionDuration={400}
         data={["Overview", "Curriculum", "Reviews", "Instructor"]}
         size="sm"
+        transitionDuration={200}
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
         classNames={{
           root: "bg-white dark:bg-dark-6 shadow-sm border p-[10px]",

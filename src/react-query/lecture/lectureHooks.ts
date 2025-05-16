@@ -12,11 +12,7 @@ export const useReorderLecture = () => {
 
   return useMutation({
     mutationFn: (command: ReorderLectureCommand) => reorderLecture(command),
-
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
-      });
       showSuccessToast("Lecture Reordered", "The lecture was reordered successfully.");
     },
 
@@ -29,6 +25,11 @@ export const useReorderLecture = () => {
           },
         ],
       }),
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses.detail._def,
+      });
+    },
   });
 };
 

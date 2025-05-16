@@ -10,6 +10,8 @@ import {
 import { useLogout } from "../../../react-query/auth/identityHooks";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/store";
+import { GraduationCap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface AvatarMenuProps {
   className?: string;
@@ -44,6 +46,14 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         <Menu.Item leftSection={<IconMessageCircle size={14} />}>Messages</Menu.Item>
         <Menu.Item leftSection={<IconPhoto size={14} />}>Gallery</Menu.Item>
         <Menu.Item
+          leftSection={<GraduationCap size={14} />}
+          className="cursor-pointer"
+          component={Link}
+          to="/instructor/courses"
+        >
+          Instructor Dashboard
+        </Menu.Item>
+        <Menu.Item
           leftSection={<IconSearch size={14} />}
           rightSection={
             <Text size="xs" c="dimmed">
@@ -52,6 +62,15 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           }
         >
           Search
+        </Menu.Item>
+        {/* menu item as link to /home student */}
+        <Menu.Item
+          className="cursor-pointer"
+          component={Link}
+          to="/"
+          leftSection={<GraduationCap size={14} />}
+        >
+          Student
         </Menu.Item>
 
         <Menu.Divider />
