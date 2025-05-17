@@ -41,7 +41,7 @@ export const useCreateLecture = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
+        queryKey: keyFac.courses._def,
       });
       showSuccessToast("Lecture Created", "The lecture was created successfully.");
     },
@@ -66,7 +66,7 @@ export const useUpdateLecture = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
+        queryKey: keyFac.courses._def,
       });
       showSuccessToast("Lecture Updated", "The lecture was updated successfully.");
     },
@@ -91,7 +91,7 @@ export const useDeleteLecture = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
+        queryKey: keyFac.courses._def,
       });
       showSuccessToast("Lecture Deleted", "The lecture was deleted successfully.");
     },

@@ -74,6 +74,17 @@ export interface CourseDetailVm {
   updatedAt: string; // or Date
 }
 
+export interface CreateCourseCommand {
+  categoryId: string; // Guid tương ứng với string trong TS
+  title: string;
+  description: string;
+  image: File; // Tương ứng với IFormFile trong frontend là File
+  promoVideo: File; // Tương ứng với IFormFile
+  price: number;
+  discountedPrice: number;
+  level: CourseLevel;
+}
+
 export interface UpdateCourseCommand {
   id: string;
   title?: string;

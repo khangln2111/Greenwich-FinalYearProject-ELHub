@@ -131,9 +131,11 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
       <div className="flex items-center justify-between">
         <Title order={2}>Course Content</Title>
         <div className="flex items-center gap-4">
-          <Button leftSection={<PlusIcon size={16} />} onClick={openCreateSectionModal}>
-            Add Section
-          </Button>
+          {sections.length > 0 && (
+            <Button leftSection={<PlusIcon size={16} />} onClick={openCreateSectionModal}>
+              Add Section
+            </Button>
+          )}
           <Text className="text-gray-500 dark:text-dark-1">
             {sections.reduce((sum, sec) => sum + (sec.lectures?.length ?? 0), 0)} lectures
           </Text>

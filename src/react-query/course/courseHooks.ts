@@ -2,8 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { CreateCourseRequest } from "./course.schema";
-import { CourseQueryCriteria, UpdateCourseCommand } from "./course.types";
+import { CourseQueryCriteria, CreateCourseCommand, UpdateCourseCommand } from "./course.types";
 import { createCourse, deleteCourse, updateCourse } from "./courseApi";
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
@@ -18,7 +17,7 @@ export const useCreateCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (command: CreateCourseRequest) => createCourse(command),
+    mutationFn: (command: CreateCourseCommand) => createCourse(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["courses", "list"] });
       showSuccessToast(

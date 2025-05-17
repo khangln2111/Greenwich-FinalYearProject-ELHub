@@ -8,16 +8,15 @@ import {
 } from "../../constants/ValidationConstants";
 import { CourseLevel } from "./course.types";
 
-export const createCourseSchema = z.object({
+export const createCourseFormSchema = z.object({
   title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
   description: z
     .string({ message: "Description is required" })
     .min(10, "Description must be at least 10 characters"),
   price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
-  discountPercentage: z
-    .number({ message: "Discount percentage is required" })
-    .min(0, { message: "Discount must be >= 0%" })
-    .max(100, { message: "Discount must be <= 100%" }),
+  discountedPrice: z
+    .number({ message: "Discounted price is required" })
+    .min(0, { message: "Discounted price must be ≥ 0" }),
   image: z
     .instanceof(File, { message: "Course image is required" })
     .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
@@ -44,7 +43,7 @@ export const createCourseSchema = z.object({
   ),
 });
 
-export type CreateCourseRequest = z.infer<typeof createCourseSchema>;
+export type CreateCourseFormValues = z.infer<typeof createCourseFormSchema>;
 
 export const UpdateCourseOverviewFormSchema = z.object({
   title: z.string().min(1, "Course title is required"),

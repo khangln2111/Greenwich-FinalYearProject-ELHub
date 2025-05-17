@@ -1,8 +1,13 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
-import { CourseVm, CourseQueryCriteria, UpdateCourseCommand, CourseDetailVm } from "./course.types";
-import { CreateCourseRequest } from "./course.schema";
+import {
+  CourseDetailVm,
+  CourseQueryCriteria,
+  CourseVm,
+  CreateCourseCommand,
+  UpdateCourseCommand,
+} from "./course.types";
 
 const BASE_URL = "/courses";
 
@@ -46,7 +51,7 @@ export const getCourseDetail = async (id: string) => {
   return response.data;
 };
 
-export const createCourse = async (course: CreateCourseRequest) => {
+export const createCourse = async (course: CreateCourseCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, course, {
     headers: {
       "Content-Type": "multipart/form-data",

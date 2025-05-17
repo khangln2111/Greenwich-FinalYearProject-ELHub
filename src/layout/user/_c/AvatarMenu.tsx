@@ -1,17 +1,18 @@
 import { Avatar, Indicator, Menu, Text } from "@mantine/core";
 import {
   IconArrowsLeftRight,
+  IconBriefcase,
   IconMessageCircle,
   IconPhoto,
   IconSearch,
   IconSettings,
   IconTrash,
 } from "@tabler/icons-react";
+import { GraduationCap } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useLogout } from "../../../react-query/auth/identityHooks";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/store";
-import { GraduationCap } from "lucide-react";
-import { Link } from "react-router-dom";
 
 interface AvatarMenuProps {
   className?: string;
@@ -46,7 +47,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         <Menu.Item leftSection={<IconMessageCircle size={14} />}>Messages</Menu.Item>
         <Menu.Item leftSection={<IconPhoto size={14} />}>Gallery</Menu.Item>
         <Menu.Item
-          leftSection={<GraduationCap size={14} />}
+          leftSection={<IconBriefcase size={14} />}
           className="cursor-pointer"
           component={Link}
           to="/instructor/courses"
