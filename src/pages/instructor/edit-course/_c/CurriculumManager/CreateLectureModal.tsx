@@ -54,8 +54,6 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
       preview: values.preview ?? false,
     };
 
-    console.log("Create lecture payload:", payload);
-
     createLectureMutation.mutate(payload, {
       onSuccess: () => {
         form.reset(); // reset form về mặc định

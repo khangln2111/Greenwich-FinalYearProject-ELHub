@@ -18,7 +18,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
       icon: LibraryBig,
     },
     {
-      label: `${course.studentEnrollmentCount} enrolled`,
+      label: `${course.studentEnrollmentCount ?? 0} enrolled`,
       icon: Users,
     },
   ];
@@ -92,7 +92,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
           readOnly
           className="flex items-center justify-center"
         />
-        <p className="text-yellow-6 font-bold">{course.rating.toFixed(1)}</p>
+        <p className="text-yellow-6 font-bold">{course.rating?.toFixed(1)}</p>
         <p className="text-dimmed">({course.ratingCount})</p>
       </div>
 

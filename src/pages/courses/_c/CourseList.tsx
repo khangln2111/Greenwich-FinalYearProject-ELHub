@@ -1,21 +1,52 @@
 // app/courses/components/CourseList.tsx
-import { ActionIcon, Button, Flex, Group, SimpleGrid, TextInput, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Flex,
+  Group,
+  SimpleGrid,
+  TextInput,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 import { LayoutGrid, List, ListFilter, Search } from "lucide-react";
-import { CourseVm } from "../../../react-query/course/course.types";
-import { mockCourses } from "../../../react-query/mockData";
 import { useAppStore } from "../../../zustand/store";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import MobileFilter from "./MobileFilter";
 import PaginationComponent from "./Pagination";
+import { useGetCourses } from "../../../react-query/course/courseHooks";
+import { mockCourses } from "../../../react-query/mockData";
+import { Vaul } from "mantine-vaul";
 
-type CourseListProps = {
-  courses?: CourseVm[];
-};
+type CourseListProps = {};
 
 const CourseList = ({}: CourseListProps) => {
   const toggleDesktopFilter = useAppStore.use.toggleDesktopFilter();
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
-  const courses = mockCourses;
+
+  const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
+  const closeMobileFilter = useAppStore.use.closeMobileFilter();
+  const openMobileFilter = useAppStore.use.openMobileFilter();
+
+  const { data, isPending, isError } = useGetCourses();
+
+  if (isPending) {
+    return (
+      <div className="flex items-center justify-center h-[300px]">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center h-[300px]">
+        <p className="text-red-500">Error loading courses</p>
+      </div>
+    );
+  }
+
+  const courses = data.items;
 
   return (
     <>

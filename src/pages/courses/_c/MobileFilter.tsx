@@ -1,4 +1,4 @@
-import { ActionIcon, Stack, Text } from "@mantine/core";
+import { ActionIcon, Stack, Text, ThemeIcon } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { Vaul } from "mantine-vaul";
 import { useAppStore } from "../../../zustand/store";
@@ -23,9 +23,9 @@ export default function MobileFilter({}: MobileFilterProps) {
       title={<Text className="text-h4 font-h4">Advanced filter</Text>}
       target={
         <Vaul.Target>
-          <ActionIcon size={35} hiddenFrom="lg" variant={isMobileFilterOpen ? "filled" : "default"}>
+          <ThemeIcon size={35} hiddenFrom="lg" variant={isMobileFilterOpen ? "filled" : "default"}>
             <ListFilter strokeWidth={1.5} />
-          </ActionIcon>
+          </ThemeIcon>
         </Vaul.Target>
       }
       onCloseAnimationEnd={closeMobileFilter}
