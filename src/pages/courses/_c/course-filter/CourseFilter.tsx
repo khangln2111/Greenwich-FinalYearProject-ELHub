@@ -16,14 +16,14 @@ import {
 import { IconFilterCog } from "@tabler/icons-react";
 import { RotateCcw } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
-import { useGetCategories } from "../../../react-query/category/categoryHooks";
-import Sorting from "./Sorting";
+import { useGetCategories } from "../../../../react-query/category/categoryHooks";
+import CourseSorter from "./CourseSorter";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
-type FilterProps = {};
+type CourseFilterProps = {};
 
-const Filter = ({}: FilterProps) => {
+const CourseFilter = ({}: CourseFilterProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: categories, isPending, isError } = useGetCategories(); // Lấy danh sách category từ API
 
@@ -62,7 +62,7 @@ const Filter = ({}: FilterProps) => {
       </div>
       <Divider className="my-lg -mx-lg" />
       <Stack className="py-md">
-        <Sorting />
+        <CourseSorter />
       </Stack>
       <Divider className="mt-lg -mx-lg" />
       <Accordion
@@ -187,4 +187,4 @@ const Filter = ({}: FilterProps) => {
   );
 };
 
-export default Filter;
+export default CourseFilter;

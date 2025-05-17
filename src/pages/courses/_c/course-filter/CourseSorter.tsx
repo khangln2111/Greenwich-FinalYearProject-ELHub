@@ -20,7 +20,7 @@ const sortingOptions = [
   { value: "rating", label: "RATING", icon: <IconStar size={18} /> },
 ];
 
-const Sorting = () => {
+const CourseSorter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   // Lấy giá trị sort từ URL hoặc dùng mặc định "date"
   const selectedSort = searchParams.get("orderBy") || "date";
@@ -104,4 +104,4 @@ const Sorting = () => {
   );
 };
 
-export default Sorting;
+export default CourseSorter;

@@ -1,13 +1,13 @@
-import { ActionIcon, Stack, Text, ThemeIcon } from "@mantine/core";
+import { Stack, Text, ThemeIcon } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Vaul } from "mantine-vaul";
-import { useAppStore } from "../../../zustand/store";
-import Filter from "./Filter";
 import { ListFilter } from "lucide-react";
+import { Vaul } from "mantine-vaul";
+import { useAppStore } from "../../../../zustand/store";
+import CourseFilter from "./CourseFilter";
 
-type MobileFilterProps = {};
+type CourseMobileFilterProps = {};
 
-export default function MobileFilter({}: MobileFilterProps) {
+export default function CourseMobileFilter({}: CourseMobileFilterProps) {
   const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
   const closeMobileFilter = useAppStore.use.closeMobileFilter();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -34,7 +34,7 @@ export default function MobileFilter({}: MobileFilterProps) {
       }}
     >
       <Stack className="pt-lg px-sm xl:px-lg mx-auto">
-        <Filter />
+        <CourseFilter />
       </Stack>
     </Vaul>
   );

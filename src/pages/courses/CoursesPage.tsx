@@ -1,7 +1,7 @@
 import { Box, Grid, GridCol } from "@mantine/core";
 import { useAppStore } from "../../zustand/store";
-import CourseList from "./_c/CourseList";
-import DesktopFilter from "./_c/DesktopFilter";
+import CourseMain from "./_c/CourseMain";
+import CourseDesktopFilter from "./_c/course-filter/CourseDesktopFilter";
 
 const CoursesPage = () => {
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
@@ -22,11 +22,11 @@ const CoursesPage = () => {
             className={`transition-all transition-discrete duration-300 starting:-translate-x-full starting:opacity-0
               ${isDesktopFilterOpen ? "opacity-100" : "-translate-x-full opacity-0 hidden"} `}
           >
-            <DesktopFilter />
+            <CourseDesktopFilter />
           </GridCol>
           {/* Main content column for courses*/}
           <GridCol span="auto" className="transition-all duration-300 ease-in-out">
-            <CourseList />
+            <CourseMain />
           </GridCol>
         </Grid>
       </Box>

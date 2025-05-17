@@ -1,7 +1,7 @@
 import { Pagination } from "@mantine/core";
 import { useSearchParams } from "react-router-dom";
 
-export default function PaginationComponent() {
+export default function CoursePagination() {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
 
