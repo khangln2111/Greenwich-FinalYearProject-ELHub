@@ -31,7 +31,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
     >
       {/* Image section */}
       <div className="flex items-center justify-center relative">
-        <div className="aspect-video overflow-hidden">
+        <div className="aspect-video overflow-hidden size-full">
           <Image
             src={course.imageUrl ?? ""}
             alt={course.title}
