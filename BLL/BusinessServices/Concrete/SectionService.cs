@@ -51,11 +51,11 @@ public class SectionService(
 
         var sectionEntity = mapper.Map<Section>(command);
 
-        // Calculate the order
-        var maxOrder = await context.Sections
+        // Calculate the order, 0-based index
+        var count = await context.Sections
             .Where(s => s.CourseId == command.CourseId)
-            .MaxAsync(s => (int?)s.Order) ?? 0;
-        sectionEntity.Order = maxOrder + 1;
+            .CountAsync();
+        sectionEntity.Order = count;
 
         await context.Sections.AddAsync(sectionEntity);
         await context.SaveChangesAsync();
@@ -84,11 +84,6 @@ public class SectionService(
 
         var deletedOrder = section.Order;
 
-        // Update order for affected sections
-        await context.Sections
-            .Where(s => s.Order > deletedOrder)
-            .ForEachAsync(s => s.Order--);
-
         // Delete associated lectures' videos and Media records
         section.Lectures
             .Where(l => l.Video != null)
@@ -100,6 +95,13 @@ public class SectionService(
             });
 
         context.Lectures.RemoveRange(section.Lectures);
+        context.Sections.Remove(section);
+
+        await context.Sections
+            .Where(s => s.Order > deletedOrder)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(s => s.Order, s => s.Order - 1));
+
 
         await context.SaveChangesAsync();
 
@@ -120,6 +122,7 @@ public class SectionService(
         if (oldOrder == newOrder)
             return new Success("No changes made to the section order.");
 
+
         var (min, max, delta) = (
             Math.Min(oldOrder, newOrder),
             Math.Max(oldOrder, newOrder),
@@ -137,6 +140,7 @@ public class SectionService(
 
 
         section.Order = newOrder;
+
         await context.SaveChangesAsync();
 
         return new Success("Reordered the section successfully.");

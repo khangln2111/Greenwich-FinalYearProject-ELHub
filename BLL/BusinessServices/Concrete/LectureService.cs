@@ -54,11 +54,11 @@ public class LectureService(
         await context.Media.AddAsync(video);
         lecture.Video = video as DurationMedia;
 
-        // Calculate the order
-        var maxOrder = await context.Lectures
+        // Calculate the order, 0-based index
+        var count = await context.Lectures
             .Where(l => l.SectionId == command.SectionId)
-            .MaxAsync(l => (int?)l.Order) ?? 0;
-        lecture.Order = maxOrder + 1;
+            .CountAsync();
+        lecture.Order = count;
 
         await context.Lectures.AddAsync(lecture);
         await context.SaveChangesAsync();
