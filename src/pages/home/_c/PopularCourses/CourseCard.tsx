@@ -1,10 +1,18 @@
 import { Avatar, Badge, Button, Center, Image, Rating, Text, Tooltip } from "@mantine/core";
 import { Clock, LibraryBig, Users } from "lucide-react";
-import { CourseVm } from "../../../../react-query/course/course.types";
+import { CourseLevel, CourseVm } from "../../../../react-query/course/course.types";
 import { formatDurationLong } from "../../../../utils/format";
+import { Link } from "react-router-dom";
 
 type CourseCardProps = {
   course: CourseVm;
+};
+
+const levelColorMap: Record<CourseLevel, string> = {
+  [CourseLevel.Beginner]: "teal", // Màu dễ chịu, đại diện cho sự khởi đầu, nhẹ nhàng
+  [CourseLevel.Intermediate]: "indigo", // Trung gian – mạnh hơn teal, nhưng vẫn không quá nặng
+  [CourseLevel.Advanced]: "red", // Màu cảnh báo, thể hiện độ khó cao
+  [CourseLevel.All]: "gray", // Trung tính, dùng cho mọi đối tượng
 };
 
 const CourseCard = ({ course }: CourseCardProps) => {
@@ -53,7 +61,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
           <Badge
             size="xl"
             autoContrast
-            color="green"
+            color={levelColorMap[course.level]}
             variant="light"
             className="rounded-xs capitalize text-md px-2 font-semibold"
           >
@@ -85,15 +93,15 @@ const CourseCard = ({ course }: CourseCardProps) => {
       </div>
 
       {/* Rating */}
-      <div className="flex gap-1 mt-2 items-center px-md">
+      <div className="flex gap-1 mt-3 items-center px-md leading-none">
         <Rating
-          value={course.rating}
+          value={course.rating ?? 0}
           fractions={3}
           readOnly
           className="flex items-center justify-center"
         />
-        <p className="text-yellow-6 font-bold">{course.rating?.toFixed(1)}</p>
-        <p className="text-dimmed">({course.ratingCount})</p>
+        <p className="text-yellow-6 font-bold">{course.rating?.toFixed(1) ?? 0.0}</p>
+        <p className="text-dimmed">({course.ratingCount ?? 0})</p>
       </div>
 
       {/* Icons section */}
@@ -121,7 +129,12 @@ const CourseCard = ({ course }: CourseCardProps) => {
               <Text className="text-dimmed line-through text-md">${course.price.toFixed(2)}</Text>
             )}
           </div>
-          <Button className="w-fit shrink-0 text-sm font-medium" size="xs">
+          <Button
+            className="w-fit shrink-0 text-sm font-medium"
+            size="xs"
+            component={Link}
+            to={`/courses/${course.id}`}
+          >
             View More
           </Button>
         </div>

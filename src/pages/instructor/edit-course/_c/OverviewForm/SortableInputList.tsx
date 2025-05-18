@@ -1,4 +1,12 @@
-import { ActionIcon, Button, Center, DefaultMantineSize, TextInput, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Center,
+  DefaultMantineSize,
+  TextInput,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 import { IconGripVertical, IconPlus, IconTrash } from "@tabler/icons-react";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { UseFormReturnType } from "@mantine/form";
@@ -46,7 +54,10 @@ const SortableInputList = ({
                       key={form.key(`${field}.${index}.value`)}
                       size={size}
                       leftSection={
-                        <Center {...draggableProvided.dragHandleProps} className="cursor-grab">
+                        <Center
+                          className="cursor-grab text-gray-900 dark:text-gray-200"
+                          {...draggableProvided.dragHandleProps}
+                        >
                           <IconGripVertical size={18} />
                         </Center>
                       }

@@ -60,6 +60,13 @@ export const UpdateCourseOverviewFormSchema = z.object({
       value: z.string().min(1, "Cannot be empty"),
     }),
   ),
+  level: z.enum(
+    [CourseLevel.Beginner, CourseLevel.Intermediate, CourseLevel.Advanced, CourseLevel.All],
+    {
+      required_error: "Course level is required",
+      invalid_type_error: "Invalid course level selected",
+    },
+  ),
   image: z
     .instanceof(File, { message: "Course image is required" })
     .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {

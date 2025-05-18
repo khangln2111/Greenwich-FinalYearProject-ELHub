@@ -8,17 +8,30 @@ import { Loader } from "@mantine/core";
 type VideoPlayerWithThumbnailProps = {
   videoUrl: string;
   className?: string;
+  classNames?: {
+    playIconWrapper?: string;
+    playIcon?: string;
+  };
+  previewThumbnailUrl?: string;
 };
 
 export default function VideoPlayerWithThumbnail({
   videoUrl,
   className,
+  classNames,
+  previewThumbnailUrl,
 }: VideoPlayerWithThumbnailProps) {
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
-  const [thumbnailLoading, setThumbnailLoading] = useState(true);
+  const [thumbnail, setThumbnail] = useState<string | null>(previewThumbnailUrl ?? null);
+  const [thumbnailLoading, setThumbnailLoading] = useState(!previewThumbnailUrl);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
+    if (previewThumbnailUrl) {
+      setThumbnail(previewThumbnailUrl);
+      setThumbnailLoading(false);
+      return;
+    }
+
     if (videoUrl) {
       setThumbnailLoading(true);
       extractThumbnailFromVideoUrl(videoUrl)
@@ -32,7 +45,7 @@ export default function VideoPlayerWithThumbnail({
           setThumbnailLoading(false);
         });
     }
-  }, [videoUrl]);
+  }, [videoUrl, previewThumbnailUrl]);
 
   return (
     <div className={cn("relative size-full object-cover", className)}>
@@ -45,15 +58,15 @@ export default function VideoPlayerWithThumbnail({
         controls
         playing={playing}
         onClickPreview={() => setPlaying(true)}
-        light={thumbnail || <div className="bg-black size-full"></div>}
+        light={thumbnail || <div className="bg-black size-full" />}
         playIcon={
           thumbnailLoading ? (
             <Loader className="absolute" />
           ) : (
-            <span className="absolute flex size-12">
-              <span className="animate-ping absolute h-full w-full rounded-full bg-blue-500 opacity-75" />
+            <span className={cn("absolute flex size-12", classNames?.playIconWrapper)}>
+              <span className="animate-ping absolute size-full rounded-full bg-blue-500 opacity-75" />
               <span className="relative inline-flex rounded-full size-full bg-blue-500 items-center justify-center">
-                <Play className="text-white size-6" />
+                <Play className={cn("text-white size-6", classNames?.playIcon)} />
               </span>
             </span>
           )

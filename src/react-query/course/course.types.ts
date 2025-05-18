@@ -63,6 +63,8 @@ export interface CourseDetailVm {
 
   status: string;
 
+  level: CourseLevel;
+
   learningOutcomes: string[];
   prerequisites: string[];
 

@@ -1,5 +1,5 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { Box, Button, Group, Textarea, TextInput, Title } from "@mantine/core";
+import { Box, Button, Group, Select, Textarea, TextInput, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { randomId } from "@mantine/hooks";
 import FileUploadField from "../../../../../components/media/FileUploadField";
@@ -15,12 +15,14 @@ import {
 } from "../../../../../react-query/course/course.schema";
 import {
   CourseDetailVm,
+  CourseLevel,
   UpdateCourseCommand,
 } from "../../../../../react-query/course/course.types";
 import { useUpdateCourse } from "../../../../../react-query/course/courseHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import SortableInputList from "./SortableInputList";
 import TestSortList from "./TestSortList";
+import { ArrowUpNarrowWide } from "lucide-react";
 
 type CourseOverviewFormProps = {
   courseDetail: CourseDetailVm;
@@ -40,6 +42,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
     prerequisites: courseDetail.prerequisites?.map((value) => ({ id: randomId(), value })) ?? [],
     image: courseDetail.imageUrl ?? "",
     promoVideo: courseDetail.promoVideoUrl ?? "",
+    level: courseDetail.level ?? CourseLevel.Beginner,
   };
 
   const form = useForm<UpdateCourseOverviewFormValues>({
@@ -84,6 +87,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
       prerequisites: values.prerequisites.map((item) => item.value),
       image: values.image instanceof File ? values.image : undefined,
       promoVideo: values.promoVideo instanceof File ? values.promoVideo : undefined,
+      level: values.level,
     };
     updateCourseOverviewMutation.mutate(payload, {
       onSuccess: () => {
@@ -117,6 +121,23 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
           minRows={4}
           mt="xs"
           {...form.getInputProps("description")}
+        />
+      </div>
+
+      <div>
+        <Select
+          data={[
+            { label: "Beginner", value: CourseLevel.Beginner },
+            { label: "Intermediate", value: CourseLevel.Intermediate },
+            { label: "Advanced", value: CourseLevel.Advanced },
+            { label: "All Levels", value: CourseLevel.All },
+          ]}
+          size="md"
+          label="Course level"
+          placeholder="Select: Beginner, Intermediate, Advanced, All Levels"
+          leftSection={<ArrowUpNarrowWide className="size-4" />}
+          {...form.getInputProps("level")}
+          key={form.key("level")}
         />
       </div>
 

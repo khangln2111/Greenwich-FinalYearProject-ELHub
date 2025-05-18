@@ -1,4 +1,4 @@
-import { Anchor, Box, Breadcrumbs, Image, SegmentedControl, Tabs, Title } from "@mantine/core";
+import { Anchor, Box, Breadcrumbs, SegmentedControl, Tabs, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
   BadgeCheck,
@@ -9,7 +9,6 @@ import {
   HelpCircle,
   InfinityIcon,
   LanguagesIcon,
-  Play,
   ShoppingCart,
   StarIcon,
 } from "lucide-react";
@@ -17,6 +16,7 @@ import { useState } from "react";
 import ReactPlayer from "react-player";
 import { Link } from "react-router-dom";
 import image from "../../assets/placeholder/courseDetail.jpg";
+import VideoPlayerWithThumbnail from "../../components/media/VideoPlayerWithThumbnail";
 import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
@@ -77,7 +77,12 @@ const CourseDetailPage = () => {
   const [activeTab, setActiveTab] = useState("curriculum");
   return (
     <div className="flex-1">
-      <Box className="container" px={{ base: "15px", md: "20px", lg: "30px", xl: "90px" }} py="5xl">
+      <Box
+        className="container"
+        px={{ base: "15px", md: "20px", lg: "30px", xl: "90px" }}
+        pb="5xl"
+        pt={{ base: "xl", md: "2xl" }}
+      >
         <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr] items-start">
           {/* 1st column */}
           <div>
@@ -122,30 +127,17 @@ const CourseDetailPage = () => {
                 </div>
               </div>
               {/* course preview */}
-              <div
-                className="aspect-video relative rounded-lg overflow-hidden cursor-pointer mt-10 border"
-                onClick={handleOpenVideoPreview}
-              >
-                {/* Placeholder image */}
-                <Image
-                  className="size-full object-cover inset-shadow-2xs"
-                  src="https://kinsta.com/wp-content/uploads/2023/04/react-must-be-in-scope-when-using-jsx.jpg"
-                ></Image>
-                <div className="absolute inset-0 bg-black/20" />
-                {/* Overlay Play Button - luôn hiển thị */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="relative flex size-16">
-                    {/* Ping ring */}
-                    <span
-                      className="animate-[ping_1.5s_ease-out_infinite] absolute inline-flex h-full w-full rounded-full bg-blue-500
-                        opacity-75 scale-120"
-                    ></span>
-                    {/* Play button */}
-                    <span className="relative inline-flex rounded-full size-full bg-blue-500 items-center justify-center">
-                      <Play className="text-white size-6" />
-                    </span>
-                  </span>
-                </div>
+              <div className="aspect-video relative rounded-lg overflow-hidden cursor-pointer mt-10 border">
+                <VideoPlayerWithThumbnail
+                  classNames={{
+                    playIconWrapper: "md:size-16",
+                    playIcon: "md:size-8",
+                  }}
+                  videoUrl={
+                    "https://res.cloudinary.com/codewithmosh/video/upload/f_auto:video,q_auto/v1/promo-videos/spring-boot-part1"
+                  }
+                  previewThumbnailUrl="https://kinsta.com/wp-content/uploads/2023/04/react-must-be-in-scope-when-using-jsx.jpg"
+                />
               </div>
             </div>
             <SegmentedControl

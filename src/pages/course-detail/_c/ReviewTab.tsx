@@ -1,7 +1,24 @@
-import { Progress, Rating, Select, TextInput, Title } from "@mantine/core";
-import { IconStarFilled } from "@tabler/icons-react";
+import { Progress, Rating, Select, SelectProps, TextInput, Title, Group } from "@mantine/core";
+import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import { SearchIcon } from "lucide-react";
 import avatar from "../../../assets/placeholder/avatar-placeholder.jpg";
+
+const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
+  const stars = parseInt(option.value);
+
+  return (
+    <Group justify="space-between" flex="1" px="xs" py={4}>
+      <Group gap={4}>
+        {Array.from({ length: stars }).map((_, i) => (
+          <IconStarFilled key={i} size={16} className="text-yellow" />
+        ))}
+      </Group>
+
+      {checked && <IconCheck size={16} className="text-primary-6 opacity-70" />}
+    </Group>
+  );
+};
+
 interface FeedbackProps {
   rating: number;
   totalReviews: number;
@@ -50,11 +67,26 @@ const ReviewTab = ({ rating, totalReviews, stars }: FeedbackProps) => {
       <div className="mt-10 flex items-center gap-5">
         <TextInput
           className="grow"
+          size="md"
           type="search"
           rightSection={<SearchIcon size={16} />}
           placeholder="Search"
         />
-        <Select placeholder="Search" />
+        <Select
+          placeholder="Filter by stars"
+          size="md"
+          checkIconPosition="right"
+          leftSection={<IconStarFilled size={22} className="text-yellow" />}
+          renderOption={renderStarOptionIconOnly}
+          clearable
+          data={[
+            { value: "5", label: "5" },
+            { value: "4", label: "4" },
+            { value: "3", label: "3" },
+            { value: "2", label: "2" },
+            { value: "1", label: "1" },
+          ]}
+        />
       </div>
       <div className="mt-10 flex flex-col items-center justify-center gap-6">
         <div className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 mx-auto">
