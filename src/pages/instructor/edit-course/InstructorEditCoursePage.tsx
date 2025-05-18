@@ -9,15 +9,15 @@ import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
 
 export default function UpdateCoursePage() {
-  const [activeTab, setActiveTab] = useState("Curriculum");
-
   const { courseId } = useParams<{ courseId: string }>();
 
-  if (!courseId) {
-    return <Navigate to="/instructor/courses" replace />;
-  }
+  const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
 
-  const { data, isPending } = useGetCourseDetail(courseId);
+  const [activeTab, setActiveTab] = useState("Curriculum");
+
+  if ((error && error.response?.status === 404) || !courseId) {
+    return <Navigate to="/404" replace />;
+  }
 
   return (
     <div className="flex-1 p-6 xl:p-8">
@@ -61,8 +61,8 @@ export default function UpdateCoursePage() {
           <Tabs.Panel value="Overview">
             {isPending ? (
               <Loader />
-            ) : data ? (
-              <OverviewForm courseId={courseId} courseDetail={data} />
+            ) : courseDetail ? (
+              <OverviewForm courseId={courseId} courseDetail={courseDetail} />
             ) : (
               <div>No course data found.</div>
             )}
@@ -72,7 +72,7 @@ export default function UpdateCoursePage() {
             {isPending ? (
               <Loader />
             ) : (
-              <CurriculumManager courseId={courseId} sections={data?.sections ?? []} />
+              <CurriculumManager courseId={courseId} sections={courseDetail?.sections ?? []} />
             )}
           </Tabs.Panel>
           <Tabs.Panel value="Reviews">

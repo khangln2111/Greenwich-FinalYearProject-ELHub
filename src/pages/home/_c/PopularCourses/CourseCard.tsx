@@ -78,7 +78,11 @@ const CourseCard = ({ course }: CourseCardProps) => {
           position="bottom"
           transitionProps={{ duration: 200 }}
         >
-          <Text className="font-bold text-xl text-left cursor-pointer md:line-clamp-2 xl:line-clamp-1">
+          <Text
+            className="font-bold text-xl text-left cursor-pointer md:line-clamp-2 xl:line-clamp-1"
+            component={Link}
+            to={`/courses/${course.id}`}
+          >
             {course.title}
           </Text>
         </Tooltip>

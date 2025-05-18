@@ -1,5 +1,6 @@
 import { SimpleGrid, Title, Button, Text, Image, Container } from "@mantine/core";
 import image from "../../assets/NotFoundImage.svg";
+import { Link } from "react-router-dom";
 
 const ErrorPage = () => {
   return (
@@ -17,7 +18,14 @@ const ErrorPage = () => {
             Page you are trying to open does not exist. You may have mistyped the address, or the
             page has been moved to another URL. If you think this is an error contact support.
           </Text>
-          <Button variant="outline" size="md" mt="xl" className="w-full md:w-auto">
+          <Button
+            variant="outline"
+            size="md"
+            mt="xl"
+            className="w-full md:w-auto"
+            component={Link}
+            to="/"
+          >
             Get back to home page
           </Button>
         </div>

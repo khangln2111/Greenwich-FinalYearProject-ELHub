@@ -1,47 +1,58 @@
 import { Title, Text, List } from "@mantine/core";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
+import { CourseDetailVm } from "../../../react-query/course/course.types";
 
-const OverviewTab = () => {
+type OverviewTabProps = {
+  course: CourseDetailVm;
+};
+
+const OverviewTab = ({ course }: OverviewTabProps) => {
   return (
     <div>
       <Title order={2}>About The Course</Title>
-      <Text className="mt-2 text-lg leading-relaxed">
-        UX/UI design focuses on creating user-friendly and visually appealing digital experiences,
-        ensuring that products such as websites and apps are both intuitive and enjoyable UX (User
-        Experience) Design involves understanding the needs, behaviors, and pain points of users to
-        create a seamless, effective experience process includes conducting user research, mapping
-        user journeys.
-        <br />
-        UI (User Interface) Design is the process of creating the visual elements of a product,
-        including layout, color schemes, typography, and interactive features like buttons and
-        icons.
-      </Text>
-      <div className="mt-10">
-        <Title order={2}>What you'll learn in this course?</Title>
-        <Text className="mt-2 text-lg">
-          Together, UX and UI design ensure that digital products are not only functional and
-          accessible but also engaging and visually coherent, enhancing both usability and overall
-          user satisfaction
-        </Text>
-      </div>
+      <Text className="mt-2 text-lg leading-relaxed">{course.description}</Text>
+      {/* Learning Outcomes Section */}
+      {course.learningOutcomes && course.learningOutcomes.length > 0 && (
+        <div className="mt-10">
+          <Title order={3}>What you'll learn in this course</Title>
+          <Text className="mt-2 text-lg">
+            This course is designed to help you develop the following skills and knowledge:
+          </Text>
+          <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+            {course.learningOutcomes.map((item, idx) => (
+              <li
+                key={idx}
+                className="flex items-start gap-3 text-lg font-medium normal-case leading-relaxed"
+              >
+                <IconCircleCheckFilled className="mt-1 size-5 shrink-0 text-primary-4 dark:text-primary-8" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-      {/* Information Section */}
-      <div className="mt-4">
-        <List
-          spacing="xs"
-          size="sm"
-          className="grid grid-cols-1 md:grid-cols-2 items-baseline justify-center gap-y-5 font-semibold capitalize
-            text-lg"
-          center
-          icon={<IconCircleCheckFilled className="fill-primary-4 dark:fill-primary-8" />}
-        >
-          <List.Item>Introduction to UX/UI Design</List.Item>
-          <List.Item>UX Writing & Content Strategy</List.Item>
-          <List.Item>Design Thinking & User Research</List.Item>
-          <List.Item>Usability Testing & Iteration</List.Item>
-          <List.Item>Submit a pull request once you are done</List.Item>
-        </List>
-      </div>
+      {/* Prerequisites Section */}
+      {course.prerequisites && course.prerequisites.length > 0 && (
+        <div className="mt-10">
+          <Title order={3}>What you need before starting</Title>
+          <Text className="mt-2 text-lg">
+            To get the most out of this course, it helps to have some background knowledge or
+            skills:
+          </Text>
+          <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+            {course.prerequisites.map((item, idx) => (
+              <li
+                key={idx}
+                className="flex items-start gap-3 text-lg font-medium normal-case leading-relaxed"
+              >
+                <IconCircleCheckFilled className="mt-1 size-5 shrink-0 text-primary-4 dark:text-primary-8" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

@@ -14,13 +14,15 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import ReactPlayer from "react-player";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import image from "../../assets/placeholder/courseDetail.jpg";
 import VideoPlayerWithThumbnail from "../../components/media/VideoPlayerWithThumbnail";
 import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
+import { useGetCourseDetail } from "../../react-query/course/courseHooks";
+import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
 
 const items = [
   { title: "Home", href: "/" },
@@ -53,28 +55,26 @@ function CourseStat({
     </li>
   );
 }
+enum CourseDetailTab {
+  Overview = "Overview",
+  Curriculum = "Curriculum",
+  Reviews = "Reviews",
+  Instructor = "Instructor",
+}
 
 const CourseDetailPage = () => {
-  const handleOpenVideoPreview = () => {
-    modals.open({
-      size: "xl",
-      centered: true,
-      padding: 0,
-      withCloseButton: false,
-      overlayProps: { blur: 4 },
-      children: (
-        <ReactPlayer
-          url="https://res.cloudinary.com/codewithmosh/video/upload/f_auto:video,q_auto/v1/promo-videos/spring-boot-part1"
-          width="100%"
-          height="100%"
-          controls
-          playing
-        />
-      ),
-    });
-  };
+  const { courseId } = useParams<{ courseId: string }>();
 
-  const [activeTab, setActiveTab] = useState("curriculum");
+  const { data: course, isPending, error } = useGetCourseDetail(courseId!);
+
+  const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
+
+  if (error || !courseId) {
+    return <Navigate to="/404" replace />;
+  }
+
+  if (isPending) return <CourseDetailPageSkeleton />;
+
   return (
     <div className="flex-1">
       <Box
@@ -90,34 +90,37 @@ const CourseDetailPage = () => {
               <Breadcrumbs separator="→" separatorMargin="md" mt="xs">
                 {items}
               </Breadcrumbs>
-              <Title className="mt-5">Complete Guide to UI/UX Design with Figma</Title>
+              <Title className="mt-5">{course.title}</Title>
               {/* Course stats */}
               <div
-                className="grid grid-cols-2 md:grid-cols-4 items-center justify-between gap-6 border py-6 px-4 text-sm mt-xl
-                  rounded-lg shadow-lg"
+                className="grid grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-y-0 gap-x-3 md:gap-6 border py-6 px-4 text-sm mt-xl
+                  rounded-lg shadow-lg items-center"
               >
-                <div className="flex items-center gap-3 border-r">
+                <div className="flex items-center gap-3 border-t first:border-t-0 pt-4 md:pt-0 md:border-t-0 md:border-r">
                   <img
                     src={image}
                     alt="Instructor"
                     className="w-10 h-10 rounded-full object-cover"
                   />
                   <div>
-                    <div className="">Created By</div>
-                    <div className="font-semibold text-md">Edupls</div>
+                    <div>Created By</div>
+                    <div className="font-semibold text-md">{course.instructorName}</div>
                   </div>
                 </div>
-                <div className="md:border-r">
+
+                <div className="border-t pt-4 md:pt-0 md:border-t-0 md:border-r">
                   <div>Category</div>
                   <div className="text-blue-500 cursor-pointer hover:underline font-semibold text-md">
-                    SEO
+                    {course.categoryName}
                   </div>
                 </div>
-                <div className="border-r">
+
+                <div className="border-t pt-4 md:pt-0 md:border-t-0 md:border-r">
                   <div>Last Update</div>
                   <div className="font-semibold text-md">17 Apr, 2024</div>
                 </div>
-                <div className="">
+
+                <div className="border-t pt-4 md:pt-0 md:border-t-0">
                   <div>Review</div>
                   <div className="flex items-center gap-1 text-md">
                     <StarIcon className="fill-yellow text-yellow" size={20} />
@@ -133,23 +136,17 @@ const CourseDetailPage = () => {
                     playIconWrapper: "md:size-16",
                     playIcon: "md:size-8",
                   }}
-                  videoUrl={
-                    "https://res.cloudinary.com/codewithmosh/video/upload/f_auto:video,q_auto/v1/promo-videos/spring-boot-part1"
-                  }
-                  previewThumbnailUrl="https://kinsta.com/wp-content/uploads/2023/04/react-must-be-in-scope-when-using-jsx.jpg"
+                  className="size-full"
+                  videoUrl={course.promoVideoUrl}
+                  previewThumbnailUrl={course.imageUrl}
                 />
               </div>
             </div>
             <SegmentedControl
               value={activeTab}
-              onChange={setActiveTab}
+              onChange={(val) => setActiveTab(val as CourseDetailTab)} // 👈 ép kiểu ở đây
+              data={Object.values(CourseDetailTab)}
               transitionDuration={200}
-              data={[
-                { label: "Overview", value: "overview" },
-                { label: "Curriculum", value: "curriculum" },
-                { label: "Reviews", value: "reviews" },
-                { label: "Instructor", value: "instructor" },
-              ]}
               size="md"
               className="w-full mt-5 grid grid-cols-2 md:grid-flow-col md:auto-cols-fr"
               classNames={{
@@ -164,14 +161,14 @@ const CourseDetailPage = () => {
             <Tabs defaultValue="personal-info" variant="pills" value={activeTab} className="mt-7">
               <div>
                 {/* overview about course */}
-                <Tabs.Panel value="overview">
-                  <OverviewTab />
+                <Tabs.Panel value={CourseDetailTab.Overview}>
+                  <OverviewTab course={course} />
                 </Tabs.Panel>
                 {/* course curriculum */}
-                <Tabs.Panel value="curriculum">
+                <Tabs.Panel value={CourseDetailTab.Curriculum}>
                   <CurriculumTab />
                 </Tabs.Panel>
-                <Tabs.Panel value="reviews">
+                <Tabs.Panel value={CourseDetailTab.Reviews}>
                   <ReviewTab
                     rating={4.6}
                     totalReviews={2533}
@@ -184,7 +181,7 @@ const CourseDetailPage = () => {
                     ]}
                   />
                 </Tabs.Panel>
-                <Tabs.Panel value="instructor">
+                <Tabs.Panel value={CourseDetailTab.Instructor}>
                   <InstructorTab />
                 </Tabs.Panel>
               </div>

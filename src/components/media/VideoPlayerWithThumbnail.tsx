@@ -58,7 +58,18 @@ export default function VideoPlayerWithThumbnail({
         controls
         playing={playing}
         onClickPreview={() => setPlaying(true)}
-        light={thumbnail || <div className="bg-black size-full" />}
+        light={
+          thumbnail ? (
+            <img
+              src={thumbnail}
+              alt="thumbnail"
+              className="size-full object-cover"
+              style={{ maxHeight: "100%" }}
+            />
+          ) : (
+            <div className="bg-black size-full" />
+          )
+        }
         playIcon={
           thumbnailLoading ? (
             <Loader className="absolute" />

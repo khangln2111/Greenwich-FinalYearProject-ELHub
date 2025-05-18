@@ -10,7 +10,19 @@ export const useGetCourses = (query: CourseQueryCriteria = {}) => {
 };
 
 export const useGetCourseDetail = (id: string) => {
-  return useQuery(keyFac.courses.detail(id));
+  return useQuery({
+    queryKey: keyFac.courses.detail(id).queryKey,
+    queryFn: keyFac.courses.detail(id).queryFn,
+    enabled: !!id,
+    retry: (failureCount, error) => {
+      // ❌ Không retry nếu là 404
+      if (error && error.response?.status === 404) {
+        return false;
+      }
+      // ✅ Retry tối đa 2 lần cho lỗi khác
+      return failureCount < 2;
+    },
+  });
 };
 
 export const useCreateCourse = () => {
