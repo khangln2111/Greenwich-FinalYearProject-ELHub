@@ -1,4 +1,4 @@
-import { Title, Text, List } from "@mantine/core";
+import { Title, Text, List, ThemeIcon } from "@mantine/core";
 import {
   IconCheck,
   IconCircleArrowRight,
@@ -9,7 +9,7 @@ import {
   IconQuestionMark,
 } from "@tabler/icons-react";
 import { CourseDetailVm } from "../../../react-query/course/course.types";
-import { AwardIcon } from "lucide-react";
+import { ArrowRight, AwardIcon } from "lucide-react";
 
 type OverviewTabProps = {
   course: CourseDetailVm;
@@ -34,7 +34,9 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
                 className="flex items-start gap-3 text-lg font-medium normal-case leading-relaxed"
               >
                 <div>
-                  <AwardIcon className="inline size-6 shrink-0 text-primary-4 dark:text-primary-8" />
+                  <ThemeIcon size="md" radius="2xl" variant="light">
+                    <AwardIcon className="size-[70%]" />
+                  </ThemeIcon>
                 </div>
                 <span>{item}</span>
               </li>
@@ -57,8 +59,13 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
                 key={idx}
                 className="flex items-start gap-3 text-lg font-medium normal-case leading-relaxed"
               >
-                <div>
+                {/* <div>
                   <IconCheck className="inline size-6 shrink-0 text-primary-4 dark:text-primary-8" />
+                </div> */}
+                <div>
+                  <ThemeIcon size="md" radius="2xl" variant="light">
+                    <ArrowRight className="size-[70%]" />
+                  </ThemeIcon>
                 </div>
                 <span>{item}</span>
               </li>
