@@ -1,5 +1,4 @@
 import { Anchor, Box, Breadcrumbs, SegmentedControl, Tabs, Title } from "@mantine/core";
-import { modals } from "@mantine/modals";
 import {
   BadgeCheck,
   BarChart2,
@@ -13,23 +12,31 @@ import {
   StarIcon,
 } from "lucide-react";
 import { useState } from "react";
-import ReactPlayer from "react-player";
 import { Link, Navigate, useParams } from "react-router-dom";
 import image from "../../assets/placeholder/courseDetail.jpg";
 import VideoPlayerWithThumbnail from "../../components/media/VideoPlayerWithThumbnail";
+import { useGetCourseDetail } from "../../react-query/course/courseHooks";
+import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
 import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
-import { useGetCourseDetail } from "../../react-query/course/courseHooks";
-import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
 
 const items = [
   { title: "Home", href: "/" },
   { title: "Courses", href: "/courses" },
-  { title: "use-id", href: "/courses/id" },
+  { title: "Course Detail", href: `/courses/id`, isActive: true },
 ].map((item, index) => (
-  <Anchor to={item.href} key={index} component={Link}>
+  <Anchor
+    to={item.href}
+    key={index}
+    component={Link}
+    className={
+      item.isActive
+        ? "pointer-events-none dark:text-gray-400 text-gray-800 font-semibold cursor-default"
+        : ""
+    }
+  >
     {item.title}
   </Anchor>
 ));
