@@ -50,7 +50,7 @@ export interface CourseDetailVm {
   sectionCount: number;
   lectureCount: number;
 
-  sections: SectionVm[];
+  sections: SectionVm[] | null;
 
   imageUrl: string;
   promoVideoUrl: string;

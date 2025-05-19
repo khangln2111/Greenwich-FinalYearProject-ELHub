@@ -99,11 +99,12 @@ const CourseDetailPage = () => {
               </Breadcrumbs>
               <Title className="mt-5">{course.title}</Title>
               {/* Course stats */}
-              <div
-                className="grid grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-y-0 gap-x-3 md:gap-6 border py-6 px-4 text-sm mt-xl
-                  rounded-lg shadow-lg items-center"
-              >
-                <div className="flex items-center gap-3 border-t first:border-t-0 pt-4 md:pt-0 md:border-t-0 md:border-r">
+              <div className="flex flex-wrap border py-6 px-4 text-sm mt-xl rounded-lg shadow-lg">
+                {/* Created By */}
+                <div
+                  className="flex w-full md:w-1/4 items-center gap-3 pt-4 md:pt-0 md:pr-6 md:border-r border-t first:border-t-0
+                    md:border-t-0"
+                >
                   <img
                     src={image}
                     alt="Instructor"
@@ -115,19 +116,22 @@ const CourseDetailPage = () => {
                   </div>
                 </div>
 
-                <div className="border-t pt-4 md:pt-0 md:border-t-0 md:border-r">
+                {/* Category */}
+                <div className="w-full md:w-1/4 pt-4 md:pt-0 md:px-6 md:border-r border-t md:border-t-0">
                   <div>Category</div>
                   <div className="text-blue-500 cursor-pointer hover:underline font-semibold text-md">
                     {course.categoryName}
                   </div>
                 </div>
 
-                <div className="border-t pt-4 md:pt-0 md:border-t-0 md:border-r">
+                {/* Last Update */}
+                <div className="w-full md:w-1/4 pt-4 md:pt-0 md:px-6 md:border-r border-t md:border-t-0">
                   <div>Last Update</div>
                   <div className="font-semibold text-md">17 Apr, 2024</div>
                 </div>
 
-                <div className="border-t pt-4 md:pt-0 md:border-t-0">
+                {/* Review */}
+                <div className="w-full md:w-1/4 pt-4 md:pt-0 md:pl-6 border-t md:border-t-0">
                   <div>Review</div>
                   <div className="flex items-center gap-1 text-md">
                     <StarIcon className="fill-yellow text-yellow" size={20} />
@@ -173,7 +177,7 @@ const CourseDetailPage = () => {
                 </Tabs.Panel>
                 {/* course curriculum */}
                 <Tabs.Panel value={CourseDetailTab.Curriculum}>
-                  <CurriculumTab />
+                  <CurriculumTab sections={course.sections ?? []} />
                 </Tabs.Panel>
                 <Tabs.Panel value={CourseDetailTab.Reviews}>
                   <ReviewTab
@@ -216,9 +220,13 @@ const CourseDetailPage = () => {
                   This course includes
                 </h3>
                 <ul className="flex flex-col gap-y-3 divide-y text-sm text-gray-700 dark:text-gray-300">
-                  <CourseStat icon={BarChart2} label="Level" value="Expert" />
+                  <CourseStat icon={BarChart2} label="Level" value={course.level} />
                   <CourseStat icon={Clock} label="Duration" value="11h 20m" />
-                  <CourseStat icon={BookOpen} label="Lectures" value="12" />
+                  <CourseStat
+                    icon={BookOpen}
+                    label="Lectures"
+                    value={course.lectureCount.toString()}
+                  />
                   <CourseStat icon={HelpCircle} label="Quizzes" value="145" />
                   <CourseStat icon={InfinityIcon} label="Lifetime Access" value="Yes" />
                   <CourseStat icon={BadgeCheck} label="Certifications" value="Yes" />

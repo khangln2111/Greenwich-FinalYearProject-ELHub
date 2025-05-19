@@ -7,7 +7,7 @@ export type SectionVm = {
   lectureCount: number;
   durationInSeconds: number;
   courseId: string;
-  lectures?: LectureVm[];
+  lectures: LectureVm[] | null;
   order: number;
 };
 

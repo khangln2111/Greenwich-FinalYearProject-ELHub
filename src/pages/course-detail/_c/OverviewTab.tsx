@@ -1,15 +1,6 @@
-import { Title, Text, List, ThemeIcon } from "@mantine/core";
-import {
-  IconCheck,
-  IconCircleArrowRight,
-  IconCircleCheckFilled,
-  IconInfoCircle,
-  IconInfoCircleFilled,
-  IconInfoSquare,
-  IconQuestionMark,
-} from "@tabler/icons-react";
-import { CourseDetailVm } from "../../../react-query/course/course.types";
+import { Text, ThemeIcon, Title } from "@mantine/core";
 import { ArrowRight, AwardIcon } from "lucide-react";
+import { CourseDetailVm } from "../../../react-query/course/course.types";
 
 type OverviewTabProps = {
   course: CourseDetailVm;

@@ -420,3 +420,42 @@ const initialSections = [
     durationInSeconds: 4590,
   },
 ];
+
+const sections = [
+  {
+    title: "Chapter 1: Building Responsive & Adaptive User Interfaces [EXPENSE TRACKER APP]",
+    totalLectures: 8,
+    totalDuration: "1h 45m",
+    lectures: [
+      { title: "Introduction to UX/UI Design", canPreview: true, duration: "5:15" },
+      { title: "UX Writing & Content Strategy", canPreview: false, duration: "10:30" },
+      { title: "Design Thinking & User Research", canPreview: true, duration: "15:45" },
+      { title: "Usability Testing & Iteration", canPreview: true, duration: "18:20:00" },
+      { title: "Submit a pull request once you are done", canPreview: false, duration: "25:00" },
+    ],
+  },
+  {
+    title: "Chapter 2: Advanced Techniques",
+    totalLectures: 10,
+    totalDuration: "2h 15m",
+    lectures: [
+      { title: "Photo Editing Basics", canPreview: true, duration: "5:15" },
+      { title: "Advanced Photoshop Techniques", canPreview: false, duration: "10:30" },
+      { title: "Creating Stunning Visuals", canPreview: false, duration: "15:45" },
+      { title: "Photo Retouching & Restoration", canPreview: true, duration: "20:00" },
+      { title: "Submit a pull request once you are done", canPreview: false, duration: "25:00" },
+    ],
+  },
+  {
+    title: "Chapter 3: Mockups & Prototypes",
+    totalLectures: 5,
+    totalDuration: "1h 30m",
+    lectures: [
+      { title: "Previewing Your Work", canPreview: true, duration: "5:15" },
+      { title: "Sharing with Clients", canPreview: false, duration: "10:30" },
+      { title: "Creating Mockups", canPreview: false, duration: "15:45" },
+      { title: "Feedback & Revisions", canPreview: true, duration: "20:00" },
+      { title: "Submit a pull request once you are done", canPreview: false, duration: "25:00" },
+    ],
+  },
+];
