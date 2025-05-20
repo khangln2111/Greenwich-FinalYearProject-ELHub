@@ -1,5 +1,7 @@
-import { Accordion, Button, Text, Title } from "@mantine/core";
+import { Accordion, Button, Modal, Text, Title } from "@mantine/core";
 import { ChevronDownIcon, LayoutListIcon, Video } from "lucide-react";
+import { useState } from "react";
+import ReactPlayer from "react-player";
 import { SectionVm } from "../../../react-query/section/section.types";
 import { formatDurationMmSs } from "../../../utils/format";
 
@@ -8,8 +10,23 @@ type CurriculumTabProps = {
 };
 
 const CurriculumTab = ({ sections }: CurriculumTabProps) => {
+  const [openedPreviewModal, setOpenedPreviewModal] = useState(false);
+  const [previewVideoUrl, setPreviewVideoUrl] = useState("");
+
   return (
     <>
+      <Modal
+        opened={openedPreviewModal}
+        onClose={() => setOpenedPreviewModal(false)}
+        classNames={{
+          body: "p-0 overflow-hidden",
+        }}
+        centered
+        size="xl"
+        withCloseButton={false}
+      >
+        <ReactPlayer url={previewVideoUrl} width="100%" height="100%" controls playing />
+      </Modal>
       {/* Curriculum header */}
       <div className="flex items-center justify-between">
         <Title order={2}>Course Content</Title>
@@ -60,6 +77,10 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
                             variant="default"
                             size="compact-sm"
                             className="text-primary-4 dark:text-primary-8"
+                            onClick={() => {
+                              setPreviewVideoUrl(lecture.videoUrl);
+                              setOpenedPreviewModal(true);
+                            }}
                           >
                             Preview
                           </Button>
