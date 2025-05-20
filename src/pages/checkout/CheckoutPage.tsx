@@ -80,7 +80,7 @@ export default function CheckoutPage() {
                         </p>
                       </div>
                       <div className="text-md text-gray-600 dark:text-gray-300">
-                        x{item.quantity}
+                        {item.quantity}
                       </div>
                     </div>
                   </div>

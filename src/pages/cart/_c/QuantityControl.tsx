@@ -1,5 +1,6 @@
 import { Minus, Plus } from "lucide-react";
 import { cn } from "../../../utils/cn";
+import { NumberInput } from "@mantine/core";
 
 type QuantityControlProps = {
   quantity: number;
@@ -23,11 +24,17 @@ export default function QuantityControl({ quantity, onChange, className }: Quant
       >
         <Minus size={16} />
       </button>
-      <input
+
+      <NumberInput
+        hideControls
+        radius={0}
+        min={1}
+        className="w-9"
+        classNames={{
+          input: "focus-within:border-default-border text-center size-full p-0 font-medium",
+        }}
         value={quantity}
-        onChange={(e) => onChange(Number(e.target.value) - quantity)}
-        className="w-8 h-full flex items-center text-center justify-center font-semibold text-gray-800
-          dark:text-gray-100"
+        onChange={(value) => onChange(Number(value) - quantity)}
       />
       <button
         onClick={() => onChange(1)}
