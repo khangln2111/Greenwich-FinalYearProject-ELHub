@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CategoryQueryCriteria,
-  CreateCategoryRequest,
-  UpdateCategoryRequest,
+  CreateCategoryCommand,
+  UpdateCategoryCommand,
 } from "./category.types";
 
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
@@ -18,7 +18,7 @@ export const useGetCategoryDetail = (id: string) => {
   return useQuery(keyFac.categories.detail(id));
 };
 
-export const useCreateCategory = (category: CreateCategoryRequest) => {
+export const useCreateCategory = (category: CreateCategoryCommand) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -39,7 +39,7 @@ export const useCreateCategory = (category: CreateCategoryRequest) => {
   });
 };
 
-export const useUpdateCategory = (category: UpdateCategoryRequest) => {
+export const useUpdateCategory = (category: UpdateCategoryCommand) => {
   const queryClient = useQueryClient();
 
   return useMutation({

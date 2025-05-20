@@ -7,12 +7,12 @@ export interface Category {
   updatedAt: string;
 }
 
-export interface CreateCategoryRequest {
+export interface CreateCategoryCommand {
   name: string;
   description?: string | null;
 }
 
-export interface UpdateCategoryRequest {
+export interface UpdateCategoryCommand {
   id: string;
   name?: string;
   description?: string | null;

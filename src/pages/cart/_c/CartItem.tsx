@@ -1,4 +1,4 @@
-import { Checkbox, Text } from "@mantine/core";
+import { ActionIcon, Checkbox, Text } from "@mantine/core";
 import { Trash2 } from "lucide-react";
 import QuantityControl from "./QuantityControl";
 
@@ -55,11 +55,9 @@ export default function CartItem({ item, onChangeQuantity, onRemove, className }
             quantity={item.quantity}
             onChange={(delta) => onChangeQuantity(item.id, delta)}
           />
-          <Trash2
-            className="text-dimmed cursor-pointer hidden lg:block self-center"
-            onClick={() => onRemove(item.id)}
-            size={20}
-          />
+          <ActionIcon variant="subtle" color="gray" className="hidden lg:block self-center">
+            <Trash2 className="cursor-pointer" onClick={() => onRemove(item.id)} size={20} />
+          </ActionIcon>
         </div>
       </div>
     </div>

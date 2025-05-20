@@ -35,7 +35,7 @@ const InstructorLayout = () => {
       {/* Content */}
       <div
         className="flex flex-col flex-1 h-full transition-all lg:duration-300 bg-body text-gray-900 dark:text-white
-          lg:ml-(--sidebar-width)"
+          lg:ml-[calc(var(--sidebar-width)+1px)]"
       >
         {/* mobile sidebar */}
         <Drawer

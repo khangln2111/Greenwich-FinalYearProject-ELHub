@@ -2,11 +2,13 @@ import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import {
   Category,
   CategoryQueryCriteria,
-  CreateCategoryRequest,
-  UpdateCategoryRequest,
+  CreateCategoryCommand,
+  UpdateCategoryCommand,
 } from "./category.types";
-import { ListData } from "../../http-client/api.types";
+import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
+
+const BASE_URL = "/categories";
 
 const buildCategoryQuery = (query: CategoryQueryCriteria = {}) => {
   const queryBuilder = new GridifyQueryBuilder();
@@ -18,28 +20,28 @@ const buildCategoryQuery = (query: CategoryQueryCriteria = {}) => {
 };
 
 export const getCategories = async (query: CategoryQueryCriteria = {}) => {
-  const response = await apiClient.get<ListData<Category>>("/categories", {
+  const response = await apiClient.get<ListData<Category>>(`${BASE_URL}`, {
     params: buildCategoryQuery(query),
   });
   return response.data;
 };
 
 export const getCategoryDetail = async (id: string) => {
-  const response = await apiClient.get<Category>(`/categories/${id}`);
+  const response = await apiClient.get<Category>(`${BASE_URL}/${id}`);
   return response.data;
 };
 
-export const createCategory = async (category: CreateCategoryRequest) => {
-  const response = await apiClient.post<Category>("/categories", category);
+export const createCategory = async (command: CreateCategoryCommand) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, command);
   return response.data;
 };
 
-export const updateCategory = async (category: UpdateCategoryRequest) => {
-  const response = await apiClient.put<Category>(`/categories/${category.id}`, category);
+export const updateCategory = async (command: UpdateCategoryCommand) => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/${command.id}`, command);
   return response.data;
 };
 
 export const deleteCategory = async (id: string) => {
-  const response = await apiClient.delete<Category>(`/categories/${id}`);
+  const response = await apiClient.delete<ApiSuccessResponse>(`${BASE_URL}/${id}`);
   return response.data;
 };

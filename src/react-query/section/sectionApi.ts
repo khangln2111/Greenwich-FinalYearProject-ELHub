@@ -8,13 +8,13 @@ export const reorderSection = async (command: ReorderSectionCommand) => {
   return response.data;
 };
 
-export const createSection = async (section: CreateSectionCommand) => {
-  const response = await apiClient.post(`${BASE_URL}`, section);
+export const createSection = async (command: CreateSectionCommand) => {
+  const response = await apiClient.post(`${BASE_URL}`, command);
   return response.data;
 };
 
-export const updateSection = async (section: UpdateSectionCommand) => {
-  const response = await apiClient.put(`${BASE_URL}`, section);
+export const updateSection = async (command: UpdateSectionCommand) => {
+  const response = await apiClient.put(`${BASE_URL}`, command);
   return response.data;
 };
 

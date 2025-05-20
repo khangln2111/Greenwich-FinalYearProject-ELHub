@@ -51,8 +51,8 @@ export const getCourseDetail = async (id: string) => {
   return response.data;
 };
 
-export const createCourse = async (course: CreateCourseCommand) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, course, {
+export const createCourse = async (command: CreateCourseCommand) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, command, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -60,8 +60,8 @@ export const createCourse = async (course: CreateCourseCommand) => {
   return response.data;
 };
 
-export const updateCourse = async (course: UpdateCourseCommand) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}`, course, {
+export const updateCourse = async (command: UpdateCourseCommand) => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}`, command, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
