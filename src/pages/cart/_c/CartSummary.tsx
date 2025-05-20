@@ -3,11 +3,18 @@ import { IconArrowRight } from "@tabler/icons-react";
 import { cn } from "../../../utils/cn";
 import { Link } from "react-router-dom";
 type CartSummaryProps = {
-  total: number;
+  provisional: number;
+  totalDirectDiscount: number;
+  finalTotalAmount: number;
   className?: string;
 };
 
-export default function CartSummary({ total, className }: CartSummaryProps) {
+export default function CartSummary({
+  provisional,
+  totalDirectDiscount,
+  finalTotalAmount,
+  className,
+}: CartSummaryProps) {
   return (
     <div className={cn("bg-body lg:rounded-2xl shadow p-4", className)}>
       <Button variant="light" autoContrast size="md" className="rounded-xl text-start w-full">
@@ -17,11 +24,11 @@ export default function CartSummary({ total, className }: CartSummaryProps) {
       <div className="mt-4 space-y-2 text-lg">
         <div className="flex justify-between">
           <span>Provisional</span>
-          <span className="font-semibold">${total.toLocaleString("en-US")}</span>
+          <span className="font-semibold">${provisional.toLocaleString("en-US")}</span>
         </div>
         <div className="flex justify-between">
           <span>Direct discount</span>
-          <span className="text-orange-500">$0</span>
+          <span className="text-orange-500">- ${totalDirectDiscount.toLocaleString("en-US")}</span>
         </div>
         <div className="flex justify-between">
           <span>Voucher discount</span>
@@ -32,7 +39,7 @@ export default function CartSummary({ total, className }: CartSummaryProps) {
       <div className="border-t mt-4 pt-4 flex justify-between items-center text-lg font-semibold">
         <span>Total Amount</span>
         <span className="text-blue-500 dark:text-blue-600 text-xl font-bold">
-          ${total.toLocaleString("en-US")}
+          ${finalTotalAmount.toLocaleString("en-US")}
         </span>
       </div>
 

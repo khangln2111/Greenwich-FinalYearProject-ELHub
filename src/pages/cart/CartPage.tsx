@@ -1,47 +1,32 @@
-import { Anchor, Box, Checkbox } from "@mantine/core";
+import { Box, Checkbox, Loader } from "@mantine/core";
+import { Anchor } from "@mantine/core";
+import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useGetCart, useUpdateCartItem, useDeleteCartItem } from "../../react-query/cart/cartHooks";
 import CartItem from "./_c/CartItem";
 import CartSummary from "./_c/CartSummary";
-import { Link } from "react-router-dom";
-
-const cartItems = [
-  {
-    id: 1,
-    name: "100 Days of Code: The Complete Python Pro Bootcamp",
-    description: "By Khakha khakha",
-    price: 4050000,
-    quantity: 3,
-    image:
-      "https://hoidanit.vn/_next/image?url=https%3A%2F%2Fhoidanit.vn%2Fimages%2Fc1d33e4e76fee563c29bd4101ca7651910.png&w=3840&q=75",
-  },
-  {
-    id: 2,
-    name: "Automate the Boring Stuff with Python Programming",
-    description: "By John Doe",
-    price: 378000,
-    quantity: 3,
-    image:
-      "https://hoidanit.vn/_next/image?url=https%3A%2F%2Fhoidanit.vn%2Fimages%2Fc1d33e4e76fee563c29bd4101ca7651910.png&w=3840&q=75",
-  },
-];
+import { UpdateCartItemCommand } from "../../react-query/cart/cart.types";
 
 export default function CartPage() {
-  const [items, setItems] = useState(cartItems);
+  const { data, isLoading } = useGetCart();
+  const updateCartItem = useUpdateCartItem();
+  const deleteCartItem = useDeleteCartItem();
 
-  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
-  const handleQuantityChange = (id: number, delta: number) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item,
-      ),
-    );
+  const handleQuantityChange = (id: string, delta: number, currentQuantity: number) => {
+    const newQuantity = Math.max(1, currentQuantity + delta);
+    const payload: UpdateCartItemCommand = { id, quantity: newQuantity };
+    updateCartItem.mutate(payload);
   };
 
-  const handleRemove = (id: number) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+  const handleRemove = (id: string) => {
+    deleteCartItem.mutate(id);
   };
+
+  if (isLoading) return <Loader />;
+  if (!data) return <div>No data</div>;
+
+  const cartItems = data?.cartItems ?? [];
+  const total = cartItems.reduce((acc, item) => acc + item.price, 0);
 
   return (
     <div className="flex-1 bg-[#EDF0F3] dark:bg-dark-5">
@@ -62,20 +47,24 @@ export default function CartPage() {
           <div className="bg-body lg:rounded-2xl shadow-lg p-4">
             <div className="flex items-center mb-4 font-medium">
               <Checkbox defaultChecked className="mr-4" />
-              Select all ({items.length})
+              Select all ({cartItems.length})
             </div>
 
-            {items.map((item) => (
+            {cartItems.map((item) => (
               <CartItem
                 key={item.id}
                 item={item}
-                onChangeQuantity={handleQuantityChange}
+                onChangeQuantity={(id, delta) => handleQuantityChange(id, delta, item.quantity)}
                 onRemove={handleRemove}
               />
             ))}
           </div>
 
-          <CartSummary total={total} />
+          <CartSummary
+            provisional={data.provisional}
+            totalDirectDiscount={data.totalDirectDiscount}
+            finalTotalAmount={data.totalAmount}
+          />
         </div>
       </Box>
     </div>

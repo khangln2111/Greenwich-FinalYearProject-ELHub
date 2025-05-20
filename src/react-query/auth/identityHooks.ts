@@ -87,7 +87,8 @@ export const useLogin = () => {
       showSuccessToast("Logged In", "You are now logged in successfully.");
       const { accessToken, refreshToken } = data;
       setTokens(accessToken, refreshToken);
-      await queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
+      await queryClient.invalidateQueries();
+      // await queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
       navigate("/");
     },
     onError: (error) =>

@@ -1,18 +1,21 @@
 export type Cart = {
   id: string;
   userId: string;
-  cartItems: CartItem[];
-  totalPrice: number;
+  cartItems: CartItemType[];
+  provisional: number;
+  totalDirectDiscount: number;
+  totalAmount: number;
 };
 
-export type CartItem = {
+export type CartItemType = {
   id: string;
   courseId: string;
   courseTitle: string;
   courseDescription: string;
   courseImageUrl: string;
-  coursePrice: number;
   quantity: number;
+  price: number;
+  discountedPrice: number;
   totalPrice: number;
 };
 

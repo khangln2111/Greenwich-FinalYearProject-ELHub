@@ -8,6 +8,7 @@ import {
   Divider,
   Drawer,
   Group,
+  Indicator,
   Modal,
   ScrollArea,
   Text,
@@ -36,6 +37,7 @@ import AvatarMenu from "./_c/AvatarMenu";
 import CustomNavLink from "./_c/CustomNavLink";
 import SearchBox from "./_c/SearchBox";
 import { useAppStore } from "../../zustand/store";
+import { useGetCart } from "../../react-query/cart/cartHooks";
 
 const mockdata = [
   {
@@ -81,6 +83,8 @@ const Header = () => {
 
   const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
   const navigate = useNavigate();
+  const { data: cart, isLoading } = useGetCart();
+
   const handleSearch = () => {
     if (searchValue.trim()) {
       navigate(`/courses?search=${encodeURIComponent(searchValue.trim())}`);
@@ -164,7 +168,7 @@ const Header = () => {
           />
         </div>
 
-        <Group>
+        <Group className="h-full">
           {currentUser === null && (
             <Button
               to="/login"
@@ -187,15 +191,25 @@ const Header = () => {
           <ActionIcon variant="default" size="lg" aria-label="Notification trigger">
             <IconBell size={19} strokeWidth={1.5} />
           </ActionIcon>
-          <ActionIcon
-            variant="default"
-            size="lg"
-            aria-label="Shopping cart trigger"
-            component={Link}
-            to="/cart"
-          >
-            <ShoppingCart size={19} strokeWidth={1.5} />
-          </ActionIcon>
+          {currentUser && (
+            <Indicator
+              label={cart?.cartItems?.reduce((sum, item) => sum + item.quantity, 0) ?? 0}
+              size={20}
+              color="indigo"
+              offset={2}
+              position="top-end"
+            >
+              <ActionIcon
+                variant="default"
+                size="lg"
+                aria-label="Shopping cart trigger"
+                component={Link}
+                to="/cart"
+              >
+                <ShoppingCart size={19} strokeWidth={1.5} />
+              </ActionIcon>
+            </Indicator>
+          )}
           <ThemeToggler />
           {currentUser && <AvatarMenu />}
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" className="hidden" />

@@ -21,6 +21,7 @@ import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
+import { useAddCartItem } from "../../react-query/cart/cartHooks";
 
 const items = [
   { title: "Home", href: "/" },
@@ -75,6 +76,8 @@ const CourseDetailPage = () => {
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
 
   const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
+
+  const addCartItemMutation = useAddCartItem();
 
   if (error || !courseId) {
     return <Navigate to="/404" replace />;
@@ -238,6 +241,7 @@ const CourseDetailPage = () => {
                 className="mt-6 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500
                   hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg
                   transition-all duration-200 group text-lg"
+                onClick={() => addCartItemMutation.mutate({ courseId: courseId, quantity: 1 })}
               >
                 <span className="group-hover:scale-105 transition-transform">Add to Cart</span>
                 <ShoppingCart className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
