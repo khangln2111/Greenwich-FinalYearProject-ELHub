@@ -5,11 +5,11 @@ namespace BLL.BusinessServices.Abstract;
 
 public interface ICartService
 {
-    Task<CartVm> GetCart();
+    Task<CartVm> GetCartMe();
 
     Task<Success> AddCartItem(AddCartItemCommand command);
 
     Task<Success> UpdateCartItem(UpdateCartItemCommand command);
 
-    Task<Success> DeleteCartItem(DeleteCartItemCommand command);
+    Task<Success> DeleteCartItem(Guid cartItemId);
 }

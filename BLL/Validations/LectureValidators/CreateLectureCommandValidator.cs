@@ -14,10 +14,11 @@ public class CreateLectureCommandValidator : AbstractValidator<CreateLectureComm
 
         RuleFor(x => x.Title)
             .NotEmpty()
-            .MaximumLength(255);
+            .MaximumLength(LectureConstants.TitleMaxLength);
 
         RuleFor(x => x.Description)
-            .NotEmpty();
+            .NotEmpty()
+            .MaximumLength(LectureConstants.DescriptionMaxLength);
 
         RuleFor(x => x.SectionId)
             .NotEmpty();
@@ -30,7 +31,7 @@ public class CreateLectureCommandValidator : AbstractValidator<CreateLectureComm
             .Must(file => mediaManager.FileHasValidExtension(file, MediaConstants.VideoExtensions))
             .WithMessage(
                 $"Unsupported video file extension. Supported extensions: {string.Join(", ", MediaConstants.VideoExtensions)}.")
-            .Must(file => mediaManager.IsFileUnderMaxSize(file, LectureConstant.VideoMaxSizeBytes))
-            .WithMessage($"PromoVideo size cannot exceed {LectureConstant.VideoMaxSizeBytes.Bytes().Megabytes}.");
+            .Must(file => mediaManager.IsFileUnderMaxSize(file, LectureConstants.VideoMaxSizeBytes))
+            .WithMessage($"PromoVideo size cannot exceed {LectureConstants.VideoMaxSizeBytes.Bytes().Megabytes}.");
     }
 }

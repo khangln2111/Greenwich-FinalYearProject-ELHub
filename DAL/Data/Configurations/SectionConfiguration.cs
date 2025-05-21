@@ -1,3 +1,4 @@
+using DAL.Constants;
 using DAL.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,9 +11,9 @@ public class SectionConfiguration : IEntityTypeConfiguration<Section>
     {
         builder.Property(x => x.Title)
             .IsRequired()
-            .HasMaxLength(200);
+            .HasMaxLength(SectionConstants.TitleMaxLength);
 
         builder.Property(x => x.Description)
-            .HasMaxLength(500);
+            .HasMaxLength(SectionConstants.DescriptionMaxLength);
     }
 }

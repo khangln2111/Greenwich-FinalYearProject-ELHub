@@ -25,10 +25,16 @@ public class CreateCourseCommandValidator : AbstractValidator<CreateCourseComman
             .NotEmpty()
             .MaximumLength(CourseConstants.DescriptionMaxLength);
 
+        RuleFor(x => x.Price)
+            .GreaterThanOrEqualTo(0).WithMessage("Price cannot be negative");
+
+        RuleFor(x => x.DiscountedPrice)
+            .GreaterThanOrEqualTo(0).WithMessage("DiscountedPrice cannot be negative")
+            .LessThanOrEqualTo(x => x.Price).WithMessage("DiscountedPrice must be less than Price");
+
 
         RuleFor(x => x.Level)
             .IsInEnum()
-            .When(x => x.Level.HasValue)
             .WithMessage("Invalid course level value");
 
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DAL.Data.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace BLL.DTOs.CourseDTOs;
 
@@ -17,9 +18,11 @@ public class UpdateCourseCommand
 
     public Guid? CategoryId { get; set; }
 
+    public CourseLevel? Level { get; set; }
+
     public decimal? Price { get; set; }
 
-    public int? DiscountPercentage { get; set; }
+    public decimal? DiscountedPrice { get; set; }
 
     public string[]? LearningOutcomes { get; set; }
 

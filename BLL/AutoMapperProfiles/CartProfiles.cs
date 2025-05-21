@@ -9,8 +9,18 @@ public class CartProfiles : Profile
     public CartProfiles()
     {
         CreateMap<Cart, CartVm>()
-            .ForMember(dest => dest.TotalPrice,
-                opt => opt.MapFrom(src => src.CartItems.Sum(x => x.Course.Price * x.Quantity)));
+            .ForMember(dest => dest.UserId,
+                opt => opt.MapFrom(src => src.ApplicationUserId))
+            .ForMember(dest => dest.Provisional,
+                opt => opt.MapFrom(src => src.CartItems.Sum(x => x.Course.Price * x.Quantity)))
+            .ForMember(dest => dest.TotalDirectDiscount,
+                opt => opt.MapFrom(src =>
+                    src.CartItems.Sum(x => x.Course.Price * x.Quantity) -
+                    src.CartItems.Sum(x => x.Course.DiscountedPrice * x.Quantity)
+                ))
+            .ForMember(dest => dest.TotalAmount,
+                opt => opt.MapFrom(src => src.CartItems.Sum(x => x.Course.DiscountedPrice * x.Quantity)));
+
 
         CreateMap<CartItem, CartItemVm>()
             .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.Quantity * src.Course.Price))
@@ -18,6 +28,7 @@ public class CartProfiles : Profile
             .ForMember(dest => dest.CourseDescription, opt => opt.MapFrom(src => src.Course.Description))
             .ForMember(dest => dest.CourseImageUrl,
                 opt => opt.MapFrom(src => src.Course.Image != null ? src.Course.Image.Url : null))
-            .ForMember(dest => dest.CoursePrice, opt => opt.MapFrom(src => src.Course.Price));
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Course.Price))
+            .ForMember(dest => dest.DiscountedPrice, opt => opt.MapFrom(src => src.Course.DiscountedPrice));
     }
 }

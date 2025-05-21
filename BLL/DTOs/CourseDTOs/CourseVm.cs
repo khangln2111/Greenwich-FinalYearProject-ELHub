@@ -17,15 +17,17 @@ public class CourseVm
 
     public string? PromoVideoUrl { get; init; }
 
-    public decimal? Price { get; init; }
+    public decimal Price { get; init; }
 
-    public int? DiscountPercentage { get; init; }
+    public int DiscountPercentage { get; init; }
 
-    public decimal? DiscountedPrice { get; init; }
+    public decimal DiscountedPrice { get; init; }
 
     public int DurationInSeconds { get; init; }
 
     public string? Status { get; init; }
+
+    public string? Level { get; init; }
 
     public string[]? LearningOutcomes { get; init; }
 

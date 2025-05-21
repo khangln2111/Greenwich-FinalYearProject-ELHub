@@ -7,7 +7,8 @@ public class CartItemVm
     public required string CourseTitle { get; set; }
     public required string CourseDescription { get; set; }
     public required string CourseImageUrl { get; set; }
-    public decimal CoursePrice { get; set; }
+    public decimal Price { get; set; }
+    public decimal DiscountedPrice { get; set; }
     public int Quantity { get; set; }
     public decimal TotalPrice { get; set; }
 }

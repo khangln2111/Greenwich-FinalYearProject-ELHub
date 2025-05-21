@@ -34,8 +34,9 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.SectionCount, opt => opt.MapFrom(src => src.Sections.Count))
             .ForMember(dest => dest.LectureCount,
                 opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
-            .ForMember(dest => dest.DiscountedPrice,
-                opt => opt.MapFrom(src => src.Price - src.Price * src.DiscountPercentage / 100))
+            .ForMember(dest => dest.DiscountPercentage, opt => opt.MapFrom(src =>
+                src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)
+            ))
             .ForMember(dest => dest.InstructorName,
                 opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
             .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)));
@@ -53,8 +54,9 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.SectionCount, opt => opt.MapFrom(src => src.Sections.Count))
             .ForMember(dest => dest.LectureCount,
                 opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
-            .ForMember(dest => dest.DiscountedPrice,
-                opt => opt.MapFrom(src => src.Price - src.Price * src.DiscountPercentage / 100))
+            .ForMember(dest => dest.DiscountPercentage, opt => opt.MapFrom(src =>
+                src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)
+            ))
             .ForMember(dest => dest.InstructorName,
                 opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName));
 
@@ -71,12 +73,12 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.PromoVideo, opt => opt.Ignore())
             .ForMember(dest => dest.CategoryId, opt => opt.Ignore())
             .ForMember(dest => dest.Price, opt => opt.Ignore())
-            .ForMember(dest => dest.DiscountPercentage, opt => opt.Ignore())
+            .ForMember(dest => dest.DiscountedPrice, opt => opt.Ignore())
             .AfterMap((src, dest) =>
             {
                 if (src.CategoryId.HasValue) dest.CategoryId = src.CategoryId.Value;
                 if (src.Price.HasValue) dest.Price = src.Price.Value;
-                if (src.DiscountPercentage.HasValue) dest.DiscountPercentage = src.DiscountPercentage.Value;
+                if (src.DiscountedPrice.HasValue) dest.DiscountedPrice = src.DiscountedPrice.Value;
             })
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForAllMembers(opts =>

@@ -1,3 +1,4 @@
+using DAL.Constants;
 using DAL.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,16 +11,17 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
         builder.Property(c => c.Title)
             .IsRequired()
-            .HasMaxLength(150); // Limit the length of Title
+            .HasMaxLength(CourseConstants.TitleMaxLength); // Limit the length of Title
 
         builder.Property(c => c.Description)
-            .HasMaxLength(1500);
+            .HasMaxLength(CourseConstants.DescriptionMaxLength);
 
         builder.Property(c => c.Price)
             .HasColumnType("decimal(18,2)"); // Decimal format for Price
 
-        builder.Property(c => c.DiscountPercentage)
-            .HasDefaultValue(0); // Default value is 0 if no discount
+        builder.Property(c => c.DiscountedPrice)
+            .HasColumnType("decimal(18,2)"); // Decimal format for Price
+
 
         builder.Property(c => c.Level)
             .HasMaxLength(50);

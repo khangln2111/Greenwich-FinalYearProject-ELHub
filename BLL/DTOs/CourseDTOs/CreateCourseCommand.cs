@@ -10,7 +10,7 @@ public class CreateCourseCommand
     public required string Description { get; init; }
     public required IFormFile Image { get; init; }
     public required IFormFile PromoVideo { get; init; }
-    public decimal? Price { get; init; }
-    public int? DiscountPercentage { get; init; }
-    public CourseLevel? Level { get; init; }
+    public decimal Price { get; init; }
+    public decimal DiscountedPrice { get; init; }
+    public CourseLevel Level { get; init; }
 }

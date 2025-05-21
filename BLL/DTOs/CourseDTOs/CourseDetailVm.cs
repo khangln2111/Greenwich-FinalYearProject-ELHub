@@ -27,6 +27,8 @@ public class CourseDetailVm
     public int DurationInSeconds { get; init; }
 
     public required string Status { get; init; }
+    
+    public required string Level { get; init; }
 
     public string[] LearningOutcomes { get; init; } = [];
 

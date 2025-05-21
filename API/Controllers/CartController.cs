@@ -9,11 +9,11 @@ namespace API.Controllers;
 [ApiController]
 public class CartController(ICartService cartService) : ControllerBase
 {
-    [HttpGet("GetCartSelf")]
+    [HttpGet("me")]
     [Authorize]
-    public async Task<ActionResult<CartVm>> GetCart()
+    public async Task<ActionResult<CartVm>> GetCartMe()
     {
-        var result = await cartService.GetCart();
+        var result = await cartService.GetCartMe();
         return Ok(result);
     }
 
@@ -33,11 +33,11 @@ public class CartController(ICartService cartService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("DeleteCartItem")]
+    [HttpDelete("{CartItemId:guid}")]
     [Authorize]
-    public async Task<ActionResult<string>> DeleteCartItem(DeleteCartItemCommand command)
+    public async Task<ActionResult<string>> DeleteCartItem(Guid cartItemId)
     {
-        var result = await cartService.DeleteCartItem(command);
+        var result = await cartService.DeleteCartItem(cartItemId);
         return Ok(result);
     }
 }

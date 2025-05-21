@@ -6,9 +6,15 @@ public static class UserConstants
     public const int LastNameMaxLength = 50;
 }
 
+public static class CategoryConstants
+{
+    public const int NameMaxLength = 100;
+    public const int DescriptionMaxLength = 500;
+}
+
 public static class CourseConstants
 {
-    public const int TitleMaxLength = 100;
+    public const int TitleMaxLength = 150;
     public const int SummaryMaxLength = 500;
     public const int DescriptionMaxLength = 2000;
     public const int LanguageMaxLength = 50;
@@ -22,11 +28,19 @@ public static class CourseConstants
     public const int ImageMaxSizeBytes = 50 * Megabyte; // 50MB
 }
 
-public static class LectureConstant
+public static class SectionConstants
+{
+    public const int TitleMaxLength = 150;
+    public const int DescriptionMaxLength = 2000;
+}
+
+public static class LectureConstants
 {
     private const int Megabyte = 1024 * 1024;
     public const int VideoMaxSizeBytes = 500 * Megabyte; // 500MB
     public const int ImageMaxSizeBytes = 50 * Megabyte; // 50MB
+    public const int TitleMaxLength = 150;
+    public const int DescriptionMaxLength = 2000;
 }
 
 public static class MediaConstants

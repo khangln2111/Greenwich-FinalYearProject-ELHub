@@ -10,9 +10,9 @@ public class Course : BaseEntity
     public required string Description { get; set; }
 
 
-    public decimal? Price { get; set; }
+    public decimal Price { get; set; } = 0;
 
-    public int? DiscountPercentage { get; set; }
+    public decimal DiscountedPrice { get; set; } = 0;
 
     public CourseLevel? Level { get; set; }
 

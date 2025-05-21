@@ -20,7 +20,7 @@ public class CartService(
     ICurrentUserUtility currentUserUtility)
     : ICartService
 {
-    public async Task<CartVm> GetCart()
+    public async Task<CartVm> GetCartMe()
     {
         await EnsureCartExistsAsync();
 
@@ -31,7 +31,7 @@ public class CartService(
 
         var cart = await context.Carts
             .Include(x => x.CartItems)
-            .ThenInclude(x => x.Course)
+            .ThenInclude(x => x.Course).ThenInclude(c => c.Image)
             .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUser.Id);
         return mapper.Map<CartVm>(cart);
     }
@@ -82,10 +82,10 @@ public class CartService(
         return new Success("Cart item updated successfully");
     }
 
-    public async Task<Success> DeleteCartItem(DeleteCartItemCommand command)
+
+    public async Task<Success> DeleteCartItem(Guid cartItemId)
     {
-        await validationService.ValidateAsync(command);
-        var cartItem = await context.CartItems.FirstOrDefaultAsync(x => x.Id == command.Id);
+        var cartItem = await context.CartItems.FirstOrDefaultAsync(x => x.Id == cartItemId);
         if (cartItem == null) throw new NotFoundException("Cart item not found");
 
         context.CartItems.Remove(cartItem);

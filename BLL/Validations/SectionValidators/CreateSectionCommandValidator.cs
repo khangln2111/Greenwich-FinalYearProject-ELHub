@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.SectionDTOs;
+using DAL.Constants;
 using FluentValidation;
 
 namespace BLL.Validations.SectionValidators;
@@ -9,8 +10,8 @@ public class CreateSectionCommandValidator : AbstractValidator<CreateSectionComm
     {
         RuleFor(x => x.CourseId).NotEmpty();
         RuleFor(x => x.Title).NotEmpty()
-            .MaximumLength(50);
+            .MaximumLength(SectionConstants.TitleMaxLength);
         RuleFor(x => x.Description).NotEmpty()
-            .MaximumLength(500);
+            .MaximumLength(SectionConstants.DescriptionMaxLength);
     }
 }

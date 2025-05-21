@@ -18,17 +18,21 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
             .When(x => !string.IsNullOrEmpty(x.Title));
 
         RuleFor(x => x.Description)
-            .MaximumLength(CourseConstants.TitleMaxLength)
+            .MaximumLength(CourseConstants.DescriptionMaxLength)
             .When(x => !string.IsNullOrEmpty(x.Description));
 
         RuleFor(x => x.Price)
             .GreaterThanOrEqualTo(0).WithMessage("Price cannot be negative")
             .When(x => x.Price.HasValue);
 
-        RuleFor(x => x.DiscountPercentage)
-            .InclusiveBetween(0, 100)
-            .When(x => x.DiscountPercentage.HasValue);
+        RuleFor(x => x.DiscountedPrice)
+            .GreaterThanOrEqualTo(0).WithMessage("DiscountedPrice cannot be negative")
+            .LessThanOrEqualTo(x => x.Price).WithMessage("DiscountedPrice must be less than Price")
+            .When(x => x.DiscountedPrice.HasValue);
 
+        RuleFor(x => x.DiscountedPrice)
+            .LessThanOrEqualTo(x => x.Price).WithMessage("DiscountedPrice must be less than Price")
+            .When(x => x.DiscountedPrice.HasValue && x.Price.HasValue);
 
         RuleFor(x => x.LearningOutcomes)
             .Must(x => x == null || x.All(y => !string.IsNullOrEmpty(y)))
@@ -40,6 +44,10 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
             .WithMessage("Prerequisites cannot be null or empty")
             .When(x => x.Prerequisites != null);
 
+        RuleFor(x => x.Level)
+            .IsInEnum()
+            .WithMessage("Invalid course level value")
+            .When(x => x.Level.HasValue);
 
         RuleFor(x => x.Image)
             .Must(file => file == null || mediaManager.FileHasValidExtension(file, MediaConstants.ImageExtensions))
