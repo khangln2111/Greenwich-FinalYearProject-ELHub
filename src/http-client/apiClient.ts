@@ -4,9 +4,9 @@ import { showErrorToast } from "../utils/toastHelper";
 import { ApiErrorResponse, ErrorCode } from "./api.types";
 import { authStorageHelper, loginSessionStorageHelper } from "../utils/storageHelper";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://localhost:7014/api"; // Thay đổi URL phù hợp
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://localhost:7014/api"; //Fallback url
 const apiClient = axios.create({
-  baseURL: API_BASE_URL, // Thay đổi URL phù hợp
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },

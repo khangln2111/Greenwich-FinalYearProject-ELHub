@@ -4,11 +4,14 @@ import { addCartItem, deleteCartItem, getCart, updateCartItem } from "./cartApi"
 import { AddCartItemCommand, UpdateCartItemCommand } from "./cart.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
+import { useAppStore } from "../../zustand/store";
 
 export const useGetCart = () => {
+  const currentUser = useAppStore.use.currentUser();
   return useQuery({
     queryKey: keyFac.cart._def,
     queryFn: getCart,
+    enabled: !!currentUser,
   });
 };
 

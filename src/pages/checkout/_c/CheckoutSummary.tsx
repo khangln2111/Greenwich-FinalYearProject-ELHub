@@ -1,16 +1,51 @@
 import { Button, Text, Title } from "@mantine/core";
+import { useElements, useStripe } from "@stripe/react-stripe-js";
+import { PaymentIntentResult } from "@stripe/stripe-js";
 import { LockIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { cn } from "../../../utils/cn";
-type CheckoutSummary = {
+import { showErrorToast } from "../../../utils/toastHelper";
+
+type CheckoutSummaryProps = {
   total: number;
   className?: string;
+  clientSecret: string;
 };
 
-export default function CheckoutSummary({ total, className }: CheckoutSummary) {
+export default function CheckoutSummary({ total, className, clientSecret }: CheckoutSummaryProps) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+
+  const handleConfirmPayment = async () => {
+    if (!stripe || !elements) return;
+
+    setLoading(true);
+
+    // ✅ Submit các field trong PaymentElement trước khi confirm
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      setLoading(false);
+      return;
+    }
+
+    const result: PaymentIntentResult = await stripe.confirmPayment({
+      elements,
+      clientSecret,
+      confirmParams: {
+        return_url: `${window.location.origin}/checkout/result`,
+      },
+    });
+
+    if (result.error) {
+      console.error(result.error.message);
+      showErrorToast("Payment failed", result.error.message);
+    }
+    setLoading(false);
+  };
+
   return (
     <div className={cn("bg-body lg:rounded-2xl shadow p-4", className)}>
-      {/* Order summary title */}
       <Title order={3} className="text-xl font-semibold mb-4">
         Order Summary
       </Title>
@@ -42,8 +77,9 @@ export default function CheckoutSummary({ total, className }: CheckoutSummary) {
         size="lg"
         className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-800 dark:bg-blue-700 rounded-full"
         leftSection={<LockIcon className="ml-2" />}
-        component={Link}
-        to="/checkout"
+        onClick={handleConfirmPayment}
+        loading={loading}
+        disabled={!stripe || !elements || loading}
       >
         Proceed
       </Button>

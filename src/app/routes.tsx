@@ -12,6 +12,7 @@ import InstructorLayout from "../layout/instructor/InstructorLayout";
 import InstructorDashboard from "../pages/instructor/InstructorDashboard";
 import InstructorCoursesPage from "../pages/instructor/courses/InstructorCoursesPage";
 import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
+import CheckoutResultPage from "../pages/checkout_result/CheckoutResultPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -23,6 +24,7 @@ const userRoute: RouteObject = {
     { path: "courses/:courseId", element: <CourseDetailPage /> },
     { path: "cart", element: <CartPage /> },
     { path: "checkout", element: <CheckoutPage /> },
+    { path: "checkout/result", element: <CheckoutResultPage /> },
   ],
 };
 

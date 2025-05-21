@@ -9,14 +9,23 @@ type CartItemProps = {
   item: CartItemType;
   onChangeQuantity: (id: string, delta: number) => void;
   onRemove: (id: string) => void;
+  checked: boolean;
+  onToggle: (id: string) => void;
   className?: string;
 };
 
-export default function CartItem({ item, onChangeQuantity, onRemove, className }: CartItemProps) {
+export default function CartItem({
+  item,
+  onChangeQuantity,
+  onRemove,
+  checked,
+  onToggle,
+  className,
+}: CartItemProps) {
   return (
     <div className={cn("flex items-start border-t py-4 gap-4", className)}>
       <div className="flex gap-5 items-center">
-        <Checkbox defaultChecked />
+        <Checkbox checked={checked} onChange={() => onToggle(item.id)} />
         <img
           src={item.courseImageUrl}
           alt={item.courseTitle}

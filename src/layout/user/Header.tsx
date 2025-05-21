@@ -33,11 +33,11 @@ import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
+import { useGetCart } from "../../react-query/cart/cartHooks";
+import { useAppStore } from "../../zustand/store";
 import AvatarMenu from "./_c/AvatarMenu";
 import CustomNavLink from "./_c/CustomNavLink";
 import SearchBox from "./_c/SearchBox";
-import { useAppStore } from "../../zustand/store";
-import { useGetCart } from "../../react-query/cart/cartHooks";
 
 const mockdata = [
   {
@@ -83,7 +83,8 @@ const Header = () => {
 
   const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
   const navigate = useNavigate();
-  const { data: cart, isLoading } = useGetCart();
+
+  const { data: cart } = useGetCart();
 
   const handleSearch = () => {
     if (searchValue.trim()) {

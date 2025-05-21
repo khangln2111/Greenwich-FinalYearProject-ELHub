@@ -1,20 +1,30 @@
 import { Button, Text } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { cn } from "../../../utils/cn";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CartItemType } from "../../../react-query/cart/cart.types";
+
 type CartSummaryProps = {
-  provisional: number;
-  totalDirectDiscount: number;
-  finalTotalAmount: number;
+  selectedItems: CartItemType[];
   className?: string;
 };
 
-export default function CartSummary({
-  provisional,
-  totalDirectDiscount,
-  finalTotalAmount,
-  className,
-}: CartSummaryProps) {
+export default function CartSummary({ selectedItems, className }: CartSummaryProps) {
+  const provisional = selectedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalDirectDiscount = selectedItems.reduce(
+    (acc, item) => acc + (item.price - item.discountedPrice) * item.quantity,
+    0,
+  );
+  const finalTotalAmount = provisional - totalDirectDiscount;
+
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    navigate("/checkout", {
+      state: { selectedItems, total: finalTotalAmount },
+    });
+  };
+
   return (
     <div className={cn("bg-body lg:rounded-2xl shadow p-4", className)}>
       <Button variant="light" autoContrast size="md" className="rounded-xl text-start w-full">
@@ -45,10 +55,10 @@ export default function CartSummary({
 
       <Button
         size="lg"
+        disabled={selectedItems.length === 0}
         className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-800 dark:bg-blue-700 rounded-full"
         rightSection={<IconArrowRight className="ml-2" />}
-        component={Link}
-        to="/checkout"
+        onClick={handleCheckout}
       >
         Proceed to checkout
       </Button>
