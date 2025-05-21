@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BLL.BusinessServices.Abstract;
+using BLL.DTOs.CartDTOs;
 using BLL.DTOs.OrderDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
@@ -15,6 +16,7 @@ using Gridify;
 using Microsoft.EntityFrameworkCore;
 using DAL.Utilities.PaymentUtility;
 using Microsoft.AspNetCore.Http;
+using Stripe;
 
 namespace BLL.BusinessServices.Concrete;
 
@@ -27,14 +29,15 @@ public class OrderService(
     IStripePaymentUtility stripePaymentUtility)
     : IOrderService
 {
-    //Create order with Stripe
-    public async Task<Success> CreateOrder()
+    //payment by selected cart items
+    public async Task<Success> CreatePaymentIntent(CreatePaymentIntentCommand command)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
 
         if (currentUser == null) throw new UnauthorizedException();
 
         var currentUserId = currentUser.Id;
+
         var cart = await context.Carts
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course)
@@ -42,46 +45,89 @@ public class OrderService(
 
         if (cart == null) throw new NotFoundException("Cart belongs to user not found");
 
+        var cartItems = cart.CartItems.Where(x => command.CartItemIds.Contains(x.Id)).ToList();
+        if (cartItems.Count == 0) throw new NotFoundException("Cart items not found");
 
-        var order = new Order
+        var totalAmount = cartItems.Sum(i => i.Course.DiscountedPrice * i.Quantity);
+        var totalAmountInCents = (long)(totalAmount * 100);
+
+        var options = new PaymentIntentCreateOptions
         {
-            ApplicationUserId = currentUserId,
-            Status = OrderStatus.Pending,
-            OrderItems = cart.CartItems.Select(x => new OrderItem
+            Amount = totalAmountInCents,
+            Currency = "usd",
+            Metadata = new Dictionary<string, string>
             {
-                CourseId = x.CourseId,
-                Quantity = x.Quantity
-            }).ToList()
+                { "userId", currentUserId.ToString() },
+                { "cartItemIds", string.Join(",", cartItems.Select(ci => ci.Id.ToString())) }
+            },
+            AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+            {
+                Enabled = true
+            }
         };
-        await context.Orders.AddAsync(order);
-        cart.CartItems.Clear();
-        await context.SaveChangesAsync();
 
-        //Handling payment with Stripe using StripePaymentUtility
-        var amount = (long)order.OrderItems.Sum(x => x.Course.Price * x.Quantity * 100)!;
-        var paymentIntent = await stripePaymentUtility.CreatePaymentIntent(amount, "usd", order.Id.ToString());
-        return new Success("Order created successfully", new { paymentIntent.ClientSecret });
+        var service = new PaymentIntentService();
+        var paymentIntent = await service.CreateAsync(options);
+
+        return new Success("Payment intent created successfully", new { paymentIntent.ClientSecret });
     }
 
-    //Confirm payment for an order
-    public async Task<Success> ConfirmOrder(ConfirmOrderCommand command)
+    public async Task<Success> ConfirmPaymentIntent(ConfirmPaymentIntentCommand command)
     {
         var paymentIntent = await stripePaymentUtility.GetPaymentIntent(command.PaymentIntentId);
-        var orderId = paymentIntent.Metadata["order_id"];
-        var order = await context.Orders.FirstOrDefaultAsync(x => x.Id.ToString() == orderId);
-        if (order == null) throw new NotFoundException("Order - payment intent not found");
 
+        var metadata = paymentIntent.Metadata;
+        var userId = Guid.Parse(metadata["userId"]);
+        var cartItemIds = metadata["cartItemIds"].Split(',').Select(Guid.Parse).ToList();
+
+        var cartItems = await context.CartItems
+            .Where(ci => cartItemIds.Contains(ci.Id))
+            .Include(ci => ci.Course)
+            .ToListAsync();
+
+        // Nếu thanh toán thất bại
         if (paymentIntent.Status != "succeeded")
         {
-            order.Status = OrderStatus.Cancelled;
+            var failedOrder = new Order
+            {
+                ApplicationUserId = userId,
+                Status = OrderStatus.Failed,
+                OrderItems = cartItems.Select(x => new OrderItem
+                {
+                    CourseId = x.CourseId,
+                    Quantity = x.Quantity,
+                    Price = x.Course.DiscountedPrice
+                }).ToList()
+            };
+
+            await context.Orders.AddAsync(failedOrder);
             await context.SaveChangesAsync();
+
             throw new HttpException(StatusCodes.Status402PaymentRequired, "Payment failed", ErrorCode.PaymentFailed);
         }
 
-        order.Status = OrderStatus.Completed;
+        // Nếu thanh toán thành công
+        foreach (var cartItem in cartItems)
+            context.CartItems.Remove(cartItem);
+
+        var order = new Order
+        {
+            ApplicationUserId = userId,
+            Status = OrderStatus.Completed,
+            OrderItems = cartItems.Select(x => new OrderItem
+            {
+                CourseId = x.CourseId,
+                Quantity = x.Quantity,
+                Price = x.Course.DiscountedPrice
+            }).ToList()
+        };
+
+        await context.Orders.AddAsync(order);
         await context.SaveChangesAsync();
+
         return new Success("Payment succeeded");
     }
+
 
     public Task<Paged<ListOrderVm>> GetList(GridifyQuery query)
     {

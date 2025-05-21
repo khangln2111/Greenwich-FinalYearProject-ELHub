@@ -12,25 +12,27 @@ public class StripePaymentUtility : IStripePaymentUtility
         StripeConfiguration.ApiKey = StripeSecretKey;
     }
 
-    public async Task<PaymentIntent> CreatePaymentIntent(long amount, string currency, string orderId)
+    public async Task<PaymentIntent> CreatePaymentIntent(long amountInCents, string currency,
+        Dictionary<string, string> metadata)
     {
-        var paymentIntentService = new PaymentIntentService();
         var options = new PaymentIntentCreateOptions
         {
-            Amount = amount,
+            Amount = amountInCents,
             Currency = currency,
-            PaymentMethodTypes = new List<string> { "card" },
-            Metadata = new Dictionary<string, string>
+            Metadata = metadata,
+            AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
             {
-                { "order_id", orderId }
+                Enabled = true
             }
         };
-        return await paymentIntentService.CreateAsync(options);
+
+        var service = new PaymentIntentService();
+        return await service.CreateAsync(options);
     }
 
     public async Task<PaymentIntent> GetPaymentIntent(string paymentIntentId)
     {
-        var paymentIntentService = new PaymentIntentService();
-        return await paymentIntentService.GetAsync(paymentIntentId);
+        var service = new PaymentIntentService();
+        return await service.GetAsync(paymentIntentId);
     }
 }

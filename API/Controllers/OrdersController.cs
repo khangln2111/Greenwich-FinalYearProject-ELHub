@@ -1,4 +1,5 @@
 ﻿using BLL.BusinessServices.Abstract;
+using BLL.DTOs.CartDTOs;
 using BLL.DTOs.OrderDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
@@ -27,19 +28,19 @@ public class OrdersController(IOrderService orderService) : ControllerBase
     }
 
 
-    [HttpPost("CreateOrder")]
+    [HttpPost("CreatePaymentIntent")]
     [Authorize]
-    public async Task<IActionResult> CreateOrder()
+    public async Task<IActionResult> CreatePaymentIntent([FromBody] CreatePaymentIntentCommand command)
     {
-        var result = await orderService.CreateOrder();
-        return Ok(new { clientSecret = result });
+        var result = await orderService.CreatePaymentIntent(command);
+        return Ok(result);
     }
 
-    [HttpPost("ConfirmOrder")]
+    [HttpPost("ConfirmPaymentIntent")]
     [Authorize]
-    public async Task<IActionResult> ConfirmOrder([FromBody] ConfirmOrderCommand command)
+    public async Task<IActionResult> ConfirmPaymentIntent([FromBody] ConfirmPaymentIntentCommand command)
     {
-        var result = await orderService.ConfirmOrder(command);
+        var result = await orderService.ConfirmPaymentIntent(command);
         return Ok(result);
     }
 }
