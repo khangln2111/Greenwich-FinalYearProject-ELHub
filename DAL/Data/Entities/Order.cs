@@ -11,4 +11,6 @@ public class Order : BaseEntity
     public ApplicationUser ApplicationUser { get; set; } = null!;
 
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+    public string? PaymentIntentId { get; set; }
 }

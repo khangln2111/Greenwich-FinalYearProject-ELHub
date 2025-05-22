@@ -6,6 +6,11 @@ public static class UserConstants
     public const int LastNameMaxLength = 50;
 }
 
+public static class OrderConstants
+{
+    public const int PaymentIntentIdMaxLength = 500;
+}
+
 public static class CategoryConstants
 {
     public const int NameMaxLength = 100;
