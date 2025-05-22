@@ -5,7 +5,7 @@ namespace DAL.Utilities.PaymentUtility;
 public class StripePaymentUtility : IStripePaymentUtility
 {
     private const string StripeSecretKey =
-        "sk_test_51Pvuy2Rv7E2M7Ub6pyedepxaNaEp3yiuIulzpX5K3m90ICjUYrUYFmkxet0MNixxl4iQHg28iuszKYgzHLZFcACp00aBHyXwYg";
+        "sk_test_51RRb7XRoRYlKkzyrIVCXud0eZfl4owk4bmZVkoGnvIAiaSIjwXRcLvQdIrQTpDOtR76vnqs4ZaeO0RetFJ5VrdlY00b7n17OMk";
 
     public StripePaymentUtility()
     {

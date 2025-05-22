@@ -57,4 +57,9 @@ public class BadRequestException : HttpException
             { identityError.Code, new[] { identityError.Description } }
         };
     }
+
+    public BadRequestException(string message, ErrorCode errorCode) : base(StatusCodes.Status400BadRequest,
+        message, errorCode)
+    {
+    }
 }

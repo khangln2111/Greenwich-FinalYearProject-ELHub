@@ -446,6 +446,10 @@ namespace DAL.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PaymentIntentId")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -455,6 +459,10 @@ namespace DAL.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("PaymentIntentId")
+                        .IsUnique()
+                        .HasFilter("[PaymentIntentId] IS NOT NULL");
 
                     b.ToTable("Orders");
                 });

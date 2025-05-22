@@ -18,5 +18,6 @@ public enum ErrorCode
     EmailOrPasswordIncorrect,
     InvalidToken,
     Unauthorized,
-    Forbidden
+    Forbidden,
+    InvalidPaymentIntent
 }

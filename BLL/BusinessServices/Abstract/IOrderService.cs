@@ -14,5 +14,5 @@ public interface IOrderService
 
     Task<Success> CreatePaymentIntent(CreatePaymentIntentCommand command);
 
-    Task<Success> ConfirmPaymentIntent(ConfirmPaymentIntentCommand command);
+    Task<Success> ConfirmPaymentIntent(string paymentIntentId);
 }

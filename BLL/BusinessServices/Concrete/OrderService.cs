@@ -36,6 +36,7 @@ public class OrderService(
 
         if (currentUser == null) throw new UnauthorizedException();
 
+
         var currentUserId = currentUser.Id;
 
         var cart = await context.Carts
@@ -60,10 +61,8 @@ public class OrderService(
                 { "userId", currentUserId.ToString() },
                 { "cartItemIds", string.Join(",", cartItems.Select(ci => ci.Id.ToString())) }
             },
-            AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
-            {
-                Enabled = true
-            }
+            Description = "Thanks you for your purchase",
+            ReceiptEmail = currentUser.Email
         };
 
         var service = new PaymentIntentService();
@@ -72,49 +71,55 @@ public class OrderService(
         return new Success("Payment intent created successfully", new { paymentIntent.ClientSecret });
     }
 
-    public async Task<Success> ConfirmPaymentIntent(ConfirmPaymentIntentCommand command)
+
+    public async Task<Success> ConfirmPaymentIntent(string paymentIntentId)
     {
-        var paymentIntent = await stripePaymentUtility.GetPaymentIntent(command.PaymentIntentId);
+        var existingOrder = await context.Orders
+            .FirstOrDefaultAsync(o => o.PaymentIntentId == paymentIntentId);
 
+        if (existingOrder != null)
+            return new Success("Payment already processed", new
+            {
+                OrderId = existingOrder.Id,
+                Status = existingOrder.Status.ToString()
+            });
+
+        var paymentIntent = await stripePaymentUtility.GetPaymentIntent(paymentIntentId);
         var metadata = paymentIntent.Metadata;
-        var userId = Guid.Parse(metadata["userId"]);
-        var cartItemIds = metadata["cartItemIds"].Split(',').Select(Guid.Parse).ToList();
 
-        var cartItems = await context.CartItems
-            .Where(ci => cartItemIds.Contains(ci.Id))
+        if (!metadata.TryGetValue("userId", out var userIdStr) || !Guid.TryParse(userIdStr, out var userId))
+            throw new BadRequestException("Missing or invalid userId in metadata", ErrorCode.InvalidPaymentIntent);
+
+        if (!metadata.TryGetValue("cartItemIds", out var cartItemIdsRaw))
+            throw new BadRequestException("Missing cartItemIds in metadata", ErrorCode.InvalidPaymentIntent);
+
+        var cartItemIds = cartItemIdsRaw
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(id => Guid.TryParse(id, out var guid) ? guid : Guid.Empty)
+            .Where(id => id != Guid.Empty)
+            .ToList();
+
+        if (cartItemIds.Count == 0)
+            throw new BadRequestException("Invalid cartItemIds in metadata", ErrorCode.InvalidPaymentIntent);
+
+        // get cart items by cartItemIds and userId
+        var cartItemsToRemove = await context.CartItems
             .Include(ci => ci.Course)
+            .Include(ci => ci.Cart)
+            .Where(ci => cartItemIds.Contains(ci.Id) && ci.Cart.ApplicationUserId == userId)
             .ToListAsync();
 
-        // Nếu thanh toán thất bại
-        if (paymentIntent.Status != "succeeded")
-        {
-            var failedOrder = new Order
-            {
-                ApplicationUserId = userId,
-                Status = OrderStatus.Failed,
-                OrderItems = cartItems.Select(x => new OrderItem
-                {
-                    CourseId = x.CourseId,
-                    Quantity = x.Quantity,
-                    Price = x.Course.DiscountedPrice
-                }).ToList()
-            };
+        var orderStatus = paymentIntent.Status == "succeeded"
+            ? OrderStatus.Completed
+            : OrderStatus.Failed;
 
-            await context.Orders.AddAsync(failedOrder);
-            await context.SaveChangesAsync();
 
-            throw new HttpException(StatusCodes.Status402PaymentRequired, "Payment failed", ErrorCode.PaymentFailed);
-        }
-
-        // Nếu thanh toán thành công
-        foreach (var cartItem in cartItems)
-            context.CartItems.Remove(cartItem);
-
-        var order = new Order
+        var newOrder = new Order
         {
             ApplicationUserId = userId,
-            Status = OrderStatus.Completed,
-            OrderItems = cartItems.Select(x => new OrderItem
+            PaymentIntentId = paymentIntentId,
+            Status = orderStatus,
+            OrderItems = cartItemsToRemove.Select(x => new OrderItem
             {
                 CourseId = x.CourseId,
                 Quantity = x.Quantity,
@@ -122,12 +127,22 @@ public class OrderService(
             }).ToList()
         };
 
-        await context.Orders.AddAsync(order);
+        await context.Orders.AddAsync(newOrder);
+
+        if (orderStatus == OrderStatus.Completed && cartItemsToRemove.Count > 0)
+            context.CartItems.RemoveRange(cartItemsToRemove);
+
         await context.SaveChangesAsync();
 
-        return new Success("Payment succeeded");
+        return new Success(
+            orderStatus == OrderStatus.Completed ? "Payment succeeded" : "Payment failed",
+            new
+            {
+                OrderId = newOrder.Id,
+                Status = orderStatus.ToString()
+            }
+        );
     }
-
 
     public Task<Paged<ListOrderVm>> GetList(GridifyQuery query)
     {
