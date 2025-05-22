@@ -97,7 +97,7 @@ const CourseDetailPage = () => {
           {/* 1st column */}
           <div>
             <div>
-              <Breadcrumbs separator="→" separatorMargin="md" mt="xs">
+              <Breadcrumbs separator="→" separatorMargin="md">
                 {items}
               </Breadcrumbs>
               <Title className="mt-5">{course.title}</Title>

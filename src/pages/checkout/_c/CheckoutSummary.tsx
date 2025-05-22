@@ -5,14 +5,22 @@ import { LockIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "../../../utils/cn";
 import { showErrorToast } from "../../../utils/toastHelper";
+import { CartItemType } from "../../../react-query/cart/cart.types";
 
 type CheckoutSummaryProps = {
-  total: number;
+  items: CartItemType[];
   className?: string;
   clientSecret: string;
 };
 
-export default function CheckoutSummary({ total, className, clientSecret }: CheckoutSummaryProps) {
+export default function CheckoutSummary({ items, className, clientSecret }: CheckoutSummaryProps) {
+  const provisional = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalDirectDiscount = items.reduce(
+    (acc, item) => acc + (item.price - item.discountedPrice) * item.quantity,
+    0,
+  );
+  const finalTotalAmount = provisional - totalDirectDiscount;
+
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -54,11 +62,13 @@ export default function CheckoutSummary({ total, className, clientSecret }: Chec
       <div className="mt-4 space-y-2 text-lg">
         <div className="flex justify-between">
           <span>Provisional</span>
-          <span className="font-semibold">${total.toLocaleString("en-US")}</span>
+          <span className="font-semibold">${provisional.toLocaleString("en-US")}</span>
         </div>
         <div className="flex justify-between">
           <span>Direct discount</span>
-          <span className="text-orange-500">$0</span>
+          <span className="text-orange-500">
+            {totalDirectDiscount !== 0 && "- "}${totalDirectDiscount.toLocaleString("en-US")}
+          </span>
         </div>
         <div className="flex justify-between">
           <span>Voucher discount</span>
@@ -69,7 +79,7 @@ export default function CheckoutSummary({ total, className, clientSecret }: Chec
       <div className="border-t mt-4 pt-4 flex justify-between items-center text-lg font-semibold">
         <span>Total Amount</span>
         <span className="text-blue-500 dark:text-blue-600 text-xl font-bold">
-          ${total.toLocaleString("en-US")}
+          ${finalTotalAmount.toLocaleString("en-US")}
         </span>
       </div>
 

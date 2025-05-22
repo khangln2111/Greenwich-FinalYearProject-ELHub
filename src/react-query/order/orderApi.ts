@@ -1,6 +1,6 @@
 import { ApiSuccessResponse } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
-import { ConfirmPaymentIntentCommand, CreatePaymentIntentCommand } from "./order.types";
+import { CreatePaymentIntentCommand } from "./order.types";
 
 const BASE_URL = "/orders";
 
@@ -13,10 +13,9 @@ export const createPaymentIntent = async (command: CreatePaymentIntentCommand) =
   return response.data;
 };
 
-export const confirmPaymentIntent = async (command: ConfirmPaymentIntentCommand) => {
-  const response = await apiClient.post<ApiSuccessResponse>(
-    `${BASE_URL}/ConfirmPaymentIntent`,
-    command,
+export const confirmPaymentIntent = async (paymentIntentId: string) => {
+  const response = await apiClient.get<ApiSuccessResponse>(
+    `${BASE_URL}/ConfirmPaymentIntent/${paymentIntentId}`,
   );
   return response.data;
 };

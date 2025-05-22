@@ -1,8 +1,8 @@
 import { Button, Text } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
-import { cn } from "../../../utils/cn";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CartItemType } from "../../../react-query/cart/cart.types";
+import { cn } from "../../../utils/cn";
 
 type CartSummaryProps = {
   selectedItems: CartItemType[];
@@ -34,11 +34,13 @@ export default function CartSummary({ selectedItems, className }: CartSummaryPro
       <div className="mt-4 space-y-2 text-lg">
         <div className="flex justify-between">
           <span>Provisional</span>
-          <span className="font-semibold">${provisional.toLocaleString("en-US")}</span>
+          <span className="font-semibold">${provisional?.toLocaleString("en-US")}</span>
         </div>
         <div className="flex justify-between">
           <span>Direct discount</span>
-          <span className="text-orange-500">- ${totalDirectDiscount.toLocaleString("en-US")}</span>
+          <span className="text-orange-500">
+            {totalDirectDiscount !== 0 && "- "}${totalDirectDiscount?.toLocaleString("en-US")}
+          </span>
         </div>
         <div className="flex justify-between">
           <span>Voucher discount</span>

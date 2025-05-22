@@ -1,16 +1,16 @@
-import { Anchor, Box, useComputedColorScheme, Loader } from "@mantine/core";
-import { ArrowLeft } from "lucide-react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { CartItemType } from "../../react-query/cart/cart.types";
-import CheckoutForm from "./_c/CheckoutForm";
-import CheckoutSummary from "./_c/CheckoutSummary";
-import { useState, useEffect } from "react";
-import { useCreatePaymentIntent } from "../../react-query/order/orderHooks";
+import { Anchor, Box, Loader, useComputedColorScheme } from "@mantine/core";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { ArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { CartItemType } from "../../react-query/cart/cart.types";
+import { useCreatePaymentIntent } from "../../react-query/order/orderHooks";
+import CheckoutForm from "./_c/CheckoutForm";
+import CheckoutSummary from "./_c/CheckoutSummary";
 
 const stripePromise = loadStripe(
-  "pk_test_51Pvuy2Rv7E2M7Ub6wfJIaUN5EFDPRJk9q74V4wiPEO4q2ncQFtFZcgZQom8VTRmwyKSiz8ri2LOUTLgiX6SmNLFD00Sdpd3qTD",
+  "pk_test_51RRb7XRoRYlKkzyrjHFredaX8Ha0wJNHj0v60IJa1BycyHTVgTeO7VlUkveFVbN2GVbtvaQkcCPDoXLJPmR1WKMv00fBzMO0yS",
 );
 
 export default function CheckoutPage() {
@@ -29,8 +29,6 @@ export default function CheckoutPage() {
   if (!items || items.length === 0) {
     return <Navigate to="/cart" replace />;
   }
-
-  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   useEffect(() => {
     if (items.length === 0) return;
@@ -131,7 +129,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Summary section */}
-            <CheckoutSummary total={total} clientSecret={clientSecret} />
+            <CheckoutSummary items={items} clientSecret={clientSecret} />
           </div>
         </Box>
       </div>

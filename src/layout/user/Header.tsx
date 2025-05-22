@@ -150,10 +150,10 @@ const Header = () => {
       <div className="flex items-center justify-between h-full gap-2 md:gap-10">
         <Link
           to="/"
-          className="no-underline select-none flex items-center text-black dark:text-white"
+          className="no-underline select-none flex items-center text-black dark:text-white gap-2 font-semibold text-2xl"
         >
-          <MantineLogo color="primary" size={30} className="visible-from-md" />
-          <MantineLogo color="primary" size={30} type="mark" className="hidden-from-md" />
+          <MantineLogo color="primary" size={30} type="mark" />
+          <span className="hidden md:block font-[Inter] tracking-wide font-bold">ELHub</span>
         </Link>
 
         {/* Nav links (desktop) */}
