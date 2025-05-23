@@ -45,8 +45,6 @@ public class IdentityService(
             LastName = command.LastName
         };
 
-        //create cart for user 
-        user.Cart = new Cart { ApplicationUser = user };
 
         var result = await userManager.CreateAsync(user, command.Password);
         if (!result.Succeeded) throw new BadRequestException(result.Errors);

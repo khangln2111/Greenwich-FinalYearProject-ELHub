@@ -41,6 +41,7 @@ public static class DataAccessDependencyInjection
         services.AddScoped<IEmailUtility, EmailUtility>();
         services.AddScoped<ICurrentUserUtility, CurrentUserUtility>();
         services.AddScoped<IStripePaymentUtility, StripePaymentUtility>();
+        services.AddScoped<DataSeeder>();
     }
 
     private static void AddBackgroundServices(this IServiceCollection services)

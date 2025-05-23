@@ -17,7 +17,7 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public bool IsInitialPasswordChanged { get; set; } = false;
 
-    public Cart? Cart { get; set; }
+    public Cart Cart { get; set; } = new();
 
     public ICollection<ApplicationRole> Roles { get; set; } = new List<ApplicationRole>();
 

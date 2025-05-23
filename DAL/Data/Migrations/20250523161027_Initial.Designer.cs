@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250522154030_Initial")]
+    [Migration("20250523161027_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -928,7 +928,8 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Data.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Cart");
+                    b.Navigation("Cart")
+                        .IsRequired();
 
                     b.Navigation("Courses");
 

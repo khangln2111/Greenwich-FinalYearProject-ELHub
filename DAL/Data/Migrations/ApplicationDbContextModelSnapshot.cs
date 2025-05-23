@@ -925,7 +925,8 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Data.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Cart");
+                    b.Navigation("Cart")
+                        .IsRequired();
 
                     b.Navigation("Courses");
 

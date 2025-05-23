@@ -1,4 +1,6 @@
-﻿namespace BLL.DTOs.SectionDTOs;
+﻿using BLL.DTOs.LectureDTOs;
+
+namespace BLL.DTOs.SectionDTOs;
 
 public class SectionVm
 {
@@ -13,4 +15,8 @@ public class SectionVm
     public int DurationInSeconds { get; init; }
 
     public Guid CourseId { get; init; }
+
+    public LectureVm[] Lectures { get; init; } = [];
+
+    public int Order { get; init; }
 }

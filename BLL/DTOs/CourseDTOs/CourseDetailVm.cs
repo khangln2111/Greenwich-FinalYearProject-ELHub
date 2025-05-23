@@ -1,4 +1,6 @@
-﻿namespace BLL.DTOs.CourseDTOs;
+﻿using BLL.DTOs.SectionDTOs;
+
+namespace BLL.DTOs.CourseDTOs;
 
 public class CourseDetailVm
 {
@@ -12,7 +14,7 @@ public class CourseDetailVm
 
     public int LectureCount { get; init; }
 
-    public required CourseSectionVm[] Sections { get; init; }
+    public SectionVm[] Sections { get; init; } = [];
 
     public required string ImageUrl { get; init; }
 
@@ -27,7 +29,7 @@ public class CourseDetailVm
     public int DurationInSeconds { get; init; }
 
     public required string Status { get; init; }
-    
+
     public required string Level { get; init; }
 
     public string[] LearningOutcomes { get; init; } = [];

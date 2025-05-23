@@ -22,8 +22,6 @@ public class CartService(
 {
     public async Task<CartVm> GetCartMe()
     {
-        await EnsureCartExistsAsync();
-
         var currentUser = currentUserUtility.GetCurrentUser();
 
         if (currentUser == null) throw new UnauthorizedException();
@@ -41,7 +39,6 @@ public class CartService(
         await validationService.ValidateAsync(command);
         var course = await context.Courses.FirstOrDefaultAsync(x => x.Id == command.CourseId);
         if (course == null) throw new NotFoundException("Course not found");
-        await EnsureCartExistsAsync();
 
         var currentUser = currentUserUtility.GetCurrentUser();
 
@@ -51,7 +48,9 @@ public class CartService(
             .Include(x => x.CartItems)
             .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUser.Id);
 
-        var cartItem = cart!.CartItems.FirstOrDefault(x => x.CourseId == command.CourseId);
+        if (cart == null) throw new NotFoundException("Cart belongs to user not found");
+
+        var cartItem = cart.CartItems.FirstOrDefault(x => x.CourseId == command.CourseId);
         if (cartItem == null)
         {
             cartItem = new CartItem
@@ -91,28 +90,5 @@ public class CartService(
         context.CartItems.Remove(cartItem);
         await context.SaveChangesAsync();
         return new Success("Cart item deleted successfully");
-    }
-
-    // Ensures the user's cart exists, creates it if not, and includes cart items.
-    private async Task EnsureCartExistsAsync()
-    {
-        var currentUser = currentUserUtility.GetCurrentUser();
-
-        if (currentUser == null) throw new UnauthorizedException();
-
-        var userId = currentUser.Id;
-
-        var cart = await context.Carts
-            .FirstOrDefaultAsync(x => x.ApplicationUserId == userId);
-
-        if (cart == null)
-        {
-            cart = new Cart
-            {
-                ApplicationUserId = userId
-            };
-            await context.Carts.AddAsync(cart);
-            await context.SaveChangesAsync();
-        }
     }
 }

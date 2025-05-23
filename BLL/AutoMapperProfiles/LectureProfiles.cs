@@ -9,10 +9,10 @@ public class LectureProfiles : Profile
     public LectureProfiles()
     {
         CreateMap<Lecture, LectureVm>()
-            .ForMember(dest => dest.VideoUrl, opt => opt.MapFrom(src => src.Video != null ? src.Video.Url : null))
-            .ForMember(dest => dest.SectionTitle, opt => opt.MapFrom(src => src.Section.Title))
+            .ForMember(dest => dest.VideoUrl,
+                opt => opt.MapFrom(src => src.Video != null ? src.Video.Url : string.Empty))
             .ForMember(dest => dest.DurationInSeconds,
-                opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : default));
+                opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0));
 
         CreateMap<CreateLectureCommand, Lecture>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())

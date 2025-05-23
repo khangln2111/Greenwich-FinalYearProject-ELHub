@@ -2,6 +2,7 @@ using API;
 using API.Middlewares;
 using BLL;
 using DAL;
+using DAL.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,13 @@ builder.Services.AddCors(options =>
 // Configure max file size for upload to 500MB
 builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 500 * 1024 * 1024);
 var app = builder.Build();
+
+//Seeding data
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    await seeder.SeedAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
