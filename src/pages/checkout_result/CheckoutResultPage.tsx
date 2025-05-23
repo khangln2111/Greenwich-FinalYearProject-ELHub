@@ -1,6 +1,6 @@
 import { Button, Loader } from "@mantine/core";
 import { CheckCircle, XCircle } from "lucide-react";
-import { Navigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { useConfirmPaymentIntent } from "../../react-query/order/orderHooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { keyFac } from "../../react-query/common-service/queryKeyFactory";
@@ -14,7 +14,12 @@ export default function CheckoutResultPage() {
 
   const { isPending, isError, isSuccess } = useConfirmPaymentIntent(paymentIntentId);
 
-  if (isPending) return <Loader size="xl" className="mt-20" />;
+  if (isPending)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader size="xl" />
+      </div>
+    );
 
   if (isSuccess) {
     queryClient.invalidateQueries({ queryKey: keyFac.cart._def });
@@ -32,8 +37,8 @@ export default function CheckoutResultPage() {
           <Button
             variant="light"
             className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
-            component="a"
-            href="/my-learning"
+            component={Link}
+            to="/my-learning"
           >
             Go to My Learning
           </Button>
