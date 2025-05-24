@@ -1,14 +1,20 @@
 import { Avatar, Indicator, Menu, Text } from "@mantine/core";
 import {
-  IconArrowsLeftRight,
+  IconBell,
   IconBriefcase,
   IconMessageCircle,
-  IconPhoto,
   IconSearch,
   IconSettings,
   IconTrash,
 } from "@tabler/icons-react";
-import { GraduationCap } from "lucide-react";
+import {
+  ChartNoAxesCombinedIcon,
+  CircleUserIcon,
+  GiftIcon,
+  GraduationCap,
+  MonitorCheckIcon,
+  PackageIcon,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLogout } from "../../../react-query/auth/identityHooks";
 import { cn } from "../../../utils/cn";
@@ -42,18 +48,13 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
       </Menu.Target>
 
       <Menu.Dropdown className="shadow-xl">
-        <Menu.Label>Application</Menu.Label>
-        <Menu.Item leftSection={<IconSettings size={14} />}>Settings</Menu.Item>
-        <Menu.Item leftSection={<IconMessageCircle size={14} />}>Messages</Menu.Item>
-        <Menu.Item leftSection={<IconPhoto size={14} />}>Gallery</Menu.Item>
-        <Menu.Item
-          leftSection={<IconBriefcase size={14} />}
-          className="cursor-pointer"
-          component={Link}
-          to="/instructor/courses"
-        >
-          Instructor Dashboard
-        </Menu.Item>
+        <Menu.Label>Personal</Menu.Label>
+        <Menu.Item leftSection={<CircleUserIcon size={14} />}>My Account</Menu.Item>
+        <Menu.Item leftSection={<MonitorCheckIcon size={14} />}>Enrolled courses</Menu.Item>
+        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={14} />}>Analytics</Menu.Item>
+        <Menu.Item leftSection={<PackageIcon size={14} />}>Purchase History</Menu.Item>
+        <Menu.Item leftSection={<GiftIcon size={14} />}>Gifts</Menu.Item>
+
         <Menu.Item
           leftSection={<IconSearch size={14} />}
           rightSection={
@@ -64,6 +65,24 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           Search
         </Menu.Item>
+
+        <Menu.Divider />
+        <Menu.Label>Communication</Menu.Label>
+        <Menu.Item leftSection={<IconBell size={14} />}>Notifications</Menu.Item>
+        <Menu.Item leftSection={<IconMessageCircle size={14} />}>Messages</Menu.Item>
+
+        <Menu.Divider />
+
+        <Menu.Label>Sites navigation</Menu.Label>
+        <Menu.Item
+          leftSection={<IconBriefcase size={14} />}
+          className="cursor-pointer"
+          component={Link}
+          to="/instructor/courses"
+        >
+          Instructor Dashboard
+        </Menu.Item>
+
         {/* menu item as link to /home student */}
         <Menu.Item
           className="cursor-pointer"
@@ -71,13 +90,11 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           to="/"
           leftSection={<GraduationCap size={14} />}
         >
-          Student
+          Student Sites
         </Menu.Item>
 
         <Menu.Divider />
-
-        <Menu.Label>Danger zone</Menu.Label>
-        <Menu.Item leftSection={<IconArrowsLeftRight size={14} />}>Transfer my data</Menu.Item>
+        <Menu.Item leftSection={<IconSettings size={14} />}>Settings</Menu.Item>
         <Menu.Item
           color="red"
           leftSection={<IconTrash size={14} />}

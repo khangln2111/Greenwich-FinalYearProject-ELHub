@@ -1,82 +1,113 @@
-import { Outlet, NavLink } from "react-router-dom";
-import { LayoutDashboard, User, Gift, BookOpen, History, Menu, X } from "lucide-react";
-import { useState } from "react";
-import clsx from "clsx";
+import {
+  LogOut,
+  MapPin,
+  Menu,
+  Package,
+  Syringe,
+  Truck,
+  User,
+  ChevronUp,
+  ChevronDown,
+} from "lucide-react";
+import { Collapse } from "@mantine/core";
+import { ReactNode, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { cn } from "../../utils/cn";
 
-const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
-  { label: "My Profile", icon: User, to: "/dashboard/profile" },
-  { label: "My Learning", icon: BookOpen, to: "/dashboard/learning" },
-  { label: "Gifts", icon: Gift, to: "/dashboard/gifts" },
-  { label: "Purchase History", icon: History, to: "/dashboard/history" },
+type MenuItem = {
+  label: string;
+  icon: ReactNode;
+  href: string;
+};
+
+const menuItems: MenuItem[] = [
+  { label: "Thông tin cá nhân", icon: <User className="w-5 h-5" />, href: "/user/profile" },
+  { label: "Đơn hàng của tôi", icon: <Package className="w-5 h-5" />, href: "/user/orders" },
+  { label: "Quản lý sổ địa chỉ", icon: <MapPin className="w-5 h-5" />, href: "/user/addresses" },
+  {
+    label: "Lịch hẹn tiêm chủng",
+    icon: <Syringe className="w-5 h-5" />,
+    href: "/user/vaccine-appointments",
+  },
+  {
+    label: "Đơn hàng tiêm chủng",
+    icon: <Truck className="w-5 h-5" />,
+    href: "/user/vaccine-orders",
+  },
+  { label: "Đơn thuốc của tôi", icon: <Truck className="w-5 h-5" />, href: "/user/prescriptions" },
 ];
 
-const UserDashboardLayout = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
+export default function UserDashboardLayout({ children }: { children: ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isActive = (href: string) => location.pathname === href;
+
+  const Sidebar = () => (
+    <div className="space-y-4">
+      <div className="bg-blue-600 text-white rounded-xl p-4 text-center">
+        <div className="w-16 h-16 mx-auto rounded-full bg-white/20 flex items-center justify-center">
+          <User className="w-8 h-8" />
+        </div>
+        <p className="mt-2 font-medium">Khang</p>
+        <p className="text-sm">0931296160</p>
+      </div>
+
+      <ul className="space-y-1">
+        {menuItems.map((item) => (
+          <li
+            key={item.href}
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer text-sm transition",
+              isActive(item.href)
+                ? "bg-blue-100 text-blue-600 dark:bg-blue-900"
+                : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800",
+            )}
+            onClick={() => {
+              navigate(item.href);
+              if (window.innerWidth < 768) setSidebarOpen(false);
+            }}
+          >
+            {item.icon}
+            {item.label}
+          </li>
+        ))}
+      </ul>
+
+      <button className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:underline px-4 py-2 text-sm">
+        <LogOut className="w-5 h-5" />
+        Đăng xuất
+      </button>
+    </div>
+  );
 
   return (
-    <div className="min-h-dvh flex bg-gray-50">
-      {/* Sidebar */}
-      <aside
-        className={clsx(
-          ` z-40 w-64 bg-white border-r shadow-sm transition-transform duration-300 ease-in-out
-          lg:translate-x-0`,
-          {
-            "-translate-x-full": !mobileOpen,
-            "translate-x-0": mobileOpen,
-          },
-        )}
-      >
-        <div className="flex items-center justify-between p-4 lg:hidden">
-          <span className="text-lg font-bold">Menu</span>
-          <button onClick={() => setMobileOpen(false)}>
-            <X className="w-6 h-6" />
-          </button>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white px-6 lg:px-20 py-6">
+      {/* Mobile toggle */}
+      <div className="lg:hidden flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold">Trang cá nhân</h2>
+        <button
+          onClick={() => setSidebarOpen((prev) => !prev)}
+          className="p-2 rounded-md border dark:border-gray-700"
+        >
+          {sidebarOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+        </button>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Sidebar (Collapse ở mobile, luôn hiện ở md+) */}
+        <div className="w-full lg:max-w-[300px]">
+          <Collapse in={sidebarOpen || window.innerWidth >= 1024}>
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm p-4">
+              <Sidebar />
+            </div>
+          </Collapse>
         </div>
-        <nav className="flex flex-col gap-1 p-4">
-          {navItems.map(({ label, icon: Icon, to }) => (
-            <NavLink
-              key={label}
-              to={to}
-              className={({ isActive }) =>
-                clsx(
-                  "flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors",
-                  isActive ? "bg-blue-100 text-blue-600" : "hover:bg-gray-100 text-gray-700",
-                )
-              }
-              onClick={() => setMobileOpen(false)} // auto close on mobile
-            >
-              <Icon className="w-5 h-5" />
-              {label}
-            </NavLink>
-          ))}
-        </nav>
-      </aside>
 
-      {/* Overlay for mobile */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-30 lg:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-dvh lg:ml-64">
-        <header className="flex items-center justify-between p-4 border-b bg-white shadow-sm lg:hidden">
-          <button onClick={() => setMobileOpen(true)}>
-            <Menu className="w-6 h-6" />
-          </button>
-          <h1 className="text-lg font-semibold">Dashboard</h1>
-          <div className="w-6 h-6" /> {/* Spacer for layout balance */}
-        </header>
-
-        <main className="p-4 flex-1">
-          <Outlet />
-        </main>
+        {/* Main Content */}
+        <main className="flex-1">{children}</main>
       </div>
     </div>
   );
-};
-
-export default UserDashboardLayout;
+}

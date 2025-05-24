@@ -1,7 +1,6 @@
 import {
   ActionIcon,
   Box,
-  Burger,
   Button,
   Center,
   Collapse,
@@ -29,7 +28,7 @@ import {
   IconNotification,
   IconSearch,
 } from "@tabler/icons-react";
-import { MenuIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
+import { PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
