@@ -23,14 +23,20 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
             .HasColumnType("decimal(18,2)"); // Decimal format for Price
 
 
+        builder.Property(c => c.Status)
+            .HasMaxLength(50);
+
+
         builder.Property(c => c.Level)
             .HasMaxLength(50);
 
+
         builder.Property(c => c.Prerequisites)
-            .HasMaxLength(1000);
+            .HasMaxLength(1500);
 
         builder.Property(c => c.LearningOutcomes)
-            .HasMaxLength(1000);
+            .HasMaxLength(1500);
+
 
         builder.HasOne(c => c.Instructor)
             .WithMany()

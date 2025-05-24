@@ -30,7 +30,7 @@ public class CartService(
         var cart = await context.Carts
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course).ThenInclude(c => c.Image)
-            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUser.Id);
+            .FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
         return mapper.Map<CartVm>(cart);
     }
 
@@ -46,7 +46,7 @@ public class CartService(
 
         var cart = await context.Carts
             .Include(x => x.CartItems)
-            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUser.Id);
+            .FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
 
         if (cart == null) throw new NotFoundException("Cart belongs to user not found");
 

@@ -11,8 +11,7 @@ public class OrderVm
     public decimal TotalPrice { get; set; }
 
     //list of order items
-    public List<OrderItemVm> OrderItems { get; set; }
-
+    public OrderItemVm[] OrderItems { get; set; } = [];
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }

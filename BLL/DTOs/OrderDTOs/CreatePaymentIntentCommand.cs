@@ -1,6 +1,6 @@
-﻿namespace BLL.DTOs.CartDTOs;
+﻿namespace BLL.DTOs.OrderDTOs;
 
 public class CreatePaymentIntentCommand
 {
-    public List<Guid> CartItemIds { get; set; } = [];
+    public required Guid[] CartItemIds { get; set; }
 }

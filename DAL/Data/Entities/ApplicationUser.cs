@@ -19,20 +19,21 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public Cart Cart { get; set; } = new();
 
-    public ICollection<ApplicationRole> Roles { get; set; } = new List<ApplicationRole>();
+    public Inventory Inventory { get; set; } = new();
 
-    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public ICollection<ApplicationRole> Roles { get; init; } = new List<ApplicationRole>();
 
-    public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<Review> Reviews { get; init; } = new List<Review>();
 
-    public ICollection<Course> Courses { get; set; } = new List<Course>();
+    public ICollection<Order> Orders { get; init; } = new List<Order>();
 
-    public ICollection<Section> Sections { get; set; } = new List<Section>();
+    public ICollection<Course> Courses { get; init; } = new List<Course>();
 
-    public ICollection<Lecture> Lessons { get; set; } = new List<Lecture>();
+    public ICollection<Enrollment> Enrollments { get; init; } = new List<Enrollment>();
+
 
     // public ICollection<RefreshToken> RefreshTokens { get; set; }
 
 
-    public ICollection<Notification> ReceivedNotifications { get; set; } = new List<Notification>();
+    public ICollection<Notification> ReceivedNotifications { get; init; } = new List<Notification>();
 }

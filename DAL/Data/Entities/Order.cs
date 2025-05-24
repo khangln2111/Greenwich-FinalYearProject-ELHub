@@ -6,9 +6,9 @@ public class Order : BaseEntity
 {
     public OrderStatus Status { get; set; }
 
-    public Guid ApplicationUserId { get; set; }
+    public Guid UserId { get; set; }
 
-    public ApplicationUser ApplicationUser { get; set; } = null!;
+    public ApplicationUser User { get; set; } = null!;
 
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 

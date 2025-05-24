@@ -18,7 +18,7 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
             .OnDelete(DeleteBehavior.Cascade); // Cascade delete if Cart is deleted
 
         builder.HasOne(ci => ci.Course)
-            .WithMany(c => c.CartItems)
+            .WithMany()
             .HasForeignKey(ci => ci.CourseId)
             .OnDelete(DeleteBehavior.Cascade); // Restrict delete if Course is deleted
     }

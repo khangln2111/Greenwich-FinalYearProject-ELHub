@@ -28,6 +28,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<Notification> Notifications { get; set; }
 
+    public DbSet<Inventory> Inventories { get; set; }
+
+    public DbSet<InventoryItem> InventoryItems { get; set; }
+
+    public DbSet<Enrollment> Enrollments { get; set; }
+
+    public DbSet<Gift> Gifts { get; set; }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         var connectionString =

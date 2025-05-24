@@ -27,13 +27,16 @@ public class Course : BaseEntity
     public Category Category { get; set; } = null!;
     public Media? Image { get; set; }
     public DurationMedia? PromoVideo { get; set; }
-    public ICollection<Section> Sections { get; } = new List<Section>();
 
-    public ICollection<CartItem> CartItems { get; } = new List<CartItem>();
+    public ICollection<Section> Sections { get; set; } = new List<Section>();
 
-    public ICollection<OrderItem> OrderItems { get; } = new List<OrderItem>();
+    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
-    public ICollection<Review> Reviews { get; } = new List<Review>();
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+
+    public ICollection<Gift> Gifts { get; set; } = new List<Gift>();
+
+    public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
     public Guid InstructorId { get; set; }
 

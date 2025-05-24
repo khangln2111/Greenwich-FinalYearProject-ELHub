@@ -10,7 +10,7 @@ public class CartProfiles : Profile
     {
         CreateMap<Cart, CartVm>()
             .ForMember(dest => dest.UserId,
-                opt => opt.MapFrom(src => src.ApplicationUserId))
+                opt => opt.MapFrom(src => src.UserId))
             .ForMember(dest => dest.Provisional,
                 opt => opt.MapFrom(src => src.CartItems.Sum(x => x.Course.Price * x.Quantity)))
             .ForMember(dest => dest.TotalDirectDiscount,

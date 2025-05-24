@@ -42,7 +42,7 @@ public class OrderService(
         var cart = await context.Carts
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course)
-            .FirstOrDefaultAsync(x => x.ApplicationUserId == currentUserId);
+            .FirstOrDefaultAsync(x => x.UserId == currentUserId);
 
         if (cart == null) throw new NotFoundException("Cart belongs to user not found");
 
@@ -106,7 +106,7 @@ public class OrderService(
         var cartItemsToRemove = await context.CartItems
             .Include(ci => ci.Course)
             .Include(ci => ci.Cart)
-            .Where(ci => cartItemIds.Contains(ci.Id) && ci.Cart.ApplicationUserId == userId)
+            .Where(ci => cartItemIds.Contains(ci.Id) && ci.Cart.UserId == userId)
             .ToListAsync();
 
         var orderStatus = paymentIntent.Status == "succeeded"
@@ -116,7 +116,7 @@ public class OrderService(
 
         var newOrder = new Order
         {
-            ApplicationUserId = userId,
+            UserId = userId,
             PaymentIntentId = paymentIntentId,
             Status = orderStatus,
             OrderItems = cartItemsToRemove.Select(x => new OrderItem

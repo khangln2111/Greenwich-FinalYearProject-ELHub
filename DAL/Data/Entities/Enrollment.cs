@@ -1,11 +1,7 @@
-namespace DAL.Data.Entities;
+﻿namespace DAL.Data.Entities;
 
-public class Review : BaseEntity
+public class Enrollment : BaseEntity
 {
-    public int Rating { get; set; }
-
-    public required string Content { get; set; }
-
     public Guid CourseId { get; set; }
 
     public Course Course { get; set; } = null!;
@@ -13,4 +9,6 @@ public class Review : BaseEntity
     public Guid UserId { get; set; }
 
     public ApplicationUser User { get; set; } = null!;
+
+    public DateTime EnrolledAt { get; set; } = DateTime.Now;
 }

@@ -269,7 +269,7 @@ public class IdentityService(
             Email = user.Email ?? "",
             FirstName = user.FirstName ?? "",
             LastName = user.LastName ?? "",
-            Roles = roles.ToList()
+            Roles = roles.ToArray()
         };
     }
 

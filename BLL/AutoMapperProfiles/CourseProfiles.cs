@@ -8,19 +8,6 @@ public class CourseProfiles : Profile
 {
     public CourseProfiles()
     {
-        CreateMap<Lecture, CourseLectureVm>()
-            .ForMember(dest => dest.VideoUrl,
-                opt => opt.MapFrom(src => src.Video != null ? src.Video.Url : string.Empty))
-            .ForMember(dest => dest.DurationInSeconds,
-                opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0));
-
-        // Ánh xạ Section → CourseSectionVm
-        CreateMap<Section, CourseSectionVm>()
-            .ForMember(dest => dest.LectureCount, opt => opt.MapFrom(src => src.Lectures.Count))
-            .ForMember(dest => dest.DurationInSeconds,
-                opt => opt.MapFrom(src => src.Lectures.Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
-            .ForMember(dest => dest.Lectures, opt => opt.MapFrom(src => src.Lectures.OrderBy(l => l.Order)));
-
         CreateMap<Course, CourseDetailVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
             .ForMember(dest => dest.DurationInSeconds, opt => opt
