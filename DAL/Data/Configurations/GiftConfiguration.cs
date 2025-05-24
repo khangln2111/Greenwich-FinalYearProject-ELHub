@@ -1,4 +1,5 @@
-﻿using DAL.Data.Entities;
+﻿using DAL.Constants;
+using DAL.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,5 +9,7 @@ public class GiftConfiguration : IEntityTypeConfiguration<Gift>
 {
     public void Configure(EntityTypeBuilder<Gift> builder)
     {
+        builder.Property(g => g.ReceiverEmail)
+            .HasMaxLength(GiftConstants.ReceiverEmailMaxLength);
     }
 }

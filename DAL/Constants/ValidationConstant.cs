@@ -2,8 +2,10 @@ namespace DAL.Constants;
 
 public static class UserConstants
 {
-    public const int FirstNameMaxLength = 50;
-    public const int LastNameMaxLength = 50;
+    public const int FirstNameMaxLength = 70;
+    public const int LastNameMaxLength = 70;
+    public const int AddressMaxLength = 200;
+    public const int BioMaxLength = 500;
 }
 
 public static class OrderConstants
@@ -46,6 +48,16 @@ public static class LectureConstants
     public const int ImageMaxSizeBytes = 50 * Megabyte; // 50MB
     public const int TitleMaxLength = 150;
     public const int DescriptionMaxLength = 2000;
+}
+
+public static class ReviewConstants
+{
+    public const int ContentMaxLength = 500;
+}
+
+public static class GiftConstants
+{
+    public const int ReceiverEmailMaxLength = 254; // Standard max length for email addresses
 }
 
 public static class MediaConstants
