@@ -3,6 +3,7 @@ import { IconArrowRight } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { CartItemType } from "../../../react-query/cart/cart.types";
 import { cn } from "../../../utils/cn";
+import { useCreatePaymentIntent } from "../../../react-query/order/orderHooks";
 
 type CartSummaryProps = {
   selectedItems: CartItemType[];
@@ -19,10 +20,27 @@ export default function CartSummary({ selectedItems, className }: CartSummaryPro
 
   const navigate = useNavigate();
 
+  const createPaymentIntentMutation = useCreatePaymentIntent();
+
   const handleCheckout = () => {
-    navigate("/checkout", {
-      state: { selectedItems, total: finalTotalAmount },
-    });
+    createPaymentIntentMutation.mutate(
+      {
+        cartItemIds: selectedItems.map((item) => item.id),
+      },
+      {
+        onSuccess: (data) => {
+          const clientSecret = data.data?.clientSecret;
+          if (clientSecret) {
+            navigate("/checkout", {
+              state: { selectedItems, clientSecret },
+            });
+          }
+        },
+        onError: (error) => {
+          console.error("Failed to create PaymentIntent", error);
+        },
+      },
+    );
   };
 
   return (
@@ -61,6 +79,7 @@ export default function CartSummary({ selectedItems, className }: CartSummaryPro
         className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-800 dark:bg-blue-700 rounded-full"
         rightSection={<IconArrowRight className="ml-2" />}
         onClick={handleCheckout}
+        loading={createPaymentIntentMutation.isPending}
       >
         Proceed to checkout
       </Button>

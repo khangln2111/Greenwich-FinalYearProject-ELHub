@@ -2,10 +2,8 @@ import { Anchor, Box, Loader, useComputedColorScheme } from "@mantine/core";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { CartItemType } from "../../react-query/cart/cart.types";
-import { useCreatePaymentIntent } from "../../react-query/order/orderHooks";
 import CheckoutForm from "./_c/CheckoutForm";
 import CheckoutSummary from "./_c/CheckoutSummary";
 
@@ -16,37 +14,18 @@ const stripePromise = loadStripe(
 export default function CheckoutPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   });
   const stripeTheme = computedColorScheme === "dark" ? "night" : "stripe";
-  const createPaymentIntentMutation = useCreatePaymentIntent();
 
   const items: CartItemType[] | undefined = location.state?.selectedItems;
+  const clientSecret: string | null = location.state?.clientSecret ?? null;
 
   // Nếu không có item được chọn -> về lại cart
-  if (!items || items.length === 0) {
+  if (!items || items.length === 0 || !clientSecret) {
     return <Navigate to="/cart" replace />;
   }
-
-  useEffect(() => {
-    if (items.length === 0) return;
-
-    createPaymentIntentMutation.mutate(
-      {
-        cartItemIds: items.map((item) => item.id),
-      },
-      {
-        onSuccess: (data) => {
-          setClientSecret(data.data?.clientSecret ?? null);
-        },
-        onError: (error) => {
-          console.error("Failed to create PaymentIntent", error);
-        },
-      },
-    );
-  }, [items]);
 
   if (!clientSecret)
     return (

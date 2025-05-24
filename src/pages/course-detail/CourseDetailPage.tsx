@@ -1,4 +1,4 @@
-import { Anchor, Box, Breadcrumbs, SegmentedControl, Tabs, Title } from "@mantine/core";
+import { Anchor, Box, Breadcrumbs, Button, SegmentedControl, Tabs, Title } from "@mantine/core";
 import {
   BadgeCheck,
   BarChart2,
@@ -237,7 +237,7 @@ const CourseDetailPage = () => {
                   <CourseStat icon={LanguagesIcon} label="Language" value="English" />
                 </ul>
               </div>
-              <button
+              {/* <button
                 className="mt-6 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500
                   hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg
                   transition-all duration-200 group text-lg"
@@ -245,7 +245,21 @@ const CourseDetailPage = () => {
               >
                 <span className="group-hover:scale-105 transition-transform">Add to Cart</span>
                 <ShoppingCart className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </button> */}
+              <Button
+                rightSection={
+                  <ShoppingCart className="size-5 group-hover:translate-x-1 transition-transform" />
+                }
+                radius="full"
+                size="lg"
+                className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600
+                  font-semibold mt-6 h-13 px-1"
+                variant="gradient"
+                loading={addCartItemMutation.isPending}
+                onClick={() => addCartItemMutation.mutate({ courseId: courseId, quantity: 1 })}
+              >
+                Add to Cart
+              </Button>
             </div>
           </div>
         </div>
