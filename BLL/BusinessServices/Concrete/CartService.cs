@@ -53,13 +53,13 @@ public class CartService(
         var cartItem = cart.CartItems.FirstOrDefault(x => x.CourseId == command.CourseId);
         if (cartItem == null)
         {
-            cartItem = new CartItem
+            var newCartItem = new CartItem
             {
                 CartId = cart.Id,
                 CourseId = command.CourseId,
                 Quantity = command.Quantity
             };
-            await context.CartItems.AddAsync(cartItem);
+            await context.CartItems.AddAsync(newCartItem);
         }
         else
         {

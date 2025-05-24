@@ -24,18 +24,18 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
 
 
         builder.Property(c => c.Status)
-            .HasMaxLength(50);
+            .HasMaxLength(CourseConstants.StatusMaxLength);
 
 
         builder.Property(c => c.Level)
-            .HasMaxLength(50);
+            .HasMaxLength(CourseConstants.LevelMaxLength);
 
 
         builder.Property(c => c.Prerequisites)
-            .HasMaxLength(1500);
+            .HasMaxLength(CourseConstants.PrerequisitesMaxLength);
 
         builder.Property(c => c.LearningOutcomes)
-            .HasMaxLength(1500);
+            .HasMaxLength(CourseConstants.LearningOutcomesMaxLength);
 
 
         builder.HasOne(c => c.Instructor)
