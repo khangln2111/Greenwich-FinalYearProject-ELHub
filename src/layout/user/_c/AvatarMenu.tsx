@@ -29,7 +29,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
       trigger="click"
     >
       <Menu.Target>
-        <div className="px-3 hover:bg-blue-light-hover py-1 rounded-md">
+        <div className="px-2 hover:bg-blue-light-hover py-1 rounded-md">
           <Indicator offset={5} processing>
             <Avatar
               className={cn("cursor-pointer", className)}

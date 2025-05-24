@@ -29,7 +29,7 @@ import {
   IconNotification,
   IconSearch,
 } from "@tabler/icons-react";
-import { ShoppingCart } from "lucide-react";
+import { MenuIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
@@ -147,14 +147,17 @@ const Header = () => {
         />
       </Modal>
       {/* Logo */}
-      <div className="flex items-center justify-between h-full gap-2 md:gap-10">
-        <Link
-          to="/"
-          className="no-underline select-none flex items-center text-black dark:text-white gap-2 font-semibold text-2xl"
-        >
-          <MantineLogo color="primary" size={30} type="mark" />
-          <span className="hidden md:block font-[Inter] tracking-wide font-bold">ELHub</span>
-        </Link>
+      <div className="flex items-center justify-between h-full gap-2 md:gap-6 lg:gap-10">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <PanelRightCloseIcon onClick={toggleDrawer} className="hidden-from-lg block" />
+          <Link
+            to="/"
+            className="no-underline select-none flex items-center text-black dark:text-white gap-2 font-semibold text-2xl"
+          >
+            <MantineLogo color="primary" size={30} type="mark" />
+            <span className="hidden md:block font-[Inter] tracking-wide font-bold">ELHub</span>
+          </Link>
+        </div>
 
         {/* Nav links (desktop) */}
         <div className="flex flex-1 justify-center items-center visible-from-md">
@@ -189,7 +192,12 @@ const Header = () => {
           >
             <IconSearch size={20} />
           </ActionIcon>
-          <ActionIcon variant="default" size="lg" aria-label="Notification trigger">
+          <ActionIcon
+            variant="default"
+            size="lg"
+            aria-label="Notification trigger"
+            visibleFrom="md"
+          >
             <IconBell size={19} strokeWidth={1.5} />
           </ActionIcon>
           {currentUser && (
@@ -213,7 +221,7 @@ const Header = () => {
           )}
           <ThemeToggler />
           {currentUser && <AvatarMenu />}
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" className="hidden" />
+          {/* <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="lg" /> */}
         </Group>
       </div>
 

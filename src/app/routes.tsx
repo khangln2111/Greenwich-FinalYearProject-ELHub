@@ -13,6 +13,7 @@ import InstructorDashboard from "../pages/instructor/InstructorDashboard";
 import InstructorCoursesPage from "../pages/instructor/courses/InstructorCoursesPage";
 import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
 import CheckoutResultPage from "../pages/checkout_result/CheckoutResultPage";
+import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -25,6 +26,11 @@ const userRoute: RouteObject = {
     { path: "cart", element: <CartPage /> },
     { path: "checkout", element: <CheckoutPage /> },
     { path: "checkout/result", element: <CheckoutResultPage /> },
+    {
+      path: "dashboard",
+      element: <UserDashboardLayout />,
+      children: [{ index: true, element: <p>User Dashboard Home Page</p> }],
+    },
   ],
 };
 
