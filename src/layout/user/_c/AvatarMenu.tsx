@@ -47,16 +47,22 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         </div>
       </Menu.Target>
 
-      <Menu.Dropdown className="shadow-xl">
+      <Menu.Dropdown className="shadow-xl max-h-[90dvh] overflow-y-auto">
         <Menu.Label>Personal</Menu.Label>
-        <Menu.Item leftSection={<CircleUserIcon size={14} />}>My Account</Menu.Item>
-        <Menu.Item leftSection={<MonitorCheckIcon size={14} />}>Enrolled courses</Menu.Item>
-        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={14} />}>Analytics</Menu.Item>
-        <Menu.Item leftSection={<PackageIcon size={14} />}>Purchase History</Menu.Item>
-        <Menu.Item leftSection={<GiftIcon size={14} />}>Gifts</Menu.Item>
+        <Menu.Item
+          component={Link}
+          to="/dashboard/my-account"
+          leftSection={<CircleUserIcon size={15} />}
+        >
+          My Account
+        </Menu.Item>
+        <Menu.Item leftSection={<MonitorCheckIcon size={15} />}>Enrolled courses</Menu.Item>
+        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Analytics</Menu.Item>
+        <Menu.Item leftSection={<PackageIcon size={15} />}>Purchase History</Menu.Item>
+        <Menu.Item leftSection={<GiftIcon size={15} />}>Gifts</Menu.Item>
 
         <Menu.Item
-          leftSection={<IconSearch size={14} />}
+          leftSection={<IconSearch size={15} />}
           rightSection={
             <Text size="xs" c="dimmed">
               ⌘K
@@ -68,14 +74,14 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
 
         <Menu.Divider />
         <Menu.Label>Communication</Menu.Label>
-        <Menu.Item leftSection={<IconBell size={14} />}>Notifications</Menu.Item>
-        <Menu.Item leftSection={<IconMessageCircle size={14} />}>Messages</Menu.Item>
+        <Menu.Item leftSection={<IconBell size={15} />}>Notifications</Menu.Item>
+        <Menu.Item leftSection={<IconMessageCircle size={15} />}>Messages</Menu.Item>
 
         <Menu.Divider />
 
         <Menu.Label>Sites navigation</Menu.Label>
         <Menu.Item
-          leftSection={<IconBriefcase size={14} />}
+          leftSection={<IconBriefcase size={15} />}
           className="cursor-pointer"
           component={Link}
           to="/instructor/courses"
@@ -88,16 +94,16 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           className="cursor-pointer"
           component={Link}
           to="/"
-          leftSection={<GraduationCap size={14} />}
+          leftSection={<GraduationCap size={15} />}
         >
           Student Sites
         </Menu.Item>
 
         <Menu.Divider />
-        <Menu.Item leftSection={<IconSettings size={14} />}>Settings</Menu.Item>
+        <Menu.Item leftSection={<IconSettings size={15} />}>Settings</Menu.Item>
         <Menu.Item
           color="red"
-          leftSection={<IconTrash size={14} />}
+          leftSection={<IconTrash size={15} />}
           onClick={() => {
             handleLogout();
           }}

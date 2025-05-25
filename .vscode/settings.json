@@ -30,7 +30,9 @@
     "src/vite-env.d.ts": true,
     "tailwind.config.ts": true,
     "vite.config.ts": true,
-    "public": true
+    "public": true,
+    "localhost-key.pem": true,
+    "localhost.pem": true
   },
   "explorerExclude.backup": {}
 }

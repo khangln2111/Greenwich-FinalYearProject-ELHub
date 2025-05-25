@@ -38,7 +38,13 @@ export default function CartPage() {
     else setSelectedIds(allIds);
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader />
+      </div>
+    );
+
   if (!data) return <div>No data</div>;
 
   const cartItems = data?.cartItems ?? [];

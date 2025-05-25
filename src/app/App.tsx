@@ -10,6 +10,10 @@ import theme from "../styles/theme";
 import router from "./routes";
 import { ModalsProvider } from "@mantine/modals";
 import IdentityProvider from "./providers/IdentityProvider";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import dayjs from "dayjs";
+
+dayjs.extend(customParseFormat);
 
 const queryClient = new QueryClient({
   defaultOptions: {

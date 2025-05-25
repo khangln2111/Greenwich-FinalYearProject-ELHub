@@ -14,6 +14,7 @@ import InstructorCoursesPage from "../pages/instructor/courses/InstructorCourses
 import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
 import CheckoutResultPage from "../pages/checkout_result/CheckoutResultPage";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
+import MyAccountPage from "../pages/my-account/MyAccountPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -29,7 +30,13 @@ const userRoute: RouteObject = {
     {
       path: "dashboard",
       element: <UserDashboardLayout />,
-      children: [{ index: true, element: <p>User Dashboard Home Page</p> }],
+      children: [
+        { index: true, element: <p>User Dashboard Home Page</p> },
+        {
+          path: "my-account",
+          element: <MyAccountPage />,
+        },
+      ],
     },
   ],
 };
