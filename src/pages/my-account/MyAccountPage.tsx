@@ -17,7 +17,7 @@ export default function MyAccountPage() {
       </Title>
       <div className="w-full px-4 bg-body rounded-md border border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="rounded-xl max-w-(--container-md) mx-auto px-2 py-4 md:py-10">
-          <div className="flex flex-col items-center gap-2 mb-6">
+          <div className="flex flex-col items-center gap-4 mb-6">
             <Avatar size={100} radius="full" />
             <Button
               variant="subtle"
@@ -59,8 +59,8 @@ export default function MyAccountPage() {
               <label className="font-medium block mb-1">Gender</label>
               <Radio.Group value={gender} onChange={setGender} size="md" variant="outline">
                 <Group gap="md">
-                  <Radio value="male" label="Male" variant="outline" />
-                  <Radio value="female" label="Female" variant="outline" />
+                  <Radio value="male" label="Male" />
+                  <Radio value="female" label="Female" />
                 </Group>
               </Radio.Group>
             </div>

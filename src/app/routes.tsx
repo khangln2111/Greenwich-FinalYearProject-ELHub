@@ -36,6 +36,22 @@ const userRoute: RouteObject = {
           path: "my-account",
           element: <MyAccountPage />,
         },
+        {
+          path: "enrolled-courses",
+          element: <p>User Enrolled Courses Page</p>,
+        },
+        {
+          path: "analytics",
+          element: <p>User Analytics Page</p>,
+        },
+        {
+          path: "order-history",
+          element: <p>User Order History Page</p>,
+        },
+        {
+          path: "gifts",
+          element: <p>User Gifts Page</p>,
+        },
       ],
     },
   ],
@@ -70,45 +86,3 @@ const authRoutes: RouteObject[] = [
 const router = createBrowserRouter([userRoute, instructorRoute, ...authRoutes]);
 
 export default router;
-
-// Using TSX syntax for defining routes
-// const userRoutes = (
-//   <Route path="/" element={<UserLayout />} key="user">
-//     <Route index element={<HomePage />} />
-//     <Route path="courses" element={<CoursesPage />} />
-//     <Route path="*" element={<ErrorPage />} />
-//   </Route>
-// );
-
-// const authRoutes = [
-//   <Route path="/login" element={<LoginPage />} key="login" />,
-//   <Route path="/register" element={<RegisterPage />} key="register" />,
-// ];
-
-// const router = createBrowserRouter(
-//   createRoutesFromElements([userRoutes, ...authRoutes]),
-// );
-
-// const routes: RouteObject[] = [
-//   {
-//     path: "/",
-//     element: <UserLayout />, // To set the layout for the user routes
-//     errorElement: <h1>[Error boundary] Error occured, please check</h1>, // Error page for the user routes
-//     children: [
-//       { index: true, element: <HomePage /> }, // Homepage as the default route
-//       { path: "courses", element: <CoursesPage /> },
-//       {
-//         path: "*", // Catch all route for 404 errors
-//         element: <ErrorPage />, //ErrorPage will be wrapped in the UserLayout
-//       },
-//     ],
-//   },
-//   {
-//     path: "/login",
-//     element: <LoginPage />,
-//   },
-//   {
-//     path: "/register",
-//     element: <RegisterPage />,
-//   },
-// ];

@@ -74,3 +74,8 @@ export const getCurrentUser = async () => {
   const response = await apiClient.get<CurrentUser>(`${BASE_URL}/me`);
   return response.data;
 };
+
+export const updateUserProfile = async (data: Partial<CurrentUser>) => {
+  const response = await apiClient.put<CurrentUser>(`${BASE_URL}/me`, data);
+  return response.data;
+};
