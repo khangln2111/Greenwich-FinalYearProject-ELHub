@@ -11,6 +11,7 @@ import {
   ResendConfirmationEmailRequest,
   ResetPasswordRequest,
   SendResetPasswordOtpRequest,
+  UpdateUserProfileCommand,
   ValidateResetPasswordOtpRequest,
 } from "./identity.types";
 
@@ -75,7 +76,15 @@ export const getCurrentUser = async () => {
   return response.data;
 };
 
-export const updateUserProfile = async (data: Partial<CurrentUser>) => {
-  const response = await apiClient.put<CurrentUser>(`${BASE_URL}/me`, data);
+export const updateUserProfile = async (command: UpdateUserProfileCommand) => {
+  const response = await apiClient.put<ApiSuccessResponse>(
+    `${BASE_URL}/UpdateUserProfile`,
+    command,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
   return response.data;
 };

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export function formatCurrency(amount: number): string {
   return amount.toLocaleString("en-US", {
     style: "currency",
@@ -26,3 +28,9 @@ export function formatDurationLong(seconds: number): string {
   const minutes = Math.floor((seconds % 3600) / 60);
   return `${hours}h ${minutes}m`;
 }
+
+export const parseDateUTC = (val: string | null) => {
+  if (!val) return null;
+  const parsed = dayjs.utc(val, "DD/MM/YYYY", true);
+  return parsed.isValid() ? parsed.toDate() : null;
+};

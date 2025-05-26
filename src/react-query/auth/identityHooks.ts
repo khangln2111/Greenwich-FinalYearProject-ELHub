@@ -15,6 +15,7 @@ import {
   ResendConfirmationEmailRequest,
   ResetPasswordRequest,
   SendResetPasswordOtpRequest,
+  UpdateUserProfileCommand,
   ValidateResetPasswordOtpRequest,
 } from "./identity.types";
 import {
@@ -27,6 +28,7 @@ import {
   resendConfirmationEmail,
   resetPassword,
   sendResetPasswordOtp,
+  updateUserProfile,
   validateResetPasswordOtp,
 } from "./identityApi";
 
@@ -288,6 +290,30 @@ export const useRefreshToken = async (data: RefreshTokenRequest) => {
               showErrorToast(
                 "Invalid refresh Token",
                 "The token is invalid or has expired. Please login again.",
+              ),
+          },
+        ],
+      }),
+  });
+};
+
+export const useUpdateUserProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: UpdateUserProfileCommand) => updateUserProfile(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
+      showSuccessToast("Profile Updated", "Your profile has been updated successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast(
+                "User not found",
+                "The user profile you are trying to update does not exist.",
               ),
           },
         ],

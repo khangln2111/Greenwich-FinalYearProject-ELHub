@@ -40,7 +40,10 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
             <Avatar
               className={cn("cursor-pointer", className)}
               color="initials"
-              name={currentUser?.firstName || "haha"}
+              name={
+                `${currentUser?.firstName.trim() ?? ""} ${currentUser?.lastName.trim() ?? ""}`.trim() ||
+                "Nguyen Khang"
+              }
               allowedInitialsColors={["blue", "red"]}
             />
           </Indicator>

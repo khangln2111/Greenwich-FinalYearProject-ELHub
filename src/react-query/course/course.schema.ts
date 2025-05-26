@@ -34,13 +34,10 @@ export const createCourseFormSchema = z.object({
       message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
     }),
   categoryId: z.string({ message: "Category is required" }).min(1, "Select a category"),
-  level: z.enum(
-    [CourseLevel.Beginner, CourseLevel.Intermediate, CourseLevel.Advanced, CourseLevel.All],
-    {
-      required_error: "Level is required",
-      invalid_type_error: "Invalid level selected",
-    },
-  ),
+  level: z.nativeEnum(CourseLevel, {
+    required_error: "Level is required",
+    invalid_type_error: "Invalid level selected",
+  }),
 });
 
 export type CreateCourseFormValues = z.infer<typeof createCourseFormSchema>;
@@ -60,13 +57,10 @@ export const UpdateCourseOverviewFormSchema = z.object({
       value: z.string().min(1, "Cannot be empty"),
     }),
   ),
-  level: z.enum(
-    [CourseLevel.Beginner, CourseLevel.Intermediate, CourseLevel.Advanced, CourseLevel.All],
-    {
-      required_error: "Course level is required",
-      invalid_type_error: "Invalid course level selected",
-    },
-  ),
+  level: z.nativeEnum(CourseLevel, {
+    required_error: "Course level is required",
+    invalid_type_error: "Invalid course level selected",
+  }),
   image: z
     .instanceof(File, { message: "Course image is required" })
     .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {

@@ -39,7 +39,7 @@ export function extractThumbnailFromVideoUrl(videoUrl: string, seekTime = 1): Pr
       resolve(imageUrl);
     });
 
-    video.addEventListener("error", (e) => {
+    video.addEventListener("error", (_) => {
       reject("Failed to load video or CORS error");
     });
   });

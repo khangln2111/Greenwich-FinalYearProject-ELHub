@@ -1,4 +1,10 @@
-export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+export const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+  "image/svg",
+];
 
 export const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/ogg"];
 

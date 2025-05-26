@@ -89,5 +89,21 @@ export interface CurrentUser {
   firstName: string;
   lastName: string;
   avatarUrl: string;
+  dateOfBirth: Date;
+  gender: Gender;
   roles: string[]; // ["Admin", "User"]
+}
+
+export interface UpdateUserProfileCommand {
+  firstName?: string;
+  lastName?: string;
+  gender?: Gender;
+  dateOfBirth?: Date;
+  avatar?: File;
+}
+
+export enum Gender {
+  Male = "Male",
+  Female = "Female",
+  Other = "Other",
 }

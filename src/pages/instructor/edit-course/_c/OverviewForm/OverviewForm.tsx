@@ -30,8 +30,6 @@ type CourseOverviewFormProps = {
 };
 
 const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
-  // using react query to get coruse detail data
-
   const updateCourseOverviewMutation = useUpdateCourse();
 
   const initialValues = {
@@ -111,7 +109,6 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
           {...form.getInputProps("title")}
         />
       </div>
-
       <div>
         <Title order={3}>Course Description</Title>
         <Textarea
