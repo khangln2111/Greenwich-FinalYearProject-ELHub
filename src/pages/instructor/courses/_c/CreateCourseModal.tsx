@@ -1,19 +1,19 @@
-import { Button, TextInput, Textarea, NumberInput, Select } from "@mantine/core";
+import { Button, NumberInput, Select, TextInput, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import {
+  ArrowUpNarrowWide,
+  DollarSign,
   FileType,
   ScrollText,
-  DollarSign,
-  TicketPercent,
   TagsIcon,
-  ArrowUpNarrowWide,
+  TicketPercent,
 } from "lucide-react";
 import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import {
   ALLOWED_IMAGE_TYPES,
-  MAX_IMAGE_SIZE_MB,
   ALLOWED_VIDEO_TYPES,
+  MAX_IMAGE_SIZE_MB,
   MAX_VIDEO_SIZE_MB,
 } from "../../../../constants/ValidationConstants";
 import { useGetCategories } from "../../../../react-query/category/categoryHooks";

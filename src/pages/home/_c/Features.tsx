@@ -1,5 +1,5 @@
-import { Badge, Group, Title, Text, Card, SimpleGrid, Container } from "@mantine/core";
-import { IconGauge, IconUser, IconCookie } from "@tabler/icons-react";
+import { Badge, Card, Container, Group, SimpleGrid, Text, Title } from "@mantine/core";
+import { IconCookie, IconGauge, IconUser } from "@tabler/icons-react";
 
 const mockdata = [
   {

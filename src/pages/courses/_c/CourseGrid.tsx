@@ -1,7 +1,7 @@
-import { SimpleGrid, Flex } from "@mantine/core";
+import { Flex, SimpleGrid } from "@mantine/core";
+import { useGetCourses } from "../../../react-query/course/courseHooks";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import CoursePagination from "./CoursePagination";
-import { useGetCourses } from "../../../react-query/course/courseHooks";
 
 const CourseGrid = () => {
   const { data, isPending, isError } = useGetCourses();

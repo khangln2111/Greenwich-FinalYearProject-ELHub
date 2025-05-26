@@ -1,17 +1,17 @@
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { Accordion, ActionIcon, Button, Menu, Text, ThemeIcon } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { EllipsisVerticalIcon, Move, PlusIcon } from "lucide-react";
-import { SectionVm as lectureVm } from "../../../../../react-query/section/section.types";
-import { cn } from "../../../../../utils/cn";
-import { LectureItem } from "./LectureItem";
-import { CreateLectureModal } from "./CreateLectureModal";
 import { useState } from "react";
-import { useDisclosure } from "@mantine/hooks";
 import { LectureVm } from "../../../../../react-query/lecture/lecture.types";
-import { UpdateLectureModal } from "./UpdateLectureModal";
-import { modals } from "@mantine/modals";
+import { SectionVm as lectureVm } from "../../../../../react-query/section/section.types";
 import { useDeleteSection } from "../../../../../react-query/section/sectionHooks";
+import { cn } from "../../../../../utils/cn";
+import { CreateLectureModal } from "./CreateLectureModal";
+import { LectureItem } from "./LectureItem";
+import { UpdateLectureModal } from "./UpdateLectureModal";
 
 type SectionItemProps = {
   section: lectureVm;

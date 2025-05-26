@@ -1,11 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { useNavigate } from "react-router-dom";
 import { ErrorCode } from "../../http-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { useAppStore } from "../../zustand/store";
+import { handleApiError } from "../common-service/handleApiError";
+import { keyFac } from "../common-service/queryKeyFactory";
 import {
   ConfirmEmailRequest,
-  LoginWithGoogleRequest,
   LoginRequest,
+  LoginWithGoogleRequest,
   RefreshTokenRequest,
   RegisterRequest,
   ResendConfirmationEmailRequest,
@@ -15,20 +19,16 @@ import {
 } from "./identity.types";
 import {
   confirmEmail,
-  loginWithGoogle,
+  getCurrentUser,
   login,
+  loginWithGoogle,
   refreshToken,
   register,
   resendConfirmationEmail,
   resetPassword,
   sendResetPasswordOtp,
   validateResetPasswordOtp,
-  getCurrentUser,
 } from "./identityApi";
-import { handleApiError } from "../common-service/handleApiError";
-import { useAppStore } from "../../zustand/store";
-import { keyFac } from "../common-service/queryKeyFactory";
-import { useNavigate } from "react-router-dom";
 
 export const useCurrentUser = () => {
   const accessToken = useAppStore.use.accessToken();

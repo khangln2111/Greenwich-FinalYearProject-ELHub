@@ -1,6 +1,6 @@
+import { ElementType, SVGProps } from "react";
 import { useLocation } from "react-router-dom";
 import { CollapsedNavLink } from "./CollapsedNavLink";
-import { ElementType, SVGProps } from "react";
 import { ExpandedNavLink } from "./ExpandedNavLink";
 
 type SubLink = { label: string; href: string };

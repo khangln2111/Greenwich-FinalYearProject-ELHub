@@ -1,5 +1,5 @@
-import { CreateSectionCommand, ReorderSectionCommand, UpdateSectionCommand } from "./section.types";
 import apiClient from "../../http-client/apiClient";
+import { CreateSectionCommand, ReorderSectionCommand, UpdateSectionCommand } from "./section.types";
 
 const BASE_URL = "/sections";
 

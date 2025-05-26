@@ -1,12 +1,12 @@
 import { Draggable } from "@hello-pangea/dnd";
 import { ActionIcon, Menu, Text } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { EllipsisVerticalIcon, EyeIcon, Video } from "lucide-react";
 import { LectureVm } from "../../../../../react-query/lecture/lecture.types";
+import { useDeleteLecture } from "../../../../../react-query/lecture/lectureHooks";
 import { cn } from "../../../../../utils/cn";
 import { formatDurationMmSs } from "../../../../../utils/format";
-import { modals } from "@mantine/modals";
-import { useDeleteLecture } from "../../../../../react-query/lecture/lectureHooks";
 
 export type LectureItemProps = {
   lecture: LectureVm;

@@ -1,5 +1,5 @@
-import { Star } from "lucide-react";
 import { Image } from "@mantine/core";
+import { Star } from "lucide-react";
 import image from "../../../../assets/react-course-image.svg";
 const TestCard = () => {
   return (

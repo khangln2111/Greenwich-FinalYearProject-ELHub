@@ -1,4 +1,4 @@
-import { Button, Switch, TextInput, Textarea, Text } from "@mantine/core";
+import { Button, Switch, Text, TextInput, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { EyeIcon, EyeOffIcon, FileText, ScrollText } from "lucide-react";
 import { z } from "zod";

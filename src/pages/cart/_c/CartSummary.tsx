@@ -2,8 +2,8 @@ import { Button, Text } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { CartItemType } from "../../../react-query/cart/cart.types";
-import { cn } from "../../../utils/cn";
 import { useCreatePaymentIntent } from "../../../react-query/order/orderHooks";
+import { cn } from "../../../utils/cn";
 
 type CartSummaryProps = {
   selectedItems: CartItemType[];

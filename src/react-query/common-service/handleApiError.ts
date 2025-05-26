@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
+import React from "react";
 import { ApiErrorResponse, ErrorCode } from "../../http-client/api.types";
 import { showErrorToast } from "../../utils/toastHelper";
-import React from "react";
 
 type ErrorHandler = (error: AxiosError<ApiErrorResponse>) => void;
 

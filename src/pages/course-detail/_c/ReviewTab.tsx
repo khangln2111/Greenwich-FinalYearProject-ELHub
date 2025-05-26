@@ -1,4 +1,4 @@
-import { Progress, Rating, Select, SelectProps, TextInput, Title, Group } from "@mantine/core";
+import { Group, Progress, Rating, Select, SelectProps, TextInput, Title } from "@mantine/core";
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import { SearchIcon } from "lucide-react";
 import avatar from "../../../assets/placeholder/avatar-placeholder.jpg";

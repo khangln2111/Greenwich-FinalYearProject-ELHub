@@ -1,7 +1,7 @@
-import { ActionIcon, Button, Center, DefaultMantineSize, TextInput, Title } from "@mantine/core";
-import { IconGripVertical, IconPlus, IconTrash } from "@tabler/icons-react";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { ActionIcon, Button, Center, DefaultMantineSize, TextInput, Title } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
+import { IconGripVertical, IconPlus, IconTrash } from "@tabler/icons-react";
 
 interface SortableInputListProps {
   form: UseFormReturnType<any>;

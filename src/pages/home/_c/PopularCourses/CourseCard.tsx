@@ -1,8 +1,8 @@
 import { Avatar, Badge, Button, Center, Image, Rating, Text, Tooltip } from "@mantine/core";
 import { Clock, LibraryBig, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 import { CourseLevel, CourseVm } from "../../../../react-query/course/course.types";
 import { formatDurationLong } from "../../../../utils/format";
-import { Link } from "react-router-dom";
 
 type CourseCardProps = {
   course: CourseVm;

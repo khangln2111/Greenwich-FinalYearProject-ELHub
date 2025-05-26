@@ -13,8 +13,8 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import CourseCard from "./CourseCard";
 import { mockCourses } from "../../../../react-query/mockData";
+import CourseCard from "./CourseCard";
 
 const PopularCourses = () => {
   const [opened, { open, close }] = useDisclosure(false);

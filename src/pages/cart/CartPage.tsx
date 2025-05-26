@@ -1,12 +1,11 @@
-import { Box, Checkbox, Loader } from "@mantine/core";
-import { Anchor } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Anchor, Box, Checkbox, Loader } from "@mantine/core";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { useGetCart, useUpdateCartItem, useDeleteCartItem } from "../../react-query/cart/cartHooks";
+import { Link } from "react-router-dom";
+import { UpdateCartItemCommand } from "../../react-query/cart/cart.types";
+import { useDeleteCartItem, useGetCart, useUpdateCartItem } from "../../react-query/cart/cartHooks";
 import CartItem from "./_c/CartItem";
 import CartSummary from "./_c/CartSummary";
-import { UpdateCartItemCommand } from "../../react-query/cart/cart.types";
 
 export default function CartPage() {
   const { data, isLoading } = useGetCart();

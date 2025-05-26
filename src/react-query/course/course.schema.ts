@@ -2,8 +2,8 @@
 import { z } from "zod";
 import {
   ALLOWED_IMAGE_TYPES,
-  MAX_IMAGE_SIZE_MB,
   ALLOWED_VIDEO_TYPES,
+  MAX_IMAGE_SIZE_MB,
   MAX_VIDEO_SIZE_MB,
 } from "../../constants/ValidationConstants";
 import { CourseLevel } from "./course.types";

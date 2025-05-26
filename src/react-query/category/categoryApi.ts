@@ -1,12 +1,12 @@
-import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
+import { GridifyQueryBuilder } from "gridify-client";
+import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
+import apiClient from "../../http-client/apiClient";
 import {
   Category,
   CategoryQueryCriteria,
   CreateCategoryCommand,
   UpdateCategoryCommand,
 } from "./category.types";
-import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
-import apiClient from "../../http-client/apiClient";
 
 const BASE_URL = "/categories";
 

@@ -1,9 +1,9 @@
-import { Dropzone } from "@mantine/dropzone";
 import { Button } from "@mantine/core";
-import { ImageIcon, UploadIcon, VideoIcon } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { Dropzone } from "@mantine/dropzone";
 import { useUncontrolled } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
+import { ImageIcon, UploadIcon, VideoIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Accept } from "react-dropzone-esm";
 import VideoPlayerWithThumbnail from "./VideoPlayerWithThumbnail";
 interface FileUploadFieldProps {

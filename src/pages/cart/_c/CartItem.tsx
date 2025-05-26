@@ -2,8 +2,8 @@ import { ActionIcon, Checkbox, Text } from "@mantine/core";
 import { Trash2 } from "lucide-react";
 import QuantityControl from "./QuantityControl";
 
-import { cn } from "../../../utils/cn";
 import { CartItemType } from "../../../react-query/cart/cart.types";
+import { cn } from "../../../utils/cn";
 
 type CartItemProps = {
   item: CartItemType;

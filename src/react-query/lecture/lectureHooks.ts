@@ -4,8 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { createLecture, deleteLecture, reorderLecture, updateLecture } from "./lectureApi";
 import { CreateLectureCommand, ReorderLectureCommand, UpdateLectureCommand } from "./lecture.types";
+import { createLecture, deleteLecture, reorderLecture, updateLecture } from "./lectureApi";
 
 export const useReorderLecture = () => {
   const queryClient = useQueryClient();

@@ -1,9 +1,9 @@
 import { Button, Loader } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
-import { useConfirmPaymentIntent } from "../../react-query/order/orderHooks";
-import { useQueryClient } from "@tanstack/react-query";
 import { keyFac } from "../../react-query/common-service/queryKeyFactory";
+import { useConfirmPaymentIntent } from "../../react-query/order/orderHooks";
 
 export default function CheckoutResultPage() {
   const [searchParams] = useSearchParams();

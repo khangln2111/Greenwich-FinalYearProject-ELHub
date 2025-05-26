@@ -1,4 +1,4 @@
-import { TextInput, Button, Title, Stack } from "@mantine/core";
+import { Button, Stack, TextInput, Title } from "@mantine/core";
 
 interface Props {
   price: number;

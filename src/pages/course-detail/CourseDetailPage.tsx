@@ -15,13 +15,13 @@ import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import image from "../../assets/placeholder/courseDetail.jpg";
 import VideoPlayerWithThumbnail from "../../components/media/VideoPlayerWithThumbnail";
+import { useAddCartItem } from "../../react-query/cart/cartHooks";
 import { useGetCourseDetail } from "../../react-query/course/courseHooks";
 import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
 import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
-import { useAddCartItem } from "../../react-query/cart/cartHooks";
 
 const items = [
   { title: "Home", href: "/" },

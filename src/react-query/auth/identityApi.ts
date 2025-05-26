@@ -1,18 +1,18 @@
+import { ApiSuccessResponse } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
 import {
   AuthResponse,
   ConfirmEmailRequest,
-  LoginWithGoogleRequest,
+  CurrentUser,
   LoginRequest,
+  LoginWithGoogleRequest,
   RefreshTokenRequest,
   RegisterRequest,
   ResendConfirmationEmailRequest,
   ResetPasswordRequest,
   SendResetPasswordOtpRequest,
   ValidateResetPasswordOtpRequest,
-  CurrentUser,
 } from "./identity.types";
-import { ApiSuccessResponse } from "../../http-client/api.types";
 
 const BASE_URL = "/identity";
 

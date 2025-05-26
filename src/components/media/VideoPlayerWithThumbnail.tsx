@@ -1,9 +1,9 @@
-import { Play } from "lucide-react";
-import { useState, useEffect } from "react";
-import ReactPlayer from "react-player";
-import { extractThumbnailFromVideoUrl } from "../../utils/form";
-import { cn } from "../../utils/cn";
 import { Loader } from "@mantine/core";
+import { Play } from "lucide-react";
+import { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
+import { cn } from "../../utils/cn";
+import { extractThumbnailFromVideoUrl } from "../../utils/form";
 
 type VideoPlayerWithThumbnailProps = {
   videoUrl: string;

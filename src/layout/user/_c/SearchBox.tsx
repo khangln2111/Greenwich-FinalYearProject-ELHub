@@ -1,7 +1,7 @@
-import { TextInputProps, TextInput, ActionIcon } from "@mantine/core";
-import { IconX, IconSearch } from "@tabler/icons-react";
-import { cn } from "../../../utils/cn";
+import { ActionIcon, TextInput, TextInputProps } from "@mantine/core";
+import { IconSearch, IconX } from "@tabler/icons-react";
 import { ArrowRightIcon } from "lucide-react";
+import { cn } from "../../../utils/cn";
 
 type SearchBoxProps = {
   value: string;

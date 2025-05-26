@@ -1,6 +1,6 @@
-import { Text, Container, ActionIcon, Group } from "@mantine/core";
-import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from "@tabler/icons-react";
+import { ActionIcon, Container, Group, Text } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
+import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from "@tabler/icons-react";
 
 const data = [
   {

@@ -1,6 +1,6 @@
+import { NumberInput } from "@mantine/core";
 import { Minus, Plus } from "lucide-react";
 import { cn } from "../../../utils/cn";
-import { NumberInput } from "@mantine/core";
 
 type QuantityControlProps = {
   quantity: number;
