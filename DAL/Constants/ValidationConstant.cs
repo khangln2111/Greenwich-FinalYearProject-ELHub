@@ -6,6 +6,7 @@ public static class UserConstants
     public const int LastNameMaxLength = 70;
     public const int AddressMaxLength = 200;
     public const int BioMaxLength = 500;
+    public const int AvatarMaxSizeBytes = 5 * 1024 * 1024; // 5MB
 }
 
 public static class OrderConstants

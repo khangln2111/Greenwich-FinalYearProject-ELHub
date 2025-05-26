@@ -9,7 +9,9 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public Media? ProfilePicture { get; set; }
+
+
+    public Media? Avatar { get; set; }
     public string? Address { get; set; }
     public string? Bio { get; set; }
 

@@ -1,5 +1,4 @@
 using API;
-using API.Middlewares;
 using BLL;
 using DAL;
 using DAL.Data;

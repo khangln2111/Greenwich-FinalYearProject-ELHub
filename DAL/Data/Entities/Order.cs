@@ -4,7 +4,7 @@ namespace DAL.Data.Entities;
 
 public class Order : BaseEntity
 {
-    public OrderStatus Status { get; set; }
+    public OrderStatus Status { get; set; } = OrderStatus.Incomplete;
 
     public Guid UserId { get; set; }
 

@@ -273,6 +273,21 @@ public class IdentityService(
         };
     }
 
+    public async Task<Success> UpdateUserProfile(UpdateUserProfileCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        var user = await userManager.GetUserAsync(signInManager.Context.User);
+        if (user == null) throw new NotFoundException("Current user not found");
+
+        user.FirstName = command.FirstName;
+        user.LastName = command.LastName;
+
+        var result = await userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new BadRequestException(result.Errors);
+
+        return new Success("User profile updated successfully");
+    }
+
 
     private string CreateAccessToken(ClaimsPrincipal principal)
     {

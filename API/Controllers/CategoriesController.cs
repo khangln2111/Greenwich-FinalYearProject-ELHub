@@ -1,7 +1,6 @@
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CategoryDTOs;
 using Gridify;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;

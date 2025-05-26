@@ -86,11 +86,11 @@ namespace DAL.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    ProfilePictureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: true),
+                    AvatarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     IsActivated = table.Column<bool>(type: "bit", nullable: false),
                     IsInitialPasswordChanged = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -112,8 +112,8 @@ namespace DAL.Data.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Media_ProfilePictureId",
-                        column: x => x.ProfilePictureId,
+                        name: "FK_AspNetUsers_Media_AvatarId",
+                        column: x => x.AvatarId,
                         principalTable: "Media",
                         principalColumn: "Id");
                 });
@@ -426,7 +426,7 @@ namespace DAL.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GiverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReceiverEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReceiverEmail = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     RedeemedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -628,9 +628,9 @@ namespace DAL.Data.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_ProfilePictureId",
+                name: "IX_AspNetUsers_AvatarId",
                 table: "AspNetUsers",
-                column: "ProfilePictureId");
+                column: "AvatarId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

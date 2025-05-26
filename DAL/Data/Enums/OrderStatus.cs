@@ -2,7 +2,7 @@ namespace DAL.Data.Enums;
 
 public enum OrderStatus
 {
-    Processing,
+    Incomplete,
     Completed,
     Failed
 }

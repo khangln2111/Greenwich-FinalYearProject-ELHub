@@ -10,7 +10,6 @@ using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Utilities.MediaUtility.Abstract;
-using DAL.Utilities.MediaUtility.Concrete;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
 

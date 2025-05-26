@@ -1,5 +1,4 @@
-﻿using BLL.DTOs.LectureDTOs;
-using BLL.DTOs.SectionDTOs;
+﻿using BLL.DTOs.SectionDTOs;
 using FluentValidation;
 
 namespace BLL.Validations.CourseValidators;

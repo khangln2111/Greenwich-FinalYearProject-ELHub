@@ -1,5 +1,4 @@
-﻿using DAL.Data.Entities;
-using DAL.Data.Enums;
+﻿using DAL.Data.Enums;
 
 namespace BLL.DTOs.OrderDTOs;
 

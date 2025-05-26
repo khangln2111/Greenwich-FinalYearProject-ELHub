@@ -1,5 +1,4 @@
-﻿using BLL.DTOs.CartDTOs;
-using BLL.DTOs.OrderDTOs;
+﻿using BLL.DTOs.OrderDTOs;
 using BLL.Gridify.CustomModels;
 using BLL.Models;
 using Gridify;

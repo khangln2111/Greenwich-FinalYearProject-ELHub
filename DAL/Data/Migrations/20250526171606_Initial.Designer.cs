@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250524110133_Initial")]
+    [Migration("20250526171606_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -78,10 +78,15 @@ namespace DAL.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid?>("AvatarId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Bio")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -95,8 +100,8 @@ namespace DAL.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<bool>("IsActivated")
                         .HasColumnType("bit");
@@ -105,8 +110,8 @@ namespace DAL.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -131,9 +136,6 @@ namespace DAL.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("ProfilePictureId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -146,6 +148,8 @@ namespace DAL.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AvatarId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -153,8 +157,6 @@ namespace DAL.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("ProfilePictureId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -361,7 +363,8 @@ namespace DAL.Data.Migrations
 
                     b.Property<string>("ReceiverEmail")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(254)
+                        .HasColumnType("nvarchar(254)");
 
                     b.Property<DateTime?>("RedeemedAt")
                         .HasColumnType("datetime2");
@@ -821,11 +824,11 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Data.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "ProfilePicture")
+                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "Avatar")
                         .WithMany()
-                        .HasForeignKey("ProfilePictureId");
+                        .HasForeignKey("AvatarId");
 
-                    b.Navigation("ProfilePicture");
+                    b.Navigation("Avatar");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Cart", b =>

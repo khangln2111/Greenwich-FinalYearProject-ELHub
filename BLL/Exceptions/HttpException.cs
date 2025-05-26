@@ -1,7 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Http;
-
-namespace BLL.Exceptions;
+﻿namespace BLL.Exceptions;
 
 public class HttpException(int statusCode, string message, ErrorCode errorCode) : Exception(message)
 {
