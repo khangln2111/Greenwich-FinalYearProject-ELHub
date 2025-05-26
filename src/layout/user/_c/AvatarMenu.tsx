@@ -40,6 +40,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
             <Avatar
               className={cn("cursor-pointer", className)}
               color="initials"
+              src={currentUser?.avatarUrl ?? ""}
               name={
                 `${currentUser?.firstName.trim() ?? ""} ${currentUser?.lastName.trim() ?? ""}`.trim() ||
                 "Nguyen Khang"
