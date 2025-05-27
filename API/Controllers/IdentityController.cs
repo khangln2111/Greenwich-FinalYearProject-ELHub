@@ -123,4 +123,15 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         var result = await identityService.GetInfoMe();
         return Ok(result);
     }
+
+    [HttpPut("UpdateUserProfile")]
+    [Authorize]
+    [ProducesResponseType<InfoMeVm>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> UpdateProfile([FromForm] UpdateUserProfileCommand command)
+    {
+        var result = await identityService.UpdateUserProfile(command);
+        return Ok(result);
+    }
 }

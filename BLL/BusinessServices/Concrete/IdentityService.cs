@@ -1,18 +1,24 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using AutoMapper;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.IdentityDTOs;
 using BLL.Exceptions;
 using BLL.Models;
 using BLL.Validations;
+using DAL.Data;
 using DAL.Data.Entities;
+using DAL.Data.Enums;
+using DAL.Utilities.CurrentUserUtility;
 using DAL.Utilities.EmailUtility;
+using DAL.Utilities.MediaUtility.Abstract;
 using Google.Apis.Oauth2.v2.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -25,7 +31,12 @@ public class IdentityService(
     TimeProvider timeProvider,
     IValidationService validationService,
     IEmailUtility emailUtility,
-    IOptions<BearerTokenOptions> options)
+    IOptions<BearerTokenOptions> options,
+    IMapper mapper,
+    IMediaManager mediaManager,
+    ApplicationDbContext context,
+    ICurrentUserUtility currentUserUtility
+)
     : IIdentityService
 {
     public async Task<Success> Register(RegisterCommand command)
@@ -257,21 +268,34 @@ public class IdentityService(
             });
     }
 
+
     public async Task<InfoMeVm> GetInfoMe()
     {
-        var user = await userManager.GetUserAsync(signInManager.Context.User);
-        if (user == null) throw new NotFoundException("Current user not found");
-        // get user roles
-        var roles = await userManager.GetRolesAsync(user);
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser is null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        var user = await context.Users
+            .Include(u => u.Avatar)
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Id == currentUser.Id);
+
+        if (user is null)
+            throw new NotFoundException("User not found");
+
         return new InfoMeVm
         {
             Id = user.Id,
-            Email = user.Email ?? "",
-            FirstName = user.FirstName ?? "",
-            LastName = user.LastName ?? "",
-            Roles = roles.ToArray()
+            Email = user.Email ?? string.Empty,
+            FirstName = user.FirstName ?? string.Empty,
+            LastName = user.LastName ?? string.Empty,
+            Roles = currentUser.Roles.ToArray(),
+            AvatarUrl = user.Avatar?.Url,
+            Gender = user.Gender,
+            DateOfBirth = user.DateOfBirth
         };
     }
+
 
     public async Task<Success> UpdateUserProfile(UpdateUserProfileCommand command)
     {
@@ -279,11 +303,19 @@ public class IdentityService(
         var user = await userManager.GetUserAsync(signInManager.Context.User);
         if (user == null) throw new NotFoundException("Current user not found");
 
-        user.FirstName = command.FirstName;
-        user.LastName = command.LastName;
+        // if the user does not have an avatar, create a new one
+        if (command.Avatar != null && user.Avatar == null)
+        {
+            var avatar = await mediaManager.SaveFileAsync(command.Avatar, MediaType.Image);
+            await context.Media.AddAsync(avatar);
+            user.Avatar = avatar;
+        }
 
-        var result = await userManager.UpdateAsync(user);
-        if (!result.Succeeded) throw new BadRequestException(result.Errors);
+        if (command.Avatar != null && user.Avatar != null)
+            await mediaManager.UpdateFileAsync(user.Avatar, command.Avatar);
+
+        mapper.Map(command, user);
+        await context.SaveChangesAsync();
 
         return new Success("User profile updated successfully");
     }

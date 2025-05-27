@@ -10,15 +10,15 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
         builder.Property(x => x.FirstName)
-            .HasMaxLength(UserConstants.FirstNameMaxLength);
+            .HasMaxLength(AppConstants.User.FirstNameMaxLength);
 
         builder.Property(x => x.LastName)
-            .HasMaxLength(UserConstants.LastNameMaxLength);
+            .HasMaxLength(AppConstants.User.LastNameMaxLength);
 
         builder.Property(x => x.Address)
-            .HasMaxLength(UserConstants.AddressMaxLength);
+            .HasMaxLength(AppConstants.User.AddressMaxLength);
 
         builder.Property(x => x.Bio)
-            .HasMaxLength(UserConstants.BioMaxLength);
+            .HasMaxLength(AppConstants.User.BioMaxLength);
     }
 }

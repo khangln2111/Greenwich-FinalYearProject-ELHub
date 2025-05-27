@@ -11,10 +11,10 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
         builder.Property(c => c.Title)
             .IsRequired()
-            .HasMaxLength(CourseConstants.TitleMaxLength); // Limit the length of Title
+            .HasMaxLength(AppConstants.Course.TitleMaxLength); // Limit the length of Title
 
         builder.Property(c => c.Description)
-            .HasMaxLength(CourseConstants.DescriptionMaxLength);
+            .HasMaxLength(AppConstants.Course.DescriptionMaxLength);
 
         builder.Property(c => c.Price)
             .HasColumnType("decimal(18,2)"); // Decimal format for Price
@@ -24,18 +24,18 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
 
 
         builder.Property(c => c.Status)
-            .HasMaxLength(CourseConstants.StatusMaxLength);
+            .HasMaxLength(AppConstants.Course.StatusMaxLength);
 
 
         builder.Property(c => c.Level)
-            .HasMaxLength(CourseConstants.LevelMaxLength);
+            .HasMaxLength(AppConstants.Course.LevelMaxLength);
 
 
         builder.Property(c => c.Prerequisites)
-            .HasMaxLength(CourseConstants.PrerequisitesMaxLength);
+            .HasMaxLength(AppConstants.Course.PrerequisitesMaxLength);
 
         builder.Property(c => c.LearningOutcomes)
-            .HasMaxLength(CourseConstants.LearningOutcomesMaxLength);
+            .HasMaxLength(AppConstants.Course.LearningOutcomesMaxLength);
 
 
         builder.HasOne(c => c.Instructor)

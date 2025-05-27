@@ -10,6 +10,6 @@ public class GiftConfiguration : IEntityTypeConfiguration<Gift>
     public void Configure(EntityTypeBuilder<Gift> builder)
     {
         builder.Property(g => g.ReceiverEmail)
-            .HasMaxLength(GiftConstants.ReceiverEmailMaxLength);
+            .HasMaxLength(AppConstants.Gift.ReceiverEmailMaxLength);
     }
 }

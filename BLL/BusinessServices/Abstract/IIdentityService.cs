@@ -26,4 +26,6 @@ public interface IIdentityService
     Task<Success> ResetPassword(ResetPasswordCommand command);
 
     Task<InfoMeVm> GetInfoMe();
+
+    Task<Success> UpdateUserProfile(UpdateUserProfileCommand command);
 }

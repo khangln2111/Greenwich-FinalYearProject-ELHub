@@ -12,9 +12,9 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         // Configure properties
         builder.Property(c => c.Name)
             .IsRequired()
-            .HasMaxLength(CategoryConstants.NameMaxLength); // Limit the length of Name
+            .HasMaxLength(AppConstants.Category.NameMaxLength); // Limit the length of Name
 
         builder.Property(c => c.Description)
-            .HasMaxLength(CategoryConstants.DescriptionMaxLength); // Limit the length of Description
+            .HasMaxLength(AppConstants.Category.DescriptionMaxLength); // Limit the length of Description
     }
 }

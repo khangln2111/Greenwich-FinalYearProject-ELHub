@@ -10,8 +10,8 @@ public class CreateSectionCommandValidator : AbstractValidator<CreateSectionComm
     {
         RuleFor(x => x.CourseId).NotEmpty();
         RuleFor(x => x.Title).NotEmpty()
-            .MaximumLength(SectionConstants.TitleMaxLength);
+            .MaximumLength(AppConstants.Section.TitleMaxLength);
         RuleFor(x => x.Description).NotEmpty()
-            .MaximumLength(SectionConstants.DescriptionMaxLength);
+            .MaximumLength(AppConstants.Section.DescriptionMaxLength);
     }
 }

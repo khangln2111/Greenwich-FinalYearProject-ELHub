@@ -14,11 +14,11 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
             .NotEmpty();
 
         RuleFor(x => x.Title)
-            .MaximumLength(CourseConstants.TitleMaxLength)
+            .MaximumLength(AppConstants.Course.TitleMaxLength)
             .When(x => !string.IsNullOrEmpty(x.Title));
 
         RuleFor(x => x.Description)
-            .MaximumLength(CourseConstants.DescriptionMaxLength)
+            .MaximumLength(AppConstants.Course.DescriptionMaxLength)
             .When(x => !string.IsNullOrEmpty(x.Description));
 
         RuleFor(x => x.Price)
@@ -50,19 +50,21 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
             .When(x => x.Level.HasValue);
 
         RuleFor(x => x.Image)
-            .Must(file => file == null || mediaManager.FileHasValidExtension(file, MediaConstants.ImageExtensions))
+            .Must(file =>
+                file == null || mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedImageExtensions))
             .WithMessage(
-                $"Unsupported image file extension. Supported extensions: {string.Join(", ", MediaConstants.ImageExtensions)}.")
-            .Must(file => file != null && mediaManager.IsFileUnderMaxSize(file, CourseConstants.ImageMaxSizeBytes))
-            .WithMessage($"Image size cannot exceed {CourseConstants.ImageMaxSizeBytes.Bytes().Humanize()}.")
+                $"Unsupported image file extension. Supported extensions: {string.Join(", ", AppConstants.Media.AllowedImageExtensions)}.")
+            .Must(file => file != null && mediaManager.IsFileUnderMaxSize(file, AppConstants.Course.ImageMaxSizeBytes))
+            .WithMessage($"Image size cannot exceed {AppConstants.Course.ImageMaxSizeBytes.Bytes().Humanize()}.")
             .When(x => x.Image != null);
 
         RuleFor(x => x.PromoVideo)
-            .Must(file => file == null || mediaManager.FileHasValidExtension(file, MediaConstants.VideoExtensions))
+            .Must(file =>
+                file == null || mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedVideoExtensions))
             .WithMessage(
-                $"Unsupported video file extension. Supported extensions: {string.Join(", ", MediaConstants.VideoExtensions)}.")
-            .Must(file => file != null && mediaManager.IsFileUnderMaxSize(file, CourseConstants.VideoMaxSizeBytes))
-            .WithMessage($"PromoVideo size cannot exceed {CourseConstants.VideoMaxSizeBytes.Bytes().Humanize()}.")
+                $"Unsupported video file extension. Supported extensions: {string.Join(", ", AppConstants.Media.AllowedVideoExtensions)}.")
+            .Must(file => file != null && mediaManager.IsFileUnderMaxSize(file, AppConstants.Course.VideoMaxSizeBytes))
+            .WithMessage($"PromoVideo size cannot exceed {AppConstants.Course.VideoMaxSizeBytes.Bytes().Humanize()}.")
             .When(x => x.PromoVideo != null);
     }
 }

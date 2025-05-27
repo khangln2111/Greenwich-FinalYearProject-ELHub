@@ -11,7 +11,7 @@ public class UpdateUserProfileCommand
 
     public Gender? Gender { get; set; }
 
-    public DateTime? Birthday { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     public IFormFile? Avatar { get; set; }
 }

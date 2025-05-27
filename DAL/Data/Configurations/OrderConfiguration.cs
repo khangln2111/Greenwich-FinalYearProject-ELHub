@@ -14,6 +14,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .IsUnique();
 
         builder.Property(o => o.PaymentIntentId)
-            .HasMaxLength(OrderConstants.PaymentIntentIdMaxLength);
+            .HasMaxLength(AppConstants.Order.PaymentIntentIdMaxLength);
     }
 }

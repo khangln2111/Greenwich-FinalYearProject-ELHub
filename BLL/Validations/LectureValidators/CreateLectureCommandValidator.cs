@@ -14,11 +14,11 @@ public class CreateLectureCommandValidator : AbstractValidator<CreateLectureComm
 
         RuleFor(x => x.Title)
             .NotEmpty()
-            .MaximumLength(LectureConstants.TitleMaxLength);
+            .MaximumLength(AppConstants.Lecture.TitleMaxLength);
 
         RuleFor(x => x.Description)
             .NotEmpty()
-            .MaximumLength(LectureConstants.DescriptionMaxLength);
+            .MaximumLength(AppConstants.Lecture.DescriptionMaxLength);
 
         RuleFor(x => x.SectionId)
             .NotEmpty();
@@ -28,10 +28,10 @@ public class CreateLectureCommandValidator : AbstractValidator<CreateLectureComm
 
         RuleFor(x => x.Video)
             .NotEmpty()
-            .Must(file => mediaManager.FileHasValidExtension(file, MediaConstants.VideoExtensions))
+            .Must(file => mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedVideoExtensions))
             .WithMessage(
-                $"Unsupported video file extension. Supported extensions: {string.Join(", ", MediaConstants.VideoExtensions)}.")
-            .Must(file => mediaManager.IsFileUnderMaxSize(file, LectureConstants.VideoMaxSizeBytes))
-            .WithMessage($"PromoVideo size cannot exceed {LectureConstants.VideoMaxSizeBytes.Bytes().Megabytes}.");
+                $"Unsupported video file extension. Supported extensions: {string.Join(", ", AppConstants.Media.AllowedVideoExtensions)}.")
+            .Must(file => mediaManager.IsFileUnderMaxSize(file, AppConstants.Lecture.VideoMaxSizeBytes))
+            .WithMessage($"PromoVideo size cannot exceed {AppConstants.Lecture.VideoMaxSizeBytes.Bytes().Megabytes}.");
     }
 }

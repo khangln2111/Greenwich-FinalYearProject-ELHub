@@ -18,12 +18,12 @@ public class CreateCourseCommandValidator : AbstractValidator<CreateCourseComman
 
         RuleFor(x => x.Title)
             .NotEmpty()
-            .MaximumLength(CourseConstants.TitleMaxLength);
+            .MaximumLength(AppConstants.Course.TitleMaxLength);
 
 
         RuleFor(x => x.Description)
             .NotEmpty()
-            .MaximumLength(CourseConstants.DescriptionMaxLength);
+            .MaximumLength(AppConstants.Course.DescriptionMaxLength);
 
         RuleFor(x => x.Price)
             .GreaterThanOrEqualTo(0).WithMessage("Price cannot be negative");
@@ -40,18 +40,18 @@ public class CreateCourseCommandValidator : AbstractValidator<CreateCourseComman
 
         RuleFor(x => x.Image)
             .NotEmpty()
-            .Must(file => mediaManager.FileHasValidExtension(file, MediaConstants.ImageExtensions))
+            .Must(file => mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedImageExtensions))
             .WithMessage(
-                $"Unsupported image file extension. Supported extensions: {string.Join(", ", MediaConstants.ImageExtensions)}.")
-            .Must(file => mediaManager.IsFileUnderMaxSize(file, CourseConstants.ImageMaxSizeBytes))
-            .WithMessage($"Image size cannot exceed {CourseConstants.ImageMaxSizeBytes.Bytes().Humanize()}.");
+                $"Unsupported image file extension. Supported extensions: {string.Join(", ", AppConstants.Media.AllowedImageExtensions)}.")
+            .Must(file => mediaManager.IsFileUnderMaxSize(file, AppConstants.Course.ImageMaxSizeBytes))
+            .WithMessage($"Image size cannot exceed {AppConstants.Course.ImageMaxSizeBytes.Bytes().Humanize()}.");
 
         RuleFor(x => x.PromoVideo)
             .NotEmpty()
-            .Must(file => mediaManager.FileHasValidExtension(file, MediaConstants.VideoExtensions))
+            .Must(file => mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedVideoExtensions))
             .WithMessage(
-                $"Unsupported video file extension. Supported extensions: {string.Join(", ", MediaConstants.VideoExtensions)}.")
-            .Must(file => mediaManager.IsFileUnderMaxSize(file, CourseConstants.VideoMaxSizeBytes))
-            .WithMessage($"PromoVideo size cannot exceed {CourseConstants.VideoMaxSizeBytes.Bytes().Humanize()}.");
+                $"Unsupported video file extension. Supported extensions: {string.Join(", ", AppConstants.Media.AllowedVideoExtensions)}.")
+            .Must(file => mediaManager.IsFileUnderMaxSize(file, AppConstants.Course.VideoMaxSizeBytes))
+            .WithMessage($"PromoVideo size cannot exceed {AppConstants.Course.VideoMaxSizeBytes.Bytes().Humanize()}.");
     }
 }

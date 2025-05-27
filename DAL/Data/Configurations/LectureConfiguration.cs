@@ -11,9 +11,9 @@ public class LectureConfiguration : IEntityTypeConfiguration<Lecture>
     {
         builder.Property(l => l.Title)
             .IsRequired()
-            .HasMaxLength(LectureConstants.TitleMaxLength); // Limit the length of Title
+            .HasMaxLength(AppConstants.Lecture.TitleMaxLength); // Limit the length of Title
 
         builder.Property(l => l.Description)
-            .HasMaxLength(LectureConstants.DescriptionMaxLength); // Limit the length of Description
+            .HasMaxLength(AppConstants.Lecture.DescriptionMaxLength); // Limit the length of Description
     }
 }

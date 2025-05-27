@@ -59,8 +59,6 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.Image, opt => opt.Ignore())
             .ForMember(dest => dest.PromoVideo, opt => opt.Ignore())
             .ForMember(dest => dest.CategoryId, opt => opt.Ignore())
-            .ForMember(dest => dest.Price, opt => opt.Ignore())
-            .ForMember(dest => dest.DiscountedPrice, opt => opt.Ignore())
             .AfterMap((src, dest) =>
             {
                 if (src.CategoryId.HasValue) dest.CategoryId = src.CategoryId.Value;

@@ -11,9 +11,9 @@ public class SectionConfiguration : IEntityTypeConfiguration<Section>
     {
         builder.Property(x => x.Title)
             .IsRequired()
-            .HasMaxLength(SectionConstants.TitleMaxLength);
+            .HasMaxLength(AppConstants.Section.TitleMaxLength);
 
         builder.Property(x => x.Description)
-            .HasMaxLength(SectionConstants.DescriptionMaxLength);
+            .HasMaxLength(AppConstants.Section.DescriptionMaxLength);
     }
 }

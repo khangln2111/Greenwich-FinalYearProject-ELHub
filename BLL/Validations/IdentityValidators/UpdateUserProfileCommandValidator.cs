@@ -25,17 +25,18 @@ public class UpdateUserProfileCommandValidator : AbstractValidator<UpdateUserPro
             .WithMessage("Invalid gender value.")
             .When(x => x.Gender.HasValue);
 
-        RuleFor(x => x.Birthday)
+        RuleFor(x => x.DateOfBirth)
             .LessThan(DateTime.Today)
-            .WithMessage("Birthday must be in the past.")
-            .When(x => x.Birthday.HasValue);
+            .WithMessage("DateOfBirth must be in the past.")
+            .When(x => x.DateOfBirth.HasValue);
 
         RuleFor(x => x.Avatar)
-            .Must(file => file == null || mediaManager.FileHasValidExtension(file, MediaConstants.ImageExtensions))
+            .Must(file =>
+                file == null || mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedImageExtensions))
             .WithMessage(
-                $"Unsupported image file extension. Supported extensions: {string.Join(", ", MediaConstants.ImageExtensions)}.")
-            .Must(file => file == null || mediaManager.IsFileUnderMaxSize(file, UserConstants.AvatarMaxSizeBytes))
-            .WithMessage($"Avatar size cannot exceed {UserConstants.AvatarMaxSizeBytes.Bytes().Humanize()}.")
+                $"Unsupported image file extension. Supported extensions: {string.Join(", ", AppConstants.Media.AllowedImageExtensions)}.")
+            .Must(file => file == null || mediaManager.IsFileUnderMaxSize(file, AppConstants.User.AvatarMaxSizeBytes))
+            .WithMessage($"Avatar size cannot exceed {AppConstants.User.AvatarMaxSizeBytes.Bytes().Humanize()}.")
             .When(x => x.Avatar != null);
     }
 }

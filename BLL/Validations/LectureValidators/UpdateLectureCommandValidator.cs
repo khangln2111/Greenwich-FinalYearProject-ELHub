@@ -22,11 +22,12 @@ public class UpdateLectureCommandValidator : AbstractValidator<UpdateLectureComm
             .When(x => !string.IsNullOrEmpty(x.Description));
 
         RuleFor(x => x.Video)
-            .Must(file => file == null || mediaManager.FileHasValidExtension(file, MediaConstants.VideoExtensions))
+            .Must(file =>
+                file == null || mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedVideoExtensions))
             .WithMessage(
-                $"Unsupported video file extension. Supported extensions: {string.Join(", ", MediaConstants.VideoExtensions)}.")
-            .Must(file => file == null || mediaManager.IsFileUnderMaxSize(file, LectureConstants.VideoMaxSizeBytes))
-            .WithMessage($"Video size cannot exceed {LectureConstants.VideoMaxSizeBytes.Bytes().Humanize()}.")
+                $"Unsupported video file extension. Supported extensions: {string.Join(", ", AppConstants.Media.AllowedVideoExtensions)}.")
+            .Must(file => file == null || mediaManager.IsFileUnderMaxSize(file, AppConstants.Lecture.VideoMaxSizeBytes))
+            .WithMessage($"Video size cannot exceed {AppConstants.Lecture.VideoMaxSizeBytes.Bytes().Humanize()}.")
             .When(x => x.Video != null);
     }
 }

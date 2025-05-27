@@ -1,4 +1,5 @@
 using DAL.Data.Entities.MediaEntities;
+using DAL.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace DAL.Data.Entities;
@@ -14,6 +15,8 @@ public class ApplicationUser : IdentityUser<Guid>
     public Media? Avatar { get; set; }
     public string? Address { get; set; }
     public string? Bio { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+    public Gender? Gender { get; set; }
 
     public bool IsActivated { get; set; } = false;
 
