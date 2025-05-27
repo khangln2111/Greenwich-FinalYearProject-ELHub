@@ -49,7 +49,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
     initialValues: {
       firstName: user.firstName,
       lastName: user.lastName,
-      dateOfBirth: user.dateOfBirth,
+      dateOfBirth: new Date(user.dateOfBirth),
       gender: user.gender,
       avatar: user.avatarUrl,
     },
@@ -67,7 +67,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
 
     updateUserProfileMutation.mutate(payload, {
       onSuccess: () => {
-        form.reset();
+        form.resetDirty();
       },
     });
   };
@@ -80,12 +80,21 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
         <Avatar
           size={100}
           radius="full"
+          className="shadow-lg"
           src={avatar instanceof File ? URL.createObjectURL(avatar) : user.avatarUrl}
         />
         <FileButton
           accept={ALLOWED_IMAGE_TYPES.join(",")}
           {...form.getInputProps("avatar")}
           key={form.key("avatar")}
+          onChange={(file) => {
+            if (file) {
+              form.setFieldValue("avatar", file);
+              form.setDirty({
+                avatar: true,
+              });
+            }
+          }}
         >
           {(props) => (
             <Button

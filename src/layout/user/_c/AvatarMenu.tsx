@@ -1,4 +1,4 @@
-import { Avatar, Indicator, Menu, Text } from "@mantine/core";
+import { Avatar, Menu, Text } from "@mantine/core";
 import {
   IconBell,
   IconBriefcase,
@@ -36,18 +36,16 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
     >
       <Menu.Target>
         <div className="px-2 hover:bg-blue-light-hover py-1 rounded-md">
-          <Indicator offset={5} processing>
-            <Avatar
-              className={cn("cursor-pointer", className)}
-              color="initials"
-              src={currentUser?.avatarUrl ?? ""}
-              name={
-                `${currentUser?.firstName.trim() ?? ""} ${currentUser?.lastName.trim() ?? ""}`.trim() ||
-                "Nguyen Khang"
-              }
-              allowedInitialsColors={["blue", "red"]}
-            />
-          </Indicator>
+          <Avatar
+            className={cn("cursor-pointer", className)}
+            color="initials"
+            src={currentUser?.avatarUrl ?? ""}
+            name={
+              `${currentUser?.firstName.trim() ?? ""} ${currentUser?.lastName.trim() ?? ""}`.trim() ||
+              "Nguyen Khang"
+            }
+            allowedInitialsColors={["blue", "red"]}
+          />
         </div>
       </Menu.Target>
 

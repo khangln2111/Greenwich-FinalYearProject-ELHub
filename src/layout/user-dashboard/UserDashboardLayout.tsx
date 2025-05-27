@@ -77,7 +77,7 @@ export default function UserDashboardLayout() {
             className={cn(
               "flex items-center gap-2 px-5 py-3 rounded-lg cursor-pointer text-lg transition",
               isActive(item.href)
-                ? "bg-blue-100 text-blue-600 dark:bg-blue-900"
+                ? "bg-primary-light text-primary-light-color hover:bg-primary-light-hover"
                 : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800",
             )}
             onClick={() => {
