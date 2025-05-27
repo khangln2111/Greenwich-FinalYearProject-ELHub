@@ -13,6 +13,7 @@ import {
 import { useUpdateUserProfile } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 import { parseDateUTC } from "../../../utils/format";
+import avatarPlaceHolder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
 const UpdateUserProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -25,7 +26,9 @@ const UpdateUserProfileSchema = z.object({
     })
     .max(new Date(), "Date of birth cannot be in the future"),
   avatar: z
-    .instanceof(File)
+    .instanceof(File, {
+      message: "Profile photo is required",
+    })
     .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
       message: "Only JPG, JPEG, PNG, WEBP images are allowed",
     })
@@ -47,11 +50,11 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
   const form = useForm<UpdateUserProfileFormType>({
     mode: "uncontrolled",
     initialValues: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      dateOfBirth: new Date(user.dateOfBirth),
-      gender: user.gender,
-      avatar: user.avatarUrl,
+      firstName: user.firstName ?? "",
+      lastName: user.lastName ?? "",
+      dateOfBirth: new Date(user.dateOfBirth) ?? new Date(),
+      gender: user.gender ?? Gender.Other,
+      avatar: user.avatarUrl ?? "",
     },
     validate: zodResolver(UpdateUserProfileSchema),
   });
@@ -80,12 +83,15 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
         <Avatar
           size={100}
           radius="full"
-          className="shadow-lg"
-          src={avatar instanceof File ? URL.createObjectURL(avatar) : user.avatarUrl}
+          className="shadow-lg border"
+          src={
+            avatar instanceof File
+              ? URL.createObjectURL(avatar)
+              : user.avatarUrl || avatarPlaceHolder
+          }
         />
         <FileButton
           accept={ALLOWED_IMAGE_TYPES.join(",")}
-          {...form.getInputProps("avatar")}
           key={form.key("avatar")}
           onChange={(file) => {
             if (file) {
@@ -107,6 +113,9 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
             </Button>
           )}
         </FileButton>
+        {form.errors.avatar && (
+          <div className="mt-1 text-xs text-red-600">{form.errors.avatar}</div>
+        )}
       </div>
       <div className="flex flex-col gap-4">
         <div className="grid items-start grid-cols-2 gap-4">
@@ -116,7 +125,6 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
             key={form.key("firstName")}
             placeholder="Enter your first name"
             size="md"
-            required
           />
           <TextInput
             label="Last Name"
@@ -124,7 +132,6 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
             key={form.key("lastName")}
             placeholder="Enter your last name"
             size="md"
-            required
           />
         </div>
         <TextInput

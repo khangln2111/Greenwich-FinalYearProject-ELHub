@@ -1,4 +1,4 @@
-import { Collapse } from "@mantine/core";
+import { Avatar, Collapse } from "@mantine/core";
 import { IconBell, IconDashboard, IconMessageCircle, IconSettings } from "@tabler/icons-react";
 import {
   ChartNoAxesCombinedIcon,
@@ -13,6 +13,9 @@ import {
 import { ReactNode, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "../../utils/cn";
+import { useAppStore } from "../../zustand/store";
+import avatarPlaceHolder from "../../assets/placeholder/profile-avatar-placeholder.svg";
+import background from "../../assets/userDashboard/background-info.png";
 
 type MenuItem = {
   label: string;
@@ -29,11 +32,6 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/enrolled-courses",
   },
   {
-    label: "Analytics",
-    icon: <ChartNoAxesCombinedIcon className="size-5" />,
-    href: "/dashboard/analytics",
-  },
-  {
     label: "Purchase History",
     icon: <PackageIcon className="size-5" />,
     href: "/dashboard/order-history",
@@ -43,6 +41,11 @@ const menuItems: MenuItem[] = [
     label: "Notifications",
     icon: <IconBell className="size-5" />,
     href: "/dashboard/notifications",
+  },
+  {
+    label: "Analytics",
+    icon: <ChartNoAxesCombinedIcon className="size-5" />,
+    href: "/dashboard/analytics",
   },
   {
     label: "Messages",
@@ -57,14 +60,26 @@ export default function UserDashboardLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const currentUser = useAppStore.use.currentUser();
+
   const isActive = (href: string) => location.pathname === href;
 
   const Sidebar = () => (
     <div className="space-y-4">
-      <div className="bg-blue text-white rounded-xl p-4 text-center">
-        <div className="w-16 h-16 mx-auto rounded-full bg-white/20 flex items-center justify-center">
-          <User className="w-8 h-8" />
-        </div>
+      <div
+        className="bg-blue text-white rounded-xl p-4 text-center"
+        style={{
+          backgroundImage: `url(${background})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <Avatar
+          size={100}
+          radius="full"
+          className="mx-auto shadow-lg dark:border"
+          src={currentUser?.avatarUrl || avatarPlaceHolder}
+        />
         <p className="mt-2 font-medium">Khang</p>
         <p className="text-xs">lenguyenkhang21112003@gmail.com</p>
       </div>
