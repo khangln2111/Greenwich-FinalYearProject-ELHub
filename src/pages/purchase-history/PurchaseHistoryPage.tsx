@@ -1,4 +1,5 @@
 // PurchaseHistoryPage.tsx
+import { Badge } from "@mantine/core";
 import { ChevronRight, SearchIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -109,7 +110,7 @@ export default function PurchaseHistoryPage() {
                 text-gray-600 dark:text-gray-300 gap-2"
             >
               <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
-                <span className="font-bold text-sm md:text-md">#ORD{order.id}</span>
+                <span className="font-bold text-sm md:text-md">#{order.id}</span>
                 <span className="text-gray-400 visible-from-md">|</span>
                 <span>{order.method}</span>
                 <span className="text-gray-400 visible-from-md">|</span>
