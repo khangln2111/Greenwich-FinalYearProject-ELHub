@@ -1,4 +1,5 @@
 import { Avatar, Collapse } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   IconBell,
   IconDashboard,
@@ -65,8 +66,8 @@ export default function UserDashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-
   const currentUser = useAppStore.use.currentUser();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const isActive = (href: string) => location.pathname === href;
 
@@ -101,7 +102,7 @@ export default function UserDashboardLayout() {
             )}
             onClick={() => {
               navigate(item.href);
-              if (window.innerWidth < 768) setSidebarOpen(false);
+              if (!isDesktop) setSidebarOpen(false);
             }}
           >
             {item.icon}
@@ -119,7 +120,7 @@ export default function UserDashboardLayout() {
 
   return (
     <div className="bg-gray-200 dark:bg-dark-5 text-gray-900 dark:text-white flex-1">
-      <div className="p-4 md:p-6 lg:px-15 py-10 container">
+      <div className="p-4 md:p-6 xl:px-15 py-10 container">
         {/* Mobile toggle */}
         <div className="lg:hidden flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
@@ -133,16 +134,17 @@ export default function UserDashboardLayout() {
             {sidebarOpen ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
           </button>
         </div>
+
         <div className="flex flex-col lg:flex-row gap-7">
-          {/* Sidebar (Collapse ở mobile, luôn hiện ở md+) */}
-          <div className="w-full lg:basis-[300px]">
-            <Collapse in={sidebarOpen || window.innerWidth >= 1024}>
+          {/* Sidebar */}
+          <div className="w-full lg:w-[250px] xl:w-[300px]">
+            <Collapse in={!!(sidebarOpen || isDesktop)}>
               <div className="bg-body border border-gray-200 dark:border-gray-800 rounded-xl p-3">
                 <Sidebar />
               </div>
             </Collapse>
           </div>
-          {/* Main Content */}
+          {/* Main content */}
           <main className="flex-1">
             <Outlet />
           </main>

@@ -16,7 +16,7 @@ export function OrderCard({ order }: Props) {
     <div className="bg-body rounded-lg mb-6">
       <div
         className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-dark-4 text-sm
-          text-gray-600 dark:text-gray-300 gap-2"
+          text-gray-600 dark:text-gray-300 gap-2 flex-wrap"
       >
         <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
           <span className="font-bold text-sm md:text-md">#{order.id}</span>
@@ -25,9 +25,7 @@ export function OrderCard({ order }: Props) {
           <span className="text-gray-400 visible-from-md">|</span>
           <span className="text-dimmed font-semibold text-md">{order.date}</span>
         </div>
-        <span className={`font-semibold md:text-md shrink-0 ${order.statusColor}`}>
-          {order.status}
-        </span>
+        <span className={`font-semibold md:text-md ${order.statusColor}`}>{order.status}</span>
       </div>
 
       <FirstOrderItemPreviewer item={firstItem} remainingCount={remainingCount} />
