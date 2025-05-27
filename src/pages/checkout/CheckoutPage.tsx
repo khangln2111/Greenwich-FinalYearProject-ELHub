@@ -3,7 +3,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft } from "lucide-react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { CartItemType } from "../../react-query/cart/cart.types";
+import { CartItem } from "../../react-query/cart/cart.types";
 import CheckoutForm from "./_c/CheckoutForm";
 import CheckoutSummary from "./_c/CheckoutSummary";
 
@@ -19,7 +19,7 @@ export default function CheckoutPage() {
   });
   const stripeTheme = computedColorScheme === "dark" ? "night" : "stripe";
 
-  const items: CartItemType[] | undefined = location.state?.selectedItems;
+  const items: CartItem[] | undefined = location.state?.selectedItems;
   const clientSecret: string | null = location.state?.clientSecret ?? null;
 
   // Nếu không có item được chọn -> về lại cart

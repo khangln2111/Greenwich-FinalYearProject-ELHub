@@ -19,8 +19,9 @@ export default function QuantityControl({ quantity, onChange, className }: Quant
     >
       <button
         onClick={() => onChange(-1)}
+        disabled={quantity <= 1}
         className="w-8 h-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100
-          dark:hover:bg-gray-800"
+          dark:hover:bg-gray-800 disabled:cursor-not-allowed"
       >
         <Minus size={16} />
       </button>

@@ -3,12 +3,12 @@ import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { PaymentIntentResult } from "@stripe/stripe-js";
 import { LockIcon } from "lucide-react";
 import { useState } from "react";
-import { CartItemType } from "../../../react-query/cart/cart.types";
+import { CartItem } from "../../../react-query/cart/cart.types";
 import { cn } from "../../../utils/cn";
 import { showErrorToast } from "../../../utils/toastHelper";
 
 type CheckoutSummaryProps = {
-  items: CartItemType[];
+  items: CartItem[];
   className?: string;
   clientSecret: string;
 };

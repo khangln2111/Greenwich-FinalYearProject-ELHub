@@ -1,13 +1,13 @@
 export type Cart = {
   id: string;
   userId: string;
-  cartItems: CartItemType[];
+  cartItems: CartItem[];
   provisional: number;
   totalDirectDiscount: number;
   totalAmount: number;
 };
 
-export type CartItemType = {
+export type CartItem = {
   id: string;
   courseId: string;
   courseTitle: string;

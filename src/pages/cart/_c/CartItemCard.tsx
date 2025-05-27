@@ -2,11 +2,11 @@ import { ActionIcon, Checkbox, Text } from "@mantine/core";
 import { Trash2 } from "lucide-react";
 import QuantityControl from "./QuantityControl";
 
-import { CartItemType } from "../../../react-query/cart/cart.types";
+import { CartItem } from "../../../react-query/cart/cart.types";
 import { cn } from "../../../utils/cn";
 
-type CartItemProps = {
-  item: CartItemType;
+type CartItemCardProps = {
+  item: CartItem;
   onChangeQuantity: (id: string, delta: number) => void;
   onRemove: (id: string) => void;
   checked: boolean;
@@ -14,14 +14,14 @@ type CartItemProps = {
   className?: string;
 };
 
-export default function CartItem({
+export default function CartItemCard({
   item,
   onChangeQuantity,
   onRemove,
   checked,
   onToggle,
   className,
-}: CartItemProps) {
+}: CartItemCardProps) {
   return (
     <div className={cn("flex items-start border-t py-4 gap-4", className)}>
       <div className="flex gap-5 items-center">

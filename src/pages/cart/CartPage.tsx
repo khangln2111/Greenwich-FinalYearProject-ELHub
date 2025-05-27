@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { UpdateCartItemCommand } from "../../react-query/cart/cart.types";
 import { useDeleteCartItem, useGetCart, useUpdateCartItem } from "../../react-query/cart/cartHooks";
-import CartItem from "./_c/CartItem";
 import CartSummary from "./_c/CartSummary";
+import CartItemCard from "./_c/CartItemCard";
 
 export default function CartPage() {
   const { data, isLoading } = useGetCart();
@@ -114,7 +114,7 @@ export default function CartPage() {
             </div>
 
             {cartItems.map((item) => (
-              <CartItem
+              <CartItemCard
                 key={item.id}
                 item={item}
                 onChangeQuantity={(id, delta) => handleQuantityChange(id, delta, item.quantity)}
