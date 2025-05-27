@@ -16,6 +16,7 @@ import CheckoutResultPage from "../pages/checkout-result/CheckoutResultPage";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import MyAccountPage from "../pages/my-account/MyAccountPage";
 import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
+import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -28,6 +29,10 @@ const userRoute: RouteObject = {
     { path: "cart", element: <CartPage /> },
     { path: "checkout", element: <CheckoutPage /> },
     { path: "checkout/result", element: <CheckoutResultPage /> },
+    {
+      path: "dashboard/order-history/:orderId",
+      element: <OrderHistoryDetailPage />,
+    },
     {
       path: "dashboard",
       element: <UserDashboardLayout />,
@@ -49,6 +54,7 @@ const userRoute: RouteObject = {
           path: "order-history",
           element: <OrderHistoryPage />,
         },
+
         {
           path: "gifts",
           element: <p>User Gifts Page</p>,
