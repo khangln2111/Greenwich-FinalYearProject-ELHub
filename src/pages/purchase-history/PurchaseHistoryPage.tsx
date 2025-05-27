@@ -7,7 +7,7 @@ type OrderItem = {
   price: number;
   quantity: number;
   thumbnail?: string;
-  discountPrice?: number;
+  discountedPrice?: number;
 };
 
 type Order = {
@@ -42,7 +42,7 @@ const mockOrders: Order[] = [
     ],
   },
   {
-    id: "1008724",
+    id: "132E97B7-9543-4E90-A32D-BAAE4A09D705",
     date: "12/14/2024",
     method: "Card payment",
     status: "Success",
@@ -51,7 +51,7 @@ const mockOrders: Order[] = [
       {
         title: "KamiCare Antibacterial Cotton Buds (160 pcs) for kids - dual end",
         price: 25600,
-        discountPrice: 32000,
+        discountedPrice: 32000,
         quantity: 1,
         thumbnail:
           "https://cdn.nhathuoclongchau.com.vn/unsafe/50x50/https://cms-prod.s3-sgn09.fptcloud.com/DSC_00198_f2f6e60ea0.jpg",
@@ -81,7 +81,7 @@ export default function PurchaseHistoryPage() {
             className="w-full border rounded-full py-2 px-4 pl-10 shadow-sm focus:ring-2 focus:ring-blue-500
               focus:outline-none"
           />
-          <SearchIcon className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+          <SearchIcon className="absolute left-3 top-2.5 text-gray-400 size-5" />
         </div>
       </div>
       <div className="mx-auto">
@@ -106,16 +106,16 @@ export default function PurchaseHistoryPage() {
           <div key={order.id} className="bg-body rounded-lg mb-6">
             <div
               className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-zinc-800 text-sm
-                text-gray-600 dark:text-gray-300"
+                text-gray-600 dark:text-gray-300 gap-2"
             >
               <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
-                <span className="font-bold text-md">Order {order.date}</span>
+                <span className="font-bold text-sm md:text-md">#ORD{order.id}</span>
                 <span className="text-gray-400 visible-from-md">|</span>
                 <span>{order.method}</span>
                 <span className="text-gray-400 visible-from-md">|</span>
-                <span className="text-dimmed font-semibold">#{order.id}</span>
+                <span className="text-dimmed font-semibold text-md">{order.date}</span>
               </div>
-              <span className={`font-semibold ${order.statusColor}`}>{order.status}</span>
+              <span className={`font-semibold shrink-0 ${order.statusColor}`}>{order.status}</span>
             </div>
 
             {/* First Product Preview */}
@@ -136,19 +136,20 @@ export default function PurchaseHistoryPage() {
                 )}
               </div>
 
-              <div className="text-right text-sm">
-                <p>
-                  <span className="text-gray-700">{order.items[0].price.toLocaleString()}₫</span>
-                  {order.items[0].discountPrice && (
-                    <span className="line-through text-gray-400 ml-1 text-xs">
-                      {order.items[0].discountPrice.toLocaleString()}₫
+              <div className="text-right text-sm md:text-md">
+                <div>
+                  <span className="text-gray-700 font-semibold">
+                    {order.items[0].discountedPrice !== undefined
+                      ? `${order.items[0].discountedPrice.toLocaleString()}₫`
+                      : `${order.items[0].price.toLocaleString()}₫`}
+                  </span>
+                  {order.items[0].price && (
+                    <span className="line-through text-gray-400 ml-2">
+                      {order.items[0].price.toLocaleString()}₫
                     </span>
                   )}
-                </p>
-                <p className="text-gray-500">
-                  x{order.items[0].quantity}{" "}
-                  {order.items[0].title.includes("Buds") ? "Box" : "Pack"}
-                </p>
+                </div>
+                <p className="text-gray-500">x{order.items[0].quantity} </p>
               </div>
             </div>
 
@@ -156,17 +157,17 @@ export default function PurchaseHistoryPage() {
             <div className="flex justify-between items-center px-4 pb-4 text-sm">
               <div className="text-sm text-blue-600 mt-1 inline-flex items-center cursor-pointer hover:underline">
                 View details
-                <ChevronRight className="w-4 h-4 ml-1" />
+                <ChevronRight className="size-4 ml-1" />
               </div>
-              <p>
-                Total:{" "}
-                <span className="text-blue-600 font-semibold">
+              <div className="flex items-center gap-2">
+                <span className="text-md">Total Amount:</span>
+                <span className="text-blue-600 font-semibold text-lg">
                   {order.items
                     .reduce((acc, item) => acc + item.price * item.quantity, 0)
                     .toLocaleString()}
                   ₫
                 </span>
-              </p>
+              </div>
             </div>
           </div>
         ))}
