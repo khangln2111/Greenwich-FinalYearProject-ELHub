@@ -119,7 +119,7 @@ export default function UserDashboardLayout() {
 
   return (
     <div className="bg-gray-200 dark:bg-dark-5 text-gray-900 dark:text-white flex-1">
-      <div className="p-6 lg:px-15 py-10 container">
+      <div className="p-4 md:p-6 lg:px-15 py-10 container">
         {/* Mobile toggle */}
         <div className="lg:hidden flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
