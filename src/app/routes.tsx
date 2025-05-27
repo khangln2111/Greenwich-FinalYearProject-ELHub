@@ -15,7 +15,7 @@ import InstructorEditCoursePage from "../pages/instructor/edit-course/Instructor
 import CheckoutResultPage from "../pages/checkout-result/CheckoutResultPage";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import MyAccountPage from "../pages/my-account/MyAccountPage";
-import PurchaseHistoryPage from "../pages/purchase-history/PurchaseHistoryPage";
+import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -47,7 +47,7 @@ const userRoute: RouteObject = {
         },
         {
           path: "order-history",
-          element: <PurchaseHistoryPage />,
+          element: <OrderHistoryPage />,
         },
         {
           path: "gifts",

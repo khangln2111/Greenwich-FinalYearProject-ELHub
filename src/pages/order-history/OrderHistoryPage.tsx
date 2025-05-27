@@ -1,5 +1,3 @@
-// PurchaseHistoryPage.tsx
-import { Badge } from "@mantine/core";
 import { ChevronRight, SearchIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -66,7 +64,7 @@ const mockOrders: Order[] = [
   },
 ];
 
-export default function PurchaseHistoryPage() {
+export default function OrderHistoryPage() {
   const [activeTab, setActiveTab] = useState("All");
 
   const tabs = ["All", "Pending", "Success", "Canceled", "Refunded"];
