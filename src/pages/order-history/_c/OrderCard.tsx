@@ -1,6 +1,8 @@
 import { ChevronRight } from "lucide-react";
 import { FirstOrderItemPreviewer } from "./FirstOrderItemPreviewer";
 import { Order } from "../OrderHistoryPage";
+import { Box } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 type Props = {
   order: Order;
@@ -31,10 +33,14 @@ export function OrderCard({ order }: Props) {
       <FirstOrderItemPreviewer item={firstItem} remainingCount={remainingCount} />
 
       <div className="flex justify-between items-center px-4 pb-4 text-sm">
-        <div className="text-sm text-blue-600 mt-1 inline-flex items-center cursor-pointer hover:underline">
+        <Box
+          component={Link}
+          to={`/dashboard/order-history/${order.id}`}
+          className="text-sm text-blue-600 mt-1 inline-flex items-center cursor-pointer hover:underline"
+        >
           View details
           <ChevronRight className="size-4 ml-1" />
-        </div>
+        </Box>
         <div className="flex items-center gap-2">
           <span className="text-md">Total Amount:</span>
           <span className="text-blue-600 font-semibold text-lg">

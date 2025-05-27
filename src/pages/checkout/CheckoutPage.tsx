@@ -85,11 +85,11 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex gap-2 items-center lg:gap-6 lg:self-center justify-between">
                         <div className="flex flex-row items-baseline gap-3 lg:gap-1 lg:flex-col lg:items-end lg:self-center">
-                          <p className="text-sm text-dimmed font-semibold line-through">
-                            ${item.price.toLocaleString("en-US")}
-                          </p>
                           <p className="text-blue-500 font-semibold">
                             ${item.discountedPrice.toLocaleString("en-US")}
+                          </p>
+                          <p className="text-sm text-dimmed font-semibold line-through">
+                            ${item.price.toLocaleString("en-US")}
                           </p>
                         </div>
                         <div className="text-md text-gray-600 dark:text-gray-300">
