@@ -21,10 +21,10 @@ type Order = {
 
 const mockOrders: Order[] = [
   {
-    id: "2020640",
+    id: "132E97B7-9543-4E90-A32D-BAAE4A09D705",
     date: "10/04/2025",
     method: "Card payment",
-    status: "Delivered",
+    status: "Success",
     statusColor: "text-green-600",
     items: [
       {
@@ -45,7 +45,7 @@ const mockOrders: Order[] = [
     id: "1008724",
     date: "12/14/2024",
     method: "Card payment",
-    status: "Delivered",
+    status: "Success",
     statusColor: "text-green-600",
     items: [
       {
@@ -108,11 +108,11 @@ export default function PurchaseHistoryPage() {
               className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-zinc-800 text-sm
                 text-gray-600 dark:text-gray-300"
             >
-              <div className="space-x-2">
+              <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
                 <span className="font-bold text-md">Order {order.date}</span>
-                <span className="text-gray-400">|</span>
+                <span className="text-gray-400 visible-from-md">|</span>
                 <span>{order.method}</span>
-                <span className="text-gray-400">|</span>
+                <span className="text-gray-400 visible-from-md">|</span>
                 <span className="text-dimmed font-semibold">#{order.id}</span>
               </div>
               <span className={`font-semibold ${order.statusColor}`}>{order.status}</span>
@@ -134,10 +134,6 @@ export default function PurchaseHistoryPage() {
                     +{order.items.length - 1} more item
                   </p>
                 )}
-                <div className="text-sm text-blue-600 mt-1 inline-flex items-center cursor-pointer hover:underline">
-                  View details
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
               </div>
 
               <div className="text-right text-sm">
@@ -158,6 +154,10 @@ export default function PurchaseHistoryPage() {
 
             {/* Bottom total + action */}
             <div className="flex justify-between items-center px-4 pb-4 text-sm">
+              <div className="text-sm text-blue-600 mt-1 inline-flex items-center cursor-pointer hover:underline">
+                View details
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </div>
               <p>
                 Total:{" "}
                 <span className="text-blue-600 font-semibold">
@@ -167,9 +167,6 @@ export default function PurchaseHistoryPage() {
                   ₫
                 </span>
               </p>
-              <button className="bg-blue-600 text-white text-sm px-4 py-2 rounded-full hover:bg-blue-700 transition">
-                Buy Again
-              </button>
             </div>
           </div>
         ))}
