@@ -1,5 +1,11 @@
 import { Avatar, Collapse } from "@mantine/core";
-import { IconBell, IconDashboard, IconMessageCircle, IconSettings } from "@tabler/icons-react";
+import {
+  IconBell,
+  IconDashboard,
+  IconLayoutDashboardFilled,
+  IconMessageCircle,
+  IconSettings,
+} from "@tabler/icons-react";
 import {
   ChartNoAxesCombinedIcon,
   ChevronDown,
@@ -70,8 +76,6 @@ export default function UserDashboardLayout() {
         className="bg-blue text-white rounded-xl p-4 text-center"
         style={{
           backgroundImage: `url(${background})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
         }}
       >
         <Avatar
@@ -114,32 +118,35 @@ export default function UserDashboardLayout() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-dark-5 text-gray-900 dark:text-white p-6 lg:px-15 py-10">
-      {/* Mobile toggle */}
-      <div className="lg:hidden flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">User Dashboard</h2>
-        <button
-          onClick={() => setSidebarOpen((prev) => !prev)}
-          className="p-2 rounded-md border dark:border-gray-700"
-        >
-          {sidebarOpen ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
-        </button>
-      </div>
-
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Sidebar (Collapse ở mobile, luôn hiện ở md+) */}
-        <div className="w-full lg:basis-[270px]">
-          <Collapse in={sidebarOpen || window.innerWidth >= 1024}>
-            <div className="bg-body border border-gray-200 dark:border-gray-800 rounded-xl p-3">
-              <Sidebar />
-            </div>
-          </Collapse>
+    <div className="bg-gray-100 dark:bg-dark-5 text-gray-900 dark:text-white flex-1">
+      <div className="p-6 lg:px-15 py-10 container">
+        {/* Mobile toggle */}
+        <div className="lg:hidden flex justify-between items-center mb-4">
+          <div className="flex items-center gap-2">
+            <IconLayoutDashboardFilled />
+            <h2 className="text-2xl font-semibold">User Dashboard</h2>
+          </div>
+          <button
+            onClick={() => setSidebarOpen((prev) => !prev)}
+            className="p-2 rounded-md border dark:border-gray-700"
+          >
+            {sidebarOpen ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
+          </button>
         </div>
-
-        {/* Main Content */}
-        <main className="flex-1">
-          <Outlet />
-        </main>
+        <div className="flex flex-col md:flex-row gap-12">
+          {/* Sidebar (Collapse ở mobile, luôn hiện ở md+) */}
+          <div className="w-full lg:basis-[270px]">
+            <Collapse in={sidebarOpen || window.innerWidth >= 1024}>
+              <div className="bg-body border border-gray-200 dark:border-gray-800 rounded-xl p-3">
+                <Sidebar />
+              </div>
+            </Collapse>
+          </div>
+          {/* Main Content */}
+          <main className="flex-1">
+            <Outlet />
+          </main>
+        </div>
       </div>
     </div>
   );

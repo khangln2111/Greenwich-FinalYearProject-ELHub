@@ -12,9 +12,10 @@ import InstructorLayout from "../layout/instructor/InstructorLayout";
 import InstructorDashboard from "../pages/instructor/InstructorDashboard";
 import InstructorCoursesPage from "../pages/instructor/courses/InstructorCoursesPage";
 import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
-import CheckoutResultPage from "../pages/checkout_result/CheckoutResultPage";
+import CheckoutResultPage from "../pages/checkout-result/CheckoutResultPage";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import MyAccountPage from "../pages/my-account/MyAccountPage";
+import PurchaseHistoryPage from "../pages/purchase-history/PurchaseHistoryPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -46,7 +47,7 @@ const userRoute: RouteObject = {
         },
         {
           path: "order-history",
-          element: <p>User Order History Page</p>,
+          element: <PurchaseHistoryPage />,
         },
         {
           path: "gifts",
