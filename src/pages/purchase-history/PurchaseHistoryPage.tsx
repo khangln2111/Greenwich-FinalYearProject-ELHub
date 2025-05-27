@@ -23,7 +23,7 @@ const mockOrders: Order[] = [
   {
     id: "2020640",
     date: "10/04/2025",
-    method: "Pickup in store",
+    method: "Card payment",
     status: "Delivered",
     statusColor: "text-green-600",
     items: [
@@ -44,7 +44,7 @@ const mockOrders: Order[] = [
   {
     id: "1008724",
     date: "12/14/2024",
-    method: "Home delivery",
+    method: "Card payment",
     status: "Delivered",
     statusColor: "text-green-600",
     items: [
@@ -68,7 +68,7 @@ const mockOrders: Order[] = [
 export default function PurchaseHistoryPage() {
   const [activeTab, setActiveTab] = useState("All");
 
-  const tabs = ["All", "Processing", "Shipping", "Delivered", "Canceled", "Returned"];
+  const tabs = ["All", "Pending", "Success", "Canceled", "Refunded"];
 
   return (
     <div>
@@ -88,7 +88,7 @@ export default function PurchaseHistoryPage() {
         {/* Search */}
 
         {/* Tabs */}
-        <div className="flex gap-x-4 overflow-x-auto mb-6 bg-body rounded-t-xl">
+        <div className="flex gap-x-4 overflow-x-auto mb-4 bg-body rounded-t-xl">
           {tabs.map((tab) => (
             <button
               key={tab}
@@ -103,14 +103,17 @@ export default function PurchaseHistoryPage() {
 
         {/* Orders */}
         {mockOrders.map((order) => (
-          <div key={order.id} className="bg-body rounded-lg shadow-sm mb-6 border">
-            <div className="flex justify-between items-center p-4 border-b text-sm text-gray-600">
+          <div key={order.id} className="bg-body rounded-lg mb-6">
+            <div
+              className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-zinc-800 text-sm
+                text-gray-600 dark:text-gray-300"
+            >
               <div className="space-x-2">
-                <span className="font-medium">Order {order.date}</span>
+                <span className="font-bold text-md">Order {order.date}</span>
                 <span className="text-gray-400">|</span>
                 <span>{order.method}</span>
                 <span className="text-gray-400">|</span>
-                <span className="text-gray-400">#{order.id}</span>
+                <span className="text-dimmed font-semibold">#{order.id}</span>
               </div>
               <span className={`font-semibold ${order.statusColor}`}>{order.status}</span>
             </div>
@@ -127,7 +130,9 @@ export default function PurchaseHistoryPage() {
               <div className="flex-1">
                 <p className="font-medium text-sm">{order.items[0].title}</p>
                 {order.items.length > 1 && (
-                  <p className="text-sm text-gray-500">+{order.items.length - 1} more item</p>
+                  <p className="text-sm text-gray-500 dark:text-dark-2">
+                    +{order.items.length - 1} more item
+                  </p>
                 )}
                 <div className="text-sm text-blue-600 mt-1 inline-flex items-center cursor-pointer hover:underline">
                   View details

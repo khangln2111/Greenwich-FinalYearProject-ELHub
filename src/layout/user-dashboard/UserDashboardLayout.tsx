@@ -118,7 +118,7 @@ export default function UserDashboardLayout() {
   );
 
   return (
-    <div className="bg-gray-100 dark:bg-dark-5 text-gray-900 dark:text-white flex-1">
+    <div className="bg-gray-200 dark:bg-dark-5 text-gray-900 dark:text-white flex-1">
       <div className="p-6 lg:px-15 py-10 container">
         {/* Mobile toggle */}
         <div className="lg:hidden flex justify-between items-center mb-4">
@@ -133,9 +133,9 @@ export default function UserDashboardLayout() {
             {sidebarOpen ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
           </button>
         </div>
-        <div className="flex flex-col md:flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar (Collapse ở mobile, luôn hiện ở md+) */}
-          <div className="w-full lg:basis-[270px]">
+          <div className="w-full lg:basis-[300px]">
             <Collapse in={sidebarOpen || window.innerWidth >= 1024}>
               <div className="bg-body border border-gray-200 dark:border-gray-800 rounded-xl p-3">
                 <Sidebar />
