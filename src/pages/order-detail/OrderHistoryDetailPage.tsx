@@ -42,11 +42,12 @@ const OrderHistoryDetailPage = () => {
   return (
     <div className="bg-gray-200 dark:bg-dark-5 text-gray-900 dark:text-white flex-1">
       <div className="p-4 md:p-6 xl:px-15 py-10 container grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] items-start gap-6">
-        {/* Order info summary */}
-        <div className="bg-body rounded-lg">
+        {/* left section:  */}
+        <div>
+          {/* Order info summary */}
           <div
             className="flex justify-between items-center p-4 border-b text-sm text-gray-600 dark:text-gray-300 gap-2
-              flex-wrap"
+              flex-wrap bg-body rounded-lg"
           >
             <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
               <span className="font-bold text-sm md:text-md">#{id}</span>
@@ -57,9 +58,10 @@ const OrderHistoryDetailPage = () => {
             </div>
             <span className="font-semibold md:text-md text-green-600">{status}</span>
           </div>
-
+          {/* items list title */}
+          <h2 className="text-md font-medium mt-10">Items in order</h2>
           {/* Items */}
-          <div className="p-4 divide-y">
+          <div className="p-4 divide-y bg-body rounded-lg mt-1">
             {items.map((item, idx) => (
               <div
                 key={item.id}
