@@ -53,7 +53,7 @@ export default function CheckoutSummary({ items, className, clientSecret }: Chec
   };
 
   return (
-    <div className={cn("bg-body lg:rounded-2xl shadow p-4", className)}>
+    <div className={cn("bg-body lg:rounded-t-2xl shadow p-4", className)}>
       <Title order={3} className="text-xl font-semibold mb-4">
         Order Summary
       </Title>

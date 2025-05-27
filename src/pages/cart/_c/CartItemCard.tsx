@@ -23,7 +23,7 @@ export default function CartItemCard({
   className,
 }: CartItemCardProps) {
   return (
-    <div className={cn("flex items-start border-t py-4 gap-4", className)}>
+    <div className={cn("flex items-start border-t pt-4 gap-4", className)}>
       <div className="flex gap-5 items-center">
         <Checkbox checked={checked} onChange={() => onToggle(item.id)} />
         <img
@@ -50,14 +50,14 @@ export default function CartItemCard({
 
         <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center lg:gap-6 lg:self-center">
           <div className="flex flex-row items-baseline gap-3 lg:gap-1 lg:flex-col lg:items-end lg:self-center">
+            <Text className="text-blue-500 font-semibold">
+              ${item.discountedPrice.toLocaleString("en-US")}
+            </Text>
             {item.discountedPrice < item.price && (
               <Text className="text-sm text-dimmed font-semibold line-through">
                 ${item.price.toLocaleString("en-US")}
               </Text>
             )}
-            <Text className="text-blue-500 font-semibold">
-              ${item.discountedPrice.toLocaleString("en-US")}
-            </Text>
           </div>
 
           <QuantityControl

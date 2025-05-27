@@ -6,6 +6,8 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { CartItem } from "../../react-query/cart/cart.types";
 import CheckoutForm from "./_c/CheckoutForm";
 import CheckoutSummary from "./_c/CheckoutSummary";
+import CheckoutItem from "./_c/CheckoutItem";
+import SummaryDecorator from "../../components/SummaryDecorator";
 
 const stripePromise = loadStripe(
   "pk_test_51RRb7XRoRYlKkzyrjHFredaX8Ha0wJNHj0v60IJa1BycyHTVgTeO7VlUkveFVbN2GVbtvaQkcCPDoXLJPmR1WKMv00fBzMO0yS",
@@ -62,42 +64,14 @@ export default function CheckoutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] items-start gap-6">
             {/* Left section */}
             <div>
-              {/* Cart items */}
+              {/* Checkout items */}
               <div className="bg-body lg:rounded-2xl shadow-lg p-4 space-y-6">
                 <p className="flex items-center mb-2 font-semibold">
                   Items in order ({items.length})
                 </p>
+
                 {items.map((item) => (
-                  <div key={item.id} className="flex items-start border-t pt-4 gap-4">
-                    <img
-                      src={item.courseImageUrl}
-                      alt={item.courseDescription}
-                      className="size-20 object-cover rounded-md border"
-                    />
-                    <div className="flex-1 flex flex-col justify-between gap-2 lg:flex-row lg:gap-4 lg:self-stretch lg:items-center">
-                      <div className="flex lg:block items-center">
-                        <div className="flex-1 flex flex-col">
-                          <p className="font-medium leading-tight">{item.courseTitle}</p>
-                          <p className="text-sm text-gray-500 line-clamp-1">
-                            {item.courseDescription}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2 items-center lg:gap-6 lg:self-center justify-between">
-                        <div className="flex flex-row items-baseline gap-3 lg:gap-1 lg:flex-col lg:items-end lg:self-center">
-                          <p className="text-blue-500 font-semibold">
-                            ${item.discountedPrice.toLocaleString("en-US")}
-                          </p>
-                          <p className="text-sm text-dimmed font-semibold line-through">
-                            ${item.price.toLocaleString("en-US")}
-                          </p>
-                        </div>
-                        <div className="text-md text-gray-600 dark:text-gray-300">
-                          x{item.quantity}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <CheckoutItem key={item.id} item={item} />
                 ))}
               </div>
 
@@ -108,7 +82,10 @@ export default function CheckoutPage() {
             </div>
 
             {/* Summary section */}
-            <CheckoutSummary items={items} clientSecret={clientSecret} />
+            <div>
+              <CheckoutSummary items={items} clientSecret={clientSecret} />
+              <SummaryDecorator />
+            </div>
           </div>
         </Box>
       </div>

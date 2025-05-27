@@ -117,7 +117,7 @@ const OrderHistoryDetailPage = () => {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="size-15 object-cover rounded-md border"
+                    className="size-15 object-cover rounded-lg border"
                   />
                   <div className="flex-1 flex flex-col justify-between gap-2 lg:flex-row lg:gap-4 lg:self-stretch lg:items-center">
                     <div className="flex-1">
@@ -143,7 +143,7 @@ const OrderHistoryDetailPage = () => {
           </div>
           {/* Order summary */}
           <div>
-            <div className="bg-body rounded-t-2xl shadow p-4">
+            <div className="bg-body rounded-t-lg shadow p-4">
               <Title order={3} className="text-xl font-semibold mb-4">
                 Order Summary
               </Title>
@@ -182,7 +182,7 @@ const OrderHistoryDetailPage = () => {
                 </div>
               </div>
             </div>
-            <SummaryDecorator></SummaryDecorator>
+            <SummaryDecorator />
           </div>
         </div>
       </div>

@@ -44,7 +44,7 @@ export default function CartSummary({ selectedItems, className }: CartSummaryPro
   };
 
   return (
-    <div className={cn("bg-body lg:rounded-2xl shadow p-4", className)}>
+    <div className={cn("bg-body lg:rounded-t-2xl p-4", className)}>
       <Button variant="light" autoContrast size="md" className="rounded-xl text-start w-full">
         Apply voucher to get discount
       </Button>
