@@ -133,7 +133,7 @@ export default function UserDashboardLayout() {
             {sidebarOpen ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
           </button>
         </div>
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-7">
           {/* Sidebar (Collapse ở mobile, luôn hiện ở md+) */}
           <div className="w-full lg:basis-[300px]">
             <Collapse in={sidebarOpen || window.innerWidth >= 1024}>

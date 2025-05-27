@@ -1,4 +1,4 @@
-import { Loader, Title } from "@mantine/core";
+import { Loader } from "@mantine/core";
 import { useCurrentUser } from "../../react-query/auth/identityHooks";
 import UpdateUserProfileForm from "./_c/UpdateUserProfileForm";
 
@@ -11,9 +11,7 @@ export default function MyAccountPage() {
 
   return (
     <div>
-      <Title order={3} className="mb-3">
-        Personal Information
-      </Title>
+      <h1 className="text-2xl font-bold mb-4 flex-1"> Personal Information</h1>
       <div className="w-full px-4 bg-body rounded-md border border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="rounded-xl max-w-(--container-md) mx-auto px-2 py-4 md:py-10">
           <UpdateUserProfileForm user={user} />
