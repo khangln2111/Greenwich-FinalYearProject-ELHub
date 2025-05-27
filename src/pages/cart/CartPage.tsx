@@ -1,13 +1,13 @@
-import { Anchor, Box, Checkbox, Loader } from "@mantine/core";
+import { Anchor, Box, Checkbox, Divider, Loader } from "@mantine/core";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SummaryDecorator from "../../components/SummaryDecorator";
 import { UpdateCartItemCommand } from "../../react-query/cart/cart.types";
 import { useDeleteCartItem, useGetCart, useUpdateCartItem } from "../../react-query/cart/cartHooks";
-import CartSummary from "./_c/CartSummary";
 import CartItemCard from "./_c/CartItemCard";
+import CartSummary from "./_c/CartSummary";
 import EmptyCartPlaceholder from "./_c/EmptyCartPlaceholder";
-import SummaryDecorator from "../../components/SummaryDecorator";
 
 export default function CartPage() {
   const { data, isLoading } = useGetCart();
@@ -71,8 +71,9 @@ export default function CartPage() {
         </Anchor>
 
         <div className="grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] items-start gap-6">
+          {/* left section: cart items */}
           <div className="bg-body lg:rounded-2xl shadow-lg p-4">
-            <div className="flex items-center mb-4 font-medium">
+            <div className="flex items-center font-medium">
               <Checkbox
                 checked={selectedIds.length === cartItems.length}
                 indeterminate={selectedIds.length > 0 && selectedIds.length < cartItems.length}
@@ -81,19 +82,24 @@ export default function CartPage() {
               />
               Select all ({cartItems.length})
             </div>
+            <Divider className="-mx-4 mt-2 border-[#EDF0F3] dark:border-dark-5" size="md" />
 
-            {cartItems.map((item) => (
-              <CartItemCard
-                key={item.id}
-                item={item}
-                onChangeQuantity={(id, delta) => handleQuantityChange(id, delta, item.quantity)}
-                onRemove={handleRemove}
-                checked={selectedIds.includes(item.id)}
-                onToggle={handleToggle}
-              />
-            ))}
+            <div className="divide-y">
+              {cartItems.map((item) => (
+                <CartItemCard
+                  key={item.id}
+                  item={item}
+                  onChangeQuantity={(id, delta) => handleQuantityChange(id, delta, item.quantity)}
+                  onRemove={handleRemove}
+                  checked={selectedIds.includes(item.id)}
+                  onToggle={handleToggle}
+                  className="last:pb-0"
+                />
+              ))}
+            </div>
           </div>
 
+          {/* right section: cart summary */}
           <div>
             <CartSummary selectedItems={selectedItems} />
             <SummaryDecorator />

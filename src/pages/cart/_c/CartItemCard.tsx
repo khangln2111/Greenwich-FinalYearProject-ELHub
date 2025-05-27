@@ -23,7 +23,7 @@ export default function CartItemCard({
   className,
 }: CartItemCardProps) {
   return (
-    <div className={cn("flex items-start border-t pt-4 gap-4", className)}>
+    <div className={cn("flex items-start py-4 gap-4", className)}>
       <div className="flex gap-5 items-center">
         <Checkbox checked={checked} onChange={() => onToggle(item.id)} />
         <img

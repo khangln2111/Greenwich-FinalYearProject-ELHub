@@ -1,12 +1,14 @@
 import { CartItem } from "../../../react-query/cart/cart.types";
+import { cn } from "../../../utils/cn";
 
 interface CheckoutItemProps {
   item: CartItem;
+  className?: string;
 }
 
-export default function CheckoutItem({ item }: CheckoutItemProps) {
+export default function CheckoutItem({ item, className }: CheckoutItemProps) {
   return (
-    <div className="flex items-start border-t pt-4 gap-4">
+    <div className={cn("flex items-start py-4 gap-4", className)}>
       <img
         src={item.courseImageUrl}
         alt={item.courseDescription}

@@ -74,7 +74,7 @@ const OrderHistoryDetailPage = () => {
                   {status}
                 </div>
               </div>
-              <Divider className="-mx-4 -mt-2 border" />
+              <Divider className="-mx-4 -mt-2 border-gray-200 dark:border-dark-5" size="md" />
               {/* Section: Payment */}
               <div className="grid md:grid-cols-2 gap-3">
                 <div>
@@ -88,7 +88,7 @@ const OrderHistoryDetailPage = () => {
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{date}</p>
                 </div>
               </div>
-              <div className="border-t border-dashed" />
+              <Divider variant="dashed" className="border-default-border" />
               {/* Section: Access Info */}
               <div className="grid md:grid-cols-2 gap-3">
                 <div>
@@ -105,15 +105,8 @@ const OrderHistoryDetailPage = () => {
             <h2 className="text-md font-medium mt-6">Items in order</h2>
             {/* Items */}
             <div className="p-4 divide-y bg-body rounded-lg mt-1">
-              {items.map((item, idx) => (
-                <div
-                  key={item.id}
-                  className={cn(
-                    "flex items-start gap-4 py-4",
-                    idx === 0 ? "pt-0" : "",
-                    idx === items.length - 1 ? "pb-0" : "",
-                  )}
-                >
+              {items.map((item) => (
+                <div key={item.id} className="flex items-start gap-4 py-4 last:pb-0 first:pt-0">
                   <img
                     src={item.image}
                     alt={item.title}

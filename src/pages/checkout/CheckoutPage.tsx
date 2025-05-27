@@ -1,4 +1,4 @@
-import { Anchor, Box, Loader, useComputedColorScheme } from "@mantine/core";
+import { Anchor, Box, Divider, Loader, useComputedColorScheme } from "@mantine/core";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft } from "lucide-react";
@@ -62,17 +62,19 @@ export default function CheckoutPage() {
           </Anchor>
 
           <div className="grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] items-start gap-6">
-            {/* Left section */}
+            {/* Left section: checkout items + payment form */}
             <div>
               {/* Checkout items */}
-              <div className="bg-body lg:rounded-2xl shadow-lg p-4 space-y-6">
-                <p className="flex items-center mb-2 font-semibold">
-                  Items in order ({items.length})
-                </p>
+              <div className="bg-body lg:rounded-2xl shadow-lg p-4">
+                <p className="flex items-center font-semibold">Items in order ({items.length})</p>
 
-                {items.map((item) => (
-                  <CheckoutItem key={item.id} item={item} />
-                ))}
+                <Divider className="-mx-4 mt-1 border-[#EDF0F3] dark:border-dark-5" size="md" />
+
+                <div className="divide-y">
+                  {items.map((item) => (
+                    <CheckoutItem key={item.id} item={item} className="last:pb-0" />
+                  ))}
+                </div>
               </div>
 
               {/* Payment form */}
@@ -81,7 +83,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Summary section */}
+            {/* right section: checkout summary*/}
             <div>
               <CheckoutSummary items={items} clientSecret={clientSecret} />
               <SummaryDecorator />
