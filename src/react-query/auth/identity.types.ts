@@ -94,7 +94,7 @@ export interface CurrentUser {
   roles: string[]; // ["Admin", "User"]
 }
 
-export interface UpdateUserProfileCommand {
+export interface UpdateUserProfileSelfCommand {
   firstName?: string;
   lastName?: string;
   gender?: Gender;

@@ -15,7 +15,7 @@ import {
   ResendConfirmationEmailRequest,
   ResetPasswordRequest,
   SendResetPasswordOtpRequest,
-  UpdateUserProfileCommand,
+  UpdateUserProfileSelfCommand,
   ValidateResetPasswordOtpRequest,
 } from "./identity.types";
 import {
@@ -28,7 +28,7 @@ import {
   resendConfirmationEmail,
   resetPassword,
   sendResetPasswordOtp,
-  updateUserProfile,
+  updateUserProfileSelf,
   validateResetPasswordOtp,
 } from "./identityApi";
 
@@ -300,7 +300,7 @@ export const useRefreshToken = async (data: RefreshTokenRequest) => {
 export const useUpdateUserProfile = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (command: UpdateUserProfileCommand) => updateUserProfile(command),
+    mutationFn: (command: UpdateUserProfileSelfCommand) => updateUserProfileSelf(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
       showSuccessToast("Profile Updated", "Your profile has been updated successfully.");

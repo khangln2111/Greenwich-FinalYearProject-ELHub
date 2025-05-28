@@ -1,3 +1,4 @@
+import { GridifyQueryBuilder } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
 import { CreatePaymentIntentCommand, OrderQueryCriteria, OrderVm } from "./order.types";
@@ -20,17 +21,18 @@ export const confirmPaymentIntent = async (paymentIntentId: string) => {
   return response.data;
 };
 
-const buildOrderQuery = (query: OrderQueryCriteria = {}) => {
-  const queryBuilder = new URLSearchParams();
-  if (query.status) queryBuilder.append("status", query.status);
-  if (query.pageNumber) queryBuilder.append("pageNumber", query.pageNumber.toString());
-  if (query.pageSize) queryBuilder.append("pageSize", query.pageSize.toString());
-  return queryBuilder.toString();
-};
-
 export const getOrdersSelf = async (query?: OrderQueryCriteria) => {
-  const response = await apiClient.get<ListData<OrderVm>>(`${BASE_URL}/me`, {
+  const response = await apiClient.get<ListData<OrderVm>>(`${BASE_URL}/self`, {
     params: buildOrderQuery(query),
   });
   return response.data;
+};
+
+const buildOrderQuery = (query: OrderQueryCriteria = {}) => {
+  const queryBuilder = new GridifyQueryBuilder();
+  queryBuilder.setPage(query.page ?? 1);
+  queryBuilder.setPageSize(query.pageSize ?? 10);
+  queryBuilder.addOrderBy("createdAt", true);
+  if (query.status) queryBuilder.addCondition("status", "eq", query.status);
+  return queryBuilder.build();
 };

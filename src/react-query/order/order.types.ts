@@ -12,18 +12,28 @@ export enum OrderStatus {
   Failed = "Failed",
 }
 
-export type OrderQueryCriteria = {
-  status?: OrderStatus;
-  pageNumber?: number;
-  pageSize?: number;
-};
-
 export type OrderVm = {
   id: string;
   status: OrderStatus;
-  applicationUserId: string;
+  userId: string;
+  totalPrice: number;
+  firstOrderItem?: OrderItemVm;
+  paymentMethodType?: string;
+  paymentMethodBrand?: string;
+  paymentMethodLast4?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type OrderDetailVm = {
+  id: string;
+  status: OrderStatus;
+  userId: string;
   totalPrice: number;
   orderItems: OrderItemVm[];
+  paymentMethodType?: string;
+  paymentMethodBrand?: string;
+  paymentMethodLast4?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -38,4 +48,15 @@ export type OrderItemVm = {
   courseImageUrl: string;
   createdAt: string;
   updatedAt: string;
+};
+
+export type OrderQueryCriteria = {
+  page?: number;
+  pageSize?: number;
+  status?: OrderStatus;
+  totalAmount?: number;
+  provisionalAmount?: number;
+  totalDirectDiscount?: number;
+  createAt?: string;
+  updatedAt?: string;
 };

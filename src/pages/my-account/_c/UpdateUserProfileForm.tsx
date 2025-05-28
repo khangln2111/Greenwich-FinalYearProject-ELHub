@@ -8,7 +8,7 @@ import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../constants/Valid
 import {
   CurrentUser,
   Gender,
-  UpdateUserProfileCommand,
+  UpdateUserProfileSelfCommand,
 } from "../../../react-query/auth/identity.types";
 import { useUpdateUserProfile } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
@@ -60,7 +60,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
   });
 
   const handleSubmit = (values: UpdateUserProfileFormType) => {
-    const payload: UpdateUserProfileCommand = {
+    const payload: UpdateUserProfileSelfCommand = {
       firstName: values.firstName,
       lastName: values.lastName,
       dateOfBirth: values.dateOfBirth,
