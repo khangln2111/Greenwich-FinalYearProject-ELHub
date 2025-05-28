@@ -36,7 +36,9 @@ export function OrderCard({ order }: Props) {
         <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
           <span className="font-bold text-sm md:text-md uppercase">#{order.id}</span>
           <span className="text-gray-400 visible-from-md">|</span>
-          <span className="capitalize">Paid via: {order.paymentMethodType ?? "None"}</span>
+          <span>
+            Paid via: <span className="capitalize">{order.paymentMethodType ?? "None"}</span>
+          </span>
           <span className="text-gray-400 visible-from-md">|</span>
           <span className="text-dimmed font-semibold text-md">{formatDate(order.createdAt)}</span>
         </div>

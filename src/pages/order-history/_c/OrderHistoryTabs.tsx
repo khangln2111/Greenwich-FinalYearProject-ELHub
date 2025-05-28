@@ -3,7 +3,7 @@ type Props = {
   onTabChange: (tab: string) => void;
 };
 
-const tabs = ["All", "Pending", "Success", "Canceled", "Refunded"];
+const tabs = ["All", "Completed", "Incomplete", "Failed", "Refunded"];
 
 export function OrderHistoryTabs({ activeTab, onTabChange }: Props) {
   return (
