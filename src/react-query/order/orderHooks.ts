@@ -2,8 +2,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { showErrorToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { CreatePaymentIntentCommand } from "./order.types";
+import { CreatePaymentIntentCommand, OrderQueryCriteria } from "./order.types";
 import { confirmPaymentIntent, createPaymentIntent } from "./orderApi";
+
+export const useGetOrdersSelf = (query: OrderQueryCriteria = {}) => {
+  return useQuery(keyFac.orders.listSelf(query));
+};
 
 export const useCreatePaymentIntent = () => {
   return useMutation({

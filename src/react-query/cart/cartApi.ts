@@ -1,16 +1,16 @@
 import { ApiSuccessResponse } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
-import { AddCartItemCommand, Cart, UpdateCartItemCommand } from "./cart.types";
+import { AddCartItemCommand, CartVm, UpdateCartItemCommand } from "./cart.types";
 
 const BASE_URL = "/cart";
 
 export const getCart = async () => {
-  const response = await apiClient.get<Cart>(`${BASE_URL}/me`);
+  const response = await apiClient.get<CartVm>(`${BASE_URL}/me`);
   return response.data;
 };
 
 export const addCartItem = async (command: AddCartItemCommand) => {
-  const response = await apiClient.post<Cart>(`${BASE_URL}/AddCartItem`, command);
+  const response = await apiClient.post<CartVm>(`${BASE_URL}/AddCartItem`, command);
   return response.data;
 };
 

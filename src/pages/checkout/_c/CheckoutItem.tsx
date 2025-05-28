@@ -1,8 +1,8 @@
-import { CartItem } from "../../../react-query/cart/cart.types";
+import { CartItemVm } from "../../../react-query/cart/cart.types";
 import { cn } from "../../../utils/cn";
 
 interface CheckoutItemProps {
-  item: CartItem;
+  item: CartItemVm;
   className?: string;
 }
 

@@ -3,7 +3,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft } from "lucide-react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { CartItem } from "../../react-query/cart/cart.types";
+import { CartItemVm } from "../../react-query/cart/cart.types";
 import CheckoutForm from "./_c/CheckoutForm";
 import CheckoutSummary from "./_c/CheckoutSummary";
 import CheckoutItem from "./_c/CheckoutItem";
@@ -21,7 +21,7 @@ export default function CheckoutPage() {
   });
   const stripeTheme = computedColorScheme === "dark" ? "night" : "stripe";
 
-  const items: CartItem[] | undefined = location.state?.selectedItems;
+  const items: CartItemVm[] | undefined = location.state?.selectedItems;
   const clientSecret: string | null = location.state?.clientSecret ?? null;
 
   // Nếu không có item được chọn -> về lại cart
@@ -68,7 +68,7 @@ export default function CheckoutPage() {
               <div className="bg-body lg:rounded-2xl shadow-lg p-4">
                 <p className="flex items-center font-semibold">Items in order ({items.length})</p>
 
-                <Divider className="-mx-4 mt-1 border-[#EDF0F3] dark:border-dark-5" size="md" />
+                <Divider className="-mx-4 mt-2 border-[#EDF0F3] dark:border-dark-5" size="md" />
 
                 <div className="divide-y">
                   {items.map((item) => (

@@ -2,11 +2,11 @@ import { ActionIcon, Checkbox, Text } from "@mantine/core";
 import { Trash2 } from "lucide-react";
 import QuantityControl from "./QuantityControl";
 
-import { CartItem } from "../../../react-query/cart/cart.types";
+import { CartItemVm } from "../../../react-query/cart/cart.types";
 import { cn } from "../../../utils/cn";
 
 type CartItemCardProps = {
-  item: CartItem;
+  item: CartItemVm;
   onChangeQuantity: (id: string, delta: number) => void;
   onRemove: (id: string) => void;
   checked: boolean;
