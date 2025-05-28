@@ -3,16 +3,19 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CourseQueryCriteria, CreateCourseCommand, UpdateCourseCommand } from "./course.types";
-import { createCourse, deleteCourse, updateCourse } from "./courseApi";
+import { createCourse, deleteCourse, getCourseDetail, getCourses, updateCourse } from "./courseApi";
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
-  return useQuery(keyFac.courses.list(query));
+  return useQuery({
+    queryKey: keyFac.courses.list(query).queryKey,
+    queryFn: () => getCourses(query),
+  });
 };
 
 export const useGetCourseDetail = (id: string) => {
   return useQuery({
     queryKey: keyFac.courses.detail(id).queryKey,
-    queryFn: keyFac.courses.detail(id).queryFn,
+    queryFn: () => getCourseDetail(id),
     enabled: !!id,
     retry: (failureCount, error) => {
       // ❌ Không retry nếu là 404

@@ -8,14 +8,35 @@ import {
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { createCategory, deleteCategory, updateCategory } from "./categoryApi";
+import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  getCategoryDetail,
+  updateCategory,
+} from "./categoryApi";
 
 export const useGetCategories = (query: CategoryQueryCriteria = {}) => {
-  return useQuery(keyFac.categories.list(query));
+  return useQuery({
+    queryKey: keyFac.categories.list(query).queryKey,
+    queryFn: () => getCategories(query),
+  });
 };
 
 export const useGetCategoryDetail = (id: string) => {
-  return useQuery(keyFac.categories.detail(id));
+  return useQuery({
+    queryKey: keyFac.categories.detail(id).queryKey,
+    queryFn: () => getCategoryDetail(id),
+    enabled: !!id,
+    retry: (failureCount, error) => {
+      // ❌ Không retry nếu là 404
+      if (error && error.response?.status === 404) {
+        return false;
+      }
+      // ✅ Retry tối đa 2 lần cho lỗi khác
+      return failureCount < 2;
+    },
+  });
 };
 
 export const useCreateCategory = (category: CreateCategoryCommand) => {

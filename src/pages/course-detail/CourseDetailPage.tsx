@@ -79,9 +79,7 @@ const CourseDetailPage = () => {
 
   const addCartItemMutation = useAddCartItem();
 
-  if (error || !courseId) {
-    return <Navigate to="/404" replace />;
-  }
+  if (error || !courseId) return <Navigate to="/404" replace />;
 
   if (isPending) return <CourseDetailPageSkeleton />;
 

@@ -1,8 +1,10 @@
 import { Anchor, Divider, Title } from "@mantine/core";
 import { cn } from "../../utils/cn";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import SummaryDecorator from "../../components/SummaryDecorator";
 import { ArrowLeft } from "lucide-react";
+import { useGetOrderDetailSelf } from "../../react-query/order/orderHooks";
+import CenterLoader from "../../components/CenterLoader";
 
 const mockOrder = {
   id: "132E97B7-9543-4E90-A32D-BAAE4A09D705",
@@ -33,6 +35,15 @@ const mockOrder = {
 
 const OrderHistoryDetailPage = () => {
   const { id, paymentMethod, date, status, items } = mockOrder;
+  const { orderId } = useParams<{ orderId: string }>();
+
+  const { data, isPending, error } = useGetOrderDetailSelf(orderId!);
+
+  if (error || !orderId) return <Navigate to="/404" replace />;
+
+  if (isPending) return <CenterLoader />;
+
+  console.log("Order Detail Data:", data);
 
   const totalOriginal = items.reduce((sum, item) => sum + item.originalPrice * item.quantity, 0);
   const totalDiscounted = items.reduce(

@@ -3,10 +3,34 @@ import { showErrorToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CreatePaymentIntentCommand, OrderQueryCriteria } from "./order.types";
-import { confirmPaymentIntent, createPaymentIntent } from "./orderApi";
+import {
+  confirmPaymentIntent,
+  createPaymentIntent,
+  getOrderDetailSelf,
+  getOrdersSelf,
+} from "./orderApi";
 
 export const useGetOrdersSelf = (query: OrderQueryCriteria = {}) => {
-  return useQuery(keyFac.orders.listSelf(query));
+  return useQuery({
+    queryKey: keyFac.orders.listSelf(query).queryKey,
+    queryFn: () => getOrdersSelf(query),
+  });
+};
+
+export const useGetOrderDetailSelf = (id: string) => {
+  return useQuery({
+    queryKey: keyFac.orders.detailSelf(id).queryKey,
+    queryFn: () => getOrderDetailSelf(id),
+    enabled: !!id,
+    retry: (failureCount, error) => {
+      // ❌ Không retry nếu là 404
+      if (error && error.response?.status === 404) {
+        return false;
+      }
+      // ✅ Retry tối đa 2 lần cho lỗi khác
+      return failureCount < 2;
+    },
+  });
 };
 
 export const useCreatePaymentIntent = () => {
