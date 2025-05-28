@@ -2,17 +2,12 @@ import { Flex, SimpleGrid } from "@mantine/core";
 import { useGetCourses } from "../../../react-query/course/courseHooks";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import CoursePagination from "./CoursePagination";
+import CenterLoader from "../../../components/CenterLoader";
 
 const CourseGrid = () => {
   const { data, isPending, isError } = useGetCourses();
 
-  if (isPending) {
-    return (
-      <div className="flex items-center justify-center h-[300px]">
-        <p className="text-gray-500">Loading...</p>
-      </div>
-    );
-  }
+  if (isPending) return <CenterLoader />;
 
   if (isError) {
     return (

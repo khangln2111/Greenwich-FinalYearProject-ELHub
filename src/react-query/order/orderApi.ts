@@ -1,7 +1,12 @@
 import { GridifyQueryBuilder } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
-import { CreatePaymentIntentCommand, OrderQueryCriteria, OrderVm } from "./order.types";
+import {
+  CreatePaymentIntentCommand,
+  OrderDetailVm,
+  OrderQueryCriteria,
+  OrderVm,
+} from "./order.types";
 
 const BASE_URL = "/orders";
 
@@ -25,6 +30,11 @@ export const getOrdersSelf = async (query?: OrderQueryCriteria) => {
   const response = await apiClient.get<ListData<OrderVm>>(`${BASE_URL}/self`, {
     params: buildOrderQuery(query),
   });
+  return response.data;
+};
+
+export const getOrderDetailSelf = async (id: string) => {
+  const response = await apiClient.get<OrderDetailVm>(`${BASE_URL}/self/${id}`);
   return response.data;
 };
 

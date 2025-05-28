@@ -8,13 +8,27 @@ export function formatCurrency(amount: number): string {
   });
 }
 
-export function formatDate(input: string | number): string {
+type FormatType = "longMonth" | "ddmmyyyy";
+
+export function formatDate(input: string | number, formatType: FormatType = "longMonth"): string {
   const date = new Date(input);
-  return date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+
+  switch (formatType) {
+    case "longMonth":
+      return date.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+    case "ddmmyyyy":
+      return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+    default:
+      return date.toISOString();
+  }
 }
 
 export function formatDurationMmSs(seconds: number): string {

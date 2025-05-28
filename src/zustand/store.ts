@@ -1,8 +1,7 @@
 import { create, StateCreator } from "zustand";
-import { createSelectors } from "./auto-selectors";
 import { CurrentUser } from "../react-query/auth/identity.types";
 import { authStorageHelper } from "../utils/storageHelper";
-import { Stripe, StripeElements } from "@stripe/stripe-js";
+import { createSelectors } from "./auto-selectors";
 
 // Slice for managing the state of the instructor layout
 interface InstructorLayoutSlice {
@@ -69,19 +68,6 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   },
   setUser: (user) => set({ currentUser: user }),
 });
-
-//slice for managing checkout
-interface CheckoutSlice {
-  clientSecret: string | null;
-  stripe: Stripe | null;
-  elements: StripeElements | null;
-
-  setClientSecret: (clientSecret: string | null) => void;
-  setStripeInstance: (stripe: Stripe | null) => void;
-  setElementsInstance: (elements: StripeElements | null) => void;
-
-  triggerPayment: () => Promise<void>;
-}
 
 type AppStore = CourseFilterSlice & AuthSlice & InstructorLayoutSlice;
 

@@ -35,7 +35,7 @@ const ReviewTab = ({ rating, totalReviews, stars }: FeedbackProps) => {
           <div className="text-orange-500 text-5xl font-bold">{rating.toFixed(1)}</div>
           <Rating value={rating} readOnly size="lg" />
           <span className="text-gray-500 text-sm dark:text-neutral-300">
-            ({totalReviews.toLocaleString()})
+            ({totalReviews.toLocaleString("en-US")})
           </span>
           <span className="text-gray-500 text-xs dark:text-neutral-300">Course Rating</span>
         </div>

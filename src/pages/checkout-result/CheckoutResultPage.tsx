@@ -1,8 +1,8 @@
-import { Button, Loader } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
-import { keyFac } from "../../react-query/common-service/queryKeyFactory";
+import CenterLoader from "../../components/CenterLoader";
 import { useConfirmPaymentIntent } from "../../react-query/order/orderHooks";
 
 export default function CheckoutResultPage() {
@@ -14,15 +14,10 @@ export default function CheckoutResultPage() {
 
   const { isPending, isError, isSuccess } = useConfirmPaymentIntent(paymentIntentId);
 
-  if (isPending)
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader size="xl" />
-      </div>
-    );
+  if (isPending) return <CenterLoader />;
 
   if (isSuccess) {
-    queryClient.invalidateQueries({ queryKey: keyFac.cart._def });
+    queryClient.invalidateQueries();
   }
 
   return (

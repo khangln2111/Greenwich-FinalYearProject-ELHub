@@ -16,7 +16,10 @@ export type OrderVm = {
   id: string;
   status: OrderStatus;
   userId: string;
-  totalPrice: number;
+  totalAmount: number;
+  provisionalAmount: number;
+  totalDirectDiscount: number;
+  itemCount: number;
   firstOrderItem?: OrderItemVm;
   paymentMethodType?: string;
   paymentMethodBrand?: string;
@@ -29,7 +32,10 @@ export type OrderDetailVm = {
   id: string;
   status: OrderStatus;
   userId: string;
-  totalPrice: number;
+  totalAmount: number;
+  provisionalAmount: number;
+  totalDirectDiscount: number;
+  itemCount: number;
   orderItems: OrderItemVm[];
   paymentMethodType?: string;
   paymentMethodBrand?: string;
