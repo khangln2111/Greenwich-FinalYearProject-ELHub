@@ -6,6 +6,8 @@ public class OrderItem : BaseEntity
 
     public decimal Price { get; set; }
 
+    public decimal DiscountedPrice { get; set; }
+
     public Guid OrderId { get; set; }
     public Order Order { get; set; } = null!;
 

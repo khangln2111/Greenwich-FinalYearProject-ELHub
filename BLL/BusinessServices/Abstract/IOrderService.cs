@@ -14,4 +14,6 @@ public interface IOrderService
     Task<Success> CreatePaymentIntent(CreatePaymentIntentCommand command);
 
     Task<Success> ConfirmPaymentIntent(string paymentIntentId);
+
+    Task<Paged<ListOrderVm>> GetListSelf(GridifyQuery query);
 }

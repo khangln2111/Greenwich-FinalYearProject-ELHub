@@ -57,7 +57,8 @@ public class OrderService(
             {
                 CourseId = x.CourseId,
                 Quantity = x.Quantity,
-                Price = x.Course.DiscountedPrice
+                DiscountedPrice = x.Course.DiscountedPrice,
+                Price = x.Course.Price
             }).ToList()
         };
 
@@ -146,9 +147,25 @@ public class OrderService(
     {
         return context.Orders
             .AsNoTracking()
-            .Include(o => o.OrderItems)
+            .Include(o => o.OrderItems).ThenInclude(oi => oi.Course).ThenInclude(c => c.Image)
             .GridifyToAsync<Order, ListOrderVm>(query, mapper, gridifyMapper);
     }
+
+    //get list Self 
+    public Task<Paged<ListOrderVm>> GetListSelf(GridifyQuery query)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
+
+        var currentUserId = currentUser.Id;
+
+        return context.Orders
+            .AsNoTracking()
+            .Where(o => o.UserId == currentUserId)
+            .Include(o => o.OrderItems).ThenInclude(oi => oi.Course).ThenInclude(c => c.Image)
+            .GridifyToAsync<Order, ListOrderVm>(query, mapper, gridifyMapper);
+    }
+
 
     public async Task<ListOrderVm> GetById(Guid id)
     {

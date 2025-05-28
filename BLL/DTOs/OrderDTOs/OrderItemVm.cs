@@ -9,8 +9,10 @@ public class OrderItemVm
 
     public decimal Price { get; set; }
 
+    public decimal DiscountedPrice { get; set; }
+
     public required string CourseTitle { get; set; }
-    public required string CourseImage { get; set; }
+    public required string CourseImageUrl { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

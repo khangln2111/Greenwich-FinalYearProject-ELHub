@@ -8,7 +8,13 @@ public class ListOrderVm
     public OrderStatus Status { get; set; }
     public Guid ApplicationUserId { get; set; }
 
-    public decimal TotalPrice { get; set; }
+    public decimal TotalAmount { get; set; }
+
+    public decimal ProvisionalAmount { get; set; }
+
+    public decimal TotalDirectDiscount { get; set; }
+
+    public OrderItemVm[] OrderItems { get; set; } = [];
 
     public DateTime CreatedAt { get; set; }
 
