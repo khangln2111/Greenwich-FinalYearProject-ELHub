@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace BLL.DTOs.IdentityDTOs;
 
-public class UpdateUserProfileCommand
+public class UpdateUserProfileSelfCommand
 {
     public string? FirstName { get; set; }
 

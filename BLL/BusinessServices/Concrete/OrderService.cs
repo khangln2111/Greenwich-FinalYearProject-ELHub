@@ -91,8 +91,9 @@ public class OrderService(
 
     public async Task<Success> ConfirmPaymentIntent(string paymentIntentId)
     {
-        var paymentIntent = await stripePaymentUtility.GetPaymentIntent(paymentIntentId);
-        var metadata = paymentIntent.Metadata;
+        var intent = await stripePaymentUtility.GetPaymentIntent(paymentIntentId);
+        var metadata = intent.Metadata;
+
 
         if (!metadata.TryGetValue("orderId", out var orderIdStr) || !Guid.TryParse(orderIdStr, out var orderId))
             throw new BadRequestException("Missing or invalid orderId in metadata", ErrorCode.InvalidPaymentIntent);
@@ -113,11 +114,31 @@ public class OrderService(
             });
 
         // Step 1: Update Order status
-        order.Status = paymentIntent.Status == "succeeded"
+        order.Status = intent.Status == "succeeded"
             ? OrderStatus.Completed
             : OrderStatus.Failed;
 
-        // Step 2: Remove cart items if payment succeeded
+        // Step 2: Extract payment method info
+        var paymentMethodId = intent.PaymentMethodId;
+        if (!string.IsNullOrEmpty(paymentMethodId))
+        {
+            var paymentMethodService = new PaymentMethodService();
+            var paymentMethod = await paymentMethodService.GetAsync(paymentMethodId);
+
+            if (paymentMethod.Type == "card" && paymentMethod.Card != null)
+            {
+                order.PaymentMethodBrand = paymentMethod.Card.Brand;
+                order.PaymentMethodLast4 = paymentMethod.Card.Last4;
+                order.PaymentMethodType = paymentMethod.Type;
+            }
+            else
+            {
+                order.PaymentMethodType = paymentMethod.Type;
+            }
+        }
+
+
+        // Step 3: Remove cart items if payment succeeded
         if (order.Status == OrderStatus.Completed)
         {
             var cartItemCourseIds = order.OrderItems.Select(oi => oi.CourseId).ToList();
@@ -143,16 +164,16 @@ public class OrderService(
         );
     }
 
-    public Task<Paged<ListOrderVm>> GetList(GridifyQuery query)
+    public Task<Paged<OrderVm>> GetList(GridifyQuery query)
     {
         return context.Orders
             .AsNoTracking()
             .Include(o => o.OrderItems).ThenInclude(oi => oi.Course).ThenInclude(c => c.Image)
-            .GridifyToAsync<Order, ListOrderVm>(query, mapper, gridifyMapper);
+            .GridifyToAsync<Order, OrderVm>(query, mapper, gridifyMapper);
     }
 
     //get list Self 
-    public Task<Paged<ListOrderVm>> GetListSelf(GridifyQuery query)
+    public Task<Paged<OrderVm>> GetListSelf(GridifyQuery query)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
@@ -163,17 +184,35 @@ public class OrderService(
             .AsNoTracking()
             .Where(o => o.UserId == currentUserId)
             .Include(o => o.OrderItems).ThenInclude(oi => oi.Course).ThenInclude(c => c.Image)
-            .GridifyToAsync<Order, ListOrderVm>(query, mapper, gridifyMapper);
+            .GridifyToAsync<Order, OrderVm>(query, mapper, gridifyMapper);
+    }
+
+    public async Task<OrderDetailVm> GetByIdSelf(Guid id)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
+
+        var currentUserId = currentUser.Id;
+
+        var order = await context.Orders
+            .AsNoTracking()
+            .Where(o => o.Id == id && o.UserId == currentUserId)
+            .Include(o => o.OrderItems).ThenInclude(oi => oi.Course).ThenInclude(c => c.Image)
+            .ProjectTo<OrderDetailVm>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+
+        if (order == null) throw new NotFoundException(nameof(Order), id);
+        return order;
     }
 
 
-    public async Task<ListOrderVm> GetById(Guid id)
+    public async Task<OrderVm> GetById(Guid id)
     {
         var order = await context.Orders
             .AsNoTracking()
             .Where(o => o.Id == id)
             .Include(o => o.OrderItems).ThenInclude(oi => oi.Course)
-            .ProjectTo<ListOrderVm>(mapper.ConfigurationProvider)
+            .ProjectTo<OrderVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
 
         if (order == null) throw new NotFoundException(nameof(Order), id);

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250528002039_Initial")]
+    [Migration("20250528164149_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -577,6 +577,15 @@ namespace DAL.Data.Migrations
                     b.Property<string>("PaymentIntentId")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("PaymentMethodBrand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethodLast4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethodType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

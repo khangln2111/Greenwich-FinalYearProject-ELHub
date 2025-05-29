@@ -575,6 +575,15 @@ namespace DAL.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("PaymentMethodBrand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethodLast4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethodType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 

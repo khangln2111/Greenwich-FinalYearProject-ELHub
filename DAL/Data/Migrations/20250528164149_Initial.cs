@@ -352,6 +352,9 @@ namespace DAL.Data.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PaymentIntentId = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    PaymentMethodType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentMethodBrand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentMethodLast4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

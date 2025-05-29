@@ -8,18 +8,25 @@ public class OrderProfiles : Profile
 {
     public OrderProfiles()
     {
-        CreateMap<Order, ListOrderVm>()
+        CreateMap<Order, OrderVm>()
+            .ForMember(dest => dest.TotalAmount,
+                opt => opt.MapFrom(src => src.OrderItems.Sum(x => x.DiscountedPrice * x.Quantity)))
+            .ForMember(dest => dest.ProvisionalAmount,
+                opt => opt.MapFrom(src => src.OrderItems.Sum(x => x.Price * x.Quantity)))
+            .ForMember(dest => dest.TotalDirectDiscount,
+                opt => opt.MapFrom(src => src.OrderItems.Sum(x => (x.Price - x.DiscountedPrice) * x.Quantity)))
+            .ForMember(dest => dest.FirstOrderItem,
+                opt => opt.MapFrom(src => src.OrderItems.OrderBy(oi => oi.Id).FirstOrDefault()))
+            .ForMember(dest => dest.ItemCount, opt => opt.MapFrom(src => src.OrderItems.Count));
+
+
+        CreateMap<Order, OrderDetailVm>()
             .ForMember(dest => dest.TotalAmount,
                 opt => opt.MapFrom(src => src.OrderItems.Sum(x => x.DiscountedPrice * x.Quantity)))
             .ForMember(dest => dest.ProvisionalAmount,
                 opt => opt.MapFrom(src => src.OrderItems.Sum(x => x.Price * x.Quantity)))
             .ForMember(dest => dest.TotalDirectDiscount,
                 opt => opt.MapFrom(src => src.OrderItems.Sum(x => (x.Price - x.DiscountedPrice) * x.Quantity)));
-
-
-        CreateMap<Order, OrderVm>()
-            .ForMember(dest => dest.TotalPrice,
-                opt => opt.MapFrom(src => src.OrderItems.Sum(x => x.Price * x.Quantity)));
 
         CreateMap<OrderItem, OrderItemVm>()
             .ForMember(dest => dest.CourseTitle,

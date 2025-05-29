@@ -221,14 +221,14 @@ public class IdentityService(
         var refreshTicket = refreshTokenProtector.Unprotect(command.RefreshToken);
 
         //Reject the request if the refresh token is expired
-        if (refreshTicket?.Properties.ExpiresUtc is not { } expiresUtc ||
-            timeProvider.GetUtcNow() >= expiresUtc ||
+        if (refreshTicket?.Properties.ExpiresUtc is not { } expiresUtc || timeProvider.GetUtcNow() >= expiresUtc ||
             await signInManager.ValidateSecurityStampAsync(refreshTicket.Principal) is not { } user)
             throw new HttpException(StatusCodes.Status400BadRequest, "Invalid refresh token", ErrorCode.InvalidToken);
 
-        var newPrincipal = await signInManager.CreateUserPrincipalAsync(user);
         signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
-        await signInManager.SignInWithClaimsAsync(user, false, newPrincipal.Claims);
+        await signInManager.SignInAsync(user, false);
+        // var newPrincipal = await signInManager.CreateUserPrincipalAsync(user);
+        // await signInManager.SignInWithClaimsAsync(user, newPrincipal.Claims);
         // await signInManager.RefreshSignInAsync(user);
     }
 
@@ -269,7 +269,7 @@ public class IdentityService(
     }
 
 
-    public async Task<InfoMeVm> GetInfoMe()
+    public async Task<InfoMeVm> GetInfoSelf()
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser is null)
@@ -297,24 +297,24 @@ public class IdentityService(
     }
 
 
-    public async Task<Success> UpdateUserProfile(UpdateUserProfileCommand command)
+    public async Task<Success> UpdateUserProfileSelf(UpdateUserProfileSelfCommand selfCommand)
     {
-        await validationService.ValidateAsync(command);
+        await validationService.ValidateAsync(selfCommand);
         var user = await userManager.GetUserAsync(signInManager.Context.User);
         if (user == null) throw new NotFoundException("Current user not found");
 
         // if the user does not have an avatar, create a new one
-        if (command.Avatar != null && user.Avatar == null)
+        if (selfCommand.Avatar != null && user.Avatar == null)
         {
-            var avatar = await mediaManager.SaveFileAsync(command.Avatar, MediaType.Image);
+            var avatar = await mediaManager.SaveFileAsync(selfCommand.Avatar, MediaType.Image);
             await context.Media.AddAsync(avatar);
             user.Avatar = avatar;
         }
 
-        if (command.Avatar != null && user.Avatar != null)
-            await mediaManager.UpdateFileAsync(user.Avatar, command.Avatar);
+        if (selfCommand.Avatar != null && user.Avatar != null)
+            await mediaManager.UpdateFileAsync(user.Avatar, selfCommand.Avatar);
 
-        mapper.Map(command, user);
+        mapper.Map(selfCommand, user);
         await context.SaveChangesAsync();
 
         return new Success("User profile updated successfully");

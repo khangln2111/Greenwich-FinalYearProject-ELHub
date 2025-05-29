@@ -6,9 +6,9 @@ using Humanizer;
 
 namespace BLL.Validations.IdentityValidators;
 
-public class UpdateUserProfileCommandValidator : AbstractValidator<UpdateUserProfileCommand>
+public class UpdateUserProfileSelfCommandValidator : AbstractValidator<UpdateUserProfileSelfCommand>
 {
-    public UpdateUserProfileCommandValidator(IMediaManager mediaManager)
+    public UpdateUserProfileSelfCommandValidator(IMediaManager mediaManager)
     {
         RuleFor(x => x.FirstName)
             .MaximumLength(50)

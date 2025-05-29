@@ -7,13 +7,15 @@ namespace BLL.BusinessServices.Abstract;
 
 public interface IOrderService
 {
-    Task<Paged<ListOrderVm>> GetList(GridifyQuery query);
+    Task<Paged<OrderVm>> GetList(GridifyQuery query);
 
-    Task<ListOrderVm> GetById(Guid id);
+    Task<OrderVm> GetById(Guid id);
 
     Task<Success> CreatePaymentIntent(CreatePaymentIntentCommand command);
 
     Task<Success> ConfirmPaymentIntent(string paymentIntentId);
 
-    Task<Paged<ListOrderVm>> GetListSelf(GridifyQuery query);
+    Task<Paged<OrderVm>> GetListSelf(GridifyQuery query);
+
+    Task<OrderDetailVm> GetByIdSelf(Guid id);
 }

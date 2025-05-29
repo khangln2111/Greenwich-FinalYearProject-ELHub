@@ -114,24 +114,24 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Empty;
     }
 
-    [HttpGet("me")]
+    [HttpGet("self")]
     [Authorize]
     [ProducesResponseType<InfoMeVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetProfile()
+    public async Task<IActionResult> GetInfoSelf()
     {
-        var result = await identityService.GetInfoMe();
+        var result = await identityService.GetInfoSelf();
         return Ok(result);
     }
 
-    [HttpPut("UpdateUserProfile")]
+    [HttpPut("UpdateUserProfileSelf")]
     [Authorize]
     [ProducesResponseType<InfoMeVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> UpdateProfile([FromForm] UpdateUserProfileCommand command)
+    public async Task<IActionResult> UpdateUserProfileSelf([FromForm] UpdateUserProfileSelfCommand selfCommand)
     {
-        var result = await identityService.UpdateUserProfile(command);
+        var result = await identityService.UpdateUserProfileSelf(selfCommand);
         return Ok(result);
     }
 }

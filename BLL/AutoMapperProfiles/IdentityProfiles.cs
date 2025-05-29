@@ -8,7 +8,7 @@ public class IdentityProfiles : Profile
 {
     public IdentityProfiles()
     {
-        CreateMap<UpdateUserProfileCommand, ApplicationUser>()
+        CreateMap<UpdateUserProfileSelfCommand, ApplicationUser>()
             .ForMember(dest => dest.Avatar, opt => opt.Ignore())
             .ForAllMembers(opts =>
             {
