@@ -8,10 +8,11 @@ import {
   IconSettings,
 } from "@tabler/icons-react";
 import {
-  ChartNoAxesCombinedIcon,
+  BackpackIcon,
   ChevronDown,
   ChevronUp,
   GiftIcon,
+  HistoryIcon,
   LogOut,
   MonitorCheckIcon,
   PackageIcon,
@@ -19,10 +20,10 @@ import {
 } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { cn } from "../../utils/cn";
-import { useAppStore } from "../../zustand/store";
 import avatarPlaceHolder from "../../assets/placeholder/profile-avatar-placeholder.svg";
 import background from "../../assets/userDashboard/background-info.png";
+import { cn } from "../../utils/cn";
+import { useAppStore } from "../../zustand/store";
 
 type MenuItem = {
   label: string;
@@ -34,25 +35,25 @@ const menuItems: MenuItem[] = [
   { label: "Dashboard", icon: <IconDashboard className="size-5" />, href: "/dashboard" },
   { label: "My Account", icon: <User className="size-5" />, href: "/dashboard/my-account" },
   {
+    label: "Purchase History",
+    icon: <HistoryIcon className="size-5" />,
+    href: "/dashboard/order-history",
+  },
+  {
+    label: "Inventory",
+    icon: <BackpackIcon />,
+    href: "/dashboard/inventory",
+  },
+  {
     label: "Enrolled Courses",
     icon: <MonitorCheckIcon className="size-5" />,
     href: "/dashboard/enrolled-courses",
-  },
-  {
-    label: "Purchase History",
-    icon: <PackageIcon className="size-5" />,
-    href: "/dashboard/order-history",
   },
   { label: "Gifts", icon: <GiftIcon className="size-5" />, href: "/dashboard/gifts" },
   {
     label: "Notifications",
     icon: <IconBell className="size-5" />,
     href: "/dashboard/notifications",
-  },
-  {
-    label: "Analytics",
-    icon: <ChartNoAxesCombinedIcon className="size-5" />,
-    href: "/dashboard/analytics",
   },
   {
     label: "Messages",

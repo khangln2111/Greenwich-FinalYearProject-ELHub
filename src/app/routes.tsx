@@ -54,7 +54,6 @@ const userRoute: RouteObject = {
           path: "order-history",
           element: <OrderHistoryPage />,
         },
-
         {
           path: "gifts",
           element: <p>User Gifts Page</p>,

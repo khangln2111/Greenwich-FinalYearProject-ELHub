@@ -10,6 +10,7 @@ export enum OrderStatus {
   Incomplete = "Incomplete",
   Completed = "Completed",
   Failed = "Failed",
+  Refunded = "Refunded",
 }
 
 export type OrderVm = {
@@ -56,13 +57,19 @@ export type OrderItemVm = {
   updatedAt: string;
 };
 
+export type OrderSortableFields =
+  | "createdAt"
+  | "totalAmount"
+  | "provisionalAmount"
+  | "totalDirectDiscount";
+
 export type OrderQueryCriteria = {
   page?: number;
   pageSize?: number;
   status?: OrderStatus;
-  totalAmount?: number;
-  provisionalAmount?: number;
-  totalDirectDiscount?: number;
-  createAt?: string;
-  updatedAt?: string;
+
+  orderBy?: {
+    field: OrderSortableFields;
+    direction: "asc" | "desc";
+  };
 };

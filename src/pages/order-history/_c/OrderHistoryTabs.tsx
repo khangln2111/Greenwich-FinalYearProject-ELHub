@@ -7,13 +7,16 @@ const tabs = ["All", "Completed", "Incomplete", "Failed", "Refunded"];
 
 export function OrderHistoryTabs({ activeTab, onTabChange }: Props) {
   return (
-    <div className="flex gap-x-4 overflow-x-auto mb-4 bg-body rounded-t-xl">
+    <div className="flex gap-x-4 overflow-x-auto mt-4 bg-body rounded-t-xl">
       {tabs.map((tab) => (
         <button
           key={tab}
           onClick={() => onTabChange(tab)}
-          className={`py-2 px-3 font-medium flex-1 ${
-          activeTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500" }`}
+          className={`py-2 px-3 flex-1 ${
+          activeTab === tab
+              ? "border-b-2 font-medium border-blue-600 text-blue-600"
+              : "text-gray-500"
+          }`}
         >
           {tab}
         </button>
