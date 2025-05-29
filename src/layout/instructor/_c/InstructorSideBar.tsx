@@ -1,9 +1,16 @@
 import { MantineLogo } from "@mantinex/mantine-logo";
-import { IconBellRinging, IconFingerprint, IconReceipt2 } from "@tabler/icons-react";
-import { LayoutDashboardIcon, ScreenShareIcon } from "lucide-react";
+import { IconBellRinging, IconFingerprint } from "@tabler/icons-react";
+import {
+  LayoutDashboardIcon,
+  ScreenShareIcon,
+  SettingsIcon,
+  TicketPercentIcon,
+  User2Icon,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "../../../utils/cn";
 import SidebarNavLink from "./InstructorSidebarNavLink/SidebarNavLink";
+import { Text } from "@mantine/core";
 
 type InstructorSidebarProps = {
   collapsedToIcon?: boolean;
@@ -17,6 +24,17 @@ const navItems = [
     icon: ScreenShareIcon,
   },
   {
+    href: "/instructor/profile",
+    label: "Instructor Profile",
+    icon: User2Icon,
+  },
+  {
+    href: "/instructor/coupons",
+    label: "Coupons",
+    icon: TicketPercentIcon,
+  },
+  { href: "/instructor/notifications", label: "Notifications", icon: IconBellRinging },
+  {
     href: "#",
     label: "Students",
     icon: IconFingerprint,
@@ -25,19 +43,7 @@ const navItems = [
       { label: "Messages", href: "/instructor/messages" },
     ],
   },
-  { href: "/instructor/settings", label: "Settings", icon: IconReceipt2 },
-  { href: "/instructor/reports", label: "Reports", icon: IconFingerprint },
-  {
-    href: "#",
-    label: "Billing",
-    icon: IconReceipt2,
-    subLinks: [
-      { label: "Payment History", href: "/instructor/billing/history" },
-      { label: "Subscription", href: "/instructor/billing/subscription" },
-    ],
-  },
-  { href: "/instructor/security", label: "Security", icon: IconFingerprint },
-  { href: "/instructor/notifications", label: "Notifications", icon: IconBellRinging },
+  { href: "/instructor/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
@@ -60,7 +66,16 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
           )}
         </Link>
       </div>
-
+      {/* header: instructor sidebar */}
+      <Text
+        size="xl"
+        fw={900}
+        variant="gradient"
+        gradient={{ from: "blue", to: "cyan", deg: 90 }}
+        className="px-4"
+      >
+        Instructor dashboard
+      </Text>
       {/* Sidebar Body */}
       <nav className="flex-1 p-2 flex flex-col gap-2">
         {navItems.map((item) => (

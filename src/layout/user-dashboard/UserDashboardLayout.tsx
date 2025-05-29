@@ -8,7 +8,6 @@ import {
   IconSettings,
 } from "@tabler/icons-react";
 import {
-  BackpackIcon,
   ChevronDown,
   ChevronUp,
   GiftIcon,
@@ -41,7 +40,7 @@ const menuItems: MenuItem[] = [
   },
   {
     label: "Inventory",
-    icon: <BackpackIcon />,
+    icon: <PackageIcon className="size-5" />,
     href: "/dashboard/inventory",
   },
   {
