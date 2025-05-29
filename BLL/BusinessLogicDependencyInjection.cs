@@ -28,6 +28,9 @@ public static class BusinessLogicDependencyInjection
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<IEnrollmentService, EnrollmentService>();
+        services.AddScoped<IGiftService, GiftService>();
     }
 
     private static void ConfigureGridify(this IServiceCollection services)

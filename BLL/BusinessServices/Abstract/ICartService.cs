@@ -5,7 +5,7 @@ namespace BLL.BusinessServices.Abstract;
 
 public interface ICartService
 {
-    Task<CartVm> GetCartMe();
+    Task<CartVm> GetCartSelf();
 
     Task<Success> AddCartItem(AddCartItemCommand command);
 

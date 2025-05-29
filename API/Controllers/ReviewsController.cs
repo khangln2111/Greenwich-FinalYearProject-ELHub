@@ -1,6 +1,9 @@
-﻿namespace API.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public class ReviewsController
+namespace API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ReviewsController : ControllerBase
 {
-    
 }

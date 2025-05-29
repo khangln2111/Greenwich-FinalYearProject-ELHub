@@ -138,9 +138,9 @@ public class OrderService(
         }
 
 
-        // Step 3: Remove cart items if payment succeeded
         if (order.Status == OrderStatus.Completed)
         {
+            // Step 3: Remove cart items if payment succeeded
             var cartItemCourseIds = order.OrderItems.Select(oi => oi.CourseId).ToList();
 
             var cartItemsToRemove = await context.CartItems
@@ -150,6 +150,26 @@ public class OrderService(
 
             if (cartItemsToRemove.Any())
                 context.CartItems.RemoveRange(cartItemsToRemove);
+
+            //Step 4: Add purchased courses to inventory
+            var inventory = await context.Inventories
+                .Include(i => i.InventoryItems)
+                .FirstOrDefaultAsync(i => i.UserId == order.UserId);
+
+            foreach (var orderItem in order.OrderItems)
+            {
+                var existingItem = inventory!.InventoryItems
+                    .FirstOrDefault(ii => ii.CourseId == orderItem.CourseId);
+
+                if (existingItem != null)
+                    existingItem.Quantity += orderItem.Quantity;
+                else
+                    inventory.InventoryItems.Add(new InventoryItem
+                    {
+                        CourseId = orderItem.CourseId,
+                        Quantity = orderItem.Quantity
+                    });
+            }
         }
 
         await context.SaveChangesAsync();

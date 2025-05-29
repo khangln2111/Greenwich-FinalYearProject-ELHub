@@ -9,11 +9,14 @@ namespace API.Controllers;
 [ApiController]
 public class CartController(ICartService cartService) : ControllerBase
 {
-    [HttpGet("me")]
+    [HttpGet("self")]
     [Authorize]
-    public async Task<ActionResult<CartVm>> GetCartMe()
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CartVm>> GetCartSelf()
     {
-        var result = await cartService.GetCartMe();
+        var result = await cartService.GetCartSelf();
         return Ok(result);
     }
 

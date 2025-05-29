@@ -9,12 +9,19 @@ namespace BLL.Gridify;
 
 public static class CustomGridifyExtension
 {
-    public static async Task<Paged<T>> CustomGridifyAsync<T>(this IQueryable<T> query, IGridifyQuery gridifyQuery,
-        CancellationToken token,
-        IGridifyMapper<T>? mapper = null)
+    public static async Task<Paged<TDestination>> GridifyProjectionAsync<TSource, TDestination>(
+        this IQueryable<TSource> source,
+        GridifyQuery query,
+        IGridifyMapper<TSource> gridifyMapper,
+        Func<IQueryable<TSource>, IQueryable<TDestination>> projection)
     {
-        var (count, queryable) = await query.GridifyQueryableAsync(gridifyQuery, mapper, token);
-        return new Paged<T>(count, await queryable.ToListAsync(token));
+        var filtered = source.ApplyFiltering(query, gridifyMapper);
+        var count = await filtered.CountAsync();
+
+        var ordered = filtered.ApplyOrderingAndPaging(query, gridifyMapper);
+        var items = await projection(ordered).ToListAsync();
+
+        return new Paged<TDestination>(count, items);
     }
 
 

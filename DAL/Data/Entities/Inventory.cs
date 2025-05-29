@@ -2,9 +2,9 @@
 
 public class Inventory : BaseEntity
 {
-    public Guid ApplicationUserId { get; init; }
+    public Guid UserId { get; init; }
 
-    public ApplicationUser ApplicationUser { get; init; } = null!;
+    public ApplicationUser User { get; init; } = null!;
 
     public ICollection<InventoryItem> InventoryItems { get; init; } = new List<InventoryItem>();
 }

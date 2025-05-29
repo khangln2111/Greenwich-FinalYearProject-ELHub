@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CartDTOs;
 using BLL.Exceptions;
@@ -20,7 +21,7 @@ public class CartService(
     ICurrentUserUtility currentUserUtility)
     : ICartService
 {
-    public async Task<CartVm> GetCartMe()
+    public async Task<CartVm> GetCartSelf()
     {
         var currentUser = currentUserUtility.GetCurrentUser();
 
@@ -30,8 +31,12 @@ public class CartService(
         var cart = await context.Carts
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course).ThenInclude(c => c.Image)
+            .ProjectTo<CartVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
-        return mapper.Map<CartVm>(cart);
+
+        if (cart == null) throw new NotFoundException("Cart not found for the current user");
+
+        return cart;
     }
 
     public async Task<Success> AddCartItem(AddCartItemCommand command)
