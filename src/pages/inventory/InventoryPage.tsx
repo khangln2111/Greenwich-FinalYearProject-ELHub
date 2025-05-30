@@ -1,17 +1,38 @@
-import { CheckCircle, Gift } from "lucide-react";
+import { Button } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
+import { CheckCircle, GiftIcon, KeyIcon } from "lucide-react";
 import CenterLoader from "../../components/CenterLoader";
+import { useEnrollFromInventory } from "../../react-query/enrollment/enrollmentHooks";
 import { InventoryItemVm } from "../../react-query/inventory/inventory.types";
 import { useGetInventoryItemsSelf } from "../../react-query/inventory/inventoryHooks";
 
 function InventoryItemCard({
   item,
-  onEnroll,
   onGift,
 }: {
   item: InventoryItemVm;
-  onEnroll?: (id: string) => void;
   onGift?: (id: string) => void;
 }) {
+  const enrollFromInventoryMutation = useEnrollFromInventory();
+
+  const handleConfirmEnroll = () => {
+    if (item.enrolled || item.quantity <= 0) return;
+
+    openConfirmModal({
+      title: "Confirm Enrollment",
+      centered: true,
+      children: (
+        <p>
+          Do you want to enroll in{" "}
+          <strong className="text-black dark:text-white">{item.courseTitle}</strong>?
+        </p>
+      ),
+      labels: { confirm: "Yes, Enroll", cancel: "Cancel" },
+      confirmProps: { color: "teal", loading: enrollFromInventoryMutation.isPending },
+      onConfirm: () => enrollFromInventoryMutation.mutate({ inventoryItemId: item.id }),
+    });
+  };
+
   return (
     <div
       className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4
@@ -54,25 +75,22 @@ function InventoryItemCard({
           </div>
 
           <div className="flex gap-2 justify-end">
-            <button
-              onClick={() => onEnroll?.(item.id)}
+            <Button
+              onClick={handleConfirmEnroll}
               disabled={item.enrolled}
-              className={`px-4 py-1.5 text-sm rounded-lg font-medium transition-all duration-200 ${
-                !item.enrolled
-                  ? "bg-emerald-500 hover:bg-emerald-600 text-white"
-                  : "bg-gray-300 dark:bg-zinc-700 text-gray-500 cursor-not-allowed"
-                }`}
+              color="teal"
+              loading={enrollFromInventoryMutation.isPending}
+              leftSection={<KeyIcon size={16} />}
             >
               Enroll
-            </button>
-            <button
+            </Button>
+            <Button
+              leftSection={<GiftIcon size={16} />}
               onClick={() => onGift?.(item.id)}
-              className={`px-4 py-1.5 text-sm rounded-lg font-medium flex items-center gap-1 transition-all duration-200
-                ${"bg-amber-400 hover:bg-amber-500 text-white"}`}
+              className="bg-rose-500 dark:bg-rose-600"
             >
-              <Gift size={16} />
               Gift
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -86,24 +104,6 @@ export default function InventoryPage() {
   if (isPending) return <CenterLoader />;
 
   if (error) return <div>Error loading orders: {error.message}</div>;
-
-  // const onEnroll = (id: string) => {
-  //   setItems((prev) =>
-  //     prev.map((item) =>
-  //       item.id === id && item.quantity > 0 && !item.enrolled
-  //         ? { ...item, quantity: item.quantity - 1, enrolled: true }
-  //         : item,
-  //     ),
-  //   );
-  // };
-
-  // const onGift = (id: string) => {
-  //   setItems((prev) =>
-  //     prev.map((item) =>
-  //       item.id === id && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item,
-  //     ),
-  //   );
-  // };
 
   return (
     <div className="mx-auto">

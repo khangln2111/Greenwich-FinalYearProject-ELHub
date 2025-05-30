@@ -9,5 +9,5 @@ export interface EnrollmentVm {
 export interface EnrollmentQueryCriteria {}
 
 export interface EnrollFromInventoryCommand {
-  InventoryItemId: string;
+  inventoryItemId: string;
 }
