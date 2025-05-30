@@ -26,7 +26,7 @@ export const useReorderSection = () => {
       }),
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
+        queryKey: keyFac.courses.getCourseDetail._def,
       });
     },
   });
@@ -39,7 +39,7 @@ export const useCreateSection = () => {
     mutationFn: (command: CreateSectionCommand) => createSection(command),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
+        queryKey: keyFac.courses.getCourseDetail._def,
       });
       showSuccessToast("Section Created", "The section was created successfully.");
     },
@@ -61,7 +61,7 @@ export const useUpdateSection = () => {
     mutationFn: (command: UpdateSectionCommand) => updateSection(command),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
+        queryKey: keyFac.courses.getCourseDetail._def,
       });
       showSuccessToast("Section Updated", "The section was updated successfully.");
     },

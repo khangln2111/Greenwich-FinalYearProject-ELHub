@@ -35,7 +35,7 @@ import {
 export const useCurrentUser = () => {
   const accessToken = useAppStore.use.accessToken();
   return useQuery({
-    queryKey: keyFac.identity.currentUser.queryKey,
+    queryKey: keyFac.identity.getCurrentUser.queryKey,
     queryFn: getCurrentUser,
     enabled: !!accessToken,
     refetchOnWindowFocus: false,
@@ -48,7 +48,7 @@ export const useLogout = () => {
   const logout = useAppStore.use.logout();
 
   const handleLogout = () => {
-    queryClient.removeQueries({ queryKey: keyFac.identity.currentUser.queryKey });
+    queryClient.removeQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
     logout();
     navigate("/", { replace: true });
   };
@@ -125,7 +125,7 @@ export const useLoginWithGoogle = () => {
       showSuccessToast("Logged In with google", "You are now logged in.");
       const { accessToken, refreshToken } = data;
       setTokens(accessToken, refreshToken);
-      await queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
+      await queryClient.invalidateQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
       navigate("/");
     },
     onError: (error) =>
@@ -302,7 +302,7 @@ export const useUpdateUserProfile = () => {
   return useMutation({
     mutationFn: (command: UpdateUserProfileSelfCommand) => updateUserProfileSelf(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
       showSuccessToast("Profile Updated", "Your profile has been updated successfully.");
     },
     onError: (error) =>

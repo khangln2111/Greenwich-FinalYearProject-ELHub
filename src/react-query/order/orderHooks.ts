@@ -12,14 +12,14 @@ import {
 
 export const useGetOrdersSelf = (query: OrderQueryCriteria = {}) => {
   return useQuery({
-    queryKey: keyFac.orders.listSelf(query).queryKey,
+    queryKey: keyFac.orders.getOrdersSelf(query).queryKey,
     queryFn: () => getOrdersSelf(query),
   });
 };
 
 export const useGetOrderDetailSelf = (id: string) => {
   return useQuery({
-    queryKey: keyFac.orders.detailSelf(id).queryKey,
+    queryKey: keyFac.orders.getOrderDetailSelf(id).queryKey,
     queryFn: () => getOrderDetailSelf(id),
     enabled: !!id,
     retry: (failureCount, error) => {

@@ -2,10 +2,10 @@ import { createQueryKeys } from "@lukemorales/query-key-factory";
 import { CourseQueryCriteria } from "./course.types";
 
 export const courseKeyFac = createQueryKeys("courses", {
-  list: (query?: CourseQueryCriteria) => ({
+  getCourses: (query?: CourseQueryCriteria) => ({
     queryKey: [query],
   }),
-  detail: (id: string) => ({
+  getCourseDetail: (id: string) => ({
     queryKey: [id],
   }),
 });

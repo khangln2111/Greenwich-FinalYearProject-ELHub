@@ -4,8 +4,8 @@ import { AddCartItemCommand, CartVm, UpdateCartItemCommand } from "./cart.types"
 
 const BASE_URL = "/cart";
 
-export const getCart = async () => {
-  const response = await apiClient.get<CartVm>(`${BASE_URL}/me`);
+export const getCartSelf = async () => {
+  const response = await apiClient.get<CartVm>(`${BASE_URL}/self`);
   return response.data;
 };
 

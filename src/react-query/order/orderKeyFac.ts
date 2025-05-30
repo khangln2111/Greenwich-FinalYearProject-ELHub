@@ -5,10 +5,10 @@ export const orderKeyFac = createQueryKeys("orders", {
   confirmPaymentIntent: (paymentIntentId: string) => ({
     queryKey: [paymentIntentId],
   }),
-  listSelf: (query?: OrderQueryCriteria) => ({
+  getOrdersSelf: (query?: OrderQueryCriteria) => ({
     queryKey: [query],
   }),
-  detailSelf: (id: string) => ({
+  getOrderDetailSelf: (id: string) => ({
     queryKey: [id],
   }),
 });

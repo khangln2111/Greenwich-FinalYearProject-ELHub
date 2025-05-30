@@ -7,14 +7,14 @@ import { createCourse, deleteCourse, getCourseDetail, getCourses, updateCourse }
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
   return useQuery({
-    queryKey: keyFac.courses.list(query).queryKey,
+    queryKey: keyFac.courses.getCourses(query).queryKey,
     queryFn: () => getCourses(query),
   });
 };
 
 export const useGetCourseDetail = (id: string) => {
   return useQuery({
-    queryKey: keyFac.courses.detail(id).queryKey,
+    queryKey: keyFac.courses.getCourseDetail(id).queryKey,
     queryFn: () => getCourseDetail(id),
     enabled: !!id,
     retry: (failureCount, error) => {
@@ -58,8 +58,10 @@ export const useUpdateCourse = () => {
   return useMutation({
     mutationFn: (command: UpdateCourseCommand) => updateCourse(command),
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: keyFac.courses.detail(variables.id).queryKey });
-      queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses.getCourseDetail(variables.id).queryKey,
+      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses.getCourses._def });
       showSuccessToast("Course Updated", "The course was updated successfully.");
     },
     onError: (error) =>
@@ -81,7 +83,7 @@ export const useDeleteCourse = () => {
   return useMutation({
     mutationFn: (id: string) => deleteCourse(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.courses.list._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses.getCourses._def });
       showSuccessToast("Course Deleted", "The course was deleted successfully.");
     },
     onError: (error) =>

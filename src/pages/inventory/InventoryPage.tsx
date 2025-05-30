@@ -1,5 +1,7 @@
 import { Gift, CheckCircle } from "lucide-react";
 import { useState } from "react";
+import { useGetInventoryItemsSelf } from "../../react-query/inventory/inventoryHooks";
+import CenterLoader from "../../components/CenterLoader";
 
 type InventoryItem = {
   id: string;
@@ -7,19 +9,19 @@ type InventoryItem = {
   courseDescription: string;
   courseImageUrl: string;
   quantity: number;
-  activated: boolean;
+  enrolled: boolean;
 };
 
 function InventoryItemCard({
   item,
-  onActivate,
+  onEnroll,
   onGift,
 }: {
   item: InventoryItem;
-  onActivate: (id: string) => void;
+  onEnroll: (id: string) => void;
   onGift: (id: string) => void;
 }) {
-  const canActivate = item.quantity > 0 && !item.activated;
+  const canEnroll = item.quantity > 0 && !item.enrolled;
   const canGift = item.quantity > 0;
 
   return (
@@ -58,22 +60,22 @@ function InventoryItemCard({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <CheckCircle
-              className={`w-5 h-5 ${item.activated ? "text-green-500" : "text-gray-300"}`}
+              className={`w-5 h-5 ${item.enrolled ? "text-green-500" : "text-gray-300"}`}
             />
-            <span>{item.activated ? "Activated" : "Not Activated"}</span>
+            <span>{item.enrolled ? "Enrolled" : "Not Enrolled"}</span>
           </div>
 
           <div className="flex gap-2 justify-end">
             <button
-              onClick={() => onActivate(item.id)}
-              disabled={!canActivate}
+              onClick={() => onEnroll(item.id)}
+              disabled={!canEnroll}
               className={`px-4 py-1.5 text-sm rounded-lg font-medium transition-all duration-200 ${
-                canActivate
+                canEnroll
                   ? "bg-emerald-500 hover:bg-emerald-600 text-white"
                   : "bg-gray-300 dark:bg-zinc-700 text-gray-500 cursor-not-allowed"
                   }`}
             >
-              Activate
+              Enroll
             </button>
             <button
               onClick={() => onGift(item.id)}
@@ -95,6 +97,7 @@ function InventoryItemCard({
 }
 
 export default function InventoryPage() {
+  const { data, isPending, error } = useGetInventoryItemsSelf();
   const [items, setItems] = useState<InventoryItem[]>([
     {
       id: "1",
@@ -102,7 +105,7 @@ export default function InventoryPage() {
       courseDescription: "Master React and build real-world apps with hooks, context and suspense.",
       courseImageUrl: "https://cloud.z.com/vn/wp-content/uploads/2023/06/Screenshot_12-5.png",
       quantity: 2,
-      activated: false,
+      enrolled: false,
     },
     {
       id: "2",
@@ -111,15 +114,20 @@ export default function InventoryPage() {
       courseImageUrl:
         "https://images.ctfassets.net/23aumh6u8s0i/3auCWvEHRgMULidrkY6oQx/44b6f250f482dc75323130492e322746/TS.png",
       quantity: 1,
-      activated: true,
+      enrolled: true,
     },
   ]);
+  if (isPending) return <CenterLoader />;
 
-  const onActivate = (id: string) => {
+  if (error) return <div>Error loading orders: {error.message}</div>;
+
+  console.log("Inventory items:", data.items);
+
+  const onEnroll = (id: string) => {
     setItems((prev) =>
       prev.map((item) =>
-        item.id === id && item.quantity > 0 && !item.activated
-          ? { ...item, quantity: item.quantity - 1, activated: true }
+        item.id === id && item.quantity > 0 && !item.enrolled
+          ? { ...item, quantity: item.quantity - 1, enrolled: true }
           : item,
       ),
     );
@@ -144,7 +152,7 @@ export default function InventoryPage() {
           <p className="text-gray-500 dark:text-gray-400 text-center">Your inventory is empty.</p>
         ) : (
           items.map((item) => (
-            <InventoryItemCard key={item.id} item={item} onActivate={onActivate} onGift={onGift} />
+            <InventoryItemCard key={item.id} item={item} onEnroll={onEnroll} onGift={onGift} />
           ))
         )}
       </div>

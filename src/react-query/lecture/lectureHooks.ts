@@ -27,7 +27,7 @@ export const useReorderLecture = () => {
       }),
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.detail._def,
+        queryKey: keyFac.courses.getCourseDetail._def,
       });
     },
   });

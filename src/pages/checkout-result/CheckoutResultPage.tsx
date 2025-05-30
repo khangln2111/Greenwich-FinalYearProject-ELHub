@@ -29,13 +29,8 @@ export default function CheckoutResultPage() {
           <p className="text-gray-600 dark:text-gray-300 mt-2">
             Thank you for your purchase! You can now access your course materials.
           </p>
-          <Button
-            variant="light"
-            className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full"
-            component={Link}
-            to="/my-learning"
-          >
-            Go to My Learning
+          <Button className="mt-6 w-full rounded-full" component={Link} to="/dashboard/inventory">
+            Go to My Inventory
           </Button>
         </>
 
