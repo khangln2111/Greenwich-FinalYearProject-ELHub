@@ -1,3 +1,5 @@
+import CenterLoader from "../../components/CenterLoader";
+import { useGetEnrollmentsSelf } from "../../react-query/enrollment/enrollmentHooks";
 import EnrolledCourseCard from "./_c/EnrolledCourseCard";
 
 const mockCourses = [
@@ -31,6 +33,14 @@ const mockCourses = [
 ];
 
 export default function EnrolledCoursesPage() {
+  const { data, isPending, error } = useGetEnrollmentsSelf();
+
+  if (isPending) return <CenterLoader />;
+
+  if (error) return <div>Error loading orders: {error.message}</div>;
+
+  console.log("EnrolledCoursesPage data:", data);
+
   return (
     <div>
       <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">

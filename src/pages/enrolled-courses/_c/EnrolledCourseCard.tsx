@@ -84,9 +84,15 @@ export default function EnrolledCourseCard({
             {title}
           </h3>
           <div className="flex gap-2 items-center mt-2">
-            <Avatar color="cyan" size="sm" radius="xl" name={author} />
+            <Avatar
+              allowedInitialsColors={["red", "blue", "cyan"]}
+              color="initials"
+              size="sm"
+              radius="xl"
+              name="Nguyen Khang"
+            />
             <Text className="text-gray-500 text-sm dark:text-gray-400">
-              by <span className="font-semibold">{author}</span>
+              by <span className="font-semibold">Nguyen Khang</span>
             </Text>
           </div>
         </div>
@@ -94,13 +100,13 @@ export default function EnrolledCourseCard({
         <div className="flex flex-col gap-1">
           <div className="flex justify-between text-md text-gray-500 dark:text-gray-400">
             <span>Complete</span>
-            <span>{progressPercent}%</span>
+            <span>85%</span>
           </div>
-          <Progress value={progressPercent} size="md" striped radius="xl" />
+          <Progress value={85} size="md" striped radius="xl" />
         </div>
 
         <div className="flex items-center justify-between mt-2">
-          <Rating value={userRating} readOnly size="xs" />
+          <Rating value={4} readOnly size="xs" />
           <Button
             variant="outline"
             radius="lg"
