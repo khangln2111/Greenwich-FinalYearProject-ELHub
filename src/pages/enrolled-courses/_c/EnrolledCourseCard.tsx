@@ -43,12 +43,12 @@ export default function EnrolledCourseCard({
 
   return (
     <div
-      className="bg-white dark:bg-dark-6 rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition
-        duration-300 overflow-hidden flex flex-col group"
+      className="bg-body rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300
+        overflow-hidden flex flex-col group p-4"
     >
       {/* Image Section */}
       <div
-        className="relative aspect-video cursor-pointer"
+        className="relative aspect-video cursor-pointer overflow-hidden rounded-lg"
         onClick={handleNavigateToLearningPage}
         role="button"
         tabIndex={0}
@@ -59,7 +59,7 @@ export default function EnrolledCourseCard({
         <img
           src={imageUrl}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-300"
           draggable={false}
         />
 
@@ -75,7 +75,7 @@ export default function EnrolledCourseCard({
       </div>
 
       {/* Content Section */}
-      <div className="p-4 flex flex-col gap-4 flex-1">
+      <div className="flex flex-col gap-4 flex-1 mt-4">
         <div className="flex-1">
           <h3
             className="text-lg font-semibold line-clamp-2 cursor-pointer"
@@ -96,22 +96,14 @@ export default function EnrolledCourseCard({
             <span>Complete</span>
             <span>{progressPercent}%</span>
           </div>
-          <Progress
-            value={progressPercent}
-            size="sm"
-            striped
-            radius="xl"
-            classNames={{
-              root: "bg-gray-200 dark:bg-dark-4",
-            }}
-          />
+          <Progress value={progressPercent} size="md" striped radius="xl" />
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-2">
           <Rating value={userRating} readOnly size="xs" />
           <Button
             variant="outline"
-            radius="xl"
+            radius="lg"
             color="gray"
             leftSection={<Star size={14} />}
             onClick={(e) => {

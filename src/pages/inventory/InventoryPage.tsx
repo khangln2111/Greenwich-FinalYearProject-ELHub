@@ -1,8 +1,7 @@
-import { Gift, CheckCircle } from "lucide-react";
-import { useState } from "react";
-import { useGetInventoryItemsSelf } from "../../react-query/inventory/inventoryHooks";
+import { CheckCircle, Gift } from "lucide-react";
 import CenterLoader from "../../components/CenterLoader";
 import { InventoryItemVm } from "../../react-query/inventory/inventory.types";
+import { useGetInventoryItemsSelf } from "../../react-query/inventory/inventoryHooks";
 
 function InventoryItemCard({
   item,
@@ -88,8 +87,6 @@ export default function InventoryPage() {
 
   if (error) return <div>Error loading orders: {error.message}</div>;
 
-  console.log("Inventory items:", data.items);
-
   // const onEnroll = (id: string) => {
   //   setItems((prev) =>
   //     prev.map((item) =>
@@ -110,8 +107,8 @@ export default function InventoryPage() {
 
   return (
     <div className="mx-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900 dark:text-white text-center sm:text-left">
-        Your Inventory
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+        My Inventory
       </h1>
 
       <div className="space-y-5">

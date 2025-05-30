@@ -73,7 +73,7 @@ export default function OrderHistoryPage() {
   return (
     <div>
       <div className="flex items-center gap-10 justify-between mb-4">
-        <h1 className="text-2xl font-bold flex-1">My Orders</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">My Orders</h1>
 
         <Select
           data={ORDER_BY_OPTIONS}
