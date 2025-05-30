@@ -1,8 +1,8 @@
-import { Button, Progress, Rating, Text, Avatar } from "@mantine/core";
+import { Avatar, Button, Progress, Rating, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { Play, Star } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Star } from "lucide-react";
 
 interface EnrolledCourseCardProps {
   imageUrl: string;
@@ -26,7 +26,7 @@ export default function EnrolledCourseCard({
 
   const handleOpenRatingModal = () => {
     modals.open({
-      title: "Đánh giá khóa học",
+      title: "Rating the course",
       children: (
         <div className="flex flex-col gap-4">
           <Rating value={userRating} onChange={setUserRating} size="lg" count={5} color="yellow" />
@@ -37,35 +37,68 @@ export default function EnrolledCourseCard({
     });
   };
 
+  const handleNavigateToLearningPage = () => {
+    navigate(`/learning/${courseId}`);
+  };
+
   return (
-    <div className="bg-body rounded-xl shadow-sm hover:shadow-md transition p-3 flex flex-col">
-      <div className="overflow-hidden rounded-lg aspect-video">
+    <div
+      className="bg-white dark:bg-dark-6 rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition
+        duration-300 overflow-hidden flex flex-col group"
+    >
+      {/* Image Section */}
+      <div
+        className="relative aspect-video cursor-pointer"
+        onClick={handleNavigateToLearningPage}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") handleNavigateToLearningPage();
+        }}
+      >
         <img
           src={imageUrl}
           alt={title}
-          className="object-cover size-full transition duration-300 hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          draggable={false}
         />
+
+        {/* Overlay Play Button */}
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0
+            group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+        >
+          <div className="bg-white dark:bg-dark-4 bg-opacity-90 backdrop-blur-sm rounded-full p-3 shadow-lg">
+            <Play size={28} className="text-gray-800 dark:text-white" />
+          </div>
+        </div>
       </div>
 
-      <div className="mt-3 flex-1 flex flex-col justify-between gap-3">
+      {/* Content Section */}
+      <div className="p-4 flex flex-col gap-4 flex-1">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-text line-clamp-2">{title}</h3>
-          <div className="flex gap-2 items-center text-wrap mt-2">
-            <Avatar color="initials" size="sm" className="border-1" name="Nguyen Khang" />
-            <Text className="text-gray-500 text-sm block dark:text-gray-5">
-              by <span className="font-semibold">Nguyen Khang</span>
+          <h3
+            className="text-lg font-semibold line-clamp-2 cursor-pointer"
+            onClick={handleNavigateToLearningPage}
+          >
+            {title}
+          </h3>
+          <div className="flex gap-2 items-center mt-2">
+            <Avatar color="cyan" size="sm" radius="xl" name={author} />
+            <Text className="text-gray-500 text-sm dark:text-gray-400">
+              by <span className="font-semibold">{author}</span>
             </Text>
           </div>
         </div>
 
-        <div>
-          <div className="flex items-center gap-2 mb-2 justify-between">
-            <p className="text-md text-gray-400">Complete</p>
-            <p className="text-md text-gray-400">{progressPercent}%</p>
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-between text-md text-gray-500 dark:text-gray-400">
+            <span>Complete</span>
+            <span>{progressPercent}%</span>
           </div>
           <Progress
             value={progressPercent}
-            size="md"
+            size="sm"
             striped
             radius="xl"
             classNames={{
@@ -74,14 +107,17 @@ export default function EnrolledCourseCard({
           />
         </div>
 
-        <div className="flex items-center gap-2 mt-2">
+        <div className="flex items-center justify-between">
+          <Rating value={userRating} readOnly size="xs" />
           <Button
-            size="xs"
             variant="outline"
             radius="xl"
             color="gray"
             leftSection={<Star size={14} />}
-            onClick={handleOpenRatingModal}
+            onClick={(e) => {
+              e.stopPropagation(); // tránh kích hoạt click bên ngoài
+              handleOpenRatingModal();
+            }}
           >
             Leave a rating
           </Button>
