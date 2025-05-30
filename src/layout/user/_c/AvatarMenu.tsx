@@ -60,7 +60,13 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           My Account
         </Menu.Item>
-        <Menu.Item leftSection={<MonitorCheckIcon size={15} />}>Enrolled courses</Menu.Item>
+        <Menu.Item
+          leftSection={<MonitorCheckIcon size={15} />}
+          component={Link}
+          to="/dashboard/enrolled-courses"
+        >
+          Enrolled courses
+        </Menu.Item>
         <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Analytics</Menu.Item>
         <Menu.Item
           leftSection={<PackageIcon size={15} />}

@@ -18,6 +18,7 @@ import MyAccountPage from "../pages/my-account/MyAccountPage";
 import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
 import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
 import InventoryPage from "../pages/inventory/InventoryPage";
+import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -45,7 +46,7 @@ const userRoute: RouteObject = {
         },
         {
           path: "enrolled-courses",
-          element: <p>User Enrolled Courses Page</p>,
+          element: <EnrolledCoursesPage />,
         },
         {
           path: "inventory",
