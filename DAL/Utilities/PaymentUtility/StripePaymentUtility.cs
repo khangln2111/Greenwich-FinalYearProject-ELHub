@@ -12,8 +12,12 @@ public class StripePaymentUtility : IStripePaymentUtility
         StripeConfiguration.ApiKey = StripeSecretKey;
     }
 
-    public async Task<PaymentIntent> CreatePaymentIntent(long amountInCents, string currency,
-        Dictionary<string, string> metadata)
+    public async Task<PaymentIntent> CreatePaymentIntent(
+        long amountInCents,
+        string currency,
+        Dictionary<string, string> metadata,
+        string? description = null,
+        string? receiptEmail = null)
     {
         var options = new PaymentIntentCreateOptions
         {
@@ -23,7 +27,9 @@ public class StripePaymentUtility : IStripePaymentUtility
             AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
             {
                 Enabled = true
-            }
+            },
+            Description = description,
+            ReceiptEmail = receiptEmail
         };
 
         var service = new PaymentIntentService();
