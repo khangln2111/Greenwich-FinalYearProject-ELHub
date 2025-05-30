@@ -4,6 +4,7 @@ export interface InventoryItemVm {
   courseTitle: string;
   courseDescription: string;
   courseImageUrl: string;
+  enrolled: boolean;
   quantity: number;
 }
 

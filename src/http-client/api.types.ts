@@ -30,7 +30,7 @@ export enum ErrorCode {
   EmailAlreadyTaken = "EmailAlreadyTaken",
   PaymentFailed = "PaymentFailed",
   Unexpected = "Unexpected",
-  InvalidBehavior = "InvalidBehavior",
+  InvalidOperation = "InvalidOperation",
   EmailAlreadyConfirmed = "EmailAlreadyConfirmed",
   EmailOrPasswordIncorrect = "EmailOrPasswordIncorrect",
   InvalidToken = "InvalidToken",

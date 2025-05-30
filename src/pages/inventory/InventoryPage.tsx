@@ -2,28 +2,17 @@ import { Gift, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { useGetInventoryItemsSelf } from "../../react-query/inventory/inventoryHooks";
 import CenterLoader from "../../components/CenterLoader";
-
-type InventoryItem = {
-  id: string;
-  courseTitle: string;
-  courseDescription: string;
-  courseImageUrl: string;
-  quantity: number;
-  enrolled: boolean;
-};
+import { InventoryItemVm } from "../../react-query/inventory/inventory.types";
 
 function InventoryItemCard({
   item,
   onEnroll,
   onGift,
 }: {
-  item: InventoryItem;
-  onEnroll: (id: string) => void;
-  onGift: (id: string) => void;
+  item: InventoryItemVm;
+  onEnroll?: (id: string) => void;
+  onGift?: (id: string) => void;
 }) {
-  const canEnroll = item.quantity > 0 && !item.enrolled;
-  const canGift = item.quantity > 0;
-
   return (
     <div
       className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4
@@ -67,24 +56,20 @@ function InventoryItemCard({
 
           <div className="flex gap-2 justify-end">
             <button
-              onClick={() => onEnroll(item.id)}
-              disabled={!canEnroll}
+              onClick={() => onEnroll?.(item.id)}
+              disabled={item.enrolled}
               className={`px-4 py-1.5 text-sm rounded-lg font-medium transition-all duration-200 ${
-                canEnroll
+                !item.enrolled
                   ? "bg-emerald-500 hover:bg-emerald-600 text-white"
                   : "bg-gray-300 dark:bg-zinc-700 text-gray-500 cursor-not-allowed"
-                  }`}
+                }`}
             >
               Enroll
             </button>
             <button
-              onClick={() => onGift(item.id)}
-              disabled={!canGift}
-              className={`px-4 py-1.5 text-sm rounded-lg font-medium flex items-center gap-1 transition-all duration-200 ${
-                canGift
-                  ? "bg-amber-400 hover:bg-amber-500 text-white"
-                  : "bg-gray-300 dark:bg-zinc-700 text-gray-500 cursor-not-allowed"
-              }`}
+              onClick={() => onGift?.(item.id)}
+              className={`px-4 py-1.5 text-sm rounded-lg font-medium flex items-center gap-1 transition-all duration-200
+                ${"bg-amber-400 hover:bg-amber-500 text-white"}`}
             >
               <Gift size={16} />
               Gift
@@ -98,62 +83,42 @@ function InventoryItemCard({
 
 export default function InventoryPage() {
   const { data, isPending, error } = useGetInventoryItemsSelf();
-  const [items, setItems] = useState<InventoryItem[]>([
-    {
-      id: "1",
-      courseTitle: "Modern React 2025",
-      courseDescription: "Master React and build real-world apps with hooks, context and suspense.",
-      courseImageUrl: "https://cloud.z.com/vn/wp-content/uploads/2023/06/Screenshot_12-5.png",
-      quantity: 2,
-      enrolled: false,
-    },
-    {
-      id: "2",
-      courseTitle: "TypeScript Pro Patterns",
-      courseDescription: "Learn advanced TS patterns and scalable application design.",
-      courseImageUrl:
-        "https://images.ctfassets.net/23aumh6u8s0i/3auCWvEHRgMULidrkY6oQx/44b6f250f482dc75323130492e322746/TS.png",
-      quantity: 1,
-      enrolled: true,
-    },
-  ]);
+
   if (isPending) return <CenterLoader />;
 
   if (error) return <div>Error loading orders: {error.message}</div>;
 
   console.log("Inventory items:", data.items);
 
-  const onEnroll = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.quantity > 0 && !item.enrolled
-          ? { ...item, quantity: item.quantity - 1, enrolled: true }
-          : item,
-      ),
-    );
-  };
+  // const onEnroll = (id: string) => {
+  //   setItems((prev) =>
+  //     prev.map((item) =>
+  //       item.id === id && item.quantity > 0 && !item.enrolled
+  //         ? { ...item, quantity: item.quantity - 1, enrolled: true }
+  //         : item,
+  //     ),
+  //   );
+  // };
 
-  const onGift = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item,
-      ),
-    );
-  };
+  // const onGift = (id: string) => {
+  //   setItems((prev) =>
+  //     prev.map((item) =>
+  //       item.id === id && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item,
+  //     ),
+  //   );
+  // };
 
   return (
-    <div className="mx-auto px-4 sm:px-6 py-6">
+    <div className="mx-auto">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900 dark:text-white text-center sm:text-left">
         Your Inventory
       </h1>
 
       <div className="space-y-5">
-        {items.length === 0 ? (
+        {data.items.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400 text-center">Your inventory is empty.</p>
         ) : (
-          items.map((item) => (
-            <InventoryItemCard key={item.id} item={item} onEnroll={onEnroll} onGift={onGift} />
-          ))
+          data.items.map((item) => <InventoryItemCard key={item.id} item={item} />)
         )}
       </div>
     </div>

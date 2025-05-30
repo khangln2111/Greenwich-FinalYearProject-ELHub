@@ -34,6 +34,11 @@ const menuItems: MenuItem[] = [
   { label: "Dashboard", icon: <IconDashboard className="size-5" />, href: "/dashboard" },
   { label: "My Account", icon: <User className="size-5" />, href: "/dashboard/my-account" },
   {
+    label: "Enrolled Courses",
+    icon: <MonitorCheckIcon className="size-5" />,
+    href: "/dashboard/enrolled-courses",
+  },
+  {
     label: "Purchase History",
     icon: <HistoryIcon className="size-5" />,
     href: "/dashboard/order-history",
@@ -43,11 +48,7 @@ const menuItems: MenuItem[] = [
     icon: <PackageIcon className="size-5" />,
     href: "/dashboard/inventory",
   },
-  {
-    label: "Enrolled Courses",
-    icon: <MonitorCheckIcon className="size-5" />,
-    href: "/dashboard/enrolled-courses",
-  },
+
   { label: "Gifts", icon: <GiftIcon className="size-5" />, href: "/dashboard/gifts" },
   {
     label: "Notifications",
@@ -82,11 +83,11 @@ export default function UserDashboardLayout() {
         <Avatar
           size={100}
           radius="full"
-          className="mx-auto shadow-lg dark:border"
+          className="mx-auto shadow-lg"
           src={currentUser?.avatarUrl || avatarPlaceHolder}
         />
-        <p className="mt-2 font-medium">Khang</p>
-        <p className="text-xs">lenguyenkhang21112003@gmail.com</p>
+        <p className="mt-2 font-medium">{currentUser?.firstName}</p>
+        <p className="text-xs">{currentUser?.email}</p>
       </div>
 
       <div className="space-y-2">

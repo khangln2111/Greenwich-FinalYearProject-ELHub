@@ -36,7 +36,6 @@ function getPasswordRequirements(
 
 const RegisterForm = () => {
   const form = useForm<RegisterRequest>({
-    mode: "uncontrolled",
     initialValues: {
       firstName: "",
       lastName: "",
