@@ -94,7 +94,6 @@ public class OrderService(
         var intent = await stripePaymentUtility.GetPaymentIntent(paymentIntentId);
         var metadata = intent.Metadata;
 
-
         if (!metadata.TryGetValue("orderId", out var orderIdStr) || !Guid.TryParse(orderIdStr, out var orderId))
             throw new BadRequestException("Missing or invalid orderId in metadata", ErrorCode.InvalidPaymentIntent);
 
@@ -140,36 +139,41 @@ public class OrderService(
 
         if (order.Status == OrderStatus.Completed)
         {
-            // Step 3: Remove cart items if payment succeeded
-            var cartItemCourseIds = order.OrderItems.Select(oi => oi.CourseId).ToList();
+            // Step 3: Remove related cart items
+            var courseIds = order.OrderItems.Select(oi => oi.CourseId).ToList();
 
-            var cartItemsToRemove = await context.CartItems
-                .Include(ci => ci.Cart)
-                .Where(ci => ci.Cart.UserId == order.UserId && cartItemCourseIds.Contains(ci.CourseId))
+            var cartItems = await context.CartItems
+                .Where(ci => ci.Cart.UserId == order.UserId && courseIds.Contains(ci.CourseId))
                 .ToListAsync();
 
-            if (cartItemsToRemove.Any())
-                context.CartItems.RemoveRange(cartItemsToRemove);
+            if (cartItems.Count != 0)
+                context.CartItems.RemoveRange(cartItems);
 
-            //Step 4: Add purchased courses to inventory
+            // Step 4: Ensure inventory
             var inventory = await context.Inventories
-                .Include(i => i.InventoryItems)
                 .FirstOrDefaultAsync(i => i.UserId == order.UserId);
 
-            foreach (var orderItem in order.OrderItems)
-            {
-                var existingItem = inventory!.InventoryItems
-                    .FirstOrDefault(ii => ii.CourseId == orderItem.CourseId);
+            // Query InventoryItems of this user and index
+            var inventoryItems = await context.InventoryItems
+                .Where(ii => ii.InventoryId == inventory!.Id && courseIds.Contains(ii.CourseId))
+                .ToDictionaryAsync(ii => ii.CourseId);
 
-                if (existingItem != null)
-                    existingItem.Quantity += orderItem.Quantity;
+
+            foreach (var orderItem in order.OrderItems)
+                if (inventoryItems.TryGetValue(orderItem.CourseId, out var item))
+                {
+                    item.Quantity += orderItem.Quantity;
+                }
                 else
-                    inventory.InventoryItems.Add(new InventoryItem
+                {
+                    var newItem = new InventoryItem
                     {
+                        InventoryId = inventory!.Id,
                         CourseId = orderItem.CourseId,
                         Quantity = orderItem.Quantity
-                    });
-            }
+                    };
+                    await context.InventoryItems.AddAsync(newItem);
+                }
         }
 
         await context.SaveChangesAsync();
