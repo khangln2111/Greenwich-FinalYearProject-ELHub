@@ -12,6 +12,7 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
             .IsRequired()
             .HasDefaultValue(1); // Default quantity is 1 if not specified
 
+
         builder.HasOne(ci => ci.Cart)
             .WithMany(c => c.CartItems)
             .HasForeignKey(ci => ci.CartId)

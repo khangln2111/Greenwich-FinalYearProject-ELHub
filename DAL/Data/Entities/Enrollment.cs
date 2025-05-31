@@ -9,6 +9,4 @@ public class Enrollment : BaseEntity
     public Guid UserId { get; set; }
 
     public ApplicationUser User { get; set; } = null!;
-
-    public DateTime EnrolledAt { get; set; } = DateTime.Now;
 }

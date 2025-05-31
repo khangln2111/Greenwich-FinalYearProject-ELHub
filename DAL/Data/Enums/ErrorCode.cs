@@ -12,7 +12,7 @@ public enum ErrorCode
     EmailAlreadyTaken,
     PaymentFailed,
     Unexpected,
-    InvalidBehavior,
+    InvalidOperation,
     InvalidOtp,
     EmailAlreadyConfirmed,
     EmailOrPasswordIncorrect,

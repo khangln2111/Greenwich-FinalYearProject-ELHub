@@ -53,7 +53,7 @@ public class BadRequestException : HttpException
     {
         ValidationErrors = new Dictionary<string, string[]>
         {
-            { identityError.Code, new[] { identityError.Description } }
+            { identityError.Code, [identityError.Description] }
         };
     }
 

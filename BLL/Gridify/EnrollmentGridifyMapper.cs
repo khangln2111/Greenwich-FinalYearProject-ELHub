@@ -3,9 +3,9 @@ using Gridify;
 
 namespace BLL.Gridify;
 
-public class InventoryItemGridifyMapper : GridifyMapper<InventoryItem>
+public class EnrollmentGridifyMapper : GridifyMapper<Enrollment>
 {
-    public InventoryItemGridifyMapper()
+    public EnrollmentGridifyMapper()
     {
         AddMap("CourseTitle", e => e.Course.Title);
     }

@@ -19,7 +19,6 @@ public class InventoryService(
     ICurrentUserUtility currentUserUtility,
     IMapper mapper,
     IGridifyMapper<InventoryItem> gridifyMapper,
-    IValidationService validationService,
     ApplicationDbContext context
 ) : IInventoryService
 {
