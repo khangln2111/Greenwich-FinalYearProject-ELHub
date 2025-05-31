@@ -39,16 +39,14 @@ export default function EnrolledCoursesPage() {
 
   if (error) return <div>Error loading orders: {error.message}</div>;
 
-  console.log("EnrolledCoursesPage data:", data);
-
   return (
     <div>
       <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
         Enrolled courses
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-        {mockCourses.map((course) => (
-          <EnrolledCourseCard key={course.courseId} {...course} />
+        {data.items.map((enrollment) => (
+          <EnrolledCourseCard key={enrollment.id} enrollment={enrollment} />
         ))}
       </div>
     </div>

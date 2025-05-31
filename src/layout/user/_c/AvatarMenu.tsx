@@ -12,6 +12,7 @@ import {
   CircleUserIcon,
   GiftIcon,
   GraduationCap,
+  HistoryIcon,
   MonitorCheckIcon,
   PackageIcon,
 } from "lucide-react";
@@ -53,6 +54,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
 
       <Menu.Dropdown className="shadow-xl max-h-[90dvh] overflow-y-auto">
         <Menu.Label>Personal</Menu.Label>
+        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Analytics</Menu.Item>
         <Menu.Item
           component={Link}
           to="/dashboard/my-account"
@@ -67,13 +69,19 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           Enrolled courses
         </Menu.Item>
-        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Analytics</Menu.Item>
         <Menu.Item
-          leftSection={<PackageIcon size={15} />}
+          leftSection={<HistoryIcon size={15} />}
           component={Link}
           to="/dashboard/order-history"
         >
           Purchase History
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<PackageIcon size={15} />}
+          component={Link}
+          to="/dashboard/inventory"
+        >
+          Inventory
         </Menu.Item>
         <Menu.Item leftSection={<GiftIcon size={15} />}>Gifts</Menu.Item>
 

@@ -26,9 +26,9 @@ export function FirstOrderItemPreviewer({ item, remainingCount = 0 }: Props) {
         )}
       </div>
 
-      <div className="text-right text-sm md:text-md">
+      <div className="text-right text-sm md:text-lg">
         <div>
-          <span className="font-medium text-text">
+          <span className="font-medium">
             {shouldShowOriginalPrice
               ? `$${item.discountedPrice!.toLocaleString("en-US")}`
               : `$${item.price.toLocaleString("en-US")}`}

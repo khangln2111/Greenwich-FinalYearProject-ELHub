@@ -40,7 +40,9 @@ export function OrderCard({ order }: Props) {
             Paid via: <span className="capitalize">{order.paymentMethodType ?? "None"}</span>
           </span>
           <span className="text-gray-400 visible-from-md">|</span>
-          <span className="text-dimmed font-semibold text-md">{formatDate(order.createdAt)}</span>
+          <span className="text-gray-600 dark:text-gray-300 font-semibold text-md">
+            {formatDate(order.createdAt)}
+          </span>
         </div>
         <span className={getStatusStyle(order.status)}>{order.status}</span>
       </div>
@@ -51,14 +53,15 @@ export function OrderCard({ order }: Props) {
         <Box
           component={Link}
           to={`/dashboard/order-history/${order.id}`}
-          className="text-sm text-blue-600 mt-1 inline-flex items-center cursor-pointer hover:underline"
+          className="text-md text-blue-600 dark:text-blue-400 font-medium mt-1 inline-flex items-center cursor-pointer
+            hover:underline"
         >
           View details
           <ChevronRight className="size-4 ml-1" />
         </Box>
         <div className="flex items-center gap-2">
           <span className="text-md">Total Amount:</span>
-          <span className="text-blue-600 font-semibold text-lg">${totalAmount}</span>
+          <span className="text-blue-600 dark:text-blue-400 font-bold text-xl">${totalAmount}</span>
         </div>
       </div>
     </div>

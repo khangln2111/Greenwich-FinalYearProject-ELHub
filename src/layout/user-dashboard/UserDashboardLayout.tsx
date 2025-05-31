@@ -2,12 +2,12 @@ import { Avatar, Collapse } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
   IconBell,
-  IconDashboard,
   IconLayoutDashboardFilled,
   IconMessageCircle,
   IconSettings,
 } from "@tabler/icons-react";
 import {
+  ChartNoAxesCombinedIcon,
   ChevronDown,
   ChevronUp,
   GiftIcon,
@@ -31,7 +31,7 @@ type MenuItem = {
 };
 
 const menuItems: MenuItem[] = [
-  { label: "Dashboard", icon: <IconDashboard className="size-5" />, href: "/dashboard" },
+  { label: "Analytics", icon: <ChartNoAxesCombinedIcon className="size-5" />, href: "/dashboard" },
   { label: "My Account", icon: <User className="size-5" />, href: "/dashboard/my-account" },
   {
     label: "Enrolled Courses",

@@ -3,34 +3,22 @@ import { modals } from "@mantine/modals";
 import { Play, Star } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { EnrollmentVm } from "../../../react-query/enrollment/enrollment.types";
 
 interface EnrolledCourseCardProps {
-  imageUrl: string;
-  title: string;
-  author: string;
-  progressPercent: number;
-  rating: number;
-  courseId: string;
+  enrollment: EnrollmentVm;
 }
 
-export default function EnrolledCourseCard({
-  imageUrl,
-  title,
-  author,
-  progressPercent,
-  rating,
-  courseId,
-}: EnrolledCourseCardProps) {
+export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardProps) {
   const navigate = useNavigate();
-  const [userRating, setUserRating] = useState(rating);
 
   const handleOpenRatingModal = () => {
     modals.open({
       title: "Rating the course",
       children: (
         <div className="flex flex-col gap-4">
-          <Rating value={userRating} onChange={setUserRating} size="lg" count={5} color="yellow" />
-          <Button onClick={() => modals.closeAll()}>Gửi đánh giá</Button>
+          <Rating value={5} size="lg" count={5} color="yellow" />
+          <Button onClick={() => modals.closeAll()}>Submit</Button>
         </div>
       ),
       centered: true,
@@ -38,7 +26,7 @@ export default function EnrolledCourseCard({
   };
 
   const handleNavigateToLearningPage = () => {
-    navigate(`/learning/${courseId}`);
+    navigate(`/learning/${enrollment.courseId}`);
   };
 
   return (
@@ -57,8 +45,8 @@ export default function EnrolledCourseCard({
         }}
       >
         <img
-          src={imageUrl}
-          alt={title}
+          src={enrollment.courseImageUrl}
+          alt={enrollment.courseTitle}
           className="w-full h-full object-cover transition-transform duration-300"
           draggable={false}
         />
@@ -81,7 +69,7 @@ export default function EnrolledCourseCard({
             className="text-lg font-semibold line-clamp-2 cursor-pointer"
             onClick={handleNavigateToLearningPage}
           >
-            {title}
+            {enrollment.courseTitle}
           </h3>
           <div className="flex gap-2 items-center mt-2">
             <Avatar
