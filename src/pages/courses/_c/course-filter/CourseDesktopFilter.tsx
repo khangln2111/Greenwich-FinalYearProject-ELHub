@@ -5,7 +5,7 @@ type CourseDesktopFilterProps = {};
 
 export default function CourseDesktopFilter({}: CourseDesktopFilterProps) {
   return (
-    <Paper withBorder className="pt-lg px-sm xl:px-lg">
+    <Paper withBorder className="pt-lg px-sm xl:px-lg rounded-2xl">
       <CourseFilter />
     </Paper>
   );

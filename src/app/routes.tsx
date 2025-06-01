@@ -19,6 +19,7 @@ import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
 import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
 import InventoryPage from "../pages/inventory/InventoryPage";
 import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
+import LearningPage from "../pages/learning/LearningPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -93,6 +94,10 @@ const authRoutes: RouteObject[] = [
   { path: "/forgot-password", element: <p>Forgot Password Page</p> },
   { path: "/reset-password", element: <p>Reset Password Page</p> },
   { path: "/verify-email", element: <p>Verify Email Page</p> },
+  {
+    path: "learning",
+    element: <LearningPage />,
+  },
 ];
 
 const router = createBrowserRouter([userRoute, instructorRoute, ...authRoutes]);
