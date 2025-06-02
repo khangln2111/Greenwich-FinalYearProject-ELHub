@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, PlayIcon, CheckCircle } from "lucide-react";
+import { Collapse } from "@mantine/core";
+import { CheckCircle, ChevronDown, ChevronRight, PlayIcon } from "lucide-react";
+import { useState } from "react";
 import ReactPlayer from "react-player";
 
 // Types
@@ -138,20 +139,20 @@ export default function LearningCoursePage() {
             duration-200 ease-in-out z-20 ${sidebarOpen ? "translate-x-0" : "translate-x-full md:translate-x-0"}`}
         >
           <h2 className="text-lg font-semibold px-4 py-3 border-b">Course Content</h2>
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto">
             {mockSections.map((section) => {
               const isOpen = openSections[section.id] ?? true;
               return (
                 <div key={section.id} className="mb-4">
                   <button
                     onClick={() => toggleSection(section.id)}
-                    className="w-full flex items-center justify-between text-left px-2 py-2 bg-gray-100 rounded hover:bg-gray-200"
+                    className="w-full flex items-center justify-between text-left px-2 py-2 bg-gray-100 hover:bg-gray-200"
                   >
                     <span className="font-medium text-sm">{section.title}</span>
                     {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                   </button>
-                  {isOpen && (
-                    <ul className="mt-2 pl-4">
+                  <Collapse in={isOpen}>
+                    <ul className="mt-4 px-2 flex flex-col gap-3">
                       {section.lectures.map((lecture) => {
                         const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
                         const isActive = lectureIndex === currentLectureIndex;
@@ -181,7 +182,7 @@ export default function LearningCoursePage() {
                         );
                       })}
                     </ul>
-                  )}
+                  </Collapse>
                 </div>
               );
             })}
