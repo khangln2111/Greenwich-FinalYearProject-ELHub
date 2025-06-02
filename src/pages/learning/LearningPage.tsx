@@ -1,7 +1,9 @@
-import { Collapse } from "@mantine/core";
-import { CheckCircle, ChevronDown, ChevronRight, PlayIcon } from "lucide-react";
+import { Collapse, Drawer } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { CheckCircle, ChevronDown, ChevronLeft, ChevronRight, Menu, PlayIcon } from "lucide-react";
 import { useState } from "react";
 import ReactPlayer from "react-player";
+import { cn } from "../../utils/cn";
 
 // Types
 interface Lecture {
@@ -69,7 +71,6 @@ const mockSections: Section[] = [
   },
 ];
 
-// Flatten lectures for navigation
 const getAllLectures = (sections: Section[]) =>
   sections.flatMap((section) =>
     section.lectures.map((lec) => ({ ...lec, sectionTitle: section.title })),
@@ -80,23 +81,85 @@ export default function LearningCoursePage() {
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [completed, setCompleted] = useState<Set<string>>(new Set());
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [drawerOpened, setDrawerOpened] = useState(false);
+  const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
+  const isMobileOrTablet = useMediaQuery("(max-width: 991px)");
 
   const currentLecture = allLectures[currentLectureIndex];
   const progressPercent = ((currentLectureIndex + 1) / allLectures.length) * 100;
 
-  // auto-mark complete when video ends
   const onVideoEnd = () => {
     setCompleted((prev) => new Set(prev).add(currentLecture.id));
   };
 
-  // handlers
   const toggleSection = (sectionId: string) => {
     setOpenSections((prev) => ({ ...prev, [sectionId]: !prev[sectionId] }));
   };
-  const handlePrev = () => currentLectureIndex > 0 && setCurrentLectureIndex((i) => i - 1);
-  const handleNext = () =>
-    currentLectureIndex < allLectures.length - 1 && setCurrentLectureIndex((i) => i + 1);
+
+  const handlePrev = () => {
+    if (currentLectureIndex > 0) setCurrentLectureIndex((i) => i - 1);
+  };
+
+  const handleNext = () => {
+    if (currentLectureIndex < allLectures.length - 1) setCurrentLectureIndex((i) => i + 1);
+  };
+
+  const renderSidebar = (
+    <div className="h-full w-full bg-white flex flex-col border-l">
+      <h2 className="text-lg font-semibold px-4 py-3 border-b">Course Content</h2>
+      <div className="flex-1 overflow-y-auto">
+        {mockSections.map((section) => {
+          const isOpen = openSections[section.id] ?? true;
+          return (
+            <div key={section.id} className="mb-4">
+              <button
+                onClick={() => toggleSection(section.id)}
+                className="w-full flex items-center justify-between text-left px-2 py-2 bg-gray-100 hover:bg-gray-200"
+              >
+                <span className="font-medium text-sm">{section.title}</span>
+                {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+              </button>
+              <Collapse in={isOpen}>
+                <ul className="mt-4 px-2 flex flex-col gap-3">
+                  {section.lectures.map((lecture) => {
+                    const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
+                    const isActive = lectureIndex === currentLectureIndex;
+                    const isDone = completed.has(lecture.id);
+                    return (
+                      <li
+                        key={lecture.id}
+                        onClick={() => {
+                          setCurrentLectureIndex(lectureIndex);
+                          if (isMobileOrTablet) setDrawerOpened(false);
+                        }}
+                        className={`flex items-center justify-between px-2 py-1 rounded cursor-pointer text-sm transition-colors ${
+                        isActive
+                            ? "bg-purple-100 text-purple-700 font-medium"
+                            : "hover:bg-gray-100"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          {isDone ? (
+                            <CheckCircle size={16} className="text-green-500" />
+                          ) : (
+                            <PlayIcon size={16} />
+                          )}
+                          <span className={isDone ? "line-through text-gray-500" : ""}>
+                            {lecture.title}
+                          </span>
+                        </div>
+                        <span className="text-xs text-gray-500">{lecture.duration}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </Collapse>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex flex-col h-screen">
@@ -114,81 +177,59 @@ export default function LearningCoursePage() {
             />
           </div>
         </div>
-        {/* Mobile toggle */}
-        <button className="md:hidden text-gray-600" onClick={() => setSidebarOpen((o) => !o)}>
-          {sidebarOpen ? <ChevronDown /> : <ChevronRight />}
+        <button className="text-gray-600 lg:hidden" onClick={() => setDrawerOpened(true)}>
+          <Menu />
+        </button>
+        <button
+          className="hidden lg:block text-gray-600"
+          onClick={() => setDesktopSidebarOpen((prev) => !prev)}
+        >
+          {desktopSidebarOpen ? <ChevronRight /> : <ChevronLeft />}
         </button>
       </header>
 
       {/* Main content */}
-      <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
-        {/* Video player */}
-        <main className="flex-1 bg-black flex items-center justify-center">
+      <div className="flex-1 flex overflow-hidden transition-all duration-300">
+        {/* Video area */}
+        <main className={"flex-1 bg-black transition-all duration-300"}>
           <ReactPlayer
             url={currentLecture.videoUrl}
             width="100%"
             height="100%"
             controls
+            style={{ aspectRatio: "16/9" }}
             onEnded={onVideoEnd}
           />
         </main>
 
-        {/* Sidebar */}
-        <aside
-          className={`fixed inset-y-0 right-0 w-full md:static md:w-[350px] bg-white border-l transition-transform
-            duration-200 ease-in-out z-20 ${sidebarOpen ? "translate-x-0" : "translate-x-full md:translate-x-0"}`}
-        >
-          <h2 className="text-lg font-semibold px-4 py-3 border-b">Course Content</h2>
-          <div className="flex-1 overflow-y-auto">
-            {mockSections.map((section) => {
-              const isOpen = openSections[section.id] ?? true;
-              return (
-                <div key={section.id} className="mb-4">
-                  <button
-                    onClick={() => toggleSection(section.id)}
-                    className="w-full flex items-center justify-between text-left px-2 py-2 bg-gray-100 hover:bg-gray-200"
-                  >
-                    <span className="font-medium text-sm">{section.title}</span>
-                    {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-                  </button>
-                  <Collapse in={isOpen}>
-                    <ul className="mt-4 px-2 flex flex-col gap-3">
-                      {section.lectures.map((lecture) => {
-                        const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
-                        const isActive = lectureIndex === currentLectureIndex;
-                        const isDone = completed.has(lecture.id);
-                        return (
-                          <li
-                            key={lecture.id}
-                            onClick={() => setCurrentLectureIndex(lectureIndex)}
-                            className={`flex items-center justify-between px-2 py-1 rounded cursor-pointer text-sm transition-colors ${
-                            isActive
-                                ? "bg-purple-100 text-purple-700 font-medium"
-                                : "hover:bg-gray-100"
-                            }`}
-                          >
-                            <div className="flex items-center gap-2">
-                              {isDone ? (
-                                <CheckCircle size={16} className="text-green-500" />
-                              ) : (
-                                <PlayIcon size={16} />
-                              )}
-                              <span className={isDone ? "line-through text-gray-500" : ""}>
-                                {lecture.title}
-                              </span>
-                            </div>
-                            <span className="text-xs text-gray-500">{lecture.duration}</span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </Collapse>
-                </div>
-              );
+        {/* Desktop sidebar */}
+        {!isMobileOrTablet && (
+          <aside
+            className={cn("hidden md:block transition-all duration-300 ", {
+              "opacity-100 w-[350px]": desktopSidebarOpen,
+              "w-0 opacity-0": !desktopSidebarOpen,
             })}
-          </div>
-        </aside>
+          >
+            {renderSidebar}
+          </aside>
+        )}
       </div>
+
+      {/* Drawer for mobile & tablet */}
+      <Drawer
+        opened={drawerOpened}
+        onClose={() => setDrawerOpened(false)}
+        title="Course Content"
+        padding="md"
+        size="100%"
+        position="right"
+        withCloseButton
+        classNames={{
+          body: "p-0",
+        }}
+      >
+        {renderSidebar}
+      </Drawer>
 
       {/* Footer navigation */}
       <footer className="border-t bg-white px-4 md:px-6 py-3 flex items-center justify-between text-sm shadow-sm">
