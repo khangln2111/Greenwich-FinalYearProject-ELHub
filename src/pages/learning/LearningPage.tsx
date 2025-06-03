@@ -45,7 +45,7 @@ const mockSections: Section[] = [
     lectures: [
       {
         id: "l3",
-        title: "Getting Started with Python",
+        title: "Getting Started with Python Getting Started with Python",
         duration: "1m",
         videoUrl: "https://example.com/video3",
       },
@@ -83,7 +83,7 @@ export default function LearningCoursePage() {
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
-  const isMobileOrTablet = useMediaQuery("(max-width: 991px)");
+  const isMobileOrTablet = useMediaQuery("(max-width: 768px)");
 
   const currentLecture = allLectures[currentLectureIndex];
   const progressPercent = ((currentLectureIndex + 1) / allLectures.length) * 100;
@@ -106,21 +106,21 @@ export default function LearningCoursePage() {
 
   const renderSidebar = (
     <div className="h-full w-full bg-white flex flex-col border-l">
-      <h2 className="text-lg font-semibold px-4 py-3 border-b">Course Content</h2>
-      <div className="flex-1 overflow-y-auto">
+      <h2 className="text-lg font-semibold px-4 py-3 border-b hidden lg:block">Course Content</h2>
+      <div className="flex-1 overflow-y-auto divide-y">
         {mockSections.map((section) => {
           const isOpen = openSections[section.id] ?? true;
           return (
-            <div key={section.id} className="mb-4">
+            <div key={section.id}>
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full flex items-center justify-between text-left px-2 py-2 bg-gray-100 hover:bg-gray-200"
+                className="w-full flex items-center justify-between text-left p-4 bg-gray-100 hover:bg-gray-200"
               >
-                <span className="font-medium text-sm">{section.title}</span>
+                <span className="font-semibold text-md">{section.title}</span>
                 {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               </button>
               <Collapse in={isOpen}>
-                <ul className="mt-4 px-2 flex flex-col gap-3">
+                <ul className="my-4 px-2 flex flex-col gap-3">
                   {section.lectures.map((lecture) => {
                     const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
                     const isActive = lectureIndex === currentLectureIndex;
@@ -133,10 +133,7 @@ export default function LearningCoursePage() {
                           if (isMobileOrTablet) setDrawerOpened(false);
                         }}
                         className={`flex items-center justify-between px-2 py-1 rounded cursor-pointer text-sm transition-colors ${
-                        isActive
-                            ? "bg-purple-100 text-purple-700 font-medium"
-                            : "hover:bg-gray-100"
-                        }`}
+                        isActive ? "bg-purple-100 text-purple-700" : "hover:bg-gray-100" }`}
                       >
                         <div className="flex items-center gap-2">
                           {isDone ? (
@@ -197,7 +194,6 @@ export default function LearningCoursePage() {
             width="100%"
             height="100%"
             controls
-            style={{ aspectRatio: "16/9" }}
             onEnded={onVideoEnd}
           />
         </main>
@@ -205,8 +201,8 @@ export default function LearningCoursePage() {
         {/* Desktop sidebar */}
         {!isMobileOrTablet && (
           <aside
-            className={cn("hidden md:block transition-all duration-300 ", {
-              "opacity-100 w-[350px]": desktopSidebarOpen,
+            className={cn("hidden md:block transition-all duration-300", {
+              "opacity-100 xl:w-[350px]": desktopSidebarOpen,
               "w-0 opacity-0": !desktopSidebarOpen,
             })}
           >
@@ -219,11 +215,12 @@ export default function LearningCoursePage() {
       <Drawer
         opened={drawerOpened}
         onClose={() => setDrawerOpened(false)}
-        title="Course Content"
+        title={<h2 className="text-lg font-semibold">Course Content</h2>}
         padding="md"
         size="100%"
         position="right"
         withCloseButton
+        className="lg:hidden"
         classNames={{
           body: "p-0",
         }}
