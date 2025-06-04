@@ -142,7 +142,7 @@ export default function LearningCoursePage() {
                 onClick={() => toggleSection(section.id)}
                 className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-100"
               >
-                <div className="flex flex-col items-start gap-2">
+                <div className="flex flex-col items-start gap-3">
                   <span className="font-semibold text-md leading-none">{section.title}</span>
                   <span className="text-sm text-gray-600">
                     {section.lectures.length} lectures · {formatMinutes(totalDuration)}
@@ -179,7 +179,7 @@ export default function LearningCoursePage() {
                         className={cn(
                           "group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors",
                           isActive
-                            ? "bg-primary-1 text-primary-7 cursor-default"
+                            ? "bg-primary-0 text-primary-6 cursor-default"
                             : "hover:bg-gray-200",
                         )}
                       >
@@ -193,7 +193,7 @@ export default function LearningCoursePage() {
                           onClick={(e) => e.stopPropagation()}
                           onChange={toggleComplete}
                         />
-                        <div className="flex-1 flex flex-col gap-2">
+                        <div className="flex-1 flex flex-col gap-3">
                           <div
                             className={cn("text-md leading-none", {
                               "font-medium": isActive,
