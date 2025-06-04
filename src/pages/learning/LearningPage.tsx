@@ -140,7 +140,7 @@ export default function LearningCoursePage() {
   };
 
   const renderSidebar = (
-    <div className="h-full w-full flex flex-col border-l">
+    <div className="h-full w-full flex flex-col border-l text-text dark:text-gray-3">
       <h2 className="text-lg font-semibold px-4 pl-3 py-2 border-b hidden lg:block">
         Course Content
       </h2>
@@ -208,7 +208,7 @@ export default function LearningCoursePage() {
                         <div className="flex-1 flex flex-col gap-3">
                           <div
                             className={cn("text-[15px] leading-none", {
-                              "font-medium dark:text-gray-3": isActive,
+                              "font-medium ": isActive,
                             })}
                           >
                             {lecture.title}
@@ -332,7 +332,7 @@ export default function LearningCoursePage() {
 
       {/* Footer navigation */}
       <footer
-        className="border-t px-4 md:px-6 py-2 flex items-center justify-between text-sm shadow-sm bg-white
+        className="border-t px-4 md:px-6 py-2 flex items-center justify-between text-sm shadow-sm bg-gray-200
           dark:bg-[#121212]"
       >
         <div className="hidden lg:block"></div>
@@ -342,6 +342,7 @@ export default function LearningCoursePage() {
             disabled={currentLectureIndex === 0}
             leftSection={<ChevronLeft size={16} />}
             variant="default"
+            radius="full"
           >
             Previous
           </Button>
@@ -349,6 +350,7 @@ export default function LearningCoursePage() {
             onClick={handleNext}
             disabled={currentLectureIndex === allLectures.length - 1}
             rightSection={<ChevronRight size={16} />}
+            radius="full"
           >
             Next
           </Button>

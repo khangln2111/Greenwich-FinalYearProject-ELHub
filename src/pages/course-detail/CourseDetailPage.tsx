@@ -100,10 +100,10 @@ const CourseDetailPage = () => {
               </Breadcrumbs>
               <Title className="mt-5">{course.title}</Title>
               {/* Course stats */}
-              <div className="flex flex-wrap border py-6 px-4 text-sm mt-xl rounded-lg shadow-lg">
+              <div className="flex flex-wrap items-center gap border py-6 px-4 text-sm mt-xl rounded-lg shadow-lg">
                 {/* Created By */}
                 <div
-                  className="flex w-full md:w-1/4 items-center gap-3 pt-4 md:pt-0 md:pr-6 md:border-r border-t first:border-t-0
+                  className="flex w-full md:w-1/4 items-center gap-3 py-4 md:py-0 md:pr-6 md:border-r border-t first:border-t-0
                     md:border-t-0"
                 >
                   <img
@@ -118,7 +118,7 @@ const CourseDetailPage = () => {
                 </div>
 
                 {/* Category */}
-                <div className="w-full md:w-1/4 pt-4 md:pt-0 md:px-6 md:border-r border-t md:border-t-0">
+                <div className="w-full md:w-1/4 py-4 md:py-0 md:px-6 md:border-r border-t md:border-t-0">
                   <div>Category</div>
                   <div className="text-blue-500 cursor-pointer hover:underline font-semibold text-md">
                     {course.categoryName}
@@ -126,13 +126,13 @@ const CourseDetailPage = () => {
                 </div>
 
                 {/* Last Update */}
-                <div className="w-full md:w-1/4 pt-4 md:pt-0 md:px-6 md:border-r border-t md:border-t-0">
+                <div className="w-full md:w-1/4 py-4 md:py-0 md:px-6 md:border-r border-t md:border-t-0">
                   <div>Last Update</div>
                   <div className="font-semibold text-md">17 Apr, 2024</div>
                 </div>
 
                 {/* Review */}
-                <div className="w-full md:w-1/4 pt-4 md:pt-0 md:pl-6 border-t md:border-t-0">
+                <div className="w-full md:w-1/4 py-4 md:py-0 md:pl-6 border-t md:border-t-0">
                   <div>Review</div>
                   <div className="flex items-center gap-1 text-md">
                     <StarIcon className="fill-yellow text-yellow" size={20} />
