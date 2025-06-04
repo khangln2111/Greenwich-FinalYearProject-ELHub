@@ -6,7 +6,7 @@ import { EllipsisVerticalIcon, EyeIcon, Video } from "lucide-react";
 import { LectureVm } from "../../../../../react-query/lecture/lecture.types";
 import { useDeleteLecture } from "../../../../../react-query/lecture/lectureHooks";
 import { cn } from "../../../../../utils/cn";
-import { formatDurationMmSs } from "../../../../../utils/format";
+import { formatDuration } from "../../../../../utils/format";
 
 export type LectureItemProps = {
   lecture: LectureVm;
@@ -65,7 +65,7 @@ export const LectureItem = ({ lecture, index, onUpdate }: LectureItemProps) => {
               </ActionIcon>
             )}
             <Text className="text-dimmed text-nowrap">
-              {formatDurationMmSs(lecture.durationInSeconds)}
+              {formatDuration({ seconds: lecture.durationInSeconds, formatType: "mm:ss" })}
             </Text>
             <Menu trigger="click">
               <Menu.Target>

@@ -1,7 +1,7 @@
 import { Divider } from "@mantine/core";
 import { OrderDetailVm, OrderStatus } from "../../../react-query/order/order.types";
-import { formatDate } from "../../../utils/format";
 import { cn } from "../../../utils/cn";
+import { formatDate } from "../../../utils/format";
 
 export function getStatusStyle(status: OrderStatus) {
   switch (status) {
@@ -42,7 +42,7 @@ const OrderDetailHeader = ({ order }: { order: OrderDetailVm }) => {
         <div>
           <p className="text-gray-500 dark:text-gray-400 mb-1">Purchase Date</p>
           <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
-            {formatDate(order.createdAt)}
+            {formatDate({ input: order.createdAt, formatType: "longMonth" })}
           </p>
         </div>
       </div>

@@ -41,7 +41,7 @@ export function OrderCard({ order }: Props) {
           </span>
           <span className="text-gray-400 visible-from-md">|</span>
           <span className="text-gray-600 dark:text-gray-300 font-semibold text-md">
-            {formatDate(order.createdAt)}
+            {formatDate({ input: order.createdAt, formatType: "longMonth" })}
           </span>
         </div>
         <span className={getStatusStyle(order.status)}>{order.status}</span>

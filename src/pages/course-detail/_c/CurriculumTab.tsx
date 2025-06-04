@@ -3,7 +3,7 @@ import { ChevronDownIcon, LayoutListIcon, Video } from "lucide-react";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import { SectionVm } from "../../../react-query/section/section.types";
-import { formatDurationMmSs } from "../../../utils/format";
+import { formatDuration } from "../../../utils/format";
 
 type CurriculumTabProps = {
   sections: SectionVm[];
@@ -86,7 +86,10 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
                           </Button>
                         )}
                         <Text className="text-dimmed text-nowrap">
-                          {formatDurationMmSs(lecture.durationInSeconds)}
+                          {formatDuration({
+                            seconds: lecture.durationInSeconds,
+                            formatType: "mm:ss",
+                          })}
                         </Text>
                       </div>
                     </li>

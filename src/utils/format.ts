@@ -8,9 +8,12 @@ export function formatCurrency(amount: number): string {
   });
 }
 
-type FormatType = "longMonth" | "ddmmyyyy";
+interface FormatDateOptions {
+  input: string | number | Date;
+  formatType?: "longMonth" | "ddmmyyyy";
+}
 
-export function formatDate(input: string | number, formatType: FormatType = "longMonth"): string {
+export function formatDate({ input, formatType = "longMonth" }: FormatDateOptions): string {
   const date = new Date(input);
 
   switch (formatType) {
@@ -31,16 +34,23 @@ export function formatDate(input: string | number, formatType: FormatType = "lon
   }
 }
 
-export function formatDurationMmSs(seconds: number): string {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+interface FormatDurationOptions {
+  seconds: number;
+  formatType?: "mm:ss" | "long";
 }
 
-export function formatDurationLong(seconds: number): string {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  return `${hours}h ${minutes}m`;
+export function formatDuration({ seconds, formatType = "mm:ss" }: FormatDurationOptions): string {
+  const totalSeconds = Math.floor(seconds);
+  const minutes = Math.floor(totalSeconds / 60);
+  const remainingSeconds = totalSeconds % 60;
+  const hours = Math.floor(totalSeconds / 3600);
+  const remainingMinutes = Math.floor((totalSeconds % 3600) / 60);
+
+  if (formatType === "long") {
+    return `${hours}h ${remainingMinutes}m`;
+  }
+
+  return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
 }
 
 export const parseDateUTC = (val: string | null) => {

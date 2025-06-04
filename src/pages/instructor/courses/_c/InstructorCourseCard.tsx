@@ -5,7 +5,7 @@ import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
 import { useDeleteCourse } from "../../../../react-query/course/courseHooks";
-import { formatCurrency, formatDurationLong } from "../../../../utils/format";
+import { formatCurrency, formatDuration } from "../../../../utils/format";
 
 const statusBadgeMap: Record<CourseStatus, string> = {
   [CourseStatus.Draft]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900",
@@ -85,7 +85,7 @@ export default function InstructorCourseCard({ course }: Props) {
           </div>
           <div className="flex items-center gap-2">
             <Clock className="size-4 text-gray-500 dark:text-gray-400" />
-            <span>{formatDurationLong(course.durationInSeconds)}</span>
+            <span>{formatDuration({ seconds: course.durationInSeconds, formatType: "long" })}</span>
           </div>
         </div>
       </div>

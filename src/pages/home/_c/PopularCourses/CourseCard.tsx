@@ -2,7 +2,7 @@ import { Avatar, Badge, Button, Center, Image, Rating, Text, Tooltip } from "@ma
 import { Clock, LibraryBig, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CourseLevel, CourseVm } from "../../../../react-query/course/course.types";
-import { formatDurationLong } from "../../../../utils/format";
+import { formatDuration } from "../../../../utils/format";
 
 type CourseCardProps = {
   course: CourseVm;
@@ -18,7 +18,7 @@ const levelColorMap: Record<CourseLevel, string> = {
 const CourseCard = ({ course }: CourseCardProps) => {
   const features = [
     {
-      label: formatDurationLong(course.durationInSeconds),
+      label: formatDuration({ seconds: course.durationInSeconds, formatType: "long" }),
       icon: Clock,
     },
     {
