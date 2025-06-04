@@ -1,9 +1,8 @@
 {
   "plugins": ["prettier-plugin-classnames", "prettier-plugin-merge"],
-  "tailwindConfig": "./tailwind.config.ts",
-  "tailwindAttributes": ["classNames"],
-  "tailwindFunctions": ["clsx"],
   "customAttributes": ["classNames"],
-  "customFunctions": ["clsx"],
+  "customFunctions": ["cn"],
+  "tailwindConfig": "./tailwind.config.ts",
+  "tailwindFunctions": ["cn"],
   "printWidth": 100
 }

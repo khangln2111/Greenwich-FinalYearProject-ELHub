@@ -1,6 +1,13 @@
-import { Collapse, Drawer } from "@mantine/core";
+import { Checkbox, Collapse, Drawer } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { CheckCircle, ChevronDown, ChevronLeft, ChevronRight, Menu, PlayIcon } from "lucide-react";
+import {
+  CheckCircle,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  MonitorPlayIcon,
+} from "lucide-react";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import { cn } from "../../utils/cn";
@@ -122,7 +129,9 @@ export default function LearningCoursePage() {
 
   const renderSidebar = (
     <div className="h-full w-full bg-white flex flex-col border-l">
-      <h2 className="text-lg font-semibold px-4 py-3 hidden lg:block">Course Content</h2>
+      <h2 className="text-lg font-semibold px-4 pl-3 py-2 border-b hidden lg:block">
+        Course Content
+      </h2>
       <div className="flex-1 overflow-y-auto divide-y">
         {mockSections.map((section) => {
           const isOpen = openSections[section.id] ?? true;
@@ -131,10 +140,10 @@ export default function LearningCoursePage() {
             <div key={section.id}>
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full flex items-center justify-between text-left px-3 py-4 bg-gray-100"
+                className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-100"
               >
                 <div className="flex flex-col items-start">
-                  <span className="font-semibold text-md">{section.title}</span>
+                  <span className="font-semibold text-md leading-none">{section.title}</span>
                   <span className="text-sm text-gray-600">
                     {section.lectures.length} lectures · {formatMinutes(totalDuration)}
                   </span>
@@ -142,11 +151,24 @@ export default function LearningCoursePage() {
                 {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               </button>
               <Collapse in={isOpen}>
-                <ul className="my-4 px-2 flex flex-col gap-3">
+                <ul>
                   {section.lectures.map((lecture) => {
                     const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
                     const isActive = lectureIndex === currentLectureIndex;
                     const isDone = completed.has(lecture.id);
+
+                    const toggleComplete = () => {
+                      setCompleted((prev) => {
+                        const newSet = new Set(prev);
+                        if (newSet.has(lecture.id)) {
+                          newSet.delete(lecture.id);
+                        } else {
+                          newSet.add(lecture.id);
+                        }
+                        return newSet;
+                      });
+                    };
+
                     return (
                       <li
                         key={lecture.id}
@@ -154,20 +176,48 @@ export default function LearningCoursePage() {
                           setCurrentLectureIndex(lectureIndex);
                           if (isMobileOrTablet) setDrawerOpened(false);
                         }}
-                        className={`flex items-center justify-between px-2 py-1 rounded cursor-pointer text-sm transition-colors ${
-                        isActive ? "bg-purple-100 text-purple-700" : "hover:bg-gray-100" }`}
+                        className={cn(
+                          "group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors",
+                          isActive
+                            ? "bg-purple-100 text-purple-700 cursor-default"
+                            : "hover:bg-gray-200",
+                        )}
                       >
-                        <div className="flex items-center gap-2">
-                          {isDone ? (
-                            <CheckCircle size={16} className="text-green-500" />
-                          ) : (
-                            <PlayIcon size={16} />
-                          )}
-                          <span className={isDone ? "line-through text-gray-500" : ""}>
+                        <Checkbox
+                          classNames={{
+                            input: "border-2",
+                          }}
+                          color="violet"
+                          size="xs"
+                          checked={isDone}
+                          radius="sm"
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={toggleComplete}
+                        />
+                        <div className="flex-1 flex flex-col gap-5">
+                          <div
+                            className={cn("text-md leading-none", {
+                              "line-through text-gray-500": isDone,
+                              "font-medium": isActive,
+                            })}
+                          >
                             {lecture.title}
-                          </span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                            {isDone ? (
+                              <CheckCircle size={14} className="text-green-500" />
+                            ) : (
+                              <MonitorPlayIcon size={14} />
+                            )}
+                            <span
+                              className={cn("leading-none", {
+                                "text-gray-700": isActive,
+                              })}
+                            >
+                              {lecture.duration}
+                            </span>
+                          </div>
                         </div>
-                        <span className="text-xs text-gray-500">{lecture.duration}</span>
                       </li>
                     );
                   })}
@@ -224,7 +274,7 @@ export default function LearningCoursePage() {
         {!isMobileOrTablet && (
           <aside
             className={cn("hidden md:block transition-all duration-300", {
-              "opacity-100 xl:w-[350px]": desktopSidebarOpen,
+              "opacity-100 lg:w-[300px] xl:w-[400px]": desktopSidebarOpen,
               "w-0 opacity-0": !desktopSidebarOpen,
             })}
           >
