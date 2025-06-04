@@ -45,7 +45,7 @@ const mockSections: Section[] = [
     lectures: [
       {
         id: "l3",
-        title: "Getting Started with Python Getting Started with Python",
+        title: "Getting Started with Python",
         duration: "1m",
         videoUrl: "https://example.com/video3",
       },
@@ -75,6 +75,22 @@ const getAllLectures = (sections: Section[]) =>
   sections.flatMap((section) =>
     section.lectures.map((lec) => ({ ...lec, sectionTitle: section.title })),
   );
+
+// Convert durations like "5m", "1h 10m", etc.
+const formatMinutes = (minutes: number) => {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (h > 0 && m > 0) return `${h}h ${m}m`;
+  if (h > 0) return `${h}h`;
+  return `${m}m`;
+};
+
+const getSectionDuration = (section: Section) => {
+  return section.lectures.reduce((total, lecture) => {
+    const match = lecture.duration.match(/(\d+)m/);
+    return total + (match ? parseInt(match[1]) : 0);
+  }, 0);
+};
 
 export default function LearningCoursePage() {
   const allLectures = getAllLectures(mockSections);
@@ -106,17 +122,23 @@ export default function LearningCoursePage() {
 
   const renderSidebar = (
     <div className="h-full w-full bg-white flex flex-col border-l">
-      <h2 className="text-lg font-semibold px-4 py-3 border-b hidden lg:block">Course Content</h2>
+      <h2 className="text-lg font-semibold px-4 py-3 hidden lg:block">Course Content</h2>
       <div className="flex-1 overflow-y-auto divide-y">
         {mockSections.map((section) => {
           const isOpen = openSections[section.id] ?? true;
+          const totalDuration = getSectionDuration(section);
           return (
             <div key={section.id}>
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full flex items-center justify-between text-left p-4 bg-gray-100 hover:bg-gray-200"
+                className="w-full flex items-center justify-between text-left px-3 py-4 bg-gray-100"
               >
-                <span className="font-semibold text-md">{section.title}</span>
+                <div className="flex flex-col items-start">
+                  <span className="font-semibold text-md">{section.title}</span>
+                  <span className="text-sm text-gray-600">
+                    {section.lectures.length} lectures · {formatMinutes(totalDuration)}
+                  </span>
+                </div>
                 {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               </button>
               <Collapse in={isOpen}>
