@@ -47,7 +47,8 @@ const mockSections: Section[] = [
         id: "l1",
         title: "Welcome to the Course!",
         duration: "2m",
-        videoUrl: "https://example.com/video1",
+        videoUrl:
+          "https://res.cloudinary.com/codewithmosh/video/upload/f_auto:video,q_auto/v1/promo-videos/spring-boot-part2",
       },
       {
         id: "l2",
@@ -139,7 +140,7 @@ export default function LearningCoursePage() {
   };
 
   const renderSidebar = (
-    <div className="h-full w-full flex flex-col border-l dark:bg-dark-8">
+    <div className="h-full w-full flex flex-col border-l">
       <h2 className="text-lg font-semibold px-4 pl-3 py-2 border-b hidden lg:block">
         Course Content
       </h2>
@@ -151,7 +152,7 @@ export default function LearningCoursePage() {
             <div key={section.id}>
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-2 dark:bg-dark-6"
+                className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-1 dark:bg-dark-6"
               >
                 <div className="flex flex-col items-start gap-3">
                   <span className="font-semibold text-md leading-none">{section.title}</span>
@@ -191,7 +192,7 @@ export default function LearningCoursePage() {
                           "group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors",
                           isActive
                             ? "bg-primary-light cursor-default"
-                            : "hover:bg-gray-3 dark:hover:bg-dark-4",
+                            : "hover:bg-gray-2 dark:hover:bg-dark-5",
                         )}
                       >
                         <Checkbox
@@ -206,13 +207,13 @@ export default function LearningCoursePage() {
                         />
                         <div className="flex-1 flex flex-col gap-3">
                           <div
-                            className={cn("text-sm leading-none", {
-                              "font-medium": isActive,
+                            className={cn("text-[15px] leading-none", {
+                              "font-medium dark:text-gray-3": isActive,
                             })}
                           >
                             {lecture.title}
                           </div>
-                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
                             {isDone ? (
                               <CheckCircle size={14} className="text-green-500" />
                             ) : (
@@ -245,33 +246,40 @@ export default function LearningCoursePage() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="flex justify-between items-center px-4 md:px-6 py-2 border-b shadow-sm">
-        <h1 className="text-sm md:text-base font-medium truncate">
+      <header className="flex justify-between items-center px-4 md:px-6 py-2 shadow-sm bg-slate-800">
+        <h1 className="text-sm md:text-base font-medium truncate text-white">
           A Quick and Easy Intro to Python Programming
         </h1>
+
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 text-xs md:text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-1 text-xs md:text-sm text-slate-300 dark:text-slate-400">
             <RingProgress
               size={45}
               thickness={3}
               roundCaps
               label={
-                <Text className="text-xs text-center font-bold" c="blue">
+                <Text className="text-xs text-center font-bold text-blue-300 dark:text-blue-400">
                   {Math.round(progressPercent)}%
                 </Text>
               }
               sections={[
                 {
                   value: progressPercent,
-                  color: "blue",
+                  color: "var(--mantine-color-blue-filled)",
                 },
               ]}
             />
             <span>completed</span>
           </div>
+
           <Menu trigger="click">
             <Menu.Target>
-              <ActionIcon variant="default" onClick={(e) => e.stopPropagation()} size="lg">
+              <ActionIcon
+                variant="transparent"
+                onClick={(e) => e.stopPropagation()}
+                size="lg"
+                className="text-slate-300 hover:text-white dark:text-slate-300 dark:hover:text-white"
+              >
                 <EllipsisVerticalIcon />
               </ActionIcon>
             </Menu.Target>
@@ -323,7 +331,10 @@ export default function LearningCoursePage() {
       </Drawer>
 
       {/* Footer navigation */}
-      <footer className="border-t px-4 md:px-6 py-3 flex items-center justify-between text-sm shadow-sm">
+      <footer
+        className="border-t px-4 md:px-6 py-2 flex items-center justify-between text-sm shadow-sm bg-white
+          dark:bg-[#121212]"
+      >
         <div className="hidden lg:block"></div>
         <div className="flex items-center gap-2">
           <Button
