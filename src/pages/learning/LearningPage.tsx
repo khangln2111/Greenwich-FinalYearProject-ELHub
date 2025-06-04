@@ -1,11 +1,22 @@
-import { Checkbox, Collapse, Drawer } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Checkbox,
+  Collapse,
+  Drawer,
+  Menu,
+  RingProgress,
+  Text,
+} from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
+  ArrowRightIcon,
   CheckCircle,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Menu,
+  EllipsisVerticalIcon,
+  MenuIcon,
   MonitorPlayIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -231,28 +242,38 @@ export default function LearningCoursePage() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="flex justify-between items-center px-4 md:px-6 py-3 border-b bg-white shadow-sm">
+      <header className="flex justify-between items-center px-4 md:px-6 py-2 border-b bg-white shadow-sm">
         <h1 className="text-sm md:text-base font-medium text-gray-800 truncate">
           A Quick and Easy Intro to Python Programming
         </h1>
-        <div className="flex items-center gap-2 text-xs md:text-sm text-gray-500">
-          <span>{Math.round(progressPercent)}% complete</span>
-          <div className="w-24 md:w-32 h-1 md:h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-purple-600 transition-all duration-300"
-              style={{ width: `${progressPercent}%` }}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 text-xs md:text-sm text-gray-500">
+            <RingProgress
+              size={45}
+              thickness={3}
+              roundCaps
+              label={
+                <Text className="text-xs text-center font-bold" c="blue">
+                  {Math.round(progressPercent)}%
+                </Text>
+              }
+              sections={[
+                {
+                  value: progressPercent,
+                  color: "blue",
+                },
+              ]}
             />
+            <span>completed</span>
           </div>
+          <Menu trigger="click">
+            <Menu.Target>
+              <ActionIcon variant="default" onClick={(e) => e.stopPropagation()} size="lg">
+                <EllipsisVerticalIcon />
+              </ActionIcon>
+            </Menu.Target>
+          </Menu>
         </div>
-        <button className="text-gray-600 lg:hidden" onClick={() => setDrawerOpened(true)}>
-          <Menu />
-        </button>
-        <button
-          className="hidden lg:block text-gray-600"
-          onClick={() => setDesktopSidebarOpen((prev) => !prev)}
-        >
-          {desktopSidebarOpen ? <ChevronRight /> : <ChevronLeft />}
-        </button>
       </header>
 
       {/* Main content */}
@@ -300,23 +321,46 @@ export default function LearningCoursePage() {
 
       {/* Footer navigation */}
       <footer className="border-t bg-white px-4 md:px-6 py-3 flex items-center justify-between text-sm shadow-sm">
-        <button
-          onClick={handlePrev}
-          disabled={currentLectureIndex === 0}
-          className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <div className="text-gray-600 text-sm truncate text-center max-w-[60%]">
-          {currentLecture.title} ({currentLecture.duration})
+        <div className="hidden lg:block"></div>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handlePrev}
+            disabled={currentLectureIndex === 0}
+            leftSection={<ChevronLeft size={16} />}
+            variant="default"
+          >
+            Previous
+          </Button>
+          <Button
+            onClick={handleNext}
+            disabled={currentLectureIndex === allLectures.length - 1}
+            rightSection={<ChevronRight size={16} />}
+          >
+            Next
+          </Button>
         </div>
-        <button
-          onClick={handleNext}
-          disabled={currentLectureIndex === allLectures.length - 1}
-          className="px-3 py-1 rounded bg-primary-6 text-white hover:bg-primary-7 disabled:opacity-50"
+        <ActionIcon
+          radius="full"
+          variant="default"
+          size="lg"
+          onClick={() => setDesktopSidebarOpen((prev) => !prev)}
+          className="visible-from-lg"
         >
-          Next
-        </button>
+          {desktopSidebarOpen ? (
+            <ArrowRightIcon style={{ width: "60%", height: "60%" }} strokeWidth={2} />
+          ) : (
+            <MenuIcon style={{ width: "60%", height: "60%" }} strokeWidth={2} />
+          )}
+        </ActionIcon>
+        <ActionIcon
+          radius="full"
+          variant="default"
+          size="lg"
+          className="hidden-from-lg"
+          onClick={() => setDrawerOpened(true)}
+        >
+          <MenuIcon style={{ width: "60%", height: "60%" }} strokeWidth={2} />
+        </ActionIcon>
       </footer>
     </div>
   );
