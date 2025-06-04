@@ -142,7 +142,7 @@ export default function LearningCoursePage() {
                 onClick={() => toggleSection(section.id)}
                 className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-100"
               >
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start gap-2">
                   <span className="font-semibold text-md leading-none">{section.title}</span>
                   <span className="text-sm text-gray-600">
                     {section.lectures.length} lectures · {formatMinutes(totalDuration)}
@@ -179,7 +179,7 @@ export default function LearningCoursePage() {
                         className={cn(
                           "group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors",
                           isActive
-                            ? "bg-purple-100 text-purple-700 cursor-default"
+                            ? "bg-primary-1 text-primary-7 cursor-default"
                             : "hover:bg-gray-200",
                         )}
                       >
@@ -187,17 +187,15 @@ export default function LearningCoursePage() {
                           classNames={{
                             input: "border-2",
                           }}
-                          color="violet"
                           size="xs"
                           checked={isDone}
                           radius="sm"
                           onClick={(e) => e.stopPropagation()}
                           onChange={toggleComplete}
                         />
-                        <div className="flex-1 flex flex-col gap-5">
+                        <div className="flex-1 flex flex-col gap-2">
                           <div
                             className={cn("text-md leading-none", {
-                              "line-through text-gray-500": isDone,
                               "font-medium": isActive,
                             })}
                           >
@@ -315,7 +313,7 @@ export default function LearningCoursePage() {
         <button
           onClick={handleNext}
           disabled={currentLectureIndex === allLectures.length - 1}
-          className="px-3 py-1 rounded bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50"
+          className="px-3 py-1 rounded bg-primary-6 text-white hover:bg-primary-7 disabled:opacity-50"
         >
           Next
         </button>
