@@ -190,7 +190,7 @@ export default function LearningCoursePage() {
                         className={cn(
                           "group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors",
                           isActive
-                            ? "bg-primary-light text-primary-light-color cursor-default"
+                            ? "bg-primary-light cursor-default"
                             : "hover:bg-gray-3 dark:hover:bg-dark-4",
                         )}
                       >
@@ -216,7 +216,10 @@ export default function LearningCoursePage() {
                             {isDone ? (
                               <CheckCircle size={14} className="text-green-500" />
                             ) : (
-                              <MonitorPlayIcon size={14} />
+                              <MonitorPlayIcon
+                                size={14}
+                                className="text-gray-500 dark:text-gray-400"
+                              />
                             )}
                             <span
                               className={cn("leading-none text-gray-500 dark:text-gray-400", {
@@ -243,7 +246,7 @@ export default function LearningCoursePage() {
     <div className="flex flex-col h-screen">
       {/* Header */}
       <header className="flex justify-between items-center px-4 md:px-6 py-2 border-b shadow-sm">
-        <h1 className="text-sm md:text-base font-medium text-gray-800 truncate">
+        <h1 className="text-sm md:text-base font-medium truncate">
           A Quick and Easy Intro to Python Programming
         </h1>
         <div className="flex items-center gap-3">
