@@ -139,7 +139,7 @@ export default function LearningCoursePage() {
   };
 
   const renderSidebar = (
-    <div className="h-full w-full bg-white flex flex-col border-l">
+    <div className="h-full w-full flex flex-col border-l dark:bg-dark-8">
       <h2 className="text-lg font-semibold px-4 pl-3 py-2 border-b hidden lg:block">
         Course Content
       </h2>
@@ -151,11 +151,11 @@ export default function LearningCoursePage() {
             <div key={section.id}>
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-100"
+                className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-2 dark:bg-dark-6"
               >
                 <div className="flex flex-col items-start gap-3">
                   <span className="font-semibold text-md leading-none">{section.title}</span>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     {section.lectures.length} lectures · {formatMinutes(totalDuration)}
                   </span>
                 </div>
@@ -190,8 +190,8 @@ export default function LearningCoursePage() {
                         className={cn(
                           "group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors",
                           isActive
-                            ? "bg-primary-0 text-primary-6 cursor-default"
-                            : "hover:bg-gray-200",
+                            ? "bg-primary-light text-primary-light-color cursor-default"
+                            : "hover:bg-gray-3 dark:hover:bg-dark-4",
                         )}
                       >
                         <Checkbox
@@ -206,7 +206,7 @@ export default function LearningCoursePage() {
                         />
                         <div className="flex-1 flex flex-col gap-3">
                           <div
-                            className={cn("text-md leading-none", {
+                            className={cn("text-sm leading-none", {
                               "font-medium": isActive,
                             })}
                           >
@@ -219,8 +219,8 @@ export default function LearningCoursePage() {
                               <MonitorPlayIcon size={14} />
                             )}
                             <span
-                              className={cn("leading-none", {
-                                "text-gray-700": isActive,
+                              className={cn("leading-none text-gray-500 dark:text-gray-400", {
+                                "text-gray-700 dark:text-gray-200": isActive,
                               })}
                             >
                               {lecture.duration}
@@ -242,12 +242,12 @@ export default function LearningCoursePage() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="flex justify-between items-center px-4 md:px-6 py-2 border-b bg-white shadow-sm">
+      <header className="flex justify-between items-center px-4 md:px-6 py-2 border-b shadow-sm">
         <h1 className="text-sm md:text-base font-medium text-gray-800 truncate">
           A Quick and Easy Intro to Python Programming
         </h1>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 text-xs md:text-sm text-gray-500">
+          <div className="flex items-center gap-1 text-xs md:text-sm text-gray-500 dark:text-gray-400">
             <RingProgress
               size={45}
               thickness={3}
@@ -320,7 +320,7 @@ export default function LearningCoursePage() {
       </Drawer>
 
       {/* Footer navigation */}
-      <footer className="border-t bg-white px-4 md:px-6 py-3 flex items-center justify-between text-sm shadow-sm">
+      <footer className="border-t px-4 md:px-6 py-3 flex items-center justify-between text-sm shadow-sm">
         <div className="hidden lg:block"></div>
         <div className="flex items-center gap-2">
           <Button
