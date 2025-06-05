@@ -214,22 +214,20 @@ export default function LearningCoursePage() {
                           >
                             {lecture.title}
                           </div>
-                          <div className="flex items-center gap-2 text-sm">
+                          <div
+                            className={cn(
+                              "flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400",
+                              {
+                                "text-gray-700 dark:text-gray-200": isActive,
+                              },
+                            )}
+                          >
                             {isDone ? (
                               <CheckCircle size={14} className="text-green-500" />
                             ) : (
-                              <MonitorPlayIcon
-                                size={14}
-                                className="text-gray-500 dark:text-gray-400"
-                              />
+                              <MonitorPlayIcon size={14} />
                             )}
-                            <span
-                              className={cn("leading-none text-gray-500 dark:text-gray-400", {
-                                "text-gray-700 dark:text-gray-200": isActive,
-                              })}
-                            >
-                              {lecture.duration}
-                            </span>
+                            <span className={cn("leading-none", {})}>{lecture.duration}</span>
                           </div>
                         </div>
                       </li>
