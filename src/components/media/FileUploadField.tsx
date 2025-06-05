@@ -92,7 +92,7 @@ export default function FileUploadField({
       <label className="block text-md font-medium mb-1">{label}</label>
       <div className="flex flex-col lg:flex-row gap-4">
         <div
-          className="w-full lg:w-64 h-36 border flex items-center justify-center bg-gray-50 dark:bg-gray-800
+          className="w-full lg:w-64 aspect-video border flex items-center justify-center bg-gray-50 dark:bg-gray-800
             overflow-hidden rounded-lg"
         >
           <MediaPreview url={previewMediaUrl} type={previewMediaType} />
