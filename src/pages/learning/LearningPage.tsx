@@ -249,7 +249,7 @@ export default function LearningCoursePage() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="flex justify-between items-center px-3 md:px-6 py-2 shadow-sm bg-slate-800">
+      <header className="flex justify-between items-center px-3 md:px-6 py-1 shadow-sm bg-[#29303b]">
         {/* Left: Back + Logo + Title */}
         <div className="flex items-center gap-2 md:gap-4 min-w-0">
           <Box
@@ -257,7 +257,7 @@ export default function LearningCoursePage() {
             to="/dashboard/enrolled-courses"
             className="text-slate-300 hover:text-white transition-colors"
           >
-            <ChevronLeftIcon className="size-6 md:size-7" />
+            <ChevronLeftIcon className="size-6 md:size-7" strokeWidth={2} />
           </Box>
 
           {/* Logo - ẩn ở mobile */}
@@ -268,7 +268,7 @@ export default function LearningCoursePage() {
             className="hidden md:block flex-shrink-0"
           />
 
-          <h1 className="text-sm md:text-md font-medium text-white truncate pr-2">
+          <h1 className="text-sm md:text-md font-bold text-white truncate pr-2">
             A Quick and Easy Intro to Python Programming Intro to Python Programming Intro to Python
             Programming
           </h1>
@@ -289,7 +289,7 @@ export default function LearningCoursePage() {
               sections={[
                 {
                   value: progressPercent,
-                  color: "var(--mantine-color-blue-filled)",
+                  color: "blue",
                 },
               ]}
             />
