@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Box,
   Button,
   Checkbox,
   Collapse,
@@ -9,11 +10,13 @@ import {
   Text,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import { MantineLogo } from "@mantinex/mantine-logo";
 import {
   ArrowRightIcon,
   CheckCircle,
   ChevronDown,
   ChevronLeft,
+  ChevronLeftIcon,
   ChevronRight,
   EllipsisVerticalIcon,
   MenuIcon,
@@ -21,6 +24,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import ReactPlayer from "react-player";
+import { Link } from "react-router-dom";
 import { cn } from "../../utils/cn";
 
 // Types
@@ -245,15 +249,36 @@ export default function LearningCoursePage() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="flex justify-between items-center px-2 md:px-6 py-2 shadow-sm bg-slate-800">
-        <h1 className="text-sm md:text-base font-medium truncate text-white">
-          A Quick and Easy Intro to Python Programming
-        </h1>
+      <header className="flex justify-between items-center px-3 md:px-6 py-2 shadow-sm bg-slate-800">
+        {/* Left: Back + Logo + Title */}
+        <div className="flex items-center gap-2 md:gap-4 min-w-0">
+          <Box
+            component={Link}
+            to="/dashboard/enrolled-courses"
+            className="text-slate-300 hover:text-white transition-colors"
+          >
+            <ChevronLeftIcon className="size-6 md:size-7" />
+          </Box>
 
+          {/* Logo - ẩn ở mobile */}
+          <MantineLogo
+            color="primary"
+            size={28}
+            type="mark"
+            className="hidden md:block flex-shrink-0"
+          />
+
+          <h1 className="text-sm md:text-md font-medium text-white truncate pr-2">
+            A Quick and Easy Intro to Python Programming Intro to Python Programming Intro to Python
+            Programming
+          </h1>
+        </div>
+
+        {/* Right: Progress + Menu */}
         <div className="flex items-center gap-1 md:gap-3">
           <div className="flex items-center gap-1 text-xs md:text-sm text-slate-300 dark:text-slate-400">
             <RingProgress
-              size={45}
+              size={42}
               thickness={3}
               roundCaps
               label={
@@ -268,7 +293,7 @@ export default function LearningCoursePage() {
                 },
               ]}
             />
-            <span className="visible-from-md">completed</span>
+            <span className="hidden md:inline">completed</span>
           </div>
 
           <Menu trigger="click">
