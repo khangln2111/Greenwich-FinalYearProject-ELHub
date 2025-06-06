@@ -62,7 +62,13 @@ export default function LearningCoursePage() {
   };
 
   const toggleSection = (sectionId: string) => {
-    setOpenSections((prev) => ({ ...prev, [sectionId]: !prev[sectionId] }));
+    setOpenSections((prev) => {
+      const current = prev[sectionId] ?? true;
+      return {
+        ...prev,
+        [sectionId]: !current,
+      };
+    });
   };
 
   const handlePrev = () => {
@@ -96,7 +102,7 @@ export default function LearningCoursePage() {
                 </div>
                 {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               </button>
-              <Collapse in={isOpen}>
+              <Collapse in={isOpen} transitionTimingFunction="linear">
                 <ul>
                   {section.lectures?.map((lecture) => {
                     const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
@@ -260,7 +266,7 @@ export default function LearningCoursePage() {
               playIcon: "md:size-8",
             }}
             className="size-full"
-            videoUrl={currentLecture.videoUrl}
+            videoUrl={currentLecture?.videoUrl}
           />
         </main>
 
@@ -327,9 +333,9 @@ export default function LearningCoursePage() {
           className="visible-from-lg"
         >
           {desktopSidebarOpen ? (
-            <ArrowRightIcon style={{ width: "60%", height: "60%" }} strokeWidth={2} />
+            <ArrowRightIcon className="size-[60%]" strokeWidth={2} />
           ) : (
-            <MenuIcon style={{ width: "60%", height: "60%" }} strokeWidth={2} />
+            <MenuIcon className="size-[60%]" strokeWidth={2} />
           )}
         </ActionIcon>
         <ActionIcon
@@ -339,7 +345,7 @@ export default function LearningCoursePage() {
           className="hidden-from-lg"
           onClick={() => setDrawerOpened(true)}
         >
-          <MenuIcon style={{ width: "60%", height: "60%" }} strokeWidth={2} />
+          <MenuIcon className="size-[60%]" strokeWidth={2} />
         </ActionIcon>
       </footer>
     </div>
