@@ -23,106 +23,36 @@ import {
   MonitorPlayIcon,
 } from "lucide-react";
 import { useState } from "react";
-import ReactPlayer from "react-player";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
+import VideoPlayerWithThumbnail from "../../components/media/VideoPlayerWithThumbnail";
+import { useGetCourseDetail } from "../../react-query/course/courseHooks";
 import { cn } from "../../utils/cn";
-
-// Types
-interface Lecture {
-  id: string;
-  title: string;
-  duration: string;
-  videoUrl: string;
-}
-
-interface Section {
-  id: string;
-  title: string;
-  lectures: Lecture[];
-}
-
-// Mock data
-const mockSections: Section[] = [
-  {
-    id: "s1",
-    title: "Section 1: Up And Running With Python",
-    lectures: [
-      {
-        id: "l1",
-        title: "Welcome to the Course!",
-        duration: "2m",
-        videoUrl:
-          "https://res.cloudinary.com/codewithmosh/video/upload/f_auto:video,q_auto/v1/promo-videos/spring-boot-part2",
-      },
-      {
-        id: "l2",
-        title: "Read this before starting the course!",
-        duration: "1m",
-        videoUrl: "https://example.com/video2",
-      },
-    ],
-  },
-  {
-    id: "s2",
-    title: "Section 2: All The Basics (2023)",
-    lectures: [
-      {
-        id: "l3",
-        title: "Getting Started with Python",
-        duration: "1m",
-        videoUrl: "https://example.com/video3",
-      },
-      {
-        id: "l4",
-        title: "Variables and Multiple Assignment",
-        duration: "4m",
-        videoUrl: "https://example.com/video4",
-      },
-      {
-        id: "l5",
-        title: "Arithmetic Operators and Strings",
-        duration: "6m",
-        videoUrl: "https://example.com/video5",
-      },
-      {
-        id: "l6",
-        title: "Placeholders in Strings",
-        duration: "5m",
-        videoUrl: "https://example.com/video6",
-      },
-    ],
-  },
-];
-
-const getAllLectures = (sections: Section[]) =>
-  sections.flatMap((section) =>
-    section.lectures.map((lec) => ({ ...lec, sectionTitle: section.title })),
-  );
-
-// Convert durations like "5m", "1h 10m", etc.
-const formatMinutes = (minutes: number) => {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  if (h > 0 && m > 0) return `${h}h ${m}m`;
-  if (h > 0) return `${h}h`;
-  return `${m}m`;
-};
-
-const getSectionDuration = (section: Section) => {
-  return section.lectures.reduce((total, lecture) => {
-    const match = lecture.duration.match(/(\d+)m/);
-    return total + (match ? parseInt(match[1]) : 0);
-  }, 0);
-};
+import { formatDuration } from "../../utils/format";
 
 export default function LearningCoursePage() {
-  const allLectures = getAllLectures(mockSections);
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   const isMobileOrTablet = useMediaQuery("(max-width: 768px)");
+
+  const { courseId } = useParams<{ courseId: string }>();
+
+  const { data, isPending, error } = useGetCourseDetail(courseId!);
+
+  if (isPending) return <div>Loading...</div>;
+
+  if (error || !courseId) return <Navigate to="/404" replace />;
+
+  const allLectures =
+    data.sections?.flatMap(
+      (section) =>
+        section.lectures?.map((lec) => ({
+          ...lec,
+          sectionTitle: section.title,
+        })) || [],
+    ) ?? [];
 
   const currentLecture = allLectures[currentLectureIndex];
   const progressPercent = ((currentLectureIndex + 1) / allLectures.length) * 100;
@@ -149,9 +79,8 @@ export default function LearningCoursePage() {
         Course Content
       </h2>
       <div className="flex-1 overflow-y-auto divide-y">
-        {mockSections.map((section) => {
+        {data.sections?.map((section) => {
           const isOpen = openSections[section.id] ?? true;
-          const totalDuration = getSectionDuration(section);
           return (
             <div key={section.id}>
               <button
@@ -159,16 +88,17 @@ export default function LearningCoursePage() {
                 className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-2 dark:bg-dark-6"
               >
                 <div className="flex flex-col items-start gap-3">
-                  <span className="font-semibold text-md leading-none">{section.title}</span>
+                  <span className="font-semibold text-md leading-none">{`Section ${section.order + 1}: ${section.title.trim()}`}</span>
                   <span className="text-sm text-gray-600 dark:text-gray-400">
-                    {section.lectures.length} lectures · {formatMinutes(totalDuration)}
+                    {section.lectures?.length} lectures ·{" "}
+                    {formatDuration({ seconds: section.durationInSeconds, formatType: "mm:ss" })}
                   </span>
                 </div>
                 {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
               </button>
               <Collapse in={isOpen}>
                 <ul>
-                  {section.lectures.map((lecture) => {
+                  {section.lectures?.map((lecture) => {
                     const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
                     const isActive = lectureIndex === currentLectureIndex;
                     const isDone = completed.has(lecture.id);
@@ -196,7 +126,7 @@ export default function LearningCoursePage() {
                           "group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors",
                           {
                             "bg-primary-light cursor-default": isActive,
-                            "hover:bg-gray-2 dark:hover:bg-dark-5": !isActive,
+                            "hover:bg-gray-100 dark:hover:bg-dark-5": !isActive,
                           },
                         )}
                       >
@@ -231,7 +161,12 @@ export default function LearningCoursePage() {
                             ) : (
                               <MonitorPlayIcon size={14} />
                             )}
-                            <span className={cn("leading-none", {})}>{lecture.duration}</span>
+                            <span className={cn("leading-none", {})}>
+                              {formatDuration({
+                                seconds: lecture.durationInSeconds,
+                                formatType: "mm:ss",
+                              })}
+                            </span>
                           </div>
                         </div>
                       </li>
@@ -268,10 +203,7 @@ export default function LearningCoursePage() {
             className="hidden md:block flex-shrink-0"
           />
 
-          <h1 className="text-sm md:text-md font-bold text-white truncate pr-2">
-            A Quick and Easy Intro to Python Programming Intro to Python Programming Intro to Python
-            Programming
-          </h1>
+          <h1 className="text-sm md:text-md font-bold text-white truncate pr-2">{data.title}</h1>
         </div>
 
         {/* Right: Progress + Menu */}
@@ -315,12 +247,20 @@ export default function LearningCoursePage() {
       <div className="flex-1 flex overflow-hidden transition-all duration-300">
         {/* Video area */}
         <main className={"flex-1 bg-black transition-all duration-300"}>
-          <ReactPlayer
+          {/* <ReactPlayer
             url={currentLecture.videoUrl}
             width="100%"
             height="100%"
             controls
             onEnded={onVideoEnd}
+          /> */}
+          <VideoPlayerWithThumbnail
+            classNames={{
+              playIconWrapper: "md:size-16",
+              playIcon: "md:size-8",
+            }}
+            className="size-full"
+            videoUrl={currentLecture.videoUrl}
           />
         </main>
 
@@ -356,7 +296,7 @@ export default function LearningCoursePage() {
 
       {/* Footer navigation */}
       <footer
-        className="border-t px-4 md:px-6 py-2 flex items-center justify-between text-sm shadow-sm bg-gray-200
+        className="border-t px-4 md:px-6 py-2 flex items-center justify-between text-sm shadow-sm bg-[#f0f0f0]
           dark:bg-[#121212]"
       >
         <div className="hidden lg:block"></div>

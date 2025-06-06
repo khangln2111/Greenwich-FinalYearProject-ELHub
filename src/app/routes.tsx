@@ -95,7 +95,7 @@ const authRoutes: RouteObject[] = [
   { path: "/reset-password", element: <p>Reset Password Page</p> },
   { path: "/verify-email", element: <p>Verify Email Page</p> },
   {
-    path: "learning",
+    path: "learning/:courseId",
     element: <LearningPage />,
   },
 ];

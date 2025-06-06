@@ -60,12 +60,7 @@ export default function VideoPlayerWithThumbnail({
         onClickPreview={() => setPlaying(true)}
         light={
           thumbnail ? (
-            <img
-              src={thumbnail}
-              alt="thumbnail"
-              className="size-full object-cover"
-              style={{ maxHeight: "100%" }}
-            />
+            <img src={thumbnail} alt="thumbnail" className="aspect-video object-cover h-full" />
           ) : (
             <div className="bg-black size-full" />
           )

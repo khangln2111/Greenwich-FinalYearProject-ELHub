@@ -1,7 +1,6 @@
 import { Avatar, Button, Progress, Rating, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { Play, Star } from "lucide-react";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EnrollmentVm } from "../../../react-query/enrollment/enrollment.types";
 
