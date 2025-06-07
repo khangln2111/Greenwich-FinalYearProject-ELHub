@@ -68,6 +68,13 @@ export default function LearningCoursePage() {
       <div className="flex-1 flex overflow-hidden transition-all duration-300">
         {/* Video area */}
         <main className={"flex-1 bg-black transition-all duration-300"}>
+          {/* <ReactPlayer
+            url={currentLecture.videoUrl}
+            width="100%"
+            height="100%"
+            controls
+            onEnded={onVideoEnd}
+          /> */}
           <VideoPlayerWithThumbnail
             classNames={{
               playIconWrapper: "md:size-16",
