@@ -1,27 +1,28 @@
+import { Checkbox, Collapse } from "@mantine/core";
+import { CheckCircle, ChevronDown, ChevronRight, MonitorPlayIcon } from "lucide-react";
 import { LectureVm } from "../../../react-query/lecture/lecture.types";
 import { SectionVm } from "../../../react-query/section/section.types";
-import LearningSectionItem from "./LearningSectionItem";
+import { cn } from "../../../utils/cn";
+import { formatDuration } from "../../../utils/format";
 
 interface CourseSidebarProps {
   sections: SectionVm[];
-  currentLectureId: string;
+  currentLectureIndex: number;
   completed: Set<string>;
-  openSections: Record<string, boolean>;
+  openedSections: Record<string, boolean>;
   allLectures: (LectureVm & { sectionTitle: string })[];
-  onLectureClick: (lectureId: string) => void;
+  onLectureClick: (lectureId: number) => void;
   toggleSection: (sectionId: string) => void;
-  toggleComplete: (lectureId: string) => void;
 }
 
-export default function CourseSidebar({
+export default function LearningSidebar({
   sections,
-  currentLectureId,
+  currentLectureIndex,
   completed,
-  openSections,
+  openedSections,
   allLectures,
   onLectureClick,
   toggleSection,
-  toggleComplete,
 }: CourseSidebarProps) {
   return (
     <div className="h-full w-full flex flex-col border-l text-[#233D63] dark:text-[#EEEEEE]">
@@ -29,20 +30,88 @@ export default function CourseSidebar({
         Course Content
       </h2>
       <div className="flex-1 overflow-y-auto divide-y">
-        {sections.map((section) => {
-          const isOpen = openSections[section.id] ?? true;
+        {sections?.map((section) => {
+          // default to be open
+          const isOpen = openedSections[section.id] ?? true;
           return (
-            <LearningSectionItem
-              key={section.id}
-              section={section}
-              isOpen={isOpen}
-              toggleSection={() => toggleSection(section.id)}
-              currentLectureId={currentLectureId}
-              completed={completed}
-              allLectures={allLectures}
-              onLectureClick={onLectureClick}
-              toggleComplete={toggleComplete}
-            />
+            <div key={section.id}>
+              <button
+                onClick={() => toggleSection(section.id)}
+                className="w-full flex items-start justify-between text-left px-3 py-4 bg-gray-2 dark:bg-dark-6"
+              >
+                <div className="flex flex-col items-start gap-3">
+                  <span className="font-semibold text-md leading-none">{`Section ${section.order + 1}: ${section.title.trim()}`}</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {section.lectures?.length} lectures ·{" "}
+                    {formatDuration({ seconds: section.durationInSeconds, formatType: "mm:ss" })}
+                  </span>
+                </div>
+                {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+              </button>
+              <Collapse in={isOpen} transitionTimingFunction="linear">
+                <ul>
+                  {section.lectures?.map((lecture) => {
+                    const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
+                    const isActive = lectureIndex === currentLectureIndex;
+                    const isDone = completed.has(lecture.id);
+
+                    return (
+                      <li
+                        key={lecture.id}
+                        onClick={() => onLectureClick(lectureIndex)}
+                        className={cn(
+                          "group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors",
+                          {
+                            "bg-primary-light cursor-default": isActive,
+                            "hover:bg-gray-100 dark:hover:bg-dark-5": !isActive,
+                          },
+                        )}
+                      >
+                        <Checkbox
+                          classNames={{
+                            input: "border-2",
+                          }}
+                          size="xs"
+                          checked={isDone}
+                          radius="sm"
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={() => console.log("Toggle complete", lecture.id)}
+                        />
+                        <div className="flex-1 flex flex-col gap-3">
+                          <div
+                            className={cn("text-[15px] leading-none", {
+                              "font-semibold": isActive,
+                            })}
+                          >
+                            {lecture.title}
+                          </div>
+                          <div
+                            className={cn(
+                              "flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400",
+                              {
+                                "text-gray-700 dark:text-gray-200": isActive,
+                              },
+                            )}
+                          >
+                            {isDone ? (
+                              <CheckCircle size={14} className="text-green-500" />
+                            ) : (
+                              <MonitorPlayIcon size={14} />
+                            )}
+                            <span className={cn("leading-none", {})}>
+                              {formatDuration({
+                                seconds: lecture.durationInSeconds,
+                                formatType: "mm:ss",
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </Collapse>
+            </div>
           );
         })}
       </div>

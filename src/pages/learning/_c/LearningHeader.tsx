@@ -4,12 +4,12 @@ import { MantineLogo } from "@mantinex/mantine-logo";
 import { ChevronLeftIcon, EllipsisVerticalIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
-interface CourseHeaderProps {
+interface LearningHeaderProps {
   title: string;
   progressPercent: number;
 }
 
-export default function CourseHeader({ title, progressPercent }: CourseHeaderProps) {
+export default function LearningHeader({ title, progressPercent }: LearningHeaderProps) {
   return (
     <header className="flex justify-between items-center px-3 md:px-6 py-1 shadow-sm bg-[#29303b]">
       {/* Left: Back + Logo + Title */}
