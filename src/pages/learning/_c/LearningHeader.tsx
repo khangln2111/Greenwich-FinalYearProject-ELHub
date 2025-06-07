@@ -1,15 +1,18 @@
-import { Box, ActionIcon, RingProgress, Text, Menu } from "@mantine/core";
+// components/learning/CourseHeader.tsx
+import { Box, ActionIcon, Menu, RingProgress, Text } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import { ChevronLeftIcon, EllipsisVerticalIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
-interface Props {
+interface CourseHeaderProps {
+  title: string;
   progressPercent: number;
 }
 
-export default function LearningHeader({ progressPercent }: Props) {
+export default function CourseHeader({ title, progressPercent }: CourseHeaderProps) {
   return (
     <header className="flex justify-between items-center px-3 md:px-6 py-1 shadow-sm bg-[#29303b]">
+      {/* Left: Back + Logo + Title */}
       <div className="flex items-center gap-2 md:gap-4 min-w-0">
         <Box
           component={Link}
@@ -18,17 +21,14 @@ export default function LearningHeader({ progressPercent }: Props) {
         >
           <ChevronLeftIcon className="size-6 md:size-7" strokeWidth={2} />
         </Box>
-        <MantineLogo
-          color="primary"
-          size={28}
-          type="mark"
-          className="hidden md:block flex-shrink-0"
-        />
-        <h1 className="text-sm md:text-md font-bold text-white truncate pr-2">
-          A Quick and Easy Intro to Python Programming
-        </h1>
+
+        {/* Logo - ẩn ở mobile */}
+        <MantineLogo color="primary" size={28} type="mark" className="hidden md:block shrink-0" />
+
+        <h1 className="text-sm md:text-md font-bold text-white truncate pr-2">{title}</h1>
       </div>
 
+      {/* Right: Progress + Menu */}
       <div className="flex items-center gap-1 md:gap-3">
         <div className="flex items-center gap-1 text-xs md:text-sm text-slate-300 dark:text-slate-400">
           <RingProgress

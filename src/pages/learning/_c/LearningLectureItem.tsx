@@ -2,13 +2,14 @@ import { Checkbox } from "@mantine/core";
 import { CheckCircle, MonitorPlayIcon } from "lucide-react";
 import { LectureVm } from "../../../react-query/lecture/lecture.types";
 import { cn } from "../../../utils/cn";
+import { formatDuration } from "../../../utils/format";
 
-interface Props {
+interface LectureItemProps {
   lecture: LectureVm;
   isActive: boolean;
   isDone: boolean;
   onClick: () => void;
-  toggleComplete: () => void;
+  onToggleComplete: () => void;
 }
 
 export default function LearningLectureItem({
@@ -16,23 +17,25 @@ export default function LearningLectureItem({
   isActive,
   isDone,
   onClick,
-  toggleComplete,
-}: Props) {
+  onToggleComplete,
+}: LectureItemProps) {
   return (
     <li
       onClick={onClick}
       className={cn("group flex items-start gap-3 px-4 py-4 cursor-pointer transition-colors", {
         "bg-primary-light cursor-default": isActive,
-        "hover:bg-gray-2 dark:hover:bg-dark-5": !isActive,
+        "hover:bg-gray-100 dark:hover:bg-dark-5": !isActive,
       })}
     >
       <Checkbox
-        classNames={{ input: "border-2" }}
+        classNames={{
+          input: "border-2",
+        }}
         size="xs"
         checked={isDone}
         radius="sm"
         onClick={(e) => e.stopPropagation()}
-        onChange={toggleComplete}
+        onChange={onToggleComplete}
       />
       <div className="flex-1 flex flex-col gap-3">
         <div className={cn("text-[15px] leading-none", { "font-semibold": isActive })}>
@@ -48,7 +51,12 @@ export default function LearningLectureItem({
           ) : (
             <MonitorPlayIcon size={14} />
           )}
-          <span>{lecture.durationInSeconds}</span>
+          <span className="leading-none">
+            {formatDuration({
+              seconds: lecture.durationInSeconds,
+              formatType: "mm:ss",
+            })}
+          </span>
         </div>
       </div>
     </li>
