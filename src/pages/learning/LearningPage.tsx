@@ -1,5 +1,5 @@
-import { Drawer } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
+import { ResponsiveDialog } from "mantine-vaul";
 import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import VideoPlayerWithThumbnail from "../../components/media/VideoPlayerWithThumbnail";
@@ -116,17 +116,25 @@ export default function LearningCoursePage() {
       </div>
 
       {/* Drawer for mobile & tablet */}
-      <Drawer
+      <ResponsiveDialog
         opened={drawerOpened}
         onClose={() => setDrawerOpened(false)}
-        title={<h2 className="text-lg font-semibold">Course Content</h2>}
-        padding="md"
-        size="100%"
-        position="right"
+        title={<p className="text-lg font-semibold">Course Content</p>}
         withCloseButton
-        className="lg:hidden"
-        classNames={{
-          body: "p-0",
+        vaulProps={{
+          classNames: {
+            body: "px-0",
+          },
+        }}
+        drawerProps={{
+          className: "lg:hidden",
+          classNames: {
+            body: "p-0",
+          },
+        }}
+        matches={{
+          base: "vaul",
+          md: "drawer",
         }}
       >
         <LearningSidebar
@@ -141,7 +149,7 @@ export default function LearningCoursePage() {
           }}
           toggleSection={(sectionId) => toggleSection(sectionId)}
         />
-      </Drawer>
+      </ResponsiveDialog>
 
       {/* Footer navigation */}
       <LearningFooter
