@@ -1,4 +1,4 @@
-import { SectionVm } from "../section/section.types";
+import { LearningSectionVm, SectionVm } from "../section/section.types";
 
 // course.type.ts
 export enum CourseStatus {
@@ -72,12 +72,49 @@ export interface CourseDetailVm {
   instructorName: string;
   instructorId: string;
 
-  createdAt: string; // or Date, depending on how you parse it
-  updatedAt: string; // or Date
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LearningCourseVm {
+  id: string;
+
+  title: string;
+  description: string;
+
+  sectionCount: number;
+  lectureCount: number;
+
+  sections: LearningSectionVm[] | null;
+
+  imageUrl: string;
+  promoVideoUrl: string;
+
+  price: number;
+  discountPercentage: number;
+  discountedPrice: number;
+
+  durationInSeconds: number;
+
+  status: string;
+
+  level: CourseLevel;
+
+  learningOutcomes: string[];
+  prerequisites: string[];
+
+  categoryName: string;
+  instructorName: string;
+  instructorId: string;
+
+  createdAt: string;
+  updatedAt: string;
+
+  progressPercentage: number;
 }
 
 export interface CreateCourseCommand {
-  categoryId: string; // Guid tương ứng với string trong TS
+  categoryId: string;
   title: string;
   description: string;
   image: File; // Tương ứng với IFormFile trong frontend là File

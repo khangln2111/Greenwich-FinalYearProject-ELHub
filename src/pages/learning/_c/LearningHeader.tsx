@@ -35,6 +35,7 @@ export default function LearningHeader({ title, progressPercent }: LearningHeade
             size={42}
             thickness={3}
             roundCaps
+            transitionDuration={400}
             label={
               <Text className="text-xs text-center font-bold text-blue-300 dark:text-blue-400">
                 {Math.round(progressPercent)}%

@@ -6,6 +6,7 @@ import {
   CourseQueryCriteria,
   CourseVm,
   CreateCourseCommand,
+  LearningCourseVm,
   UpdateCourseCommand,
 } from "./course.types";
 
@@ -47,7 +48,12 @@ export const getCourses = async (query: CourseQueryCriteria = {}) => {
 };
 
 export const getCourseDetail = async (id: string) => {
-  const response = await apiClient.get<CourseDetailVm>(`/courses/${id}`);
+  const response = await apiClient.get<CourseDetailVm>(`${BASE_URL}/${id}`);
+  return response.data;
+};
+
+export const getCourseLearning = async (id: string) => {
+  const response = await apiClient.get<LearningCourseVm>(`${BASE_URL}/Learning/${id}`);
   return response.data;
 };
 

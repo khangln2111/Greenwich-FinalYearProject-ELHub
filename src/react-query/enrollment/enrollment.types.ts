@@ -4,6 +4,7 @@ export interface EnrollmentVm {
   courseTitle: string;
   courseDescription: string;
   courseImageUrl?: string;
+  progressPercentage: number;
 }
 
 export interface EnrollmentQueryCriteria {}

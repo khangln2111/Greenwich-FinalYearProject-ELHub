@@ -3,7 +3,8 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import VideoPlayerWithThumbnail from "../../components/media/VideoPlayerWithThumbnail";
-import { useGetCourseDetail } from "../../react-query/course/courseHooks";
+import { useGetCourseLearning } from "../../react-query/course/courseHooks";
+import { useCompleteLecture } from "../../react-query/lecture/lectureHooks";
 import { cn } from "../../utils/cn";
 import LearningFooter from "./_c/LearningFooter";
 import LearningHeader from "./_c/LearningHeader";
@@ -12,14 +13,15 @@ import LearningSidebar from "./_c/LearningSidebar";
 export default function LearningCoursePage() {
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
   const [openedSections, setOpenedSections] = useState<Record<string, boolean>>({});
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [desktopSidebarOpened, setdesktopSidebarOpened] = useState(true);
   const isMobileOrTablet = useMediaQuery("(max-width: 768px)");
 
   const { courseId } = useParams<{ courseId: string }>();
 
-  const { data, isPending, error } = useGetCourseDetail(courseId!);
+  const { data, isPending, error } = useGetCourseLearning(courseId!);
+
+  const completeLectureMutation = useCompleteLecture();
 
   if (isPending) return <div>Loading...</div>;
 
@@ -35,10 +37,21 @@ export default function LearningCoursePage() {
     ) ?? [];
 
   const currentLecture = allLectures[currentLectureIndex];
-  const progressPercent = ((currentLectureIndex + 1) / allLectures.length) * 100;
+
+  const handleLectureComplete = (lectureId: string) => {
+    completeLectureMutation.mutate(lectureId);
+  };
 
   const onVideoEnd = () => {
-    setCompleted((prev) => new Set(prev).add(currentLecture.id));
+    const current = allLectures[currentLectureIndex];
+
+    if (!current.completed) {
+      completeLectureMutation.mutate(current.id);
+    }
+
+    if (currentLectureIndex < allLectures.length - 1) {
+      setCurrentLectureIndex((i) => i + 1);
+    }
   };
 
   const toggleSection = (sectionId: string) => {
@@ -62,25 +75,19 @@ export default function LearningCoursePage() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <LearningHeader title={data.title} progressPercent={progressPercent} />
+      <LearningHeader title={data.title} progressPercent={data.progressPercentage} />
 
       {/* Main content */}
       <div className="flex-1 flex overflow-hidden transition-all duration-300">
         {/* Video area */}
         <main className={"flex-1 bg-black transition-all duration-300"}>
-          {/* <ReactPlayer
-            url={currentLecture.videoUrl}
-            width="100%"
-            height="100%"
-            controls
-            onEnded={onVideoEnd}
-          /> */}
           <VideoPlayerWithThumbnail
             classNames={{
               playIconWrapper: "md:size-16",
               playIcon: "md:size-8",
             }}
             videoUrl={currentLecture?.videoUrl}
+            onVideoEnd={onVideoEnd}
           />
         </main>
 
@@ -95,7 +102,7 @@ export default function LearningCoursePage() {
             <LearningSidebar
               sections={data.sections || []}
               currentLectureIndex={currentLectureIndex}
-              completed={completed}
+              onLectureComplete={handleLectureComplete}
               openedSections={openedSections}
               allLectures={allLectures}
               onLectureClick={(lectureId) => {
@@ -125,7 +132,7 @@ export default function LearningCoursePage() {
         <LearningSidebar
           sections={data.sections || []}
           currentLectureIndex={currentLectureIndex}
-          completed={completed}
+          onLectureComplete={handleLectureComplete}
           openedSections={openedSections}
           allLectures={allLectures}
           onLectureClick={(lectureId) => {

@@ -27,6 +27,11 @@ export const updateLecture = async (command: UpdateLectureCommand) => {
   return response.data;
 };
 
+export const completeLecture = async (id: string) => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/CompleteLecture/${id}`);
+  return response.data;
+};
+
 export const deleteLecture = async (id: string) => {
   const response = await apiClient.delete<ApiSuccessResponse>(`${BASE_URL}/${id}`);
   return response.data;

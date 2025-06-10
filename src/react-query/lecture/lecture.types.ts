@@ -9,6 +9,18 @@ export type LectureVm = {
   order: number;
 };
 
+export type LearningLectureVm = {
+  id: string;
+  title: string;
+  description: string;
+  videoUrl: string;
+  durationInSeconds: number;
+  sectionId: string;
+  preview: boolean;
+  order: number;
+  completed: boolean;
+};
+
 export interface CreateLectureCommand {
   sectionId: string;
   title: string;

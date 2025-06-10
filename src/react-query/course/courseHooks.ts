@@ -3,7 +3,15 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CourseQueryCriteria, CreateCourseCommand, UpdateCourseCommand } from "./course.types";
-import { createCourse, deleteCourse, getCourseDetail, getCourses, updateCourse } from "./courseApi";
+import {
+  createCourse,
+  deleteCourse,
+  getCourseDetail,
+  getCourseLearning,
+  getCourses,
+  updateCourse,
+} from "./courseApi";
+import { useAppStore } from "../../zustand/store";
 
 export const useGetCourses = (query: CourseQueryCriteria = {}) => {
   return useQuery({
@@ -28,13 +36,30 @@ export const useGetCourseDetail = (id: string) => {
   });
 };
 
+export const useGetCourseLearning = (id: string) => {
+  const currentUser = useAppStore.use.currentUser();
+  return useQuery({
+    queryKey: keyFac.courses.getCourseLearning(id).queryKey,
+    queryFn: () => getCourseLearning(id),
+    enabled: !!id && !!currentUser,
+    retry: (failureCount, error) => {
+      // ❌ Không retry nếu là 404
+      if (error && error.response?.status === 404) {
+        return false;
+      }
+      // ✅ Retry tối đa 2 lần cho lỗi khác
+      return failureCount < 2;
+    },
+  });
+};
+
 export const useCreateCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (command: CreateCourseCommand) => createCourse(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["courses", "list"] });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast(
         "Course Created",
         "Course created successfully, you can check it in the list",

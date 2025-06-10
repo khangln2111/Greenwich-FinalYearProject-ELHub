@@ -1,28 +1,28 @@
 import { Checkbox, Collapse } from "@mantine/core";
 import { CheckCircle, ChevronDown, ChevronRight, MonitorPlayIcon } from "lucide-react";
 import { LectureVm } from "../../../react-query/lecture/lecture.types";
-import { SectionVm } from "../../../react-query/section/section.types";
+import { LearningSectionVm } from "../../../react-query/section/section.types";
 import { cn } from "../../../utils/cn";
 import { formatDuration } from "../../../utils/format";
 
 interface CourseSidebarProps {
-  sections: SectionVm[];
+  sections: LearningSectionVm[];
   currentLectureIndex: number;
-  completed: Set<string>;
   openedSections: Record<string, boolean>;
   allLectures: (LectureVm & { sectionTitle: string })[];
   onLectureClick: (lectureId: number) => void;
   toggleSection: (sectionId: string) => void;
+  onLectureComplete?: (lectureId: string) => void;
 }
 
 export default function LearningSidebar({
   sections,
   currentLectureIndex,
-  completed,
   openedSections,
   allLectures,
   onLectureClick,
   toggleSection,
+  onLectureComplete,
 }: CourseSidebarProps) {
   return (
     <div className="h-full w-full flex flex-col border-l text-[#233D63] dark:text-[#EEEEEE]">
@@ -53,8 +53,8 @@ export default function LearningSidebar({
                   {section.lectures?.map((lecture) => {
                     const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
                     const isActive = lectureIndex === currentLectureIndex;
-                    const isDone = completed.has(lecture.id);
 
+                    // lecture mapping
                     return (
                       <li
                         key={lecture.id}
@@ -68,14 +68,14 @@ export default function LearningSidebar({
                         )}
                       >
                         <Checkbox
-                          classNames={{
-                            input: "border-2",
-                          }}
+                          classNames={{ input: "border-2" }}
                           size="xs"
-                          checked={isDone}
                           radius="sm"
-                          onClick={(e) => e.stopPropagation()}
-                          onChange={() => console.log("Toggle complete", lecture.id)}
+                          checked={lecture.completed}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                          onChange={() => onLectureComplete?.(lecture.id)}
                         />
                         <div className="flex-1 flex flex-col gap-3">
                           <div
@@ -83,7 +83,7 @@ export default function LearningSidebar({
                               "font-semibold": isActive,
                             })}
                           >
-                            {lecture.title}
+                            {lectureIndex + 1}. {lecture.title}
                           </div>
                           <div
                             className={cn(
@@ -93,7 +93,7 @@ export default function LearningSidebar({
                               },
                             )}
                           >
-                            {isDone ? (
+                            {lecture.completed ? (
                               <CheckCircle size={14} className="text-green-500" />
                             ) : (
                               <MonitorPlayIcon size={14} />

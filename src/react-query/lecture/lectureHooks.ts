@@ -5,7 +5,13 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CreateLectureCommand, ReorderLectureCommand, UpdateLectureCommand } from "./lecture.types";
-import { createLecture, deleteLecture, reorderLecture, updateLecture } from "./lectureApi";
+import {
+  completeLecture,
+  createLecture,
+  deleteLecture,
+  reorderLecture,
+  updateLecture,
+} from "./lectureApi";
 
 export const useReorderLecture = () => {
   const queryClient = useQueryClient();
@@ -30,6 +36,34 @@ export const useReorderLecture = () => {
         queryKey: keyFac.courses.getCourseDetail._def,
       });
     },
+  });
+};
+
+export const useCompleteLecture = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => completeLecture(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses.getCourseLearning._def,
+      });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.enrollments._def,
+      });
+      showSuccessToast("Lecture Completed", "The lecture was completed successfully.");
+    },
+
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The lecture ID was not found"),
+          },
+        ],
+      }),
   });
 };
 

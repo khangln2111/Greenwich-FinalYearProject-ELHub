@@ -13,6 +13,7 @@ type VideoPlayerWithThumbnailProps = {
     playIcon?: string;
   };
   previewThumbnailUrl?: string;
+  onVideoEnd?: () => void;
 };
 
 export default function VideoPlayerWithThumbnail({
@@ -20,6 +21,7 @@ export default function VideoPlayerWithThumbnail({
   className,
   classNames,
   previewThumbnailUrl,
+  onVideoEnd,
 }: VideoPlayerWithThumbnailProps) {
   const [thumbnail, setThumbnail] = useState<string | null>(previewThumbnailUrl ?? null);
   const [thumbnailLoading, setThumbnailLoading] = useState(!previewThumbnailUrl);
@@ -58,6 +60,7 @@ export default function VideoPlayerWithThumbnail({
         controls
         playing={playing}
         onClickPreview={() => setPlaying(true)}
+        onEnded={() => onVideoEnd?.()}
         light={
           thumbnail ? (
             <img src={thumbnail} alt="thumbnail" className="aspect-video object-cover" />

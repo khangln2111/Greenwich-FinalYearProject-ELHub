@@ -87,9 +87,9 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
         <div className="flex flex-col gap-1">
           <div className="flex justify-between text-md text-gray-500 dark:text-gray-400">
             <span>Complete</span>
-            <span>85%</span>
+            <span>{enrollment.progressPercentage}%</span>
           </div>
-          <Progress value={85} size="md" striped radius="xl" />
+          <Progress value={enrollment.progressPercentage} size="md" striped radius="xl" />
         </div>
 
         <div className="flex items-center justify-between mt-2">
