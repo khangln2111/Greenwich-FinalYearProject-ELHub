@@ -18,4 +18,6 @@ public interface ILectureService
     Task<Success> Delete(Guid id);
 
     Task<Success> ReorderLecture(ReorderLectureCommand command);
+
+    Task<Success> CompleteLecture(Guid id);
 }

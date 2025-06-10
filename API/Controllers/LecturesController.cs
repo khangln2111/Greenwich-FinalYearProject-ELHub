@@ -1,6 +1,7 @@
 ﻿using BLL.BusinessServices.Abstract;
 using BLL.DTOs.LectureDTOs;
 using Gridify;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -18,7 +19,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return Ok(courses);
     }
 
-    // GET: api/Sections/id
+    // GET: api/Lectures/id
     [HttpGet("{id:guid}")]
     [ProducesResponseType<LectureVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -36,6 +37,17 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
     {
         var result = await lectureService.Create(command);
         return StatusCode(StatusCodes.Status201Created, result);
+    }
+
+    // PUT: /api/Lectures/CompleteLecture/{id:guid}
+    [HttpPut("CompleteLecture/{id:guid}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CompleteLecture(Guid id)
+    {
+        var result = await lectureService.CompleteLecture(id);
+        return Ok(result);
     }
 
     // PUT: api/Lectures

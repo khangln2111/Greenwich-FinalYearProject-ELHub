@@ -306,7 +306,7 @@ namespace DAL.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -314,8 +314,8 @@ namespace DAL.Data.Migrations
                 {
                     table.PrimaryKey("PK_Inventories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Inventories_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
+                        name: "FK_Inventories_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -404,7 +404,6 @@ namespace DAL.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EnrolledAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -596,6 +595,33 @@ namespace DAL.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "LectureProgresses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EnrollmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LectureId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Completed = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LectureProgresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LectureProgresses_Enrollments_EnrollmentId",
+                        column: x => x.EnrollmentId,
+                        principalTable: "Enrollments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LectureProgresses_Lectures_LectureId",
+                        column: x => x.LectureId,
+                        principalTable: "Lectures",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationRoleApplicationUser_UsersId",
                 table: "ApplicationRoleApplicationUser",
@@ -707,9 +733,9 @@ namespace DAL.Data.Migrations
                 column: "GiverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventories_ApplicationUserId",
+                name: "IX_Inventories_UserId",
                 table: "Inventories",
-                column: "ApplicationUserId",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -721,6 +747,16 @@ namespace DAL.Data.Migrations
                 name: "IX_InventoryItems_InventoryId",
                 table: "InventoryItems",
                 column: "InventoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LectureProgresses_EnrollmentId",
+                table: "LectureProgresses",
+                column: "EnrollmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LectureProgresses_LectureId",
+                table: "LectureProgresses",
+                column: "LectureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lectures_SectionId",
@@ -800,16 +836,13 @@ namespace DAL.Data.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
-                name: "Enrollments");
-
-            migrationBuilder.DropTable(
                 name: "Gifts");
 
             migrationBuilder.DropTable(
                 name: "InventoryItems");
 
             migrationBuilder.DropTable(
-                name: "Lectures");
+                name: "LectureProgresses");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
@@ -830,10 +863,16 @@ namespace DAL.Data.Migrations
                 name: "Inventories");
 
             migrationBuilder.DropTable(
-                name: "Sections");
+                name: "Enrollments");
+
+            migrationBuilder.DropTable(
+                name: "Lectures");
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Sections");
 
             migrationBuilder.DropTable(
                 name: "Courses");

@@ -27,6 +27,61 @@ public class CourseService(
     ICurrentUserUtility currentUserUtility)
     : ICourseService
 {
+    public async Task<LearningCourseVm> GetCourseLearning(Guid id)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null)
+            throw new UnauthorizedException();
+
+        // get enrollment for the current user in the course
+        var enrollment = await context.Enrollments
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.CourseId == id && e.UserId == currentUser.Id);
+
+        if (enrollment == null)
+            throw new NotFoundException(nameof(Enrollment), id);
+
+        // get completed lecture IDs for the current user in the course
+        var completedLectureIdList = await context.LectureProgresses
+            .AsNoTracking()
+            .Where(lp => lp.EnrollmentId == enrollment.Id && lp.Completed)
+            .Select(lp => lp.LectureId)
+            .ToListAsync();
+
+        var completedLectureIds = new HashSet<Guid>(completedLectureIdList);
+
+        // Fetch the course with related entities
+        var course = await context.Courses
+            .AsNoTracking()
+            .Where(c => c.Id == id)
+            .Include(c => c.Category)
+            .Include(c => c.Image)
+            .Include(c => c.PromoVideo)
+            .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
+            .ProjectTo<LearningCourseVm>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+
+
+        if (course == null)
+            throw new NotFoundException(nameof(Course), id);
+
+
+        // Get completion status for each lecture
+        foreach (var section in course.Sections)
+        foreach (var lecture in section.Lectures)
+            lecture.Completed = completedLectureIds.Contains(lecture.Id);
+
+        // get ProgressPercentage of the course
+        var allLectures = course.Sections.SelectMany(s => s.Lectures).ToList();
+        var totalLectures = allLectures.Count;
+        var completedCount = allLectures.Count(l => l.Completed);
+        course.ProgressPercentage = totalLectures == 0
+            ? 0
+            : (int)Math.Round((double)completedCount / totalLectures * 100);
+
+        return course;
+    }
+
     public async Task<CourseDetailVm> GetById(Guid id)
     {
         var course = await context.Courses

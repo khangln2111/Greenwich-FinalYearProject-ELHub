@@ -7,4 +7,5 @@ public class EnrollmentVm
     public required string CourseTitle { get; set; }
     public required string CourseDescription { get; set; }
     public string? CourseImageUrl { get; set; }
+    public int ProgressPercentage { get; set; }
 }

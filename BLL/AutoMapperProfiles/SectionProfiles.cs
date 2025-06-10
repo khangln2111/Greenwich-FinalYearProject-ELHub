@@ -14,6 +14,12 @@ public class SectionProfiles : Profile
                 opt => opt.MapFrom(src => src.Lectures.Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
             .ForMember(dest => dest.Lectures, opt => opt.MapFrom(src => src.Lectures.OrderBy(l => l.Order)));
 
+        CreateMap<Section, LearningSectionVm>()
+            .ForMember(dest => dest.LectureCount, opt => opt.MapFrom(src => src.Lectures.Count))
+            .ForMember(dest => dest.DurationInSeconds,
+                opt => opt.MapFrom(src => src.Lectures.Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
+            .ForMember(dest => dest.Lectures, opt => opt.MapFrom(src => src.Lectures.OrderBy(l => l.Order)));
+
         CreateMap<CreateSectionCommand, Section>()
             .ForMember(dest => dest.Id, opt => opt.Ignore());
 

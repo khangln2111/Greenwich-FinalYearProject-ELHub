@@ -36,6 +36,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<Gift> Gifts { get; set; }
 
+    public DbSet<LectureProgress> LectureProgresses { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {

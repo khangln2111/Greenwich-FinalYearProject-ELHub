@@ -18,5 +18,5 @@ public class Lecture : BaseEntity
 
     public int Order { get; set; }
 
-    // public ICollection<Quiz> Quizzes { get; } = new List<Quiz>();
+    public ICollection<LectureProgress> LectureProgresses { get; set; } = new List<LectureProgress>();
 }

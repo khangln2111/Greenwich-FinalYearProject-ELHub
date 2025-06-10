@@ -40,6 +40,17 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
+    // GET: api/Courses/Learning/{id:guid}
+    [HttpGet("Learning/{id:guid}")]
+    [Authorize]
+    [ProducesResponseType<LearningCourseVm>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCourseLearning(Guid id)
+    {
+        var course = await courseService.GetCourseLearning(id);
+        return Ok(course);
+    }
+
     // PUT: api/Courses
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -15,5 +15,7 @@ public interface ICourseService
 
     Task<Success> Update(UpdateCourseCommand command);
 
+    Task<LearningCourseVm> GetCourseLearning(Guid id);
+
     Task<string> Delete(Guid id);
 }

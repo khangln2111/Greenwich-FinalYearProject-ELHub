@@ -482,6 +482,36 @@ namespace DAL.Data.Migrations
                     b.ToTable("Lectures");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.LectureProgress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EnrollmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LectureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EnrollmentId");
+
+                    b.HasIndex("LectureId");
+
+                    b.ToTable("LectureProgresses");
+                });
+
             modelBuilder.Entity("DAL.Data.Entities.MediaEntities.Media", b =>
                 {
                     b.Property<Guid>("Id")
@@ -993,6 +1023,25 @@ namespace DAL.Data.Migrations
                     b.Navigation("Video");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.LectureProgress", b =>
+                {
+                    b.HasOne("DAL.Data.Entities.Enrollment", "Enrollment")
+                        .WithMany("LectureProgresses")
+                        .HasForeignKey("EnrollmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Data.Entities.Lecture", "Lecture")
+                        .WithMany("LectureProgresses")
+                        .HasForeignKey("LectureId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Enrollment");
+
+                    b.Navigation("Lecture");
+                });
+
             modelBuilder.Entity("DAL.Data.Entities.Notification", b =>
                 {
                     b.HasOne("DAL.Data.Entities.ApplicationUser", "User")
@@ -1157,9 +1206,19 @@ namespace DAL.Data.Migrations
                     b.Navigation("Sections");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.Enrollment", b =>
+                {
+                    b.Navigation("LectureProgresses");
+                });
+
             modelBuilder.Entity("DAL.Data.Entities.Inventory", b =>
                 {
                     b.Navigation("InventoryItems");
+                });
+
+            modelBuilder.Entity("DAL.Data.Entities.Lecture", b =>
+                {
+                    b.Navigation("LectureProgresses");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Order", b =>

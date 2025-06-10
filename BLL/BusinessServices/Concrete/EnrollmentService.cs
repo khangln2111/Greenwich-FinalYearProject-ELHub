@@ -64,8 +64,15 @@ public class EnrollmentService(
 
     public async Task<Paged<EnrollmentVm>> GetListSelf(GridifyQuery query)
     {
-        return await context.Enrollments
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
+
+
+        var enrollments = await context.Enrollments
             .AsNoTracking()
+            .Where(e => e.UserId == currentUser.Id)
             .GridifyToAsync<Enrollment, EnrollmentVm>(query, mapper, gridifyMapper);
+
+        return enrollments;
     }
 }

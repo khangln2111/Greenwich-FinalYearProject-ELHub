@@ -11,6 +11,7 @@ using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Data.Entities.MediaEntities;
 using DAL.Data.Enums;
+using DAL.Utilities.CurrentUserUtility;
 using DAL.Utilities.MediaUtility.Abstract;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,8 @@ public class LectureService(
     IGridifyMapper<Lecture> gridifyMapper,
     IMapper mapper,
     IValidationService validationService,
-    IMediaManager mediaManager)
+    IMediaManager mediaManager,
+    ICurrentUserUtility currentUserUtility)
     : ILectureService
 {
     public async Task<LectureVm> GetById(Guid id)
@@ -42,6 +44,48 @@ public class LectureService(
             .AsNoTracking()
             .Include(l => l.Video)
             .GridifyToAsync<Lecture, LectureVm>(query, mapper, gridifyMapper);
+    }
+
+    public async Task<Success> CompleteLecture(Guid id)
+    {
+        // get current user 
+        var user = currentUserUtility.GetCurrentUser();
+        if (user == null) throw new UnauthorizedException();
+
+        var lecture = await context.Lectures
+            .Include(l => l.Section)
+            .FirstOrDefaultAsync(l => l.Id == id);
+
+        if (lecture == null) throw new NotFoundException(nameof(Lecture), id);
+
+        var courseId = lecture.Section.CourseId;
+
+        var enrollment = await context.Enrollments
+            .FirstOrDefaultAsync(e => e.CourseId == courseId && e.UserId == user.Id);
+
+        if (enrollment == null) throw new UnauthorizedException();
+
+        var existingProgress = await context.LectureProgresses
+            .FirstOrDefaultAsync(lp => lp.LectureId == id && lp.EnrollmentId == enrollment.Id);
+
+        if (existingProgress == null)
+        {
+            var progress = new LectureProgress
+            {
+                LectureId = id,
+                EnrollmentId = enrollment.Id,
+                Completed = true
+            };
+            await context.LectureProgresses.AddAsync(progress);
+        }
+        else
+        {
+            existingProgress.ToggleCompleted();
+        }
+
+        await context.SaveChangesAsync();
+
+        return new Success("Toggle complete the lecture successfully");
     }
 
     public async Task<Guid> Create(CreateLectureCommand command)

@@ -28,6 +28,26 @@ public class CourseProfiles : Profile
                 opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
             .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)));
 
+        CreateMap<Course, LearningCourseVm>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+            .ForMember(dest => dest.DurationInSeconds, opt => opt
+                .MapFrom(src => src.Sections
+                    .SelectMany(s => s.Lectures)
+                    .Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
+            .ForMember(dest => dest.ImageUrl,
+                opt => opt.MapFrom(src => src.Image == null ? null : src.Image.Url))
+            .ForMember(dest => dest.PromoVideoUrl,
+                opt => opt.MapFrom(src => src.PromoVideo == null ? null : src.PromoVideo.Url))
+            .ForMember(dest => dest.SectionCount, opt => opt.MapFrom(src => src.Sections.Count))
+            .ForMember(dest => dest.LectureCount,
+                opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
+            .ForMember(dest => dest.DiscountPercentage, opt => opt.MapFrom(src =>
+                src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)
+            ))
+            .ForMember(dest => dest.InstructorName,
+                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
+            .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)));
+
         CreateMap<Course, CourseVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
             .ForMember(dest => dest.DurationInSeconds, opt => opt

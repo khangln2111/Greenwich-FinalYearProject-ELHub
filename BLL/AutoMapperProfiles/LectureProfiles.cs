@@ -14,6 +14,13 @@ public class LectureProfiles : Profile
             .ForMember(dest => dest.DurationInSeconds,
                 opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0));
 
+        CreateMap<Lecture, LearningLectureVm>()
+            .ForMember(dest => dest.VideoUrl,
+                opt => opt.MapFrom(src => src.Video != null ? src.Video.Url : string.Empty))
+            .ForMember(dest => dest.DurationInSeconds,
+                opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0));
+
+
         CreateMap<CreateLectureCommand, Lecture>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Video, opt => opt.Ignore());
