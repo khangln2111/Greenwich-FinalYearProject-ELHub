@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610052645_Initial")]
+    [Migration("20250611075949_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -320,6 +320,46 @@ namespace DAL.Data.Migrations
                     b.HasIndex("PromoVideoId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("DAL.Data.Entities.CourseReview", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid?>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EnrollmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("EnrollmentId");
+
+                    b.ToTable("CourseReview");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Enrollment", b =>
@@ -670,41 +710,6 @@ namespace DAL.Data.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("DAL.Data.Entities.Review", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Review");
-                });
-
             modelBuilder.Entity("DAL.Data.Entities.Section", b =>
                 {
                     b.Property<Guid>("Id")
@@ -941,6 +946,25 @@ namespace DAL.Data.Migrations
                     b.Navigation("PromoVideo");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.CourseReview", b =>
+                {
+                    b.HasOne("DAL.Data.Entities.ApplicationUser", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("DAL.Data.Entities.Course", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("DAL.Data.Entities.Enrollment", "Enrollment")
+                        .WithMany()
+                        .HasForeignKey("EnrollmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Enrollment");
+                });
+
             modelBuilder.Entity("DAL.Data.Entities.Enrollment", b =>
                 {
                     b.HasOne("DAL.Data.Entities.Course", "Course")
@@ -1084,25 +1108,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("DAL.Data.Entities.Review", b =>
-                {
-                    b.HasOne("DAL.Data.Entities.Course", "Course")
-                        .WithMany("Reviews")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Data.Entities.ApplicationUser", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Section", b =>

@@ -10,6 +10,6 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
     public void Configure(EntityTypeBuilder<Review> builder)
     {
         builder.Property(x => x.Content)
-            .HasMaxLength(AppConstants.Review.ContentMaxLength);
+            .HasMaxLength(AppConstants.CourseReview.ContentMaxLength);
     }
 }

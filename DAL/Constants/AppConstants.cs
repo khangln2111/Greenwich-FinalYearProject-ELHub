@@ -52,7 +52,7 @@ public static class AppConstants
         public const int ImageMaxSizeBytes = 50 * FileSize.Megabyte;
     }
 
-    public static class Review
+    public static class CourseReview
     {
         public const int ContentMaxLength = 500;
     }
@@ -61,6 +61,7 @@ public static class AppConstants
     {
         public const int ReceiverEmailMaxLength = 254; // Standard max email length
     }
+
 
     public static class Media
     {

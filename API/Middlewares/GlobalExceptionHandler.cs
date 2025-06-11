@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using BLL.Exceptions;
+using DAL.Data.Enums;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace API.Middlewares;

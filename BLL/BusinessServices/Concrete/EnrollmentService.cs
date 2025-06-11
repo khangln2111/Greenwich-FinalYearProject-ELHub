@@ -8,6 +8,7 @@ using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
+using DAL.Data.Enums;
 using DAL.Utilities.CurrentUserUtility;
 using DAL.Utilities.MediaUtility.Abstract;
 using Gridify;

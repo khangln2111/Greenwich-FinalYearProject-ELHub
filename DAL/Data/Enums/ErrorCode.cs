@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace BLL.Exceptions;
+namespace DAL.Data.Enums;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ErrorCode
@@ -19,5 +19,6 @@ public enum ErrorCode
     InvalidToken,
     Unauthorized,
     Forbidden,
-    InvalidPaymentIntent
+    InvalidPaymentIntent,
+    ReviewAlreadyExists
 }

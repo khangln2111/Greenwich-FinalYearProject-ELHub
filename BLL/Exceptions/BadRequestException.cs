@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using DAL.Data.Enums;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 

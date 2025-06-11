@@ -17,7 +17,6 @@ public class CartService(
     ApplicationDbContext context,
     IMapper mapper,
     IValidationService validationService,
-    IGridifyMapper<Cart> gridifyMapper,
     ICurrentUserUtility currentUserUtility)
     : ICartService
 {

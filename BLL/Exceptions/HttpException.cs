@@ -1,4 +1,6 @@
-﻿namespace BLL.Exceptions;
+﻿using DAL.Data.Enums;
+
+namespace BLL.Exceptions;
 
 public class HttpException(int statusCode, string message, ErrorCode errorCode) : Exception(message)
 {
