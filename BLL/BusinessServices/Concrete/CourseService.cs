@@ -67,12 +67,10 @@ public class CourseService(
 
 
         // Get completion status for each lecture
-        foreach (var section in course.Sections)
-        foreach (var lecture in section.Lectures)
-            lecture.Completed = completedLectureIds.Contains(lecture.Id);
+        var allLectures = course.Sections.SelectMany(s => s.Lectures).ToList();
+        foreach (var lecture in allLectures) lecture.Completed = completedLectureIds.Contains(lecture.Id);
 
         // get ProgressPercentage of the course
-        var allLectures = course.Sections.SelectMany(s => s.Lectures).ToList();
         var totalLectures = allLectures.Count;
         var completedCount = allLectures.Count(l => l.Completed);
         course.ProgressPercentage = totalLectures == 0
