@@ -52,9 +52,11 @@ public static class AppConstants
         public const int ImageMaxSizeBytes = 50 * FileSize.Megabyte;
     }
 
-    public static class CourseReview
+    public static class Review
     {
         public const int ContentMaxLength = 500;
+        public const int MaxRating = 5;
+        public const int MinRating = 1;
     }
 
     public static class Gift

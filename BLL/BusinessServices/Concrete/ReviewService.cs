@@ -98,8 +98,8 @@ public class ReviewService(
 
         if (review == null) throw new NotFoundException("Review not found or you do not have permission to update it.");
 
-        review.Rating = command.Rating;
-        review.Content = command.Content;
+        mapper.Map(command, review);
+
         await context.SaveChangesAsync();
         return new Success("Review updated successfully.");
     }

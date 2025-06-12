@@ -1,5 +1,6 @@
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CourseDTOs;
+using BLL.Gridify.CustomModels;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
 {
     // GET: api/Courses
     [HttpGet]
-    [ProducesResponseType<Paging<CourseVm>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Paged<CourseVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
     {
         var courses = await courseService.GetList(query);

@@ -1,0 +1,27 @@
+﻿using AutoMapper;
+using BLL.DTOs.ReviewDTOs;
+using DAL.Data.Entities;
+
+namespace BLL.AutoMapperProfiles;
+
+public class ReviewProfiles : Profile
+{
+    public ReviewProfiles()
+    {
+        CreateMap<Review, ReviewVm>()
+            .ForMember(dest => dest.UserFullName,
+                opt => opt.MapFrom(src => src.Enrollment.User.FirstName + " " + src.Enrollment.User.LastName))
+            .ForMember(dest => dest.UserAvatarUrl,
+                opt => opt.MapFrom(src => src.Enrollment.User.Avatar != null ? src.Enrollment.User.Avatar.Url : null));
+
+        CreateMap<CreateReviewCommand, Review>();
+        CreateMap<UpdateReviewCommand, Review>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
+            .ForAllMembers(opts =>
+            {
+                opts.AllowNull();
+                opts.Condition((_, _, srcMember) => srcMember != null);
+            });
+    }
+}

@@ -537,7 +537,7 @@ namespace DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Review",
+                name: "CourseReviews",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -551,19 +551,19 @@ namespace DAL.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseReview", x => x.Id);
+                    table.PrimaryKey("PK_CourseReviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CourseReview_AspNetUsers_ApplicationUserId",
+                        name: "FK_CourseReviews_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CourseReview_Courses_CourseId",
+                        name: "FK_CourseReviews_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CourseReview_Enrollments_EnrollmentId",
+                        name: "FK_CourseReviews_Enrollments_EnrollmentId",
                         column: x => x.EnrollmentId,
                         principalTable: "Enrollments",
                         principalColumn: "Id",
@@ -693,19 +693,20 @@ namespace DAL.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseReview_ApplicationUserId",
-                table: "Review",
+                name: "IX_CourseReviews_ApplicationUserId",
+                table: "CourseReviews",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseReview_CourseId",
-                table: "Review",
+                name: "IX_CourseReviews_CourseId",
+                table: "CourseReviews",
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseReview_EnrollmentId",
-                table: "Review",
-                column: "EnrollmentId");
+                name: "IX_CourseReviews_EnrollmentId",
+                table: "CourseReviews",
+                column: "EnrollmentId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Courses_ApplicationUserId",
@@ -846,7 +847,7 @@ namespace DAL.Data.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
-                name: "Review");
+                name: "CourseReviews");
 
             migrationBuilder.DropTable(
                 name: "Gifts");
