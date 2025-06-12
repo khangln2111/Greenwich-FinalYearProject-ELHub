@@ -13,7 +13,7 @@ import {
 } from "./courseApi";
 import { useAppStore } from "../../zustand/store";
 
-export const useGetCourses = (query: CourseQueryCriteria = {}) => {
+export const useGetCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.courses.getCourses(query).queryKey,
     queryFn: () => getCourses(query),

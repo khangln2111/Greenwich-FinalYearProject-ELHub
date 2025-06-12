@@ -10,7 +10,7 @@ import {
   getOrdersSelf,
 } from "./orderApi";
 
-export const useGetOrdersSelf = (query: OrderQueryCriteria = {}) => {
+export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.orders.getOrdersSelf(query).queryKey,
     queryFn: () => getOrdersSelf(query),
