@@ -1,3 +1,5 @@
+import { ReviewVm } from "../review/review.types";
+
 export interface EnrollmentVm {
   id: string;
   courseId: string;
@@ -5,6 +7,7 @@ export interface EnrollmentVm {
   courseDescription: string;
   courseImageUrl?: string;
   progressPercentage: number;
+  review: ReviewVm | null;
 }
 
 export interface EnrollmentQueryCriteria {}

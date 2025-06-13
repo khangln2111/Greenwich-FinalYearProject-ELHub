@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createReview, deleteReview, getReviewsByCourseId, updateReview } from "./reviewApi";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CreateReviewCommand, ReviewQueryCriteria, UpdateReviewCommand } from "./review.types";
-import { showErrorToast } from "../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { ErrorCode } from "../../http-client/api.types";
 
@@ -22,6 +22,10 @@ export const useCreateReview = () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.reviews._def,
       });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.enrollments._def,
+      });
+      showSuccessToast("Review Created", "Your review has been successfully created");
     },
     onError: (error) =>
       handleApiError(error, {
@@ -50,6 +54,10 @@ export const useUpdateReview = () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.reviews._def,
       });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.enrollments._def,
+      });
+      showSuccessToast("Review Updated", "Your review has been successfully updated");
     },
     onError: (error) =>
       handleApiError(error, {
@@ -72,6 +80,10 @@ export const useDeleteReview = () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.reviews._def,
       });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.enrollments._def,
+      });
+      showSuccessToast("Review Deleted", "Your review has been successfully deleted");
     },
     onError: (error) =>
       handleApiError(error, {

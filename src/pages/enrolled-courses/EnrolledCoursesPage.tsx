@@ -9,6 +9,8 @@ export default function EnrolledCoursesPage() {
 
   if (error) return <div>Error loading orders: {error.message}</div>;
 
+  console.log("enrolled courses data", data);
+
   return (
     <div>
       <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">

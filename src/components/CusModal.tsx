@@ -7,7 +7,7 @@ import { cn } from "../utils/cn";
 interface CustomModalProps {
   opened: boolean;
   onClose: () => void;
-  title?: string;
+  title?: string | React.ReactNode; // If title is provided, it will be used as the header title
   footer?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
