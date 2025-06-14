@@ -99,13 +99,13 @@ const CourseCard = ({ course }: CourseCardProps) => {
       {/* Rating */}
       <div className="flex gap-1 mt-3 items-center px-md leading-none">
         <Rating
-          value={course.rating ?? 0}
+          value={course.averageRating ?? 0}
           fractions={3}
           readOnly
           className="flex items-center justify-center"
         />
-        <p className="text-yellow-6 font-bold">{course.rating?.toFixed(1) ?? 0.0}</p>
-        <p className="text-dimmed">({course.ratingCount ?? 0})</p>
+        <p className="text-yellow-6 font-bold">{course.averageRating?.toFixed(1) ?? 0.0}</p>
+        <p className="text-dimmed">({course.reviewCount ?? 0})</p>
       </div>
 
       {/* Icons section */}

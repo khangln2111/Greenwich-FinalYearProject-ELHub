@@ -6,8 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import CusModal from "../../../components/CusModal";
 import { EnrollmentVm } from "../../../react-query/enrollment/enrollment.types";
-import { CreateReviewCommand } from "../../../react-query/review/review.types";
-import { useCreateReview, useUpdateReview } from "../../../react-query/review/reviewHooks";
+import { CreateReviewCommand, UpdateReviewCommand } from "../../../react-query/review/review.types";
+import {
+  useCreateReview,
+  useDeleteReview,
+  useUpdateReview,
+} from "../../../react-query/review/reviewHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 interface EnrolledCourseCardProps {
@@ -19,7 +23,7 @@ export const CreateReviewFormSchema = z.object({
   content: z
     .string()
     .min(1, "Content is required")
-    .max(1000, "Content cannot exceed 500 characters"),
+    .max(1000, "Content cannot exceed 1000 characters"),
 });
 
 export type CreateReviewFormValues = z.infer<typeof CreateReviewFormSchema>;
@@ -28,7 +32,9 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
   const navigate = useNavigate();
   const createReviewMutation = useCreateReview();
   const updateReviewMutation = useUpdateReview();
+  const deleteReviewMutation = useDeleteReview(); // Assuming you have a delete review mutation
   const [createReviewModalOpened, setCreateReviewModalOpened] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const form = useForm<CreateReviewFormValues>({
     mode: "uncontrolled",
@@ -39,17 +45,32 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
     navigate(`/learning/${enrollment.courseId}`);
   };
 
-  const handleCreateReview = (values: CreateReviewFormValues) => {
-    var payload: CreateReviewCommand = {
-      courseId: enrollment.courseId,
-      rating: values.rating,
-      content: values.content,
-    };
-    createReviewMutation.mutate(payload, {
-      onSuccess: () => {
-        setCreateReviewModalOpened(false);
-      },
-    });
+  const handleSubmitReview = (values: CreateReviewFormValues) => {
+    if (isEditing && enrollment.review) {
+      const payload: UpdateReviewCommand = {
+        id: enrollment.review.id,
+        rating: values.rating,
+        content: values.content,
+      };
+
+      updateReviewMutation.mutate(payload, {
+        onSuccess: () => {
+          setCreateReviewModalOpened(false);
+        },
+      });
+    } else {
+      const payload: CreateReviewCommand = {
+        courseId: enrollment.courseId,
+        rating: values.rating,
+        content: values.content,
+      };
+
+      createReviewMutation.mutate(payload, {
+        onSuccess: () => {
+          setCreateReviewModalOpened(false);
+        },
+      });
+    }
   };
 
   return (
@@ -58,7 +79,7 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
         size="600px"
         opened={createReviewModalOpened}
         onClose={() => setCreateReviewModalOpened(false)}
-        title="How would you rate this course?"
+        title={isEditing ? "Edit your review" : "How would you rate this course?"}
       >
         <div className="flex flex-col gap-4 pt-2">
           <Rating
@@ -77,20 +98,40 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
             maxRows={5}
             className="mt-4"
             classNames={{
-              input: " placeholder:text-gray-600 dark:placeholder:text-gray-400",
+              input: "placeholder:text-gray-600 dark:placeholder:text-gray-400",
             }}
             {...form.getInputProps("content")}
             key={form.key("content")}
           />
-          <Button
-            loading={createReviewMutation.isPending}
-            onClick={() => formSubmitWithFocus(form, handleCreateReview)()}
-            className="self-end"
-          >
-            Submit
-          </Button>
+          <div className="flex justify-end gap-2">
+            {enrollment.review && (
+              <Button
+                variant="subtle"
+                onClick={() => {
+                  if (enrollment.review?.id) {
+                    deleteReviewMutation.mutate(enrollment.review.id, {
+                      onSuccess: () => {
+                        setCreateReviewModalOpened(false);
+                        form.reset();
+                      },
+                    });
+                  }
+                }}
+              >
+                Delete
+              </Button>
+            )}
+            <Button
+              loading={createReviewMutation.isPending || updateReviewMutation.isPending}
+              onClick={() => formSubmitWithFocus(form, handleSubmitReview)()}
+              className="self-end"
+            >
+              {isEditing ? "Edit Review" : "Submit"}
+            </Button>
+          </div>
         </div>
       </CusModal>
+
       <div
         className="bg-body rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300
           overflow-hidden flex flex-col group p-4"
@@ -154,7 +195,7 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
           </div>
 
           <div className="flex items-center justify-between mt-2">
-            <Rating value={4} readOnly size="xs" />
+            <Rating value={enrollment.review?.rating ?? 0} readOnly size="xs" />
 
             <Button
               variant="outline"
@@ -163,10 +204,20 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
               leftSection={<Star size={14} />}
               onClick={(e) => {
                 e.stopPropagation();
+                if (enrollment.review) {
+                  setIsEditing(true);
+                  form.setValues({
+                    rating: enrollment.review.rating,
+                    content: enrollment.review.content,
+                  });
+                } else {
+                  setIsEditing(false);
+                  form.reset();
+                }
                 setCreateReviewModalOpened(true);
               }}
             >
-              Leave a review
+              {enrollment.review ? "Edit your review" : "Leave a review"}
             </Button>
           </div>
         </div>
