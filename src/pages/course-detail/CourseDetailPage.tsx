@@ -17,6 +17,7 @@ import image from "../../assets/placeholder/courseDetail.jpg";
 import VideoPlayerWithThumbnail from "../../components/media/VideoPlayerWithThumbnail";
 import { useAddCartItem } from "../../react-query/cart/cartHooks";
 import { useGetCourseDetail } from "../../react-query/course/courseHooks";
+import { formatDate, formatDuration } from "../../utils/format";
 import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
 import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
@@ -128,7 +129,9 @@ const CourseDetailPage = () => {
                 {/* Last Update */}
                 <div className="w-full md:w-1/4 py-4 md:py-0 md:px-6 md:border-r border-t md:border-t-0">
                   <div>Last Update</div>
-                  <div className="font-semibold text-md">17 Apr, 2024</div>
+                  <div className="font-semibold text-md">
+                    {formatDate({ input: course.updatedAt, formatType: "longMonth" })}
+                  </div>
                 </div>
 
                 {/* Review */}
@@ -136,8 +139,10 @@ const CourseDetailPage = () => {
                   <div>Review</div>
                   <div className="flex items-center gap-1 text-md">
                     <StarIcon className="fill-yellow text-yellow" size={20} />
-                    <span className="text-blue-500 ml-1">4.5</span>
-                    <span className="text-dimmed">(2)</span>
+                    <span className="text-blue-500 ml-1">
+                      {course.averageRating?.toFixed(1) ?? 0.0}
+                    </span>
+                    <span className="text-dimmed">({course.reviewCount})</span>
                   </div>
                 </div>
               </div>
@@ -156,7 +161,7 @@ const CourseDetailPage = () => {
             </div>
             <SegmentedControl
               value={activeTab}
-              onChange={(val) => setActiveTab(val as CourseDetailTab)} // 👈 ép kiểu ở đây
+              onChange={(val) => setActiveTab(val as CourseDetailTab)}
               data={Object.values(CourseDetailTab)}
               transitionDuration={200}
               size="md"
@@ -182,6 +187,7 @@ const CourseDetailPage = () => {
                 </Tabs.Panel>
                 <Tabs.Panel value={CourseDetailTab.Reviews}>
                   <ReviewTab
+                    courseDetail={course}
                     rating={4.6}
                     totalReviews={2533}
                     stars={[
@@ -222,28 +228,30 @@ const CourseDetailPage = () => {
                 </h3>
                 <ul className="flex flex-col gap-y-3 divide-y text-sm text-gray-700 dark:text-gray-300">
                   <CourseStat icon={BarChart2} label="Level" value={course.level} />
-                  <CourseStat icon={Clock} label="Duration" value="11h 20m" />
+                  <CourseStat
+                    icon={Clock}
+                    label="Duration"
+                    value={formatDuration({
+                      seconds: course.durationInSeconds,
+                      formatType: "long",
+                    })}
+                  />
                   <CourseStat
                     icon={BookOpen}
                     label="Lectures"
                     value={course.lectureCount.toString()}
                   />
                   <CourseStat icon={HelpCircle} label="Quizzes" value="145" />
+                  <CourseStat
+                    icon={GraduationCap}
+                    label="Enrolled"
+                    value={course.enrollmentCount.toString()}
+                  />
                   <CourseStat icon={InfinityIcon} label="Lifetime Access" value="Yes" />
                   <CourseStat icon={BadgeCheck} label="Certifications" value="Yes" />
-                  <CourseStat icon={GraduationCap} label="Enrolled" value="25K" />
                   <CourseStat icon={LanguagesIcon} label="Language" value="English" />
                 </ul>
               </div>
-              {/* <button
-                className="mt-6 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500
-                  hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg
-                  transition-all duration-200 group text-lg"
-                onClick={() => addCartItemMutation.mutate({ courseId: courseId, quantity: 1 })}
-              >
-                <span className="group-hover:scale-105 transition-transform">Add to Cart</span>
-                <ShoppingCart className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button> */}
               <Button
                 rightSection={
                   <ShoppingCart className="size-5 group-hover:translate-x-1 transition-transform" />

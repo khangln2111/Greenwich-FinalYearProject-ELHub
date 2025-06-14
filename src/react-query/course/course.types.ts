@@ -31,13 +31,13 @@ export interface CourseVm {
   level: CourseLevel;
   learningOutcomes: string[] | null;
   prerequisites: string[] | null;
-  studentEnrollmentCount: number;
   lectureCount: number;
   sectionCount: number;
   durationInSeconds: number;
   categoryName: string;
   createdAt: string | null;
   updatedAt: string | null;
+  enrollmentCount: number;
   reviewCount: number;
   averageRating: number;
 }
@@ -75,6 +75,10 @@ export interface CourseDetailVm {
 
   createdAt: string;
   updatedAt: string;
+
+  enrollmentCount: number;
+  reviewCount: number;
+  averageRating: number;
 }
 
 export interface LearningCourseVm {

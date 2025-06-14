@@ -77,7 +77,7 @@ export default function InstructorCourseCard({ course }: Props) {
         <div className="mt-4 flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
           <div className="flex items-center gap-2">
             <Users className="size-4 text-gray-500 dark:text-gray-400" />
-            <span>{course.studentEnrollmentCount ?? 0} students</span>
+            <span>{course.enrollmentCount ?? 0} students</span>
           </div>
           <div className="flex items-center gap-2">
             <ListOrdered className="size-4 text-gray-500 dark:text-gray-400" />

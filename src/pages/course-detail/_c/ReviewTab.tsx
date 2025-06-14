@@ -2,6 +2,9 @@ import { Group, Progress, Rating, Select, SelectProps, TextInput, Title } from "
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import { SearchIcon } from "lucide-react";
 import avatar from "../../../assets/placeholder/avatar-placeholder.jpg";
+import { CourseDetailVm } from "../../../react-query/course/course.types";
+import { use } from "framer-motion/client";
+import { useGetReviewsByCourseId } from "../../../react-query/review/reviewHooks";
 
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
   const stars = parseInt(option.value);
@@ -19,13 +22,15 @@ const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked
   );
 };
 
-interface FeedbackProps {
+interface ReviewTabProps {
   rating: number;
   totalReviews: number;
   stars: { stars: number; percentage: number }[];
+  courseDetail: CourseDetailVm;
 }
 
-const ReviewTab = ({ rating, totalReviews, stars }: FeedbackProps) => {
+const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps) => {
+  const { data: reviews, isPending, isError } = useGetReviewsByCourseId(courseDetail.id);
   return (
     <div>
       <Title order={2}>What our student are saying</Title>

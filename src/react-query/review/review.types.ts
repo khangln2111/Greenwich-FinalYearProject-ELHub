@@ -21,10 +21,8 @@ export interface UpdateReviewCommand {
 }
 
 export interface ReviewQueryCriteria {
-  courseId?: string;
-  userId?: string;
   pageIndex?: number;
   pageSize?: number;
-  sortBy?: string;
-  sortDirection?: "asc" | "desc";
+  rating?: number;
+  content?: string;
 }

@@ -26,7 +26,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
       icon: LibraryBig,
     },
     {
-      label: `${course.studentEnrollmentCount ?? 0} enrolled`,
+      label: `${course.enrollmentCount ?? 0} enrolled`,
       icon: Users,
     },
   ];
