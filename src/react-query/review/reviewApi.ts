@@ -1,4 +1,4 @@
-import { GridifyQueryBuilder } from "gridify-client";
+import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
 import {
@@ -23,13 +23,20 @@ export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
   queryBuilder.setPageSize(query.pageSize ?? 10);
   queryBuilder.addOrderBy("createdAt", true);
 
-  if (query.content) {
-    queryBuilder.addCondition("content", "Contains", query.content, false);
+  const conditions: Array<() => void> = [];
+
+  if (query.content !== undefined && query.content !== null) {
+    conditions.push(() => queryBuilder.addCondition("content", op.Contains, query.content!, false));
   }
 
-  if (query.rating) {
-    queryBuilder.addCondition("rating", "Equal", query.rating);
+  if (query.rating !== undefined && query.rating !== null) {
+    conditions.push(() => queryBuilder.addCondition("rating", op.Equal, query.rating!));
   }
+
+  conditions.forEach((addConditionFn, index) => {
+    if (index > 0) queryBuilder.and();
+    addConditionFn();
+  });
 
   return queryBuilder.build();
 };

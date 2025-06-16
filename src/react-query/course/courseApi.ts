@@ -30,12 +30,27 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
       .endGroup();
   }
 
-  if (query.minPrice) queryBuilder.addCondition("price", op.GreaterThanOrEqual, query.minPrice);
-  if (query.maxPrice) queryBuilder.addCondition("price", op.LessThanOrEqual, query.maxPrice);
-  if (query.categoryId) queryBuilder.addCondition("categoryId", op.Equal, query.categoryId);
-  if (query.level) queryBuilder.addCondition("level", op.Equal, query.level);
+  const conditions: Array<() => void> = [];
+
+  if (query.minPrice)
+    conditions.push(() =>
+      queryBuilder.addCondition("price", op.GreaterThanOrEqual, query.minPrice!),
+    );
+  if (query.maxPrice)
+    conditions.push(() => queryBuilder.addCondition("price", op.LessThanOrEqual, query.maxPrice!));
+  if (query.categoryId)
+    conditions.push(() => queryBuilder.addCondition("categoryId", op.Equal, query.categoryId!));
+  if (query.level)
+    conditions.push(() => queryBuilder.addCondition("level", op.Equal, query.level!));
   if (query.durationInSeconds)
-    queryBuilder.addCondition("durationInSeconds", op.Equal, query.durationInSeconds);
+    conditions.push(() =>
+      queryBuilder.addCondition("durationInSeconds", op.Equal, query.durationInSeconds!),
+    );
+
+  conditions.forEach((addCondition, index) => {
+    if (index > 0) queryBuilder.and();
+    addCondition();
+  });
 
   return queryBuilder.build();
 };

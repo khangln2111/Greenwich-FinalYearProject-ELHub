@@ -3,19 +3,20 @@ import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
 import ms from "ms";
 import { RouterProvider } from "react-router-dom";
 import "../styles/globals.css";
 import theme from "../styles/theme";
 import IdentityProvider from "./providers/IdentityProvider";
 import router from "./routes";
-import utc from "dayjs/plugin/utc";
 
-dayjs.extend(customParseFormat);
 dayjs.extend(utc);
+dayjs.extend(relativeTime);
+dayjs.extend(customParseFormat);
 
 const queryClient = new QueryClient({
   defaultOptions: {

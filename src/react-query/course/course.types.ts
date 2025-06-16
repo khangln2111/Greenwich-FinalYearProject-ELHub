@@ -159,4 +159,15 @@ export interface CourseQueryCriteria {
   durationInSeconds?: number;
   language?: string;
   sectionCount?: number;
+  orderBy?: {
+    field:
+      | "createdAt"
+      | "updatedAt"
+      | "averateRating"
+      | "name"
+      | "price"
+      | "discountedPrice"
+      | "durationInSeconds";
+    direction: "asc" | "desc";
+  };
 }

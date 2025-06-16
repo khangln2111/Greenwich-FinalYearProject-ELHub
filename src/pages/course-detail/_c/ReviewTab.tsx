@@ -1,14 +1,17 @@
 import { Group, Progress, Rating, Select, SelectProps, TextInput, Title } from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import { SearchIcon } from "lucide-react";
+import { useState } from "react";
+import dayjs from "dayjs";
+
 import avatar from "../../../assets/placeholder/avatar-placeholder.jpg";
 import { CourseDetailVm } from "../../../react-query/course/course.types";
-import { use } from "framer-motion/client";
 import { useGetReviewsByCourseId } from "../../../react-query/review/reviewHooks";
+import CenterLoader from "../../../components/CenterLoader";
 
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
   const stars = parseInt(option.value);
-
   return (
     <Group justify="space-between" flex="1" px="xs" py={4}>
       <Group gap={4}>
@@ -16,7 +19,6 @@ const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked
           <IconStarFilled key={i} size={16} className="text-yellow" />
         ))}
       </Group>
-
       {checked && <IconCheck size={16} className="text-primary-6 opacity-70" />}
     </Group>
   );
@@ -30,10 +32,29 @@ interface ReviewTabProps {
 }
 
 const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps) => {
-  const { data: reviews, isPending, isError } = useGetReviewsByCourseId(courseDetail.id);
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearch] = useDebouncedValue(searchInput, 300);
+  const [selectedRating, setSelectedRating] = useState<string | null>(null);
+
+  const {
+    data: reviews,
+    isPending,
+    error,
+  } = useGetReviewsByCourseId(courseDetail.id, {
+    content: debouncedSearch,
+    rating: selectedRating ? parseInt(selectedRating) : undefined,
+  });
+
+  if (isPending) return <CenterLoader />;
+
+  if (error) {
+    return <p className="text-red-500 text-center">Error loading reviews: {error.message}</p>;
+  }
+
   return (
     <div>
       <Title order={2}>What our student are saying</Title>
+
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg mt-10">
         {/* Left section */}
         <div className="flex flex-col items-center justify-center md:col-span-3 gap-3 p-sm border-r md:aspect-square">
@@ -44,6 +65,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps
           </span>
           <span className="text-gray-500 text-xs dark:text-neutral-300">Course Rating</span>
         </div>
+
         {/* Right section */}
         <div className="grid grid-rows-5 gap-y-5 gap-x-3 grid-cols-[auto_1fr_auto] md:col-span-9">
           {stars.map(({ stars, percentage }) => (
@@ -51,16 +73,13 @@ const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps
               key={stars}
               className="grid grid-cols-subgrid col-span-3 items-center justify-center"
             >
-              {/* Stars */}
               <div className="flex items-center justify-center text-yellow-500 gap-2">
                 <p className="text-gray-600 dark:text-gray-300 text-sm font-medium leading-none">
                   {stars}
                 </p>
                 <IconStarFilled size={16} />
               </div>
-              {/* Progress Bar */}
               <Progress value={percentage} size="lg" color="orange" striped />
-              {/* Percentage */}
               <span className="text-gray-500 dark:text-gray-400 text-sm text-left leading-none">
                 {percentage}%
               </span>
@@ -68,7 +87,8 @@ const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps
           ))}
         </div>
       </div>
-      {/* Reviews of customer */}
+
+      {/* Search + Filter */}
       <div className="mt-10 flex items-center gap-5">
         <TextInput
           className="grow"
@@ -76,7 +96,10 @@ const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps
           type="search"
           rightSection={<SearchIcon size={16} />}
           placeholder="Search"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.currentTarget.value)}
         />
+
         <Select
           placeholder="Filter by stars"
           size="md"
@@ -84,6 +107,8 @@ const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps
           leftSection={<IconStarFilled size={22} className="text-yellow" />}
           renderOption={renderStarOptionIconOnly}
           clearable
+          value={selectedRating}
+          onChange={setSelectedRating}
           data={[
             { value: "5", label: "5" },
             { value: "4", label: "4" },
@@ -93,29 +118,43 @@ const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps
           ]}
         />
       </div>
+
+      {/* Reviews */}
       <div className="mt-10 flex flex-col items-center justify-center gap-6">
-        <div className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 mx-auto">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-4">
-              <img src={avatar} alt="User avatar" className="w-16 h-16 rounded-full object-cover" />
-              <div>
-                <p className="text-lg font-medium">Jura Hujaor Jura Hujao</p>
-                <p className="text-sm text-gray-500 dark:text-dark-2">2 Days ago</p>
+        {reviews.items.length === 0 && (
+          <p className="text-center text-gray-500">No reviews found.</p>
+        )}
+
+        {reviews.items.map((review) => (
+          <div
+            key={review.id}
+            className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 mx-auto w-full"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-4">
+                <img
+                  src={review.userAvatarUrl || avatar}
+                  alt="User avatar"
+                  className="size-16 rounded-full object-cover"
+                />
+                <div>
+                  <p className="text-xl font-medium">{review.userFullName}</p>
+                  <p className="text-sm text-gray-500 dark:text-dark-2">
+                    {dayjs.utc(review.updatedAt).local().fromNow()}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center text-yellow-400">
+                <Rating value={review.rating} readOnly size="md" />
               </div>
             </div>
-            <div className="flex items-center text-yellow-400">
-              <Rating value={5} readOnly size="md" />
+            <div>
+              <p className="mt-2 text-gray-600 dark:text-slate-400 leading-relaxed">
+                {review.content}
+              </p>
             </div>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold">The best LMS Design System</h3>
-            <p className="mt-2 text-gray-600 dark:text-slate-400 leading-relaxed">
-              Maximus ligula eleifend id nisl quis interdum. Sed malesuada tortor non turpis semper
-              bibendum nisi porta, malesuada risus nonerviverra dolor. Vestibulum ante ipsum primis
-              in faucibus.
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
