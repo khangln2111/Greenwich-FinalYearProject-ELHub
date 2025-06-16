@@ -42,6 +42,12 @@ public class CourseDetailVm
 
     public required string InstructorId { get; init; }
 
+    public int ReviewCount { get; init; }
+
+    public double AverageRating { get; init; }
+
+    public int EnrollmentCount { get; init; }
+
     public DateTime CreatedAt { get; init; }
 
     public DateTime UpdatedAt { get; init; }

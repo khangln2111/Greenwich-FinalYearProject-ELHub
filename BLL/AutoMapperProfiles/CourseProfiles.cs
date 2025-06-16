@@ -26,7 +26,18 @@ public class CourseProfiles : Profile
             ))
             .ForMember(dest => dest.InstructorName,
                 opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
-            .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)));
+            .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)))
+            .ForMember(dest => dest.EnrollmentCount, opt => opt.MapFrom(src => src.Enrollments.Count))
+            .ForMember(
+                dest => dest.ReviewCount,
+                opt => opt.MapFrom(src => src.Enrollments.Count(e => e.Review != null)))
+            .ForMember(dest => dest.AverageRating,
+                opt => opt.MapFrom(src =>
+                    src.Enrollments
+                        .Where(e => e.Review != null)
+                        .Select(e => (double?)e.Review!.Rating)
+                        .Average()));
+
 
         CreateMap<Course, LearningCourseVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
@@ -65,7 +76,18 @@ public class CourseProfiles : Profile
                 src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)
             ))
             .ForMember(dest => dest.InstructorName,
-                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName));
+                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
+            .ForMember(dest => dest.EnrollmentCount, opt => opt.MapFrom(src => src.Enrollments.Count))
+            .ForMember(
+                dest => dest.ReviewCount,
+                opt => opt.MapFrom(src => src.Enrollments.Count(e => e.Review != null)))
+            .ForMember(dest => dest.AverageRating,
+                opt => opt.MapFrom(src =>
+                    src.Enrollments
+                        .Where(e => e.Review != null)
+                        .Select(e => (double?)e.Review!.Rating)
+                        .Average()));
+
 
         // CreateMap<Course, CourseVm>();
 

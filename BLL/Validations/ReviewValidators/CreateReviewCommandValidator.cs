@@ -14,7 +14,8 @@ public class CreateReviewCommandValidator : AbstractValidator<CreateReviewComman
 
         RuleFor(x => x.Rating)
             .InclusiveBetween(AppConstants.Review.MinRating, AppConstants.Review.MaxRating)
-            .WithMessage("Rating must be between 1 and 5.");
+            .WithMessage(
+                $"Rating must be between {AppConstants.Review.MinRating} and {AppConstants.Review.MaxRating}.");
 
         RuleFor(x => x.Content)
             .NotEmpty()

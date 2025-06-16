@@ -11,8 +11,8 @@ namespace API.Controllers;
 [ApiController]
 public class ReviewsController(IReviewService reviewService) : ControllerBase
 {
-    //GET: /api/Reviews/{courseId:guid}
-    [HttpGet("{courseId:guid}")]
+    // GET: /api/Reviews/course/{courseId}
+    [HttpGet("course/{courseId:guid}")]
     [ProducesResponseType<Paged<ReviewVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetReviewsByCourseId(Guid courseId, [FromQuery] GridifyQuery query)
     {

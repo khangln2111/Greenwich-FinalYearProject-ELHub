@@ -36,7 +36,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<Gift> Gifts { get; set; }
 
-    public DbSet<Review> CourseReviews { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
     public DbSet<LectureProgress> LectureProgresses { get; set; }
 

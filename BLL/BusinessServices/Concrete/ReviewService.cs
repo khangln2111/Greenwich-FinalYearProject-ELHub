@@ -28,7 +28,7 @@ public class ReviewService(
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
 
-        var result = await context.CourseReviews
+        var result = await context.Reviews
             .AsNoTracking()
             .Where(r => r.Enrollment.UserId == currentUser.Id && r.Enrollment.Course.Id == courseId)
             .Include(r => r.Enrollment).ThenInclude(e => e.Course)
@@ -43,7 +43,7 @@ public class ReviewService(
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
 
-        var review = await context.CourseReviews
+        var review = await context.Reviews
             .AsNoTracking()
             .Include(r => r.Enrollment)
             .ThenInclude(e => e.Course)
@@ -69,7 +69,7 @@ public class ReviewService(
         if (enrollment == null) throw new UnauthorizedException("You must enroll in the course to review it.");
 
         // check if the user already reviewed the course
-        var existingReview = await context.CourseReviews.AnyAsync(r => r.EnrollmentId == enrollment.Id);
+        var existingReview = await context.Reviews.AnyAsync(r => r.EnrollmentId == enrollment.Id);
 
 
         if (existingReview)
@@ -78,7 +78,7 @@ public class ReviewService(
         var review = mapper.Map<Review>(command);
         review.EnrollmentId = enrollment.Id;
 
-        await context.CourseReviews.AddAsync(review);
+        await context.Reviews.AddAsync(review);
         await context.SaveChangesAsync();
 
         return new Success("Review added successfully.");
@@ -92,7 +92,7 @@ public class ReviewService(
 
         await validationService.ValidateAsync(command);
 
-        var review = await context.CourseReviews
+        var review = await context.Reviews
             .Include(r => r.Enrollment)
             .FirstOrDefaultAsync(r => r.Id == command.Id && r.Enrollment.UserId == currentUser.Id);
 
@@ -109,13 +109,13 @@ public class ReviewService(
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
 
-        var review = await context.CourseReviews
-            .Include(r => r.Enrollment)
+        var review = await context.Reviews
+            .Include(r => r.Enrollment).ThenInclude(e => e.User).ThenInclude(u => u.Avatar)
             .FirstOrDefaultAsync(r => r.Id == id && r.Enrollment.UserId == currentUser.Id);
 
         if (review == null) throw new NotFoundException("Review not found or you do not have permission to delete it.");
 
-        context.CourseReviews.Remove(review);
+        context.Reviews.Remove(review);
         await context.SaveChangesAsync();
         return new Success("Review deleted successfully.");
     }

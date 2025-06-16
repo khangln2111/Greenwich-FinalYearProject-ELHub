@@ -42,4 +42,10 @@ public class CourseVm
     public required string InstructorId { get; init; }
 
     public required string InstructorName { get; init; }
+
+    public int ReviewCount { get; init; }
+
+    public double AverageRating { get; init; }
+
+    public int EnrollmentCount { get; init; }
 }

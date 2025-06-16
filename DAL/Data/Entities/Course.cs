@@ -32,7 +32,6 @@ public class Course : BaseEntity
 
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
-    public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
     public ICollection<Gift> Gifts { get; set; } = new List<Gift>();
 

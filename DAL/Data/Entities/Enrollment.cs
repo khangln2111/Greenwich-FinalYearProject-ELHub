@@ -10,7 +10,7 @@ public class Enrollment : BaseEntity
 
     public ApplicationUser User { get; set; } = null!;
 
-    public Review? CourseReview { get; set; }
-
     public ICollection<LectureProgress> LectureProgresses { get; set; } = new List<LectureProgress>();
+
+    public Review? Review { get; set; }
 }

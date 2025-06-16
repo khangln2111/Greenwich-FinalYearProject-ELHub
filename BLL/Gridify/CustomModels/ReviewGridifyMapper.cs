@@ -9,5 +9,7 @@ public class ReviewGridifyMapper : GridifyMapper<Review>
     {
         AddMap("Content", r => r.Content);
         AddMap("Rating", r => r.Rating);
+        AddMap("CreatedAt", r => r.CreatedAt);
+        AddMap("UpdatedAt", r => r.UpdatedAt);
     }
 }
