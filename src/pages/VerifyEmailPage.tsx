@@ -5,19 +5,19 @@ import {
   Group,
   Paper,
   PinInput,
+  Stack,
   Text,
   TextInput,
   Title,
 } from "@mantine/core";
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useConfirmEmail, useSendEmailConfirmationOtp } from "../react-query/auth/identityHooks";
 
 const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const email = searchParams.get("email") ?? "";
-
   const [otp, setOtp] = useState("");
 
   const confirmEmail = useConfirmEmail();
@@ -49,8 +49,9 @@ const VerifyEmailPage = () => {
         <Title ta="center" order={2} className="text-gray-900 dark:text-white font-bold mb-1">
           Verify Your Email
         </Title>
+
         <Text ta="center" size="sm" className="text-gray-700 dark:text-gray-300 mb-3 text-center">
-          A 6-digit code has been sent to your email. Please enter it below to verify your account.
+          We’ve sent a 6-digit OTP to <b>{email}</b>. Please enter it below to verify your account.
         </Text>
 
         <Paper
@@ -60,33 +61,37 @@ const VerifyEmailPage = () => {
           radius="md"
           className="rounded-2xl bg-white dark:bg-neutral-900 border border-white/30"
         >
-          {/* Disabled Email Input */}
-          <TextInput label="Email" value={email} disabled className="mb-4" />
+          <Stack gap="sm">
+            {/* Email input (disabled) */}
+            <TextInput label="Email" value={email} disabled />
 
-          {/* OTP Input */}
-          <Group justify="center" mb="md">
-            <PinInput length={6} value={otp} onChange={setOtp} oneTimeCode />
-          </Group>
+            {/* OTP input */}
+            <Box className="flex justify-center">
+              <PinInput
+                length={6}
+                value={otp}
+                onChange={setOtp}
+                oneTimeCode
+                type="number"
+                autoFocus
+              />
+            </Box>
 
-          {/* Confirm Button */}
-          <Button
-            fullWidth
-            onClick={handleConfirm}
-            loading={confirmEmail.isPending}
-            className="mb-3"
-          >
-            Confirm Email
-          </Button>
-
-          {/* Resend + Back Buttons */}
-          <Group justify="space-between" grow>
-            <Button variant="subtle" size="xs" onClick={handleResend} loading={sendOtp.isPending}>
-              Resend Code
+            {/* Confirm button */}
+            <Button fullWidth onClick={handleConfirm} loading={confirmEmail.isPending}>
+              Confirm Email
             </Button>
-            <Button variant="subtle" size="xs" onClick={() => navigate("/login")}>
-              Back to Login
-            </Button>
-          </Group>
+
+            {/* Resend + Back buttons */}
+            <Group justify="space-between" grow>
+              <Button variant="subtle" size="xs" onClick={handleResend} loading={sendOtp.isPending}>
+                Resend Code
+              </Button>
+              <Button variant="subtle" size="xs" onClick={() => navigate("/login")}>
+                Back to Login
+              </Button>
+            </Group>
+          </Stack>
         </Paper>
       </Container>
     </Box>

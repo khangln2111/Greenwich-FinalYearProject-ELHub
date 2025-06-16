@@ -57,13 +57,15 @@ export const useLogout = () => {
 };
 
 export const useRegister = () => {
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: RegisterCommand) => register(data),
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       showSuccessToast(
         "Registered",
         "You have registered successfully, please check your email to confirm your account.",
       );
+      navigate(`/verify-email?email=${encodeURIComponent(variables.email)}`);
     },
     onError: (error) =>
       handleApiError(error, {
