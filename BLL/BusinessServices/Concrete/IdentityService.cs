@@ -76,8 +76,13 @@ public class IdentityService(
             throw new HttpException(StatusCodes.Status401Unauthorized, "Email or password wrong",
                 ErrorCode.EmailOrPasswordIncorrect);
         if (!user.EmailConfirmed)
+        {
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            if (user.Email != null) await emailUtility.SendConfirmationEmailAsync(user.Email, token);
             throw new HttpException(StatusCodes.Status403Forbidden, "Email is not confirmed",
                 ErrorCode.EmailNotConfirmed);
+        }
+
         var result = await signInManager.PasswordSignInAsync(command.Email, command.Password, false, false);
         if (!result.Succeeded)
             throw new HttpException(StatusCodes.Status401Unauthorized, "Email or password wrong",
@@ -110,6 +115,13 @@ public class IdentityService(
             await userManager.CreateAsync(user);
         }
 
+        if (!user.EmailConfirmed)
+        {
+            user.EmailConfirmed = true; // Automatically confirm email for Google users
+            await userManager.UpdateAsync(user);
+        }
+
+
         signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
         await signInManager.SignInAsync(user, false);
     }
@@ -135,7 +147,7 @@ public class IdentityService(
         return JsonConvert.DeserializeObject<Userinfo>(json);
     }
 
-    public async Task<Success> ResendConfirmationEmailOtp(ResendConfirmationEmailCommand command)
+    public async Task<Success> SendEmailConfirmationOtp(ResendConfirmationEmailCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
@@ -157,7 +169,7 @@ public class IdentityService(
             throw new HttpException(StatusCodes.Status400BadRequest, "Email is already confirmed",
                 ErrorCode.EmailAlreadyConfirmed);
 
-        var result = await userManager.ConfirmEmailAsync(user, command.Code);
+        var result = await userManager.ConfirmEmailAsync(user, command.Otp);
 
         if (!result.Succeeded)
             throw new HttpException(StatusCodes.Status400BadRequest, "Please provide a valid Otp",

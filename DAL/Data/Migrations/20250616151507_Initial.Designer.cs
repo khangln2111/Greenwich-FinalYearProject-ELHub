@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250612185433_AddReviewSSD")]
-    partial class AddReviewSSD
+    [Migration("20250616151507_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -684,9 +684,6 @@ namespace DAL.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid?>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -702,8 +699,6 @@ namespace DAL.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("CourseId");
 
                     b.HasIndex("EnrollmentId")
                         .IsUnique();
@@ -1098,10 +1093,6 @@ namespace DAL.Data.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("DAL.Data.Entities.Course", null)
-                        .WithMany("Reviews")
-                        .HasForeignKey("CourseId");
-
                     b.HasOne("DAL.Data.Entities.Enrollment", "Enrollment")
                         .WithOne("Review")
                         .HasForeignKey("DAL.Data.Entities.Review", "EnrollmentId")
@@ -1209,8 +1200,6 @@ namespace DAL.Data.Migrations
                     b.Navigation("Gifts");
 
                     b.Navigation("OrderItems");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("Sections");
                 });

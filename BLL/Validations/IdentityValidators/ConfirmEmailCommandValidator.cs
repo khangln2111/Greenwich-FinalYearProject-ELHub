@@ -11,7 +11,7 @@ public class ConfirmEmailCommandValidator : AbstractValidator<ConfirmEmailComman
             .NotEmpty().WithMessage("Email is required")
             .EmailAddress().WithMessage("Email is not valid");
 
-        RuleFor(x => x.Code)
+        RuleFor(x => x.Otp)
             .NotEmpty().WithMessage("Code is required");
     }
 }

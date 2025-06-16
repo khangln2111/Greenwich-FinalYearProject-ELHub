@@ -537,7 +537,7 @@ namespace DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseReviews",
+                name: "Reviews",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -545,25 +545,19 @@ namespace DAL.Data.Migrations
                     Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     EnrollmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseReviews", x => x.Id);
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CourseReviews_AspNetUsers_ApplicationUserId",
+                        name: "FK_Reviews_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CourseReviews_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CourseReviews_Enrollments_EnrollmentId",
+                        name: "FK_Reviews_Enrollments_EnrollmentId",
                         column: x => x.EnrollmentId,
                         principalTable: "Enrollments",
                         principalColumn: "Id",
@@ -693,22 +687,6 @@ namespace DAL.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseReviews_ApplicationUserId",
-                table: "CourseReviews",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CourseReviews_CourseId",
-                table: "CourseReviews",
-                column: "CourseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CourseReviews_EnrollmentId",
-                table: "CourseReviews",
-                column: "EnrollmentId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Courses_ApplicationUserId",
                 table: "Courses",
                 column: "ApplicationUserId");
@@ -817,6 +795,17 @@ namespace DAL.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ApplicationUserId",
+                table: "Reviews",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_EnrollmentId",
+                table: "Reviews",
+                column: "EnrollmentId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sections_CourseId",
                 table: "Sections",
                 column: "CourseId");
@@ -847,9 +836,6 @@ namespace DAL.Data.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
-                name: "CourseReviews");
-
-            migrationBuilder.DropTable(
                 name: "Gifts");
 
             migrationBuilder.DropTable(
@@ -865,6 +851,9 @@ namespace DAL.Data.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
+                name: "Reviews");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -874,13 +863,13 @@ namespace DAL.Data.Migrations
                 name: "Inventories");
 
             migrationBuilder.DropTable(
-                name: "Enrollments");
-
-            migrationBuilder.DropTable(
                 name: "Lectures");
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Enrollments");
 
             migrationBuilder.DropTable(
                 name: "Sections");

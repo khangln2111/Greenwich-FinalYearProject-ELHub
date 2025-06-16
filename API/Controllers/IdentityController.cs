@@ -50,6 +50,19 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     }
 
 
+    // POST: api/Identity/SendEmailConfirmationOtp
+    [HttpPost("SendEmailConfirmationOtp")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SendEmailConfirmationOtp([FromBody] ResendConfirmationEmailCommand command)
+    {
+        var result = await identityService.SendEmailConfirmationOtp(command);
+
+        return Ok(result);
+    }
+
+
     // POST: api/Identity/ConfirmEmail
     [HttpPost("ConfirmEmail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -61,26 +74,14 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Ok(result);
     }
 
-    // Post: api/Identity/ResendConfirmationEmail
-    [HttpPost("ResendConfirmationEmail")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendConfirmationEmailCommand command)
-    {
-        var result = await identityService.ResendConfirmationEmailOtp(command);
-
-        return Ok(result);
-    }
-
 
     // POST: api/Identity/SendResetPasswordToken
     [HttpPost("SendResetPasswordOtp")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> SendResetPasswordToken([FromBody] SendResetPasswordOtpCommand otpCommand)
+    public async Task<IActionResult> SendResetPasswordOtp([FromBody] SendResetPasswordOtpCommand command)
     {
-        var result = await identityService.SendResetPasswordOtp(otpCommand);
+        var result = await identityService.SendResetPasswordOtp(command);
 
 
         return Ok(result);
@@ -129,9 +130,9 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType<InfoMeVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> UpdateUserProfileSelf([FromForm] UpdateUserProfileSelfCommand selfCommand)
+    public async Task<IActionResult> UpdateUserProfileSelf([FromForm] UpdateUserProfileSelfCommand command)
     {
-        var result = await identityService.UpdateUserProfileSelf(selfCommand);
+        var result = await identityService.UpdateUserProfileSelf(command);
         return Ok(result);
     }
 }

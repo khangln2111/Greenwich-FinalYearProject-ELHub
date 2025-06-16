@@ -15,7 +15,7 @@ public interface IIdentityService
 
     Task<Success> ConfirmEmail(ConfirmEmailCommand command);
 
-    Task<Success> ResendConfirmationEmailOtp(ResendConfirmationEmailCommand command);
+    Task<Success> SendEmailConfirmationOtp(ResendConfirmationEmailCommand command);
 
     Task RefreshToken(RefreshTokenCommand command);
 
