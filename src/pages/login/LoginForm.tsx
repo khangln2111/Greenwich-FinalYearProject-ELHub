@@ -5,6 +5,7 @@ import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 import GoogleIcon from "../../components/svg-icons/GoogleIcon";
 import { LoginCommand, loginSchema } from "../../react-query/auth/identity.types";
 import { useLogin, useLoginWithGoogle } from "../../react-query/auth/identityHooks";
+import { Link } from "react-router-dom";
 
 // Zod schema for login form validation
 
@@ -79,7 +80,9 @@ const LoginForm = () => {
             label="Remember me"
             {...form.getInputProps("rememberMe", { type: "checkbox" })}
           />
-          <Anchor size="sm">Forgot password?</Anchor>
+          <Anchor size="sm" component={Link} to="/forgot-password">
+            Forgot password?
+          </Anchor>
         </Group>
 
         <Button

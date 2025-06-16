@@ -104,11 +104,13 @@ export const useLogin = () => {
           {
             status: 403,
             errorCode: ErrorCode.EmailNotConfirmed,
-            handler: () =>
+            handler: () => {
               showErrorToast(
                 "Email Not Confirmed",
                 "Please confirm your email address before logging in.",
-              ),
+              );
+              navigate("/verify-email");
+            },
           },
         ],
       }),
