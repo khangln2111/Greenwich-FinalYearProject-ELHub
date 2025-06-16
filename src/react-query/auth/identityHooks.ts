@@ -56,10 +56,10 @@ export const useLogout = () => {
   return handleLogout;
 };
 
-export const useRegister = async (data: RegisterCommand) => {
+export const useRegister = () => {
   return useMutation({
-    mutationFn: () => register(data),
-    onSuccess: async () => {
+    mutationFn: (data: RegisterCommand) => register(data),
+    onSuccess: () => {
       showSuccessToast(
         "Registered",
         "You have registered successfully, please check your email to confirm your account.",
@@ -147,9 +147,9 @@ export const useLoginWithGoogle = () => {
   });
 };
 
-export const useSendEmailConfirmationOtp = async (data: SendEmailConfirmationOtpCommand) => {
+export const useSendEmailConfirmationOtp = () => {
   return useMutation({
-    mutationFn: () => sendEmailConfirmationOtp(data),
+    mutationFn: (data: SendEmailConfirmationOtpCommand) => sendEmailConfirmationOtp(data),
     onSuccess: async () => {
       showSuccessToast("Email Resent", "Confirmation email has been resent successfully.");
     },
@@ -174,9 +174,9 @@ export const useSendEmailConfirmationOtp = async (data: SendEmailConfirmationOtp
   });
 };
 
-export const useConfirmEmail = async (data: ConfirmEmailCommand) => {
+export const useConfirmEmail = () => {
   return useMutation({
-    mutationFn: () => confirmEmail(data),
+    mutationFn: (data: ConfirmEmailCommand) => confirmEmail(data),
     onSuccess: async () => {
       showSuccessToast("Email Confirmed", "Your email has been confirmed successfully.");
     },
@@ -207,9 +207,9 @@ export const useConfirmEmail = async (data: ConfirmEmailCommand) => {
   });
 };
 
-export const useSendResetPasswordOtp = async (data: SendResetPasswordOtpCommand) => {
+export const useSendResetPasswordOtp = () => {
   return useMutation({
-    mutationFn: () => sendResetPasswordOtp(data),
+    mutationFn: (data: SendResetPasswordOtpCommand) => sendResetPasswordOtp(data),
     onSuccess: async () => {
       showSuccessToast(
         "Reset Password OTP Sent",
@@ -228,9 +228,9 @@ export const useSendResetPasswordOtp = async (data: SendResetPasswordOtpCommand)
   });
 };
 
-export const useValidateResetPasswordOtp = async (data: ValidateResetPasswordOtpCommand) => {
+export const useValidateResetPasswordOtp = () => {
   return useMutation({
-    mutationFn: () => validateResetPasswordOtp(data),
+    mutationFn: (data: ValidateResetPasswordOtpCommand) => validateResetPasswordOtp(data),
     onError: (error) =>
       handleApiError(error, {
         matchers: [
@@ -249,9 +249,9 @@ export const useValidateResetPasswordOtp = async (data: ValidateResetPasswordOtp
   });
 };
 
-export const useResetPassword = async (data: ResetPasswordCommand) => {
+export const useResetPassword = () => {
   return useMutation({
-    mutationFn: () => resetPassword(data),
+    mutationFn: (data: ResetPasswordCommand) => resetPassword(data),
     onSuccess: async () => {
       showSuccessToast("Password Reset", "Your password has been reset successfully.");
     },
@@ -273,10 +273,10 @@ export const useResetPassword = async (data: ResetPasswordCommand) => {
   });
 };
 
-export const useRefreshToken = async (data: RefreshTokenCommand) => {
+export const useRefreshToken = () => {
   return useMutation({
-    mutationFn: () => refreshToken(data),
-    onSuccess: async () => {
+    mutationFn: (data: RefreshTokenCommand) => refreshToken(data),
+    onSuccess: () => {
       showSuccessToast("Token Refreshed", "Your token has been refreshed successfully.");
     },
     onError: (error) =>

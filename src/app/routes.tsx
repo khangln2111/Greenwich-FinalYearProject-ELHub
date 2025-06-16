@@ -3,8 +3,8 @@ import UserLayout from "../layout/user/UserLayout";
 import CoursesPage from "../pages/courses/CoursesPage";
 import ErrorPage from "../pages/error/ErrorPage";
 import HomePage from "../pages/home/HomePage";
-import LoginPage from "../pages/login/LoginPage";
-import RegisterPage from "../pages/register/RegisterPage";
+import LoginPage from "../pages/auth/login/LoginPage";
+import RegisterPage from "../pages/auth/register/RegisterPage";
 import CourseDetailPage from "../pages/course-detail/CourseDetailPage";
 import CartPage from "../pages/cart/CartPage";
 import CheckoutPage from "../pages/checkout/CheckoutPage";
@@ -20,6 +20,7 @@ import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage
 import InventoryPage from "../pages/inventory/InventoryPage";
 import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
 import LearningPage from "../pages/learning/LearningPage";
+import ForgotPasswordPage from "../pages/auth/forgot-password/ForgotPasswordPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -91,7 +92,7 @@ const instructorRoute: RouteObject = {
 const authRoutes: RouteObject[] = [
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
-  { path: "/forgot-password", element: <p>Forgot Password Page</p> },
+  { path: "/forgot-password", element: <ForgotPasswordPage /> },
   { path: "/reset-password", element: <p>Reset Password Page</p> },
   { path: "/verify-email", element: <p>Verify Email Page</p> },
   {

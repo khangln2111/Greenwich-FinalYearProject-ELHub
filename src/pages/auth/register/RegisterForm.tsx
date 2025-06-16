@@ -2,8 +2,8 @@ import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from
 import { useForm, zodResolver } from "@mantine/form";
 import { IconAt, IconLock, IconRegistered } from "@tabler/icons-react";
 import { z } from "zod";
-import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
-import { RegisterCommand, registerSchema } from "../../react-query/auth/identity.types";
+import PasswordStrength from "../../../components/PasswordStrength/PasswordStrength";
+import { RegisterCommand, registerSchema } from "../../../react-query/auth/identity.types";
 
 function getPasswordRequirements(
   schema: z.ZodObject<any>,
