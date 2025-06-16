@@ -19,16 +19,16 @@ const LoginPage = () => {
 
   return (
     <Box
-      className="flex justify-center pt-[100px] min-h-screen bg-linear-to-br from-cyan-200 to-pink-300
-        dark:bg-linear-to-r dark:from-gray-900 dark:to-slate-900"
+      className="flex justify-center items-center min-h-dvh bg-gradient-to-br from-cyan-200 to-pink-300
+        dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700"
     >
       <Container size={500} flex={1}>
-        <Title ta="center" className="font-black font-[Greycliff_CF,var(--mantine-font-family)]">
+        <Title ta="center" className="font-black">
           Welcome back!
         </Title>
-        <Text size="md" ta="center" mt={5} className="text-gray-8 dark:text-dark-1">
+        <Text size="lg" ta="center" mt={5} className="text-gray-8 dark:text-dark-1">
           Do not have an account yet?{" "}
-          <Anchor size="sm" c="blue" component={Link} to="/register" className="font-semibold">
+          <Anchor size="lg" component={Link} to="/register" className="font-semibold">
             Create account
           </Anchor>
         </Text>

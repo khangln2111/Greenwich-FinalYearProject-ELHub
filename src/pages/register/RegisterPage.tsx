@@ -9,12 +9,12 @@ const RegisterPage = () => {
         bg-no-repeat"
     >
       <Container size={500} flex={1}>
-        <Title ta="center" className="font-black font-[Greycliff_CF,var(--mantine-font-family)]">
+        <Title ta="center" className="font-black">
           Welcome to ELearning Hub
         </Title>
-        <Text size="md" ta="center" mt={5} className="text-gray-8 dark:text-dark-1">
+        <Text size="lg" ta="center" mt={5} className="text-gray-8 dark:text-dark-1">
           Already have an account?{" "}
-          <Anchor size="sm" c="blue" component={Link} className="font-semibold" to="/login">
+          <Anchor size="lg" component={Link} className="font-semibold" to="/login">
             Login
           </Anchor>
         </Text>

@@ -79,9 +79,7 @@ const LoginForm = () => {
             label="Remember me"
             {...form.getInputProps("rememberMe", { type: "checkbox" })}
           />
-          <Anchor component="button" size="sm">
-            Forgot password?
-          </Anchor>
+          <Anchor size="sm">Forgot password?</Anchor>
         </Group>
 
         <Button
