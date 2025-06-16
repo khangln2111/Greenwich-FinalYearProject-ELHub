@@ -20,6 +20,8 @@ import {
   useValidateResetPasswordOtp,
 } from "../../../react-query/auth/identityHooks";
 import { useMediaQuery } from "@mantine/hooks";
+import { ErrorCode } from "../../../http-client/api.types";
+import { ArrowLeftIcon } from "lucide-react";
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -103,6 +105,15 @@ const ForgotPasswordPage = () => {
         onSuccess: () => {
           navigate("/login");
         },
+        onError: (error) => {
+          if (error.response?.status === 400) {
+            if (error.response.data.errorCode === ErrorCode.InvalidOtp && otpVerified) {
+              verifyOtpMutation.reset();
+              setOtpVerified(false);
+              setActive(1);
+            }
+          }
+        },
       },
     );
   };
@@ -119,6 +130,16 @@ const ForgotPasswordPage = () => {
         <Text ta="center" size="sm" className="text-gray-700 dark:text-gray-300 mb-3">
           Follow the steps below to reset your password securely.
         </Text>
+        <Group justify="center" mb="sm">
+          <Button
+            variant="subtle"
+            size="sm"
+            onClick={() => navigate("/login")}
+            leftSection={<ArrowLeftIcon size={16} />}
+          >
+            Back to Login
+          </Button>
+        </Group>
 
         <Paper
           withBorder
@@ -135,7 +156,6 @@ const ForgotPasswordPage = () => {
             classNames={{
               content: "max-sm:pt-0",
             }}
-            allowNextStepsSelect={false}
             orientation={isTabletOrLarger ? "horizontal" : "vertical"}
           >
             {/* Step 1: Email */}
