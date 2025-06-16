@@ -14,7 +14,7 @@ export const loginSchema = z.object({
   password: z.string().min(8, "Please enter at least 8 characters"),
 });
 
-export type LoginRequest = z.infer<typeof loginSchema>;
+export type LoginCommand = z.infer<typeof loginSchema>;
 
 // Register
 export const registerSchema = z
@@ -42,44 +42,44 @@ export const registerSchema = z
     path: ["confirmPassword"],
   });
 
-export type RegisterRequest = z.infer<typeof registerSchema>;
+export type RegisterCommand = z.infer<typeof registerSchema>;
 
 // Google Login
-export interface LoginWithGoogleRequest {
+export interface LoginWithGoogleCommand {
   idToken: string;
 }
 
 // Confirm Email
-export interface ConfirmEmailRequest {
+export interface ConfirmEmailCommand {
   email: string;
-  code: string;
+  otp: string;
 }
 
 // Resend Confirmation Email
-export interface ResendConfirmationEmailRequest {
+export interface SendEmailConfirmationOtpCommand {
   email: string;
 }
 
 // Send Reset Password OTP
-export interface SendResetPasswordOtpRequest {
+export interface SendResetPasswordOtpCommand {
   email: string;
 }
 
 // Validate Reset Password OTP
-export interface ValidateResetPasswordOtpRequest {
+export interface ValidateResetPasswordOtpCommand {
   email: string;
   otp: string;
 }
 
 // Reset Password
-export interface ResetPasswordRequest {
+export interface ResetPasswordCommand {
   email: string;
   newPassword: string;
   otp: string;
 }
 
 // Refresh Token
-export interface RefreshTokenRequest {
+export interface RefreshTokenCommand {
   refreshToken: string;
 }
 

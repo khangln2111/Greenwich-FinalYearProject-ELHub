@@ -7,16 +7,16 @@ import { useAppStore } from "../../zustand/store";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
-  ConfirmEmailRequest,
-  LoginRequest,
-  LoginWithGoogleRequest,
-  RefreshTokenRequest,
-  RegisterRequest,
-  ResendConfirmationEmailRequest,
-  ResetPasswordRequest,
-  SendResetPasswordOtpRequest,
+  ConfirmEmailCommand,
+  LoginCommand,
+  LoginWithGoogleCommand,
+  RefreshTokenCommand,
+  RegisterCommand,
+  SendEmailConfirmationOtpCommand,
+  ResetPasswordCommand,
+  SendResetPasswordOtpCommand,
   UpdateUserProfileSelfCommand,
-  ValidateResetPasswordOtpRequest,
+  ValidateResetPasswordOtpCommand,
 } from "./identity.types";
 import {
   confirmEmail,
@@ -25,7 +25,7 @@ import {
   loginWithGoogle,
   refreshToken,
   register,
-  resendConfirmationEmail,
+  sendEmailConfirmationOtp,
   resetPassword,
   sendResetPasswordOtp,
   updateUserProfileSelf,
@@ -56,7 +56,7 @@ export const useLogout = () => {
   return handleLogout;
 };
 
-export const useRegister = async (data: RegisterRequest) => {
+export const useRegister = async (data: RegisterCommand) => {
   return useMutation({
     mutationFn: () => register(data),
     onSuccess: async () => {
@@ -84,7 +84,7 @@ export const useLogin = () => {
   const setTokens = useAppStore.use.setTokens();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (data: LoginRequest) => login(data),
+    mutationFn: (data: LoginCommand) => login(data),
     onSuccess: async (data) => {
       showSuccessToast("Logged In", "You are now logged in successfully.");
       const { accessToken, refreshToken } = data;
@@ -120,7 +120,7 @@ export const useLoginWithGoogle = () => {
   const setTokens = useAppStore.use.setTokens();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (data: LoginWithGoogleRequest) => loginWithGoogle(data),
+    mutationFn: (data: LoginWithGoogleCommand) => loginWithGoogle(data),
     onSuccess: async (data) => {
       showSuccessToast("Logged In with google", "You are now logged in.");
       const { accessToken, refreshToken } = data;
@@ -145,7 +145,34 @@ export const useLoginWithGoogle = () => {
   });
 };
 
-export const useConfirmEmail = async (data: ConfirmEmailRequest) => {
+export const useSendEmailConfirmationOtp = async (data: SendEmailConfirmationOtpCommand) => {
+  return useMutation({
+    mutationFn: () => sendEmailConfirmationOtp(data),
+    onSuccess: async () => {
+      showSuccessToast("Email Resent", "Confirmation email has been resent successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Email not found", "The email address does not exist."),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.EmailAlreadyConfirmed,
+            handler: () =>
+              showErrorToast(
+                "Email Already Confirmed",
+                "The email address has already been confirmed.",
+              ),
+          },
+        ],
+      }),
+  });
+};
+
+export const useConfirmEmail = async (data: ConfirmEmailCommand) => {
   return useMutation({
     mutationFn: () => confirmEmail(data),
     onSuccess: async () => {
@@ -178,34 +205,7 @@ export const useConfirmEmail = async (data: ConfirmEmailRequest) => {
   });
 };
 
-export const useResendConfirmationEmail = async (data: ResendConfirmationEmailRequest) => {
-  return useMutation({
-    mutationFn: () => resendConfirmationEmail(data),
-    onSuccess: async () => {
-      showSuccessToast("Email Resent", "Confirmation email has been resent successfully.");
-    },
-    onError: (error) =>
-      handleApiError(error, {
-        matchers: [
-          {
-            status: 404,
-            handler: () => showErrorToast("Email not found", "The email address does not exist."),
-          },
-          {
-            status: 400,
-            errorCode: ErrorCode.EmailAlreadyConfirmed,
-            handler: () =>
-              showErrorToast(
-                "Email Already Confirmed",
-                "The email address has already been confirmed.",
-              ),
-          },
-        ],
-      }),
-  });
-};
-
-export const useSendResetPasswordOtp = async (data: SendResetPasswordOtpRequest) => {
+export const useSendResetPasswordOtp = async (data: SendResetPasswordOtpCommand) => {
   return useMutation({
     mutationFn: () => sendResetPasswordOtp(data),
     onSuccess: async () => {
@@ -226,12 +226,9 @@ export const useSendResetPasswordOtp = async (data: SendResetPasswordOtpRequest)
   });
 };
 
-export const useValidateResetPasswordOtp = async (data: ValidateResetPasswordOtpRequest) => {
+export const useValidateResetPasswordOtp = async (data: ValidateResetPasswordOtpCommand) => {
   return useMutation({
     mutationFn: () => validateResetPasswordOtp(data),
-    onSuccess: async () => {
-      showSuccessToast("OTP Validated", "The OTP has been validated successfully.");
-    },
     onError: (error) =>
       handleApiError(error, {
         matchers: [
@@ -250,7 +247,7 @@ export const useValidateResetPasswordOtp = async (data: ValidateResetPasswordOtp
   });
 };
 
-export const useResetPassword = async (data: ResetPasswordRequest) => {
+export const useResetPassword = async (data: ResetPasswordCommand) => {
   return useMutation({
     mutationFn: () => resetPassword(data),
     onSuccess: async () => {
@@ -274,7 +271,7 @@ export const useResetPassword = async (data: ResetPasswordRequest) => {
   });
 };
 
-export const useRefreshToken = async (data: RefreshTokenRequest) => {
+export const useRefreshToken = async (data: RefreshTokenCommand) => {
   return useMutation({
     mutationFn: () => refreshToken(data),
     onSuccess: async () => {

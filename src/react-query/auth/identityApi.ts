@@ -1,51 +1,51 @@
 import { ApiSuccessResponse } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
 import {
+  RegisterCommand,
+  LoginCommand,
   AuthResponse,
-  ConfirmEmailRequest,
+  LoginWithGoogleCommand,
+  SendEmailConfirmationOtpCommand,
+  ConfirmEmailCommand,
+  SendResetPasswordOtpCommand,
+  ValidateResetPasswordOtpCommand,
+  ResetPasswordCommand,
+  RefreshTokenCommand,
   CurrentUser,
-  LoginRequest,
-  LoginWithGoogleRequest,
-  RefreshTokenRequest,
-  RegisterRequest,
-  ResendConfirmationEmailRequest,
-  ResetPasswordRequest,
-  SendResetPasswordOtpRequest,
   UpdateUserProfileSelfCommand,
-  ValidateResetPasswordOtpRequest,
 } from "./identity.types";
 
 const BASE_URL = "/identity";
 
-export const register = async (data: RegisterRequest) => {
+export const register = async (data: RegisterCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/Register`, data);
   return response.data;
 };
 
-export const login = async (data: LoginRequest) => {
+export const login = async (data: LoginCommand) => {
   const response = await apiClient.post<AuthResponse>(`${BASE_URL}/Login`, data);
   return response.data;
 };
 
-export const loginWithGoogle = async (data: LoginWithGoogleRequest) => {
+export const loginWithGoogle = async (data: LoginWithGoogleCommand) => {
   const response = await apiClient.post<AuthResponse>(`${BASE_URL}/LoginWithGoogle`, data);
   return response.data;
 };
 
-export const confirmEmail = async (data: ConfirmEmailRequest) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/ConfirmEmail`, data);
-  return response.data;
-};
-
-export const resendConfirmationEmail = async (data: ResendConfirmationEmailRequest) => {
+export const sendEmailConfirmationOtp = async (data: SendEmailConfirmationOtpCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(
-    `${BASE_URL}/ResendConfirmationEmail`,
+    `${BASE_URL}/SendEmailConfirmationOtp`,
     data,
   );
   return response.data;
 };
 
-export const sendResetPasswordOtp = async (data: SendResetPasswordOtpRequest) => {
+export const confirmEmail = async (data: ConfirmEmailCommand) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/ConfirmEmail`, data);
+  return response.data;
+};
+
+export const sendResetPasswordOtp = async (data: SendResetPasswordOtpCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(
     `${BASE_URL}/SendResetPasswordOtp`,
     data,
@@ -53,7 +53,7 @@ export const sendResetPasswordOtp = async (data: SendResetPasswordOtpRequest) =>
   return response.data;
 };
 
-export const validateResetPasswordOtp = async (data: ValidateResetPasswordOtpRequest) => {
+export const validateResetPasswordOtp = async (data: ValidateResetPasswordOtpCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(
     `${BASE_URL}/ValidateResetPasswordOtp`,
     data,
@@ -61,12 +61,12 @@ export const validateResetPasswordOtp = async (data: ValidateResetPasswordOtpReq
   return response.data;
 };
 
-export const resetPassword = async (data: ResetPasswordRequest) => {
+export const resetPassword = async (data: ResetPasswordCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/ResetPassword`, data);
   return response.data;
 };
 
-export const refreshToken = async (data: RefreshTokenRequest) => {
+export const refreshToken = async (data: RefreshTokenCommand) => {
   const response = await apiClient.post<AuthResponse>(`${BASE_URL}/RefreshToken`, data);
   return response.data;
 };
