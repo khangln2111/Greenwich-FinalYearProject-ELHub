@@ -6,6 +6,7 @@ import {
   Paper,
   PasswordInput,
   PinInput,
+  Stepper,
   Text,
   TextInput,
   Title,
@@ -18,23 +19,25 @@ import {
   useResetPassword,
   useValidateResetPasswordOtp,
 } from "../../../react-query/auth/identityHooks";
+import { useMediaQuery } from "@mantine/hooks";
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
+  const isTabletOrLarger = useMediaQuery("(min-width: 768px)");
 
-  const [emailSent, setEmailSent] = useState(false);
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [active, setActive] = useState(0);
   const [otpValue, setOtpValue] = useState("");
 
   const sendOtpMutation = useSendResetPasswordOtp();
   const verifyOtpMutation = useValidateResetPasswordOtp();
   const resetPasswordMutation = useResetPassword();
 
+  const [emailSent, setEmailSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+
   const emailForm = useForm({
     initialValues: { email: "" },
-    validate: {
-      email: isEmail("Invalid email"),
-    },
+    validate: { email: isEmail("Invalid email") },
   });
 
   const passwordForm = useForm({
@@ -48,6 +51,13 @@ const ForgotPasswordPage = () => {
     },
   });
 
+  const canProceedToStep = (step: number) => {
+    if (step === 0) return true;
+    if (step === 1) return emailSent;
+    if (step === 2) return emailSent && otpVerified;
+    return false;
+  };
+
   const handleSendOtp = () => {
     const { hasErrors } = emailForm.validate();
     if (hasErrors) return;
@@ -55,13 +65,18 @@ const ForgotPasswordPage = () => {
     sendOtpMutation.mutate(
       { email: emailForm.values.email },
       {
-        onSuccess: () => setEmailSent(true),
+        onSuccess: () => {
+          setEmailSent(true);
+          setActive(1);
+        },
       },
     );
   };
 
   const handleVerifyOtp = () => {
-    if (otpValue.length !== 6) return;
+    if (otpValue.length !== 6) {
+      return;
+    }
 
     verifyOtpMutation.mutate(
       {
@@ -69,7 +84,10 @@ const ForgotPasswordPage = () => {
         otp: otpValue,
       },
       {
-        onSuccess: () => setIsOtpVerified(true),
+        onSuccess: () => {
+          setOtpVerified(true);
+          setActive(2);
+        },
       },
     );
   };
@@ -91,56 +109,60 @@ const ForgotPasswordPage = () => {
 
   return (
     <Box
-      className="flex justify-center items-center min-h-dvh bg-gradient-to-br from-cyan-200 to-pink-300
+      className="flex justify-center items-center min-h-dvh px-2 bg-gradient-to-br from-cyan-200 to-pink-300
         dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700"
     >
-      <Container size={500} flex={1}>
-        <Title order={2} ta="center" className="mb-2 font-bold text-gray-900 dark:text-white">
+      <Container size={800} flex={1}>
+        <Title ta="center" order={2} className="text-gray-900 dark:text-white font-bold mb-1">
           Forgot your password?
         </Title>
-
-        <Text ta="center" size="sm" mb="md" className="text-gray-700 dark:text-gray-300">
-          Enter your email to receive a verification code.
+        <Text ta="center" size="sm" className="text-gray-700 dark:text-gray-300 mb-3">
+          Follow the steps below to reset your password securely.
         </Text>
 
         <Paper
           withBorder
           shadow="md"
-          p={30}
+          p={24}
           radius="md"
-          className="rounded-2xl bg-white/80 dark:bg-neutral-900/80 border border-white/30 backdrop-blur-md"
+          className="rounded-2xl bg-white dark:bg-neutral-900 border border-white/30"
         >
-          {/* Email Section */}
-          <TextInput
-            label="Email"
-            placeholder="you@example.com"
-            required
-            {...emailForm.getInputProps("email")}
-            disabled={emailSent}
-          />
-          <Button
-            mt="sm"
-            fullWidth
-            onClick={handleSendOtp}
-            loading={sendOtpMutation.isPending}
-            disabled={emailSent}
+          <Stepper
+            active={active}
+            onStepClick={(step) => {
+              if (canProceedToStep(step)) setActive(step);
+            }}
+            classNames={{
+              content: "max-sm:pt-0",
+            }}
+            allowNextStepsSelect={false}
+            orientation={isTabletOrLarger ? "horizontal" : "vertical"}
           >
-            {emailSent ? "OTP Sent" : "Send OTP"}
-          </Button>
+            {/* Step 1: Email */}
+            <Stepper.Step label="Email" description="Send verification code">
+              <TextInput
+                label="Email"
+                placeholder="you@example.com"
+                required
+                {...emailForm.getInputProps("email")}
+              />
+              <Button mt="sm" fullWidth onClick={handleSendOtp} loading={sendOtpMutation.isPending}>
+                Send OTP
+              </Button>
+            </Stepper.Step>
 
-          {/* OTP Section */}
-          {emailSent && !isOtpVerified && (
-            <>
-              <Text size="sm" mt="lg" className="text-gray-700 dark:text-gray-300">
-                Enter the 6-digit code sent to your email
+            {/* Step 2: OTP Verification */}
+            <Stepper.Step label="Verify OTP" description="Enter code from email">
+              <Text size="sm" className="mb-2 text-gray-700 dark:text-gray-300">
+                A 6-digit code was sent to: <b>{emailForm.values.email}</b>
               </Text>
-              <Group justify="center" mt="xs">
+              <Group justify="center">
                 <PinInput
                   length={6}
-                  oneTimeCode
                   value={otpValue}
                   onChange={setOtpValue}
-                  disabled={isOtpVerified}
+                  oneTimeCode
+                  disabled={verifyOtpMutation.isPending}
                 />
               </Group>
               <Button
@@ -151,22 +173,35 @@ const ForgotPasswordPage = () => {
               >
                 Verify OTP
               </Button>
-            </>
-          )}
-
-          {/* New Password Section */}
-          {isOtpVerified && (
-            <form onSubmit={passwordForm.onSubmit(handleResetPassword)} className="space-y-4 mt-6">
-              <PasswordInput label="New Password" {...passwordForm.getInputProps("password")} />
-              <PasswordInput
-                label="Confirm Password"
-                {...passwordForm.getInputProps("confirmPassword")}
-              />
-              <Button type="submit" fullWidth loading={resetPasswordMutation.isPending}>
-                Reset Password
+              <Button
+                variant="subtle"
+                size="xs"
+                mt="xs"
+                onClick={handleSendOtp}
+                disabled={sendOtpMutation.isPending}
+              >
+                Resend OTP
               </Button>
-            </form>
-          )}
+            </Stepper.Step>
+
+            {/* Step 3: New Password */}
+            <Stepper.Step label="Reset Password" description="Set a new password">
+              <form onSubmit={passwordForm.onSubmit(handleResetPassword)} className="space-y-4">
+                <PasswordInput label="New Password" {...passwordForm.getInputProps("password")} />
+                <PasswordInput
+                  label="Confirm Password"
+                  {...passwordForm.getInputProps("confirmPassword")}
+                />
+                <Button type="submit" fullWidth loading={resetPasswordMutation.isPending}>
+                  Reset Password
+                </Button>
+              </form>
+            </Stepper.Step>
+
+            <Stepper.Completed>
+              <Text ta="center">Password successfully reset. Redirecting to login...</Text>
+            </Stepper.Completed>
+          </Stepper>
         </Paper>
       </Container>
     </Box>
