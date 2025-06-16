@@ -135,7 +135,7 @@ const RegisterForm = () => {
           <Checkbox
             label={
               <>
-                I accept
+                I accept to the{" "}
                 <Anchor c="blue" href="https://mantine.dev" target="_blank" inherit defaultChecked>
                   terms and conditions
                 </Anchor>

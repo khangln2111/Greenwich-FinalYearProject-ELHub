@@ -29,7 +29,7 @@ const LoginPage = () => {
         </Title>
         <Text size="lg" ta="center" mt={5} className="text-gray-8 dark:text-dark-1">
           Do not have an account yet?{" "}
-          <Anchor size="lg" component={Link} to="/register" className="font-semibold">
+          <Anchor size="md" component={Link} to="/register" className="font-semibold">
             Create account
           </Anchor>
         </Text>

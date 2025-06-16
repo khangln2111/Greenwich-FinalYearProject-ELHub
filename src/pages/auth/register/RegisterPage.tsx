@@ -14,7 +14,7 @@ const RegisterPage = () => {
         </Title>
         <Text size="lg" ta="center" mt={5} className="text-gray-8 dark:text-dark-1">
           Already have an account?{" "}
-          <Anchor size="lg" component={Link} className="font-semibold" to="/login">
+          <Anchor size="md" component={Link} className="font-semibold" to="/login">
             Login
           </Anchor>
         </Text>

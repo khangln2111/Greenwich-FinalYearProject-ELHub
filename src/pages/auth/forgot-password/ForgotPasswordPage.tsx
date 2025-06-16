@@ -135,7 +135,7 @@ const ForgotPasswordPage = () => {
             variant="subtle"
             size="sm"
             onClick={() => navigate("/login")}
-            leftSection={<ArrowLeftIcon size={16} />}
+            leftSection={<ArrowLeftIcon className="w-4 h-4" />}
           >
             Back to Login
           </Button>
