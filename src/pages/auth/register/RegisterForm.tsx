@@ -4,6 +4,8 @@ import { IconAt, IconLock, IconRegistered } from "@tabler/icons-react";
 import { z } from "zod";
 import PasswordStrength from "../../../components/PasswordStrength/PasswordStrength";
 import { RegisterCommand, registerSchema } from "../../../react-query/auth/identity.types";
+import { useRegister } from "../../../react-query/auth/identityHooks";
+import { useNavigate } from "react-router-dom";
 
 function getPasswordRequirements(
   schema: z.ZodObject<any>,
@@ -35,6 +37,8 @@ function getPasswordRequirements(
 }
 
 const RegisterForm = () => {
+  const registerMutation = useRegister();
+  const navigate = useNavigate();
   const form = useForm<RegisterCommand>({
     initialValues: {
       firstName: "",
@@ -49,7 +53,12 @@ const RegisterForm = () => {
   const passwordRequirements = getPasswordRequirements(registerSchema.innerType());
 
   const handleSubmit = (values: typeof form.values) => {
-    console.log("Register form values:", values);
+    registerMutation.mutate(values, {
+      onSuccess: () => {
+        form.reset();
+        navigate("/login", { replace: true });
+      },
+    });
   };
 
   return (

@@ -8,7 +8,6 @@ import LoginForm from "./LoginForm";
 
 const LoginPage = () => {
   const currentUser = useAppStore.use.currentUser();
-  if (currentUser) return <Navigate to="/" replace={true} />;
 
   useEffect(() => {
     if (loginSessionStorageHelper.shouldShowSessionExpiredToast()) {
@@ -16,6 +15,8 @@ const LoginPage = () => {
       loginSessionStorageHelper.clearSessionExpiredToastFlag();
     }
   }, []);
+
+  if (currentUser) return <Navigate to="/" replace={true} />;
 
   return (
     <Box
