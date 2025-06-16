@@ -93,7 +93,7 @@ export const useLogin = () => {
       // await queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
       navigate("/");
     },
-    onError: (error) =>
+    onError: (error, variables) =>
       handleApiError(error, {
         matchers: [
           {
@@ -109,7 +109,7 @@ export const useLogin = () => {
                 "Email Not Confirmed",
                 "Please confirm your email address before logging in.",
               );
-              navigate("/verify-email");
+              navigate(`/verify-email?email=${encodeURIComponent(variables.email)}`);
             },
           },
         ],
@@ -199,8 +199,9 @@ export const useConfirmEmail = () => {
           {
             status: 400,
             errorCode: ErrorCode.InvalidOtp,
-            handler: () =>
-              showErrorToast("Invalid OTP", "The OTP is invalid or has expired. Please try again."),
+            handler: () => {
+              showErrorToast("Invalid OTP", "The OTP is invalid or has expired. Please try again.");
+            },
           },
         ],
       }),

@@ -150,7 +150,7 @@ const RegisterForm = () => {
           type="submit"
           gradient={{ from: "red", to: "pink", deg: 90 }}
           rightSection={<IconRegistered />}
-          // disabled={!form.isValid()}
+          loading={registerMutation.isPending}
         >
           Register
         </Button>

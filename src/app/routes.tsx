@@ -21,6 +21,7 @@ import InventoryPage from "../pages/inventory/InventoryPage";
 import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
 import LearningPage from "../pages/learning/LearningPage";
 import ForgotPasswordPage from "../pages/auth/forgot-password/ForgotPasswordPage";
+import VerifyEmailPage from "../pages/VerifyEmailPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -93,8 +94,7 @@ const authRoutes: RouteObject[] = [
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
   { path: "/forgot-password", element: <ForgotPasswordPage /> },
-  { path: "/reset-password", element: <p>Reset Password Page</p> },
-  { path: "/verify-email", element: <p>Verify Email Page</p> },
+  { path: "/verify-email", element: <VerifyEmailPage /> },
   {
     path: "learning/:courseId",
     element: <LearningPage />,
