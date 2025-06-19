@@ -187,7 +187,7 @@ const CourseDetailPage = () => {
                 </Tabs.Panel>
                 <Tabs.Panel value={CourseDetailTab.Reviews}>
                   <ReviewTab
-                    courseDetail={course}
+                    courseId={courseId}
                     rating={4.6}
                     totalReviews={2533}
                     stars={[

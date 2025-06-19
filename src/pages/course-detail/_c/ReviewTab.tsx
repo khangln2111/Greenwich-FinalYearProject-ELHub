@@ -1,14 +1,13 @@
 import { Group, Progress, Rating, Select, SelectProps, TextInput, Title } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
+import dayjs from "dayjs";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
-import dayjs from "dayjs";
 
 import avatar from "../../../assets/placeholder/avatar-placeholder.jpg";
-import { CourseDetailVm } from "../../../react-query/course/course.types";
-import { useGetReviewsByCourseId } from "../../../react-query/review/reviewHooks";
 import CenterLoader from "../../../components/CenterLoader";
+import { useGetReviewsByCourseId } from "../../../react-query/review/reviewHooks";
 
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
   const stars = parseInt(option.value);
@@ -28,10 +27,10 @@ interface ReviewTabProps {
   rating: number;
   totalReviews: number;
   stars: { stars: number; percentage: number }[];
-  courseDetail: CourseDetailVm;
+  courseId: string;
 }
 
-const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps) => {
+const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) => {
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearch] = useDebouncedValue(searchInput, 300);
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
@@ -40,7 +39,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseDetail }: ReviewTabProps
     data: reviews,
     isPending,
     error,
-  } = useGetReviewsByCourseId(courseDetail.id, {
+  } = useGetReviewsByCourseId(courseId, {
     content: debouncedSearch,
     rating: selectedRating ? parseInt(selectedRating) : undefined,
   });

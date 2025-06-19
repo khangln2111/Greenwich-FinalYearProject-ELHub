@@ -171,3 +171,10 @@ export interface CourseQueryCriteria {
     direction: "asc" | "desc";
   };
 }
+
+export interface Experience {
+  organizationName: string;
+  title: string;
+  startDate: string;
+  endDate?: string; // Optional if currently employed
+}

@@ -77,6 +77,7 @@ export default function UpdateCoursePage() {
           </Tabs.Panel>
           <Tabs.Panel value="Reviews">
             <ReviewTab
+              courseId={courseId}
               rating={4.6}
               totalReviews={2533}
               stars={[
