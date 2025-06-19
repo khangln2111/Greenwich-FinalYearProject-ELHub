@@ -86,9 +86,9 @@ export interface RefreshTokenCommand {
 export interface CurrentUser {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  avatarUrl: string;
+  firstName?: string;
+  lastName?: string;
+  avatarUrl?: string;
   dateOfBirth: Date;
   gender: Gender;
   roles: string[]; // ["Admin", "User"]

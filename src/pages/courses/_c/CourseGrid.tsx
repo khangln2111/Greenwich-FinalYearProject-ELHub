@@ -19,8 +19,6 @@ const CourseGrid = () => {
 
   const courses = data.items;
 
-  console.log("Courses data:", data);
-
   return (
     <>
       <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" my={25} className="auto-rows-auto">

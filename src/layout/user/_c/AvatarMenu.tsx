@@ -41,9 +41,9 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
             <Avatar
               className={cn("cursor-pointer shadow-sm border", className)}
               color="initials"
-              src={currentUser?.avatarUrl ?? ""}
+              src={currentUser?.avatarUrl}
               name={
-                `${currentUser?.firstName.trim() ?? ""} ${currentUser?.lastName.trim() ?? ""}`.trim() ||
+                `${currentUser?.firstName?.trim()} ${currentUser?.lastName?.trim()}`.trim() ||
                 "Nguyen Khang"
               }
               allowedInitialsColors={["blue", "red"]}
