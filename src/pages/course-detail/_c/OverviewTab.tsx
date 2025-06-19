@@ -9,7 +9,7 @@ type OverviewTabProps = {
 const OverviewTab = ({ course }: OverviewTabProps) => {
   return (
     <div>
-      <Title order={2}>About The Course</Title>
+      <Title order={2}>About the course</Title>
       <Text className="mt-2 text-lg leading-relaxed">{course.description}</Text>
       {/* Learning Outcomes Section */}
       {course.learningOutcomes && course.learningOutcomes.length > 0 && (

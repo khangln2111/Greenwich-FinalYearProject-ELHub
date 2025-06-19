@@ -52,7 +52,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
 
   return (
     <div>
-      <Title order={2}>What our student are saying</Title>
+      <Title order={2}>What our students are saying</Title>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg mt-10">
         {/* Left section */}

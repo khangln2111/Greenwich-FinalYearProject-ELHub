@@ -29,7 +29,7 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
       </Modal>
       {/* Curriculum header */}
       <div className="flex items-center justify-between">
-        <Title order={2}>Course Content</Title>
+        <Title order={2}>Course content</Title>
         <Text className="text-gray-500 dark:text-dark-1">
           {sections.reduce((sum, sec) => sum + (sec.lectures?.length ?? 0), 0)} lectures
         </Text>
