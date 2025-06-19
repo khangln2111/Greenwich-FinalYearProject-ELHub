@@ -29,9 +29,9 @@ export default function InstructorCoursesPage() {
             onClick={openCreateCourseModal}
             leftSection={<Plus className="size-4" />}
             size="sm"
-            className="flex-1"
+            className="flex-1 px-0"
           >
-            Add New Course
+            New Course
           </Button>
 
           <Select

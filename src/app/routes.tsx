@@ -92,6 +92,10 @@ const instructorRoute: RouteObject = {
       path: "profile",
       element: <InstructorProfilePage />,
     },
+    {
+      path: "coupons",
+      element: <p>Instructor Coupons Page</p>,
+    },
   ],
 };
 
