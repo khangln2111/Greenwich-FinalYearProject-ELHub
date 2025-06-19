@@ -27,5 +27,9 @@ public interface IIdentityService
 
     Task<InfoMeVm> GetInfoSelf();
 
+    Task<WorkProfileVm> GetWorkProfileSelf();
+
     Task<Success> UpdateUserProfileSelf(UpdateUserProfileSelfCommand selfCommand);
+
+    Task<Success> UpdateWorkProfileSelf(UpdateWorkProfileSelfCommand selfCommand);
 }

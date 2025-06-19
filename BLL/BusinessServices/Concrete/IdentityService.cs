@@ -308,6 +308,55 @@ public class IdentityService(
         };
     }
 
+    public async Task<WorkProfileVm> GetWorkProfileSelf()
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser is null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        var user = await context.Users
+            .Include(u => u.WorkAvatar)
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Id == currentUser.Id);
+
+        if (user is null)
+            throw new NotFoundException("User not found");
+
+        return new WorkProfileVm
+        {
+            Id = user.Id,
+            WorkAvatarUrl = user.WorkAvatar?.Url,
+            DisplayName = user.DisplayName,
+            FavoriteQuote = user.FavoriteQuote,
+            FavoriteQuoteCite = user.FavoriteQuoteCite,
+            About = user.About,
+            ProfessionalTitle = user.ProfessionalTitle
+        };
+    }
+
+    public async Task<Success> UpdateWorkProfileSelf(UpdateWorkProfileSelfCommand selfCommand)
+    {
+        await validationService.ValidateAsync(selfCommand);
+        var user = await userManager.GetUserAsync(signInManager.Context.User);
+        if (user == null) throw new NotFoundException("Current user not found");
+
+        // if the user does not have an avatar, create a new one
+        if (selfCommand.WorkAvatar != null && user.WorkAvatar == null)
+        {
+            var avatar = await mediaManager.SaveFileAsync(selfCommand.WorkAvatar, MediaType.Image);
+            await context.Media.AddAsync(avatar);
+            user.WorkAvatar = avatar;
+        }
+
+        if (selfCommand.WorkAvatar != null && user.WorkAvatar != null)
+            await mediaManager.UpdateFileAsync(user.WorkAvatar, selfCommand.WorkAvatar);
+
+        mapper.Map(selfCommand, user);
+        await context.SaveChangesAsync();
+
+        return new Success("User work profile updated successfully");
+    }
+
 
     public async Task<Success> UpdateUserProfileSelf(UpdateUserProfileSelfCommand selfCommand)
     {

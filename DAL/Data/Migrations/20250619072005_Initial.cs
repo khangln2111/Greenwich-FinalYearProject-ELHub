@@ -93,6 +93,9 @@ namespace DAL.Data.Migrations
                     Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: true),
+                    WorkingName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ProfessionalTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    About = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     IsActivated = table.Column<bool>(type: "bit", nullable: false),
                     IsInitialPasswordChanged = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -299,6 +302,30 @@ namespace DAL.Data.Migrations
                         column: x => x.PromoVideoId,
                         principalTable: "Media",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Experience",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrganizationName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Experience", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Experience_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -722,6 +749,11 @@ namespace DAL.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Experience_UserId",
+                table: "Experience",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Gifts_CourseId",
                 table: "Gifts",
                 column: "CourseId");
@@ -834,6 +866,9 @@ namespace DAL.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CartItems");
+
+            migrationBuilder.DropTable(
+                name: "Experience");
 
             migrationBuilder.DropTable(
                 name: "Gifts");

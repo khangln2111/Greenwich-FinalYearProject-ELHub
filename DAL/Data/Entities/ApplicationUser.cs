@@ -18,6 +18,20 @@ public class ApplicationUser : IdentityUser<Guid>
     public DateTime? DateOfBirth { get; set; }
     public Gender? Gender { get; set; }
 
+    public string? DisplayName { get; set; }
+
+    public Media? WorkAvatar { get; set; }
+
+    public string? ProfessionalTitle { get; set; }
+
+    public string? About { get; set; }
+
+    public string? FavoriteQuote { get; set; }
+    public string? FavoriteQuoteCite { get; set; }
+
+
+    public ICollection<Experience> Experiences { get; init; } = new List<Experience>();
+
     public bool IsActivated { get; set; } = false;
 
     public bool IsInitialPasswordChanged { get; set; } = false;
@@ -35,7 +49,6 @@ public class ApplicationUser : IdentityUser<Guid>
     public ICollection<Course> Courses { get; init; } = new List<Course>();
 
     public ICollection<Enrollment> Enrollments { get; init; } = new List<Enrollment>();
-
 
     // public ICollection<RefreshToken> RefreshTokens { get; set; }
 

@@ -20,5 +20,20 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 
         builder.Property(x => x.Bio)
             .HasMaxLength(AppConstants.User.BioMaxLength);
+
+        builder.Property(x => x.DisplayName)
+            .HasMaxLength(AppConstants.User.DisplayNameMaxLength);
+
+        builder.Property(x => x.ProfessionalTitle)
+            .HasMaxLength(AppConstants.User.ProfessionalTitleMaxLength);
+
+        builder.Property(x => x.About)
+            .HasMaxLength(AppConstants.User.AboutMaxLength);
+
+        builder.Property(x => x.FavoriteQuote)
+            .HasMaxLength(AppConstants.User.FavoriteQuoteMaxLength);
+
+        builder.Property(x => x.FavoriteQuoteCite)
+            .HasMaxLength(AppConstants.User.FavoriteQuoteCiteMaxLength);
     }
 }

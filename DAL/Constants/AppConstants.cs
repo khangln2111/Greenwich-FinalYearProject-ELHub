@@ -9,6 +9,11 @@ public static class AppConstants
         public const int AddressMaxLength = 200;
         public const int BioMaxLength = 500;
         public const int AvatarMaxSizeBytes = 5 * FileSize.Megabyte;
+        public const int DisplayNameMaxLength = 100;
+        public const int ProfessionalTitleMaxLength = 100;
+        public const int AboutMaxLength = 500;
+        public const int FavoriteQuoteMaxLength = 500;
+        public const int FavoriteQuoteCiteMaxLength = 100;
     }
 
     public static class Order
@@ -69,6 +74,13 @@ public static class AppConstants
     {
         public static readonly string[] AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".webp", ".svg"];
         public static readonly string[] AllowedVideoExtensions = [".mp4", ".webm", ".ogg"];
+    }
+
+
+    public static class Experience
+    {
+        public const int OrganizationNameMaxLength = 100;
+        public const int TitleMaxLength = 100;
     }
 
     public static class FileSize
