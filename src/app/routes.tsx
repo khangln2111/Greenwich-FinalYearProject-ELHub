@@ -1,27 +1,28 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
+import InstructorLayout from "../layout/instructor/InstructorLayout";
+import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import UserLayout from "../layout/user/UserLayout";
-import CoursesPage from "../pages/courses/CoursesPage";
-import ErrorPage from "../pages/error/ErrorPage";
-import HomePage from "../pages/home/HomePage";
+import VerifyEmailPage from "../pages/VerifyEmailPage";
+import ForgotPasswordPage from "../pages/auth/forgot-password/ForgotPasswordPage";
 import LoginPage from "../pages/auth/login/LoginPage";
 import RegisterPage from "../pages/auth/register/RegisterPage";
-import CourseDetailPage from "../pages/course-detail/CourseDetailPage";
 import CartPage from "../pages/cart/CartPage";
+import CheckoutResultPage from "../pages/checkout-result/CheckoutResultPage";
 import CheckoutPage from "../pages/checkout/CheckoutPage";
-import InstructorLayout from "../layout/instructor/InstructorLayout";
+import CourseDetailPage from "../pages/course-detail/CourseDetailPage";
+import CoursesPage from "../pages/courses/CoursesPage";
+import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
+import ErrorPage from "../pages/error/ErrorPage";
+import HomePage from "../pages/home/HomePage";
 import InstructorDashboard from "../pages/instructor/InstructorDashboard";
 import InstructorCoursesPage from "../pages/instructor/courses/InstructorCoursesPage";
-import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
-import CheckoutResultPage from "../pages/checkout-result/CheckoutResultPage";
-import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
-import MyAccountPage from "../pages/my-account/MyAccountPage";
-import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
-import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
 import InventoryPage from "../pages/inventory/InventoryPage";
-import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
 import LearningPage from "../pages/learning/LearningPage";
-import ForgotPasswordPage from "../pages/auth/forgot-password/ForgotPasswordPage";
-import VerifyEmailPage from "../pages/VerifyEmailPage";
+import MyAccountPage from "../pages/my-account/MyAccountPage";
+import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
+import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
+import InstructorProfilePage from "../pages/instructor/profile/InstructorProfilePage";
+import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -76,7 +77,7 @@ const instructorRoute: RouteObject = {
   element: <InstructorLayout />,
   path: "/instructor",
   children: [
-    { index: true, element: <InstructorDashboard /> },
+    { path: "dashboard", element: <InstructorDashboard /> },
     { path: "students", element: <p>Instructor Students Page</p> },
     {
       path: "courses",
@@ -86,6 +87,10 @@ const instructorRoute: RouteObject = {
     {
       path: "courses/:courseId/edit",
       element: <InstructorEditCoursePage />,
+    },
+    {
+      path: "profile",
+      element: <InstructorProfilePage />,
     },
   ],
 };

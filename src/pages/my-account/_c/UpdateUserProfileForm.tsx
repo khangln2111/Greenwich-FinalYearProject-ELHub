@@ -13,7 +13,7 @@ import {
 import { useUpdateUserProfile } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 import { parseDateUTC } from "../../../utils/format";
-import avatarPlaceHolder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
+import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
 const UpdateUserProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -61,7 +61,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
 
   const handleSubmit = (values: UpdateUserProfileFormType) => {
     const payload: UpdateUserProfileSelfCommand = {
-      firstName: values.firstName,
+      displayName: values.firstName,
       lastName: values.lastName,
       dateOfBirth: values.dateOfBirth,
       gender: values.gender,
@@ -87,7 +87,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
           src={
             avatar instanceof File
               ? URL.createObjectURL(avatar)
-              : user.avatarUrl || avatarPlaceHolder
+              : user.avatarUrl || avatarPlaceholder
           }
         />
         <FileButton

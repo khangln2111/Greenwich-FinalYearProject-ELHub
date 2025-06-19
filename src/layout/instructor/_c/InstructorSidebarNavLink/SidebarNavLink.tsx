@@ -27,7 +27,8 @@ const SidebarNavLink = ({
   const location = useLocation();
   const hasSubLinks = Array.isArray(subLinks) && subLinks.length > 0;
   const isSubLinkActive = hasSubLinks && subLinks!.some((link) => location.pathname === link.href);
-  const isActive = location.pathname === href || isSubLinkActive;
+  const isActive =
+    location.pathname === href || isSubLinkActive || location.pathname.startsWith(href + "/");
 
   const sharedProps = {
     href,

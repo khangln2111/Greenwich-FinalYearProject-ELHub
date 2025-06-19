@@ -94,12 +94,31 @@ export interface CurrentUser {
   roles: string[]; // ["Admin", "User"]
 }
 
+export interface WorkProfileVm {
+  id: string;
+  displayName?: string;
+  professionalTitle?: string;
+  about?: string;
+  workAvatarUrl?: string;
+  favoriteQuote?: string;
+  favoriteQuoteCite?: string;
+}
+
 export interface UpdateUserProfileSelfCommand {
-  firstName?: string;
+  displayName?: string;
   lastName?: string;
   gender?: Gender;
   dateOfBirth?: Date;
   avatar?: File;
+}
+
+export interface UpdateWorkProfileSelfCommand {
+  displayName?: string;
+  professionalTitle?: string;
+  about?: string;
+  workAvatar?: File;
+  favoriteQuote?: string;
+  favoriteQuoteCite?: string;
 }
 
 export enum Gender {

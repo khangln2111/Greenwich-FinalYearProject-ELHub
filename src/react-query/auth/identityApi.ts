@@ -13,6 +13,8 @@ import {
   RefreshTokenCommand,
   CurrentUser,
   UpdateUserProfileSelfCommand,
+  UpdateWorkProfileSelfCommand,
+  WorkProfileVm,
 } from "./identity.types";
 
 const BASE_URL = "/identity";
@@ -76,9 +78,27 @@ export const getCurrentUser = async () => {
   return response.data;
 };
 
+export const getWorkProfileSelf = async () => {
+  const response = await apiClient.get<WorkProfileVm>(`${BASE_URL}/WorkProfileSelf`);
+  return response.data;
+};
+
 export const updateUserProfileSelf = async (command: UpdateUserProfileSelfCommand) => {
   const response = await apiClient.put<ApiSuccessResponse>(
     `${BASE_URL}/UpdateUserProfileSelf`,
+    command,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return response.data;
+};
+
+export const updateWorkProfileSelf = async (command: UpdateWorkProfileSelfCommand) => {
+  const response = await apiClient.put<ApiSuccessResponse>(
+    `${BASE_URL}/UpdateWorkProfileSelf`,
     command,
     {
       headers: {

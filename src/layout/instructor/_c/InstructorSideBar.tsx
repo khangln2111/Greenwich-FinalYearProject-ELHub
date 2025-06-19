@@ -1,5 +1,6 @@
+import { Text } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
-import { IconBellRinging, IconFingerprint } from "@tabler/icons-react";
+import { IconBellRinging } from "@tabler/icons-react";
 import {
   LayoutDashboardIcon,
   ScreenShareIcon,
@@ -10,14 +11,20 @@ import {
 import { Link } from "react-router-dom";
 import { cn } from "../../../utils/cn";
 import SidebarNavLink from "./InstructorSidebarNavLink/SidebarNavLink";
-import { Text } from "@mantine/core";
 
 type InstructorSidebarProps = {
   collapsedToIcon?: boolean;
 };
 
-const navItems = [
-  { href: "/instructor", label: "Dashboard", icon: LayoutDashboardIcon },
+type NavItem = {
+  href: string;
+  label: string;
+  icon: React.ElementType;
+  subLinks?: { label: string; href: string }[];
+};
+
+const navItems: NavItem[] = [
+  { href: "/instructor/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   {
     href: "/instructor/courses",
     label: "Course Management",
@@ -34,15 +41,6 @@ const navItems = [
     icon: TicketPercentIcon,
   },
   { href: "/instructor/notifications", label: "Notifications", icon: IconBellRinging },
-  {
-    href: "#",
-    label: "Students",
-    icon: IconFingerprint,
-    subLinks: [
-      { label: "All Students", href: "/instructor/students" },
-      { label: "Messages", href: "/instructor/messages" },
-    ],
-  },
   { href: "/instructor/settings", label: "Settings", icon: SettingsIcon },
 ];
 
@@ -72,7 +70,9 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
         fw={900}
         variant="gradient"
         gradient={{ from: "blue", to: "cyan", deg: 90 }}
-        className="px-4"
+        className={cn("px-4", {
+          hidden: collapsedToIcon,
+        })}
       >
         Instructor dashboard
       </Text>

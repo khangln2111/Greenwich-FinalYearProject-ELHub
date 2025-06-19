@@ -17,6 +17,7 @@ import {
   SendResetPasswordOtpCommand,
   UpdateUserProfileSelfCommand,
   ValidateResetPasswordOtpCommand,
+  UpdateWorkProfileSelfCommand,
 } from "./identity.types";
 import {
   confirmEmail,
@@ -30,6 +31,8 @@ import {
   sendResetPasswordOtp,
   updateUserProfileSelf,
   validateResetPasswordOtp,
+  updateWorkProfileSelf,
+  getWorkProfileSelf,
 } from "./identityApi";
 
 export const useCurrentUser = () => {
@@ -316,6 +319,44 @@ export const useUpdateUserProfile = () => {
               showErrorToast(
                 "User not found",
                 "The user profile you are trying to update does not exist.",
+              ),
+          },
+        ],
+      }),
+  });
+};
+
+export const useGetWorkProfileSelf = () => {
+  const accessToken = useAppStore.use.accessToken();
+
+  return useQuery({
+    queryKey: keyFac.identity.getWorkProfileSelf.queryKey,
+    queryFn: getWorkProfileSelf,
+    refetchOnWindowFocus: false,
+    enabled: !!accessToken,
+  });
+};
+
+export const useUpdateWorkProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: UpdateWorkProfileSelfCommand) => updateWorkProfileSelf(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.identity.getWorkProfileSelf.queryKey });
+      showSuccessToast(
+        "Working Profile Updated",
+        "Your work profile has been updated successfully.",
+      );
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast(
+                "Working Profile not found",
+                "The work profile you are trying to update does not exist.",
               ),
           },
         ],

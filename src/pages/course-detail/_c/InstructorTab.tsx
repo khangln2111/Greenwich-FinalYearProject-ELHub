@@ -6,7 +6,10 @@ const InstructorTab = () => {
   return (
     <div>
       <Title order={2}>Meet your instructor</Title>
-      <div className="mx-auto p-6 bg-gray-50 dark:bg-zinc-900 shadow-lg rounded-lg mt-5">
+      <div
+        className="mx-auto p-6 shadow-lg rounded-lg mt-5 border border-gray-200 dark:border-zinc-700 bg-white
+          dark:bg-zinc-800"
+      >
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left column: Avatar */}
           <div className="size-50">
