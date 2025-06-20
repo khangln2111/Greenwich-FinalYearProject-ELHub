@@ -61,7 +61,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
 
   const handleSubmit = (values: UpdateUserProfileFormType) => {
     const payload: UpdateUserProfileSelfCommand = {
-      displayName: values.firstName,
+      firstName: values.firstName,
       lastName: values.lastName,
       dateOfBirth: values.dateOfBirth,
       gender: values.gender,

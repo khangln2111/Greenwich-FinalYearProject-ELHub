@@ -105,7 +105,7 @@ export interface WorkProfileVm {
 }
 
 export interface UpdateUserProfileSelfCommand {
-  displayName?: string;
+  firstName?: string;
   lastName?: string;
   gender?: Gender;
   dateOfBirth?: Date;
