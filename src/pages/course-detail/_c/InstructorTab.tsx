@@ -12,7 +12,7 @@ const InstructorTab = () => {
       >
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left column: Avatar */}
-          <div className="size-50">
+          <div className="size-50 self-center md:self-start">
             <img
               src={image}
               alt="Instructor Avatar"
