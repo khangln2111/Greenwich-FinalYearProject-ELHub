@@ -70,8 +70,6 @@ export interface CourseDetailVm {
   prerequisites: string[];
 
   categoryName: string;
-  instructorName: string;
-  instructorId: string;
 
   createdAt: string;
   updatedAt: string;
@@ -79,6 +77,16 @@ export interface CourseDetailVm {
   enrollmentCount: number;
   reviewCount: number;
   averageRating: number;
+
+  instructorName: string;
+  instructorId: string;
+  instructorAvatarUrl: string | null;
+  instructorProfessionalTitle: string | null;
+  instructorAbout: string | null;
+  instructorAverageRating: number;
+  instructorReviewCount: number;
+  instructorCourseCount: number;
+  instructorStudentCount: number;
 }
 
 export interface LearningCourseVm {

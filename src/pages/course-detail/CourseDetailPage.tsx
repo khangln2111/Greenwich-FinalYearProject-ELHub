@@ -200,7 +200,7 @@ const CourseDetailPage = () => {
                   />
                 </Tabs.Panel>
                 <Tabs.Panel value={CourseDetailTab.Instructor}>
-                  <InstructorTab />
+                  <InstructorTab courseDetail={course} />
                 </Tabs.Panel>
               </div>
             </Tabs>
