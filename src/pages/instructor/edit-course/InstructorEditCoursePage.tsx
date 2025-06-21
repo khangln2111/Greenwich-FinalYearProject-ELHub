@@ -90,7 +90,11 @@ export default function UpdateCoursePage() {
             />
           </Tabs.Panel>
           <Tabs.Panel value="Instructor">
-            <InstructorTab />
+            {courseDetail ? (
+              <InstructorTab courseId={courseDetail} />
+            ) : (
+              <div>No course data found.</div>
+            )}
           </Tabs.Panel>
         </div>
       </Tabs>

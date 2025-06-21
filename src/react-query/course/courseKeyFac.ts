@@ -11,4 +11,7 @@ export const courseKeyFac = createQueryKeys("courses", {
   getCourseLearning: (id: string) => ({
     queryKey: [id],
   }),
+  getInstructorByCourseId: (courseId: string) => ({
+    queryKey: [courseId],
+  }),
 });

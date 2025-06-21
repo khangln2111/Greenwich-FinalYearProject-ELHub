@@ -147,13 +147,13 @@ const CourseDetailPage = () => {
                 </div>
               </div>
               {/* course preview */}
-              <div className="aspect-video relative rounded-lg overflow-hidden cursor-pointer mt-10 border">
+              <div className="aspect-video rounded-lg overflow-hidden cursor-pointer mt-10 border">
                 <VideoPlayerWithThumbnail
                   classNames={{
                     playIconWrapper: "md:size-16",
                     playIcon: "md:size-8",
+                    previewImage: "size-full",
                   }}
-                  className="size-full"
                   videoUrl={course.promoVideoUrl}
                   previewThumbnailUrl={course.imageUrl}
                 />
@@ -200,7 +200,7 @@ const CourseDetailPage = () => {
                   />
                 </Tabs.Panel>
                 <Tabs.Panel value={CourseDetailTab.Instructor}>
-                  <InstructorTab courseDetail={course} />
+                  <InstructorTab courseId={courseId} />
                 </Tabs.Panel>
               </div>
             </Tabs>

@@ -6,6 +6,7 @@ import {
   CourseQueryCriteria,
   CourseVm,
   CreateCourseCommand,
+  InstructorVm,
   LearningCourseVm,
   UpdateCourseCommand,
 } from "./course.types";
@@ -92,5 +93,10 @@ export const updateCourse = async (command: UpdateCourseCommand) => {
 
 export const deleteCourse = async (id: string) => {
   const response = await apiClient.delete<ApiSuccessResponse>(`${BASE_URL}/${id}`);
+  return response.data;
+};
+
+export const getInstructorByCourseId = async (courseId: string) => {
+  const response = await apiClient.get<InstructorVm>(`${BASE_URL}/${courseId}/instructor`);
   return response.data;
 };

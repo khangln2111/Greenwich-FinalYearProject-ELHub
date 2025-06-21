@@ -9,6 +9,7 @@ import {
   getCourseDetail,
   getCourseLearning,
   getCourses,
+  getInstructorByCourseId,
   updateCourse,
 } from "./courseApi";
 import { useAppStore } from "../../zustand/store";
@@ -121,5 +122,21 @@ export const useDeleteCourse = () => {
           },
         ],
       }),
+  });
+};
+
+export const useGetInstructorByCourseId = (courseId: string) => {
+  return useQuery({
+    queryKey: keyFac.courses.getInstructorByCourseId(courseId).queryKey,
+    queryFn: () => getInstructorByCourseId(courseId),
+    enabled: !!courseId,
+    retry: (failureCount, error) => {
+      // ❌ Không retry nếu là 404
+      if (error && error.response?.status === 404) {
+        return false;
+      }
+      // ✅ Retry tối đa 2 lần cho lỗi khác
+      return failureCount < 2;
+    },
   });
 };

@@ -11,6 +11,7 @@ type VideoPlayerWithThumbnailProps = {
   classNames?: {
     playIconWrapper?: string;
     playIcon?: string;
+    previewImage?: string;
   };
   previewThumbnailUrl?: string;
   onVideoEnd?: () => void;
@@ -50,7 +51,7 @@ export default function VideoPlayerWithThumbnail({
   }, [videoUrl, previewThumbnailUrl]);
 
   return (
-    <div className={cn("relative size-full object-cover", className)}>
+    <div className={cn("relative size-full", className)}>
       <ReactPlayer
         key={videoUrl}
         url={videoUrl}
@@ -63,7 +64,11 @@ export default function VideoPlayerWithThumbnail({
         onEnded={() => onVideoEnd?.()}
         light={
           thumbnail ? (
-            <img src={thumbnail} alt="thumbnail" className="aspect-video object-cover" />
+            <img
+              src={thumbnail}
+              alt="thumbnail"
+              className={cn("object-cover aspect-video", classNames?.previewImage)}
+            />
           ) : (
             <div className="bg-black size-full" />
           )

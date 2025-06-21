@@ -1,12 +1,20 @@
 import { Spoiler, Title } from "@mantine/core";
 import { MessageSquare, PlayCircle, Star, Users } from "lucide-react";
 import image from "../../../assets/placeholder/avatar-placeholder.jpg";
-import { CourseDetailVm } from "../../../react-query/course/course.types";
+import { useGetInstructorByCourseId } from "../../../react-query/course/courseHooks";
+import { Navigate } from "react-router-dom";
+import CenterLoader from "../../../components/CenterLoader";
 
 type InstructorTabProps = {
-  courseDetail: CourseDetailVm;
+  courseId: string;
 };
-const InstructorTab = ({ courseDetail }: InstructorTabProps) => {
+const InstructorTab = ({ courseId: courseId }: InstructorTabProps) => {
+  const { data, isPending, error } = useGetInstructorByCourseId(courseId);
+
+  if (error || !courseId) return <Navigate to="/404" replace />;
+
+  if (isPending) return <CenterLoader />;
+
   return (
     <div>
       <Title order={2}>Meet your instructor</Title>
@@ -18,7 +26,7 @@ const InstructorTab = ({ courseDetail }: InstructorTabProps) => {
           {/* Left column: Avatar */}
           <div className="size-50 self-center md:self-start">
             <img
-              src={courseDetail?.instructorAvatarUrl || image}
+              src={data.avatarUrl || image}
               alt="Instructor Avatar"
               className="max-w-full aspect-square object-cover rounded-md"
             />
@@ -26,11 +34,9 @@ const InstructorTab = ({ courseDetail }: InstructorTabProps) => {
 
           {/* Right column: Instructor Info + Description */}
           <div className="md:flex-6 flex flex-col">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {courseDetail.instructorName}
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{data.name}</h3>
             <p className="font-medium text-gray-500 dark:text-zinc-400">
-              {courseDetail.instructorProfessionalTitle || "Software Engineer & Instructor"}
+              {data.professionalTitle || "Software Engineer & Instructor"}
             </p>
 
             {/* Stats */}
@@ -38,26 +44,26 @@ const InstructorTab = ({ courseDetail }: InstructorTabProps) => {
               <div className="flex items-center gap-2">
                 <Star className="text-yellow-500" size={16} fill="currentColor" stroke="none" />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
-                  {courseDetail.instructorAverageRating} Instructor Rating
+                  {data.averageRating} Instructor Rating
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <MessageSquare className="text-blue-500" size={16} />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
-                  {courseDetail.instructorReviewCount} Reviews
+                  {data.reviewCount} Reviews
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="text-orange-500" size={16} />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
-                  {courseDetail.instructorStudentCount} Students
+                  {data.studentCount} Students
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <PlayCircle className="text-rose-500" size={16} />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
-                  {courseDetail.instructorCourseCount} Courses
+                  {data.courseCount} Courses
                 </span>
               </div>
             </div>
@@ -65,7 +71,7 @@ const InstructorTab = ({ courseDetail }: InstructorTabProps) => {
             {/* Description with Spoiler */}
             <Spoiler maxHeight={100} showLabel="Show more" hideLabel="Hide">
               <p className="mt-3 text-gray-800 dark:text-gray-400 leading-loose">
-                {courseDetail.instructorAbout ||
+                {data.about ||
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
               </p>
             </Spoiler>

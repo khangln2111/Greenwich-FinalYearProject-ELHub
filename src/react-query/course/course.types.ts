@@ -186,3 +186,15 @@ export interface Experience {
   startDate: string;
   endDate?: string; // Optional if currently employed
 }
+
+export interface InstructorVm {
+  id: string;
+  name: string;
+  avatarUrl: string | null;
+  professionalTitle: string | null;
+  about: string | null;
+  averageRating: number;
+  reviewCount: number;
+  courseCount: number;
+  studentCount: number;
+}
