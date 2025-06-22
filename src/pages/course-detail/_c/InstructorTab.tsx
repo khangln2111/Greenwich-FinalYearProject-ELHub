@@ -1,20 +1,12 @@
 import { Spoiler, Title } from "@mantine/core";
 import { MessageSquare, PlayCircle, Star, Users } from "lucide-react";
 import image from "../../../assets/placeholder/avatar-placeholder.jpg";
-import { useGetInstructorByCourseId } from "../../../react-query/course/courseHooks";
-import { Navigate } from "react-router-dom";
-import CenterLoader from "../../../components/CenterLoader";
+import { CourseDetailVm } from "../../../react-query/course/course.types";
 
 type InstructorTabProps = {
-  courseId: string;
+  courseDetail: CourseDetailVm;
 };
-const InstructorTab = ({ courseId: courseId }: InstructorTabProps) => {
-  const { data, isPending, error } = useGetInstructorByCourseId(courseId);
-
-  if (error || !courseId) return <Navigate to="/404" replace />;
-
-  if (isPending) return <CenterLoader />;
-
+const InstructorTab = ({ courseDetail }: InstructorTabProps) => {
   return (
     <div>
       <Title order={2}>Meet your instructor</Title>
@@ -24,19 +16,21 @@ const InstructorTab = ({ courseId: courseId }: InstructorTabProps) => {
       >
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left column: Avatar */}
-          <div className="size-50 self-center md:self-start">
+          <div className="size-50 self-center md:self-start shadow-md border overflow-hidden rounded-md aspect-square">
             <img
-              src={data.avatarUrl || image}
+              src={courseDetail.instructorAvatarUrl || image}
               alt="Instructor Avatar"
-              className="max-w-full aspect-square object-cover rounded-md"
+              className="object-cover size-full"
             />
           </div>
 
           {/* Right column: Instructor Info + Description */}
           <div className="md:flex-6 flex flex-col">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{data.name}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {courseDetail.instructorName}
+            </h3>
             <p className="font-medium text-gray-500 dark:text-zinc-400">
-              {data.professionalTitle || "Software Engineer & Instructor"}
+              {courseDetail.instructorProfessionalTitle || "Software Engineer & Instructor"}
             </p>
 
             {/* Stats */}
@@ -44,26 +38,26 @@ const InstructorTab = ({ courseId: courseId }: InstructorTabProps) => {
               <div className="flex items-center gap-2">
                 <Star className="text-yellow-500" size={16} fill="currentColor" stroke="none" />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
-                  {data.averageRating} Instructor Rating
+                  {courseDetail.instructorAverageRating} Instructor Rating
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <MessageSquare className="text-blue-500" size={16} />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
-                  {data.reviewCount} Reviews
+                  {courseDetail.instructorReviewCount} Reviews
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="text-orange-500" size={16} />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
-                  {data.studentCount} Students
+                  {courseDetail.instructorStudentCount} Students
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <PlayCircle className="text-rose-500" size={16} />
                 <span className="text-md font-medium text-zinc-600 dark:text-zinc-400">
-                  {data.courseCount} Courses
+                  {courseDetail.instructorCourseCount} Courses
                 </span>
               </div>
             </div>
@@ -71,7 +65,7 @@ const InstructorTab = ({ courseId: courseId }: InstructorTabProps) => {
             {/* Description with Spoiler */}
             <Spoiler maxHeight={100} showLabel="Show more" hideLabel="Hide">
               <p className="mt-3 text-gray-800 dark:text-gray-400 leading-loose">
-                {data.about ||
+                {courseDetail.instructorAbout ||
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
               </p>
             </Spoiler>
