@@ -38,15 +38,30 @@ public class CourseDetailVm
 
     public required string CategoryName { get; init; }
 
-    public required string InstructorName { get; init; }
-
-    public required string InstructorId { get; init; }
 
     public int ReviewCount { get; init; }
 
     public double AverageRating { get; init; }
 
     public int EnrollmentCount { get; init; }
+
+    public required string InstructorId { get; init; }
+
+    public string InstructorName { get; init; } = string.Empty;
+
+    public string InstructorAvatarUrl { get; init; } = string.Empty;
+
+    public string InstructorProfessionalTitle { get; init; } = string.Empty;
+
+    public string InstructorAbout { get; init; } = string.Empty;
+
+    public double InstructorAverageRating { get; init; }
+
+    public int InstructorReviewCount { get; init; }
+
+    public int InstructorCourseCount { get; init; }
+
+    public int InstructorStudentCount { get; init; }
 
     public DateTime CreatedAt { get; init; }
 

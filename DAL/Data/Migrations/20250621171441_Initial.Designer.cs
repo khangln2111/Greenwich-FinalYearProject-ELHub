@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250619092337_AddWorkingAvatarToUser")]
-    partial class AddWorkingAvatarToUser
+    [Migration("20250621171441_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,10 @@ namespace DAL.Data.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DisplayName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -168,12 +172,8 @@ namespace DAL.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<Guid?>("WorkingAvatarId")
+                    b.Property<Guid?>("WorkAvatarId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("WorkingName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -187,7 +187,7 @@ namespace DAL.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("WorkingAvatarId");
+                    b.HasIndex("WorkAvatarId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -279,9 +279,6 @@ namespace DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
@@ -333,8 +330,6 @@ namespace DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -937,13 +932,13 @@ namespace DAL.Data.Migrations
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
-                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "WorkingAvatar")
+                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "WorkAvatar")
                         .WithMany()
-                        .HasForeignKey("WorkingAvatarId");
+                        .HasForeignKey("WorkAvatarId");
 
                     b.Navigation("Avatar");
 
-                    b.Navigation("WorkingAvatar");
+                    b.Navigation("WorkAvatar");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Cart", b =>
@@ -978,10 +973,6 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Data.Entities.Course", b =>
                 {
-                    b.HasOne("DAL.Data.Entities.ApplicationUser", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("DAL.Data.Entities.Category", "Category")
                         .WithMany("Courses")
                         .HasForeignKey("CategoryId")
@@ -993,7 +984,7 @@ namespace DAL.Data.Migrations
                         .HasForeignKey("ImageId");
 
                     b.HasOne("DAL.Data.Entities.ApplicationUser", "Instructor")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();

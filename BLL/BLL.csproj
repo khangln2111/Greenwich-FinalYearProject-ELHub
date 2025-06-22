@@ -31,7 +31,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Validations\OrderValidators\" />
+        <Folder Include="DTOs\InstructorDTOs\"/>
+        <Folder Include="Validations\OrderValidators\"/>
     </ItemGroup>
 
 </Project>

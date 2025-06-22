@@ -29,7 +29,6 @@ public class ApplicationUser : IdentityUser<Guid>
     public string? FavoriteQuote { get; set; }
     public string? FavoriteQuoteCite { get; set; }
 
-
     public ICollection<Experience> Experiences { get; init; } = new List<Experience>();
 
     public bool IsActivated { get; set; } = false;

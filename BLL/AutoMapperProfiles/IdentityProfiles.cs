@@ -26,16 +26,12 @@ public class IdentityProfiles : Profile
 
         CreateMap<ApplicationUser, WorkProfileVm>()
             .ForMember(dest => dest.WorkAvatarUrl,
-                opt => opt.MapFrom(src => src.WorkAvatar != null ? src.WorkAvatar.Url : null))
-            .ForMember(dest => dest.DisplayName,
-                opt => opt.MapFrom(src => src.DisplayName))
-            .ForMember(dest => dest.FavoriteQuote,
-                opt => opt.MapFrom(src => src.FavoriteQuote))
-            .ForMember(dest => dest.FavoriteQuoteCite,
-                opt => opt.MapFrom(src => src.FavoriteQuoteCite))
-            .ForMember(dest => dest.About,
-                opt => opt.MapFrom(src => src.About))
-            .ForMember(dest => dest.ProfessionalTitle,
-                opt => opt.MapFrom(src => src.ProfessionalTitle));
+                opt => opt.MapFrom(src => src.WorkAvatar != null ? src.WorkAvatar.Url : null));
+
+        CreateMap<ApplicationUser, InfoMeVm>()
+            .ForMember(dest => dest.AvatarUrl,
+                opt => opt.MapFrom(src => src.Avatar != null ? src.Avatar.Url : null))
+            .ForMember(dest => dest.Roles,
+                opt => opt.MapFrom(src => src.Roles.Select(ur => ur.Name).ToArray()));
     }
 }

@@ -84,13 +84,12 @@ public class CourseService(
     {
         var course = await context.Courses
             .AsNoTracking()
-            .Where(c => c.Id == id)
             .Include(c => c.Category)
             .Include(c => c.Image)
             .Include(c => c.PromoVideo)
             .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
             .ProjectTo<CourseDetailVm>(mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(c => c.Id == id);
 
         if (course == null) throw new NotFoundException(nameof(Course), id);
 
@@ -187,6 +186,26 @@ public class CourseService(
         context.Courses.Remove(course);
         await context.SaveChangesAsync();
         return "Deleted course successfully";
+    }
+
+    public async Task<InstructorVm> GetInstructorByCourseId(Guid courseId)
+    {
+        var course = await context.Courses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+
+        if (course == null) throw new NotFoundException(nameof(Course), courseId);
+
+        var instructor = await context.Users
+            .AsNoTracking()
+            .Where(u => u.Id == course.InstructorId)
+            .ProjectTo<InstructorVm>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+
+
+        if (instructor == null) throw new NotFoundException(nameof(Course), courseId);
+
+        return instructor;
     }
 
     //Check if the related Category with the Course exists

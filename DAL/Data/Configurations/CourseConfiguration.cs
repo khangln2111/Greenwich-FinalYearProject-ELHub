@@ -39,7 +39,7 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
 
 
         builder.HasOne(c => c.Instructor)
-            .WithMany()
+            .WithMany(i => i.Courses)
             .HasForeignKey(c => c.InstructorId)
             .OnDelete(DeleteBehavior.NoAction);
     }

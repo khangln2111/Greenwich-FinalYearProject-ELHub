@@ -93,9 +93,12 @@ namespace DAL.Data.Migrations
                     Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: true),
-                    WorkingName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    WorkAvatarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ProfessionalTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     About = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    FavoriteQuote = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    FavoriteQuoteCite = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     IsActivated = table.Column<bool>(type: "bit", nullable: false),
                     IsInitialPasswordChanged = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -119,6 +122,11 @@ namespace DAL.Data.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Media_AvatarId",
                         column: x => x.AvatarId,
+                        principalTable: "Media",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Media_WorkAvatarId",
+                        column: x => x.WorkAvatarId,
                         principalTable: "Media",
                         principalColumn: "Id");
                 });
@@ -269,18 +277,12 @@ namespace DAL.Data.Migrations
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PromoVideoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     InstructorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Courses_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Courses_AspNetUsers_InstructorId",
                         column: x => x.InstructorId,
@@ -691,6 +693,11 @@ namespace DAL.Data.Migrations
                 column: "AvatarId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_WorkAvatarId",
+                table: "AspNetUsers",
+                column: "WorkAvatarId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -712,11 +719,6 @@ namespace DAL.Data.Migrations
                 table: "Carts",
                 column: "UserId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Courses_ApplicationUserId",
-                table: "Courses",
-                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Courses_CategoryId",

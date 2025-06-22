@@ -2,6 +2,7 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.IdentityDTOs;
 using BLL.Exceptions;
@@ -290,22 +291,13 @@ public class IdentityService(
         var user = await context.Users
             .Include(u => u.Avatar)
             .Include(u => u.Roles)
+            .ProjectTo<InfoMeVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(u => u.Id == currentUser.Id);
 
         if (user is null)
             throw new NotFoundException("User not found");
 
-        return new InfoMeVm
-        {
-            Id = user.Id,
-            Email = user.Email ?? string.Empty,
-            FirstName = user.FirstName ?? string.Empty,
-            LastName = user.LastName ?? string.Empty,
-            Roles = currentUser.Roles.ToArray(),
-            AvatarUrl = user.Avatar?.Url,
-            Gender = user.Gender,
-            DateOfBirth = user.DateOfBirth
-        };
+        return user;
     }
 
     public async Task<WorkProfileVm> GetWorkProfileSelf()
@@ -314,24 +306,16 @@ public class IdentityService(
         if (currentUser is null)
             throw new UnauthorizedAccessException("User not authenticated");
 
-        var user = await context.Users
+        var workProfile = await context.Users
             .Include(u => u.WorkAvatar)
             .Include(u => u.Roles)
+            .ProjectTo<WorkProfileVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(u => u.Id == currentUser.Id);
 
-        if (user is null)
+        if (workProfile is null)
             throw new NotFoundException("User not found");
 
-        return new WorkProfileVm
-        {
-            Id = user.Id,
-            WorkAvatarUrl = user.WorkAvatar?.Url,
-            DisplayName = user.DisplayName,
-            FavoriteQuote = user.FavoriteQuote,
-            FavoriteQuoteCite = user.FavoriteQuoteCite,
-            About = user.About,
-            ProfessionalTitle = user.ProfessionalTitle
-        };
+        return workProfile;
     }
 
     public async Task<Success> UpdateWorkProfileSelf(UpdateWorkProfileSelfCommand selfCommand)

@@ -22,7 +22,6 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
 
     //GET: /api/Reviews/{id:guid}
     [HttpGet("{id:guid}")]
-    [Authorize]
     [ProducesResponseType<ReviewVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetReviewById(Guid id)

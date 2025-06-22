@@ -25,15 +25,11 @@ public class ReviewService(
 {
     public async Task<Paged<ReviewVm>> GetListByCourseId(Guid courseId, GridifyQuery query)
     {
-        var currentUser = currentUserUtility.GetCurrentUser();
-        if (currentUser == null) throw new UnauthorizedException();
-
         var result = await context.Reviews
             .AsNoTracking()
-            .Where(r => r.Enrollment.UserId == currentUser.Id && r.Enrollment.Course.Id == courseId)
+            .Where(r => r.Enrollment.Course.Id == courseId)
             .Include(r => r.Enrollment).ThenInclude(e => e.Course)
             .GridifyToAsync<Review, ReviewVm>(query, mapper, gridifyMapper);
-
 
         return result;
     }

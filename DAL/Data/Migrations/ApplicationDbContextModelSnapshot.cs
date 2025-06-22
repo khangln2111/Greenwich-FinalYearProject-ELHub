@@ -276,9 +276,6 @@ namespace DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
@@ -330,8 +327,6 @@ namespace DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -975,10 +970,6 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Data.Entities.Course", b =>
                 {
-                    b.HasOne("DAL.Data.Entities.ApplicationUser", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("DAL.Data.Entities.Category", "Category")
                         .WithMany("Courses")
                         .HasForeignKey("CategoryId")
@@ -990,7 +981,7 @@ namespace DAL.Data.Migrations
                         .HasForeignKey("ImageId");
 
                     b.HasOne("DAL.Data.Entities.ApplicationUser", "Instructor")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();

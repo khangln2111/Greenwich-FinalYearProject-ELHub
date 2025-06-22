@@ -72,4 +72,14 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         var result = await courseService.Delete(id);
         return Ok(result);
     }
+
+    // GET: api/Courses/{courseId}/Instructor
+    [HttpGet("{courseId:guid}/Instructor")]
+    [ProducesResponseType<InstructorVm>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetInstructorByCourseId(Guid courseId)
+    {
+        var instructor = await courseService.GetInstructorByCourseId(courseId);
+        return Ok(instructor);
+    }
 }

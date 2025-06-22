@@ -1,5 +1,5 @@
 ﻿namespace BLL.BusinessServices.Abstract;
 
-public interface IGiftService
+public interface IUserService
 {
 }

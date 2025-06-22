@@ -18,4 +18,6 @@ public interface ICourseService
     Task<LearningCourseVm> GetCourseLearning(Guid id);
 
     Task<string> Delete(Guid id);
+
+    Task<InstructorVm> GetInstructorByCourseId(Guid courseId);
 }
