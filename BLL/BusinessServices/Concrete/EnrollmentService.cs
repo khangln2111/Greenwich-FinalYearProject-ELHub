@@ -40,13 +40,13 @@ public class EnrollmentService(
             throw new NotFoundException("Inventory item not found or does not belong to the current user");
 
         if (inventoryItem.Quantity <= 0)
-            throw new BadRequestException("No remaining quantity for this item", ErrorCode.InvalidOperation);
+            throw new BadRequestException("No remaining quantity for this item", ErrorCode.NoInventoryLeft);
 
         //validate if the user is already enrolled in the course
         var alreadyEnrolled = await context.Enrollments
             .AnyAsync(e => e.UserId == currentUser.Id && e.CourseId == inventoryItem.CourseId);
         if (alreadyEnrolled)
-            throw new BadRequestException("User is already enrolled in this course", ErrorCode.InvalidOperation);
+            throw new BadRequestException("User is already enrolled in this course", ErrorCode.CourseAlreadyEnrolled);
 
         // Create a new enrollment
         var enrollment = new Enrollment

@@ -11,5 +11,10 @@ public class GiftConfiguration : IEntityTypeConfiguration<Gift>
     {
         builder.Property(g => g.ReceiverEmail)
             .HasMaxLength(AppConstants.Gift.ReceiverEmailMaxLength);
+
+        builder.HasOne(g => g.InventoryItem)
+            .WithMany()
+            .HasForeignKey(g => g.InventoryItemId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

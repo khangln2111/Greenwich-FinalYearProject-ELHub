@@ -410,13 +410,16 @@ namespace DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CourseId")
+                    b.Property<Guid?>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("GiverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InventoryItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ReceiverEmail")
@@ -441,6 +444,8 @@ namespace DAL.Data.Migrations
                     b.HasIndex("CourseId");
 
                     b.HasIndex("GiverId");
+
+                    b.HasIndex("InventoryItemId");
 
                     b.ToTable("Gifts");
                 });
@@ -1031,11 +1036,9 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Data.Entities.Gift", b =>
                 {
-                    b.HasOne("DAL.Data.Entities.Course", "Course")
+                    b.HasOne("DAL.Data.Entities.Course", null)
                         .WithMany("Gifts")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("DAL.Data.Entities.ApplicationUser", "Giver")
                         .WithMany()
@@ -1043,9 +1046,15 @@ namespace DAL.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
+                    b.HasOne("DAL.Data.Entities.InventoryItem", "InventoryItem")
+                        .WithMany()
+                        .HasForeignKey("InventoryItemId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Giver");
+
+                    b.Navigation("InventoryItem");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Inventory", b =>

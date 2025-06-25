@@ -10,9 +10,9 @@ public class Gift : BaseEntity
 
     public required string ReceiverEmail { get; set; }
 
-    public Guid CourseId { get; set; }
+    public Guid InventoryItemId { get; set; }
 
-    public Course Course { get; set; } = null!;
+    public InventoryItem InventoryItem { get; set; } = null!;
 
     public GiftStatus Status { get; set; } = GiftStatus.Pending;
 

@@ -31,6 +31,56 @@ public class EmailUtility : IEmailUtility
         await _client.SendMailAsync(message);
     }
 
+    public Task SendGiftEmailAsync(string receiverEmail, string giftCode, string giverEmail,
+        string? giverName = null, string? courseTitle = null)
+    {
+        var subject = "🎁 You've Received a Gift!";
+
+        // Optional fallback
+        var senderDisplay = string.IsNullOrWhiteSpace(giverName)
+            ? giverEmail
+            : $"{giverName} ({giverEmail})";
+
+        var courseDisplay = string.IsNullOrWhiteSpace(courseTitle)
+            ? "a course"
+            : $"the course <strong>{courseTitle}</strong>";
+
+        var body = $@"
+    <div style='font-family:Segoe UI, sans-serif; padding: 24px; background-color:#f4f6fa; border-radius:12px; color:#333;'>
+        <h2 style='color:#2d6cdf;'>🎉 You've Received a Course Gift!</h2>
+        
+        <p style='font-size:16px; line-height:1.6;'>
+            Hi there!<br/><br/>
+            <strong>{senderDisplay}</strong> has gifted you {courseDisplay} on our learning platform.
+        </p>
+
+        <p style='font-size:16px;'>
+            To redeem your gift, simply copy the gift code below and paste it on the gift redemption page.
+        </p>
+
+        <div style='margin: 24px 0; padding: 20px; background-color:#eaf2ff; border: 2px dashed #2d6cdf; border-radius:8px; text-align:center;'>
+            <span style='font-size: 28px; letter-spacing:2px; color:#2d6cdf; font-weight: bold;'>{giftCode}</span>
+        </div>
+
+        <p style='font-size:16px;'>
+            Visit our website, navigate to <em>Redeem Gift</em>, and enter the code above.
+        </p>
+
+        <p style='font-size:16px;'>
+            We hope you enjoy your learning journey 🚀<br/>
+            — The Team
+        </p>
+
+        <hr style='margin: 30px 0; border:none; border-top:1px solid #ddd;'/>
+        <p style='font-size:12px; color:#888;'>
+            If you believe you received this message by mistake, you can safely ignore it.
+        </p>
+    </div>";
+
+        BackgroundJob.Enqueue(() => SendEmailAsync(receiverEmail, subject, body));
+        return Task.CompletedTask;
+    }
+
     //SendConfirmationEmailAsync with 6 digits code
     public Task SendConfirmationEmailAsync(string to, string code)
     {

@@ -454,37 +454,6 @@ namespace DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Gifts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GiverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReceiverEmail = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
-                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    RedeemedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RevokedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Gifts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Gifts_AspNetUsers_GiverId",
-                        column: x => x.GiverId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Gifts_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sections",
                 columns: table => new
                 {
@@ -621,6 +590,42 @@ namespace DAL.Data.Migrations
                         principalTable: "Sections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Gifts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GiverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReceiverEmail = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
+                    InventoryItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    RedeemedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RevokedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gifts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Gifts_AspNetUsers_GiverId",
+                        column: x => x.GiverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Gifts_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Gifts_InventoryItems_InventoryItemId",
+                        column: x => x.InventoryItemId,
+                        principalTable: "InventoryItems",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -766,6 +771,11 @@ namespace DAL.Data.Migrations
                 column: "GiverId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Gifts_InventoryItemId",
+                table: "Gifts",
+                column: "InventoryItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Inventories_UserId",
                 table: "Inventories",
                 column: "UserId",
@@ -876,9 +886,6 @@ namespace DAL.Data.Migrations
                 name: "Gifts");
 
             migrationBuilder.DropTable(
-                name: "InventoryItems");
-
-            migrationBuilder.DropTable(
                 name: "LectureProgresses");
 
             migrationBuilder.DropTable(
@@ -897,7 +904,7 @@ namespace DAL.Data.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "Inventories");
+                name: "InventoryItems");
 
             migrationBuilder.DropTable(
                 name: "Lectures");
@@ -907,6 +914,9 @@ namespace DAL.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Enrollments");
+
+            migrationBuilder.DropTable(
+                name: "Inventories");
 
             migrationBuilder.DropTable(
                 name: "Sections");

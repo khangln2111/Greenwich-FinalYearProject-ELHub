@@ -20,5 +20,7 @@ public enum ErrorCode
     Unauthorized,
     Forbidden,
     InvalidPaymentIntent,
-    ReviewAlreadyExists
+    NoInventoryLeft,
+    CourseAlreadyEnrolled,
+    GiftUnavailable
 }
