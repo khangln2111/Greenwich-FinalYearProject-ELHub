@@ -12,7 +12,7 @@ export interface GiftVm {
 
 export interface CreateGiftCommand {
   receiverEmail: string;
-  InventoryItemId: string;
+  inventoryItemId: string;
 }
 
 export interface ChangeGiftReceiverCommand {

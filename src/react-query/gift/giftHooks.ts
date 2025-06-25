@@ -10,7 +10,7 @@ import {
 } from "./giftApi";
 import { ChangeGiftReceiverCommand, CreateGiftCommand } from "./gift.types";
 import { handleApiError } from "../common-service/handleApiError";
-import { showErrorToast } from "../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { ErrorCode } from "../../http-client/api.types";
 
 export const useGetSentGifts = () => {
@@ -33,8 +33,11 @@ export const useCreateGift = () => {
   return useMutation({
     mutationFn: (command: CreateGiftCommand) => createGift(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts.queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.enrollments.getEnrollmentsSelf._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.inventories.getInventoryItemsSelf._def });
+      showSuccessToast("Gift Sent", "Your gift has been sent successfully!");
     },
     onError: (error) =>
       handleApiError(error, {

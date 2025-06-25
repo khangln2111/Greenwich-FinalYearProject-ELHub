@@ -1,10 +1,12 @@
 import { Button } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { CheckCircle, GiftIcon, KeyIcon } from "lucide-react";
+import { useState } from "react";
 import CenterLoader from "../../components/CenterLoader";
 import { useEnrollFromInventory } from "../../react-query/enrollment/enrollmentHooks";
 import { InventoryItemVm } from "../../react-query/inventory/inventory.types";
 import { useGetInventoryItemsSelf } from "../../react-query/inventory/inventoryHooks";
+import GiftModal from "./_c/GiftModal";
 
 function InventoryItemCard({
   item,
@@ -77,7 +79,7 @@ function InventoryItemCard({
           <div className="flex gap-2 justify-end">
             <Button
               onClick={handleConfirmEnroll}
-              disabled={item.enrolled}
+              disabled={item.enrolled || item.quantity <= 0}
               color="teal"
               loading={enrollFromInventoryMutation.isPending}
               leftSection={<KeyIcon size={16} />}
@@ -86,7 +88,7 @@ function InventoryItemCard({
             </Button>
             <Button
               leftSection={<GiftIcon size={16} />}
-              onClick={() => onGift?.(item.id)}
+              onClick={() => onGift?.(item.id) || item.quantity <= 0}
               className="bg-rose-500 dark:bg-rose-600"
             >
               Gift
@@ -100,6 +102,7 @@ function InventoryItemCard({
 
 export default function InventoryPage() {
   const { data, isPending, error } = useGetInventoryItemsSelf();
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   if (isPending) return <CenterLoader />;
 
@@ -115,9 +118,18 @@ export default function InventoryPage() {
         {data.items.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400 text-center">Your inventory is empty.</p>
         ) : (
-          data.items.map((item) => <InventoryItemCard key={item.id} item={item} />)
+          data.items.map((item) => (
+            <InventoryItemCard key={item.id} item={item} onGift={(id) => setSelectedItemId(id)} />
+          ))
         )}
       </div>
+      {selectedItemId && (
+        <GiftModal
+          opened={!!selectedItemId}
+          onClose={() => setSelectedItemId(null)}
+          inventoryItemId={selectedItemId}
+        />
+      )}
     </div>
   );
 }
