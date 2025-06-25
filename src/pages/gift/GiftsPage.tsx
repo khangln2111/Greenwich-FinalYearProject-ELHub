@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GiftVm } from "../../react-query/gift/gift.types";
+import { formatDate } from "../../utils/format";
 
 const mockSentGifts: GiftVm[] = [
   {
@@ -149,10 +150,10 @@ function GiftTable({
               </div>
               <div className="text-xs text-gray-400">
                 {canManage
-                  ? `Sent: ${formatDate(gift.createdAt)}`
+                  ? `Sent: ${formatDate({ input: gift.createdAt, formatType: "ddmmyyyy" })}`
                   : gift.redeemedAt
-                    ? `Redeemed: ${formatDate(gift.redeemedAt)}`
-                    : `Received: ${formatDate(gift.createdAt)}`}
+                    ? `Redeemed: ${formatDate({ input: gift.redeemedAt, formatType: "ddmmyyyy" })}`
+                    : `Received: ${formatDate({ input: gift.createdAt, formatType: "ddmmyyyy" })}`}
               </div>
             </div>
           </div>
@@ -196,12 +197,4 @@ function StatusBadge({ status }: { status: GiftVm["status"] }) {
     default:
       return null;
   }
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
 }
