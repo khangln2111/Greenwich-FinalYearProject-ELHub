@@ -42,7 +42,6 @@ const mockReceivedGifts: GiftVm[] = [
     receiverEmail: "you@example.com",
     giverName: "Alice Nguyen",
     inventoryItemName: "UI/UX Design Bootcamp",
-
     status: "Redeemed",
     createdAt: "2025-06-10T12:00:00Z",
     redeemedAt: "2025-06-11T14:00:00Z",
@@ -130,12 +129,12 @@ function GiftTable({
               <img
                 src={gift.inventoryItemImageUrl}
                 alt="Course"
-                className="w-16 h-16 rounded object-cover"
+                className="size-16 rounded object-cover border"
               />
             ) : (
-              <div className="w-16 h-16 bg-gray-200 rounded" />
+              <div className="size-16 bg-gray-200 rounded" />
             )}
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <div className="text-base font-semibold">{gift.inventoryItemName}</div>
               <div className="text-sm text-gray-500">
                 {canManage ? (
@@ -148,24 +147,22 @@ function GiftTable({
                   </>
                 )}
               </div>
+              <div className="text-xs text-gray-400">
+                {canManage
+                  ? `Sent: ${formatDate(gift.createdAt)}`
+                  : gift.redeemedAt
+                    ? `Redeemed: ${formatDate(gift.redeemedAt)}`
+                    : `Received: ${formatDate(gift.createdAt)}`}
+              </div>
             </div>
           </div>
 
-          {/* RIGHT: Status + Date + Actions */}
-          <div className="flex flex-col items-start sm:items-end gap-2">
-            <div className="flex items-center gap-2">
-              <StatusBadge status={gift.status} />
-              <span className="text-xs text-gray-400">
-                {canManage
-                  ? `Sent: ${new Date(gift.createdAt).toLocaleDateString()}`
-                  : gift.redeemedAt
-                    ? `Redeemed: ${new Date(gift.redeemedAt).toLocaleDateString()}`
-                    : `Received: ${new Date(gift.createdAt).toLocaleDateString()}`}
-              </span>
-            </div>
+          {/* RIGHT: Status + Actions */}
+          <div className="flex flex-row md:flex-col items-center justify-between md:items-end gap-3">
+            <StatusBadge status={gift.status} />
 
             {canManage && gift.status === "Pending" && (
-              <div className="flex gap-2 mt-1">
+              <div className="flex gap-2">
                 <button
                   onClick={() => onRevoke?.(gift.id)}
                   className="text-xs px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
@@ -186,6 +183,7 @@ function GiftTable({
     </div>
   );
 }
+
 function StatusBadge({ status }: { status: GiftVm["status"] }) {
   const base = "px-2 py-0.5 rounded-full text-xs font-medium";
   switch (status) {
@@ -198,4 +196,12 @@ function StatusBadge({ status }: { status: GiftVm["status"] }) {
     default:
       return null;
   }
+}
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 }
