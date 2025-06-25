@@ -71,6 +71,10 @@ export default function GiftsPage() {
     alert(`Change receiver for gift ID: ${giftId}`);
   };
 
+  const handleRedeem = (giftId: string) => {
+    alert(`Redeem gift ID: ${giftId}`);
+  };
+
   return (
     <div className="mx-auto px-4">
       <h1 className="text-3xl font-bold mb-6 text-center">🎁 My Gifts</h1>
@@ -79,14 +83,14 @@ export default function GiftsPage() {
         <button
           onClick={() => setActiveTab("sent")}
           className={`px-4 py-2 text-sm font-medium rounded-full transition ${
-            activeTab === "sent" ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200" }`}
+            activeTab === "sent" ? "bg-blue-600 text-white" : "bg-gray-50 hover:bg-gray-100" }`}
         >
           Sent
         </button>
         <button
           onClick={() => setActiveTab("received")}
           className={`px-4 py-2 text-sm font-medium rounded-full transition ${
-            activeTab === "received" ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200" }`}
+            activeTab === "received" ? "bg-blue-600 text-white" : "bg-gray-50 hover:bg-gray-100" }`}
         >
           Received
         </button>
@@ -100,7 +104,7 @@ export default function GiftsPage() {
           onChangeReceiver={handleChangeReceiver}
         />
       ) : (
-        <GiftTable gifts={mockReceivedGifts} />
+        <GiftTable gifts={mockReceivedGifts} onRedeem={handleRedeem} />
       )}
     </div>
   );
@@ -111,11 +115,13 @@ function GiftTable({
   canManage = false,
   onRevoke,
   onChangeReceiver,
+  onRedeem,
 }: {
   gifts: GiftVm[];
   canManage?: boolean;
   onRevoke?: (id: string) => void;
   onChangeReceiver?: (id: string) => void;
+  onRedeem?: (id: string) => void;
 }) {
   return (
     <div className="space-y-4">
@@ -130,10 +136,10 @@ function GiftTable({
               <img
                 src={gift.inventoryItemImageUrl}
                 alt="Course"
-                className="size-16 rounded object-cover border"
+                className="size-17 rounded object-cover border"
               />
             ) : (
-              <div className="size-16 bg-gray-200 rounded" />
+              <div className="size-17 bg-gray-200 rounded" />
             )}
             <div className="flex flex-col gap-1">
               <div className="text-base font-semibold">{gift.inventoryItemName}</div>
@@ -150,10 +156,19 @@ function GiftTable({
               </div>
               <div className="text-xs text-gray-400">
                 {canManage
-                  ? `Sent: ${formatDate({ input: gift.createdAt, formatType: "ddmmyyyy" })}`
+                  ? `Sent: ${formatDate({
+                      input: gift.createdAt,
+                      formatType: "ddmmyyyy",
+                    })}`
                   : gift.redeemedAt
-                    ? `Redeemed: ${formatDate({ input: gift.redeemedAt, formatType: "ddmmyyyy" })}`
-                    : `Received: ${formatDate({ input: gift.createdAt, formatType: "ddmmyyyy" })}`}
+                    ? `Redeemed: ${formatDate({
+                        input: gift.redeemedAt,
+                        formatType: "ddmmyyyy",
+                      })}`
+                    : `Received: ${formatDate({
+                        input: gift.createdAt,
+                        formatType: "ddmmyyyy",
+                      })}`}
               </div>
             </div>
           </div>
@@ -177,6 +192,15 @@ function GiftTable({
                   Change
                 </button>
               </div>
+            )}
+
+            {!canManage && gift.status === "Pending" && (
+              <button
+                onClick={() => onRedeem?.(gift.id)}
+                className="text-xs px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                Redeem
+              </button>
             )}
           </div>
         </div>
