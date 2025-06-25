@@ -7,7 +7,8 @@ const mockSentGifts: GiftVm[] = [
     receiverEmail: "friend@example.com",
     giverName: "You",
     inventoryItemName: "Complete React Course",
-    inventoryItemImageUrl: "https://source.unsplash.com/80x80/?react,code",
+    inventoryItemImageUrl:
+      "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
     status: "Pending",
     createdAt: "2025-06-24T08:30:00Z",
   },
@@ -16,7 +17,8 @@ const mockSentGifts: GiftVm[] = [
     receiverEmail: "teammate@example.com",
     giverName: "You",
     inventoryItemName: "TailwindCSS Mastery",
-    inventoryItemImageUrl: "https://source.unsplash.com/80x80/?tailwind,design",
+    inventoryItemImageUrl:
+      "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
     status: "Redeemed",
     createdAt: "2025-06-20T10:00:00Z",
     redeemedAt: "2025-06-21T10:00:00Z",
@@ -29,6 +31,8 @@ const mockSentGifts: GiftVm[] = [
     status: "Revoked",
     createdAt: "2025-06-15T09:00:00Z",
     revokedAt: "2025-06-16T11:00:00Z",
+    inventoryItemImageUrl:
+      "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
   },
 ];
 
@@ -38,10 +42,12 @@ const mockReceivedGifts: GiftVm[] = [
     receiverEmail: "you@example.com",
     giverName: "Alice Nguyen",
     inventoryItemName: "UI/UX Design Bootcamp",
-    inventoryItemImageUrl: "https://source.unsplash.com/80x80/?design,ui",
+
     status: "Redeemed",
     createdAt: "2025-06-10T12:00:00Z",
     redeemedAt: "2025-06-11T14:00:00Z",
+    inventoryItemImageUrl:
+      "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
   },
   {
     id: "5",
@@ -116,10 +122,10 @@ function GiftTable({
       {gifts.map((gift) => (
         <div
           key={gift.id}
-          className="bg-white p-4 rounded-xl shadow flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4"
+          className="bg-white p-4 rounded-xl shadow flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
           {/* LEFT: Image + Info */}
-          <div className="flex items-center gap-4 w-full sm:w-auto">
+          <div className="flex items-center gap-4 flex-1">
             {gift.inventoryItemImageUrl ? (
               <img
                 src={gift.inventoryItemImageUrl}
@@ -129,7 +135,7 @@ function GiftTable({
             ) : (
               <div className="w-16 h-16 bg-gray-200 rounded" />
             )}
-            <div>
+            <div className="flex flex-col">
               <div className="text-base font-semibold">{gift.inventoryItemName}</div>
               <div className="text-sm text-gray-500">
                 {canManage ? (
@@ -146,7 +152,7 @@ function GiftTable({
           </div>
 
           {/* RIGHT: Status + Date + Actions */}
-          <div className="flex flex-col items-start sm:items-end w-full sm:w-auto">
+          <div className="flex flex-col items-start sm:items-end gap-2">
             <div className="flex items-center gap-2">
               <StatusBadge status={gift.status} />
               <span className="text-xs text-gray-400">
@@ -159,7 +165,7 @@ function GiftTable({
             </div>
 
             {canManage && gift.status === "Pending" && (
-              <div className="flex gap-2">
+              <div className="flex gap-2 mt-1">
                 <button
                   onClick={() => onRevoke?.(gift.id)}
                   className="text-xs px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
@@ -180,7 +186,6 @@ function GiftTable({
     </div>
   );
 }
-
 function StatusBadge({ status }: { status: GiftVm["status"] }) {
   const base = "px-2 py-0.5 rounded-full text-xs font-medium";
   switch (status) {
