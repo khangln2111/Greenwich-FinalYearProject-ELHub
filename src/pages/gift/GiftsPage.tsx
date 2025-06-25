@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { GiftVm } from "../../react-query/gift/gift.types";
 import { formatDate } from "../../utils/format";
+import CusModal from "../../components/CusModal";
 
+// ----- MOCK DATA -----
 const mockSentGifts: GiftVm[] = [
   {
     id: "1",
     receiverEmail: "friend@example.com",
     giverName: "You",
-    inventoryItemName: "Complete React Course",
-    inventoryItemImageUrl:
+    giftName: "Complete React Course",
+    giftImageUrl:
       "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
     status: "Pending",
     createdAt: "2025-06-24T08:30:00Z",
@@ -17,8 +19,8 @@ const mockSentGifts: GiftVm[] = [
     id: "2",
     receiverEmail: "teammate@example.com",
     giverName: "You",
-    inventoryItemName: "TailwindCSS Mastery",
-    inventoryItemImageUrl:
+    giftName: "TailwindCSS Mastery",
+    giftImageUrl:
       "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
     status: "Redeemed",
     createdAt: "2025-06-20T10:00:00Z",
@@ -28,11 +30,11 @@ const mockSentGifts: GiftVm[] = [
     id: "3",
     receiverEmail: "oldfriend@example.com",
     giverName: "You",
-    inventoryItemName: "C# Fundamentals",
+    giftName: "C# Fundamentals",
     status: "Revoked",
     createdAt: "2025-06-15T09:00:00Z",
     revokedAt: "2025-06-16T11:00:00Z",
-    inventoryItemImageUrl:
+    giftImageUrl:
       "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
   },
 ];
@@ -42,26 +44,28 @@ const mockReceivedGifts: GiftVm[] = [
     id: "4",
     receiverEmail: "you@example.com",
     giverName: "Alice Nguyen",
-    inventoryItemName: "UI/UX Design Bootcamp",
+    giftName: "UI/UX Design Bootcamp",
     status: "Redeemed",
     createdAt: "2025-06-10T12:00:00Z",
     redeemedAt: "2025-06-11T14:00:00Z",
-    inventoryItemImageUrl:
+    giftImageUrl:
       "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
   },
   {
     id: "5",
     receiverEmail: "you@example.com",
     giverName: "Bob Tran",
-    inventoryItemName: "Next.js Fullstack Guide",
-    inventoryItemImageUrl: "https://source.unsplash.com/80x80/?nextjs,javascript",
+    giftName: "Next.js Fullstack Guide",
+    giftImageUrl: "https://source.unsplash.com/80x80/?nextjs,javascript",
     status: "Pending",
     createdAt: "2025-06-23T08:00:00Z",
   },
 ];
 
+// ----- MAIN COMPONENT -----
 export default function GiftsPage() {
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
+  const [redeemModalOpen, setRedeemModalOpen] = useState(false);
 
   const handleRevoke = (giftId: string) => {
     alert(`Revoke gift ID: ${giftId}`);
@@ -75,24 +79,38 @@ export default function GiftsPage() {
     alert(`Redeem gift ID: ${giftId}`);
   };
 
+  const handleRedeemGiftCode = (giftCode: string) => {
+    // Gọi API ở đây (hiện tại chỉ alert)
+    alert(`Redeem bằng mã gift code: ${giftCode}`);
+  };
+
   return (
     <div className="mx-auto px-4">
       <h1 className="text-3xl font-bold mb-6 text-center">🎁 My Gifts</h1>
 
-      <div className="flex justify-center space-x-4 mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-y-5">
+        <div className="flex gap-x-4">
+          <button
+            onClick={() => setActiveTab("sent")}
+            className={`px-4 py-2 text-sm font-medium rounded-full transition ${
+              activeTab === "sent" ? "bg-blue-600 text-white" : "bg-gray-50 hover:bg-gray-100" }`}
+          >
+            Sent
+          </button>
+          <button
+            onClick={() => setActiveTab("received")}
+            className={`px-4 py-2 text-sm font-medium rounded-full transition ${
+              activeTab === "received" ? "bg-blue-600 text-white" : "bg-gray-50 hover:bg-gray-100" }`}
+          >
+            Received
+          </button>
+        </div>
+
         <button
-          onClick={() => setActiveTab("sent")}
-          className={`px-4 py-2 text-sm font-medium rounded-full transition ${
-            activeTab === "sent" ? "bg-blue-600 text-white" : "bg-gray-50 hover:bg-gray-100" }`}
+          onClick={() => setRedeemModalOpen(true)}
+          className="text-sm px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
         >
-          Sent
-        </button>
-        <button
-          onClick={() => setActiveTab("received")}
-          className={`px-4 py-2 text-sm font-medium rounded-full transition ${
-            activeTab === "received" ? "bg-blue-600 text-white" : "bg-gray-50 hover:bg-gray-100" }`}
-        >
-          Received
+          Redeem by Gift Code
         </button>
       </div>
 
@@ -106,10 +124,17 @@ export default function GiftsPage() {
       ) : (
         <GiftTable gifts={mockReceivedGifts} onRedeem={handleRedeem} />
       )}
+
+      <RedeemGiftModal
+        open={redeemModalOpen}
+        onClose={() => setRedeemModalOpen(false)}
+        onSubmit={handleRedeemGiftCode}
+      />
     </div>
   );
 }
 
+// ----- TABLE COMPONENT -----
 function GiftTable({
   gifts,
   canManage = false,
@@ -130,11 +155,10 @@ function GiftTable({
           key={gift.id}
           className="bg-white p-4 rounded-xl shadow flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
-          {/* LEFT: Image + Info */}
           <div className="flex items-center gap-4 flex-1">
-            {gift.inventoryItemImageUrl ? (
+            {gift.giftImageUrl ? (
               <img
-                src={gift.inventoryItemImageUrl}
+                src={gift.giftImageUrl}
                 alt="Course"
                 className="size-17 rounded object-cover border"
               />
@@ -142,7 +166,7 @@ function GiftTable({
               <div className="size-17 bg-gray-200 rounded" />
             )}
             <div className="flex flex-col gap-1">
-              <div className="text-base font-semibold">{gift.inventoryItemName}</div>
+              <div className="text-base font-semibold">{gift.giftName}</div>
               <div className="text-sm text-gray-500">
                 {canManage ? (
                   <>
@@ -173,23 +197,22 @@ function GiftTable({
             </div>
           </div>
 
-          {/* RIGHT: Status + Actions */}
           <div className="flex flex-row md:flex-col items-center justify-between md:items-end gap-3">
             <StatusBadge status={gift.status} />
 
             {canManage && gift.status === "Pending" && (
               <div className="flex gap-2">
                 <button
-                  onClick={() => onRevoke?.(gift.id)}
-                  className="text-xs px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                >
-                  Revoke
-                </button>
-                <button
                   onClick={() => onChangeReceiver?.(gift.id)}
                   className="text-xs px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
                 >
                   Change
+                </button>
+                <button
+                  onClick={() => onRevoke?.(gift.id)}
+                  className="text-xs px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                >
+                  Revoke
                 </button>
               </div>
             )}
@@ -209,6 +232,7 @@ function GiftTable({
   );
 }
 
+// ----- STATUS BADGE -----
 function StatusBadge({ status }: { status: GiftVm["status"] }) {
   const base = "px-2 py-0.5 rounded-full text-xs font-medium";
   switch (status) {
@@ -221,4 +245,51 @@ function StatusBadge({ status }: { status: GiftVm["status"] }) {
     default:
       return null;
   }
+}
+
+// ----- MODAL COMPONENT -----
+function RedeemGiftModal({
+  open,
+  onClose,
+  onSubmit,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (giftCode: string) => void;
+}) {
+  const [giftCode, setGiftCode] = useState("");
+
+  const handleSubmit = () => {
+    if (!giftCode.trim()) return;
+    onSubmit(giftCode.trim());
+    onClose();
+    setGiftCode("");
+  };
+
+  if (!open) return null;
+
+  return (
+    <CusModal opened={open} onClose={onClose} title="Redeem Gift" size="500px">
+      <div>
+        <input
+          type="text"
+          value={giftCode}
+          onChange={(e) => setGiftCode(e.target.value)}
+          placeholder="Enter Gift Code"
+          className="w-full px-3 py-2 border rounded mb-4"
+        />
+        <div className="flex justify-end gap-4">
+          <button onClick={onClose} className="text-sm text-gray-500 hover:underline">
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="text-sm px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Redeem
+          </button>
+        </div>
+      </div>
+    </CusModal>
+  );
 }

@@ -7,6 +7,7 @@ import { orderKeyFac } from "../order/orderKeyFac";
 import { inventoryKeyFac } from "../inventory/inventoryKeyFac";
 import { enrollmentKeyFac } from "../enrollment/enrollmentKeyFac";
 import { reviewKeyFac } from "../review/reviewKeyFac";
+import { giftKeyFac } from "../gift/giftKeyFac";
 
 export const keyFac = mergeQueryKeys(
   courseKeyFac,
@@ -17,4 +18,5 @@ export const keyFac = mergeQueryKeys(
   inventoryKeyFac,
   enrollmentKeyFac,
   reviewKeyFac,
+  giftKeyFac,
 );

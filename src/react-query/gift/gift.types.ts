@@ -2,8 +2,8 @@ export interface GiftVm {
   id: string;
   receiverEmail: string;
   giverName: string;
-  inventoryItemName: string;
-  inventoryItemImageUrl?: string;
+  giftName: string;
+  giftImageUrl?: string;
   status: "Pending" | "Redeemed" | "Revoked";
   redeemedAt?: string;
   revokedAt?: string;

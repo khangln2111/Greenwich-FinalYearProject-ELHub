@@ -22,3 +22,13 @@ export const revokeGift = async (giftId: string) => {
   const response = await apiClient.delete(`${BASE_URL}/${giftId}/Revoke`);
   return response.data;
 };
+
+export const getSentGifts = async () => {
+  const response = await apiClient.get(`${BASE_URL}/Sent`);
+  return response.data;
+};
+
+export const getReceivedGifts = async () => {
+  const response = await apiClient.get(`${BASE_URL}/Received`);
+  return response.data;
+};
