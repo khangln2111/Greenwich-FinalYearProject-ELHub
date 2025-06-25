@@ -23,6 +23,7 @@ import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage
 import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
 import InstructorProfilePage from "../pages/instructor/profile/InstructorProfilePage";
 import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
+import GiftsPage from "../pages/gift/GiftsPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -66,7 +67,7 @@ const userRoute: RouteObject = {
         },
         {
           path: "gifts",
-          element: <p>User Gifts Page</p>,
+          element: <GiftsPage />,
         },
       ],
     },

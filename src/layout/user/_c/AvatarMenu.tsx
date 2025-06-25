@@ -83,7 +83,9 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           Inventory
         </Menu.Item>
-        <Menu.Item leftSection={<GiftIcon size={15} />}>Gifts</Menu.Item>
+        <Menu.Item leftSection={<GiftIcon size={15} />} component={Link} to="/dashboard/gifts">
+          Gifts
+        </Menu.Item>
 
         <Menu.Item
           leftSection={<IconSearch size={15} />}
