@@ -37,4 +37,7 @@ export enum ErrorCode {
   InvalidOtp = "InvalidOtp",
   Unauthorized = "Unauthorized",
   Forbidden = "Forbidden",
+  NoInventoryLeft = "NoInventoryLeft",
+  CourseAlreadyEnrolled = "CourseAlreadyEnrolled",
+  GiftUnavailable = "GiftUnavailable",
 }
