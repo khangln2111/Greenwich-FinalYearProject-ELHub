@@ -51,7 +51,7 @@ export const useLogout = () => {
   const logout = useAppStore.use.logout();
 
   const handleLogout = () => {
-    queryClient.removeQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
+    queryClient.clear();
     logout();
     navigate("/", { replace: true });
   };
