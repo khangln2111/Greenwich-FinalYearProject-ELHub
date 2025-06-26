@@ -1,14 +1,19 @@
 import { Button } from "@mantine/core";
-import { GiftVm } from "../../../react-query/gift/gift.types";
+import {
+  SentGiftVm,
+  ReceivedGiftVm,
+  GiftStatus,
+  GiftVm,
+} from "../../../react-query/gift/gift.types";
 import { formatDate } from "../../../utils/format";
 
-type GiftTableProps = {
-  gifts: GiftVm[];
+interface GiftTableProps {
+  gifts: (SentGiftVm | ReceivedGiftVm)[];
   canManage?: boolean;
   onRevoke?: (id: string) => void;
   onChangeReceiver?: (id: string) => void;
   onRedeem?: (id: string) => void;
-};
+}
 
 export function GiftTable({
   gifts,
@@ -22,7 +27,7 @@ export function GiftTable({
       {gifts.map((gift) => (
         <div
           key={gift.id}
-          className="bg-white p-4 rounded-xl shadow flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          className="bg-white p-4 rounded-xl shadow flex flex-col md:flex-row md:items-center md:justify-between gap-4"
         >
           <div className="flex items-center gap-4 flex-1">
             {gift.giftImageUrl ? (
@@ -39,11 +44,13 @@ export function GiftTable({
               <div className="text-sm text-gray-500">
                 {canManage ? (
                   <>
-                    <span className="font-medium">To:</span> {gift.receiverEmail}
+                    <span className="font-medium">To:</span>{" "}
+                    {"receiverEmail" in gift ? gift.receiverEmail : "-"}
                   </>
                 ) : (
                   <>
-                    <span className="font-medium">From:</span> {gift.giverName}
+                    <span className="font-medium">From:</span>{" "}
+                    {"giverName" in gift ? `${gift.giverName} - ${gift.giverEmail}` : "-"}
                   </>
                 )}
               </div>
@@ -69,7 +76,7 @@ export function GiftTable({
           <div className="flex flex-row md:flex-col items-center justify-between md:items-end gap-3">
             <StatusBadge status={gift.status} />
 
-            {canManage && gift.status === "Pending" && (
+            {canManage && gift.status === GiftStatus.Pending && (
               <div className="flex gap-2">
                 <Button
                   size="compact-sm"
@@ -90,7 +97,7 @@ export function GiftTable({
               </div>
             )}
 
-            {!canManage && gift.status === "Pending" && (
+            {!canManage && gift.status === GiftStatus.Pending && (
               <button
                 onClick={() => onRedeem?.(gift.id)}
                 className="text-xs px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"

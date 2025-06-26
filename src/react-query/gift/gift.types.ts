@@ -30,6 +30,7 @@ export interface SentGiftVm {
 export interface ReceivedGiftVm {
   id: string;
   giverName: string;
+  giverEmail: string;
   giftName: string;
   giftImageUrl?: string;
   status: GiftStatus;

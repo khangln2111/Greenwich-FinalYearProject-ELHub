@@ -1,73 +1,17 @@
 import { Button } from "@mantine/core";
 import { GemIcon } from "lucide-react";
 import { useState } from "react";
-import { GiftVm } from "../../react-query/gift/gift.types";
+import CenterLoader from "../../components/CenterLoader";
+import { useGetReceivedGifts, useGetSentGifts } from "../../react-query/gift/giftHooks";
 import { GiftTable } from "./_c/GiftTable";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
 
-// ----- MOCK DATA -----
-const mockSentGifts: GiftVm[] = [
-  {
-    id: "1",
-    receiverEmail: "friend@example.com",
-    giverName: "You",
-    giftName: "Complete React Course",
-    giftImageUrl:
-      "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
-    status: "Pending",
-    createdAt: "2025-06-24T08:30:00Z",
-  },
-  {
-    id: "2",
-    receiverEmail: "teammate@example.com",
-    giverName: "You",
-    giftName: "TailwindCSS Mastery",
-    giftImageUrl:
-      "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
-    status: "Redeemed",
-    createdAt: "2025-06-20T10:00:00Z",
-    redeemedAt: "2025-06-21T10:00:00Z",
-  },
-  {
-    id: "3",
-    receiverEmail: "oldfriend@example.com",
-    giverName: "You",
-    giftName: "C# Fundamentals",
-    status: "Revoked",
-    createdAt: "2025-06-15T09:00:00Z",
-    revokedAt: "2025-06-16T11:00:00Z",
-    giftImageUrl:
-      "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
-  },
-];
-
-const mockReceivedGifts: GiftVm[] = [
-  {
-    id: "4",
-    receiverEmail: "you@example.com",
-    giverName: "Alice Nguyen",
-    giftName: "UI/UX Design Bootcamp",
-    status: "Redeemed",
-    createdAt: "2025-06-10T12:00:00Z",
-    redeemedAt: "2025-06-11T14:00:00Z",
-    giftImageUrl:
-      "https://ramonoutdoors.com/wp-content/uploads/2024/07/types-of-sunfish-1024x576.jpg",
-  },
-  {
-    id: "5",
-    receiverEmail: "you@example.com",
-    giverName: "Bob Tran",
-    giftName: "Next.js Fullstack Guide",
-    giftImageUrl: "https://source.unsplash.com/80x80/?nextjs,javascript",
-    status: "Pending",
-    createdAt: "2025-06-23T08:00:00Z",
-  },
-];
-
-// ----- MAIN COMPONENT -----
 export default function GiftsPage() {
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
   const [redeemModalOpen, setRedeemModalOpen] = useState(false);
+
+  const { data: sentGifts, isLoading: loadingSent } = useGetSentGifts();
+  const { data: receivedGifts, isLoading: loadingReceived } = useGetReceivedGifts();
 
   const handleRevoke = (giftId: string) => {
     alert(`Revoke gift ID: ${giftId}`);
@@ -79,6 +23,23 @@ export default function GiftsPage() {
 
   const handleRedeem = (giftId: string) => {
     alert(`Redeem gift ID: ${giftId}`);
+  };
+
+  const renderGiftContent = () => {
+    if (activeTab === "sent") {
+      if (loadingSent) return <CenterLoader />;
+      return (
+        <GiftTable
+          gifts={sentGifts?.items ?? []}
+          canManage
+          onRevoke={handleRevoke}
+          onChangeReceiver={handleChangeReceiver}
+        />
+      );
+    } else {
+      if (loadingReceived) return <CenterLoader />;
+      return <GiftTable gifts={receivedGifts?.items ?? []} onRedeem={handleRedeem} />;
+    }
   };
 
   return (
@@ -113,16 +74,7 @@ export default function GiftsPage() {
         </Button>
       </div>
 
-      {activeTab === "sent" ? (
-        <GiftTable
-          gifts={mockSentGifts}
-          canManage
-          onRevoke={handleRevoke}
-          onChangeReceiver={handleChangeReceiver}
-        />
-      ) : (
-        <GiftTable gifts={mockReceivedGifts} onRedeem={handleRedeem} />
-      )}
+      {renderGiftContent()}
 
       <RedeemGiftModal open={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
     </div>
