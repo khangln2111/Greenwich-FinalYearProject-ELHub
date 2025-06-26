@@ -70,8 +70,8 @@ export default function InstructorCourseCard({ course }: Props) {
         </p> */}
         {/* rating */}
         <div className="flex items-center mt-2 mb-4 gap-2">
-          <Rating value={course.rating} />
-          <span className="text-sm text-gray-500 dark:text-gray-400">({course.ratingCount})</span>
+          <Rating readOnly value={course.averageRating} />
+          <span className="text-sm text-gray-500 dark:text-gray-400">({course.reviewCount})</span>
         </div>
 
         <div className="mt-4 flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">

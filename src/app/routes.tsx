@@ -2,7 +2,7 @@ import { createBrowserRouter, RouteObject } from "react-router-dom";
 import InstructorLayout from "../layout/instructor/InstructorLayout";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import UserLayout from "../layout/user/UserLayout";
-import VerifyEmailPage from "../pages/VerifyEmailPage";
+import VerifyEmailPage from "../pages/verify-email/VerifyEmailPage";
 import ForgotPasswordPage from "../pages/auth/forgot-password/ForgotPasswordPage";
 import LoginPage from "../pages/auth/login/LoginPage";
 import RegisterPage from "../pages/auth/register/RegisterPage";

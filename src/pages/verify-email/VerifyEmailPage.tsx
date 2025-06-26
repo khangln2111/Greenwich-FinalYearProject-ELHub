@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useConfirmEmail, useSendEmailConfirmationOtp } from "../react-query/auth/identityHooks";
+import { useConfirmEmail, useSendEmailConfirmationOtp } from "../../react-query/auth/identityHooks";
 
 const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams();

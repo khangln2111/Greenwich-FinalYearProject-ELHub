@@ -2,6 +2,8 @@ import { useState } from "react";
 import { GiftVm } from "../../react-query/gift/gift.types";
 import { GiftTable } from "./_c/GiftTable";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
+import { Button } from "@mantine/core";
+import { GemIcon, GiftIcon } from "lucide-react";
 
 // ----- MOCK DATA -----
 const mockSentGifts: GiftVm[] = [
@@ -101,12 +103,14 @@ export default function GiftsPage() {
           </button>
         </div>
 
-        <button
+        <Button
           onClick={() => setRedeemModalOpen(true)}
-          className="text-sm px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+          color="violet"
+          className="text-sm px-4 py-2 rounded transition"
+          leftSection={<GemIcon size={14} />}
         >
           Redeem by Gift Code
-        </button>
+        </Button>
       </div>
 
       {activeTab === "sent" ? (

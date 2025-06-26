@@ -11,7 +11,7 @@ interface GiftModalProps {
   inventoryItemId: string;
 }
 
-const GiftModal = ({ opened, onClose, inventoryItemId }: GiftModalProps) => {
+const GiftingModal = ({ opened, onClose, inventoryItemId }: GiftModalProps) => {
   const form = useForm<CreateGiftCommand>({
     validate: { receiverEmail: (v) => (/^\S+@\S+$/.test(v) ? null : "Invalid email") },
   });
@@ -46,4 +46,4 @@ const GiftModal = ({ opened, onClose, inventoryItemId }: GiftModalProps) => {
   );
 };
 
-export default GiftModal;
+export default GiftingModal;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CenterLoader from "../../components/CenterLoader";
 import { useGetInventoryItemsSelf } from "../../react-query/inventory/inventoryHooks";
-import GiftModal from "./_c/GiftModal";
+import GiftingModal from "./_c/GiftingModal";
 import InventoryItemCard from "./_c/InventoryItemCard";
 
 export default function InventoryPage() {
@@ -28,7 +28,7 @@ export default function InventoryPage() {
         )}
       </div>
       {selectedItemId && (
-        <GiftModal
+        <GiftingModal
           opened={!!selectedItemId}
           onClose={() => setSelectedItemId(null)}
           inventoryItemId={selectedItemId}

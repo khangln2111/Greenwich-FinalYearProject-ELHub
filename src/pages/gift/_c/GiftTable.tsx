@@ -1,3 +1,4 @@
+import { Button } from "@mantine/core";
 import { GiftVm } from "../../../react-query/gift/gift.types";
 import { formatDate } from "../../../utils/format";
 
@@ -70,18 +71,22 @@ export function GiftTable({
 
             {canManage && gift.status === "Pending" && (
               <div className="flex gap-2">
-                <button
+                <Button
+                  size="compact-sm"
                   onClick={() => onChangeReceiver?.(gift.id)}
-                  className="text-xs px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
+                  color="yellow"
+                  className="text-xs px-3 py-1 rounded"
                 >
                   Change
-                </button>
-                <button
+                </Button>
+                <Button
+                  size="compact-sm"
                   onClick={() => onRevoke?.(gift.id)}
-                  className="text-xs px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                  color="red"
+                  className="text-xs px-3 py-1 rounded"
                 >
                   Revoke
-                </button>
+                </Button>
               </div>
             )}
 
