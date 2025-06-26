@@ -1,9 +1,9 @@
+import { Button } from "@mantine/core";
+import { GemIcon } from "lucide-react";
 import { useState } from "react";
 import { GiftVm } from "../../react-query/gift/gift.types";
 import { GiftTable } from "./_c/GiftTable";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
-import { Button } from "@mantine/core";
-import { GemIcon, GiftIcon } from "lucide-react";
 
 // ----- MOCK DATA -----
 const mockSentGifts: GiftVm[] = [

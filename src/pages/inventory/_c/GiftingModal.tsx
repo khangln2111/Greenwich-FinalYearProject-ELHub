@@ -5,13 +5,13 @@ import { useCreateGift } from "../../../react-query/gift/giftHooks";
 import { CreateGiftCommand } from "../../../react-query/gift/gift.types";
 import { formSubmitWithFocus } from "../../../utils/form";
 
-interface GiftModalProps {
+interface GiftingModalProps {
   opened: boolean;
   onClose: () => void;
   inventoryItemId: string;
 }
 
-const GiftingModal = ({ opened, onClose, inventoryItemId }: GiftModalProps) => {
+const GiftingModal = ({ opened, onClose, inventoryItemId }: GiftingModalProps) => {
   const form = useForm<CreateGiftCommand>({
     validate: { receiverEmail: (v) => (/^\S+@\S+$/.test(v) ? null : "Invalid email") },
   });
