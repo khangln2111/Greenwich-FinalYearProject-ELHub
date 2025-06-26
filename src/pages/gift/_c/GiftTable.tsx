@@ -27,21 +27,19 @@ export function GiftTable({
       {gifts.map((gift) => (
         <div
           key={gift.id}
-          className="bg-white p-4 rounded-xl shadow flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+          className="bg-white p-4 rounded-xl shadow border flex flex-col gap-4 sm:flex-row sm:items-center
+            sm:justify-between"
         >
-          <div className="flex items-center gap-4 flex-1">
-            {gift.giftImageUrl ? (
-              <img
-                src={gift.giftImageUrl}
-                alt="Course"
-                className="size-17 rounded object-cover border"
-              />
-            ) : (
-              <div className="size-17 bg-gray-200 rounded" />
-            )}
-            <div className="flex flex-col gap-1">
+          {/* Info Section */}
+          <div className="flex items-start sm:items-center gap-4 flex-1">
+            <img
+              src={gift.giftImageUrl || "/placeholder.png"}
+              alt="Gift"
+              className="w-20 h-20 rounded object-cover border shrink-0"
+            />
+            <div className="flex flex-col gap-1 text-sm">
               <div className="text-base font-semibold">{gift.giftName}</div>
-              <div className="text-sm text-gray-500">
+              <div className="text-gray-500">
                 {canManage ? (
                   <>
                     <span className="font-medium">To:</span>{" "}
@@ -54,7 +52,7 @@ export function GiftTable({
                   </>
                 )}
               </div>
-              <div className="text-xs text-gray-400">
+              <div className="text-gray-400 text-xs">
                 {canManage
                   ? `Sent: ${formatDate({
                       input: gift.createdAt,
@@ -70,11 +68,18 @@ export function GiftTable({
                         formatType: "ddmmyyyy",
                       })}`}
               </div>
+              {/* Status on mobile */}
+              <div className="sm:hidden mt-2">
+                <StatusBadge status={gift.status} />
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-row md:flex-col items-center justify-between md:items-end gap-3">
-            <StatusBadge status={gift.status} />
+          {/* Actions + Status */}
+          <div className="flex flex-col items-end gap-2 sm:gap-3">
+            <div className="hidden sm:block">
+              <StatusBadge status={gift.status} />
+            </div>
 
             {canManage && gift.status === GiftStatus.Pending && (
               <div className="flex gap-2">
@@ -82,7 +87,7 @@ export function GiftTable({
                   size="compact-sm"
                   onClick={() => onChangeReceiver?.(gift.id)}
                   color="yellow"
-                  className="text-xs px-3 py-1 rounded"
+                  className="text-xs px-3 py-1"
                 >
                   Change
                 </Button>
@@ -90,7 +95,7 @@ export function GiftTable({
                   size="compact-sm"
                   onClick={() => onRevoke?.(gift.id)}
                   color="red"
-                  className="text-xs px-3 py-1 rounded"
+                  className="text-xs px-3 py-1"
                 >
                   Revoke
                 </Button>
@@ -98,12 +103,14 @@ export function GiftTable({
             )}
 
             {!canManage && gift.status === GiftStatus.Pending && (
-              <button
+              <Button
+                size="compact-sm"
                 onClick={() => onRedeem?.(gift.id)}
-                className="text-xs px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                color="blue"
+                className="text-xs px-3 py-1"
               >
                 Redeem
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -113,7 +120,7 @@ export function GiftTable({
 }
 
 function StatusBadge({ status }: { status: GiftVm["status"] }) {
-  const base = "px-2 py-0.5 rounded-full text-xs font-medium";
+  const base = "px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap";
   switch (status) {
     case "Pending":
       return <span className={`${base} bg-yellow-100 text-yellow-800`}>Pending</span>;
