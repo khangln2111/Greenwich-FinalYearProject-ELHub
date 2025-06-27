@@ -1,8 +1,9 @@
 import { Flex, SimpleGrid } from "@mantine/core";
+import { Search } from "lucide-react";
+import CenterLoader from "../../../components/CenterLoader";
 import { useGetCourses } from "../../../react-query/course/courseHooks";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import CoursePagination from "./CoursePagination";
-import CenterLoader from "../../../components/CenterLoader";
 
 const CourseGrid = () => {
   const { data, isPending, isError } = useGetCourses();
@@ -18,6 +19,18 @@ const CourseGrid = () => {
   }
 
   const courses = data.items;
+
+  if (courses.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[400px] gap-4 text-center px-4">
+        <Search className="w-16 h-16 text-gray-400" />
+        <p className="text-lg font-semibold">No courses found</p>
+        <p className="text-sm text-gray-500">
+          Try adjusting your search keywords or filters to find more results.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <>

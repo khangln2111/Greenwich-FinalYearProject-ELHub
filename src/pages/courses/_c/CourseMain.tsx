@@ -18,7 +18,7 @@ const CourseMain = ({}: CourseMainProps) => {
   return (
     <>
       <Group justify="space-between">
-        <Title order={2}>Courses List</Title>
+        <Title className="text-2xl sm:text-3xl">Courses List</Title>
         {/* Sort Options */}
         <Group align="center">
           {/* Desktop filter toggler */}

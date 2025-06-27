@@ -13,6 +13,7 @@ import { SentGiftItemCard } from "./_c/SentGiftItemCard";
 import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
 import { ChangeReceiverModal } from "./_c/ChangeReceiverModal";
 import { modals } from "@mantine/modals";
+import { Link } from "react-router-dom";
 
 export default function GiftsPage() {
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
@@ -73,13 +74,13 @@ export default function GiftsPage() {
           <p className="text-gray-600 dark:text-gray-400">
             Share the joy of learning by gifting a course to someone special.
           </p>
-          <a
-            href="/courses"
+          <Link
+            to="/dashboard/inventory"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium
               transition"
           >
-            Browse Courses
-          </a>
+            Browse Inventory
+          </Link>
         </div>
       );
     }

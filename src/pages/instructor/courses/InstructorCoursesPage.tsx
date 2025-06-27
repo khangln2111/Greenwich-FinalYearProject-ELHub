@@ -57,13 +57,10 @@ export default function InstructorCoursesPage() {
           Array.from({ length: 9 }).map((_, i) => <InstructorCourseCardSkeleton key={i} />)}
 
         {!isCoursesPending && filteredCourses.length === 0 ? (
-          <div
-            className="col-span-full flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400
-              py-16"
-          >
-            <GraduationCap size={48} className="mb-4 text-gray-400" />
+          <div className="col-span-full flex flex-col items-center justify-center text-center py-16">
+            <GraduationCap size={48} className="mb-4 text-blue" />
             <p className="text-lg font-medium mb-1">You haven’t created any courses yet</p>
-            <p className="text-sm mb-4">
+            <p className="text-sm mb-4 text-gray-500 dark:text-gray-400">
               Start building your course to share knowledge with others.
             </p>
             <Button

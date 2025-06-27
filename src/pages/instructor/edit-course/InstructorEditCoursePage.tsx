@@ -3,7 +3,6 @@ import { IconArrowLeft, IconPencil } from "@tabler/icons-react";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
-import InstructorTab from "../../course-detail/_c/InstructorTab";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
@@ -35,14 +34,14 @@ export default function UpdateCoursePage() {
         <div className="flex items-center gap-2">
           <IconPencil size={22} className="text-blue-600 dark:text-blue-400" />
           <span className="text-xl sm:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
-            React Native Full Course from Beginner to Expert 2024
+            {courseDetail?.title}
           </span>
         </div>
       </div>
       <SegmentedControl
         value={activeTab}
         onChange={setActiveTab}
-        data={["Overview", "Curriculum", "Reviews", "Instructor"]}
+        data={["Overview", "Curriculum", "Reviews"]}
         size="sm"
         transitionDuration={200}
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
@@ -88,13 +87,6 @@ export default function UpdateCoursePage() {
                 { stars: 1, percentage: 2 },
               ]}
             />
-          </Tabs.Panel>
-          <Tabs.Panel value="Instructor">
-            {courseDetail ? (
-              <InstructorTab courseDetail={courseDetail} />
-            ) : (
-              <div>No course data found.</div>
-            )}
           </Tabs.Panel>
         </div>
       </Tabs>
