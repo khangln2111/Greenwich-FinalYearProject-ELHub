@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core";
-import { GemIcon } from "lucide-react";
+import { GemIcon, GiftIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../components/CenterLoader";
 import {
@@ -33,7 +33,6 @@ export default function GiftsPage() {
 
   const handleChangeGiftReceiver = (receiverEmail: string) => {
     if (!selectedGiftId) return;
-
     changeReceiverMutation.mutate({ id: selectedGiftId, receiverEmail });
   };
 
@@ -63,9 +62,31 @@ export default function GiftsPage() {
 
   const renderSent = () => {
     if (pendingSent) return <CenterLoader />;
+
+    if (!sentGifts || sentGifts.items.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <GiftIcon className="w-14 h-14 text-blue-500" />
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+            You haven’t sent any gifts yet
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Share the joy of learning by gifting a course to someone special.
+          </p>
+          <a
+            href="/courses"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium
+              transition"
+          >
+            Browse Courses
+          </a>
+        </div>
+      );
+    }
+
     return (
       <div className="space-y-4">
-        {sentGifts?.items.map((gift) => (
+        {sentGifts.items.map((gift) => (
           <SentGiftItemCard
             key={gift.id}
             gift={gift}
@@ -76,12 +97,26 @@ export default function GiftsPage() {
       </div>
     );
   };
-
   const renderReceived = () => {
     if (pendingReceived) return <CenterLoader />;
+
+    if (!receivedGifts || receivedGifts.items.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <GiftIcon className="w-14 h-14 text-green-500" />
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+            No gifts received yet
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            When someone sends you a gift, it will appear here. Stay tuned!
+          </p>
+        </div>
+      );
+    }
+
     return (
       <div className="space-y-4">
-        {receivedGifts?.items.map((gift) => (
+        {receivedGifts.items.map((gift) => (
           <ReceivedGiftItemCard key={gift.id} gift={gift} onRedeem={handleRedeem} />
         ))}
       </div>

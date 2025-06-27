@@ -9,6 +9,7 @@ import { cn } from "../../utils/cn";
 import LearningFooter from "./_c/LearningFooter";
 import LearningHeader from "./_c/LearningHeader";
 import LearningSidebar from "./_c/LearningSidebar";
+import { Hourglass } from "lucide-react";
 
 export default function LearningCoursePage() {
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
@@ -80,17 +81,27 @@ export default function LearningCoursePage() {
       {/* Main content */}
       <div className="flex-1 flex overflow-hidden transition-all duration-300">
         {/* Video area */}
-        <main className={"flex-1 bg-black transition-all duration-300"}>
-          <VideoPlayerWithThumbnail
-            classNames={{
-              playIconWrapper: "md:size-16",
-              playIcon: "md:size-8",
-            }}
-            videoUrl={currentLecture?.videoUrl}
-            onVideoEnd={onVideoEnd}
-          />
+        <main className="flex-1 bg-black flex items-center justify-center px-4 text-white text-center">
+          {allLectures.length === 0 ? (
+            <div className="space-y-3 flex flex-col items-center">
+              <Hourglass size={48} className="text-gray-400 mb-2" />
+              <h2 className="text-xl font-semibold">Course coming soon</h2>
+              <p className="text-sm text-gray-300">
+                It looks like the instructor is still working on this course. Once lectures are
+                added, they’ll show up here!
+              </p>
+            </div>
+          ) : (
+            <VideoPlayerWithThumbnail
+              classNames={{
+                playIconWrapper: "md:size-16",
+                playIcon: "md:size-8",
+              }}
+              videoUrl={currentLecture?.videoUrl}
+              onVideoEnd={onVideoEnd}
+            />
+          )}
         </main>
-
         {/* Desktop sidebar */}
         {!isMobileOrTablet && (
           <aside

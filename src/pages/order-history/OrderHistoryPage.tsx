@@ -1,12 +1,13 @@
 import { Select } from "@mantine/core";
-import { useSearchParams } from "react-router-dom";
+import { IconReceipt } from "@tabler/icons-react";
+import { ArrowUpDownIcon } from "lucide-react";
+import { useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import CenterLoader from "../../components/CenterLoader";
+import { OrderSortableFields, OrderStatus } from "../../react-query/order/order.types";
 import { useGetOrdersSelf } from "../../react-query/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
-import { ArrowUpDownIcon } from "lucide-react";
-import { useState } from "react";
-import { OrderSortableFields, OrderStatus } from "../../react-query/order/order.types";
 
 const ORDER_BY_OPTIONS = [
   { value: "createdAt_desc", label: "Date: Newest first" },
@@ -91,6 +92,22 @@ export default function OrderHistoryPage() {
 
       {isPending ? (
         <CenterLoader />
+      ) : data.items.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <IconReceipt className="w-16 h-16 text-blue-500" />
+
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">No orders found</h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            You haven't purchased anything yet. Discover top-rated courses and start learning today!
+          </p>
+          <Link
+            to="/courses"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium
+              transition"
+          >
+            Browse Courses
+          </Link>
+        </div>
       ) : (
         <div className="mx-auto mt-4">
           {data.items.map((order) => (
