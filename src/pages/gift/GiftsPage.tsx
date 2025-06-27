@@ -51,14 +51,20 @@ export default function GiftsPage() {
           <button
             onClick={() => setActiveTab("sent")}
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
-              activeTab === "sent" ? "bg-blue-600 text-white" : "bg-gray-50 hover:bg-gray-100" }`}
+              activeTab === "sent"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
+                }`}
           >
             Sent
           </button>
           <button
             onClick={() => setActiveTab("received")}
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
-              activeTab === "received" ? "bg-blue-600 text-white" : "bg-gray-50 hover:bg-gray-100" }`}
+              activeTab === "received"
+                ? "bg-blue-600 text-white"
+                : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
+            }`}
           >
             Received
           </button>

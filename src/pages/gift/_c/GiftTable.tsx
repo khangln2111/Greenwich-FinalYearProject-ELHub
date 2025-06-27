@@ -27,8 +27,8 @@ export function GiftTable({
       {gifts.map((gift) => (
         <div
           key={gift.id}
-          className="bg-white p-4 rounded-xl shadow border flex flex-col gap-4 sm:flex-row sm:items-center
-            sm:justify-between"
+          className="bg-white dark:bg-zinc-900 p-4 rounded-xl shadow border flex flex-col gap-4 sm:flex-row
+            sm:items-center sm:justify-between"
         >
           {/* Info Section */}
           <div className="flex items-start sm:items-center gap-4 flex-1">
@@ -39,7 +39,7 @@ export function GiftTable({
             />
             <div className="flex flex-col gap-1 text-sm">
               <div className="text-base font-semibold">{gift.giftName}</div>
-              <div className="text-gray-500">
+              <div className="text-gray-500 dark:text-gray-300">
                 {canManage ? (
                   <>
                     <span className="font-medium">To:</span>{" "}
