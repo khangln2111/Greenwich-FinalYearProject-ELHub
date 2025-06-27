@@ -46,10 +46,10 @@ public class GiftService(
             throw new BadRequestException("No remaining quantity for this item", ErrorCode.NoInventoryLeft);
 
         // Normalize email
-        var trimmedEmail = command.ReceiverEmail.Trim().ToLower();
+        var normalizedEmail = command.ReceiverEmail.Trim().ToLower();
 
         var receiver = await context.Users
-            .FirstOrDefaultAsync(u => u.Email.ToLower() == trimmedEmail);
+            .FirstOrDefaultAsync(u => u.Email!.ToLower() == normalizedEmail);
 
         if (receiver != null)
         {
@@ -219,7 +219,7 @@ public class GiftService(
 
 
     // Get list of gifts sent by the current user
-    public async Task<Paged<GiftVm>> GetSentGiftsSelf(GridifyQuery query)
+    public async Task<Paged<SentGiftVm>> GetSentGiftsSelf(GridifyQuery query)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
@@ -227,20 +227,22 @@ public class GiftService(
         var gifts = await context.Gifts
             .AsNoTracking()
             .Where(g => g.GiverId == currentUser.Id)
-            .GridifyToAsync<Gift, GiftVm>(query, mapper);
+            .GridifyToAsync<Gift, SentGiftVm>(query, mapper);
 
         return gifts;
     }
 
-    public async Task<Paged<GiftVm>> GetReceivedGiftsSelf(GridifyQuery query)
+    public async Task<Paged<ReceivedGiftVm>> GetReceivedGiftsSelf(GridifyQuery query)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
 
+        var normalizedEmail = currentUser.Email.Trim().ToLower();
+
         var gifts = await context.Gifts
             .AsNoTracking()
-            .Where(g => g.ReceiverEmail.Trim().Equals(currentUser.Email.Trim(), StringComparison.OrdinalIgnoreCase))
-            .GridifyToAsync<Gift, GiftVm>(query, mapper);
+            .Where(g => g.ReceiverEmail.ToLower() == normalizedEmail)
+            .GridifyToAsync<Gift, ReceivedGiftVm>(query, mapper);
 
         return gifts;
     }

@@ -13,9 +13,9 @@ public interface IGiftService
 
     Task<Success> RevokeGift(Guid giftId);
 
-    Task<Paged<GiftVm>> GetSentGiftsSelf(GridifyQuery query);
+    Task<Paged<SentGiftVm>> GetSentGiftsSelf(GridifyQuery query);
 
-    Task<Paged<GiftVm>> GetReceivedGiftsSelf(GridifyQuery query);
+    Task<Paged<ReceivedGiftVm>> GetReceivedGiftsSelf(GridifyQuery query);
 
     Task<Success> ChangeGiftReceiver(ChangeGiftReceiverCommand command);
 }
