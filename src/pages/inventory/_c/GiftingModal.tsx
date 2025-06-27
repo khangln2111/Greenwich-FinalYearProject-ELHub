@@ -13,6 +13,7 @@ interface GiftingModalProps {
 
 const GiftingModal = ({ opened, onClose, inventoryItemId }: GiftingModalProps) => {
   const form = useForm<CreateGiftCommand>({
+    mode: "uncontrolled",
     validate: { receiverEmail: (v) => (/^\S+@\S+$/.test(v) ? null : "Invalid email") },
   });
 
@@ -37,6 +38,7 @@ const GiftingModal = ({ opened, onClose, inventoryItemId }: GiftingModalProps) =
           label="Receiver Email"
           placeholder="friend@example.com"
           {...form.getInputProps("receiverEmail")}
+          key={form.key("receiverEmail")}
         />
         <Button type="submit" loading={createGiftMutation.isPending} fullWidth>
           Send Gift

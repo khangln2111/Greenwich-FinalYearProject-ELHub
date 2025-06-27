@@ -44,17 +44,18 @@ export const useCreateGift = () => {
         matchers: [
           {
             status: 400,
-            handler: () =>
-              showErrorToast(
-                "Invalid Inventory Item",
-                "Inventory item not found or does not belong to the current user",
-              ),
-          },
-          {
-            status: 400,
             errorCode: ErrorCode.NoInventoryLeft,
             handler: () =>
               showErrorToast("No Inventory Left", "No remaining quantity for this item"),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.CourseAlreadyEnrolled,
+            handler: () =>
+              showErrorToast(
+                "Already enrolled",
+                "The receiver is already enrolled in this course.",
+              ),
           },
         ],
       }),
@@ -105,6 +106,7 @@ export const useRevokeGift = () => {
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
       queryClient.invalidateQueries({ queryKey: keyFac.enrollments.getEnrollmentsSelf._def });
       queryClient.invalidateQueries({ queryKey: keyFac.inventories.getInventoryItemsSelf._def });
+      showSuccessToast("Gift Revoked", "The gift has been revoked successfully!");
     },
     onError: (error) =>
       handleApiError(error, {
@@ -142,6 +144,7 @@ export const useChangeGiftReceiver = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts.queryKey });
+      showSuccessToast("Receiver Changed", "The gift receiver has been changed successfully!");
     },
     onError: (error) =>
       handleApiError(error, {

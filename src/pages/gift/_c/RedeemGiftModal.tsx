@@ -1,8 +1,9 @@
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
 import { TextInput, Button } from "@mantine/core";
 import CusModal from "../../../components/CusModal";
 import { useRedeemGift } from "../../../react-query/gift/giftHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
+import { z } from "zod";
 
 type RedeemGiftModalProps = {
   open: boolean;
@@ -10,13 +11,18 @@ type RedeemGiftModalProps = {
   onSubmit?: (giftCode: string) => void;
 };
 
+const redeemGiftSchema = z.object({
+  giftCode: z.string().trim().min(1, { message: "Gift code is required" }),
+});
+
 export function RedeemGiftModal({ open, onClose, onSubmit }: RedeemGiftModalProps) {
   const form = useForm({
-    validate: {
-      giftCode: (value) => (value.trim() === "" ? "Gift code is required" : null),
+    mode: "uncontrolled",
+    initialValues: {
+      giftCode: "",
     },
+    validate: zodResolver(redeemGiftSchema),
   });
-
   const redeemGiftMutation = useRedeemGift();
 
   const handleSubmit = (values: { giftCode: string }) => {
@@ -38,6 +44,7 @@ export function RedeemGiftModal({ open, onClose, onSubmit }: RedeemGiftModalProp
           label="Gift Code"
           placeholder="Enter Gift Code"
           {...form.getInputProps("giftCode")}
+          key={form.key("giftCode")}
           disabled={redeemGiftMutation.isPending}
         />
 

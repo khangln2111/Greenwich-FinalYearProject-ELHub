@@ -25,7 +25,7 @@ export const redeemGift = async (giftId: string) => {
 };
 
 export const revokeGift = async (giftId: string) => {
-  const response = await apiClient.delete<ApiSuccessResponse>(`${BASE_URL}/${giftId}/Revoke`);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${giftId}/Revoke`);
   return response.data;
 };
 

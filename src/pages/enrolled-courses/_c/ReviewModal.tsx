@@ -1,7 +1,8 @@
-import { Button, Modal, Textarea } from "@mantine/core";
+import { Button, Textarea } from "@mantine/core";
+import clsx from "clsx";
 import { Star } from "lucide-react";
 import { useState } from "react";
-import clsx from "clsx";
+import CusModal from "../../../components/CusModal";
 
 type Review = {
   rating: number;
@@ -26,16 +27,7 @@ const ReviewModal = ({ opened, onClose, initialReview, onSave }: Props) => {
   };
 
   return (
-    <Modal
-      opened={opened}
-      onClose={onClose}
-      title="Rate this course"
-      centered
-      overlayProps={{
-        blur: 4,
-        opacity: 0.3,
-      }}
-    >
+    <CusModal opened={opened} onClose={onClose} title="Rate this course">
       <div className="space-y-4">
         <div className="flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
@@ -73,7 +65,7 @@ const ReviewModal = ({ opened, onClose, initialReview, onSave }: Props) => {
           <Button onClick={handleSubmit}>Submit Review</Button>
         </div>
       </div>
-    </Modal>
+    </CusModal>
   );
 };
 

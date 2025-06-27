@@ -2,45 +2,93 @@ import { Button } from "@mantine/core";
 import { GemIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../components/CenterLoader";
-import { useGetReceivedGifts, useGetSentGifts } from "../../react-query/gift/giftHooks";
-import { GiftTable } from "./_c/GiftTable";
+import {
+  useChangeGiftReceiver,
+  useGetReceivedGifts,
+  useGetSentGifts,
+  useRevokeGift,
+} from "../../react-query/gift/giftHooks";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
+import { SentGiftItemCard } from "./_c/SentGiftItemCard";
+import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
+import { ChangeReceiverModal } from "./_c/ChangeReceiverModal";
+import { modals } from "@mantine/modals";
 
 export default function GiftsPage() {
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
   const [redeemModalOpen, setRedeemModalOpen] = useState(false);
 
-  const { data: sentGifts, isLoading: loadingSent } = useGetSentGifts();
-  const { data: receivedGifts, isLoading: loadingReceived } = useGetReceivedGifts();
+  const { data: sentGifts, isPending: pendingSent } = useGetSentGifts();
+  const { data: receivedGifts, isPending: pendingReceived } = useGetReceivedGifts();
+  const changeReceiverMutation = useChangeGiftReceiver();
+  const revokeGiftMutation = useRevokeGift();
+
+  const [selectedGiftId, setSelectedGiftId] = useState<string | null>(null);
+  const [changeModalOpen, setChangeModalOpen] = useState(false);
+
+  const handleOpenChangeGiftReceiverModal = (giftId: string) => {
+    setSelectedGiftId(giftId);
+    setChangeModalOpen(true);
+  };
+
+  const handleChangeGiftReceiver = (receiverEmail: string) => {
+    if (!selectedGiftId) return;
+
+    changeReceiverMutation.mutate({ id: selectedGiftId, receiverEmail });
+  };
 
   const handleRevoke = (giftId: string) => {
-    alert(`Revoke gift ID: ${giftId}`);
+    const gift = sentGifts?.items.find((g) => g.id === giftId);
+    if (!gift) return;
+
+    modals.openConfirmModal({
+      title: "Revoke Gift",
+      centered: true,
+      children: (
+        <>
+          <p>
+            Are you sure you want to <strong>revoke</strong> the gift sent to:{" "}
+            <span className="font-semibold">{gift.receiverEmail}</span>?
+          </p>
+          <p className="text-sm text-gray-500 mt-2">This action cannot be undone.</p>
+        </>
+      ),
+      labels: { confirm: "Revoke", cancel: "Cancel" },
+      confirmProps: { color: "red", loading: revokeGiftMutation.isPending },
+      onConfirm: () => revokeGiftMutation.mutate(giftId),
+    });
   };
 
-  const handleChangeReceiver = (giftId: string) => {
-    alert(`Change receiver for gift ID: ${giftId}`);
+  const handleRedeem = (giftId: string) => alert(`Redeem: ${giftId}`);
+
+  const renderSent = () => {
+    if (pendingSent) return <CenterLoader />;
+    return (
+      <div className="space-y-4">
+        {sentGifts?.items.map((gift) => (
+          <SentGiftItemCard
+            key={gift.id}
+            gift={gift}
+            onRevoke={handleRevoke}
+            onChangeReceiver={() => handleOpenChangeGiftReceiverModal(gift.id)}
+          />
+        ))}
+      </div>
+    );
   };
 
-  const handleRedeem = (giftId: string) => {
-    alert(`Redeem gift ID: ${giftId}`);
+  const renderReceived = () => {
+    if (pendingReceived) return <CenterLoader />;
+    return (
+      <div className="space-y-4">
+        {receivedGifts?.items.map((gift) => (
+          <ReceivedGiftItemCard key={gift.id} gift={gift} onRedeem={handleRedeem} />
+        ))}
+      </div>
+    );
   };
 
-  const renderGiftContent = () => {
-    if (activeTab === "sent") {
-      if (loadingSent) return <CenterLoader />;
-      return (
-        <GiftTable
-          gifts={sentGifts?.items ?? []}
-          canManage
-          onRevoke={handleRevoke}
-          onChangeReceiver={handleChangeReceiver}
-        />
-      );
-    } else {
-      if (loadingReceived) return <CenterLoader />;
-      return <GiftTable gifts={receivedGifts?.items ?? []} onRedeem={handleRedeem} />;
-    }
-  };
+  const selectedGift = sentGifts?.items.find((g) => g.id === selectedGiftId) ?? null;
 
   return (
     <div className="mx-auto">
@@ -52,7 +100,7 @@ export default function GiftsPage() {
             onClick={() => setActiveTab("sent")}
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
               activeTab === "sent"
-                ? "bg-blue-600 text-white"
+                ? "bg-blue-600 text-white dark:bg-blue-700"
                 : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
                 }`}
           >
@@ -62,7 +110,7 @@ export default function GiftsPage() {
             onClick={() => setActiveTab("received")}
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
               activeTab === "received"
-                ? "bg-blue-600 text-white"
+                ? "bg-blue-600 text-white dark:bg-blue-700"
                 : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
             }`}
           >
@@ -80,9 +128,16 @@ export default function GiftsPage() {
         </Button>
       </div>
 
-      {renderGiftContent()}
+      {activeTab === "sent" ? renderSent() : renderReceived()}
 
       <RedeemGiftModal open={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
+      <ChangeReceiverModal
+        opened={changeModalOpen}
+        onClose={() => setChangeModalOpen(false)}
+        onSubmit={handleChangeGiftReceiver}
+        submitting={changeReceiverMutation.isPending}
+        defaultEmail={selectedGift?.receiverEmail ?? ""}
+      />
     </div>
   );
 }
