@@ -114,6 +114,7 @@ public class GiftService(
         if (gift.Status != GiftStatus.Pending)
             throw new BadRequestException("This gift has already been redeemed or revoked", ErrorCode.GiftUnavailable);
 
+
         // Update new receiver email
         gift.ReceiverEmail = command.ReceiverEmail.Trim();
 

@@ -43,7 +43,7 @@ public class GiftsController(IGiftService giftService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("{giftId:guid}/ChangeReceiver")]
+    [HttpPut("ChangeReceiver")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
