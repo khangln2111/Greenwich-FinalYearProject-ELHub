@@ -2,7 +2,7 @@ import { Collapse, Text } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { ElementType, SVGProps, useState } from "react";
 import { Link } from "react-router-dom";
-import { cn } from "../../../../utils/cn";
+import { cn } from "../../../utils/cn";
 
 type ExpandedNavLinkProps = {
   href: string;

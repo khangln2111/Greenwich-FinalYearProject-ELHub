@@ -1,7 +1,7 @@
 import { Menu, Tooltip } from "@mantine/core";
 import { ElementType, SVGProps } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "../../../../utils/cn";
+import { cn } from "../../../utils/cn";
 
 type CollapsedNavLinkProps = {
   href: string;

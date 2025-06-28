@@ -6,6 +6,7 @@ import {
   IconSearch,
   IconSettings,
   IconTrash,
+  IconUserCog,
 } from "@tabler/icons-react";
 import {
   ChartNoAxesCombinedIcon,
@@ -74,7 +75,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           component={Link}
           to="/dashboard/order-history"
         >
-          Purchase History
+          Purchase history
         </Menu.Item>
         <Menu.Item
           leftSection={<PackageIcon size={15} />}
@@ -112,7 +113,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           component={Link}
           to="/instructor/courses"
         >
-          Instructor Dashboard
+          Instructor dashboard
         </Menu.Item>
 
         {/* menu item as link to /home student */}
@@ -122,7 +123,15 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           to="/"
           leftSection={<GraduationCap size={15} />}
         >
-          Student Sites
+          Student sites
+        </Menu.Item>
+        <Menu.Item
+          className="cursor-pointer"
+          component={Link}
+          to="/admin/analytics"
+          leftSection={<IconUserCog size={15} />}
+        >
+          Admin dashboard
         </Menu.Item>
 
         <Menu.Divider />

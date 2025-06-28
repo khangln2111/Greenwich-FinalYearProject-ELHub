@@ -1,6 +1,6 @@
 import { Text } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "../../../../utils/cn";
+import { cn } from "../../../utils/cn";
 
 type Props = {
   subLinks: { label: string; href: string }[];

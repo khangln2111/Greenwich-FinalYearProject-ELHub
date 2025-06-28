@@ -32,14 +32,14 @@ type MenuItem = {
 
 const menuItems: MenuItem[] = [
   { label: "Analytics", icon: <ChartNoAxesCombinedIcon className="size-5" />, href: "/dashboard" },
-  { label: "My Account", icon: <User className="size-5" />, href: "/dashboard/my-account" },
+  { label: "My account", icon: <User className="size-5" />, href: "/dashboard/my-account" },
   {
-    label: "Enrolled Courses",
+    label: "Enrolled courses",
     icon: <MonitorCheckIcon className="size-5" />,
     href: "/dashboard/enrolled-courses",
   },
   {
-    label: "Purchase History",
+    label: "Purchase history",
     icon: <HistoryIcon className="size-5" />,
     href: "/dashboard/order-history",
   },

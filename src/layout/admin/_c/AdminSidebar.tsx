@@ -1,18 +1,22 @@
 import { Text } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
-import { IconBellRinging } from "@tabler/icons-react";
+import { IconMessageUser } from "@tabler/icons-react";
 import {
+  BellRingIcon,
+  BookOpenCheckIcon,
   ChartNoAxesCombinedIcon,
-  ScreenShareIcon,
+  FileTextIcon,
+  FlagTriangleRightIcon,
+  PackageIcon,
   SettingsIcon,
-  TicketPercentIcon,
-  User2Icon,
+  TagsIcon,
+  Users2Icon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { cn } from "../../../utils/cn";
 
-type InstructorSidebarProps = {
+type AdminSidebarProps = {
   collapsedToIcon?: boolean;
 };
 
@@ -24,37 +28,73 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { href: "/instructor/analytics", label: "Analytics", icon: ChartNoAxesCombinedIcon },
   {
-    href: "/instructor/courses",
+    href: "/admin/analytics",
+    label: "Analytics",
+    icon: ChartNoAxesCombinedIcon,
+  },
+  {
+    href: "admin/categories",
+    label: "Category management",
+    icon: TagsIcon,
+  },
+  {
+    href: "/admin/courses",
     label: "Course management",
-    icon: ScreenShareIcon,
+    icon: BookOpenCheckIcon,
+    subLinks: [
+      { label: "All Courses", href: "/admin/courses" },
+      { label: "Pending Approval", href: "/admin/courses/pending" },
+    ],
   },
   {
-    href: "/instructor/profile",
-    label: "Instructor profile",
-    icon: User2Icon,
+    href: "/admin/instructors",
+    label: "Instructor management",
+    icon: IconMessageUser,
   },
   {
-    href: "/instructor/coupons",
-    label: "Coupons",
-    icon: TicketPercentIcon,
+    href: "/admin/users",
+    label: "User management",
+    icon: Users2Icon,
   },
-  { href: "/instructor/notifications", label: "Notifications", icon: IconBellRinging },
-  { href: "/instructor/settings", label: "Settings", icon: SettingsIcon },
+  {
+    href: "/admin/reviews",
+    label: "Reviews",
+    icon: FileTextIcon,
+  },
+  {
+    href: "/admin/reports",
+    label: "Reports",
+    icon: FlagTriangleRightIcon,
+  },
+  {
+    href: "/admin/orders",
+    label: "Orders",
+    icon: PackageIcon,
+  },
+  {
+    href: "/admin/notifications",
+    label: "Notifications",
+    icon: BellRingIcon,
+  },
+  {
+    href: "/admin/settings",
+    label: "Settings",
+    icon: SettingsIcon,
+  },
 ];
 
-const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
+const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
   return (
     <div className="flex flex-col h-full">
-      {/* Sidebar Header */}
+      {/* Header */}
       <div
         className={cn("flex items-center justify-between p-4", {
           "justify-center": collapsedToIcon,
         })}
       >
         <Link
-          to="/instructor"
+          to="/admin"
           className="no-underline select-none flex items-center text-black dark:text-white"
         >
           {collapsedToIcon ? (
@@ -64,7 +104,6 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
           )}
         </Link>
       </div>
-      {/* header: instructor sidebar */}
       <Text
         size="xl"
         fw={900}
@@ -74,9 +113,9 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
           hidden: collapsedToIcon,
         })}
       >
-        Instructor dashboard
+        Admin dashboard
       </Text>
-      {/* Sidebar Body */}
+      {/* Body */}
       <nav className="flex-1 p-2 flex flex-col gap-2">
         {navItems.map((item) => (
           <SidebarNavLink
@@ -93,4 +132,4 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
   );
 };
 
-export default InstructorSidebar;
+export default AdminSidebar;

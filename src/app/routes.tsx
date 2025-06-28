@@ -24,6 +24,7 @@ import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
 import InstructorProfilePage from "../pages/instructor/profile/InstructorProfilePage";
 import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
 import GiftsPage from "../pages/gift/GiftsPage";
+import AdminLayout from "../layout/admin/AdminLayout";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -78,7 +79,7 @@ const instructorRoute: RouteObject = {
   element: <InstructorLayout />,
   path: "/instructor",
   children: [
-    { path: "dashboard", element: <InstructorDashboard /> },
+    { path: "analytics", element: <InstructorDashboard /> },
     { path: "students", element: <p>Instructor Students Page</p> },
     {
       path: "courses",
@@ -100,6 +101,17 @@ const instructorRoute: RouteObject = {
   ],
 };
 
+const adminRoute: RouteObject = {
+  element: <AdminLayout />,
+  path: "/admin",
+  children: [
+    {
+      path: "analytics",
+      element: <p>Admin Dashboard</p>,
+    },
+  ],
+};
+
 const authRoutes: RouteObject[] = [
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
@@ -111,6 +123,6 @@ const authRoutes: RouteObject[] = [
   },
 ];
 
-const router = createBrowserRouter([userRoute, instructorRoute, ...authRoutes]);
+const router = createBrowserRouter([userRoute, instructorRoute, adminRoute, ...authRoutes]);
 
 export default router;

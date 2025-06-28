@@ -3,6 +3,25 @@ import { CurrentUser } from "../react-query/auth/identity.types";
 import { authStorageHelper } from "../utils/storageHelper";
 import { createSelectors } from "./auto-selectors";
 
+interface AdminLayoutSlice {
+  desktopAdminSidebarCollapsed: boolean;
+  toggleDesktopAdminSidebar: () => void;
+  mobileAdminSidebarOpened: boolean;
+  openMobileAdminSidebar: () => void;
+  closeMobileAdminSidebar: () => void;
+}
+
+export const createAdminLayoutSlice: StateCreator<AdminLayoutSlice> = (set) => ({
+  desktopAdminSidebarCollapsed: false,
+  toggleDesktopAdminSidebar: () =>
+    set((state) => ({
+      desktopAdminSidebarCollapsed: !state.desktopAdminSidebarCollapsed,
+    })),
+  mobileAdminSidebarOpened: false,
+  openMobileAdminSidebar: () => set({ mobileAdminSidebarOpened: true }),
+  closeMobileAdminSidebar: () => set({ mobileAdminSidebarOpened: false }),
+});
+
 // Slice for managing the state of the instructor layout
 interface InstructorLayoutSlice {
   desktopInstructorSidebarCollapsed: boolean;
@@ -69,12 +88,13 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   setUser: (user) => set({ currentUser: user }),
 });
 
-type AppStore = CourseFilterSlice & AuthSlice & InstructorLayoutSlice;
+type AppStore = CourseFilterSlice & AuthSlice & InstructorLayoutSlice & AdminLayoutSlice;
 
 const useAppStoreBase = create<AppStore>()((...a) => ({
   ...createCourseFilterSlice(...a),
   ...createAuthSlice(...a),
   ...createInstructorLayoutSlice(...a),
+  ...createAdminLayoutSlice(...a),
 }));
 
 export const useAppStore = createSelectors(useAppStoreBase);
