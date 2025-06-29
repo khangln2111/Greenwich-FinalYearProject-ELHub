@@ -2,6 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CourseDTOs;
+using BLL.DTOs.LectureDTOs;
+using BLL.DTOs.SectionDTOs;
 using BLL.Exceptions;
 using BLL.Gridify;
 using BLL.Gridify.CustomModels;
@@ -82,6 +84,99 @@ public class CourseService(
 
     public async Task<CourseDetailVm> GetById(Guid id)
     {
+        // var currentUser = currentUserUtility.GetCurrentUser();
+        // var currentUserId = currentUser?.Id;
+        // var roles = currentUser?.Roles ?? [];
+        //
+        // var isAdmin = roles.Contains("Admin");
+        //
+        // var course = await context.Courses
+        //     .AsNoTracking()
+        //     .Where(c => c.Id == id)
+        //     .Select(c => new CourseDetailVm
+        //     {
+        //         Id = c.Id,
+        //         Title = c.Title,
+        //         Description = c.Description,
+        //         Price = c.Price,
+        //         DiscountedPrice = c.DiscountedPrice,
+        //         DiscountPercentage = c.Price == 0 ? 0 : (int)Math.Round((c.Price - c.DiscountedPrice) / c.Price * 100),
+        //         Status = c.Status.ToString(),
+        //         Level = c.Level.ToString()!,
+        //         Prerequisites = c.Prerequisites,
+        //         LearningOutcomes = c.LearningOutcomes,
+        //         ImageUrl = c.Image != null ? c.Image.Url : "",
+        //         PromoVideoUrl = c.PromoVideo != null ? c.PromoVideo.Url : "",
+        //         CategoryName = c.Category.Name,
+        //         SectionCount = c.Sections.Count,
+        //         LectureCount = c.Sections.SelectMany(s => s.Lectures).Count(),
+        //         DurationInSeconds = c.Sections
+        //             .SelectMany(s => s.Lectures)
+        //             .Select(l => (int?)l.Video!.DurationInSeconds)
+        //             .Sum() ?? 0,
+        //         Sections = c.Sections
+        //             .OrderBy(s => s.Order)
+        //             .Select(s => new SectionVm
+        //             {
+        //                 Id = s.Id,
+        //                 Title = s.Title,
+        //                 Description = s.Description ?? "",
+        //                 CourseId = c.Id,
+        //                 Order = s.Order,
+        //                 LectureCount = s.Lectures.Count,
+        //                 DurationInSeconds = s.Lectures
+        //                     .Select(l => (int?)l.Video!.DurationInSeconds)
+        //                     .Sum() ?? 0,
+        //                 Lectures = s.Lectures
+        //                     .OrderBy(l => l.Order)
+        //                     .Select(l => new LectureVm
+        //                     {
+        //                         Id = l.Id,
+        //                         Title = l.Title,
+        //                         Description = l.Description ?? "",
+        //                         VideoUrl = isAdmin || c.InstructorId == currentUserId || l.IsPreview
+        //                             ? l.Video != null ? l.Video.Url : ""
+        //                             : "",
+        //                         DurationInSeconds = l.Video != null ? l.Video.DurationInSeconds : 0,
+        //                         IsPreview = l.IsPreview,
+        //                         SectionId = s.Id,
+        //                         Order = l.Order
+        //                     }).ToArray()
+        //             }).ToArray(),
+        //         InstructorId = c.Instructor.Id.ToString(),
+        //         InstructorName = c.Instructor.DisplayName ?? "",
+        //         InstructorAvatarUrl = c.Instructor.Avatar != null ? c.Instructor.Avatar.Url : "",
+        //         InstructorProfessionalTitle = c.Instructor.ProfessionalTitle ?? "",
+        //         InstructorAbout = c.Instructor.About ?? "",
+        //         InstructorAverageRating = c.Instructor.Courses
+        //             .SelectMany(ic => ic.Enrollments)
+        //             .Select(e => e.Review)
+        //             .Select(r => (double?)r.Rating)
+        //             .Average() ?? 0,
+        //         InstructorReviewCount = c.Instructor.Courses
+        //             .SelectMany(ic => ic.Enrollments)
+        //             .Select(e => e.Review)
+        //             .Count(),
+        //         InstructorCourseCount = c.Instructor.Courses.Count,
+        //         InstructorStudentCount = c.Instructor.Courses
+        //             .SelectMany(ic => ic.Enrollments)
+        //             .Select(e => e.UserId)
+        //             .Distinct()
+        //             .Count(),
+        //         EnrollmentCount = c.Enrollments.Count,
+        //         ReviewCount = c.Enrollments
+        //             .Select(e => e.Review)
+        //             .Count(),
+        //         AverageRating = c.Enrollments
+        //             .Select(e => e.Review)
+        //             .Select(r => (double?)r.Rating)
+        //             .Average() ?? 0,
+        //         CreatedAt = c.CreatedAt,
+        //         UpdatedAt = c.UpdatedAt
+        //     })
+        //     .FirstOrDefaultAsync();
+
+
         var course = await context.Courses
             .AsNoTracking()
             .Include(c => c.Category)

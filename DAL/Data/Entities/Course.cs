@@ -16,9 +16,9 @@ public class Course : BaseEntity
 
     public CourseLevel? Level { get; set; }
 
-    public string[]? Prerequisites { get; set; }
+    public string[] Prerequisites { get; set; } = [];
 
-    public string[]? LearningOutcomes { get; set; }
+    public string[] LearningOutcomes { get; set; } = [];
 
     public CourseStatus Status { get; set; } = CourseStatus.Draft;
 

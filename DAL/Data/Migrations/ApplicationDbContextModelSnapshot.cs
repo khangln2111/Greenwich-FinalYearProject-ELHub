@@ -297,6 +297,7 @@ namespace DAL.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LearningOutcomes")
+                        .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
@@ -305,6 +306,7 @@ namespace DAL.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Prerequisites")
+                        .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 

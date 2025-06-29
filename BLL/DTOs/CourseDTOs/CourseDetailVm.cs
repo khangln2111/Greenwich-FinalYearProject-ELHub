@@ -38,7 +38,6 @@ public class CourseDetailVm
 
     public required string CategoryName { get; init; }
 
-
     public int ReviewCount { get; init; }
 
     public double AverageRating { get; init; }

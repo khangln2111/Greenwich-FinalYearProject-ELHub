@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250628195509_Initial")]
+    [Migration("20250629135510_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -300,6 +300,7 @@ namespace DAL.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LearningOutcomes")
+                        .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
@@ -308,6 +309,7 @@ namespace DAL.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Prerequisites")
+                        .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
