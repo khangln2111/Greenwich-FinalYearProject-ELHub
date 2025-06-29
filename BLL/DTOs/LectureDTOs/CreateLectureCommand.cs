@@ -12,5 +12,5 @@ public class CreateLectureCommand
 
     public required IFormFile Video { get; set; }
 
-    public required bool Preview { get; set; }
+    public required bool IsPreview { get; set; }
 }

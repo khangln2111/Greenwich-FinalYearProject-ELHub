@@ -5,5 +5,6 @@ public enum CourseStatus
     Draft,
     Published,
     Pending,
-    Archived
+    Archived,
+    Denied
 }

@@ -9,7 +9,7 @@ public class LearningLectureVm
 
     public required string VideoUrl { get; set; }
 
-    public required bool Preview { get; set; }
+    public required bool IsPreview { get; set; }
 
     public int DurationInSeconds { get; set; }
 

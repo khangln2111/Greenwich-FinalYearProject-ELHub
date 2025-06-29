@@ -12,5 +12,5 @@ public class UpdateLectureCommand
 
     public IFormFile? Video { get; set; }
 
-    public bool? Preview { get; set; }
+    public bool? IsPreview { get; set; }
 }

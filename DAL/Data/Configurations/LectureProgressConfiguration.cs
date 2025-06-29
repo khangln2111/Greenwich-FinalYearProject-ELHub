@@ -12,12 +12,12 @@ public class LectureProgressConfiguration : IEntityTypeConfiguration<LectureProg
             .HasOne(lp => lp.Lecture)
             .WithMany(l => l.LectureProgresses)
             .HasForeignKey(lp => lp.LectureId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasOne(lp => lp.Enrollment)
             .WithMany(l => l.LectureProgresses)
             .HasForeignKey(lp => lp.EnrollmentId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

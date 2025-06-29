@@ -8,7 +8,7 @@ public class Lecture : BaseEntity
 
     public string? Description { get; set; }
 
-    public required bool Preview { get; set; } = false;
+    public required bool IsPreview { get; set; } = false;
 
     public DurationMedia? Video { get; set; }
 

@@ -23,7 +23,7 @@ public class CreateLectureCommandValidator : AbstractValidator<CreateLectureComm
         RuleFor(x => x.SectionId)
             .NotEmpty();
 
-        RuleFor(x => x.Preview)
+        RuleFor(x => x.IsPreview)
             .NotNull();
 
         RuleFor(x => x.Video)
