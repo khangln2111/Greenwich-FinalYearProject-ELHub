@@ -2,7 +2,6 @@ import { Button, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 import CusModal from "../../../components/CusModal";
-import { useEffect } from "react";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 const schema = z.object({
@@ -37,13 +36,6 @@ export function ChangeReceiverModal({
       onSubmit(values.receiverEmail.trim());
     }
   };
-
-  useEffect(() => {
-    if (opened && defaultEmail !== undefined) {
-      form.setValues({ receiverEmail: defaultEmail });
-      form.resetDirty();
-    }
-  }, [defaultEmail, opened]);
 
   return (
     <CusModal opened={opened} onClose={onClose} title="Change Receiver Email" size="500px">

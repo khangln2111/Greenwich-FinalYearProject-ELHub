@@ -168,6 +168,7 @@ export default function GiftsPage() {
 
       <RedeemGiftModal open={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
       <ChangeReceiverModal
+        key={selectedGift?.id}
         opened={changeModalOpen}
         onClose={() => setChangeModalOpen(false)}
         onSubmit={handleChangeGiftReceiver}
