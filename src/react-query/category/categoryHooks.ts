@@ -64,7 +64,7 @@ export const useUpdateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (category: UpdateCategoryCommand) => updateCategory(category),
+    mutationFn: (command: UpdateCategoryCommand) => updateCategory(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.categories.list._def });
       showSuccessToast("Category Updated", "The category was updated successfully.");
