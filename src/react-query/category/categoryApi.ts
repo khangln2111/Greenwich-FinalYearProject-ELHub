@@ -1,4 +1,4 @@
-import { GridifyQueryBuilder } from "gridify-client";
+import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
 import {
@@ -15,6 +15,9 @@ const buildCategoryQuery = (query: CategoryQueryCriteria = {}) => {
 
   queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
+  if (query.name) {
+    queryBuilder.addCondition("name", op.Contains, query.name, false);
+  }
 
   return queryBuilder.build();
 };
@@ -32,12 +35,20 @@ export const getCategoryDetail = async (id: string) => {
 };
 
 export const createCategory = async (command: CreateCategoryCommand) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, command);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, command, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 
 export const updateCategory = async (command: UpdateCategoryCommand) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/${command.id}`, command);
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}`, command, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 
