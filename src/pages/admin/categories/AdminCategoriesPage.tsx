@@ -1,4 +1,4 @@
-import { Button, Image, Text, TextInput, Title } from "@mantine/core";
+import { Button, Image, Text, TextInput, Title, Badge } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
@@ -8,7 +8,11 @@ import FileUploadField from "../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../constants/ValidationConstants";
 import CusModal from "../../../components/CusModal";
 import { CategoryVm } from "../../../react-query/category/category.types";
-import { useGetCategories } from "../../../react-query/category/categoryHooks";
+import {
+  useCreateCategory,
+  useGetCategories,
+  useUpdateCategory,
+} from "../../../react-query/category/categoryHooks";
 import CenterLoader from "../../../components/CenterLoader";
 
 const schema = z.object({
@@ -28,6 +32,8 @@ export default function AdminCategoriesPage() {
   const [opened, { open, close }] = useDisclosure(false);
   const [editingCategory, setEditingCategory] = useState<CategoryVm | null>(null);
   const { data, isPending, error } = useGetCategories();
+  const createCategoryMutation = useCreateCategory();
+  const updateCategoryMutation = useUpdateCategory();
 
   const form = useForm<z.infer<typeof schema>>({
     mode: "uncontrolled",
@@ -62,8 +68,6 @@ export default function AdminCategoriesPage() {
   if (isPending) return <CenterLoader />;
   if (error) return <Text>Error loading categories: {error.message}</Text>;
 
-  console.log("Categories data:", data);
-
   return (
     <div className="flex-1 p-6 xl:p-8">
       <Title order={2} className="mb-6">
@@ -71,31 +75,38 @@ export default function AdminCategoriesPage() {
       </Title>
 
       {/* Grid of category cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {data.items.map((cat) => (
           <div
             key={cat.id}
-            className="bg-white dark:bg-dark-6 border border-gray-200 dark:border-dark-4 rounded-2xl shadow-sm
-              hover:shadow-md transition-all duration-300 overflow-hidden"
+            className="rounded-2xl border border-gray-200 dark:border-dark-4 overflow-hidden bg-white dark:bg-dark-6
+              shadow-sm hover:shadow-md transition-all duration-300 flex flex-col"
           >
-            <div className="aspect-video bg-gray-100 dark:bg-zinc-800">
+            {/* Image with padding & rounded */}
+            <div className="aspect-video overflow-hidden">
               <Image src={cat.imageUrl} alt={cat.name} className="w-full h-full object-cover" />
             </div>
 
-            <div className="p-4 flex flex-col gap-2">
-              <h3 className="text-lg font-semibold">{cat.name}</h3>
-              <p className="text-sm text-gray-500 dark:text-zinc-400">
-                {cat.courseCount} course{cat.courseCount !== 1 && "s"}
-              </p>
-              <Button
-                variant="light"
-                size="xs"
-                leftSection={<Pencil size={16} />}
-                onClick={() => handleEdit(cat)}
-                className="mt-2 self-start"
-              >
-                Edit
-              </Button>
+            {/* Content */}
+            <div className="p-4 flex-1 flex flex-col justify-between">
+              <h3 className="text-lg font-semibold mb-2">{cat.name}</h3>
+
+              {/* Footer: course count + edit button */}
+              <div className="flex items-center justify-between mt-auto">
+                <Badge color="gray" variant="light" radius="sm" size="sm">
+                  {cat.courseCount} course{cat.courseCount !== 1 && "s"}
+                </Badge>
+
+                <Button
+                  variant="default"
+                  size="xs"
+                  leftSection={<Pencil size={14} />}
+                  onClick={() => handleEdit(cat)}
+                  className="rounded-lg dark:bg-dark-4 dark:text-white"
+                >
+                  Edit
+                </Button>
+              </div>
             </div>
           </div>
         ))}

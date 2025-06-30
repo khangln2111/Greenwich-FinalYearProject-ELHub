@@ -39,11 +39,11 @@ export const useGetCategoryDetail = (id: string) => {
   });
 };
 
-export const useCreateCategory = (category: CreateCategoryCommand) => {
+export const useCreateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => createCategory(category),
+    mutationFn: (command: CreateCategoryCommand) => createCategory(command),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: keyFac.categories.list._def });
       showSuccessToast("Category Created", "Category created successfully.");
@@ -60,11 +60,11 @@ export const useCreateCategory = (category: CreateCategoryCommand) => {
   });
 };
 
-export const useUpdateCategory = (category: UpdateCategoryCommand) => {
+export const useUpdateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => updateCategory(category),
+    mutationFn: (category: UpdateCategoryCommand) => updateCategory(category),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.categories.list._def });
       showSuccessToast("Category Updated", "The category was updated successfully.");
