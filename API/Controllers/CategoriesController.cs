@@ -32,7 +32,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
+    public async Task<IActionResult> Create([FromForm] CreateCategoryCommand command)
     {
         var result = await categoryService.Create(command);
         return StatusCode(StatusCodes.Status201Created, result);
@@ -43,7 +43,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromBody] UpdateCategoryCommand command)
+    public async Task<IActionResult> Update([FromForm] UpdateCategoryCommand command)
     {
         var result = await categoryService.Update(command);
         return Ok(result);

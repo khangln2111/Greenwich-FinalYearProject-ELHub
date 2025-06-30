@@ -8,6 +8,8 @@ using BLL.Models;
 using BLL.Validations;
 using DAL.Data;
 using DAL.Data.Entities;
+using DAL.Data.Enums;
+using DAL.Utilities.MediaUtility.Abstract;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +19,8 @@ public class CategoryService(
     ApplicationDbContext context,
     IMapper mapper,
     IValidationService validationService,
-    IGridifyMapper<Category> gridifyMapper)
+    IGridifyMapper<Category> gridifyMapper,
+    IMediaManager mediaManager)
     : ICategoryService
 {
     public async Task<Paged<CategoryVm>> GetList(GridifyQuery query)
@@ -37,17 +40,31 @@ public class CategoryService(
     public async Task<Success> Create(CreateCategoryCommand command)
     {
         await validationService.ValidateAsync(command);
-        var categoryEntity = mapper.Map<Category>(command);
-        await context.Categories.AddAsync(categoryEntity);
+        var category = mapper.Map<Category>(command);
+        var image = await mediaManager.SaveFileAsync(command.Image, MediaType.Image);
+        await context.Media.AddAsync(image);
+        category.Image = image;
+        await context.Categories.AddAsync(category);
         await context.SaveChangesAsync();
-        return new Success("Created category successfully", new { id = categoryEntity.Id });
+        return new Success("Created category successfully", new { id = category.Id });
     }
 
     public async Task<Success> Update(UpdateCategoryCommand command)
     {
         await validationService.ValidateAsync(command);
-        var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == command.Id);
+        var category = await context.Categories
+            .Include(c => c.Image)
+            .FirstOrDefaultAsync(c => c.Id == command.Id);
         if (category == null) throw new NotFoundException(nameof(Category), command.Id);
+        if (command.Image != null && category.Image != null)
+            await mediaManager.UpdateFileAsync(category.Image, command.Image);
+        if (command.Image != null && category.Image == null)
+        {
+            var image = await mediaManager.SaveFileAsync(command.Image, MediaType.Image);
+            await context.Media.AddAsync(image);
+            category.Image = image;
+        }
+
         mapper.Map(command, category);
         await context.SaveChangesAsync();
         return new Success("Updated category successfully");

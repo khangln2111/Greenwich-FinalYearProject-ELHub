@@ -24,7 +24,7 @@ public static class AppConstants
     public static class Category
     {
         public const int NameMaxLength = 100;
-        public const int DescriptionMaxLength = 500;
+        public const int ImageMaxSizeBytes = 50 * FileSize.Megabyte;
     }
 
     public static class Course

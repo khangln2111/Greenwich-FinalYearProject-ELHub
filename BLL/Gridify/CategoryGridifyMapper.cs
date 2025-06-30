@@ -9,6 +9,5 @@ public class CategoryGridifyMapper : GridifyMapper<Category>
     {
         AddMap("CourseCount", c => c.Courses.Count);
         AddMap("Name", c => c.Name);
-        AddMap("Description", c => c.Description);
     }
 }

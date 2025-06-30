@@ -253,9 +253,8 @@ namespace DAL.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -266,6 +265,8 @@ namespace DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Categories");
                 });
@@ -973,6 +974,15 @@ namespace DAL.Data.Migrations
                     b.Navigation("Cart");
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("DAL.Data.Entities.Category", b =>
+                {
+                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Course", b =>
