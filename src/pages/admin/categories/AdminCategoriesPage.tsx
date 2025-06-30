@@ -115,10 +115,24 @@ export default function AdminCategoriesPage() {
               className="w-60"
               value={searchInput}
               onChange={(e) => setSearchInput(e.currentTarget.value)}
+              rightSectionPointerEvents="all"
               rightSection={
-                <ActionIcon type="submit" variant="subtle" size="lg">
-                  <Search className="w-5 h-5 text-gray-500" />
-                </ActionIcon>
+                searchInput ? (
+                  <ActionIcon
+                    variant="subtle"
+                    size="lg"
+                    onClick={() => {
+                      setSearchInput("");
+                      setSearchTerm("");
+                    }}
+                  >
+                    ✕
+                  </ActionIcon>
+                ) : (
+                  <ActionIcon type="submit" variant="subtle" size="lg">
+                    <Search className="w-5 h-5 text-gray-500" />
+                  </ActionIcon>
+                )
               }
             />
           </form>
