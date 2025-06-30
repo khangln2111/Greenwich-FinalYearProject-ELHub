@@ -175,6 +175,7 @@ export default function AdminCategoriesPage() {
             <Button
               variant="filled"
               disabled={!editForm.isDirty()}
+              loading={updateCategory.isPending}
               onClick={() => formSubmitWithFocus(editForm, handleEditSubmit)()}
             >
               Save
@@ -214,6 +215,7 @@ export default function AdminCategoriesPage() {
             <Button
               variant="filled"
               disabled={!createForm.isValid()}
+              loading={createCategory.isPending}
               onClick={() => formSubmitWithFocus(createForm, handleCreateSubmit)()}
             >
               Create

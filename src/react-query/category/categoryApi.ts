@@ -14,7 +14,7 @@ const buildCategoryQuery = (query: CategoryQueryCriteria = {}) => {
   const queryBuilder = new GridifyQueryBuilder();
 
   queryBuilder.setPage(query.page ?? 1);
-  queryBuilder.setPageSize(query.pageSize ?? 10);
+  queryBuilder.setPageSize(query.pageSize ?? 20);
   if (query.name) {
     queryBuilder.addCondition("name", op.Contains, query.name, false);
   }
