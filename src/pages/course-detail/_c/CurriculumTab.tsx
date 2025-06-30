@@ -72,7 +72,7 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
                         <span className="leading-none md:text-lg">{lecture.title}</span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
-                        {lecture.preview && (
+                        {lecture.isPreview && (
                           <Button
                             variant="default"
                             size="compact-sm"

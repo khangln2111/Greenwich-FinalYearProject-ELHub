@@ -31,7 +31,7 @@ const UpdateLectureSchema = z.object({
       message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
     })
     .or(z.string()),
-  preview: z.boolean(),
+  isPreview: z.boolean(),
 });
 
 type UpdateLectureFormValues = z.infer<typeof UpdateLectureSchema>;
@@ -42,7 +42,7 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
     title: lecture.title,
     description: lecture.description,
     video: lecture.videoUrl,
-    preview: lecture.preview,
+    isPreview: lecture.isPreview,
   };
 
   const form = useForm<UpdateLectureFormValues>({
@@ -59,7 +59,7 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
       title: values.title,
       description: values.description,
       video: values.video instanceof File ? values.video : undefined,
-      preview: values.preview,
+      isPreview: values.isPreview,
     };
 
     updateLectureMutation.mutate(payload, {
@@ -127,9 +127,9 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
             size="lg"
             onLabel={<EyeIcon size={16} />}
             offLabel={<EyeOffIcon size={16} />}
-            {...form.getInputProps("preview", { type: "input" })}
-            key={form.key("preview")}
-            defaultChecked={form.getValues().preview}
+            {...form.getInputProps("isPreview", { type: "input" })}
+            key={form.key("isPreview")}
+            defaultChecked={form.getValues().isPreview}
           />
         </div>
 

@@ -27,7 +27,7 @@ const InstructorTab = ({ courseDetail }: InstructorTabProps) => {
           {/* Right column: Instructor Info + Description */}
           <div className="md:flex-6 flex flex-col">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {courseDetail.instructorName}
+              {courseDetail.instructorName || "ELHub Instructor"}
             </h3>
             <p className="font-medium text-gray-500 dark:text-zinc-400">
               {courseDetail.instructorProfessionalTitle || "Software Engineer & Instructor"}

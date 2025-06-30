@@ -2,7 +2,7 @@ import { GridifyQueryBuilder } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
 import {
-  Category,
+  CategoryVm,
   CategoryQueryCriteria,
   CreateCategoryCommand,
   UpdateCategoryCommand,
@@ -20,14 +20,14 @@ const buildCategoryQuery = (query: CategoryQueryCriteria = {}) => {
 };
 
 export const getCategories = async (query: CategoryQueryCriteria = {}) => {
-  const response = await apiClient.get<ListData<Category>>(`${BASE_URL}`, {
+  const response = await apiClient.get<ListData<CategoryVm>>(`${BASE_URL}`, {
     params: buildCategoryQuery(query),
   });
   return response.data;
 };
 
 export const getCategoryDetail = async (id: string) => {
-  const response = await apiClient.get<Category>(`${BASE_URL}/${id}`);
+  const response = await apiClient.get<CategoryVm>(`${BASE_URL}/${id}`);
   return response.data;
 };
 

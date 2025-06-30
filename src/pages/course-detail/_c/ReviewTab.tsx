@@ -4,8 +4,8 @@ import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
+import avatar from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
-import avatar from "../../../assets/placeholder/avatar-placeholder.jpg";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetReviewsByCourseId } from "../../../react-query/review/reviewHooks";
 

@@ -3,6 +3,7 @@ import { openConfirmModal } from "@mantine/modals";
 import { CheckCircle, KeyIcon, GiftIcon } from "lucide-react";
 import { useEnrollFromInventory } from "../../../react-query/enrollment/enrollmentHooks";
 import { InventoryItemVm } from "../../../react-query/inventory/inventory.types";
+import { cn } from "../../../utils/cn";
 
 type InventoryItemCardProps = {
   item: InventoryItemVm;
@@ -83,8 +84,11 @@ const InventoryItemCard = ({ item, onGift }: InventoryItemCardProps) => {
             </Button>
             <Button
               leftSection={<GiftIcon size={16} />}
-              onClick={() => onGift?.(item.id) || item.quantity <= 0}
-              className="bg-rose-500 dark:bg-rose-600"
+              onClick={() => onGift?.(item.id)}
+              disabled={item.quantity <= 0}
+              className={cn({
+                "bg-rose-500 dark:bg-rose-600": item.quantity > 0,
+              })}
             >
               Gift
             </Button>

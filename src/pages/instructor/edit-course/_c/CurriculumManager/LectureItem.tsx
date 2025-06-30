@@ -59,7 +59,7 @@ export const LectureItem = ({ lecture, index, onUpdate }: LectureItemProps) => {
             <span className="leading-tight md:text-lg">{lecture.title}</span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            {lecture.preview && (
+            {lecture.isPreview && (
               <ActionIcon variant="default" className="text-primary-4 dark:text-primary-8">
                 <EyeIcon size={16} />
               </ActionIcon>

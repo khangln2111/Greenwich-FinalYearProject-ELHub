@@ -1,21 +1,21 @@
-export interface Category {
+export interface CategoryVm {
   id: string;
   name: string;
-  description: string | null;
   courseCount: number;
+  imageUrl: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreateCategoryCommand {
   name: string;
-  description?: string | null;
+  image: File;
 }
 
 export interface UpdateCategoryCommand {
   id: string;
   name?: string;
-  description?: string | null;
+  image?: File;
 }
 
 export interface CategoryQueryCriteria {

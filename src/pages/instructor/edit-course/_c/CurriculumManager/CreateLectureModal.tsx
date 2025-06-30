@@ -23,7 +23,7 @@ const CreateLectureSchema = z.object({
   description: z
     .string({ message: "Description is required" })
     .min(1, "Description must be at least 1 character"),
-  preview: z.boolean().default(false),
+  isPreview: z.boolean().default(false),
   video: z
     .instanceof(File, { message: "Video is required" })
     .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
@@ -51,7 +51,7 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
       title: values.title,
       description: values.description,
       video: values.video,
-      preview: values.preview ?? false,
+      isPreview: values.isPreview ?? false,
     };
 
     createLectureMutation.mutate(payload, {
@@ -120,9 +120,9 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
             size="lg"
             onLabel={<EyeIcon size={16} />}
             offLabel={<EyeOffIcon size={16} />}
-            {...form.getInputProps("preview", { type: "input" })}
-            key={form.key("preview")}
-            defaultChecked={form.getValues().preview}
+            {...form.getInputProps("isPreview", { type: "input" })}
+            key={form.key("isPreview")}
+            defaultChecked={form.getValues().isPreview}
           />
         </div>
 

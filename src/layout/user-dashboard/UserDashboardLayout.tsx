@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import avatarPlaceHolder from "../../assets/placeholder/profile-avatar-placeholder.svg";
+import avatarPlaceholder from "../../assets/placeholder/profile-avatar-placeholder.svg";
 import background from "../../assets/userDashboard/background-info.png";
 import { cn } from "../../utils/cn";
 import { useAppStore } from "../../zustand/store";
@@ -84,7 +84,7 @@ export default function UserDashboardLayout() {
           size={100}
           radius="full"
           className="mx-auto shadow-lg"
-          src={currentUser?.avatarUrl || avatarPlaceHolder}
+          src={currentUser?.avatarUrl || avatarPlaceholder}
         />
         <p className="mt-2 font-medium">{currentUser?.firstName}</p>
         <p className="text-xs">{currentUser?.email}</p>

@@ -25,6 +25,7 @@ import InstructorProfilePage from "../pages/instructor/profile/InstructorProfile
 import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
 import GiftsPage from "../pages/gift/GiftsPage";
 import AdminLayout from "../layout/admin/AdminLayout";
+import AdminCategoriesPage from "../pages/admin/categories/AdminCategoriesPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -109,6 +110,11 @@ const adminRoute: RouteObject = {
       path: "analytics",
       element: <p>Admin Dashboard</p>,
     },
+    {
+      path: "categories",
+      element: <AdminCategoriesPage />,
+    },
+    {},
   ],
 };
 

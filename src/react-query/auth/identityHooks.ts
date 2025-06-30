@@ -95,7 +95,6 @@ export const useLogin = () => {
       const { accessToken, refreshToken } = data;
       setTokens(accessToken, refreshToken);
       await queryClient.invalidateQueries();
-      // await queryClient.invalidateQueries({ queryKey: keyFac.identity.currentUser.queryKey });
       navigate("/");
     },
     onError: (error, variables) =>

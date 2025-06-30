@@ -5,7 +5,7 @@ export type LectureVm = {
   videoUrl: string;
   durationInSeconds: number;
   sectionId: string;
-  preview: boolean;
+  isPreview: boolean;
   order: number;
 };
 
@@ -16,7 +16,7 @@ export type LearningLectureVm = {
   videoUrl: string;
   durationInSeconds: number;
   sectionId: string;
-  preview: boolean;
+  isPreview: boolean;
   order: number;
   completed: boolean;
 };
@@ -25,7 +25,7 @@ export interface CreateLectureCommand {
   sectionId: string;
   title: string;
   description: string;
-  preview: boolean;
+  isPreview: boolean;
   video: File;
 }
 
@@ -34,7 +34,7 @@ export interface UpdateLectureCommand {
   title?: string;
   description?: string;
   video?: File;
-  preview?: boolean;
+  isPreview?: boolean;
 }
 
 export interface ReorderLectureCommand {

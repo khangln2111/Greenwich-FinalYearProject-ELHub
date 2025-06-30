@@ -5,7 +5,6 @@ import {
   BellRingIcon,
   BookOpenCheckIcon,
   ChartNoAxesCombinedIcon,
-  FileTextIcon,
   FlagTriangleRightIcon,
   PackageIcon,
   SettingsIcon,
@@ -34,7 +33,7 @@ const navItems: NavItem[] = [
     icon: ChartNoAxesCombinedIcon,
   },
   {
-    href: "admin/categories",
+    href: "/admin/categories",
     label: "Category management",
     icon: TagsIcon,
   },
@@ -56,11 +55,6 @@ const navItems: NavItem[] = [
     href: "/admin/users",
     label: "User management",
     icon: Users2Icon,
-  },
-  {
-    href: "/admin/reviews",
-    label: "Reviews",
-    icon: FileTextIcon,
   },
   {
     href: "/admin/reports",

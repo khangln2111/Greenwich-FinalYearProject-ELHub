@@ -5,7 +5,6 @@ import {
   BookOpen,
   Clock,
   GraduationCap,
-  HelpCircle,
   InfinityIcon,
   LanguagesIcon,
   ShoppingCart,
@@ -83,6 +82,8 @@ const CourseDetailPage = () => {
   if (error || !courseId) return <Navigate to="/404" replace />;
 
   if (isPending) return <CourseDetailPageSkeleton />;
+
+  console.log("course", course);
 
   return (
     <div className="flex-1">
@@ -241,7 +242,6 @@ const CourseDetailPage = () => {
                     label="Lectures"
                     value={course.lectureCount.toString()}
                   />
-                  <CourseStat icon={HelpCircle} label="Quizzes" value="145" />
                   <CourseStat
                     icon={GraduationCap}
                     label="Enrolled"

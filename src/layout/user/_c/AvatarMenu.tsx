@@ -61,7 +61,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           to="/dashboard/my-account"
           leftSection={<CircleUserIcon size={15} />}
         >
-          My Account
+          My account
         </Menu.Item>
         <Menu.Item
           leftSection={<MonitorCheckIcon size={15} />}
