@@ -27,6 +27,21 @@ public static class AppConstants
         public const int ImageMaxSizeBytes = 50 * FileSize.Megabyte;
     }
 
+    public static class RoleNames
+    {
+        public const string Admin = "ADMIN";
+        public const string Instructor = "INSTRUCTOR";
+    }
+
+    public static class InstructorApplication
+    {
+        public const int DisplayNameMaxLength = 100;
+        public const int ProfessionalTitleMaxLength = 100;
+        public const int AboutMaxLength = 1000;
+        public const int NoteMaxLength = 500;
+        public const int AvatarMaxSizeBytes = 50 * FileSize.Megabyte;
+    }
+
     public static class Course
     {
         public const int TitleMaxLength = 150;

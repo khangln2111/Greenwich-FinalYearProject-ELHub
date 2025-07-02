@@ -22,5 +22,6 @@ public enum ErrorCode
     InvalidPaymentIntent,
     NoInventoryLeft,
     CourseAlreadyEnrolled,
-    GiftUnavailable
+    GiftUnavailable,
+    CannotAssignRole
 }
