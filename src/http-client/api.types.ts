@@ -40,4 +40,7 @@ export enum ErrorCode {
   NoInventoryLeft = "NoInventoryLeft",
   CourseAlreadyEnrolled = "CourseAlreadyEnrolled",
   GiftUnavailable = "GiftUnavailable",
+  CannotAssignRole = "CannotAssignRole",
+  RetryLimitExceeded = "RetryLimitExceeded",
+  RetryCooldown = "RetryCooldown",
 }

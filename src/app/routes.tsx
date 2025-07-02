@@ -26,6 +26,7 @@ import InstructorEditCoursePage from "../pages/instructor/edit-course/Instructor
 import GiftsPage from "../pages/gift/GiftsPage";
 import AdminLayout from "../layout/admin/AdminLayout";
 import AdminCategoriesPage from "../pages/admin/categories/AdminCategoriesPage";
+import BecomeInstructorPage from "../pages/become-instructor/BecomeInstructorPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -38,6 +39,10 @@ const userRoute: RouteObject = {
     { path: "cart", element: <CartPage /> },
     { path: "checkout", element: <CheckoutPage /> },
     { path: "checkout/result", element: <CheckoutResultPage /> },
+    {
+      path: "become-instructor",
+      element: <BecomeInstructorPage />,
+    },
     {
       path: "dashboard/order-history/:orderId",
       element: <OrderHistoryDetailPage />,
@@ -114,7 +119,6 @@ const adminRoute: RouteObject = {
       path: "categories",
       element: <AdminCategoriesPage />,
     },
-    {},
   ],
 };
 

@@ -6,6 +6,7 @@ export enum CourseStatus {
   Published = "Published",
   Pending = "Pending",
   Archived = "Archived",
+  Rejected = "Rejected",
 }
 
 export enum CourseLevel {
