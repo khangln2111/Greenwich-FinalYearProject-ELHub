@@ -28,6 +28,14 @@ export const useGetInstructorApplicationSelf = () => {
   return useQuery({
     queryKey: keyFac.instructorApplications.getInstructorApplicationSelf.queryKey,
     queryFn: getInstructorApplicationSelf,
+    retry: (failureCount, error) => {
+      // ❌ Không retry nếu là 404
+      if (error && error.response?.status === 404) {
+        return false;
+      }
+      // ✅ Retry tối đa 2 lần cho lỗi khác
+      return failureCount < 2;
+    },
   });
 };
 
@@ -125,5 +133,35 @@ export const useRetryInstructorApplication = () => {
         "Your application has been retried successfully!, please wait for the review.",
       );
     },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 400,
+            errorCode: ErrorCode.RetryLimitExceeded,
+            handler: () =>
+              showErrorToast(
+                "Retry Limit Exceeded",
+                "You have reached the maximum number of retry attempts.",
+              ),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.RetryCooldown,
+            handler: (err) => {
+              const msg = err.response?.data?.message ?? "";
+              showErrorToast("Retry Too Soon", msg); // e.g. "Please wait 3 days before retrying."
+            },
+          },
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast(
+                "Not Found",
+                "No rejected instructor application found for your account.",
+              ),
+          },
+        ],
+      }),
   });
 };

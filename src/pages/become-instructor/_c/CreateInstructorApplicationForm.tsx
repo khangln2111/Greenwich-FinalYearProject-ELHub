@@ -19,30 +19,44 @@ type Props = {
 
 const CreateInstructorApplicationForm = ({ onCancel }: Props) => {
   const form = useForm<CreateInstructorApplicationCommand>({
-    initialValues: {
-      displayName: "",
-      professionalTitle: "",
-      about: "",
-      workAvatar: undefined as any,
-    },
     validate: zodResolver(schema),
   });
 
   const { mutate: createApplication, isPending } = useCreateInstructorApplication();
 
   const handleSubmit = (values: CreateInstructorApplicationCommand) => {
-    createApplication(values);
+    createApplication(values, {
+      onSuccess: () => {
+        form.reset();
+        if (onCancel) onCancel();
+      },
+    });
   };
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
-        <TextInput label="Display Name" {...form.getInputProps("displayName")} />
-        <TextInput label="Professional Title" {...form.getInputProps("professionalTitle")} />
-        <Textarea label="About" autosize minRows={4} {...form.getInputProps("about")} />
+        <TextInput
+          label="Display Name"
+          placeholder="e.g. John Doe"
+          {...form.getInputProps("displayName")}
+        />
+        <TextInput
+          label="Professional Title"
+          placeholder="e.g. Senior Web Developer, Data Scientist..."
+          {...form.getInputProps("professionalTitle")}
+        />
+        <Textarea
+          label="About"
+          placeholder="Tell us about your teaching experience, background, and why you want to become an instructor."
+          autosize
+          minRows={4}
+          {...form.getInputProps("about")}
+        />
         <FileUploadField
-          previewMediaType={"image"}
+          previewMediaType="image"
           label="Work Avatar"
+          description="Upload a professional-looking avatar (JPG, PNG, WEBP)"
           accept={ALLOWED_IMAGE_TYPES}
           {...form.getInputProps("workAvatar")}
         />
