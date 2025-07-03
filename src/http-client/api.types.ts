@@ -60,13 +60,13 @@ export interface BaseQueryCriteria<TField extends string> {
 
 export type OrderOption<TField extends string> = `${TField}_${OrderDirection}`;
 
-export function encodeOrderOption<TField extends string>(
+export function encodeOrderByOption<TField extends string>(
   orderBy: OrderBy<TField>,
 ): OrderOption<TField> {
   return `${orderBy.field}_${orderBy.direction}` as OrderOption<TField>;
 }
 
-export function decodeOrderOption<TField extends string>(
+export function decodeOrderByOption<TField extends string>(
   encoded: string | null | undefined,
   defaultField: TField,
   defaultDirection: OrderDirection = "desc",

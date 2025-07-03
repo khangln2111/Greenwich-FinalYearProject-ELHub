@@ -7,8 +7,8 @@ import {
   Select,
   Stack,
   Text,
-  TextInput,
   Textarea,
+  TextInput,
   Title,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
@@ -20,6 +20,7 @@ import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import CenterLoader from "../../../components/CenterLoader";
 import CusModal from "../../../components/CusModal";
+import { decodeOrderByOption, encodeOrderByOption, OrderBy } from "../../../http-client/api.types";
 import {
   InstructorApplicationOrderableFields,
   InstructorApplicationStatus,
@@ -90,9 +91,24 @@ export default function AdminInstructorPage() {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const orderByOptions: {
+    label: string;
+    value: OrderBy<InstructorApplicationOrderableFields>;
+  }[] = [
+    { label: "Submitted (Newest)", value: { field: "createdAt", direction: "desc" } },
+    { label: "Submitted (Oldest)", value: { field: "createdAt", direction: "asc" } },
+    { label: "Reviewed (Newest)", value: { field: "reviewedAt", direction: "desc" } },
+    { label: "Reviewed (Oldest)", value: { field: "reviewedAt", direction: "asc" } },
+  ];
+
   const search = searchParams.get("search") || "";
   const statusFilter = (searchParams.get("status") as "All" | InstructorApplicationStatus) || "All";
-  const sortOption = searchParams.get("sort") || "createdAt_desc";
+  const orderByEncoded =
+    searchParams.get("orderBy") || encodeOrderByOption({ field: "createdAt", direction: "desc" });
+  const orderByOption = decodeOrderByOption<InstructorApplicationOrderableFields>(
+    orderByEncoded,
+    "createdAt",
+  );
 
   const setParam = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
@@ -142,10 +158,7 @@ export default function AdminInstructorPage() {
   } = useGetInstructorApplications({
     search,
     status: statusFilter === "All" ? undefined : statusFilter,
-    orderBy: {
-      field: sortOption.split("_")[0] as InstructorApplicationOrderableFields,
-      direction: sortOption.split("_")[1] as "asc" | "desc",
-    },
+    orderBy: orderByOption,
   });
 
   const apps = data?.items ?? [];
@@ -172,14 +185,17 @@ export default function AdminInstructorPage() {
         <StatusFilterBadges value={statusFilter} onChange={(val) => setParam("status", val)} />
 
         <Select
-          data={[
-            { label: "Submitted (Newest)", value: "createdAt_desc" },
-            { label: "Submitted (Oldest)", value: "createdAt_asc" },
-            { label: "Reviewed (Newest)", value: "reviewedAt_desc" },
-            { label: "Reviewed (Oldest)", value: "reviewedAt_asc" },
-          ]}
-          value={sortOption}
-          onChange={(v) => setParam("sort", v || "createdAt-desc")}
+          data={orderByOptions.map((opt) => ({
+            label: opt.label,
+            value: encodeOrderByOption(opt.value),
+          }))}
+          value={orderByEncoded}
+          onChange={(val) =>
+            setParam(
+              "orderBy",
+              val || encodeOrderByOption({ field: "createdAt", direction: "desc" }),
+            )
+          }
           w={200}
           placeholder="Sort by"
         />

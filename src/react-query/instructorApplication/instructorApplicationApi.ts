@@ -31,9 +31,13 @@ const buildInstructorApplicationQuery = (query: InstructorApplicationQueryCriter
   if (query.status) {
     queryBuilder.addCondition("status", op.Equal, query.status);
   }
+
   if (query.orderBy) {
-    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "asc");
+    const orderByField = query.orderBy.field;
+    const orderByDirection = query.orderBy.direction === "asc" ? true : false;
+    queryBuilder.addOrderBy(orderByField, orderByDirection);
   }
+
   return queryBuilder.build();
 };
 
