@@ -4,27 +4,28 @@ import {
   Button,
   Card,
   Group,
-  Modal,
+  Select,
   Stack,
   Text,
+  TextInput,
   Textarea,
   Title,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { useState } from "react";
+import { useForm, zodResolver } from "@mantine/form";
+import { useDisclosure, useDebouncedValue } from "@mantine/hooks";
 import dayjs from "dayjs";
+import { useMemo, useState } from "react";
+import { z } from "zod";
+import CenterLoader from "../../../components/CenterLoader";
+import CusModal from "../../../components/CusModal";
 import {
-  InstructorApplicationVm,
   InstructorApplicationStatus,
+  InstructorApplicationVm,
 } from "../../../react-query/instructorApplication/instructorApplication.types";
 import {
   useGetInstructorApplications,
   useReviewInstructorApplication,
 } from "../../../react-query/instructorApplication/instructorApplicationHooks";
-import CenterLoader from "../../../components/CenterLoader";
-import { useForm, zodResolver } from "@mantine/form";
-import { z } from "zod";
-import CusModal from "../../../components/CusModal";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -58,10 +59,17 @@ export default function AdminInstructorPage() {
 
   const { mutate: reviewApplication, isPending } = useReviewInstructorApplication();
 
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebouncedValue(search, 200);
+  const [statusFilter, setStatusFilter] = useState<"All" | InstructorApplicationStatus>(
+    "Pending" as InstructorApplicationStatus,
+  );
+  const [sortOption, setSortOption] = useState("createdAt-desc");
+
   const handleReview = (app: InstructorApplicationVm, isApprove: boolean) => {
     setSelectedApp(app);
     setApproveMode(isApprove);
-    form.reset(); // reset form when opening modal
+    form.reset();
     open();
   };
 
@@ -82,6 +90,45 @@ export default function AdminInstructorPage() {
     }
   };
 
+  const filteredSortedApps = useMemo(() => {
+    if (!data) return [];
+
+    let items = [...data.items];
+
+    // filter
+    if (statusFilter !== "All") {
+      items = items.filter((i) => i.status === statusFilter);
+    }
+
+    if (debouncedSearch.trim()) {
+      const q = debouncedSearch.toLowerCase();
+      items = items.filter(
+        (i) =>
+          i.email.toLowerCase().includes(q) ||
+          i.fullName.toLowerCase().includes(q) ||
+          i.displayName.toLowerCase().includes(q),
+      );
+    }
+
+    // sort
+    switch (sortOption) {
+      case "createdAt-desc":
+        items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+        break;
+      case "createdAt-asc":
+        items.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+        break;
+      case "reviewedAt-desc":
+        items.sort((a, b) => (b.reviewedAt || "").localeCompare(a.reviewedAt || ""));
+        break;
+      case "reviewedAt-asc":
+        items.sort((a, b) => (a.reviewedAt || "").localeCompare(b.reviewedAt || ""));
+        break;
+    }
+
+    return items;
+  }, [data, debouncedSearch, statusFilter, sortOption]);
+
   if (isGetInstructorApplicationsPending) return <CenterLoader />;
   if (error) return <Text c="red">Error loading applications: {error.message}</Text>;
 
@@ -91,8 +138,41 @@ export default function AdminInstructorPage() {
         Instructor Applications Review
       </Title>
 
+      <Group wrap="wrap" gap="sm" mb="lg">
+        <TextInput
+          placeholder="Search by name or email"
+          value={search}
+          onChange={(e) => setSearch(e.currentTarget.value)}
+          w={240}
+        />
+        <Select
+          data={[
+            { label: "All", value: "All" },
+            { label: "Pending", value: "Pending" },
+            { label: "Approved", value: "Approved" },
+            { label: "Rejected", value: "Rejected" },
+          ]}
+          value={statusFilter}
+          onChange={(v) => setStatusFilter(v as "All" | InstructorApplicationStatus)}
+          w={140}
+          placeholder="Status"
+        />
+        <Select
+          data={[
+            { label: "Newest submitted", value: "createdAt-desc" },
+            { label: "Oldest submitted", value: "createdAt-asc" },
+            { label: "Newest reviewed", value: "reviewedAt-desc" },
+            { label: "Oldest reviewed", value: "reviewedAt-asc" },
+          ]}
+          value={sortOption}
+          onChange={(v) => setSortOption(v || "createdAt-desc")}
+          w={180}
+          placeholder="Sort by"
+        />
+      </Group>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.items.map((app) => (
+        {filteredSortedApps.map((app) => (
           <Card
             key={app.id}
             shadow="sm"
@@ -102,7 +182,6 @@ export default function AdminInstructorPage() {
             className="flex flex-col justify-between"
           >
             <Stack gap="xs">
-              {/* Header */}
               <Group align="start">
                 <Avatar src={app.workAvatarUrl} size="lg" radius="xl" />
                 <div className="flex-1">
@@ -125,7 +204,6 @@ export default function AdminInstructorPage() {
                 </div>
               </Group>
 
-              {/* Body */}
               <Stack gap={4}>
                 <Text size="sm" lineClamp={2}>
                   <strong>Title:</strong> {app.professionalTitle}
@@ -144,7 +222,6 @@ export default function AdminInstructorPage() {
               </Stack>
             </Stack>
 
-            {/* Footer */}
             <Group mt="md" justify="flex-end">
               <Button color="red" variant="light" onClick={() => handleReview(app, false)}>
                 Reject

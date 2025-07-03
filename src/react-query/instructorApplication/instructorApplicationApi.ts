@@ -21,9 +21,11 @@ const buildInstructorApplicationQuery = (query: InstructorApplicationQueryCriter
       .startGroup()
       .addCondition("displayName", op.Contains, query.search)
       .or()
+      .addCondition("email", op.Contains, query.search)
+      .or()
       .addCondition("professionalTitle", op.Contains, query.search)
       .or()
-      .addCondition("about", op.Contains, query.search)
+      .addCondition("fullName", op.Contains, query.search)
       .endGroup();
   }
   if (query.status) {
