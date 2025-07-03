@@ -90,7 +90,7 @@ export default function AdminInstructorPage() {
   const [search, setSearch] = useSearchParamState<string>("search", "");
   const [statusFilter, setStatusFilter] = useSearchParamState<"All" | InstructorApplicationStatus>(
     "status",
-    "All",
+    InstructorApplicationStatus.Pending,
   );
   const [orderByParam, setOrderByParam] = useSearchParamState<string>(
     "orderBy",
