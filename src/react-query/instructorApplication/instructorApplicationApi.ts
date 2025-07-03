@@ -61,7 +61,7 @@ export const retryInstructorApplication = async (command: RetryInstructorApplica
 };
 
 export const reviewInstructorApplication = async (command: ReviewInstructorApplicationCommand) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/review`, command);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/review`, command);
   return response.data;
 };
 
