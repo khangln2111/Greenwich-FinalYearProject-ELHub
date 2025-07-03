@@ -4,22 +4,21 @@ import { ArrowUpDownIcon } from "lucide-react";
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import CenterLoader from "../../components/CenterLoader";
-import { OrderSortableFields, OrderStatus } from "../../react-query/order/order.types";
+import { OrderOrderableFields, OrderStatus } from "../../react-query/order/order.types";
 import { useGetOrdersSelf } from "../../react-query/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
+import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../http-client/api.types";
 
-const ORDER_BY_OPTIONS = [
-  { value: "createdAt_desc", label: "Date: Newest first" },
-  { value: "createdAt_asc", label: "Date: Oldest first" },
-  { value: "totalAmount_asc", label: "Total: Low to High" },
-  { value: "totalAmount_desc", label: "Total: High to Low" },
+const ORDER_BY_OPTIONS: {
+  label: string;
+  value: OrderBy<OrderOrderableFields>;
+}[] = [
+  { label: "Date: Newest first", value: { field: "createdAt", direction: "desc" } },
+  { label: "Date: Oldest first", value: { field: "createdAt", direction: "asc" } },
+  { label: "Total: Low to High", value: { field: "totalAmount", direction: "asc" } },
+  { label: "Total: High to Low", value: { field: "totalAmount", direction: "desc" } },
 ];
-
-function parseOrderBy(param: string | null) {
-  if (!param) return ORDER_BY_OPTIONS[0].value;
-  return ORDER_BY_OPTIONS.some((o) => o.value === param) ? param : ORDER_BY_OPTIONS[0].value;
-}
 
 function parseStatus(param: string | null): OrderStatus | undefined {
   // Nếu không có hoặc là "All", không filter status
@@ -40,14 +39,16 @@ export default function OrderHistoryPage() {
   const [activeTab, setActiveTab] = useState(initialStatus);
 
   // Lấy orderBy param, mặc định createdAt_desc
-  const orderByParam = parseOrderBy(searchParams.get("orderBy"));
-  const [field, direction] = orderByParam.split("_");
+  const orderByParamValue =
+    searchParams.get("orderBy") ||
+    encodeOrderOption<OrderOrderableFields>({ field: "createdAt", direction: "desc" });
+  const orderBy = decodeOrderOption<OrderOrderableFields>(orderByParamValue, "createdAt", "desc");
 
   // Tính status filter cho API call
   const statusFilter = parseStatus(activeTab);
 
   const { data, isPending, error } = useGetOrdersSelf({
-    orderBy: { field: field as OrderSortableFields, direction: direction as "asc" | "desc" },
+    orderBy: orderBy,
     status: statusFilter,
   });
 
@@ -77,8 +78,11 @@ export default function OrderHistoryPage() {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">My Orders</h1>
 
         <Select
-          data={ORDER_BY_OPTIONS}
-          value={orderByParam}
+          data={ORDER_BY_OPTIONS.map((opt) => ({
+            label: opt.label,
+            value: encodeOrderOption(opt.value),
+          }))}
+          value={orderByParamValue}
           onChange={onOrderByChange}
           rightSection={<ArrowUpDownIcon size={16} />}
           searchable={false}

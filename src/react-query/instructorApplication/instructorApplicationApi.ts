@@ -15,7 +15,6 @@ const buildInstructorApplicationQuery = (query: InstructorApplicationQueryCriter
   const queryBuilder = new GridifyQueryBuilder();
   queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
-  queryBuilder.addOrderBy("createdAt", true);
   if (query.search) {
     queryBuilder
       .startGroup()
@@ -33,9 +32,9 @@ const buildInstructorApplicationQuery = (query: InstructorApplicationQueryCriter
   }
 
   if (query.orderBy) {
-    const orderByField = query.orderBy.field;
-    const orderByDirection = query.orderBy.direction === "asc" ? true : false;
-    queryBuilder.addOrderBy(orderByField, orderByDirection);
+    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "asc");
+  } else {
+    queryBuilder.addOrderBy("createdAt", true); // true = desc
   }
 
   return queryBuilder.build();

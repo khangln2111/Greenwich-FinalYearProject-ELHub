@@ -1,3 +1,5 @@
+import { BaseQueryCriteria } from "../../http-client/api.types";
+
 export type CreatePaymentIntentCommand = {
   cartItemIds: string[];
 };
@@ -57,19 +59,12 @@ export type OrderItemVm = {
   updatedAt: string;
 };
 
-export type OrderSortableFields =
+export type OrderOrderableFields =
   | "createdAt"
   | "totalAmount"
   | "provisionalAmount"
   | "totalDirectDiscount";
 
-export type OrderQueryCriteria = {
-  page?: number;
-  pageSize?: number;
+export interface OrderQueryCriteria extends BaseQueryCriteria<OrderOrderableFields> {
   status?: OrderStatus;
-
-  orderBy?: {
-    field: OrderSortableFields;
-    direction: "asc" | "desc";
-  };
-};
+}
