@@ -12,7 +12,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { useDisclosure, useDebouncedValue } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import { z } from "zod";
@@ -26,6 +26,7 @@ import {
   useGetInstructorApplications,
   useReviewInstructorApplication,
 } from "../../../react-query/instructorApplication/instructorApplicationHooks";
+import { IconSearch } from "@tabler/icons-react";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -42,15 +43,55 @@ const reviewSchema = z.object({
   note: z.string().min(1, { message: "Note is required" }),
 });
 
+const statuses: ("All" | InstructorApplicationStatus)[] = [
+  "All",
+  InstructorApplicationStatus.Pending,
+  InstructorApplicationStatus.Approved,
+  InstructorApplicationStatus.Rejected,
+];
+
+function StatusFilterBadges({
+  value,
+  onChange,
+}: {
+  value: "All" | InstructorApplicationStatus;
+  onChange: (status: "All" | InstructorApplicationStatus) => void;
+}) {
+  return (
+    <div className="flex gap-2 flex-wrap">
+      {statuses.map((status) => {
+        const isActive = value === status;
+        return (
+          <button
+            key={status}
+            onClick={() => onChange(status)}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150
+            ${isActive ? "bg-blue-600 text-white" : "bg-gray-100 text-black hover:bg-gray-200"} `}
+          >
+            {status}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function AdminInstructorPage() {
   const {
     data,
     isPending: isGetInstructorApplicationsPending,
     error,
   } = useGetInstructorApplications();
+
   const [selectedApp, setSelectedApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
   const [modalOpened, { open, close }] = useDisclosure(false);
+
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"All" | InstructorApplicationStatus>(
+    InstructorApplicationStatus.Pending,
+  );
+  const [sortOption, setSortOption] = useState("createdAt-desc");
 
   const form = useForm({
     initialValues: { note: "" },
@@ -58,13 +99,6 @@ export default function AdminInstructorPage() {
   });
 
   const { mutate: reviewApplication, isPending } = useReviewInstructorApplication();
-
-  const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebouncedValue(search, 200);
-  const [statusFilter, setStatusFilter] = useState<"All" | InstructorApplicationStatus>(
-    "Pending" as InstructorApplicationStatus,
-  );
-  const [sortOption, setSortOption] = useState("createdAt-desc");
 
   const handleReview = (app: InstructorApplicationVm, isApprove: boolean) => {
     setSelectedApp(app);
@@ -90,44 +124,30 @@ export default function AdminInstructorPage() {
     }
   };
 
-  const filteredSortedApps = useMemo(() => {
+  const filteredApps = useMemo(() => {
     if (!data) return [];
 
-    let items = [...data.items];
-
-    // filter
-    if (statusFilter !== "All") {
-      items = items.filter((i) => i.status === statusFilter);
-    }
-
-    if (debouncedSearch.trim()) {
-      const q = debouncedSearch.toLowerCase();
-      items = items.filter(
-        (i) =>
-          i.email.toLowerCase().includes(q) ||
-          i.fullName.toLowerCase().includes(q) ||
-          i.displayName.toLowerCase().includes(q),
-      );
-    }
-
-    // sort
-    switch (sortOption) {
-      case "createdAt-desc":
-        items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-        break;
-      case "createdAt-asc":
-        items.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-        break;
-      case "reviewedAt-desc":
-        items.sort((a, b) => (b.reviewedAt || "").localeCompare(a.reviewedAt || ""));
-        break;
-      case "reviewedAt-asc":
-        items.sort((a, b) => (a.reviewedAt || "").localeCompare(b.reviewedAt || ""));
-        break;
-    }
-
-    return items;
-  }, [data, debouncedSearch, statusFilter, sortOption]);
+    return data.items
+      .filter((app) => {
+        if (statusFilter !== "All" && app.status !== statusFilter) return false;
+        if (
+          search &&
+          !app.email.toLowerCase().includes(search.toLowerCase()) &&
+          !app.displayName.toLowerCase().includes(search.toLowerCase())
+        ) {
+          return false;
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        const [field, dir] = sortOption.split("-");
+        const aVal = field === "createdAt" ? a.createdAt : a.reviewedAt || "";
+        const bVal = field === "createdAt" ? b.createdAt : b.reviewedAt || "";
+        return dir === "asc"
+          ? new Date(aVal).getTime() - new Date(bVal).getTime()
+          : new Date(bVal).getTime() - new Date(aVal).getTime();
+      });
+  }, [data, search, statusFilter, sortOption]);
 
   if (isGetInstructorApplicationsPending) return <CenterLoader />;
   if (error) return <Text c="red">Error loading applications: {error.message}</Text>;
@@ -138,25 +158,18 @@ export default function AdminInstructorPage() {
         Instructor Applications Review
       </Title>
 
-      <Group wrap="wrap" gap="sm" mb="lg">
+      {/* FILTERS */}
+      <div className="flex flex-wrap gap-4 items-center mb-6">
         <TextInput
           placeholder="Search by name or email"
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
-          w={240}
+          leftSection={<IconSearch size={16} />}
+          w={260}
         />
-        <Select
-          data={[
-            { label: "All", value: "All" },
-            { label: "Pending", value: "Pending" },
-            { label: "Approved", value: "Approved" },
-            { label: "Rejected", value: "Rejected" },
-          ]}
-          value={statusFilter}
-          onChange={(v) => setStatusFilter(v as "All" | InstructorApplicationStatus)}
-          w={140}
-          placeholder="Status"
-        />
+
+        <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
+
         <Select
           data={[
             { label: "Newest submitted", value: "createdAt-desc" },
@@ -166,13 +179,14 @@ export default function AdminInstructorPage() {
           ]}
           value={sortOption}
           onChange={(v) => setSortOption(v || "createdAt-desc")}
-          w={180}
+          w={200}
           placeholder="Sort by"
         />
-      </Group>
+      </div>
 
+      {/* APPLICATION CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredSortedApps.map((app) => (
+        {filteredApps.map((app) => (
           <Card
             key={app.id}
             shadow="sm"
@@ -232,6 +246,7 @@ export default function AdminInstructorPage() {
         ))}
       </div>
 
+      {/* MODAL */}
       <CusModal
         opened={modalOpened}
         onClose={close}
