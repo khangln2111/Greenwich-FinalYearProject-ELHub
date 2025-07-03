@@ -160,12 +160,10 @@ export default function AdminInstructorPage() {
 
   return (
     <div className="flex-1 p-6 xl:p-8">
-      <Title order={2} className="mb-6">
-        Instructor Applications Review
-      </Title>
+      {/* HEADER WITH SEARCH */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+        <Title order={2}>Instructor Applications Review</Title>
 
-      {/* FILTERS */}
-      <div className="flex flex-wrap gap-4 items-center mb-6">
         <TextInput
           placeholder="Search by name or email"
           value={search}
@@ -173,7 +171,10 @@ export default function AdminInstructorPage() {
           leftSection={<IconSearch size={16} />}
           w={260}
         />
+      </div>
 
+      {/* FILTER BADGES + SORT */}
+      <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
         <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
 
         <Select

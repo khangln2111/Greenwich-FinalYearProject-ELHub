@@ -45,6 +45,7 @@ export default function OrderHistoryPage() {
             label: opt.label,
             value: encodeOrderOption(opt.value),
           }))}
+          size="md"
           value={orderByParam}
           onChange={(value) => value && setOrderByParam(value)}
           rightSection={<ArrowUpDownIcon size={16} />}
