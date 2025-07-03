@@ -13,12 +13,15 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import CenterLoader from "../../../components/CenterLoader";
 import CusModal from "../../../components/CusModal";
 import {
+  InstructorApplicationOrderableFields,
   InstructorApplicationStatus,
   InstructorApplicationVm,
 } from "../../../react-query/instructorApplication/instructorApplication.types";
@@ -26,7 +29,7 @@ import {
   useGetInstructorApplications,
   useReviewInstructorApplication,
 } from "../../../react-query/instructorApplication/instructorApplicationHooks";
-import { IconSearch } from "@tabler/icons-react";
+import { cn } from "../../../utils/cn";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -65,8 +68,12 @@ function StatusFilterBadges({
           <button
             key={status}
             onClick={() => onChange(status)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150
-            ${isActive ? "bg-blue-600 text-white" : "bg-gray-100 text-black hover:bg-gray-200"} `}
+            className={cn(
+              "px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150",
+              isActive
+                ? "bg-blue-600 text-white dark:bg-blue-700"
+                : "bg-gray-100 text-black hover:bg-gray-200 dark:bg-gray-300 dark:hover:bg-gray-400",
+            )}
           >
             {status}
           </button>
@@ -77,21 +84,25 @@ function StatusFilterBadges({
 }
 
 export default function AdminInstructorPage() {
-  const {
-    data,
-    isPending: isGetInstructorApplicationsPending,
-    error,
-  } = useGetInstructorApplications();
-
+  const [modalOpened, { open, close }] = useDisclosure(false);
   const [selectedApp, setSelectedApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
-  const [modalOpened, { open, close }] = useDisclosure(false);
 
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"All" | InstructorApplicationStatus>(
-    InstructorApplicationStatus.Pending,
-  );
-  const [sortOption, setSortOption] = useState("createdAt-desc");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const search = searchParams.get("search") || "";
+  const statusFilter = (searchParams.get("status") as "All" | InstructorApplicationStatus) || "All";
+  const sortOption = searchParams.get("sort") || "createdAt_desc";
+
+  const setParam = (key: string, value: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (value) {
+      newParams.set(key, value);
+    } else {
+      newParams.delete(key);
+    }
+    setSearchParams(newParams);
+  };
 
   const form = useForm({
     initialValues: { note: "" },
@@ -124,32 +135,22 @@ export default function AdminInstructorPage() {
     }
   };
 
-  const filteredApps = useMemo(() => {
-    if (!data) return [];
+  const {
+    data,
+    isPending: isGetPending,
+    error,
+  } = useGetInstructorApplications({
+    search,
+    status: statusFilter === "All" ? undefined : statusFilter,
+    orderBy: {
+      field: sortOption.split("_")[0] as InstructorApplicationOrderableFields,
+      direction: sortOption.split("_")[1] as "asc" | "desc",
+    },
+  });
 
-    return data.items
-      .filter((app) => {
-        if (statusFilter !== "All" && app.status !== statusFilter) return false;
-        if (
-          search &&
-          !app.email.toLowerCase().includes(search.toLowerCase()) &&
-          !app.displayName.toLowerCase().includes(search.toLowerCase())
-        ) {
-          return false;
-        }
-        return true;
-      })
-      .sort((a, b) => {
-        const [field, dir] = sortOption.split("-");
-        const aVal = field === "createdAt" ? a.createdAt : a.reviewedAt || "";
-        const bVal = field === "createdAt" ? b.createdAt : b.reviewedAt || "";
-        return dir === "asc"
-          ? new Date(aVal).getTime() - new Date(bVal).getTime()
-          : new Date(bVal).getTime() - new Date(aVal).getTime();
-      });
-  }, [data, search, statusFilter, sortOption]);
+  const apps = data?.items ?? [];
 
-  if (isGetInstructorApplicationsPending) return <CenterLoader />;
+  if (isGetPending) return <CenterLoader />;
   if (error) return <Text c="red">Error loading applications: {error.message}</Text>;
 
   return (
@@ -163,22 +164,22 @@ export default function AdminInstructorPage() {
         <TextInput
           placeholder="Search by name or email"
           value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
+          onChange={(e) => setParam("search", e.currentTarget.value)}
           leftSection={<IconSearch size={16} />}
           w={260}
         />
 
-        <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
+        <StatusFilterBadges value={statusFilter} onChange={(val) => setParam("status", val)} />
 
         <Select
           data={[
-            { label: "Newest submitted", value: "createdAt-desc" },
-            { label: "Oldest submitted", value: "createdAt-asc" },
-            { label: "Newest reviewed", value: "reviewedAt-desc" },
-            { label: "Oldest reviewed", value: "reviewedAt-asc" },
+            { label: "Submitted (Newest)", value: "createdAt_desc" },
+            { label: "Submitted (Oldest)", value: "createdAt_asc" },
+            { label: "Reviewed (Newest)", value: "reviewedAt_desc" },
+            { label: "Reviewed (Oldest)", value: "reviewedAt_asc" },
           ]}
           value={sortOption}
-          onChange={(v) => setSortOption(v || "createdAt-desc")}
+          onChange={(v) => setParam("sort", v || "createdAt-desc")}
           w={200}
           placeholder="Sort by"
         />
@@ -186,7 +187,7 @@ export default function AdminInstructorPage() {
 
       {/* APPLICATION CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredApps.map((app) => (
+        {apps.map((app) => (
           <Card
             key={app.id}
             shadow="sm"

@@ -1,3 +1,5 @@
+import { BaseQueryCriteria } from "../../http-client/api.types";
+
 export interface CreateInstructorApplicationCommand {
   displayName: string;
   professionalTitle: string;
@@ -34,22 +36,17 @@ export interface InstructorApplicationVm {
   note: string;
 }
 
-type InstructorApplicationSortableFields =
+export type InstructorApplicationOrderableFields =
   | "createdAt"
   | "displayName"
   | "professionalTitle"
   | "status"
   | "reviewedAt";
 
-export interface InstructorApplicationQueryCriteria {
-  page?: number;
-  pageSize?: number;
+export interface InstructorApplicationQueryCriteria
+  extends BaseQueryCriteria<InstructorApplicationOrderableFields> {
   search?: string;
   status?: InstructorApplicationStatus;
-  orderBy?: {
-    field: InstructorApplicationSortableFields;
-    direction: "asc" | "desc";
-  };
 }
 
 export enum InstructorApplicationStatus {
