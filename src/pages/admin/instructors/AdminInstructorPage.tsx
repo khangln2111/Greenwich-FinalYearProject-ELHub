@@ -16,7 +16,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import CenterLoader from "../../../components/CenterLoader";
 import CusModal from "../../../components/CusModal";
@@ -31,6 +30,7 @@ import {
 } from "../../../react-query/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../http-client/api.types";
+import { useSearchParamState } from "../../../hooks/useSearchParamState";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -89,10 +89,21 @@ export default function AdminInstructorPage() {
   const [selectedApp, setSelectedApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useSearchParamState<string>("search", "");
+  const [statusFilter, setStatusFilter] = useSearchParamState<"All" | InstructorApplicationStatus>(
+    "status",
+    "All",
+  );
+  const [orderByParam, setOrderByParam] = useSearchParamState(
+    "orderBy",
+    encodeOrderOption({ field: "createdAt", direction: "desc" }),
+  );
 
-  const search = searchParams.get("search") || "";
-  const statusFilter = (searchParams.get("status") as "All" | InstructorApplicationStatus) || "All";
+  const orderBy = decodeOrderOption<InstructorApplicationOrderableFields>(
+    orderByParam,
+    "createdAt",
+    "desc",
+  );
 
   const ORDER_BY_OPTIONS: {
     label: string;
@@ -103,23 +114,6 @@ export default function AdminInstructorPage() {
     { label: "Reviewed (Newest)", value: { field: "reviewedAt", direction: "desc" } },
     { label: "Reviewed (Oldest)", value: { field: "reviewedAt", direction: "asc" } },
   ];
-  const orderByParam =
-    searchParams.get("orderBy") || encodeOrderOption({ field: "createdAt", direction: "desc" });
-  const orderBy = decodeOrderOption<InstructorApplicationOrderableFields>(
-    orderByParam,
-    "createdAt",
-    "desc",
-  );
-
-  const setParam = (key: string, value: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    if (value) {
-      newParams.set(key, value);
-    } else {
-      newParams.delete(key);
-    }
-    setSearchParams(newParams);
-  };
 
   const form = useForm({
     initialValues: { note: "" },
@@ -159,7 +153,7 @@ export default function AdminInstructorPage() {
   } = useGetInstructorApplications({
     search,
     status: statusFilter === "All" ? undefined : statusFilter,
-    orderBy: orderBy,
+    orderBy,
   });
 
   const apps = data?.items ?? [];
@@ -178,12 +172,12 @@ export default function AdminInstructorPage() {
         <TextInput
           placeholder="Search by name or email"
           value={search}
-          onChange={(e) => setParam("search", e.currentTarget.value)}
+          onChange={(e) => setSearch(e.currentTarget.value)}
           leftSection={<IconSearch size={16} />}
           w={260}
         />
 
-        <StatusFilterBadges value={statusFilter} onChange={(val) => setParam("status", val)} />
+        <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
 
         <Select
           data={ORDER_BY_OPTIONS.map((opt) => ({
@@ -191,7 +185,9 @@ export default function AdminInstructorPage() {
             value: encodeOrderOption(opt.value),
           }))}
           value={orderByParam}
-          onChange={(val) => setParam("orderBy", val || "")}
+          onChange={(val) => {
+            if (val !== null) setOrderByParam(val as typeof orderByParam);
+          }}
           w={200}
           checkIconPosition="right"
           allowDeselect={false}
