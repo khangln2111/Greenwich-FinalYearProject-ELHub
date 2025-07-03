@@ -12,7 +12,7 @@ const breadcrumbItems = [
 
 const BecomeInstructorBanner = () => {
   return (
-    <div className="relative bg-gradient-to-b from-gray-50 to-[#eef1fd] dark:from-gray-900 dark:to-gray-800 py-20 mb-8">
+    <div className="relative bg-gradient-to-b from-gray-50 to-[#eef1fd] dark:from-gray-900 dark:to-gray-800 py-12 mb-8">
       <Container size="lg" className="text-center">
         <Title className="text-5xl font-extrabold tracking-tight mb-6 text-gray-900 dark:text-white">
           Become an Instructor

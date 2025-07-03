@@ -38,16 +38,19 @@ const CreateInstructorApplicationForm = ({ onCancel }: Props) => {
       <Stack>
         <TextInput
           label="Display Name"
+          size="md"
           placeholder="e.g. John Doe"
           {...form.getInputProps("displayName")}
         />
         <TextInput
           label="Professional Title"
+          size="md"
           placeholder="e.g. Senior Web Developer, Data Scientist..."
           {...form.getInputProps("professionalTitle")}
         />
         <Textarea
           label="About"
+          size="md"
           placeholder="Tell us about your teaching experience, background, and why you want to become an instructor."
           autosize
           minRows={4}

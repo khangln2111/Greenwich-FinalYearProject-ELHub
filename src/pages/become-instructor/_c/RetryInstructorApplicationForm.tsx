@@ -54,10 +54,12 @@ const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
         <TextInput
           label="Display Name"
           placeholder="e.g. John Doe"
+          size="md"
           {...form.getInputProps("displayName")}
         />
         <TextInput
           label="Professional Title"
+          size="md"
           placeholder="e.g. Senior Web Developer, Data Scientist..."
           {...form.getInputProps("professionalTitle")}
         />
@@ -65,6 +67,7 @@ const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
           label="About"
           placeholder="Tell us about your teaching experience, background, and why you want to become an instructor."
           autosize
+          size="md"
           minRows={4}
           {...form.getInputProps("about")}
         />
