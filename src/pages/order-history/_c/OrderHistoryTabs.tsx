@@ -1,9 +1,11 @@
+import { OrderStatus } from "../../../react-query/order/order.types";
+
 type Props = {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
+  activeTab: "All" | OrderStatus;
+  onTabChange: (tab: "All" | OrderStatus) => void;
 };
 
-const tabs = ["All", "Completed", "Incomplete", "Failed", "Refunded"];
+const tabs = ["All", ...Object.values(OrderStatus)];
 
 export function OrderHistoryTabs({ activeTab, onTabChange }: Props) {
   return (
@@ -11,7 +13,7 @@ export function OrderHistoryTabs({ activeTab, onTabChange }: Props) {
       {tabs.map((tab) => (
         <button
           key={tab}
-          onClick={() => onTabChange(tab)}
+          onClick={() => onTabChange(tab as "All" | OrderStatus)}
           className={`py-2 px-3 flex-1 ${
           activeTab === tab
               ? "border-b-2 font-medium border-blue-600 text-blue-600"

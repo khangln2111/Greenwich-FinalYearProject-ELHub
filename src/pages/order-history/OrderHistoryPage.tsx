@@ -1,14 +1,14 @@
 import { Select } from "@mantine/core";
 import { IconReceipt } from "@tabler/icons-react";
 import { ArrowUpDownIcon } from "lucide-react";
-import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CenterLoader from "../../components/CenterLoader";
+import { useSearchParamState } from "../../hooks/useSearchParamState";
+import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../http-client/api.types";
 import { OrderOrderableFields, OrderStatus } from "../../react-query/order/order.types";
 import { useGetOrdersSelf } from "../../react-query/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
-import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../http-client/api.types";
 
 const ORDER_BY_OPTIONS: {
   label: string;
@@ -20,55 +20,18 @@ const ORDER_BY_OPTIONS: {
   { label: "Total: High to Low", value: { field: "totalAmount", direction: "desc" } },
 ];
 
-function parseStatus(param: string | null): OrderStatus | undefined {
-  // Nếu không có hoặc là "All", không filter status
-  if (!param || param === "All") return undefined;
-
-  // Kiểm tra có phải 1 trong các giá trị OrderStatus không
-  if (Object.values(OrderStatus).includes(param as OrderStatus)) {
-    return param as OrderStatus;
-  }
-  return undefined; // fallback không filter
-}
-
 export default function OrderHistoryPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  // Lấy status param, mặc định "All"
-  const initialStatus = searchParams.get("status") ?? "All";
-  const [activeTab, setActiveTab] = useState(initialStatus);
-
-  // Lấy orderBy param, mặc định createdAt_desc
-  const orderByParamValue =
-    searchParams.get("orderBy") ||
-    encodeOrderOption<OrderOrderableFields>({ field: "createdAt", direction: "desc" });
-  const orderBy = decodeOrderOption<OrderOrderableFields>(orderByParamValue, "createdAt", "desc");
-
-  // Tính status filter cho API call
-  const statusFilter = parseStatus(activeTab);
+  const [statusParam, setStatusParam] = useSearchParamState<"All" | OrderStatus>("status", "All");
+  const [orderByParam, setOrderByParam] = useSearchParamState<string>(
+    "orderBy",
+    encodeOrderOption<OrderOrderableFields>({ field: "createdAt", direction: "desc" }),
+  );
+  const orderBy = decodeOrderOption<OrderOrderableFields>(orderByParam, "createdAt", "desc");
 
   const { data, isPending, error } = useGetOrdersSelf({
     orderBy: orderBy,
-    status: statusFilter,
+    status: statusParam === "All" ? undefined : statusParam,
   });
-
-  // Khi orderBy thay đổi
-  const onOrderByChange = (value: string | null) => {
-    if (!value) return;
-    searchParams.set("orderBy", value);
-    setSearchParams(searchParams);
-  };
-
-  // Khi tab status thay đổi
-  const onTabChange = (tabValue: string) => {
-    setActiveTab(tabValue);
-    if (tabValue === "All") {
-      searchParams.delete("status");
-    } else {
-      searchParams.set("status", tabValue);
-    }
-    setSearchParams(searchParams);
-  };
 
   if (error) return <div>Error loading orders: {error.message}</div>;
 
@@ -82,8 +45,8 @@ export default function OrderHistoryPage() {
             label: opt.label,
             value: encodeOrderOption(opt.value),
           }))}
-          value={orderByParamValue}
-          onChange={onOrderByChange}
+          value={orderByParam}
+          onChange={(value) => value && setOrderByParam(value)}
           rightSection={<ArrowUpDownIcon size={16} />}
           searchable={false}
           clearable={false}
@@ -92,7 +55,7 @@ export default function OrderHistoryPage() {
         />
       </div>
 
-      <OrderHistoryTabs activeTab={activeTab} onTabChange={onTabChange} />
+      <OrderHistoryTabs activeTab={statusParam} onTabChange={setStatusParam} />
 
       {isPending ? (
         <CenterLoader />

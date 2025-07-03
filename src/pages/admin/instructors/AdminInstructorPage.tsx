@@ -34,11 +34,11 @@ import { useSearchParamState } from "../../../hooks/useSearchParamState";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
-    case "Pending":
+    case InstructorApplicationStatus.Pending:
       return "gray";
-    case "Approved":
+    case InstructorApplicationStatus.Approved:
       return "green";
-    case "Rejected":
+    case InstructorApplicationStatus.Rejected:
       return "red";
   }
 };
@@ -49,9 +49,7 @@ const reviewSchema = z.object({
 
 const statuses: ("All" | InstructorApplicationStatus)[] = [
   "All",
-  InstructorApplicationStatus.Pending,
-  InstructorApplicationStatus.Approved,
-  InstructorApplicationStatus.Rejected,
+  ...Object.values(InstructorApplicationStatus),
 ];
 
 function StatusFilterBadges({
@@ -94,7 +92,7 @@ export default function AdminInstructorPage() {
     "status",
     "All",
   );
-  const [orderByParam, setOrderByParam] = useSearchParamState(
+  const [orderByParam, setOrderByParam] = useSearchParamState<string>(
     "orderBy",
     encodeOrderOption({ field: "createdAt", direction: "desc" }),
   );
@@ -158,7 +156,6 @@ export default function AdminInstructorPage() {
 
   const apps = data?.items ?? [];
 
-  if (isGetPending) return <CenterLoader />;
   if (error) return <Text c="red">Error loading applications: {error.message}</Text>;
 
   return (
@@ -185,9 +182,7 @@ export default function AdminInstructorPage() {
             value: encodeOrderOption(opt.value),
           }))}
           value={orderByParam}
-          onChange={(val) => {
-            if (val !== null) setOrderByParam(val as typeof orderByParam);
-          }}
+          onChange={(val) => val && setOrderByParam(val)}
           w={200}
           checkIconPosition="right"
           allowDeselect={false}
@@ -196,66 +191,70 @@ export default function AdminInstructorPage() {
       </div>
 
       {/* APPLICATION CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {apps.map((app) => (
-          <Card
-            key={app.id}
-            shadow="sm"
-            padding="lg"
-            radius="md"
-            withBorder
-            className="flex flex-col justify-between"
-          >
-            <Stack gap="xs">
-              <Group align="start">
-                <Avatar src={app.workAvatarUrl} size="lg" radius="xl" />
-                <div className="flex-1">
-                  <Text size="md" fw={600} lineClamp={1}>
-                    {app.displayName} ({app.fullName})
-                  </Text>
-                  <Text size="sm" c="dimmed" lineClamp={1}>
-                    {app.email}
-                  </Text>
-                  <Group gap="xs" mt={4}>
-                    <Badge color={getStatusColor(app.status)} size="sm">
-                      {app.status}
-                    </Badge>
-                    {app.retryCount > 0 && (
-                      <Badge color="orange" size="sm">
-                        Retry #{app.retryCount}
+      {isGetPending ? (
+        <CenterLoader />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {apps.map((app) => (
+            <Card
+              key={app.id}
+              shadow="sm"
+              padding="lg"
+              radius="md"
+              withBorder
+              className="flex flex-col justify-between"
+            >
+              <Stack gap="xs">
+                <Group align="start">
+                  <Avatar src={app.workAvatarUrl} size="lg" radius="xl" />
+                  <div className="flex-1">
+                    <Text size="md" fw={600} lineClamp={1}>
+                      {app.displayName} ({app.fullName})
+                    </Text>
+                    <Text size="sm" c="dimmed" lineClamp={1}>
+                      {app.email}
+                    </Text>
+                    <Group gap="xs" mt={4}>
+                      <Badge color={getStatusColor(app.status)} size="sm">
+                        {app.status}
                       </Badge>
-                    )}
-                  </Group>
-                </div>
-              </Group>
+                      {app.retryCount > 0 && (
+                        <Badge color="orange" size="sm">
+                          Retry #{app.retryCount}
+                        </Badge>
+                      )}
+                    </Group>
+                  </div>
+                </Group>
 
-              <Stack gap={4}>
-                <Text size="sm" lineClamp={2}>
-                  <strong>Title:</strong> {app.professionalTitle}
-                </Text>
-                <Text size="sm" lineClamp={3}>
-                  <strong>About:</strong> {app.about}
-                </Text>
-                <Text size="xs" c="dimmed">
-                  Submitted: {dayjs(app.createdAt).format("DD/MM/YYYY HH:mm")}
-                </Text>
-                {app.reviewedAt && (
-                  <Text size="xs" c="dimmed">
-                    Reviewed: {dayjs(app.reviewedAt).format("DD/MM/YYYY HH:mm")}
+                <Stack gap={4}>
+                  <Text size="sm" lineClamp={2}>
+                    <strong>Title:</strong> {app.professionalTitle}
                   </Text>
-                )}
+                  <Text size="sm" lineClamp={3}>
+                    <strong>About:</strong> {app.about}
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    Submitted: {dayjs(app.createdAt).format("DD/MM/YYYY HH:mm")}
+                  </Text>
+                  {app.reviewedAt && (
+                    <Text size="xs" c="dimmed">
+                      Reviewed: {dayjs(app.reviewedAt).format("DD/MM/YYYY HH:mm")}
+                    </Text>
+                  )}
+                </Stack>
               </Stack>
-            </Stack>
 
-            <Group mt="md" justify="flex-end">
-              <Button color="red" variant="light" onClick={() => handleReview(app, false)}>
-                Reject
-              </Button>
-              <Button onClick={() => handleReview(app, true)}>Approve</Button>
-            </Group>
-          </Card>
-        ))}
-      </div>
+              <Group mt="md" justify="flex-end">
+                <Button color="red" variant="light" onClick={() => handleReview(app, false)}>
+                  Reject
+                </Button>
+                <Button onClick={() => handleReview(app, true)}>Approve</Button>
+              </Group>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* MODAL */}
       <CusModal
