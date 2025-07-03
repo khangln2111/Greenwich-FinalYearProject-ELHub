@@ -23,5 +23,7 @@ public enum ErrorCode
     NoInventoryLeft,
     CourseAlreadyEnrolled,
     GiftUnavailable,
-    CannotAssignRole
+    CannotAssignRole,
+    RetryLimitExceeded,
+    RetryCooldown
 }

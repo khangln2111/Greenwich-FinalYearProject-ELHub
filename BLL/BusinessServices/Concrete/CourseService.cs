@@ -179,12 +179,13 @@ public class CourseService(
 
         var course = await context.Courses
             .AsNoTracking()
+            .Where(c => c.Id == id)
             .Include(c => c.Category)
             .Include(c => c.Image)
             .Include(c => c.PromoVideo)
             .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
             .ProjectTo<CourseDetailVm>(mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .FirstOrDefaultAsync();
 
         if (course == null) throw new NotFoundException(nameof(Course), id);
 

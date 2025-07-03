@@ -1,14 +1,16 @@
 ﻿using DAL.Data.Entities;
 using DAL.Data.Entities.MediaEntities;
 using DAL.Data.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Data;
 
-public class DataSeeder(ApplicationDbContext context)
+public class DataSeeder(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager)
 {
     public async Task SeedAsync()
     {
+        await SeedRolesAsync();
         await SeedCategoriesAsync();
     }
 
@@ -156,5 +158,17 @@ public class DataSeeder(ApplicationDbContext context)
         }
 
         await context.SaveChangesAsync();
+    }
+
+    private async Task SeedRolesAsync()
+    {
+        string[] roleNames = ["Admin", "Instructor"];
+
+        foreach (var roleName in roleNames)
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                var role = new ApplicationRole { Name = roleName };
+                await roleManager.CreateAsync(role);
+            }
     }
 }

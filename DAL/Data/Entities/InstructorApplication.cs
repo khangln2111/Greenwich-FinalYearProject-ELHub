@@ -17,9 +17,11 @@ public class InstructorApplication : BaseEntity
 
     public InstructorApplicationStatus Status { get; set; } = InstructorApplicationStatus.Pending;
 
-    public required string Note { get; set; }
+    public string? Note { get; set; }
 
     public int RetryCount { get; set; } = 0;
 
     public DateTime? ReviewedAt { get; set; }
+
+    public DateTime? LastRejectedAt { get; set; }
 }

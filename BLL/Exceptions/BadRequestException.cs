@@ -9,7 +9,6 @@ public class BadRequestException : HttpException
 {
     public IDictionary<string, string[]> ValidationErrors { get; } = new Dictionary<string, string[]>();
 
-    public override string Message { get; } = "One or more validation errors occurred.";
 
     // Constructor using FluentValidation's ValidationResult to build errors.
     public BadRequestException(ValidationResult validationResult) : base(StatusCodes.Status400BadRequest,

@@ -453,6 +453,64 @@ namespace DAL.Data.Migrations
                     b.ToTable("Gifts");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.InstructorApplication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("About")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("LastRejectedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ProfessionalTitle")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("WorkAvatarId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WorkAvatarId");
+
+                    b.ToTable("InstructorApplications");
+                });
+
             modelBuilder.Entity("DAL.Data.Entities.Inventory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1067,6 +1125,23 @@ namespace DAL.Data.Migrations
                     b.Navigation("Giver");
 
                     b.Navigation("InventoryItem");
+                });
+
+            modelBuilder.Entity("DAL.Data.Entities.InstructorApplication", b =>
+                {
+                    b.HasOne("DAL.Data.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "WorkAvatar")
+                        .WithMany()
+                        .HasForeignKey("WorkAvatarId");
+
+                    b.Navigation("User");
+
+                    b.Navigation("WorkAvatar");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Inventory", b =>

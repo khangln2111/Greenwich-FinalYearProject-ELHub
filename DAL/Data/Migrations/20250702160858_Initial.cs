@@ -290,6 +290,40 @@ namespace DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InstructorApplications",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ProfessionalTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    About = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    WorkAvatarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    RetryCount = table.Column<int>(type: "int", nullable: false),
+                    ReviewedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastRejectedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstructorApplications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InstructorApplications_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InstructorApplications_Media_WorkAvatarId",
+                        column: x => x.WorkAvatarId,
+                        principalTable: "Media",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Inventories",
                 columns: table => new
                 {
@@ -786,6 +820,16 @@ namespace DAL.Data.Migrations
                 column: "InventoryItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InstructorApplications_UserId",
+                table: "InstructorApplications",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InstructorApplications_WorkAvatarId",
+                table: "InstructorApplications",
+                column: "WorkAvatarId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Inventories_UserId",
                 table: "Inventories",
                 column: "UserId",
@@ -894,6 +938,9 @@ namespace DAL.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Gifts");
+
+            migrationBuilder.DropTable(
+                name: "InstructorApplications");
 
             migrationBuilder.DropTable(
                 name: "LectureProgresses");

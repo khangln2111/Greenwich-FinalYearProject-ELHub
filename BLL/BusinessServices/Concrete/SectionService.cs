@@ -29,8 +29,9 @@ public class SectionService(
             .AsNoTracking()
             .Include(s => s.Course)
             .Include(s => s.Lectures).ThenInclude(l => l.Video)
+            .Where(s => s.Id == id)
             .ProjectTo<SectionVm>(mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .FirstOrDefaultAsync();
         if (section == null) throw new NotFoundException(nameof(Section), id);
         return section;
     }

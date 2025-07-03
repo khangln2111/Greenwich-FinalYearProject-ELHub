@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.ReviewDTOs;
 using BLL.Exceptions;
@@ -43,11 +44,13 @@ public class ReviewService(
             .AsNoTracking()
             .Include(r => r.Enrollment)
             .ThenInclude(e => e.Course)
-            .FirstOrDefaultAsync(r => r.Id == id && r.Enrollment.UserId == currentUser.Id);
+            .Where(r => r.Id == id && r.Enrollment.UserId == currentUser.Id)
+            .ProjectTo<ReviewVm>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
 
         if (review == null) throw new NotFoundException("Review not found or you do not have permission to view it.");
 
-        return mapper.Map<ReviewVm>(review);
+        return review;
     }
 
     public async Task<Success> Create(CreateReviewCommand command)
