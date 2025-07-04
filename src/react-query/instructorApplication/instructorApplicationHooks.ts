@@ -80,7 +80,7 @@ export const useReviewInstructorApplication = () => {
       reviewInstructorApplication(command),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.instructorApplications.getInstructorApplications().queryKey,
+        queryKey: keyFac.instructorApplications.getInstructorApplications._def,
       });
       showSuccessToast("Application Reviewed", "The application has been reviewed successfully!");
     },

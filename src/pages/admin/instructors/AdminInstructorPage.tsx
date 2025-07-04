@@ -10,15 +10,17 @@ import {
   Textarea,
   TextInput,
   Title,
+  useModalsStack,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { useDisclosure } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { z } from "zod";
 import CenterLoader from "../../../components/CenterLoader";
 import CusModal from "../../../components/CusModal";
+import { useSearchParamState } from "../../../hooks/useSearchParamState";
+import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../http-client/api.types";
 import {
   InstructorApplicationOrderableFields,
   InstructorApplicationStatus,
@@ -29,8 +31,6 @@ import {
   useReviewInstructorApplication,
 } from "../../../react-query/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
-import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../http-client/api.types";
-import { useSearchParamState } from "../../../hooks/useSearchParamState";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -83,9 +83,10 @@ function StatusFilterBadges({
 }
 
 export default function AdminInstructorPage() {
-  const [modalOpened, { open, close }] = useDisclosure(false);
-  const [selectedApp, setSelectedApp] = useState<InstructorApplicationVm | null>(null);
+  const modalStack = useModalsStack(["view", "review"]);
+
   const [viewApp, setViewApp] = useState<InstructorApplicationVm | null>(null);
+  const [reviewApp, setReviewApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
 
   const [search, setSearch] = useSearchParamState<string>("search", "");
@@ -122,24 +123,27 @@ export default function AdminInstructorPage() {
   const { mutate: reviewApplication, isPending } = useReviewInstructorApplication();
 
   const handleReview = (app: InstructorApplicationVm, isApprove: boolean) => {
-    setSelectedApp(app);
+    setReviewApp(app);
     setApproveMode(isApprove);
     form.reset();
-    open();
+    modalStack.open("review");
   };
 
   const handleSubmitReview = () => {
-    if (!selectedApp) return;
+    if (!reviewApp) return;
     const result = form.validate();
     if (!result.hasErrors) {
       reviewApplication(
         {
-          id: selectedApp.id,
+          id: reviewApp.id,
           isApproved: approveMode,
           note: form.values.note.trim(),
         },
         {
-          onSuccess: close,
+          onSuccess: () => {
+            modalStack.close("review");
+            modalStack.close("view");
+          },
         },
       );
     }
@@ -161,10 +165,8 @@ export default function AdminInstructorPage() {
 
   return (
     <div className="flex-1 p-6 xl:p-8">
-      {/* HEADER WITH SEARCH */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
         <Title order={2}>Instructor Applications Review</Title>
-
         <TextInput
           placeholder="Search by name or email"
           value={search}
@@ -174,10 +176,8 @@ export default function AdminInstructorPage() {
         />
       </div>
 
-      {/* FILTER BADGES + SORT */}
       <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
         <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
-
         <Select
           data={ORDER_BY_OPTIONS.map((opt) => ({
             label: opt.label,
@@ -192,7 +192,6 @@ export default function AdminInstructorPage() {
         />
       </div>
 
-      {/* APPLICATION CARDS */}
       {isGetPending ? (
         <CenterLoader />
       ) : (
@@ -233,17 +232,9 @@ export default function AdminInstructorPage() {
                   <Text size="sm" lineClamp={2}>
                     <strong>Title:</strong> {app.professionalTitle}
                   </Text>
-                  <Text size="sm" lineClamp={3} className="whitespace-pre-line">
+                  <Text size="sm" lineClamp={3} className="whitespace-pre-line line-clamp-1">
                     <strong>About:</strong> {app.about}
                   </Text>
-                  <Button
-                    variant="light"
-                    size="xs"
-                    onClick={() => setViewApp(app)}
-                    className="mt-1 self-start"
-                  >
-                    View full profile
-                  </Button>
 
                   <Text size="xs" c="dimmed">
                     Submitted: {dayjs(app.createdAt).format("DD/MM/YYYY HH:mm")}
@@ -253,25 +244,118 @@ export default function AdminInstructorPage() {
                       Reviewed: {dayjs(app.reviewedAt).format("DD/MM/YYYY HH:mm")}
                     </Text>
                   )}
+                  <Button
+                    variant="light"
+                    size="xs"
+                    onClick={() => {
+                      setViewApp(app);
+                      modalStack.open("view");
+                    }}
+                    className="mt-1 self-end"
+                  >
+                    View full profile
+                  </Button>
                 </Stack>
               </Stack>
-
-              <Group mt="md" justify="flex-end">
-                <Button color="red" variant="light" onClick={() => handleReview(app, false)}>
-                  Reject
-                </Button>
-                <Button onClick={() => handleReview(app, true)}>Approve</Button>
-              </Group>
             </Card>
           ))}
         </div>
       )}
 
-      {/* REVIEW MODAL */}
       <CusModal
-        opened={modalOpened}
-        onClose={close}
+        title="Application Detail"
+        {...modalStack.register("view")}
+        size="600px"
+        footer={
+          viewApp?.status === InstructorApplicationStatus.Pending ? (
+            <Group justify="flex-end">
+              <Button color="red" variant="light" onClick={() => handleReview(viewApp, false)}>
+                Reject
+              </Button>
+              <Button onClick={() => handleReview(viewApp, true)}>Approve</Button>
+            </Group>
+          ) : undefined
+        }
+      >
+        {viewApp && (
+          <Stack align="center" gap="md">
+            <Stack align="center" gap={8}>
+              <Avatar src={viewApp.workAvatarUrl} size={100} radius="xl" />
+
+              <Group gap="xs">
+                <Badge color={getStatusColor(viewApp.status)} size="md">
+                  {viewApp.status}
+                </Badge>
+
+                {viewApp.retryCount > 0 && (
+                  <Badge color="orange" variant="light" size="sm">
+                    Retry #{viewApp.retryCount}
+                  </Badge>
+                )}
+              </Group>
+            </Stack>
+
+            <Stack w="100%" gap="xs">
+              <Group justify="space-between">
+                <Text c="dimmed" size="sm">
+                  Full Name
+                </Text>
+                <Text fw={500}>{viewApp.fullName}</Text>
+              </Group>
+
+              <Group justify="space-between">
+                <Text c="dimmed" size="sm">
+                  Display Name
+                </Text>
+                <Text fw={500}>{viewApp.displayName}</Text>
+              </Group>
+
+              <Group justify="space-between">
+                <Text c="dimmed" size="sm">
+                  Email
+                </Text>
+                <Text fw={500}>{viewApp.email}</Text>
+              </Group>
+
+              <Group justify="space-between">
+                <Text c="dimmed" size="sm">
+                  Title
+                </Text>
+                <Text fw={500}>{viewApp.professionalTitle}</Text>
+              </Group>
+
+              <Stack gap={4}>
+                <Text c="dimmed" size="sm">
+                  About
+                </Text>
+                <Text size="sm" className="whitespace-pre-line">
+                  {viewApp.about}
+                </Text>
+              </Stack>
+
+              <Group justify="space-between">
+                <Text c="dimmed" size="sm">
+                  Submitted
+                </Text>
+                <Text size="sm">{dayjs(viewApp.createdAt).format("DD/MM/YYYY HH:mm")}</Text>
+              </Group>
+
+              {viewApp.reviewedAt && (
+                <Group justify="space-between">
+                  <Text c="dimmed" size="sm">
+                    Reviewed
+                  </Text>
+                  <Text size="sm">{dayjs(viewApp.reviewedAt).format("DD/MM/YYYY HH:mm")}</Text>
+                </Group>
+              )}
+            </Stack>
+          </Stack>
+        )}
+      </CusModal>
+
+      <CusModal
         title={approveMode ? "Approve Application" : "Reject Application"}
+        {...modalStack.register("review")}
         size="400px"
       >
         <form onSubmit={form.onSubmit(handleSubmitReview)}>
@@ -287,7 +371,11 @@ export default function AdminInstructorPage() {
               required
             />
             <Group justify="flex-end">
-              <Button variant="subtle" onClick={close} disabled={isPending}>
+              <Button
+                variant="subtle"
+                onClick={() => modalStack.close("review")}
+                disabled={isPending}
+              >
                 Cancel
               </Button>
               <Button type="submit" loading={isPending} color={approveMode ? "green" : "red"}>
@@ -296,53 +384,6 @@ export default function AdminInstructorPage() {
             </Group>
           </Stack>
         </form>
-      </CusModal>
-
-      {/* VIEW PROFILE MODAL */}
-      <CusModal
-        opened={!!viewApp}
-        onClose={() => setViewApp(null)}
-        title="Application Detail"
-        size="600px"
-      >
-        {viewApp && (
-          <Stack>
-            <Group align="start">
-              <Avatar src={viewApp.workAvatarUrl} size="xl" radius="xl" />
-              <div>
-                <Text fw={600} size="lg">
-                  {viewApp.displayName} ({viewApp.fullName})
-                </Text>
-                <Text size="sm" c="dimmed">
-                  {viewApp.email}
-                </Text>
-                <Group mt={4}>
-                  <Badge color={getStatusColor(viewApp.status)}>{viewApp.status}</Badge>
-                  {viewApp.retryCount > 0 && (
-                    <Badge color="orange">Retry #{viewApp.retryCount}</Badge>
-                  )}
-                </Group>
-              </div>
-            </Group>
-
-            <Stack gap={4}>
-              <Text size="sm">
-                <strong>Title:</strong> {viewApp.professionalTitle}
-              </Text>
-              <Text size="sm" className="whitespace-pre-line">
-                <strong>About:</strong> {viewApp.about}
-              </Text>
-              <Text size="xs" c="dimmed">
-                Submitted: {dayjs(viewApp.createdAt).format("DD/MM/YYYY HH:mm")}
-              </Text>
-              {viewApp.reviewedAt && (
-                <Text size="xs" c="dimmed">
-                  Reviewed: {dayjs(viewApp.reviewedAt).format("DD/MM/YYYY HH:mm")}
-                </Text>
-              )}
-            </Stack>
-          </Stack>
-        )}
       </CusModal>
     </div>
   );

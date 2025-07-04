@@ -7,7 +7,7 @@ import { cn } from "../utils/cn";
 interface CustomModalProps {
   opened: boolean;
   onClose: () => void;
-  title?: string | React.ReactNode; // If title is provided, it will be used as the header title
+  title?: string | React.ReactNode;
   footer?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
@@ -17,9 +17,10 @@ interface CustomModalProps {
     body?: string;
     footer?: string;
   };
-  size?: string; // ex: "600px", "40rem"
-  bodyMaxHeight?: string; // ex: "80vh", "700px"
-  keepMounted?: boolean; // Keep mounted when closed
+  size?: string;
+  bodyMaxHeight?: string;
+  keepMounted?: boolean;
+  stackId?: string; // ✅ Thêm stackId để quản lý z-index
 }
 
 const ModalContext = createContext<Pick<CustomModalProps, "title" | "onClose" | "classNames">>({
@@ -49,7 +50,7 @@ function Header({ children }: { children?: React.ReactNode }) {
 function Body({ children }: { children: React.ReactNode }) {
   const { classNames } = useContext(ModalContext);
   return (
-    <ScrollArea.Autosize className="max-h-(--modal-body-max-height)">
+    <ScrollArea.Autosize className="max-h-[--modal-body-max-height]">
       <div className={cn("p-4", classNames?.body)}>{children}</div>
     </ScrollArea.Autosize>
   );
@@ -64,6 +65,13 @@ function Footer({ children }: { children: React.ReactNode }) {
   );
 }
 
+// ✅ Tính z-index từ stackId
+function getZIndexFromStackId(stackId?: string, base = 1000) {
+  if (!stackId) return base;
+  const numeric = parseInt(stackId.replace(/\D/g, ""));
+  return isNaN(numeric) ? base : base + numeric;
+}
+
 function CusModal({
   opened,
   onClose,
@@ -75,12 +83,14 @@ function CusModal({
   size = "1000px",
   bodyMaxHeight = "70dvh",
   keepMounted = false,
+  stackId, // ✅ stackId
 }: CustomModalProps) {
   const hasCustomHeader = (children as any)?.type === Header;
   const hasCustomBody = (children as any)?.type === Body;
   const hasCustomFooter = (children as any)?.type === Footer;
 
-  // Logic to close modal when press Escape key
+  const zIndex = getZIndexFromStackId(stackId);
+
   useEffect(() => {
     if (!opened) return;
 
@@ -107,10 +117,10 @@ function CusModal({
           <RemoveScroll enabled={opened}>
             <div
               className={cn(
-                "fixed inset-0 z-modal bg-black/60 flex items-center justify-center p-4",
+                "fixed inset-0 bg-black/60 flex items-center justify-center p-4",
                 className,
               )}
-              style={styles}
+              style={{ ...styles, zIndex }}
               onClick={onClose}
             >
               <div
@@ -128,13 +138,8 @@ function CusModal({
               >
                 <ModalContext.Provider value={{ title, onClose, classNames }}>
                   {!hasCustomHeader && <Header />}
-
-                  {/* Nếu user không dùng Custom.Body thì wrap content */}
                   {!hasCustomBody && <Body>{children}</Body>}
-
-                  {/* Nếu user dùng custom Header/Body/Footer thì render thẳng */}
                   {hasCustomHeader || hasCustomBody || hasCustomFooter ? children : null}
-
                   {!hasCustomFooter && footer && <Footer>{footer}</Footer>}
                 </ModalContext.Provider>
               </div>
