@@ -85,6 +85,7 @@ function StatusFilterBadges({
 export default function AdminInstructorPage() {
   const [modalOpened, { open, close }] = useDisclosure(false);
   const [selectedApp, setSelectedApp] = useState<InstructorApplicationVm | null>(null);
+  const [viewApp, setViewApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
 
   const [search, setSearch] = useSearchParamState<string>("search", "");
@@ -199,13 +200,13 @@ export default function AdminInstructorPage() {
           {apps.map((app) => (
             <Card
               key={app.id}
-              shadow="sm"
+              shadow="md"
               padding="lg"
-              radius="md"
+              radius="lg"
               withBorder
-              className="flex flex-col justify-between"
+              className="transition-all duration-200 hover:shadow-lg flex flex-col justify-between"
             >
-              <Stack gap="xs">
+              <Stack gap="sm">
                 <Group align="start">
                   <Avatar src={app.workAvatarUrl} size="lg" radius="xl" />
                   <div className="flex-1">
@@ -216,11 +217,11 @@ export default function AdminInstructorPage() {
                       {app.email}
                     </Text>
                     <Group gap="xs" mt={4}>
-                      <Badge color={getStatusColor(app.status)} size="sm">
+                      <Badge color={getStatusColor(app.status)} size="sm" variant="light">
                         {app.status}
                       </Badge>
                       {app.retryCount > 0 && (
-                        <Badge color="orange" size="sm">
+                        <Badge color="orange" size="sm" variant="light">
                           Retry #{app.retryCount}
                         </Badge>
                       )}
@@ -228,13 +229,22 @@ export default function AdminInstructorPage() {
                   </div>
                 </Group>
 
-                <Stack gap={4}>
+                <Stack gap={6}>
                   <Text size="sm" lineClamp={2}>
                     <strong>Title:</strong> {app.professionalTitle}
                   </Text>
-                  <Text size="sm" lineClamp={3}>
+                  <Text size="sm" lineClamp={3} className="whitespace-pre-line">
                     <strong>About:</strong> {app.about}
                   </Text>
+                  <Button
+                    variant="light"
+                    size="xs"
+                    onClick={() => setViewApp(app)}
+                    className="mt-1 self-start"
+                  >
+                    View full profile
+                  </Button>
+
                   <Text size="xs" c="dimmed">
                     Submitted: {dayjs(app.createdAt).format("DD/MM/YYYY HH:mm")}
                   </Text>
@@ -257,7 +267,7 @@ export default function AdminInstructorPage() {
         </div>
       )}
 
-      {/* MODAL */}
+      {/* REVIEW MODAL */}
       <CusModal
         opened={modalOpened}
         onClose={close}
@@ -286,6 +296,53 @@ export default function AdminInstructorPage() {
             </Group>
           </Stack>
         </form>
+      </CusModal>
+
+      {/* VIEW PROFILE MODAL */}
+      <CusModal
+        opened={!!viewApp}
+        onClose={() => setViewApp(null)}
+        title="Application Detail"
+        size="600px"
+      >
+        {viewApp && (
+          <Stack>
+            <Group align="start">
+              <Avatar src={viewApp.workAvatarUrl} size="xl" radius="xl" />
+              <div>
+                <Text fw={600} size="lg">
+                  {viewApp.displayName} ({viewApp.fullName})
+                </Text>
+                <Text size="sm" c="dimmed">
+                  {viewApp.email}
+                </Text>
+                <Group mt={4}>
+                  <Badge color={getStatusColor(viewApp.status)}>{viewApp.status}</Badge>
+                  {viewApp.retryCount > 0 && (
+                    <Badge color="orange">Retry #{viewApp.retryCount}</Badge>
+                  )}
+                </Group>
+              </div>
+            </Group>
+
+            <Stack gap={4}>
+              <Text size="sm">
+                <strong>Title:</strong> {viewApp.professionalTitle}
+              </Text>
+              <Text size="sm" className="whitespace-pre-line">
+                <strong>About:</strong> {viewApp.about}
+              </Text>
+              <Text size="xs" c="dimmed">
+                Submitted: {dayjs(viewApp.createdAt).format("DD/MM/YYYY HH:mm")}
+              </Text>
+              {viewApp.reviewedAt && (
+                <Text size="xs" c="dimmed">
+                  Reviewed: {dayjs(viewApp.reviewedAt).format("DD/MM/YYYY HH:mm")}
+                </Text>
+              )}
+            </Stack>
+          </Stack>
+        )}
       </CusModal>
     </div>
   );
