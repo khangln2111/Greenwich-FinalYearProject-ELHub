@@ -81,7 +81,7 @@ namespace DAL.Data.Migrations
                     DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     WorkAvatarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ProfessionalTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    About = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    About = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     FavoriteQuote = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     FavoriteQuoteCite = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     IsActivated = table.Column<bool>(type: "bit", nullable: false),

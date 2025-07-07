@@ -8,10 +8,10 @@ public static class AppConstants
         public const int LastNameMaxLength = 70;
         public const int AddressMaxLength = 200;
         public const int BioMaxLength = 500;
-        public const int AvatarMaxSizeBytes = 5 * FileSize.Megabyte;
+        public const int AvatarMaxSizeBytes = 50 * FileSize.Megabyte;
         public const int DisplayNameMaxLength = 100;
         public const int ProfessionalTitleMaxLength = 100;
-        public const int AboutMaxLength = 500;
+        public const int AboutMaxLength = 1000;
         public const int FavoriteQuoteMaxLength = 500;
         public const int FavoriteQuoteCiteMaxLength = 100;
     }
@@ -35,9 +35,9 @@ public static class AppConstants
 
     public static class InstructorApplication
     {
-        public const int DisplayNameMaxLength = 100;
-        public const int ProfessionalTitleMaxLength = 100;
-        public const int AboutMaxLength = 1000;
+        public const int DisplayNameMaxLength = User.DisplayNameMaxLength;
+        public const int ProfessionalTitleMaxLength = User.ProfessionalTitleMaxLength;
+        public const int AboutMaxLength = User.AboutMaxLength;
         public const int NoteMaxLength = 500;
         public const int AvatarMaxSizeBytes = 50 * FileSize.Megabyte;
     }
