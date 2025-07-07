@@ -20,7 +20,7 @@ interface CustomModalProps {
   size?: string;
   bodyMaxHeight?: string;
   keepMounted?: boolean;
-  stackId?: string; // ✅ Thêm stackId để quản lý z-index
+  stackId?: string; // ✅ stackId để quản lý z-index
 }
 
 const ModalContext = createContext<Pick<CustomModalProps, "title" | "onClose" | "classNames">>({
@@ -50,7 +50,7 @@ function Header({ children }: { children?: React.ReactNode }) {
 function Body({ children }: { children: React.ReactNode }) {
   const { classNames } = useContext(ModalContext);
   return (
-    <ScrollArea.Autosize className="max-h-[--modal-body-max-height]">
+    <ScrollArea.Autosize className="max-h-(--modal-body-max-height)">
       <div className={cn("p-4", classNames?.body)}>{children}</div>
     </ScrollArea.Autosize>
   );
