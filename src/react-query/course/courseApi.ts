@@ -8,6 +8,7 @@ import {
   CreateCourseCommand,
   InstructorVm,
   LearningCourseVm,
+  ReviewCourseCommand,
   UpdateCourseCommand,
 } from "./course.types";
 
@@ -96,7 +97,22 @@ export const deleteCourse = async (id: string) => {
   return response.data;
 };
 
-export const getInstructorByCourseId = async (courseId: string) => {
-  const response = await apiClient.get<InstructorVm>(`${BASE_URL}/${courseId}/instructor`);
+export const getInstructorByCourseId = async (id: string) => {
+  const response = await apiClient.get<InstructorVm>(`${BASE_URL}/${id}/instructor`);
+  return response.data;
+};
+
+export const reviewCourse = async (command: ReviewCourseCommand) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/Review`, command);
+  return response.data;
+};
+
+export const submitCourseForReview = async (id: string) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/SubmitForReview`);
+  return response.data;
+};
+
+export const retryCourseSubmission = async (id: string) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/RetrySubmission`);
   return response.data;
 };

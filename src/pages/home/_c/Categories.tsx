@@ -1,55 +1,25 @@
 import { Badge, Box, Card, Container, Image, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { Swiper, SwiperSlide } from "swiper/react";
-import image from "../../../assets/homePageImages/CategoryImage.webp";
-
-// Sample data for categories (you can replace this with actual data from your API)
-const categories = [
-  {
-    id: 1,
-    name: "Web Development",
-    image: image, // Replace with actual image URL
-    courseCount: 50,
-  },
-  {
-    id: 2,
-    name: "Data Science",
-    image: image, // Replace with actual image URL
-    courseCount: 30,
-  },
-  {
-    id: 3,
-    name: "Mobile Development fdffffffffffffffffsssssssssssssss",
-    image: image, // Replace with actual image URL
-    courseCount: 40,
-  },
-  {
-    id: 4,
-    name: "Design",
-    image: image, // Replace with actual image URL
-    courseCount: 40,
-  },
-  {
-    id: 5,
-    name: "Design",
-    image: image, // Replace with actual image URL
-    courseCount: 40,
-  },
-  {
-    id: 6,
-    name: "Design",
-    image: image, // Replace with actual image URL
-    courseCount: 40,
-  },
-  {
-    id: 7,
-    name: "Design",
-    image: image, // Replace with actual image URL
-    courseCount: 40,
-  },
-  // Add more categories as needed
-];
+import { useGetCategories } from "../../../react-query/category/categoryHooks";
+import CenterLoader from "../../../components/CenterLoader";
 
 const Categories = () => {
+  const { data, isPending, error } = useGetCategories();
+
+  if (isPending) return <CenterLoader />;
+
+  if (error) {
+    return (
+      <Container className="mb-[128px]" size="lg">
+        <Title order={1} ta="start" c="red">
+          Error Loading Categories
+        </Title>
+        <Text c="dimmed" mt="md">
+          {error.message || "An error occurred while fetching categories."}
+        </Text>
+      </Container>
+    );
+  }
   return (
     <Container className="mb-[128px]" size="lg">
       <Title order={1} ta="start">
@@ -78,7 +48,7 @@ const Categories = () => {
         }}
         className="size-full p-sm"
       >
-        {categories.map((category) => (
+        {data.items.map((category) => (
           <SwiperSlide
             key={category.id}
             className="transition-transform duration-300 cursor-pointer hover:scale-105"
@@ -89,8 +59,12 @@ const Categories = () => {
               withBorder
               className="h-full overflow-hidden border border-gray-2 dark:border-dark-5"
             >
-              <Card.Section>
-                <Image src={category.image} height={160} alt={category.name} />
+              <Card.Section className="relative aspect-video">
+                <Image
+                  src={category.imageUrl}
+                  alt={category.name}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
               </Card.Section>
               <Stack mb="xs" justify="space-between" align="center" h="100%">
                 <Box className="content-[''] block bg-primary-filled w-[45px] h-[2px] my-sm"></Box>

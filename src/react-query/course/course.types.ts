@@ -127,6 +127,12 @@ export interface LearningCourseVm {
   progressPercentage: number;
 }
 
+export interface ReviewCourseCommand {
+  id: string;
+  isApproved: boolean;
+  note: string;
+}
+
 export interface CreateCourseCommand {
   categoryId: string;
   title: string;

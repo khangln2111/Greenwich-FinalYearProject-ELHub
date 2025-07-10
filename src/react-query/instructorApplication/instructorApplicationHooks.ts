@@ -150,7 +150,7 @@ export const useRetryInstructorApplication = () => {
             errorCode: ErrorCode.RetryCooldown,
             handler: (err) => {
               const msg = err.response?.data?.message ?? "";
-              showErrorToast("Retry Too Soon", msg); // e.g. "Please wait 3 days before retrying."
+              showErrorToast("Retry Too Soon", msg); // e.g. "Please retry after ..."
             },
           },
           {

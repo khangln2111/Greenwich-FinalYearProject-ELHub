@@ -35,7 +35,7 @@ import { cn } from "../../../utils/cn";
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
     case InstructorApplicationStatus.Pending:
-      return "gray";
+      return "yellow";
     case InstructorApplicationStatus.Approved:
       return "green";
     case InstructorApplicationStatus.Rejected:

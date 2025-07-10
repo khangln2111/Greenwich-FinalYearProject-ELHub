@@ -2,7 +2,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { CourseQueryCriteria, CreateCourseCommand, UpdateCourseCommand } from "./course.types";
+import {
+  CourseQueryCriteria,
+  CreateCourseCommand,
+  ReviewCourseCommand,
+  UpdateCourseCommand,
+} from "./course.types";
 import {
   createCourse,
   deleteCourse,
@@ -10,9 +15,13 @@ import {
   getCourseLearning,
   getCourses,
   getInstructorByCourseId,
+  retryCourseSubmission,
+  reviewCourse,
+  submitCourseForReview,
   updateCourse,
 } from "./courseApi";
 import { useAppStore } from "../../zustand/store";
+import { ErrorCode } from "../../http-client/api.types";
 
 export const useGetCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
@@ -34,6 +43,117 @@ export const useGetCourseDetail = (id: string) => {
       // ✅ Retry tối đa 2 lần cho lỗi khác
       return failureCount < 2;
     },
+  });
+};
+
+export const useReviewCourse = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: ReviewCourseCommand) => reviewCourse(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
+      showSuccessToast("Course Reviewed", "The course review was successful.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast("Not Found", "The course you are trying to review does not exist."),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.InvalidOperation,
+            handler: () =>
+              showErrorToast(
+                "Invalid Operation",
+                "You cannot review a course that is not in pending status.",
+              ),
+          },
+        ],
+      }),
+  });
+};
+
+export const useSubmitCourseForReview = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => submitCourseForReview(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
+      showSuccessToast("Course Submitted", "The course was submitted for review successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast("Not Found", "The course you are trying to submit does not exist."),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.InvalidOperation,
+            handler: () =>
+              showErrorToast(
+                "Invalid Operation",
+                "You cannot submit a course that is not in draft status.",
+              ),
+          },
+        ],
+      }),
+  });
+};
+
+export const useRetryCourseSubmission = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => retryCourseSubmission(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
+      showSuccessToast(
+        "Course Submission Retried",
+        "The course submission was retried successfully.",
+      );
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast("Not Found", "The course you are trying to retry does not exist."),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.InvalidOperation,
+            handler: () =>
+              showErrorToast(
+                "Invalid Operation",
+                "You cannot retry a course that is not in rejected status",
+              ),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.RetryLimitExceeded,
+            handler: () =>
+              showErrorToast(
+                "Retry Limit Exceeded",
+                "You have exceeded the retry limit for this course.",
+              ),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.RetryCooldown,
+            handler: () =>
+              showErrorToast(
+                "Course Not Ready",
+                "The course is not ready for retry. Please ensure all required fields are filled.",
+              ),
+          },
+        ],
+      }),
   });
 };
 

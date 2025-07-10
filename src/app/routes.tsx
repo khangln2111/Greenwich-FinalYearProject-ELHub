@@ -28,6 +28,7 @@ import AdminLayout from "../layout/admin/AdminLayout";
 import AdminCategoriesPage from "../pages/admin/categories/AdminCategoriesPage";
 import BecomeInstructorPage from "../pages/become-instructor/BecomeInstructorPage";
 import AdminInstructorPage from "../pages/admin/instructors/AdminInstructorPage";
+import AdminCoursesPage from "../pages/admin/courses/AdminCoursesPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -123,6 +124,10 @@ const adminRoute: RouteObject = {
     {
       path: "instructors",
       element: <AdminInstructorPage />,
+    },
+    {
+      path: "courses",
+      element: <AdminCoursesPage />,
     },
   ],
 };
