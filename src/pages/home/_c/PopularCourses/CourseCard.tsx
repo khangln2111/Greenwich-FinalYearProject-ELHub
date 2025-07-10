@@ -90,9 +90,14 @@ const CourseCard = ({ course }: CourseCardProps) => {
 
       {/* Author (mocked for now) */}
       <div className="flex gap-2 items-center text-wrap mt-2 px-md">
-        <Avatar color="initials" size="sm" className="border-1" name="Nguyen Khang" />
+        <Avatar
+          color="initials"
+          size="sm"
+          name={course.instructorName}
+          src={course.instructorAvatarUrl}
+        />
         <Text className="text-gray-500 text-sm block dark:text-gray-5">
-          by <span className="font-semibold">Nguyen Khang</span>
+          by <span className="font-semibold">{course.instructorName}</span>
         </Text>
       </div>
 

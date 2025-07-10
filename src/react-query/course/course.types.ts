@@ -36,11 +36,18 @@ export interface CourseVm {
   sectionCount: number;
   durationInSeconds: number;
   categoryName: string;
+
   createdAt: string | null;
   updatedAt: string | null;
+
   enrollmentCount: number;
   reviewCount: number;
   averageRating: number;
+
+  instructorId: string;
+  instructorName: string;
+  instructorAvatarUrl: string | null;
+  instructorProfessionalTitle: string | null;
 }
 
 export interface CourseDetailVm {
@@ -79,8 +86,8 @@ export interface CourseDetailVm {
   reviewCount: number;
   averageRating: number;
 
-  instructorName: string;
   instructorId: string;
+  instructorName: string;
   instructorAvatarUrl: string | null;
   instructorProfessionalTitle: string | null;
   instructorAbout: string | null;

@@ -1,63 +1,52 @@
 import { Avatar, Badge, Button, Group, Title } from "@mantine/core";
-import { CourseStatus } from "../../../../react-query/course/course.types";
+import { CourseVm } from "../../../../react-query/course/course.types";
 
 interface AdminCourseCardProps {
-  id: string;
-  title: string;
-  imageUrl: string;
-  status: CourseStatus;
-  instructorName: string;
-  instructorAvatarUrl: string | null;
-  instructorProfessionalTitle: string | null;
+  course: CourseVm;
   onApprove: () => void;
   onReject: () => void;
 }
 
-export default function AdminCourseCard({
-  title,
-  imageUrl,
-  status,
-  instructorName,
-  instructorAvatarUrl,
-  instructorProfessionalTitle,
-  onApprove,
-  onReject,
-}: AdminCourseCardProps) {
+export default function AdminCourseCard({ course, onApprove, onReject }: AdminCourseCardProps) {
   return (
     <div className="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-white dark:bg-zinc-900">
-      <img src={imageUrl} alt={title} className="w-full h-[180px] object-cover" />
+      <img
+        src={course.imageUrl ?? undefined}
+        alt={course.title}
+        className="w-full h-[180px] object-cover"
+      />
       <div className="p-4 space-y-2">
-        <Title order={4}>{title}</Title>
+        <Title order={4}>{course.title}</Title>
 
         <Group gap="xs">
           <Badge
             color={
-              status === "Published"
+              course.status === "Published"
                 ? "green"
-                : status === "Rejected"
+                : course.status === "Rejected"
                   ? "red"
-                  : status === "Pending"
+                  : course.status === "Pending"
                     ? "yellow"
                     : "gray"
             }
             variant="light"
             size="sm"
           >
-            {status}
+            {course.status}
           </Badge>
         </Group>
 
         <Group gap="sm" className="pt-2">
-          <Avatar src={instructorAvatarUrl} radius="xl" />
+          <Avatar src={course.instructorAvatarUrl} radius="xl" />
           <div>
-            <p className="font-medium">{instructorName}</p>
+            <p className="font-medium">{course.instructorName}</p>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {instructorProfessionalTitle}
+              {course.instructorProfessionalTitle}
             </p>
           </div>
         </Group>
 
-        {status === "Pending" && (
+        {course.status === "Pending" && (
           <Group justify="end" className="pt-3">
             <Button color="green" variant="light" size="xs" onClick={onApprove}>
               Approve

@@ -21,7 +21,7 @@ export default function InstructorCoursesPage() {
       : (courses?.items.filter((c) => c.status === filter) ?? []);
 
   return (
-    <div className="flex-1 p-6 xl:p-8">
+    <div className="flex-1 p-6 xl:p-8 @container">
       {/* Header */}
       <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">My Courses</h1>
@@ -52,7 +52,7 @@ export default function InstructorCoursesPage() {
       </div>
 
       {/* Courses grid or loading or empty state */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-6">
         {isCoursesPending &&
           Array.from({ length: 9 }).map((_, i) => <InstructorCourseCardSkeleton key={i} />)}
 
