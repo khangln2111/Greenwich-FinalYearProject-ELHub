@@ -69,57 +69,77 @@ export default function AdminCoursesPage() {
           {data?.items.map((course) => (
             <div
               key={course.id}
-              className="border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition bg-white dark:bg-zinc-900"
+              className="border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition bg-white dark:bg-zinc-900
+                flex flex-col"
             >
               <img
                 src={course.imageUrl ?? undefined}
                 alt={course.title}
                 className="w-full h-[180px] object-cover"
               />
-              <div className="p-5 space-y-3">
-                {/* Title */}
+              <div className="p-5 flex flex-col gap-4 flex-1">
+                {/* Title + Status */}
                 <div className="space-y-1">
-                  <Title order={4} className="line-clamp-2">
+                  <Title order={4} className="line-clamp-2 text-lg">
                     {course.title}
                   </Title>
-                  <Badge variant="light" color="yellow" size="sm">
+                  <Badge
+                    variant="light"
+                    size="sm"
+                    color={
+                      course.status === CourseStatus.Published
+                        ? "green"
+                        : course.status === CourseStatus.Pending
+                          ? "yellow"
+                          : course.status === CourseStatus.Rejected
+                            ? "red"
+                            : "gray"
+                    }
+                  >
                     {course.status}
                   </Badge>
                 </div>
 
                 {/* Category */}
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <TagsIcon size={16} />
+                  <TagsIcon size={16} className="shrink-0" />
                   <span className="line-clamp-1">{course.categoryName}</span>
                 </div>
 
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-3 text-sm text-gray-700 dark:text-gray-300 mt-1">
-                  <div className="flex items-center gap-1">
-                    <BookOpenIcon size={16} /> {course.sectionCount}
+                {/* Stats Section */}
+                <div className="grid grid-cols-3 gap-2 text-[13px] text-gray-700 dark:text-gray-300">
+                  <div className="flex flex-col items-center justify-center rounded-md bg-gray-100 dark:bg-zinc-800 px-2 py-2">
+                    <BookOpenIcon size={16} className="mb-1" />
+                    <span className="font-medium">{course.sectionCount}</span>
+                    <span className="text-[11px] text-gray-500">Sections</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <FilmIcon size={16} /> {course.lectureCount}
+                  <div className="flex flex-col items-center justify-center rounded-md bg-gray-100 dark:bg-zinc-800 px-2 py-2">
+                    <FilmIcon size={16} className="mb-1" />
+                    <span className="font-medium">{course.lectureCount}</span>
+                    <span className="text-[11px] text-gray-500">Lectures</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <ClockIcon size={16} />{" "}
-                    {formatDuration({
-                      seconds: course.durationInSeconds,
-                    })}
+                  <div className="flex flex-col items-center justify-center rounded-md bg-gray-100 dark:bg-zinc-800 px-2 py-2">
+                    <ClockIcon size={16} className="mb-1" />
+                    <span className="font-medium">
+                      {formatDuration({ seconds: course.durationInSeconds })}
+                    </span>
+                    <span className="text-[11px] text-gray-500">Duration</span>
                   </div>
                 </div>
 
                 {/* Instructor */}
-                <div className="flex items-center gap-3 mt-2">
+                <div className="flex items-center gap-3">
                   <Avatar src={course.instructorAvatarUrl} size="md" radius="xl" />
-                  <div className="text-sm">
+                  <div className="text-sm leading-tight">
                     <div className="font-medium">{course.instructorName}</div>
-                    <div className="text-gray-500">{course.instructorProfessionalTitle}</div>
+                    <div className="text-gray-500 text-xs">
+                      {course.instructorProfessionalTitle}
+                    </div>
                   </div>
                 </div>
 
                 {/* Actions */}
-                <Group justify="end" className="pt-2">
+                <Group justify="end" className="pt-2 mt-auto">
                   <Button
                     color="green"
                     variant="light"
