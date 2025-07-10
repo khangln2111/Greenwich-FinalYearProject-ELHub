@@ -66,7 +66,7 @@ function Footer({ children }: { children: React.ReactNode }) {
 }
 
 // ✅ Tính z-index từ stackId
-function getZIndexFromStackId(stackId?: string, base = 1000) {
+function getZIndexFromStackId(stackId?: string, base = 200) {
   if (!stackId) return base;
   const numeric = parseInt(stackId.replace(/\D/g, ""));
   return isNaN(numeric) ? base : base + numeric;

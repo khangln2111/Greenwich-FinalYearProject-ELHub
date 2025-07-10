@@ -10,7 +10,8 @@ const mockCourses = [
     id: "1",
     title: "Next.js Mastery: Build Fullstack App",
     status: "Pending",
-    imageUrl: "https://source.unsplash.com/400x200/?code",
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStM_1U-oW7qQoJ6sP4BrMIAg4ipMmmnPWwIw&s",
     instructorName: "Jane Doe",
     instructorAvatarUrl: "https://i.pravatar.cc/150?img=47",
     instructorProfessionalTitle: "Senior Frontend Engineer at TechCorp",
@@ -19,7 +20,8 @@ const mockCourses = [
     id: "2",
     title: "React for Beginners",
     status: "Pending",
-    imageUrl: "https://source.unsplash.com/400x200/?reactjs",
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStM_1U-oW7qQoJ6sP4BrMIAg4ipMmmnPWwIw&s",
     instructorName: "John Smith",
     instructorAvatarUrl: "https://i.pravatar.cc/150?img=32",
     instructorProfessionalTitle: "Frontend Dev at Codify",
@@ -86,7 +88,7 @@ export default function AdminCoursesPage() {
             clearable
           />
         </Group>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {filteredCourses.map((course) => (
             <div
               key={course.id}
