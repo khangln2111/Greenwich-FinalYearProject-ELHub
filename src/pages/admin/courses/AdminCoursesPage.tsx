@@ -6,6 +6,7 @@ import { CourseStatus } from "../../../react-query/course/course.types";
 import { useGetCourses } from "../../../react-query/course/courseHooks";
 import { formatDuration } from "../../../utils/format";
 import AdminReviewCourseModal from "./_c/AdminReviewCourseModal";
+import { Link } from "react-router-dom";
 
 export default function AdminCoursesPage() {
   const [search, setSearch] = useState("");
@@ -84,7 +85,6 @@ export default function AdminCoursesPage() {
                     {course.title}
                   </Title>
                   <Badge
-                    variant="light"
                     size="sm"
                     color={
                       course.status === CourseStatus.Published
@@ -131,7 +131,7 @@ export default function AdminCoursesPage() {
                 <div className="flex items-center gap-3">
                   <Avatar src={course.instructorAvatarUrl} size="md" radius="xl" />
                   <div className="text-sm leading-tight">
-                    <div className="font-medium">{course.instructorName}</div>
+                    <div className="font-medium text-text">{course.instructorName}</div>
                     <div className="text-gray-500 text-xs">
                       {course.instructorProfessionalTitle}
                     </div>
@@ -140,7 +140,7 @@ export default function AdminCoursesPage() {
 
                 {/* Actions */}
                 <Group justify="end" className="pt-2 mt-auto">
-                  <Button
+                  {/* <Button
                     color="green"
                     variant="light"
                     size="xs"
@@ -155,6 +155,14 @@ export default function AdminCoursesPage() {
                     onClick={() => handleOpenModal(course.id, "reject")}
                   >
                     Reject
+                  </Button> */}
+                  <Button
+                    className="w-fit shrink-0 text-sm font-medium"
+                    size="xs"
+                    component={Link}
+                    to={`/admin/courses/${course.id}`}
+                  >
+                    View More
                   </Button>
                 </Group>
               </div>

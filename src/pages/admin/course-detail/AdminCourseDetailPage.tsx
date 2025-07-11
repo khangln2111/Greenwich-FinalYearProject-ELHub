@@ -2,24 +2,21 @@ import { Button, Loader, SegmentedControl, Tabs } from "@mantine/core";
 import { IconArrowLeft, IconPencil } from "@tabler/icons-react";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
-import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
-import OverviewForm from "./_c/OverviewForm/OverviewForm";
+import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
+import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 
-export default function UpdateCoursePage() {
+const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
-
   const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
-
-  const [activeTab, setActiveTab] = useState("Curriculum");
+  const [activeTab, setActiveTab] = useState("Overview");
 
   if ((error && error.response?.status === 404) || !courseId) {
     return <Navigate to="/404" replace />;
   }
-
   return (
-    <div className="flex-1 p-6 xl:p-8">
+    <div className="flex-1 p-6 xl:p-8 @container">
+      {/* header */}
       <div className="flex items-center gap-3 mb-6">
         <Button
           component={Link}
@@ -34,17 +31,16 @@ export default function UpdateCoursePage() {
         <div className="flex items-center gap-2">
           <IconPencil size={22} className="text-blue-600 dark:text-blue-400" />
           <span className="text-xl sm:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
-            {courseDetail?.title}
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit
           </span>
         </div>
       </div>
-      {/* Navigation */}
+      {/* navigation */}
       <SegmentedControl
         value={activeTab}
         onChange={setActiveTab}
-        data={["Overview", "Curriculum", "Reviews"]}
+        data={["Overview", "Curriculum", "Submissions"]}
         size="sm"
-        transitionDuration={200}
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
         classNames={{
           root: "bg-white dark:bg-dark-6 shadow-sm border p-[10px]",
@@ -55,7 +51,7 @@ export default function UpdateCoursePage() {
       />
       {/* decoration */}
       <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
-      {/* Tab Content */}
+      {/* tab content */}
       <Tabs variant="pills" value={activeTab} className="mt-7" keepMounted>
         <div>
           {/* overview about course */}
@@ -63,19 +59,13 @@ export default function UpdateCoursePage() {
             {isPending ? (
               <Loader />
             ) : courseDetail ? (
-              <OverviewForm courseId={courseId} courseDetail={courseDetail} />
+              <AdminCourseOverviewTab course={courseDetail} />
             ) : (
               <div>No course data found.</div>
             )}
           </Tabs.Panel>
           {/* course curriculum */}
-          <Tabs.Panel value="Curriculum">
-            {isPending ? (
-              <Loader />
-            ) : (
-              <CurriculumManager courseId={courseId} sections={courseDetail?.sections ?? []} />
-            )}
-          </Tabs.Panel>
+          <Tabs.Panel value="Curriculum">haha</Tabs.Panel>
           <Tabs.Panel value="Reviews">
             <ReviewTab
               courseId={courseId}
@@ -94,4 +84,5 @@ export default function UpdateCoursePage() {
       </Tabs>
     </div>
   );
-}
+};
+export default AdminCourseDetailPage;

@@ -29,6 +29,7 @@ import AdminCategoriesPage from "../pages/admin/categories/AdminCategoriesPage";
 import BecomeInstructorPage from "../pages/become-instructor/BecomeInstructorPage";
 import AdminInstructorPage from "../pages/admin/instructors/AdminInstructorPage";
 import AdminCoursesPage from "../pages/admin/courses/AdminCoursesPage";
+import AdminCourseDetailPage from "../pages/admin/course-detail/AdminCourseDetailPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -128,6 +129,10 @@ const adminRoute: RouteObject = {
     {
       path: "courses",
       element: <AdminCoursesPage />,
+    },
+    {
+      path: "courses/:courseId",
+      element: <AdminCourseDetailPage />,
     },
   ],
 };
