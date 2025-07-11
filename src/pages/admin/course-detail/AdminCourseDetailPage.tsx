@@ -1,10 +1,11 @@
-import { Button, Loader, SegmentedControl, Tabs } from "@mantine/core";
+import { Button, Group, Loader, SegmentedControl, Tabs } from "@mantine/core";
 import { IconArrowLeft, IconPencil } from "@tabler/icons-react";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
 import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
 import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
+import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 
 const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -17,7 +18,7 @@ const AdminCourseDetailPage = () => {
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
       {/* header */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center justify-between gap-3 mb-4">
         <Button
           component={Link}
           to="/instructor/courses"
@@ -28,13 +29,35 @@ const AdminCourseDetailPage = () => {
         >
           Back to Courses
         </Button>
-        <div className="flex items-center gap-2">
-          <IconPencil size={22} className="text-blue-600 dark:text-blue-400" />
-          <span className="text-xl sm:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit
-          </span>
-        </div>
+        <Group justify="end">
+          <Button color="green" variant="light" size="xs">
+            Approve
+          </Button>
+          <Button color="red" variant="light" size="xs">
+            Reject
+          </Button>
+        </Group>
       </div>
+      <div className="flex items-center gap-2 mb-4 mx-auto justify-center">
+        <IconPencil className="text-blue-600 dark:text-blue-400 size-[16px] md:size-[22px]" />
+        <span className="text-xl sm:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit
+        </span>
+      </div>
+      {/* Preview Media Section */}
+      {courseDetail?.promoVideoUrl && (
+        <div className="aspect-video rounded-lg overflow-hidden border shadow-sm max-h-[400px] mb-6 mx-auto">
+          <VideoPlayerWithThumbnail
+            classNames={{
+              playIconWrapper: "md:size-16",
+              playIcon: "md:size-8",
+              previewImage: "size-full",
+            }}
+            videoUrl={courseDetail.promoVideoUrl}
+            previewThumbnailUrl={courseDetail.imageUrl}
+          />
+        </div>
+      )}
       {/* navigation */}
       <SegmentedControl
         value={activeTab}

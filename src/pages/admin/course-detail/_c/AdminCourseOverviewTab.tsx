@@ -1,5 +1,5 @@
-import { Title, ThemeIcon, Text, Divider, AspectRatio, Paper } from "@mantine/core";
-import { AwardIcon, ArrowRight } from "lucide-react";
+import { Divider, Text, ThemeIcon, Title } from "@mantine/core";
+import { ArrowRight, AwardIcon } from "lucide-react";
 import { CourseDetailVm } from "../../../../react-query/course/course.types";
 
 type AdminCourseOverviewTabProps = {
@@ -12,26 +12,6 @@ const AdminCourseOverviewTab = ({ course }: AdminCourseOverviewTabProps) => {
       <Title order={2} className="mb-6">
         About the course
       </Title>
-
-      {/* Preview Media Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-        {/* Course Image */}
-        <Paper withBorder shadow="sm" radius="lg" className="overflow-hidden">
-          <img src={course.imageUrl} alt={course.title} className="w-full h-full object-cover" />
-        </Paper>
-
-        {/* Promo Video if available */}
-        {course.promoVideoUrl && (
-          <AspectRatio ratio={16 / 9} className="rounded-lg overflow-hidden">
-            <video
-              src={course.promoVideoUrl}
-              controls
-              className="w-full h-full rounded-lg object-cover"
-            />
-          </AspectRatio>
-        )}
-      </div>
-
       {/* Description */}
       <div>
         <Text className="text-lg leading-relaxed">{course.description}</Text>
