@@ -65,7 +65,7 @@ const AdminCourseDetailPage = () => {
       <SegmentedControl
         value={activeTab}
         onChange={setActiveTab}
-        data={["Overview", "Curriculum", "Submissions"]}
+        data={["Overview", "Curriculum", "Instructor", "Submissions"]}
         size="sm"
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
         classNames={{
