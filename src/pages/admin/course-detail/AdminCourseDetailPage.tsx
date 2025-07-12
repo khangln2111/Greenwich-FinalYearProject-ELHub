@@ -1,18 +1,21 @@
-import { Button, Group, Loader, SegmentedControl, Tabs } from "@mantine/core";
+import { Button, Group, SegmentedControl, Tabs } from "@mantine/core";
 import { IconArrowLeft, IconPencil } from "@tabler/icons-react";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import ReviewTab from "../../course-detail/_c/ReviewTab";
-import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
-import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
+import CenterLoader from "../../../components/CenterLoader";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
+import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
+import ReviewTab from "../../course-detail/_c/ReviewTab";
+import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 
 const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
   const [activeTab, setActiveTab] = useState("Overview");
 
-  if ((error && error.response?.status === 404) || !courseId) {
+  if (isPending) return <CenterLoader />;
+
+  if (error || !courseId) {
     return <Navigate to="/404" replace />;
   }
   return (
@@ -21,7 +24,7 @@ const AdminCourseDetailPage = () => {
       <div className="flex items-center justify-between gap-3 mb-4">
         <Button
           component={Link}
-          to="/instructor/courses"
+          to="/admin/courses"
           variant="default"
           size="sm"
           leftSection={<IconArrowLeft size={16} />}
@@ -38,9 +41,9 @@ const AdminCourseDetailPage = () => {
           </Button>
         </Group>
       </div>
-      <div className="flex items-center gap-2 mb-4 mx-auto justify-center">
-        <IconPencil className="text-blue-600 dark:text-blue-400 size-[16px] md:size-[22px]" />
-        <span className="text-xl sm:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
+      <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">
+        <IconPencil className="text-blue-600 dark:text-blue-400 size-5 sm:size-6 md:size-7" />
+        <span className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit
         </span>
       </div>
@@ -79,13 +82,7 @@ const AdminCourseDetailPage = () => {
         <div>
           {/* overview about course */}
           <Tabs.Panel value="Overview">
-            {isPending ? (
-              <Loader />
-            ) : courseDetail ? (
-              <AdminCourseOverviewTab course={courseDetail} />
-            ) : (
-              <div>No course data found.</div>
-            )}
+            <AdminCourseOverviewTab course={courseDetail} />
           </Tabs.Panel>
           {/* course curriculum */}
           <Tabs.Panel value="Curriculum">haha</Tabs.Panel>

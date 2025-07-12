@@ -44,6 +44,7 @@ export default function InstructorCoursesPage() {
             ]}
             value={filter}
             allowDeselect={false}
+            checkIconPosition="right"
             onChange={(val) => setFilter(val as CourseStatus | "all")}
             placeholder="Filter by status"
             className="flex-1"

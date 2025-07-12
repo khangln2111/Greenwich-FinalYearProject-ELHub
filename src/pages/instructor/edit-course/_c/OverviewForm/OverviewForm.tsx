@@ -135,6 +135,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
           leftSection={<ArrowUpNarrowWide className="size-4" />}
           {...form.getInputProps("level")}
           key={form.key("level")}
+          checkIconPosition="right"
         />
       </div>
 

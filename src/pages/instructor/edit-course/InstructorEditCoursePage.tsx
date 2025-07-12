@@ -31,12 +31,12 @@ export default function UpdateCoursePage() {
         >
           Back to Courses
         </Button>
-        <div className="flex items-center gap-2">
-          <IconPencil size={22} className="text-blue-600 dark:text-blue-400" />
-          <span className="text-xl sm:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
-            {courseDetail?.title}
-          </span>
-        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">
+        <IconPencil className="text-blue-600 dark:text-blue-400 size-5 sm:size-6 md:size-7" />
+        <span className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
+          {courseDetail?.title}
+        </span>
       </div>
       {/* Navigation */}
       <SegmentedControl

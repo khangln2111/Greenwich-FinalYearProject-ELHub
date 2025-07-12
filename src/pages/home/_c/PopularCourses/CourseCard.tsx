@@ -131,11 +131,24 @@ const CourseCard = ({ course }: CourseCardProps) => {
       <div className="p-md pt-0 border-gray-3 dark:border-dark-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex gap-2 items-baseline flex-wrap-reverse">
-            <Text className="font-bold text-xl leading-none">
-              ${course.discountedPrice.toFixed(2)}
-            </Text>
-            {course.discountPercentage > 0 && (
-              <Text className="text-dimmed line-through text-md">${course.price.toFixed(2)}</Text>
+            {course.discountedPrice === 0 ? (
+              <>
+                <Text className="font-bold text-xl leading-none text-green-600 dark:text-green-400">
+                  Free
+                </Text>
+                <Text className="text-dimmed line-through text-md">${course.price.toFixed(2)}</Text>
+              </>
+            ) : (
+              <>
+                <Text className="font-bold text-xl leading-none">
+                  ${course.discountedPrice.toFixed(2)}
+                </Text>
+                {course.discountPercentage > 0 && (
+                  <Text className="text-dimmed line-through text-md">
+                    ${course.price.toFixed(2)}
+                  </Text>
+                )}
+              </>
             )}
           </div>
           <Button

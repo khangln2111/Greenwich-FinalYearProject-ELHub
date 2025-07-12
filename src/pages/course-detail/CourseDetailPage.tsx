@@ -215,11 +215,26 @@ const CourseDetailPage = () => {
               {/* Price box */}
               <div className="bg-violet-600 text-white p-4 rounded-xl shadow-xl flex flex-col items-center lg:item-center">
                 <p className="text-md font-semibold">This Course Fee:</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-4xl font-bold leading-normal">$18.00</span>
-                  <span className="line-through opacity-60 text-xl font-semibold leading-normal">
-                    $32.00
-                  </span>
+                <div className="flex items-center gap-2 mt-1">
+                  {course.discountedPrice === 0 ? (
+                    <>
+                      <span className="text-4xl font-bold leading-normal text-green-300">Free</span>
+                      <span className="line-through opacity-80 text-xl font-semibold leading-normal">
+                        ${course.price.toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-4xl font-bold leading-normal">
+                        ${course.discountedPrice.toFixed(2)}
+                      </span>
+                      {course.discountPercentage > 0 && (
+                        <span className="line-through opacity-80 text-xl font-semibold leading-normal">
+                          ${course.price.toFixed(2)}
+                        </span>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
               {/* Course Details */}
