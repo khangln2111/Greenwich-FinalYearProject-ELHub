@@ -2,32 +2,36 @@ import {
   Badge,
   Button,
   Group,
+  Modal,
+  Paper,
   SegmentedControl,
+  SimpleGrid,
   Tabs,
   Text,
-  Title,
-  Modal,
   Textarea,
-  Paper,
-  SimpleGrid,
+  Title,
   Tooltip,
 } from "@mantine/core";
+import { zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { IconArrowLeft } from "@tabler/icons-react";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import CenterLoader from "../../../components/CenterLoader";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
-import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
+import { useGetCourseDetail, useModerateCourse } from "../../../react-query/course/courseHooks";
 import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";
-import { formatDuration } from "../../../utils/format";
 import { CourseStatus } from "../../../react-query/course/course.types";
+import { formatDuration } from "../../../utils/format";
+import { z } from "zod";
 
-dayjs.extend(relativeTime);
+const noteSchema = z.object({
+  note: z.string().min(5, "Note must be at least 5 characters long"),
+});
 
 const getStatusBadge = (status: CourseStatus) => {
   switch (status) {
@@ -48,12 +52,30 @@ const getStatusBadge = (status: CourseStatus) => {
 const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
+  const reviewCourseMutation = useModerateCourse();
   const [activeTab, setActiveTab] = useState("Overview");
 
   const [approveModalOpen, setApproveModalOpen] = useState(false);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [archiveModalOpen, setArchiveModalOpen] = useState(false);
-  const [note, setNote] = useState("");
+
+  const approveForm = useForm({
+    mode: "uncontrolled",
+    initialValues: { note: "" },
+    validate: zodResolver(noteSchema),
+  });
+
+  const rejectForm = useForm({
+    mode: "uncontrolled",
+    initialValues: { note: "" },
+    validate: zodResolver(noteSchema),
+  });
+
+  const archiveForm = useForm({
+    mode: "uncontrolled",
+    initialValues: { note: "" },
+    validate: zodResolver(noteSchema),
+  });
 
   if (isPending) return <CenterLoader />;
   if (error || !courseId || !course) return <Navigate to="/404" replace />;
@@ -80,9 +102,9 @@ const AdminCourseDetailPage = () => {
               <Button
                 color="green"
                 variant="light"
-                size="xs"
+                loading={reviewCourseMutation.isPending}
                 onClick={() => {
-                  setNote("");
+                  approveForm.reset();
                   setApproveModalOpen(true);
                 }}
               >
@@ -91,9 +113,9 @@ const AdminCourseDetailPage = () => {
               <Button
                 color="red"
                 variant="light"
-                size="xs"
+                loading={reviewCourseMutation.isPending}
                 onClick={() => {
-                  setNote("");
+                  rejectForm.reset();
                   setRejectModalOpen(true);
                 }}
               >
@@ -103,11 +125,11 @@ const AdminCourseDetailPage = () => {
           )}
           {course.status === CourseStatus.Published && (
             <Button
-              color="orange"
+              color="dark"
               variant="light"
               size="xs"
               onClick={() => {
-                setNote("");
+                archiveForm.reset();
                 setArchiveModalOpen(true);
               }}
             >
@@ -125,16 +147,13 @@ const AdminCourseDetailPage = () => {
         <Text size="sm" c="dimmed" mt={4}>
           Category: {course.categoryName} • Level: {course.level}
         </Text>
+        <Text size="sm" c="dimmed" mt={2}>
+          Created on {dayjs(course.createdAt).format("DD MMM YYYY")} • Last updated{" "}
+          {dayjs(course.updatedAt).fromNow()}
+        </Text>
 
         <Tooltip label={`Current course status is "${label}"`} withArrow>
-          <Badge
-            color={color}
-            size="md"
-            radius="sm"
-            mt="md"
-            variant="outline"
-            style={{ fontWeight: 500 }}
-          >
+          <Badge color={color} size="lg" radius="md" mt="md" style={{ fontWeight: 500 }}>
             Status: {label}
           </Badge>
         </Tooltip>
@@ -171,7 +190,10 @@ const AdminCourseDetailPage = () => {
           <Stat label="Lectures" value={course.lectureCount} />
           <Stat
             label="Duration"
-            value={formatDuration({ seconds: course.durationInSeconds, formatType: "long" })}
+            value={formatDuration({
+              seconds: course.durationInSeconds,
+              formatType: "long",
+            })}
           />
           <Stat label="Price" value={`$${course.price}`} />
           <Stat label="Discounted price" value={`$${course.discountedPrice}`} />
@@ -221,22 +243,34 @@ const AdminCourseDetailPage = () => {
         title="Approve Course"
         centered
       >
-        <Textarea
-          label="Approval Note"
-          placeholder="Enter approval note..."
-          value={note}
-          onChange={(e) => setNote(e.currentTarget.value)}
-          autosize
-          minRows={3}
-        />
-        <Group justify="end" mt="md">
-          <Button variant="default" onClick={() => setApproveModalOpen(false)}>
-            Cancel
-          </Button>
-          <Button color="green" onClick={() => setApproveModalOpen(false)}>
-            Confirm Approval
-          </Button>
-        </Group>
+        <form
+          onSubmit={approveForm.onSubmit((values) => {
+            reviewCourseMutation.mutate({
+              id: course.id,
+              isApproved: true,
+              note: values.note,
+            });
+            setApproveModalOpen(false);
+          })}
+        >
+          <Textarea
+            label="Approval Note"
+            placeholder="Enter approval note..."
+            {...approveForm.getInputProps("note")}
+            autosize
+            minRows={3}
+            {...approveForm.getInputProps("note")}
+            key={approveForm.key("note")}
+          />
+          <Group justify="end" mt="md">
+            <Button variant="default" onClick={() => setApproveModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button color="green" type="submit">
+              Confirm Approval
+            </Button>
+          </Group>
+        </form>
       </Modal>
 
       {/* Reject Modal */}
@@ -246,22 +280,34 @@ const AdminCourseDetailPage = () => {
         title="Reject Course"
         centered
       >
-        <Textarea
-          label="Rejection Note"
-          placeholder="Please provide a reason for rejection..."
-          value={note}
-          onChange={(e) => setNote(e.currentTarget.value)}
-          autosize
-          minRows={3}
-        />
-        <Group justify="end" mt="md">
-          <Button variant="default" onClick={() => setRejectModalOpen(false)}>
-            Cancel
-          </Button>
-          <Button color="red" onClick={() => setRejectModalOpen(false)}>
-            Confirm Rejection
-          </Button>
-        </Group>
+        <form
+          onSubmit={rejectForm.onSubmit((values) => {
+            reviewCourseMutation.mutate({
+              id: course.id,
+              isApproved: false,
+              note: values.note,
+            });
+            setRejectModalOpen(false);
+          })}
+        >
+          <Textarea
+            label="Rejection Note"
+            placeholder="Please provide a reason for rejection..."
+            {...rejectForm.getInputProps("note")}
+            autosize
+            minRows={3}
+            {...rejectForm.getInputProps("note")}
+            key={rejectForm.key("note")}
+          />
+          <Group justify="end" mt="md">
+            <Button variant="default" onClick={() => setRejectModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button color="red" type="submit">
+              Confirm Rejection
+            </Button>
+          </Group>
+        </form>
       </Modal>
 
       {/* Archive Modal */}
@@ -271,22 +317,24 @@ const AdminCourseDetailPage = () => {
         title="Archive Course"
         centered
       >
-        <Textarea
-          label="Archive Note"
-          placeholder="Please provide a reason for archiving this course..."
-          value={note}
-          onChange={(e) => setNote(e.currentTarget.value)}
-          autosize
-          minRows={3}
-        />
-        <Group justify="end" mt="md">
-          <Button variant="default" onClick={() => setArchiveModalOpen(false)}>
-            Cancel
-          </Button>
-          <Button color="orange" onClick={() => setArchiveModalOpen(false)}>
-            Confirm Archive
-          </Button>
-        </Group>
+        <form onSubmit={archiveForm.onSubmit(() => setArchiveModalOpen(false))}>
+          <Textarea
+            label="Archive Note"
+            placeholder="Please provide a reason for archiving this course..."
+            {...archiveForm.getInputProps("note")}
+            key={archiveForm.key("note")}
+            autosize
+            minRows={3}
+          />
+          <Group justify="end" mt="md">
+            <Button variant="default" onClick={() => setArchiveModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button color="orange" type="submit">
+              Confirm Archive
+            </Button>
+          </Group>
+        </form>
       </Modal>
     </div>
   );

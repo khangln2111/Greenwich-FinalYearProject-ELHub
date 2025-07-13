@@ -1,25 +1,47 @@
-import { Button, Loader, SegmentedControl, Tabs } from "@mantine/core";
-import { IconArrowLeft, IconPencil } from "@tabler/icons-react";
+import { Badge, Button, Group, Loader, SegmentedControl, Tabs, Text, Tooltip } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { useGetCourseDetail } from "../../../react-query/course/courseHooks";
+import { useGetCourseDetail, useSubmitCourse } from "../../../react-query/course/courseHooks";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
+import { CourseStatus } from "../../../react-query/course/course.types";
 
-export default function UpdateCoursePage() {
+export default function InstructorEditCoursePage() {
   const { courseId } = useParams<{ courseId: string }>();
-
   const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
-
   const [activeTab, setActiveTab] = useState("Curriculum");
+
+  const submitMutation = useSubmitCourse();
 
   if ((error && error.response?.status === 404) || !courseId) {
     return <Navigate to="/404" replace />;
   }
 
+  const canSubmit = courseDetail?.status === CourseStatus.Draft;
+
+  const handleConfirmSubmit = () => {
+    modals.openConfirmModal({
+      title: "Submit Course for Review",
+      centered: true,
+      children: (
+        <Text size="sm">
+          This action will submit your course to the admin for review. You won’t be able to edit it
+          while it's pending approval. Do you want to proceed?
+        </Text>
+      ),
+      labels: { confirm: "Submit", cancel: "Cancel" },
+      confirmProps: { color: "blue", leftSection: <IconUpload size={16} /> },
+      onConfirm: () => submitMutation.mutate(courseId!),
+    });
+  };
+
   return (
     <div className="flex-1 p-6 xl:p-8">
+      {/* Back button */}
       <div className="flex items-center gap-3 mb-6">
         <Button
           component={Link}
@@ -32,17 +54,73 @@ export default function UpdateCoursePage() {
           Back to Courses
         </Button>
       </div>
+
+      {/* Course title */}
       <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">
         <IconPencil className="text-blue-600 dark:text-blue-400 size-5 sm:size-6 md:size-7" />
         <span className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
           {courseDetail?.title}
         </span>
       </div>
+
+      {/* Status bar */}
+      {courseDetail && (
+        <div
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-100 dark:bg-dark-6 p-4
+            rounded-xl mb-6 gap-4 text-sm"
+        >
+          <Group gap="xs">
+            <Text>Status:</Text>
+            <Badge
+              color={
+                courseDetail.status === CourseStatus.Draft
+                  ? "gray"
+                  : courseDetail.status === CourseStatus.Pending
+                    ? "yellow"
+                    : courseDetail.status === CourseStatus.Rejected
+                      ? "red"
+                      : courseDetail.status === CourseStatus.Published
+                        ? "green"
+                        : "gray"
+              }
+              variant="light"
+              radius="sm"
+            >
+              {courseDetail.status}
+            </Badge>
+          </Group>
+
+          {courseDetail.rejectionCount > 0 && (
+            <Group gap="xs">
+              <Text className="text-red-500">Rejected:</Text>
+              <Text>
+                {courseDetail.rejectionCount} time{courseDetail.rejectionCount > 1 ? "s" : ""}
+              </Text>
+              {courseDetail.lastRejectedAt && (
+                <Tooltip label={dayjs(courseDetail.lastRejectedAt).format("YYYY-MM-DD HH:mm")}>
+                  <Text c="dimmed">(Last: {dayjs(courseDetail.lastRejectedAt).fromNow()})</Text>
+                </Tooltip>
+              )}
+            </Group>
+          )}
+
+          <Button
+            variant="light"
+            leftSection={<IconUpload size={16} />}
+            onClick={handleConfirmSubmit}
+            disabled={!canSubmit || submitMutation.isPending}
+            loading={submitMutation.isPending}
+          >
+            Submit for Review
+          </Button>
+        </div>
+      )}
+
       {/* Navigation */}
       <SegmentedControl
         value={activeTab}
         onChange={setActiveTab}
-        data={["Overview", "Curriculum", "Reviews"]}
+        data={["Overview", "Curriculum", "Reviews", "Submissions"]}
         size="sm"
         transitionDuration={200}
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
@@ -53,12 +131,14 @@ export default function UpdateCoursePage() {
           label: "data-active:text-white hover:data-active:text-white",
         }}
       />
-      {/* decoration */}
+
+      {/* Decoration line */}
       <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
+
       {/* Tab Content */}
       <Tabs variant="pills" value={activeTab} className="mt-7" keepMounted>
         <div>
-          {/* overview about course */}
+          {/* Overview Tab */}
           <Tabs.Panel value="Overview">
             {isPending ? (
               <Loader />
@@ -68,7 +148,8 @@ export default function UpdateCoursePage() {
               <div>No course data found.</div>
             )}
           </Tabs.Panel>
-          {/* course curriculum */}
+
+          {/* Curriculum Tab */}
           <Tabs.Panel value="Curriculum">
             {isPending ? (
               <Loader />
@@ -76,6 +157,8 @@ export default function UpdateCoursePage() {
               <CurriculumManager courseId={courseId} sections={courseDetail?.sections ?? []} />
             )}
           </Tabs.Panel>
+
+          {/* Reviews Tab */}
           <Tabs.Panel value="Reviews">
             <ReviewTab
               courseId={courseId}
@@ -90,6 +173,7 @@ export default function UpdateCoursePage() {
               ]}
             />
           </Tabs.Panel>
+          <Tabs.Panel value="Submissions">haha</Tabs.Panel>
         </div>
       </Tabs>
     </div>

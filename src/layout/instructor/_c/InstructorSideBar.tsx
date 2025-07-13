@@ -54,7 +54,7 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
         })}
       >
         <Link
-          to="/instructor"
+          to="/instructor/analytics"
           className="no-underline select-none flex items-center text-black dark:text-white"
         >
           {collapsedToIcon ? (

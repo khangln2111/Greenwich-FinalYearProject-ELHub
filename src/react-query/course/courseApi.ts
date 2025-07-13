@@ -102,13 +102,13 @@ export const getInstructorByCourseId = async (id: string) => {
   return response.data;
 };
 
-export const reviewCourse = async (command: ReviewCourseCommand) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/Review`, command);
+export const moderateCourse = async (command: ReviewCourseCommand) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/Moderate`, command);
   return response.data;
 };
 
-export const submitCourseForReview = async (id: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/SubmitForReview`);
+export const submitCourse = async (id: string) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/Submit`);
   return response.data;
 };
 

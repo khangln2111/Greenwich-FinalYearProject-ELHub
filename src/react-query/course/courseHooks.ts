@@ -16,8 +16,8 @@ import {
   getCourses,
   getInstructorByCourseId,
   retryCourseSubmission,
-  reviewCourse,
-  submitCourseForReview,
+  moderateCourse,
+  submitCourse,
   updateCourse,
 } from "./courseApi";
 import { useAppStore } from "../../zustand/store";
@@ -46,10 +46,10 @@ export const useGetCourseDetail = (id: string) => {
   });
 };
 
-export const useReviewCourse = () => {
+export const useModerateCourse = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (command: ReviewCourseCommand) => reviewCourse(command),
+    mutationFn: (command: ReviewCourseCommand) => moderateCourse(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Course Reviewed", "The course review was successful.");
@@ -76,10 +76,10 @@ export const useReviewCourse = () => {
   });
 };
 
-export const useSubmitCourseForReview = () => {
+export const useSubmitCourse = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => submitCourseForReview(id),
+    mutationFn: (id: string) => submitCourse(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Course Submitted", "The course was submitted for review successfully.");

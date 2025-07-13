@@ -12,6 +12,7 @@ const statusBadgeMap: Record<CourseStatus, string> = {
   [CourseStatus.Published]: "bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900",
   [CourseStatus.Pending]: "bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-900",
   [CourseStatus.Archived]: "bg-gray-100 text-gray-800 dark:bg-gray-200 dark:text-gray-900",
+  [CourseStatus.Rejected]: "bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900",
 };
 
 interface Props {
