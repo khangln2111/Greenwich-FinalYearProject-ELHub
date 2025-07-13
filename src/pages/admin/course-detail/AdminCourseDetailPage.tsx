@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Group,
   SegmentedControl,
@@ -9,6 +10,7 @@ import {
   Textarea,
   Paper,
   SimpleGrid,
+  Tooltip,
 } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useState } from "react";
@@ -27,6 +29,22 @@ import { CourseStatus } from "../../../react-query/course/course.types";
 
 dayjs.extend(relativeTime);
 
+const getStatusBadge = (status: CourseStatus) => {
+  switch (status) {
+    case CourseStatus.Pending:
+      return { color: "yellow", label: "Pending" };
+    case CourseStatus.Published:
+      return { color: "green", label: "Published" };
+    case CourseStatus.Rejected:
+      return { color: "red", label: "Rejected" };
+    case CourseStatus.Archived:
+      return { color: "gray", label: "Archived" };
+    case CourseStatus.Draft:
+    default:
+      return { color: "blue", label: "Draft" };
+  }
+};
+
 const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
@@ -39,6 +57,8 @@ const AdminCourseDetailPage = () => {
 
   if (isPending) return <CenterLoader />;
   if (error || !courseId || !course) return <Navigate to="/404" replace />;
+
+  const { color, label } = getStatusBadge(course.status as CourseStatus);
 
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
@@ -54,7 +74,6 @@ const AdminCourseDetailPage = () => {
           Back to list
         </Button>
 
-        {/* Conditional actions */}
         <div className="flex items-center gap-2">
           {course.status === CourseStatus.Pending && (
             <>
@@ -107,24 +126,18 @@ const AdminCourseDetailPage = () => {
           Category: {course.categoryName} • Level: {course.level}
         </Text>
 
-        <Text
-          mt={8}
-          fw={600}
-          size="sm"
-          className={`inline-block mt-2 px-2 py-1 rounded-md text-white ${
-            course.status === "Pending"
-              ? "bg-yellow-500"
-              : course.status === "Published"
-                ? "bg-green-600"
-                : course.status === "Rejected"
-                  ? "bg-red-600"
-                  : course.status === "Archived"
-                    ? "bg-gray-500"
-                    : "bg-blue-500"
-            }`}
-        >
-          Status: {course.status}
-        </Text>
+        <Tooltip label={`Current course status is "${label}"`} withArrow>
+          <Badge
+            color={color}
+            size="md"
+            radius="sm"
+            mt="md"
+            variant="outline"
+            style={{ fontWeight: 500 }}
+          >
+            Status: {label}
+          </Badge>
+        </Tooltip>
 
         {course.rejectionCount > 0 && (
           <Text mt={4} c="red.6" size="sm" fw={500}>
@@ -152,9 +165,9 @@ const AdminCourseDetailPage = () => {
         </div>
       )}
 
-      {/* Course Stats */}
+      {/* Stats */}
       <Paper withBorder p="md" radius="md" className="mb-6">
-        <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="xs">
+        <SimpleGrid cols={{ base: 2, md: 3, lg: 7 }} spacing="xs">
           <Stat label="Lectures" value={course.lectureCount} />
           <Stat
             label="Duration"
@@ -162,10 +175,13 @@ const AdminCourseDetailPage = () => {
           />
           <Stat label="Price" value={`$${course.price}`} />
           <Stat label="Discounted price" value={`$${course.discountedPrice}`} />
+          <Stat label="Enrollment count" value={course.enrollmentCount} />
+          <Stat label="Average rating" value={course.averageRating.toFixed(1)} />
+          <Stat label="Review count" value={course.reviewCount} />
         </SimpleGrid>
       </Paper>
 
-      {/* Navigation Tabs */}
+      {/* Tabs */}
       <SegmentedControl
         value={activeTab}
         onChange={setActiveTab}
@@ -183,7 +199,6 @@ const AdminCourseDetailPage = () => {
 
       <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
 
-      {/* Tab Content */}
       <Tabs variant="pills" value={activeTab} className="mt-7" keepMounted>
         <Tabs.Panel value="Overview">
           <AdminCourseOverviewTab course={course} />
