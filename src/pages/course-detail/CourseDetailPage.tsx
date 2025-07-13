@@ -164,7 +164,7 @@ const CourseDetailPage = () => {
               value={activeTab}
               onChange={(val) => setActiveTab(val as CourseDetailTab)}
               data={Object.values(CourseDetailTab)}
-              transitionDuration={200}
+              transitionDuration={300}
               size="md"
               className="w-full mt-5 grid grid-cols-2 md:grid-flow-col md:auto-cols-fr"
               classNames={{

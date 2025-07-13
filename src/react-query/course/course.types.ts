@@ -48,6 +48,8 @@ export interface CourseVm {
   instructorName: string;
   instructorAvatarUrl: string | null;
   instructorProfessionalTitle: string | null;
+  rejectionCount: number;
+  lastRejectedAt: string | null;
 }
 
 export interface CourseDetailVm {
@@ -95,6 +97,8 @@ export interface CourseDetailVm {
   instructorReviewCount: number;
   instructorCourseCount: number;
   instructorStudentCount: number;
+  rejectionCount: number;
+  lastRejectedAt: string | null;
 }
 
 export interface LearningCourseVm {
