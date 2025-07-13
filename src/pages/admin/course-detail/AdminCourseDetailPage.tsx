@@ -23,6 +23,7 @@ import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";
 import { formatDuration } from "../../../utils/format";
+import { CourseStatus } from "../../../react-query/course/course.types";
 
 dayjs.extend(relativeTime);
 
@@ -33,6 +34,7 @@ const AdminCourseDetailPage = () => {
 
   const [approveModalOpen, setApproveModalOpen] = useState(false);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
+  const [archiveModalOpen, setArchiveModalOpen] = useState(false);
   const [note, setNote] = useState("");
 
   if (isPending) return <CenterLoader />;
@@ -51,18 +53,53 @@ const AdminCourseDetailPage = () => {
         >
           Back to list
         </Button>
-        <div className="flex items-center gap-1 md:gap-3">
-          <Button color="green" variant="light" size="xs" onClick={() => setApproveModalOpen(true)}>
-            Approve
-          </Button>
-          <Button color="red" variant="light" size="xs" onClick={() => setRejectModalOpen(true)}>
-            Reject
-          </Button>
+
+        {/* Conditional actions */}
+        <div className="flex items-center gap-2">
+          {course.status === CourseStatus.Pending && (
+            <>
+              <Button
+                color="green"
+                variant="light"
+                size="xs"
+                onClick={() => {
+                  setNote("");
+                  setApproveModalOpen(true);
+                }}
+              >
+                Approve
+              </Button>
+              <Button
+                color="red"
+                variant="light"
+                size="xs"
+                onClick={() => {
+                  setNote("");
+                  setRejectModalOpen(true);
+                }}
+              >
+                Reject
+              </Button>
+            </>
+          )}
+          {course.status === CourseStatus.Published && (
+            <Button
+              color="orange"
+              variant="light"
+              size="xs"
+              onClick={() => {
+                setNote("");
+                setArchiveModalOpen(true);
+              }}
+            >
+              Archive
+            </Button>
+          )}
         </div>
       </div>
 
-      {/* Course Title */}
-      <div className="text-center mb-6 max-w-(--container-size-4xl) mx-auto">
+      {/* Course Title + Status */}
+      <div className="text-center mb-6 max-w-[--container-size-4xl] mx-auto">
         <Title order={2} className="italic text-gray-800 dark:text-gray-300">
           {course.title}
         </Title>
@@ -70,8 +107,27 @@ const AdminCourseDetailPage = () => {
           Category: {course.categoryName} • Level: {course.level}
         </Text>
 
+        <Text
+          mt={8}
+          fw={600}
+          size="sm"
+          className={`inline-block mt-2 px-2 py-1 rounded-md text-white ${
+            course.status === "Pending"
+              ? "bg-yellow-500"
+              : course.status === "Published"
+                ? "bg-green-600"
+                : course.status === "Rejected"
+                  ? "bg-red-600"
+                  : course.status === "Archived"
+                    ? "bg-gray-500"
+                    : "bg-blue-500"
+            }`}
+        >
+          Status: {course.status}
+        </Text>
+
         {course.rejectionCount > 0 && (
-          <Text mt={8} c="red.6" size="sm" fw={500}>
+          <Text mt={4} c="red.6" size="sm" fw={500}>
             Rejected <strong>{course.rejectionCount}</strong> time
             {course.rejectionCount > 1 ? "s" : ""}
             {course.lastRejectedAt && (
@@ -162,7 +218,9 @@ const AdminCourseDetailPage = () => {
           <Button variant="default" onClick={() => setApproveModalOpen(false)}>
             Cancel
           </Button>
-          <Button color="green">Confirm Approval</Button>
+          <Button color="green" onClick={() => setApproveModalOpen(false)}>
+            Confirm Approval
+          </Button>
         </Group>
       </Modal>
 
@@ -185,7 +243,34 @@ const AdminCourseDetailPage = () => {
           <Button variant="default" onClick={() => setRejectModalOpen(false)}>
             Cancel
           </Button>
-          <Button color="red">Confirm Rejection</Button>
+          <Button color="red" onClick={() => setRejectModalOpen(false)}>
+            Confirm Rejection
+          </Button>
+        </Group>
+      </Modal>
+
+      {/* Archive Modal */}
+      <Modal
+        opened={archiveModalOpen}
+        onClose={() => setArchiveModalOpen(false)}
+        title="Archive Course"
+        centered
+      >
+        <Textarea
+          label="Archive Note"
+          placeholder="Please provide a reason for archiving this course..."
+          value={note}
+          onChange={(e) => setNote(e.currentTarget.value)}
+          autosize
+          minRows={3}
+        />
+        <Group justify="end" mt="md">
+          <Button variant="default" onClick={() => setArchiveModalOpen(false)}>
+            Cancel
+          </Button>
+          <Button color="orange" onClick={() => setArchiveModalOpen(false)}>
+            Confirm Archive
+          </Button>
         </Group>
       </Modal>
     </div>
