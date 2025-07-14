@@ -1,27 +1,34 @@
-import { Badge, Button, Group, Loader, SegmentedControl, Tabs, Text, Tooltip } from "@mantine/core";
+import { Badge, Button, Group, SegmentedControl, Tabs, Text, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import CenterLoader from "../../../components/CenterLoader";
+import { CourseStatus } from "../../../react-query/course/course.types";
 import { useGetCourseDetail, useSubmitCourse } from "../../../react-query/course/courseHooks";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
-import { CourseStatus } from "../../../react-query/course/course.types";
+
+enum CourseDetailTab {
+  Overview = "Overview",
+  Curriculum = "Curriculum",
+  Reviews = "Reviews",
+  Submissions = "Submissions",
+}
 
 export default function InstructorEditCoursePage() {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
-  const [activeTab, setActiveTab] = useState("Curriculum");
+  const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
 
   const submitMutation = useSubmitCourse();
 
-  if ((error && error.response?.status === 404) || !courseId) {
-    return <Navigate to="/404" replace />;
-  }
+  if (isPending) return <CenterLoader />;
 
-  const canSubmit = courseDetail?.status === CourseStatus.Draft;
+  if (error || !courseId || !courseDetail) return <Navigate to="/404" replace />;
+  const canSubmit = courseDetail.status === CourseStatus.Draft;
 
   const handleConfirmSubmit = () => {
     modals.openConfirmModal({
@@ -59,68 +66,67 @@ export default function InstructorEditCoursePage() {
       <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">
         <IconPencil className="text-blue-600 dark:text-blue-400 size-5 sm:size-6 md:size-7" />
         <span className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
-          {courseDetail?.title}
+          {courseDetail.title}
         </span>
       </div>
 
       {/* Status bar */}
-      {courseDetail && (
-        <div
-          className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-100 dark:bg-dark-6 p-4
-            rounded-xl mb-6 gap-4 text-sm"
-        >
-          <Group gap="xs">
-            <Text>Status:</Text>
-            <Badge
-              color={
-                courseDetail.status === CourseStatus.Draft
-                  ? "gray"
-                  : courseDetail.status === CourseStatus.Pending
-                    ? "yellow"
-                    : courseDetail.status === CourseStatus.Rejected
-                      ? "red"
-                      : courseDetail.status === CourseStatus.Published
-                        ? "green"
-                        : "gray"
-              }
-              variant="light"
-              radius="sm"
-            >
-              {courseDetail.status}
-            </Badge>
-          </Group>
 
-          {courseDetail.rejectionCount > 0 && (
-            <Group gap="xs">
-              <Text className="text-red-500">Rejected:</Text>
-              <Text>
-                {courseDetail.rejectionCount} time{courseDetail.rejectionCount > 1 ? "s" : ""}
-              </Text>
-              {courseDetail.lastRejectedAt && (
-                <Tooltip label={dayjs(courseDetail.lastRejectedAt).format("YYYY-MM-DD HH:mm")}>
-                  <Text c="dimmed">(Last: {dayjs(courseDetail.lastRejectedAt).fromNow()})</Text>
-                </Tooltip>
-              )}
-            </Group>
-          )}
-
-          <Button
+      <div
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-100 dark:bg-dark-6 p-4
+          rounded-xl mb-6 gap-4 text-sm"
+      >
+        <Group gap="xs">
+          <Text>Status:</Text>
+          <Badge
+            color={
+              courseDetail.status === CourseStatus.Draft
+                ? "gray"
+                : courseDetail.status === CourseStatus.Pending
+                  ? "yellow"
+                  : courseDetail.status === CourseStatus.Rejected
+                    ? "red"
+                    : courseDetail.status === CourseStatus.Published
+                      ? "green"
+                      : "gray"
+            }
             variant="light"
-            leftSection={<IconUpload size={16} />}
-            onClick={handleConfirmSubmit}
-            disabled={!canSubmit || submitMutation.isPending}
-            loading={submitMutation.isPending}
+            radius="sm"
           >
-            Submit for Review
-          </Button>
-        </div>
-      )}
+            {courseDetail.status}
+          </Badge>
+        </Group>
+
+        {courseDetail.rejectionCount > 0 && (
+          <Group gap="xs">
+            <Text className="text-red-500">Rejected:</Text>
+            <Text>
+              {courseDetail.rejectionCount} time{courseDetail.rejectionCount > 1 ? "s" : ""}
+            </Text>
+            {courseDetail.lastRejectedAt && (
+              <Tooltip label={dayjs(courseDetail.lastRejectedAt).format("YYYY-MM-DD HH:mm")}>
+                <Text c="dimmed">(Last: {dayjs(courseDetail.lastRejectedAt).fromNow()})</Text>
+              </Tooltip>
+            )}
+          </Group>
+        )}
+
+        <Button
+          variant="light"
+          leftSection={<IconUpload size={16} />}
+          onClick={handleConfirmSubmit}
+          disabled={!canSubmit || submitMutation.isPending}
+          loading={submitMutation.isPending}
+        >
+          Submit for Review
+        </Button>
+      </div>
 
       {/* Navigation */}
       <SegmentedControl
         value={activeTab}
-        onChange={setActiveTab}
-        data={["Overview", "Curriculum", "Reviews", "Submissions"]}
+        data={Object.values(CourseDetailTab)}
+        onChange={(val) => setActiveTab(val as CourseDetailTab)}
         size="sm"
         transitionDuration={200}
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
@@ -139,23 +145,13 @@ export default function InstructorEditCoursePage() {
       <Tabs variant="pills" value={activeTab} className="mt-7" keepMounted>
         <div>
           {/* Overview Tab */}
-          <Tabs.Panel value="Overview">
-            {isPending ? (
-              <Loader />
-            ) : courseDetail ? (
-              <OverviewForm courseId={courseId} courseDetail={courseDetail} />
-            ) : (
-              <div>No course data found.</div>
-            )}
+          <Tabs.Panel value={CourseDetailTab.Overview}>
+            <OverviewForm courseId={courseId} courseDetail={courseDetail} />
           </Tabs.Panel>
 
           {/* Curriculum Tab */}
-          <Tabs.Panel value="Curriculum">
-            {isPending ? (
-              <Loader />
-            ) : (
-              <CurriculumManager courseId={courseId} sections={courseDetail?.sections ?? []} />
-            )}
+          <Tabs.Panel value={CourseDetailTab.Curriculum}>
+            <CurriculumManager courseId={courseId} sections={courseDetail.sections} />
           </Tabs.Panel>
 
           {/* Reviews Tab */}

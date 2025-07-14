@@ -49,11 +49,18 @@ const getStatusBadge = (status: CourseStatus) => {
   }
 };
 
+enum CourseDetailTab {
+  Overview = "Overview",
+  Curriculum = "Curriculum",
+  Instructor = "Instructor",
+  Submissions = "Submissions",
+}
+
 const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
   const reviewCourseMutation = useModerateCourse();
-  const [activeTab, setActiveTab] = useState("Overview");
+  const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
 
   const [approveModalOpen, setApproveModalOpen] = useState(false);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
@@ -159,7 +166,7 @@ const AdminCourseDetailPage = () => {
         </Tooltip>
 
         {course.rejectionCount > 0 && (
-          <Text mt={4} c="red.6" size="sm" fw={500}>
+          <Text c="red.6" size="sm" className="mt-5" fw={500}>
             Rejected <strong>{course.rejectionCount}</strong> time
             {course.rejectionCount > 1 ? "s" : ""}
             {course.lastRejectedAt && (
@@ -206,14 +213,14 @@ const AdminCourseDetailPage = () => {
       {/* Tabs */}
       <SegmentedControl
         value={activeTab}
-        onChange={setActiveTab}
-        data={["Overview", "Curriculum", "Instructor", "Submissions"]}
+        onChange={(val) => setActiveTab(val as CourseDetailTab)}
+        data={Object.values(CourseDetailTab)}
         size="sm"
         transitionDuration={300}
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
         classNames={{
           root: "bg-white dark:bg-dark-6 shadow-sm border p-[10px]",
-          indicator: "bg-linear-to-r bg-blue-5",
+          indicator: "bg-linear-to-r bg-blue",
           control: "before:hidden",
           label: "data-active:text-white hover:data-active:text-white",
         }}
@@ -222,16 +229,16 @@ const AdminCourseDetailPage = () => {
       <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
 
       <Tabs variant="pills" value={activeTab} className="mt-7" keepMounted>
-        <Tabs.Panel value="Overview">
+        <Tabs.Panel value={CourseDetailTab.Overview}>
           <AdminCourseOverviewTab course={course} />
         </Tabs.Panel>
-        <Tabs.Panel value="Curriculum">
+        <Tabs.Panel value={CourseDetailTab.Curriculum}>
           <AdminCourseCurriculumTab sections={course.sections ?? []} />
         </Tabs.Panel>
-        <Tabs.Panel value="Instructor">
+        <Tabs.Panel value={CourseDetailTab.Instructor}>
           <AdminCourseInstructorTab courseDetail={course} />
         </Tabs.Panel>
-        <Tabs.Panel value="Submissions">
+        <Tabs.Panel value={CourseDetailTab.Submissions}>
           <AdminCourseSubmissionTab />
         </Tabs.Panel>
       </Tabs>

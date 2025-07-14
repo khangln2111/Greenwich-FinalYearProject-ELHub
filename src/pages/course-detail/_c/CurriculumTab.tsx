@@ -31,7 +31,7 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
       <div className="flex items-center justify-between">
         <Title order={2}>Course content</Title>
         <Text className="text-gray-500 dark:text-dark-1">
-          {sections.reduce((sum, sec) => sum + (sec.lectures?.length ?? 0), 0)} lectures
+          {sections.reduce((sum, sec) => sum + sec.lectures.length, 0)} lectures
         </Text>
       </div>
 
@@ -58,14 +58,14 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
                 <div className="grid md:grid-cols-[1fr_auto] items-center">
                   <Text className="font-semibold md:text-xl">{section.title}</Text>
                   <Text className="text-gray-500 dark:text-dark-1">
-                    {section.lectures?.length} lectures
+                    {section.lectures.length} lectures
                   </Text>
                 </div>
               </Accordion.Control>
               {/* Accordion body */}
               <Accordion.Panel>
                 <ul className="grid gap-y-10 capitalize pt-4 md:px-3">
-                  {section.lectures?.map((lecture, index) => (
+                  {section.lectures.map((lecture, index) => (
                     <li key={index} className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
                         <Video size={20} className="text-blue-500 shrink-0" />

@@ -79,11 +79,9 @@ const CourseDetailPage = () => {
 
   const addCartItemMutation = useAddCartItem();
 
-  if (error || !courseId) return <Navigate to="/404" replace />;
-
   if (isPending) return <CourseDetailPageSkeleton />;
 
-  console.log("course", course);
+  if (error || !courseId) return <Navigate to="/404" replace />;
 
   return (
     <div className="flex-1">
@@ -184,7 +182,7 @@ const CourseDetailPage = () => {
                 </Tabs.Panel>
                 {/* course curriculum */}
                 <Tabs.Panel value={CourseDetailTab.Curriculum}>
-                  <CurriculumTab sections={course.sections ?? []} />
+                  <CurriculumTab sections={course.sections} />
                 </Tabs.Panel>
                 <Tabs.Panel value={CourseDetailTab.Reviews}>
                   <ReviewTab

@@ -137,7 +137,7 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
             </Button>
           )}
           <Text className="text-gray-500 dark:text-dark-1">
-            {sections.reduce((sum, sec) => sum + (sec.lectures?.length ?? 0), 0)} lectures
+            {sections.reduce((sum, sec) => sum + sec.lectures.length, 0)} lectures
           </Text>
         </div>
       </div>

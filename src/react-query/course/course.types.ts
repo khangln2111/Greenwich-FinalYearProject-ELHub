@@ -61,7 +61,7 @@ export interface CourseDetailVm {
   sectionCount: number;
   lectureCount: number;
 
-  sections: SectionVm[] | null;
+  sections: SectionVm[];
 
   imageUrl: string;
   promoVideoUrl: string;
@@ -81,9 +81,6 @@ export interface CourseDetailVm {
 
   categoryName: string;
 
-  createdAt: string;
-  updatedAt: string;
-
   enrollmentCount: number;
   reviewCount: number;
   averageRating: number;
@@ -99,6 +96,10 @@ export interface CourseDetailVm {
   instructorStudentCount: number;
   rejectionCount: number;
   lastRejectedAt: string | null;
+  approvalHistory: CourseApprovalHistoryVm[];
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface LearningCourseVm {
@@ -142,6 +143,15 @@ export interface ReviewCourseCommand {
   id: string;
   isApproved: boolean;
   note: string;
+}
+
+export interface CourseApprovalHistoryVm {
+  id: string;
+  courseId: string;
+  isApproved: boolean;
+  note: string;
+  createdAt: string;
+  updastedAt: string;
 }
 
 export interface CreateCourseCommand {
