@@ -1,4 +1,4 @@
-import { Badge, Paper, Stack, Text, Timeline, Title } from "@mantine/core";
+import { Badge, Paper, Stack, Text, Timeline, Title, Group } from "@mantine/core";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { CourseApprovalHistoryVm } from "../../../../react-query/course/course.types";
@@ -30,9 +30,12 @@ const AdminCourseSubmissionTab = ({ history }: Props) => {
                   key={item.id}
                   bullet={isApproved ? <IconCheck size={14} /> : <IconX size={14} />}
                   title={
-                    <Stack gap={2}>
-                      <Text fw={500}>
-                        {isApproved ? "Approved" : "Rejected"} –{" "}
+                    <Stack gap={3}>
+                      <Group gap={6} align="center">
+                        <Text fw={500}>{isApproved ? "Approved" : "Rejected"}</Text>
+                        <Text c="dimmed" size="sm">
+                          –
+                        </Text>
                         <Badge
                           size="sm"
                           color={isApproved ? "green" : "red"}
@@ -42,8 +45,8 @@ const AdminCourseSubmissionTab = ({ history }: Props) => {
                         >
                           {createdAt.fromNow()}
                         </Badge>
-                      </Text>
-                      <Text size="xs" c="dimmed">
+                      </Group>
+                      <Text size="xs" c="dimmed" className="mt-1">
                         {createdAt.format("MMM D, YYYY • HH:mm")}
                       </Text>
                     </Stack>
