@@ -408,6 +408,9 @@ namespace DAL.Data.Migrations
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PromoVideoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     InstructorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RejectionCount = table.Column<int>(type: "int", nullable: false),
+                    LastRejectedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -459,6 +462,28 @@ namespace DAL.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CartItems_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseApprovalHistories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseApprovalHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseApprovalHistories_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
@@ -770,6 +795,11 @@ namespace DAL.Data.Migrations
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseApprovalHistories_CourseId",
+                table: "CourseApprovalHistories",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Courses_CategoryId",
                 table: "Courses",
                 column: "CategoryId");
@@ -932,6 +962,9 @@ namespace DAL.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CartItems");
+
+            migrationBuilder.DropTable(
+                name: "CourseApprovalHistories");
 
             migrationBuilder.DropTable(
                 name: "Experience");

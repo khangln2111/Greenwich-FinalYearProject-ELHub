@@ -73,6 +73,37 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return Ok(result);
     }
 
+    // POST: api/Courses/{id:guid}/Submit
+    [HttpPost("{id:guid}/Submit")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SubmitCourse(Guid id)
+    {
+        var result = await courseService.SubmitCourse(id);
+        return Ok(result);
+    }
+
+    // POST: api/Courses/Moderate
+    [HttpPost("Moderate")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ModerateCourse([FromBody] ModerateCourseCommand command)
+    {
+        var result = await courseService.ModerateCourse(command);
+        return Ok(result);
+    }
+
+    // POST: api/Courses/{id:guid}/RetrySubmission
+    [HttpPost("{id:guid}/RetrySubmission")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RetryCourseSubmission(Guid id)
+    {
+        var result = await courseService.RetryCourseSubmission(id);
+        return Ok(result);
+    }
+
     // GET: api/Courses/{courseId}/Instructor
     [HttpGet("{courseId:guid}/Instructor")]
     [ProducesResponseType<InstructorVm>(StatusCodes.Status200OK)]

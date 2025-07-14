@@ -88,10 +88,14 @@ public class InstructorApplicationService(
             throw new BadRequestException("You have reached the maximum number of retry attempts.",
                 ErrorCode.RetryLimitExceeded);
 
-        if (application.LastRejectedAt.HasValue &&
-            (DateTime.UtcNow - application.LastRejectedAt.Value).TotalDays < RetryCooldownDays)
-            throw new BadRequestException($"Please wait {RetryCooldownDays} days before retrying.",
-                ErrorCode.RetryCooldown);
+        if (application.LastRejectedAt.HasValue)
+        {
+            var cooldownEnd = application.LastRejectedAt.Value.AddDays(RetryCooldownDays);
+            if (DateTime.UtcNow < cooldownEnd)
+                throw new BadRequestException(
+                    $"Please retry after {cooldownEnd.ToLocalTime():g}.",
+                    ErrorCode.RetryCooldown);
+        }
 
         await validationService.ValidateAsync(command);
 

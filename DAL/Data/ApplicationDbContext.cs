@@ -42,6 +42,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<InstructorApplication> InstructorApplications { get; set; }
 
+    public DbSet<CourseApprovalHistory> CourseApprovalHistories { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {

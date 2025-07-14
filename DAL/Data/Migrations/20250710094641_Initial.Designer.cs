@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250704085210_Initial")]
+    [Migration("20250710094641_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -300,6 +300,9 @@ namespace DAL.Data.Migrations
                     b.Property<Guid>("InstructorId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("LastRejectedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("LearningOutcomes")
                         .IsRequired()
                         .HasMaxLength(1500)
@@ -320,9 +323,15 @@ namespace DAL.Data.Migrations
                     b.Property<Guid?>("PromoVideoId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("RejectionCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasMaxLength(50)
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("SubmittedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -343,6 +352,36 @@ namespace DAL.Data.Migrations
                     b.HasIndex("PromoVideoId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("DAL.Data.Entities.CourseApprovalHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("CourseApprovalHistories");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Enrollment", b =>
@@ -1077,6 +1116,17 @@ namespace DAL.Data.Migrations
                     b.Navigation("PromoVideo");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.CourseApprovalHistory", b =>
+                {
+                    b.HasOne("DAL.Data.Entities.Course", "Course")
+                        .WithMany("ApprovalHistories")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("DAL.Data.Entities.Enrollment", b =>
                 {
                     b.HasOne("DAL.Data.Entities.Course", "Course")
@@ -1364,6 +1414,8 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Data.Entities.Course", b =>
                 {
+                    b.Navigation("ApprovalHistories");
+
                     b.Navigation("Enrollments");
 
                     b.Navigation("Gifts");

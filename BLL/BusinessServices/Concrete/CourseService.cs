@@ -29,6 +29,9 @@ public class CourseService(
     ICurrentUserUtility currentUserUtility)
     : ICourseService
 {
+    private const int MaxRetryCount = 2;
+    private const int RetryCooldownDays = 7;
+
     public async Task<LearningCourseVm> GetCourseLearning(Guid id)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
@@ -185,6 +188,7 @@ public class CourseService(
             .Include(c => c.PromoVideo)
             .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
             .ProjectTo<CourseDetailVm>(mapper.ConfigurationProvider)
+            
             .FirstOrDefaultAsync();
 
         if (course == null) throw new NotFoundException(nameof(Course), id);
@@ -282,6 +286,108 @@ public class CourseService(
         context.Courses.Remove(course);
         await context.SaveChangesAsync();
         return "Deleted course successfully";
+    }
+
+    public async Task<Success> ModerateCourse(ModerateCourseCommand command)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
+
+        await validationService.ValidateAsync(command);
+
+        var course = await context.Courses
+            .Include(c => c.ApprovalHistories)
+            .FirstOrDefaultAsync(c => c.Id == command.Id);
+
+        if (course == null) throw new NotFoundException(nameof(Course), command.Id);
+
+        if (course.Status != CourseStatus.Pending)
+            throw new BadRequestException("Course must be in Pending status to be reviewed",
+                ErrorCode.InvalidOperation);
+
+
+        // Lưu history
+        var history = new CourseApprovalHistory
+        {
+            CourseId = course.Id,
+            IsApproved = command.IsApproved,
+            Note = command.Note
+        };
+
+        await context.CourseApprovalHistories.AddAsync(history);
+
+        if (command.IsApproved)
+        {
+            course.Status = CourseStatus.Published;
+            course.RejectionCount = 0;
+        }
+        else
+        {
+            course.Status = CourseStatus.Rejected;
+            course.LastRejectedAt = DateTime.UtcNow;
+            course.RejectionCount++;
+        }
+
+        await context.SaveChangesAsync();
+
+        return new Success("Reviewed course successfully", new { id = course.Id });
+    }
+
+    public async Task<Success> SubmitCourse(Guid id)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+
+        if (currentUser == null) throw new UnauthorizedException();
+
+
+        var course = await context.Courses
+            .FirstOrDefaultAsync(c => c.Id == id && c.InstructorId == currentUser.Id);
+
+        if (course == null) throw new NotFoundException(nameof(Course), id);
+
+        if (course.Status != CourseStatus.Draft)
+            throw new BadRequestException("Course must be in Draft status to submit for review",
+                ErrorCode.InvalidOperation);
+
+        course.Status = CourseStatus.Pending;
+        course.SubmittedAt = DateTime.UtcNow;
+        await context.SaveChangesAsync();
+
+        return new Success("Submitted course for review successfully", new { id = course.Id });
+    }
+
+    public async Task<Success> RetryCourseSubmission(Guid id)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+
+        if (currentUser == null) throw new UnauthorizedException();
+
+        var course = await context.Courses
+            .FirstOrDefaultAsync(c => c.Id == id && c.InstructorId == currentUser.Id);
+
+        if (course == null) throw new NotFoundException(nameof(Course), id);
+
+        if (course.Status != CourseStatus.Rejected)
+            throw new BadRequestException("Course must be in Rejected status to retry submission",
+                ErrorCode.InvalidOperation);
+
+        if (course.RejectionCount >= MaxRetryCount)
+            throw new BadRequestException($"Course cannot be retried for submission more than {MaxRetryCount} times",
+                ErrorCode.RetryLimitExceeded);
+
+        if (course.LastRejectedAt.HasValue)
+        {
+            var cooldownEnd = course.LastRejectedAt.Value.AddDays(RetryCooldownDays);
+            if (DateTime.UtcNow < cooldownEnd)
+                throw new BadRequestException(
+                    $"Please retry after {cooldownEnd.ToLocalTime():g}.",
+                    ErrorCode.RetryCooldown);
+        }
+
+        course.Status = CourseStatus.Pending;
+        await context.SaveChangesAsync();
+
+        return new Success("Retried course submission successfully", new { id = course.Id });
     }
 
     public async Task<InstructorVm> GetInstructorByCourseId(Guid courseId)

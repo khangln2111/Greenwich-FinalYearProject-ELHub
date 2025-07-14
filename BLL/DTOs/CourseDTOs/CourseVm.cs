@@ -43,9 +43,17 @@ public class CourseVm
 
     public required string InstructorName { get; init; }
 
+    public string InstructorAvatarUrl { get; init; } = string.Empty;
+
+    public string InstructorProfessionalTitle { get; init; } = string.Empty;
+
     public int ReviewCount { get; init; }
 
     public double AverageRating { get; init; }
 
     public int EnrollmentCount { get; init; }
+
+    public int RejectionCount { get; init; }
+
+    public DateTime? LastRejectedAt { get; init; }
 }

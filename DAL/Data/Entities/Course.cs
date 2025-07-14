@@ -37,7 +37,14 @@ public class Course : BaseEntity
 
     public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
+    public ICollection<CourseApprovalHistory> ApprovalHistories { get; set; } = new List<CourseApprovalHistory>();
+
     public Guid InstructorId { get; set; }
 
     public ApplicationUser Instructor { get; set; } = null!;
+
+    public int RejectionCount { get; set; } = 0;
+    public DateTime? LastRejectedAt { get; set; }
+
+    public DateTime? SubmittedAt { get; set; }
 }

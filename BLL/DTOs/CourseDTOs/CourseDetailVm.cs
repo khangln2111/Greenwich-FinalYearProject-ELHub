@@ -62,6 +62,10 @@ public class CourseDetailVm
 
     public int InstructorStudentCount { get; init; }
 
+    public int RejectionCount { get; init; }
+
+    public DateTime? LastRejectedAt { get; init; }
+
     public DateTime CreatedAt { get; init; }
 
     public DateTime UpdatedAt { get; init; }

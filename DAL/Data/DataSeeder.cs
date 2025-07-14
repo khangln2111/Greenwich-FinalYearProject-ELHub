@@ -12,6 +12,7 @@ public class DataSeeder(ApplicationDbContext context, RoleManager<ApplicationRol
     {
         await SeedRolesAsync();
         await SeedCategoriesAsync();
+        await context.SaveChangesAsync();
     }
 
     private async Task SeedCategoriesAsync()
@@ -145,19 +146,6 @@ public class DataSeeder(ApplicationDbContext context, RoleManager<ApplicationRol
             };
             await context.Categories.AddRangeAsync(categories);
         }
-
-
-        if (!await context.Roles.AnyAsync())
-        {
-            var roles = new List<ApplicationRole>
-            {
-                new() { Name = "Admin" },
-                new() { Name = "Instructor" }
-            };
-            await context.Roles.AddRangeAsync(roles);
-        }
-
-        await context.SaveChangesAsync();
     }
 
     private async Task SeedRolesAsync()

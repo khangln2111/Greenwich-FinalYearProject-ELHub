@@ -20,4 +20,10 @@ public interface ICourseService
     Task<string> Delete(Guid id);
 
     Task<InstructorVm> GetInstructorByCourseId(Guid courseId);
+
+    Task<Success> SubmitCourse(Guid id);
+
+    Task<Success> ModerateCourse(ModerateCourseCommand command);
+
+    Task<Success> RetryCourseSubmission(Guid id);
 }
