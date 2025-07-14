@@ -94,15 +94,16 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return Ok(result);
     }
 
-    // POST: api/Courses/{id:guid}/RetrySubmission
-    [HttpPost("{id:guid}/RetrySubmission")]
+    // POST: api/Courses/{id:guid}/RetrySubmit
+    [HttpPost("{id:guid}/RetrySubmit")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> RetryCourseSubmission(Guid id)
+    public async Task<IActionResult> RetrySubmitCourse(Guid id)
     {
-        var result = await courseService.RetryCourseSubmission(id);
+        var result = await courseService.RetrySubmitCourse(id);
         return Ok(result);
     }
+
 
     // GET: api/Courses/{courseId}/Instructor
     [HttpGet("{courseId:guid}/Instructor")]

@@ -8,9 +8,15 @@ public class LectureProfiles : Profile
 {
     public LectureProfiles()
     {
+        var isAdmin = false;
+        var isOwner = false;
+
         CreateMap<Lecture, LectureVm>()
-            .ForMember(dest => dest.VideoUrl,
-                opt => opt.MapFrom(src => src.Video != null ? src.Video.Url : string.Empty))
+            .ForMember(dest => dest.VideoUrl, opt => opt.MapFrom(src =>
+                isAdmin || src.IsPreview || isOwner
+                    ? src.Video != null ? src.Video.Url : string.Empty
+                    : string.Empty
+            ))
             .ForMember(dest => dest.DurationInSeconds,
                 opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0));
 

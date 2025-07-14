@@ -29,8 +29,8 @@ public class InstructorApplicationService(
     ICurrentUserUtility currentUserUtility,
     UserManager<ApplicationUser> userManager) : IInstructorApplicationService
 {
-    private const int MaxRetryCount = 2;
-    private const int RetryCooldownDays = 7;
+    private const int MaxRetryCount = 3;
+    private const int RetryCooldownDays = 1;
 
     public async Task<Success> Create(CreateInstructorApplicationCommand command)
     {
@@ -93,7 +93,7 @@ public class InstructorApplicationService(
             var cooldownEnd = application.LastRejectedAt.Value.AddDays(RetryCooldownDays);
             if (DateTime.UtcNow < cooldownEnd)
                 throw new BadRequestException(
-                    $"Please retry after {cooldownEnd.ToLocalTime():g}.",
+                    $"Please retry after {cooldownEnd:g}.",
                     ErrorCode.RetryCooldown);
         }
 

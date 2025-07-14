@@ -29,8 +29,8 @@ public class CourseService(
     ICurrentUserUtility currentUserUtility)
     : ICourseService
 {
-    private const int MaxRetryCount = 2;
-    private const int RetryCooldownDays = 7;
+    private const int MaxRetryCount = 3;
+    private const int RetryCooldownDays = 1;
 
     public async Task<LearningCourseVm> GetCourseLearning(Guid id)
     {
@@ -180,6 +180,11 @@ public class CourseService(
         //     .FirstOrDefaultAsync();
 
 
+        var currentUser = currentUserUtility.GetCurrentUser();
+        var userId = currentUser?.Id;
+        var roles = currentUser?.Roles ?? [];
+        var isAdmin = true;
+        var isOwner = userId != null && context.Courses.Any(c => c.Id == id && c.InstructorId == userId);
         var course = await context.Courses
             .AsNoTracking()
             .Where(c => c.Id == id)
@@ -187,8 +192,9 @@ public class CourseService(
             .Include(c => c.Image)
             .Include(c => c.PromoVideo)
             .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
-            .ProjectTo<CourseDetailVm>(mapper.ConfigurationProvider)
-            
+            .ProjectTo<CourseDetailVm>(
+                mapper.ConfigurationProvider,
+                new { isAdmin, isOwner })
             .FirstOrDefaultAsync();
 
         if (course == null) throw new NotFoundException(nameof(Course), id);
@@ -356,7 +362,7 @@ public class CourseService(
         return new Success("Submitted course for review successfully", new { id = course.Id });
     }
 
-    public async Task<Success> RetryCourseSubmission(Guid id)
+    public async Task<Success> RetrySubmitCourse(Guid id)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
 
@@ -380,7 +386,7 @@ public class CourseService(
             var cooldownEnd = course.LastRejectedAt.Value.AddDays(RetryCooldownDays);
             if (DateTime.UtcNow < cooldownEnd)
                 throw new BadRequestException(
-                    $"Please retry after {cooldownEnd.ToLocalTime():g}.",
+                    $"Please retry after {cooldownEnd:dd-MM-yyyy HH:mm}",
                     ErrorCode.RetryCooldown);
         }
 

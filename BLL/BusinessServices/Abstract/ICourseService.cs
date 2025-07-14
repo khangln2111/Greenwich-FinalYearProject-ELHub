@@ -25,5 +25,5 @@ public interface ICourseService
 
     Task<Success> ModerateCourse(ModerateCourseCommand command);
 
-    Task<Success> RetryCourseSubmission(Guid id);
+    Task<Success> RetrySubmitCourse(Guid id);
 }

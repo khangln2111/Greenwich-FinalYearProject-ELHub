@@ -110,8 +110,8 @@ public class CourseProfiles : Profile
                         .Select(e => (double?)e.Review!.Rating)
                         .Average()));
 
+        CreateMap<CourseApprovalHistory, CourseApprovalHistoryVm>();
 
-        // CreateMap<Course, CourseVm>();
 
         CreateMap<CreateCourseCommand, Course>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
