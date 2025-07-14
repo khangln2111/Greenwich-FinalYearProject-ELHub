@@ -94,7 +94,7 @@ export interface CourseDetailVm {
   instructorReviewCount: number;
   instructorCourseCount: number;
   instructorStudentCount: number;
-  rejectionCount: number;
+  retryCount: number;
   lastRejectedAt: string | null;
   approvalHistories: CourseApprovalHistoryVm[];
 

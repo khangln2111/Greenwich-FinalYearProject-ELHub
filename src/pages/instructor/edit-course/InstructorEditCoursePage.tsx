@@ -113,18 +113,19 @@ export default function InstructorEditCoursePage() {
                       : "gray"
             }
             variant="light"
+            size="lg"
             radius="sm"
           >
             {courseDetail.status}
           </Badge>
         </Group>
 
-        {courseDetail.rejectionCount > 0 && (
+        {courseDetail.retryCount > 0 && (
           <Group gap="xs">
             <Text className="text-red-500">Rejected:</Text>
             <Text>
-              {courseDetail.rejectionCount} time
-              {courseDetail.rejectionCount > 1 ? "s" : ""}
+              {courseDetail.retryCount} time
+              {courseDetail.retryCount > 1 ? "s" : ""}
             </Text>
             {courseDetail.lastRejectedAt && (
               <Tooltip label={dayjs(courseDetail.lastRejectedAt).format("YYYY-MM-DD HH:mm")}>

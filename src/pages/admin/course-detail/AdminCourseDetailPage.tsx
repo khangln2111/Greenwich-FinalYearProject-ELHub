@@ -171,10 +171,10 @@ const AdminCourseDetailPage = () => {
           </Badge>
         </Tooltip>
 
-        {course.rejectionCount > 0 && (
+        {course.retryCount > 0 && (
           <Text c="red.6" size="sm" className="mt-5" fw={500}>
-            Rejected <strong>{course.rejectionCount}</strong> time
-            {course.rejectionCount > 1 ? "s" : ""}
+            Rejected <strong>{course.retryCount}</strong> time
+            {course.retryCount > 1 ? "s" : ""}
             {course.lastRejectedAt && (
               <> — last rejection {dayjs(course.lastRejectedAt).fromNow()}</>
             )}
