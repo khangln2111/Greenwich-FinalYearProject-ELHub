@@ -25,7 +25,7 @@ import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";
-import { CourseStatus } from "../../../react-query/course/course.types";
+import { CourseApprovalHistoryVm, CourseStatus } from "../../../react-query/course/course.types";
 import { formatDuration } from "../../../utils/format";
 import { z } from "zod";
 
@@ -55,6 +55,33 @@ enum CourseDetailTab {
   Instructor = "Instructor",
   Submissions = "Submissions",
 }
+
+export const fakeApprovalHistory: CourseApprovalHistoryVm[] = [
+  {
+    id: "1",
+    courseId: "c1",
+    isApproved: false,
+    note: "The course content lacks sufficient depth. Please provide more examples and detailed explanations in the lectures.",
+    createdAt: "2024-11-01T10:15:00Z",
+    updastedAt: "2024-11-01T10:15:00Z",
+  },
+  {
+    id: "2",
+    courseId: "c1",
+    isApproved: false,
+    note: "We noticed several lectures are missing or have broken video links. Please fix them before resubmitting.",
+    createdAt: "2025-01-20T14:45:00Z",
+    updastedAt: "2025-01-20T14:45:00Z",
+  },
+  {
+    id: "3",
+    courseId: "c1",
+    isApproved: true,
+    note: "Great improvement! The course structure is now clear and well-organized. Approved for publishing.",
+    createdAt: "2025-04-05T09:00:00Z",
+    updastedAt: "2025-04-05T09:00:00Z",
+  },
+];
 
 const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -239,7 +266,7 @@ const AdminCourseDetailPage = () => {
           <AdminCourseInstructorTab courseDetail={course} />
         </Tabs.Panel>
         <Tabs.Panel value={CourseDetailTab.Submissions}>
-          <AdminCourseSubmissionTab />
+          <AdminCourseSubmissionTab history={fakeApprovalHistory} />
         </Tabs.Panel>
       </Tabs>
 
