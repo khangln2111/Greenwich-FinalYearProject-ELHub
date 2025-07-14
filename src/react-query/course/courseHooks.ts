@@ -15,7 +15,7 @@ import {
   getCourseLearning,
   getCourses,
   getInstructorByCourseId,
-  retryCourseSubmission,
+  retrySubmitCourse,
   moderateCourse,
   submitCourse,
   updateCourse,
@@ -106,10 +106,10 @@ export const useSubmitCourse = () => {
   });
 };
 
-export const useRetryCourseSubmission = () => {
+export const useRetrySubmitCourse = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => retryCourseSubmission(id),
+    mutationFn: (id: string) => retrySubmitCourse(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast(
@@ -146,11 +146,10 @@ export const useRetryCourseSubmission = () => {
           {
             status: 400,
             errorCode: ErrorCode.RetryCooldown,
-            handler: () =>
-              showErrorToast(
-                "Course Not Ready",
-                "The course is not ready for retry. Please ensure all required fields are filled.",
-              ),
+            handler: (err) => {
+              const msg = err.response?.data?.message ?? "";
+              showErrorToast("Retry Too Soon", msg); // e.g. "Please retry after ..."
+            },
           },
         ],
       }),

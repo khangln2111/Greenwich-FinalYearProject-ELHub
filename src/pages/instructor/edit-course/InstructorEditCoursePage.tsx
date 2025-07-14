@@ -6,10 +6,15 @@ import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
 import { CourseStatus } from "../../../react-query/course/course.types";
-import { useGetCourseDetail, useSubmitCourse } from "../../../react-query/course/courseHooks";
+import {
+  useGetCourseDetail,
+  useSubmitCourse,
+  useRetrySubmitCourse,
+} from "../../../react-query/course/courseHooks";
 import ReviewTab from "../../course-detail/_c/ReviewTab";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
+import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmission";
 
 enum CourseDetailTab {
   Overview = "Overview",
@@ -24,11 +29,13 @@ export default function InstructorEditCoursePage() {
   const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
 
   const submitMutation = useSubmitCourse();
+  const retrySubmitMutation = useRetrySubmitCourse();
 
   if (isPending) return <CenterLoader />;
-
   if (error || !courseId || !courseDetail) return <Navigate to="/404" replace />;
+
   const canSubmit = courseDetail.status === CourseStatus.Draft;
+  const canRetry = courseDetail.status === CourseStatus.Rejected;
 
   const handleConfirmSubmit = () => {
     modals.openConfirmModal({
@@ -43,6 +50,22 @@ export default function InstructorEditCoursePage() {
       labels: { confirm: "Submit", cancel: "Cancel" },
       confirmProps: { color: "blue", leftSection: <IconUpload size={16} /> },
       onConfirm: () => submitMutation.mutate(courseId!),
+    });
+  };
+
+  const handleConfirmRetry = () => {
+    modals.openConfirmModal({
+      title: "Retry Course Submission",
+      centered: true,
+      children: (
+        <Text size="sm">
+          You are retrying submission of this course after it was rejected. Please make sure all
+          issues have been addressed before proceeding.
+        </Text>
+      ),
+      labels: { confirm: "Retry", cancel: "Cancel" },
+      confirmProps: { color: "blue", leftSection: <IconUpload size={16} /> },
+      onConfirm: () => retrySubmitMutation.mutate(courseId!),
     });
   };
 
@@ -71,7 +94,6 @@ export default function InstructorEditCoursePage() {
       </div>
 
       {/* Status bar */}
-
       <div
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-100 dark:bg-dark-6 p-4
           rounded-xl mb-6 gap-4 text-sm"
@@ -101,7 +123,8 @@ export default function InstructorEditCoursePage() {
           <Group gap="xs">
             <Text className="text-red-500">Rejected:</Text>
             <Text>
-              {courseDetail.rejectionCount} time{courseDetail.rejectionCount > 1 ? "s" : ""}
+              {courseDetail.rejectionCount} time
+              {courseDetail.rejectionCount > 1 ? "s" : ""}
             </Text>
             {courseDetail.lastRejectedAt && (
               <Tooltip label={dayjs(courseDetail.lastRejectedAt).format("YYYY-MM-DD HH:mm")}>
@@ -114,11 +137,13 @@ export default function InstructorEditCoursePage() {
         <Button
           variant="light"
           leftSection={<IconUpload size={16} />}
-          onClick={handleConfirmSubmit}
-          disabled={!canSubmit || submitMutation.isPending}
-          loading={submitMutation.isPending}
+          onClick={canSubmit ? handleConfirmSubmit : handleConfirmRetry}
+          disabled={
+            (!canSubmit && !canRetry) || submitMutation.isPending || retrySubmitMutation.isPending
+          }
+          loading={submitMutation.isPending || retrySubmitMutation.isPending}
         >
-          Submit for Review
+          {canRetry ? "Retry Submission" : "Submit for Review"}
         </Button>
       </div>
 
@@ -128,7 +153,7 @@ export default function InstructorEditCoursePage() {
         data={Object.values(CourseDetailTab)}
         onChange={(val) => setActiveTab(val as CourseDetailTab)}
         size="sm"
-        transitionDuration={200}
+        transitionDuration={300}
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
         classNames={{
           root: "bg-white dark:bg-dark-6 shadow-sm border p-[10px]",
@@ -155,7 +180,7 @@ export default function InstructorEditCoursePage() {
           </Tabs.Panel>
 
           {/* Reviews Tab */}
-          <Tabs.Panel value="Reviews">
+          <Tabs.Panel value={CourseDetailTab.Reviews}>
             <ReviewTab
               courseId={courseId}
               rating={4.6}
@@ -169,7 +194,11 @@ export default function InstructorEditCoursePage() {
               ]}
             />
           </Tabs.Panel>
-          <Tabs.Panel value="Submissions">haha</Tabs.Panel>
+
+          {/* Submissions Tab */}
+          <Tabs.Panel value={CourseDetailTab.Submissions}>
+            <InstructorCourseSubmissionTab history={courseDetail.approvalHistories} />
+          </Tabs.Panel>
         </div>
       </Tabs>
     </div>

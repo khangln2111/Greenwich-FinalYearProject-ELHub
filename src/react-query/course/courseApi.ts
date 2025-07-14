@@ -112,7 +112,7 @@ export const submitCourse = async (id: string) => {
   return response.data;
 };
 
-export const retryCourseSubmission = async (id: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/RetrySubmission`);
+export const retrySubmitCourse = async (id: string) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/RetrySubmit`);
   return response.data;
 };
