@@ -137,11 +137,10 @@ export const useRetrySubmitCourse = () => {
           {
             status: 400,
             errorCode: ErrorCode.RetryLimitExceeded,
-            handler: () =>
-              showErrorToast(
-                "Retry Limit Exceeded",
-                "You have exceeded the retry limit for this course.",
-              ),
+            handler: (err) => {
+              const msg = err.response?.data?.message ?? "";
+              showErrorToast("Retry Limit Exceeded", msg); // e.g. "Please retry after ..."
+            },
           },
           {
             status: 400,
