@@ -8,59 +8,57 @@ interface Props {
 }
 
 const AdminCourseSubmissionTab = ({ history }: Props) => {
-  if (!history || history.length === 0) {
-    return (
-      <Paper withBorder p="lg" radius="md" mt="md">
-        <Text c="dimmed" ta="center">
-          No approval history found for this course.
-        </Text>
-      </Paper>
-    );
-  }
+  const sortedHistory = [...history].sort((a, b) => dayjs(a.createdAt).diff(dayjs(b.createdAt)));
 
   return (
-    <Paper withBorder p="lg" radius="md" mt="md">
-      <Title order={4} mb="md">
-        Approval History
-      </Title>
+    <Stack>
+      <Title order={2}>Approval History</Title>
 
-      <Timeline active={history.length} bulletSize={26} lineWidth={3}>
-        {[...history]
-          .sort((a, b) => dayjs(a.createdAt).diff(dayjs(b.createdAt)))
-          .map((item) => {
-            const isApproved = item.isApproved;
+      <Paper withBorder p="lg" radius="md">
+        {sortedHistory.length === 0 ? (
+          <Text c="dimmed" ta="center">
+            No approval history found for this course.
+          </Text>
+        ) : (
+          <Timeline active={sortedHistory.length} bulletSize={26} lineWidth={2}>
+            {sortedHistory.map((item) => {
+              const isApproved = item.isApproved;
+              const createdAt = dayjs(item.createdAt);
 
-            return (
-              <Timeline.Item
-                key={item.id}
-                bullet={isApproved ? <IconCheck size={14} /> : <IconX size={14} />}
-                title={
-                  <Stack gap={2}>
-                    <Text fw={500}>
-                      {isApproved ? "Approved" : "Rejected"} –{" "}
-                      <Badge
-                        size="sm"
-                        color={isApproved ? "green" : "red"}
-                        variant="light"
-                        radius="sm"
-                      >
-                        {dayjs(item.createdAt).fromNow()}
-                      </Badge>
-                    </Text>
-                    <Text size="xs" c="dimmed">
-                      {dayjs(item.createdAt).format("MMM D, YYYY • HH:mm")}
-                    </Text>
-                  </Stack>
-                }
-              >
-                <Text c="dimmed" size="sm">
-                  {item.note}
-                </Text>
-              </Timeline.Item>
-            );
-          })}
-      </Timeline>
-    </Paper>
+              return (
+                <Timeline.Item
+                  key={item.id}
+                  bullet={isApproved ? <IconCheck size={14} /> : <IconX size={14} />}
+                  title={
+                    <Stack gap={2}>
+                      <Text fw={500}>
+                        {isApproved ? "Approved" : "Rejected"} –{" "}
+                        <Badge
+                          size="sm"
+                          color={isApproved ? "green" : "red"}
+                          variant="light"
+                          radius="sm"
+                          autoContrast
+                        >
+                          {createdAt.fromNow()}
+                        </Badge>
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        {createdAt.format("MMM D, YYYY • HH:mm")}
+                      </Text>
+                    </Stack>
+                  }
+                >
+                  <Text c="dimmed" fw={500} size="sm">
+                    {item.note}
+                  </Text>
+                </Timeline.Item>
+              );
+            })}
+          </Timeline>
+        )}
+      </Paper>
+    </Stack>
   );
 };
 
