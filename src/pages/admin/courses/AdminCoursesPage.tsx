@@ -1,35 +1,16 @@
 import { Avatar, Badge, Button, Group, Select, Skeleton, TextInput, Title } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { BookOpenIcon, ClockIcon, FilmIcon, RefreshCcw, Search, TagsIcon } from "lucide-react";
+import { BookOpenIcon, ClockIcon, FilmIcon, RefreshCcw, Search } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { useGetCourses } from "../../../react-query/course/courseHooks";
 import { formatDuration } from "../../../utils/format";
-import AdminReviewCourseModal from "./_c/AdminReviewCourseModal";
-import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
 export default function AdminCoursesPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<CourseStatus | "All">(CourseStatus.Pending);
-  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
-  const [reviewType, setReviewType] = useState<"approve" | "reject" | null>(null);
-  const [opened, { open, close }] = useDisclosure();
   const { data, isPending, error } = useGetCourses();
-
-  const handleOpenModal = (id: string, type: "approve" | "reject") => {
-    setSelectedCourseId(id);
-    setReviewType(type);
-    open();
-  };
-
-  const handleSubmitNote = (note: string) => {
-    console.log({
-      courseId: selectedCourseId,
-      isApproved: reviewType === "approve",
-      note,
-    });
-    close();
-  };
 
   if (isPending) return <Skeleton height={400} radius="md" className="mt-6" />;
 
@@ -68,10 +49,11 @@ export default function AdminCoursesPage() {
         </Group>
         <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-6">
           {data?.items.map((course) => (
-            <div
+            <Link
+              to={`/admin/courses/${course.id}`}
               key={course.id}
-              className="border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition bg-white dark:bg-zinc-900
-                flex flex-col"
+              className="border rounded-2xl overflow-hidden shadow-sm transition-all bg-white dark:bg-zinc-900 flex flex-col
+                cursor-pointer hover:shadow-lg hover:scale-[1.01]"
             >
               <img
                 src={course.imageUrl ?? undefined}
@@ -80,7 +62,7 @@ export default function AdminCoursesPage() {
               />
               <div className="p-5 flex flex-col gap-4 flex-1">
                 {/* Title + Status */}
-                <div className="space-y-1">
+                <div className="space-y-1 flex-1">
                   <Title order={4} className="line-clamp-2 text-lg">
                     {course.title}
                   </Title>
@@ -100,10 +82,34 @@ export default function AdminCoursesPage() {
                   </Badge>
                 </div>
 
-                {/* Category */}
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                  <TagsIcon size={16} className="shrink-0" />
-                  <span className="line-clamp-1">{course.categoryName}</span>
+                {/* Category + Timestamps */}
+                <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1 leading-snug">
+                  <div>
+                    🏷️ <span className="font-medium">{course.categoryName}</span>
+                  </div>
+                  <div>
+                    🕒 Created:{" "}
+                    <span className="font-medium">
+                      {dayjs(course.createdAt).format("YYYY-MM-DD HH:mm")}
+                    </span>
+                  </div>
+                  {course.status === CourseStatus.Pending ? (
+                    <div>
+                      📤 Submitted:{" "}
+                      <span className="font-medium">
+                        {course.submittedAt
+                          ? dayjs(course.submittedAt).format("YYYY-MM-DD HH:mm")
+                          : "Not submitted"}
+                      </span>
+                    </div>
+                  ) : (
+                    <div>
+                      ✏️ Last updated:{" "}
+                      <span className="font-medium">
+                        {dayjs(course.updatedAt).format("YYYY-MM-DD HH:mm")}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Stats Section */}
@@ -137,45 +143,10 @@ export default function AdminCoursesPage() {
                     </div>
                   </div>
                 </div>
-
-                {/* Actions */}
-                <Group justify="end" className="pt-2 mt-auto">
-                  {/* <Button
-                    color="green"
-                    variant="light"
-                    size="xs"
-                    onClick={() => handleOpenModal(course.id, "approve")}
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    color="red"
-                    variant="light"
-                    size="xs"
-                    onClick={() => handleOpenModal(course.id, "reject")}
-                  >
-                    Reject
-                  </Button> */}
-                  <Button
-                    className="w-fit shrink-0 text-sm font-medium"
-                    size="xs"
-                    component={Link}
-                    to={`/admin/courses/${course.id}`}
-                  >
-                    View More
-                  </Button>
-                </Group>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
-        <AdminReviewCourseModal
-          opened={opened}
-          onClose={close}
-          onSubmit={handleSubmitNote}
-          type={reviewType}
-          course={data?.items.find((c) => c.id === selectedCourseId) || undefined}
-        />
       </div>
     </div>
   );

@@ -37,9 +37,6 @@ export interface CourseVm {
   durationInSeconds: number;
   categoryName: string;
 
-  createdAt: string | null;
-  updatedAt: string | null;
-
   enrollmentCount: number;
   reviewCount: number;
   averageRating: number;
@@ -49,7 +46,10 @@ export interface CourseVm {
   instructorAvatarUrl: string | null;
   instructorProfessionalTitle: string | null;
   rejectionCount: number;
+  submittedAt: string | null;
   lastRejectedAt: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
 
 export interface CourseDetailVm {
@@ -95,11 +95,12 @@ export interface CourseDetailVm {
   instructorCourseCount: number;
   instructorStudentCount: number;
   retryCount: number;
-  lastRejectedAt: string | null;
   approvalHistories: CourseApprovalHistoryVm[];
 
   createdAt: string;
   updatedAt: string;
+  submittedAt: string | null;
+  lastRejectedAt: string | null;
 }
 
 export interface LearningCourseVm {
