@@ -47,8 +47,8 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    href: "/admin/instructors",
-    label: "Instructor management",
+    href: "/admin/instructor-applications",
+    label: "Instructor applications",
     icon: IconMessageUser,
   },
   {

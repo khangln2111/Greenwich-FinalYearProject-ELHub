@@ -123,7 +123,7 @@ const adminRoute: RouteObject = {
       element: <AdminCategoriesPage />,
     },
     {
-      path: "instructors",
+      path: "instructor-applications",
       element: <AdminInstructorPage />,
     },
     {

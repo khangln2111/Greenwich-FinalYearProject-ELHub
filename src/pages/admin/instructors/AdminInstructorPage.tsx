@@ -31,6 +31,7 @@ import {
   useReviewInstructorApplication,
 } from "../../../react-query/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
+import { FileQuestion } from "lucide-react";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -71,7 +72,7 @@ function StatusFilterBadges({
               "px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150",
               isActive
                 ? "bg-blue-600 text-white dark:bg-blue-700"
-                : "bg-gray-100 text-black hover:bg-gray-200 dark:bg-gray-300 dark:hover:bg-gray-400",
+                : "bg-gray-200 text-black hover:bg-gray-300 dark:bg-gray-400 dark:hover:bg-gray-500",
             )}
           >
             {status}
@@ -194,6 +195,15 @@ export default function AdminInstructorPage() {
 
       {isGetPending ? (
         <CenterLoader />
+      ) : apps.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
+          <FileQuestion className="w-16 h-16 mb-4" />
+          <p className="text-lg font-semibold">No instructor applications found</p>
+          <p className="text-sm mt-1 max-w-(--container-md)">
+            We couldn’t find any applications to display. This could be due to filters, search
+            terms, or simply because no one has applied yet.
+          </p>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {apps.map((app) => (
