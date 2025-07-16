@@ -42,7 +42,6 @@ export default function AdminPendingCoursesPage() {
     status: CourseStatus.Pending,
   });
 
-  if (isPending) return <CenterLoader />;
   if (error) return <div>Error loading pending courses</div>;
 
   return (
@@ -79,7 +78,9 @@ export default function AdminPendingCoursesPage() {
           />
         </Group>
 
-        {data.items?.length === 0 ? (
+        {isPending ? (
+          <CenterLoader />
+        ) : data.items?.length === 0 ? (
           <div className="py-24 text-center text-gray-500 dark:text-gray-400 flex flex-col items-center justify-center">
             <InboxIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mb-4" />
             <p className="text-lg font-semibold">No pending courses</p>

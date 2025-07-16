@@ -18,7 +18,6 @@ export default function AdminCategoriesPage() {
 
   const { data, isPending, error } = useGetCategories({ name: searchTerm });
 
-  if (isPending) return <CenterLoader />;
   if (error) return <Text>Error loading categories: {error.message}</Text>;
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,37 +69,41 @@ export default function AdminCategoriesPage() {
         </div>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {data?.items.map((cat) => (
-          <div
-            key={cat.id}
-            className="rounded-2xl border border-gray-200 dark:border-dark-4 overflow-hidden bg-white dark:bg-dark-6
-              shadow-sm hover:shadow-md transition-all duration-300 flex flex-col"
-          >
-            <div className="aspect-video overflow-hidden">
-              <Image src={cat.imageUrl} alt={cat.name} className="w-full h-full object-cover" />
-            </div>
+      {isPending ? (
+        <CenterLoader />
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {data?.items.map((cat) => (
+            <div
+              key={cat.id}
+              className="rounded-2xl border border-gray-200 dark:border-dark-4 overflow-hidden bg-white dark:bg-dark-6
+                shadow-sm hover:shadow-md transition-all duration-300 flex flex-col"
+            >
+              <div className="aspect-video overflow-hidden">
+                <Image src={cat.imageUrl} alt={cat.name} className="w-full h-full object-cover" />
+              </div>
 
-            <div className="p-4 flex-1 flex flex-col justify-between">
-              <h3 className="text-lg font-semibold mb-2">{cat.name}</h3>
-              <div className="flex items-center justify-between mt-auto">
-                <Badge color="gray" variant="light" radius="sm" size="sm">
-                  {cat.courseCount} course{cat.courseCount !== 1 && "s"}
-                </Badge>
-                <Button
-                  variant="default"
-                  size="xs"
-                  leftSection={<Pencil size={14} />}
-                  onClick={() => handleEdit(cat)}
-                  className="rounded-lg dark:bg-dark-4 dark:text-white"
-                >
-                  Edit
-                </Button>
+              <div className="p-4 flex-1 flex flex-col justify-between">
+                <h3 className="text-lg font-semibold mb-2">{cat.name}</h3>
+                <div className="flex items-center justify-between mt-auto">
+                  <Badge color="gray" variant="light" radius="sm" size="sm">
+                    {cat.courseCount} course{cat.courseCount !== 1 && "s"}
+                  </Badge>
+                  <Button
+                    variant="default"
+                    size="xs"
+                    leftSection={<Pencil size={14} />}
+                    onClick={() => handleEdit(cat)}
+                    className="rounded-lg dark:bg-dark-4 dark:text-white"
+                  >
+                    Edit
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Modals */}
       <CreateCategoryModal opened={createOpened} onClose={closeCreate} />
