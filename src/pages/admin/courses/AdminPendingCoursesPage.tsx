@@ -64,6 +64,7 @@ export default function AdminPendingCoursesPage() {
               leftSection={<SearchIcon size={16} />}
               value={searchInput}
               onChange={(e) => setSearchInput(e.currentTarget.value)}
+              label="Search"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSearchSubmit();
@@ -90,6 +91,7 @@ export default function AdminPendingCoursesPage() {
                 label: opt.label,
                 value: encodeOrderOption(opt.value),
               }))}
+              label="Sort by"
               placeholder="Sort by"
               value={orderByParam}
               onChange={(value) => value && setOrderByParam(value)}

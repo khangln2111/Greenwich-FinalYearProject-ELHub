@@ -1,15 +1,21 @@
-import { ActionIcon, Avatar, Badge, Button, Group, Select, TextInput, Title } from "@mantine/core";
-import { BookOpenIcon, ClockIcon, FilmIcon, RefreshCcw, Search, ArrowUpAzIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ActionIcon, Avatar, Badge, Select, TextInput, Title } from "@mantine/core";
 import dayjs from "dayjs";
+import {
+  ArrowUpAzIcon,
+  BookmarkIcon,
+  BookOpenIcon,
+  ClockIcon,
+  FilmIcon,
+  Search,
+} from "lucide-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
-import { CourseStatus } from "../../../react-query/course/course.types";
+import { useSearchParamState } from "../../../hooks/useSearchParamState";
+import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../http-client/api.types";
+import { CourseOrderableFields, CourseStatus } from "../../../react-query/course/course.types";
 import { useGetCourses } from "../../../react-query/course/courseHooks";
 import { formatDuration } from "../../../utils/format";
-import { useSearchParamState } from "../../../hooks/useSearchParamState";
-import { encodeOrderOption, decodeOrderOption, OrderBy } from "../../../http-client/api.types";
-import { CourseOrderableFields } from "../../../react-query/course/course.types";
-import { useState } from "react";
 
 const COURSE_ORDER_OPTIONS: {
   label: string;
@@ -40,7 +46,7 @@ export default function AdminCoursesPage() {
     setSearch(searchInput);
   };
 
-  const { data, isPending, error, refetch } = useGetCourses({
+  const { data, isPending, error } = useGetCourses({
     search: search || undefined,
     status: statusFilter !== "All" ? statusFilter : undefined,
     orderBy,
@@ -50,29 +56,20 @@ export default function AdminCoursesPage() {
 
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
-      <div className="mx-auto">
-        <Group justify="space-between" className="mb-4 flex-wrap gap-y-2">
-          <Title order={2}>Admin - Course Review</Title>
-          <Button
-            leftSection={<RefreshCcw size={16} />}
-            variant="outline"
-            onClick={() => refetch()}
-          >
-            Refresh
-          </Button>
-        </Group>
+      <div className="mx-auto space-y-6">
+        {/* Title + Search */}
+        <div className="flex flex-col @md:flex-row @md:items-center @md:justify-between gap-3">
+          <Title order={2} className="shrink-0">
+            Courses management
+          </Title>
 
-        {/* Search, Filter, Sort Controls */}
-        <Group className="mb-6 flex-wrap gap-y-2" grow>
           <TextInput
             placeholder="Search course..."
             leftSection={<Search size={16} />}
             value={searchInput}
             onChange={(e) => setSearchInput(e.currentTarget.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearchSubmit();
-              }
+              if (e.key === "Enter") handleSearchSubmit();
             }}
             rightSection={
               searchInput && (
@@ -88,7 +85,13 @@ export default function AdminCoursesPage() {
                 </ActionIcon>
               )
             }
+            className="w-full @md:max-w-[320px]"
+            classNames={{ input: "h-[42px]" }}
           />
+        </div>
+
+        {/* Status Filter + Sort */}
+        <div className="flex items-center justify-between">
           <Select
             data={[
               { value: "All", label: "All" },
@@ -100,23 +103,30 @@ export default function AdminCoursesPage() {
             ]}
             placeholder="Filter by status"
             checkIconPosition="right"
+            label="Course status"
+            leftSection={<BookmarkIcon size={16} />}
             value={statusFilter}
             onChange={(value) => value && setStatusFilter(value as CourseStatus | "All")}
             searchable
+            classNames={{ input: "h-[42px]" }}
           />
+
           <Select
             data={COURSE_ORDER_OPTIONS.map((opt) => ({
               label: opt.label,
               value: encodeOrderOption(opt.value),
             }))}
+            label="Sort by"
             placeholder="Sort by"
             value={orderByParam}
             onChange={(value) => value && setOrderByParam(value)}
             leftSection={<ArrowUpAzIcon size={16} />}
             checkIconPosition="right"
+            classNames={{ input: "h-[42px]" }}
           />
-        </Group>
+        </div>
 
+        {/* Main content */}
         {isPending ? (
           <CenterLoader />
         ) : data?.items.length === 0 ? (
