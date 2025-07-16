@@ -1,3 +1,4 @@
+import { BaseQueryCriteria } from "../../http-client/api.types";
 import { LearningSectionVm, SectionVm } from "../section/section.types";
 
 // course.type.ts
@@ -185,9 +186,7 @@ export interface UpdateCourseCommand {
   categoryId?: string;
 }
 
-export interface CourseQueryCriteria {
-  page?: number;
-  pageSize?: number;
+export interface CourseQueryCriteria extends BaseQueryCriteria<CourseOrderableFields> {
   search?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -196,18 +195,17 @@ export interface CourseQueryCriteria {
   durationInSeconds?: number;
   language?: string;
   sectionCount?: number;
-  orderBy?: {
-    field:
-      | "createdAt"
-      | "updatedAt"
-      | "averateRating"
-      | "name"
-      | "price"
-      | "discountedPrice"
-      | "durationInSeconds";
-    direction: "asc" | "desc";
-  };
+  status?: CourseStatus;
 }
+
+export type CourseOrderableFields =
+  | "createdAt"
+  | "updatedAt"
+  | "averateRating"
+  | "title"
+  | "price"
+  | "discountedPrice"
+  | "durationInSeconds";
 
 export interface Experience {
   organizationName: string;

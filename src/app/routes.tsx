@@ -30,6 +30,7 @@ import BecomeInstructorPage from "../pages/become-instructor/BecomeInstructorPag
 import AdminInstructorPage from "../pages/admin/instructors/AdminInstructorPage";
 import AdminCoursesPage from "../pages/admin/courses/AdminCoursesPage";
 import AdminCourseDetailPage from "../pages/admin/course-detail/AdminCourseDetailPage";
+import AdminPendingCoursesPage from "../pages/admin/courses/AdminPendingCoursesPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -133,6 +134,10 @@ const adminRoute: RouteObject = {
     {
       path: "courses/:courseId",
       element: <AdminCourseDetailPage />,
+    },
+    {
+      path: "courses/pending",
+      element: <AdminPendingCoursesPage />,
     },
   ],
 };

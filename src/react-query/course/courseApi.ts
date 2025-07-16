@@ -19,20 +19,19 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
 
   queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
-  queryBuilder.addOrderBy("createdAt", true);
-
-  if (query.search) {
-    queryBuilder
-      .startGroup()
-      .addCondition("title", op.Contains, query.search)
-      .or()
-      .addCondition("summary", op.Contains, query.search)
-      .or()
-      .addCondition("description", op.Contains, query.search)
-      .endGroup();
-  }
 
   const conditions: Array<() => void> = [];
+
+  if (query.search) {
+    conditions.push(() =>
+      queryBuilder
+        .startGroup()
+        .addCondition("title", op.Contains, query.search!)
+        .or()
+        .addCondition("description", op.Contains, query.search!)
+        .endGroup(),
+    );
+  }
 
   if (query.minPrice)
     conditions.push(() =>
@@ -49,10 +48,20 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
       queryBuilder.addCondition("durationInSeconds", op.Equal, query.durationInSeconds!),
     );
 
+  if (query.status)
+    conditions.push(() => queryBuilder.addCondition("status", op.Equal, query.status!));
+
   conditions.forEach((addCondition, index) => {
     if (index > 0) queryBuilder.and();
     addCondition();
   });
+
+  if (query.orderBy) {
+    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
+  } else {
+    // Mặc định sắp xếp theo createdAt giảm dần (mới nhất trước)
+    queryBuilder.addOrderBy("createdAt", true);
+  }
 
   return queryBuilder.build();
 };
