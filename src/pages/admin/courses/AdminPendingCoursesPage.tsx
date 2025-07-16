@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Group, Select, TextInput, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Group, Select, TextInput, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import {
   ArrowUpAzIcon,
@@ -6,9 +6,9 @@ import {
   ClockIcon,
   FilmIcon,
   InboxIcon,
-  RefreshCcw,
-  Search,
+  SearchIcon,
 } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
 import { useSearchParamState } from "../../../hooks/useSearchParamState";
@@ -30,13 +30,21 @@ const COURSE_ORDER_OPTIONS: {
 
 export default function AdminPendingCoursesPage() {
   const [search, setSearch] = useSearchParamState<string>("search");
+  const [searchInput, setSearchInput] = useState(search);
   const [orderByParam, setOrderByParam] = useSearchParamState<string>(
     "orderBy",
-    encodeOrderOption<CourseOrderableFields>({ field: "createdAt", direction: "desc" }),
+    encodeOrderOption<CourseOrderableFields>({
+      field: "createdAt",
+      direction: "desc",
+    }),
   );
   const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
 
-  const { data, isPending, error, refetch } = useGetCourses({
+  const handleSearchSubmit = () => {
+    setSearch(searchInput);
+  };
+
+  const { data, isPending, error } = useGetCourses({
     search: search || undefined,
     orderBy,
     status: CourseStatus.Pending,
@@ -46,36 +54,49 @@ export default function AdminPendingCoursesPage() {
 
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
-      <div className="mx-auto">
-        <Group justify="space-between" className="mb-4 flex-wrap gap-y-2">
+      <div className="mx-auto space-y-6">
+        <Group justify="space-between" align="end" className="flex-wrap gap-y-4">
           <Title order={2}>Pending Courses</Title>
-          <Button
-            leftSection={<RefreshCcw size={16} />}
-            variant="outline"
-            onClick={() => refetch()}
-          >
-            Refresh
-          </Button>
-        </Group>
 
-        <Group className="mb-4 flex-wrap gap-y-2" grow>
-          <TextInput
-            placeholder="Search course..."
-            leftSection={<Search size={16} />}
-            value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
-          />
-          <Select
-            data={COURSE_ORDER_OPTIONS.map((opt) => ({
-              label: opt.label,
-              value: encodeOrderOption(opt.value),
-            }))}
-            placeholder="Sort by"
-            value={orderByParam}
-            onChange={(value) => value && setOrderByParam(value)}
-            leftSection={<ArrowUpAzIcon size={16} />}
-            checkIconPosition="right"
-          />
+          <Group grow className="w-full sm:w-auto" gap="sm">
+            <TextInput
+              placeholder="Search course..."
+              leftSection={<SearchIcon size={16} />}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.currentTarget.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearchSubmit();
+                }
+              }}
+              rightSection={
+                searchInput && (
+                  <ActionIcon
+                    variant="subtle"
+                    size="lg"
+                    onClick={() => {
+                      setSearchInput("");
+                      setSearch("");
+                    }}
+                  >
+                    ✕
+                  </ActionIcon>
+                )
+              }
+            />
+
+            <Select
+              data={COURSE_ORDER_OPTIONS.map((opt) => ({
+                label: opt.label,
+                value: encodeOrderOption(opt.value),
+              }))}
+              placeholder="Sort by"
+              value={orderByParam}
+              onChange={(value) => value && setOrderByParam(value)}
+              leftSection={<ArrowUpAzIcon size={16} />}
+              checkIconPosition="right"
+            />
+          </Group>
         </Group>
 
         {isPending ? (

@@ -1,19 +1,50 @@
-import { Avatar, Badge, Button, Group, Select, Skeleton, TextInput, Title } from "@mantine/core";
-import { BookOpenIcon, ClockIcon, FilmIcon, RefreshCcw, Search } from "lucide-react";
-import { useState } from "react";
+import { ActionIcon, Avatar, Badge, Button, Group, Select, TextInput, Title } from "@mantine/core";
+import { BookOpenIcon, ClockIcon, FilmIcon, RefreshCcw, Search, ArrowUpAzIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
+import CenterLoader from "../../../components/CenterLoader";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { useGetCourses } from "../../../react-query/course/courseHooks";
 import { formatDuration } from "../../../utils/format";
-import dayjs from "dayjs";
-import CenterLoader from "../../../components/CenterLoader";
+import { useSearchParamState } from "../../../hooks/useSearchParamState";
+import { encodeOrderOption, decodeOrderOption, OrderBy } from "../../../http-client/api.types";
+import { CourseOrderableFields } from "../../../react-query/course/course.types";
+import { useState } from "react";
+
+const COURSE_ORDER_OPTIONS: {
+  label: string;
+  value: OrderBy<CourseOrderableFields>;
+}[] = [
+  { label: "Created: Newest first", value: { field: "createdAt", direction: "desc" } },
+  { label: "Created: Oldest first", value: { field: "createdAt", direction: "asc" } },
+  { label: "Updated: Newest first", value: { field: "updatedAt", direction: "desc" } },
+  { label: "Title: A → Z", value: { field: "title", direction: "asc" } },
+  { label: "Title: Z → A", value: { field: "title", direction: "desc" } },
+];
 
 export default function AdminCoursesPage() {
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<CourseStatus | "All">(CourseStatus.Pending);
-  const { data, isPending, error } = useGetCourses();
+  const [search, setSearch] = useSearchParamState<string>("search", "");
+  const [searchInput, setSearchInput] = useState(search);
+  const [statusFilter, setStatusFilter] = useSearchParamState<CourseStatus | "All">(
+    "status",
+    "All",
+  );
+  const [orderByParam, setOrderByParam] = useSearchParamState<string>(
+    "orderBy",
+    encodeOrderOption({ field: "createdAt", direction: "desc" }),
+  );
 
-  if (isPending) return <Skeleton height={400} radius="md" className="mt-6" />;
+  const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
+
+  const handleSearchSubmit = () => {
+    setSearch(searchInput);
+  };
+
+  const { data, isPending, error, refetch } = useGetCourses({
+    search: search || undefined,
+    status: statusFilter !== "All" ? statusFilter : undefined,
+    orderBy,
+  });
 
   if (error) return <div>Error loading courses</div>;
 
@@ -22,16 +53,41 @@ export default function AdminCoursesPage() {
       <div className="mx-auto">
         <Group justify="space-between" className="mb-4 flex-wrap gap-y-2">
           <Title order={2}>Admin - Course Review</Title>
-          <Button leftSection={<RefreshCcw size={16} />} variant="outline">
+          <Button
+            leftSection={<RefreshCcw size={16} />}
+            variant="outline"
+            onClick={() => refetch()}
+          >
             Refresh
           </Button>
         </Group>
-        <Group className="mb-4 flex-wrap gap-y-2" grow>
+
+        {/* Search, Filter, Sort Controls */}
+        <Group className="mb-6 flex-wrap gap-y-2" grow>
           <TextInput
             placeholder="Search course..."
             leftSection={<Search size={16} />}
-            value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearchSubmit();
+              }
+            }}
+            rightSection={
+              searchInput && (
+                <ActionIcon
+                  variant="subtle"
+                  size="lg"
+                  onClick={() => {
+                    setSearchInput("");
+                    setSearch("");
+                  }}
+                >
+                  ✕
+                </ActionIcon>
+              )
+            }
           />
           <Select
             data={[
@@ -40,19 +96,34 @@ export default function AdminCoursesPage() {
               { value: CourseStatus.Published, label: "Published" },
               { value: CourseStatus.Rejected, label: "Rejected" },
               { value: CourseStatus.Draft, label: "Draft" },
+              { value: CourseStatus.Archived, label: "Archived" },
             ]}
             placeholder="Filter by status"
             checkIconPosition="right"
             value={statusFilter}
-            onChange={(value) => setStatusFilter((value as CourseStatus) || "All")}
+            onChange={(value) => value && setStatusFilter(value as CourseStatus | "All")}
             searchable
           />
+          <Select
+            data={COURSE_ORDER_OPTIONS.map((opt) => ({
+              label: opt.label,
+              value: encodeOrderOption(opt.value),
+            }))}
+            placeholder="Sort by"
+            value={orderByParam}
+            onChange={(value) => value && setOrderByParam(value)}
+            leftSection={<ArrowUpAzIcon size={16} />}
+            checkIconPosition="right"
+          />
         </Group>
-        <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-6">
-          {isPending ? (
-            <CenterLoader />
-          ) : (
-            data?.items.map((course) => (
+
+        {isPending ? (
+          <CenterLoader />
+        ) : data?.items.length === 0 ? (
+          <div className="text-gray-500 text-center col-span-full py-10">No courses found</div>
+        ) : (
+          <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-6">
+            {data?.items.map((course) => (
               <Link
                 to={`/admin/courses/${course.id}`}
                 key={course.id}
@@ -65,7 +136,6 @@ export default function AdminCoursesPage() {
                   className="w-full h-[180px] object-cover"
                 />
                 <div className="p-5 flex flex-col gap-4 flex-1">
-                  {/* Title + Status */}
                   <div className="space-y-1 flex-1">
                     <Title order={4} className="line-clamp-2 text-lg">
                       {course.title}
@@ -79,14 +149,15 @@ export default function AdminCoursesPage() {
                             ? "yellow"
                             : course.status === CourseStatus.Rejected
                               ? "red"
-                              : "gray"
+                              : course.status === CourseStatus.Archived
+                                ? "gray"
+                                : "blue"
                       }
                     >
                       {course.status}
                     </Badge>
                   </div>
 
-                  {/* Category + Timestamps */}
                   <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1 leading-snug">
                     <div>
                       🏷️ <span className="font-medium">{course.categoryName}</span>
@@ -116,7 +187,6 @@ export default function AdminCoursesPage() {
                     )}
                   </div>
 
-                  {/* Stats Section */}
                   <div className="grid grid-cols-3 gap-2 text-[13px] text-gray-700 dark:text-gray-300">
                     <div className="flex flex-col items-center justify-center rounded-md bg-gray-100 dark:bg-zinc-800 px-2 py-2">
                       <BookOpenIcon size={16} className="mb-1" />
@@ -137,7 +207,6 @@ export default function AdminCoursesPage() {
                     </div>
                   </div>
 
-                  {/* Instructor */}
                   <div className="flex items-center gap-3">
                     <Avatar src={course.instructorAvatarUrl} size="md" radius="xl" />
                     <div className="text-sm leading-tight">
@@ -149,9 +218,9 @@ export default function AdminCoursesPage() {
                   </div>
                 </div>
               </Link>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
