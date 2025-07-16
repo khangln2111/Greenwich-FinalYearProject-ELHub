@@ -1,13 +1,13 @@
 import { Avatar, Badge, Button, Group, Select, TextInput, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import {
+  ArrowUpAzIcon,
   BookOpenIcon,
   ClockIcon,
   FilmIcon,
   InboxIcon,
   RefreshCcw,
   Search,
-  SortDesc,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
@@ -73,8 +73,8 @@ export default function AdminPendingCoursesPage() {
             placeholder="Sort by"
             value={orderByParam}
             onChange={(value) => value && setOrderByParam(value)}
-            leftSection={<SortDesc size={16} />}
-            searchable
+            leftSection={<ArrowUpAzIcon size={16} />}
+            checkIconPosition="right"
           />
         </Group>
 

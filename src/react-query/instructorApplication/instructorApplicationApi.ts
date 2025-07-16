@@ -1,5 +1,6 @@
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
+import { applyConditions } from "../../utils/gridifyHelper";
 import {
   CreateInstructorApplicationCommand,
   InstructorApplicationQueryCriteria,
@@ -11,33 +12,41 @@ import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 
 const BASE_URL = "/InstructorApplications";
 
-const buildInstructorApplicationQuery = (query: InstructorApplicationQueryCriteria = {}) => {
-  const queryBuilder = new GridifyQueryBuilder();
-  queryBuilder.setPage(query.page ?? 1);
-  queryBuilder.setPageSize(query.pageSize ?? 10);
+export const buildInstructorApplicationQuery = (query: InstructorApplicationQueryCriteria = {}) => {
+  const qb = new GridifyQueryBuilder();
+  qb.setPage(query.page ?? 1);
+  qb.setPageSize(query.pageSize ?? 10);
+
+  const conditions: Array<() => void> = [];
+
   if (query.search) {
-    queryBuilder
-      .startGroup()
-      .addCondition("displayName", op.Contains, query.search)
-      .or()
-      .addCondition("email", op.Contains, query.search)
-      .or()
-      .addCondition("professionalTitle", op.Contains, query.search)
-      .or()
-      .addCondition("fullName", op.Contains, query.search)
-      .endGroup();
+    conditions.push(() =>
+      qb
+        .startGroup()
+        .addCondition("displayName", op.Contains, query.search!)
+        .or()
+        .addCondition("email", op.Contains, query.search!)
+        .or()
+        .addCondition("professionalTitle", op.Contains, query.search!)
+        .or()
+        .addCondition("fullName", op.Contains, query.search!)
+        .endGroup(),
+    );
   }
+
   if (query.status) {
-    queryBuilder.addCondition("status", op.Equal, query.status);
+    conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
   }
+
+  applyConditions(qb, conditions);
 
   if (query.orderBy) {
-    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "asc");
+    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "asc");
   } else {
-    queryBuilder.addOrderBy("createdAt", true); // true = desc
+    qb.addOrderBy("createdAt", true); // true = desc
   }
 
-  return queryBuilder.build();
+  return qb.build();
 };
 
 export const getInstructorApplications = async (query?: InstructorApplicationQueryCriteria) => {

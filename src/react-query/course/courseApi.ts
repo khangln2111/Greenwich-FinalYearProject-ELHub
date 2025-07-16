@@ -20,6 +20,13 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
 
+  if (query.orderBy) {
+    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
+  } else {
+    // Mặc định sắp xếp theo createdAt giảm dần (mới nhất trước)
+    queryBuilder.addOrderBy("createdAt", true);
+  }
+
   const conditions: Array<() => void> = [];
 
   if (query.search) {
@@ -55,13 +62,6 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
     if (index > 0) queryBuilder.and();
     addCondition();
   });
-
-  if (query.orderBy) {
-    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
-  } else {
-    // Mặc định sắp xếp theo createdAt giảm dần (mới nhất trước)
-    queryBuilder.addOrderBy("createdAt", true);
-  }
 
   return queryBuilder.build();
 };

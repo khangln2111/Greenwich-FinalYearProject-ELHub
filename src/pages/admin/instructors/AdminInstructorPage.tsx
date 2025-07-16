@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Avatar,
   Badge,
   Button,
@@ -15,6 +16,7 @@ import {
 import { useForm, zodResolver } from "@mantine/form";
 import { IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
+import { ArrowUpAzIcon, FileQuestion } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import CenterLoader from "../../../components/CenterLoader";
@@ -31,7 +33,6 @@ import {
   useReviewInstructorApplication,
 } from "../../../react-query/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
-import { FileQuestion } from "lucide-react";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -83,14 +84,25 @@ function StatusFilterBadges({
   );
 }
 
+const ORDER_BY_OPTIONS: {
+  label: string;
+  value: OrderBy<InstructorApplicationOrderableFields>;
+}[] = [
+  { label: "Submitted (Newest)", value: { field: "createdAt", direction: "desc" } },
+  { label: "Submitted (Oldest)", value: { field: "createdAt", direction: "asc" } },
+  { label: "Reviewed (Newest)", value: { field: "reviewedAt", direction: "desc" } },
+  { label: "Reviewed (Oldest)", value: { field: "reviewedAt", direction: "asc" } },
+];
+
 export default function AdminInstructorPage() {
   const modalStack = useModalsStack(["view", "review"]);
 
   const [viewApp, setViewApp] = useState<InstructorApplicationVm | null>(null);
   const [reviewApp, setReviewApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
-
   const [search, setSearch] = useSearchParamState<string>("search", "");
+  const [searchInput, setSearchInput] = useState("");
+
   const [statusFilter, setStatusFilter] = useSearchParamState<"All" | InstructorApplicationStatus>(
     "status",
     InstructorApplicationStatus.Pending,
@@ -106,22 +118,16 @@ export default function AdminInstructorPage() {
     "desc",
   );
 
-  const ORDER_BY_OPTIONS: {
-    label: string;
-    value: OrderBy<InstructorApplicationOrderableFields>;
-  }[] = [
-    { label: "Submitted (Newest)", value: { field: "createdAt", direction: "desc" } },
-    { label: "Submitted (Oldest)", value: { field: "createdAt", direction: "asc" } },
-    { label: "Reviewed (Newest)", value: { field: "reviewedAt", direction: "desc" } },
-    { label: "Reviewed (Oldest)", value: { field: "reviewedAt", direction: "asc" } },
-  ];
-
   const form = useForm({
     initialValues: { note: "" },
     validate: zodResolver(reviewSchema),
   });
 
   const { mutate: reviewApplication, isPending } = useReviewInstructorApplication();
+
+  const handleSearchSubmit = () => {
+    setSearch(searchInput);
+  };
 
   const handleReview = (app: InstructorApplicationVm, isApprove: boolean) => {
     setReviewApp(app);
@@ -170,8 +176,27 @@ export default function AdminInstructorPage() {
         <Title order={2}>Instructor Applications Review</Title>
         <TextInput
           placeholder="Search by name or email"
-          value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.currentTarget.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchSubmit();
+            }
+          }}
+          rightSection={
+            searchInput && (
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                onClick={() => {
+                  setSearchInput("");
+                  setSearch("");
+                }}
+              >
+                ✕
+              </ActionIcon>
+            )
+          }
           leftSection={<IconSearch size={16} />}
           w={260}
         />
@@ -188,6 +213,7 @@ export default function AdminInstructorPage() {
           onChange={(val) => val && setOrderByParam(val)}
           w={200}
           checkIconPosition="right"
+          leftSection={<ArrowUpAzIcon size={16} />}
           allowDeselect={false}
           placeholder="Sort by"
         />
