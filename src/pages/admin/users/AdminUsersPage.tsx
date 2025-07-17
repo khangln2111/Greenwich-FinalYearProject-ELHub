@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import dayjs from "dayjs";
-import { EyeIcon, Search, ShieldQuestionIcon } from "lucide-react";
+import { PencilIcon, Search } from "lucide-react";
 import { useState } from "react";
 
 const mockUsers = Array.from({ length: 15 }, (_, i) => ({
@@ -53,20 +53,34 @@ export default function AdminUsersPage() {
   };
 
   const openEditRoleModal = (user: (typeof users)[number]) => {
+    let selectedRole = user.role;
+
     modals.open({
       title: `Edit role for ${user.name}`,
       children: (
-        <Select
-          label="Select Role"
-          data={["Student", "Instructor", "Admin"]}
-          defaultValue={user.role}
-          onChange={(value) => {
-            if (value) {
-              handleChangeRole(user.id, value);
-              modals.closeAll();
-            }
-          }}
-        />
+        <div className="space-y-4">
+          <Select
+            label="Select Role"
+            data={["Student", "Instructor", "Admin"]}
+            defaultValue={user.role}
+            onChange={(value) => {
+              if (value) selectedRole = value;
+            }}
+          />
+          <Group justify="end" mt="md">
+            <Button variant="default" onClick={() => modals.closeAll()}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                handleChangeRole(user.id, selectedRole);
+                modals.closeAll();
+              }}
+            >
+              Confirm
+            </Button>
+          </Group>
+        </div>
       ),
     });
   };
@@ -116,38 +130,37 @@ export default function AdminUsersPage() {
 
         <div className="max-h-[500px] overflow-y-auto">
           <TableScrollContainer minWidth={600}>
-            <Table striped highlightOnHover stickyHeader>
+            <Table striped highlightOnHover stickyHeader horizontalSpacing="lg">
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th>User</Table.Th>
-                  <Table.Th>Email</Table.Th>
+                  <Table.Th>User Info</Table.Th>
                   <Table.Th>Role</Table.Th>
                   <Table.Th>Status</Table.Th>
-                  <Table.Th>Joined</Table.Th>
-                  <Table.Th className="text-right">Actions</Table.Th>
+                  <Table.Th>Birthdate</Table.Th>
+                  <Table.Th>Actions</Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
                 {filteredUsers.map((user) => (
                   <Table.Tr key={user.id}>
                     <Table.Td>
-                      <Group gap="sm">
-                        <Avatar src={user.avatar} radius="xl" />
-                        <div>
-                          <Text size="sm" fw={500}>
+                      <div className="flex items-center gap-x-4 whitespace-nowrap">
+                        <Avatar src={user.avatar} radius="xl" size="md" />
+                        <div className="flex flex-col">
+                          <Text size="md" fw={600} className="text-gray-900 dark:text-gray-100">
                             {user.name}
                           </Text>
+                          <Text size="sm" className="text-gray-600 dark:text-gray-400 break-all">
+                            {user.email}
+                          </Text>
                         </div>
-                      </Group>
+                      </div>
                     </Table.Td>
-                    <Table.Td>
-                      <Text size="sm" c="dimmed">
-                        {user.email}
-                      </Text>
-                    </Table.Td>
+
                     <Table.Td>
                       <Badge
                         variant="light"
+                        className="min-w-[120px] text-center text-[13px] px-2"
                         color={
                           user.role === "Admin"
                             ? "red"
@@ -159,6 +172,7 @@ export default function AdminUsersPage() {
                         {user.role}
                       </Badge>
                     </Table.Td>
+
                     <Table.Td>
                       <Switch
                         size="sm"
@@ -168,29 +182,20 @@ export default function AdminUsersPage() {
                         label={user.status}
                       />
                     </Table.Td>
+
                     <Table.Td>
                       <Text size="sm">{dayjs(user.joinedAt).format("DD/MM/YYYY")}</Text>
                     </Table.Td>
+
                     <Table.Td>
-                      <Group justify="end" gap="xs" wrap="nowrap">
-                        <Button
-                          size="xs"
-                          variant="subtle"
-                          color="blue"
-                          leftSection={<EyeIcon size={14} />}
-                        >
-                          View
-                        </Button>
-                        <Button
-                          size="xs"
-                          variant="light"
-                          color="gray"
-                          leftSection={<ShieldQuestionIcon size={14} />}
-                          onClick={() => openEditRoleModal(user)}
-                        >
-                          Edit Role
-                        </Button>
-                      </Group>
+                      <Button
+                        size="xs"
+                        variant="subtle"
+                        leftSection={<PencilIcon size={14} />}
+                        onClick={() => openEditRoleModal(user)}
+                      >
+                        Edit
+                      </Button>
                     </Table.Td>
                   </Table.Tr>
                 ))}
