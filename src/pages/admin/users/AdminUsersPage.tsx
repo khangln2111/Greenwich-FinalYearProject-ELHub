@@ -5,15 +5,17 @@ import {
   Card,
   Group,
   Select,
+  Switch,
   Table,
+  TableScrollContainer,
   Text,
   TextInput,
   Title,
-  TableScrollContainer,
 } from "@mantine/core";
-import { useState } from "react";
-import { Search, EyeIcon, BanIcon, ShieldCheckIcon } from "lucide-react";
+import { modals } from "@mantine/modals";
 import dayjs from "dayjs";
+import { EyeIcon, Search, ShieldQuestionIcon } from "lucide-react";
+import { useState } from "react";
 
 const mockUsers = Array.from({ length: 15 }, (_, i) => ({
   id: i + 1,
@@ -31,8 +33,45 @@ export default function AdminUsersPage() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [users, setUsers] = useState(mockUsers);
 
-  const filteredUsers = mockUsers.filter((user) => {
+  const handleToggleStatus = (id: number) => {
+    setUsers((prev) =>
+      prev.map((user) =>
+        user.id === id
+          ? {
+              ...user,
+              status: user.status === "Active" ? "Banned" : "Active",
+            }
+          : user,
+      ),
+    );
+  };
+
+  const handleChangeRole = (id: number, newRole: string) => {
+    setUsers((prev) => prev.map((user) => (user.id === id ? { ...user, role: newRole } : user)));
+  };
+
+  const openEditRoleModal = (user: (typeof users)[number]) => {
+    modals.open({
+      title: `Edit role for ${user.name}`,
+      children: (
+        <Select
+          label="Select Role"
+          data={["Student", "Instructor", "Admin"]}
+          defaultValue={user.role}
+          onChange={(value) => {
+            if (value) {
+              handleChangeRole(user.id, value);
+              modals.closeAll();
+            }
+          }}
+        />
+      ),
+    });
+  };
+
+  const filteredUsers = users.filter((user) => {
     const matchesSearch =
       user.name.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase());
@@ -52,7 +91,7 @@ export default function AdminUsersPage() {
             leftSection={<Search size={16} />}
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
-            className="w-full lg:max-w-(--container-md)"
+            className="w-full lg:max-w-[400px]"
           />
 
           <Group className="flex-wrap gap-2 w-full lg:w-auto justify-start lg:justify-end">
@@ -121,9 +160,13 @@ export default function AdminUsersPage() {
                       </Badge>
                     </Table.Td>
                     <Table.Td>
-                      <Badge variant="dot" color={user.status === "Banned" ? "gray" : "green"}>
-                        {user.status}
-                      </Badge>
+                      <Switch
+                        size="sm"
+                        color={user.status === "Banned" ? "gray" : "green"}
+                        checked={user.status === "Active"}
+                        onChange={() => handleToggleStatus(user.id)}
+                        label={user.status}
+                      />
                     </Table.Td>
                     <Table.Td>
                       <Text size="sm">{dayjs(user.joinedAt).format("DD/MM/YYYY")}</Text>
@@ -138,25 +181,15 @@ export default function AdminUsersPage() {
                         >
                           View
                         </Button>
-                        {user.status === "Active" ? (
-                          <Button
-                            size="xs"
-                            variant="light"
-                            color="red"
-                            leftSection={<BanIcon size={14} />}
-                          >
-                            Ban
-                          </Button>
-                        ) : (
-                          <Button
-                            size="xs"
-                            variant="light"
-                            color="green"
-                            leftSection={<ShieldCheckIcon size={14} />}
-                          >
-                            Unban
-                          </Button>
-                        )}
+                        <Button
+                          size="xs"
+                          variant="light"
+                          color="gray"
+                          leftSection={<ShieldQuestionIcon size={14} />}
+                          onClick={() => openEditRoleModal(user)}
+                        >
+                          Edit Role
+                        </Button>
                       </Group>
                     </Table.Td>
                   </Table.Tr>
