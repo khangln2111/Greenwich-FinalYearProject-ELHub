@@ -45,14 +45,13 @@ export default function OrderHistoryPage() {
             label: opt.label,
             value: encodeOrderOption(opt.value),
           }))}
-          size="md"
+          label="Sort by"
           value={orderByParam}
           onChange={(value) => value && setOrderByParam(value)}
           rightSection={<ArrowUpDownIcon size={16} />}
-          searchable={false}
-          clearable={false}
           placeholder="Sort by"
           style={{ width: 220 }}
+          checkIconPosition="right"
         />
       </div>
 

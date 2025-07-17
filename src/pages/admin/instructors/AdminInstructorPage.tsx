@@ -214,7 +214,6 @@ export default function AdminInstructorPage() {
           w={200}
           checkIconPosition="right"
           leftSection={<ArrowUpAzIcon size={16} />}
-          allowDeselect={false}
           placeholder="Sort by"
         />
       </div>
