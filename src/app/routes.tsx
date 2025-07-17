@@ -44,9 +44,14 @@ const userRoute: RouteObject = {
     { path: "cart", element: <CartPage /> },
     { path: "checkout", element: <CheckoutPage /> },
     { path: "checkout/result", element: <CheckoutResultPage /> },
+
     {
       path: "become-instructor",
       element: <BecomeInstructorPage />,
+    },
+    {
+      path: "test",
+      element: <AdminUsersPage />,
     },
     {
       path: "dashboard/order-history/:orderId",

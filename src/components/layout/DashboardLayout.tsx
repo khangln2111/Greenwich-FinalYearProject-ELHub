@@ -40,12 +40,11 @@ const DashboardLayout = ({
         {sidebar}
       </aside>
 
-      {/* Main Content */}
+      {/* Main Content Wrapper */}
       <div
-        className="flex flex-col flex-1 h-full transition-all lg:duration-300 bg-body text-gray-900 dark:text-white
-          lg:ml-[calc(var(--sidebar-width)+1px)]"
+        className="flex flex-col flex-1 min-w-0 h-full transition-all lg:duration-300 bg-body text-gray-900
+          dark:text-white lg:ml-[calc(var(--sidebar-width)+1px)]"
       >
-        {/* Mobile Sidebar */}
         <Drawer
           opened={mobileSidebarOpened}
           onClose={closeMobileSidebar}
@@ -67,7 +66,7 @@ const DashboardLayout = ({
 
         {header}
 
-        <main className="flex flex-col flex-1">
+        <main className="flex flex-col flex-1 min-w-0">
           <Outlet />
         </main>
       </div>
