@@ -57,6 +57,7 @@ export default function AdminUsersPage() {
 
     modals.open({
       title: `Edit role for ${user.name}`,
+      centered: true,
       children: (
         <div className="space-y-4">
           <Select
@@ -66,6 +67,7 @@ export default function AdminUsersPage() {
             onChange={(value) => {
               if (value) selectedRole = value;
             }}
+            checkIconPosition="right"
           />
           <Group justify="end" mt="md">
             <Button variant="default" onClick={() => modals.closeAll()}>
