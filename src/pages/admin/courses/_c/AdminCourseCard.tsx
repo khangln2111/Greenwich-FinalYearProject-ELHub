@@ -95,7 +95,13 @@ export default function AdminCourseCard({ course }: AdminCourseCardProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <Avatar src={course.instructorAvatarUrl} size="md" radius="xl" />
+          <Avatar
+            src={course.instructorAvatarUrl}
+            color="initials"
+            name={course.instructorName}
+            size="md"
+            radius="xl"
+          />
           <div className="text-sm leading-tight">
             <div className="font-medium text-text">{course.instructorName}</div>
             <div className="text-gray-500 text-xs">{course.instructorProfessionalTitle}</div>
