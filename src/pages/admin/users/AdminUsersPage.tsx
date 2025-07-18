@@ -104,6 +104,7 @@ export default function AdminUsersPage() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
           <TextInput
             placeholder="Search by name or email"
+            label="Search Users"
             leftSection={<Search size={16} />}
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
@@ -114,7 +115,9 @@ export default function AdminUsersPage() {
             <Select
               data={["Student", "Instructor", "Admin"]}
               placeholder="Role"
+              checkIconPosition="right"
               clearable
+              label="Filter by Role"
               value={roleFilter}
               onChange={setRoleFilter}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
@@ -122,7 +125,9 @@ export default function AdminUsersPage() {
             <Select
               data={["Active", "Banned"]}
               placeholder="Status"
+              checkIconPosition="right"
               clearable
+              label="Filter by Status"
               value={statusFilter}
               onChange={setStatusFilter}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"

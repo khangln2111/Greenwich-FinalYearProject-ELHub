@@ -11,27 +11,28 @@ import {
   ReviewCourseCommand,
   UpdateCourseCommand,
 } from "./course.types";
+import { applyConditions } from "../../utils/gridifyHelper";
 
 const BASE_URL = "/courses";
 
 const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
-  const queryBuilder = new GridifyQueryBuilder();
+  const qb = new GridifyQueryBuilder();
 
-  queryBuilder.setPage(query.page ?? 1);
-  queryBuilder.setPageSize(query.pageSize ?? 10);
+  qb.setPage(query.page ?? 1);
+  qb.setPageSize(query.pageSize ?? 10);
 
   if (query.orderBy) {
-    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
+    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
   } else {
     // Mặc định sắp xếp theo createdAt giảm dần (mới nhất trước)
-    queryBuilder.addOrderBy("createdAt", true);
+    qb.addOrderBy("createdAt", true);
   }
 
   const conditions: Array<() => void> = [];
 
   if (query.search) {
     conditions.push(() =>
-      queryBuilder
+      qb
         .startGroup()
         .addCondition("title", op.Contains, query.search!)
         .or()
@@ -41,29 +42,20 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   }
 
   if (query.minPrice)
-    conditions.push(() =>
-      queryBuilder.addCondition("price", op.GreaterThanOrEqual, query.minPrice!),
-    );
+    conditions.push(() => qb.addCondition("price", op.GreaterThanOrEqual, query.minPrice!));
   if (query.maxPrice)
-    conditions.push(() => queryBuilder.addCondition("price", op.LessThanOrEqual, query.maxPrice!));
+    conditions.push(() => qb.addCondition("price", op.LessThanOrEqual, query.maxPrice!));
   if (query.categoryId)
-    conditions.push(() => queryBuilder.addCondition("categoryId", op.Equal, query.categoryId!));
-  if (query.level)
-    conditions.push(() => queryBuilder.addCondition("level", op.Equal, query.level!));
+    conditions.push(() => qb.addCondition("categoryId", op.Equal, query.categoryId!));
+  if (query.level) conditions.push(() => qb.addCondition("level", op.Equal, query.level!));
   if (query.durationInSeconds)
-    conditions.push(() =>
-      queryBuilder.addCondition("durationInSeconds", op.Equal, query.durationInSeconds!),
-    );
+    conditions.push(() => qb.addCondition("durationInSeconds", op.Equal, query.durationInSeconds!));
 
-  if (query.status)
-    conditions.push(() => queryBuilder.addCondition("status", op.Equal, query.status!));
+  if (query.status) conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
 
-  conditions.forEach((addCondition, index) => {
-    if (index > 0) queryBuilder.and();
-    addCondition();
-  });
+  applyConditions(qb, conditions);
 
-  return queryBuilder.build();
+  return qb.build();
 };
 
 export const getCourses = async (query: CourseQueryCriteria = {}) => {

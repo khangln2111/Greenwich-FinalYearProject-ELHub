@@ -6,7 +6,6 @@ import {
   BookOpenCheckIcon,
   ChartNoAxesCombinedIcon,
   FlagTriangleRightIcon,
-  PackageIcon,
   SettingsIcon,
   TagsIcon,
   Users2Icon,
@@ -60,11 +59,6 @@ const navItems: NavItem[] = [
     href: "/admin/reports",
     label: "Reports",
     icon: FlagTriangleRightIcon,
-  },
-  {
-    href: "/admin/orders",
-    label: "Orders",
-    icon: PackageIcon,
   },
   {
     href: "/admin/notifications",
