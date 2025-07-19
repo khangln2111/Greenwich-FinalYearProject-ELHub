@@ -2,28 +2,29 @@ import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 
 import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
-import {
-  CreatePaymentIntentCommand,
-  OrderDetailVm,
-  OrderQueryCriteria,
-  OrderVm,
-} from "./order.types";
+import { CreateOrderCommand, OrderDetailVm, OrderQueryCriteria, OrderVm } from "./order.types";
 
 const BASE_URL = "/orders";
 
-export const createPaymentIntent = async (command: CreatePaymentIntentCommand) => {
+export const createOrder = async (command: CreateOrderCommand) => {
   const response = await apiClient.post<
     ApiSuccessResponse<{
-      clientSecret: string;
+      clientSecret?: string;
+      orderId: string;
+      isFree: boolean;
+      status: string;
     }>
-  >(`${BASE_URL}/CreatePaymentIntent`, command);
+  >(`${BASE_URL}/Create`, command);
   return response.data;
 };
 
-export const confirmPaymentIntent = async (paymentIntentId: string) => {
-  const response = await apiClient.get<ApiSuccessResponse>(
-    `${BASE_URL}/ConfirmPaymentIntent/${paymentIntentId}`,
-  );
+export const confirmOrder = async (id: string) => {
+  const response = await apiClient.get<
+    ApiSuccessResponse<{
+      orderId: string;
+      status: string;
+    }>
+  >(`${BASE_URL}/${id}/Confirm`);
   return response.data;
 };
 

@@ -2,13 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { showErrorToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { CreatePaymentIntentCommand, OrderQueryCriteria } from "./order.types";
-import {
-  confirmPaymentIntent,
-  createPaymentIntent,
-  getOrderDetailSelf,
-  getOrdersSelf,
-} from "./orderApi";
+import { CreateOrderCommand, OrderQueryCriteria } from "./order.types";
+import { confirmOrder, createOrder, getOrderDetailSelf, getOrdersSelf } from "./orderApi";
 
 export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
   return useQuery({
@@ -33,9 +28,9 @@ export const useGetOrderDetailSelf = (id: string) => {
   });
 };
 
-export const useCreatePaymentIntent = () => {
+export const useCreateOrder = () => {
   return useMutation({
-    mutationFn: (command: CreatePaymentIntentCommand) => createPaymentIntent(command),
+    mutationFn: (command: CreateOrderCommand) => createOrder(command),
     onError: (error) =>
       handleApiError(error, {
         matchers: [
@@ -48,11 +43,11 @@ export const useCreatePaymentIntent = () => {
   });
 };
 
-export const useConfirmPaymentIntent = (paymentIntentId: string) => {
+export const useConfirmOrder = (id: string) => {
   return useQuery({
-    queryKey: keyFac.orders.confirmPaymentIntent(paymentIntentId).queryKey,
-    queryFn: () => confirmPaymentIntent(paymentIntentId),
-    enabled: !!paymentIntentId,
+    queryKey: keyFac.orders.confirmPaymentIntent(id).queryKey,
+    queryFn: () => confirmOrder(id),
+    enabled: !!id,
     retry: false,
   });
 };

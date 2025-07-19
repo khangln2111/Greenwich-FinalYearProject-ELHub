@@ -3,38 +3,46 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
 import CenterLoader from "../../components/CenterLoader";
-import { useConfirmPaymentIntent } from "../../react-query/order/orderHooks";
+import { useConfirmOrder } from "../../react-query/order/orderHooks";
 
 export default function CheckoutResultPage() {
   const [searchParams] = useSearchParams();
   const paymentIntentId = searchParams.get("payment_intent");
+  const orderId = searchParams.get("orderId");
 
   const queryClient = useQueryClient();
-  if (!paymentIntentId) return <Navigate to="/cart" />;
 
-  const { isPending, isError, isSuccess } = useConfirmPaymentIntent(paymentIntentId);
+  const validId = orderId || paymentIntentId;
+  if (!validId) return <Navigate to="/cart" />;
+
+  const { data, isPending, isError, isSuccess } = useConfirmOrder(validId);
 
   if (isPending) return <CenterLoader />;
 
   if (isSuccess) {
+    // Optional: invalidate all cart, inventory, orders cache
     queryClient.invalidateQueries();
   }
+
+  const isCompleted = data?.data?.status === "Completed";
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4">
       <div className="bg-white dark:bg-dark rounded-2xl shadow-lg p-8 w-full text-center max-w-[576px]">
-        <>
-          <CheckCircle className="text-green-500 w-16 h-16 mx-auto" />
-          <h1 className="text-2xl font-bold mt-4">Payment Successful</h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-2">
-            Thank you for your purchase! You can now access your course materials.
-          </p>
-          <Button className="mt-6 w-full rounded-full" component={Link} to="/dashboard/inventory">
-            Go to My Inventory
-          </Button>
-        </>
+        {isSuccess && isCompleted && (
+          <>
+            <CheckCircle className="text-green-500 w-16 h-16 mx-auto" />
+            <h1 className="text-2xl font-bold mt-4">Payment Successful</h1>
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
+              Thank you for your purchase! You can now access your course materials.
+            </p>
+            <Button className="mt-6 w-full rounded-full" component={Link} to="/dashboard/inventory">
+              Go to My Inventory
+            </Button>
+          </>
+        )}
 
-        {isError && (
+        {(isError || !isCompleted) && (
           <>
             <XCircle className="text-red-500 w-16 h-16 mx-auto" />
             <h1 className="text-2xl font-bold mt-4">Payment Failed</h1>

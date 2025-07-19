@@ -11,9 +11,15 @@ type CheckoutSummaryProps = {
   items: CartItemVm[];
   className?: string;
   clientSecret: string;
+  orderId: string;
 };
 
-export default function CheckoutSummary({ items, className, clientSecret }: CheckoutSummaryProps) {
+export default function CheckoutSummary({
+  items,
+  className,
+  clientSecret,
+  orderId,
+}: CheckoutSummaryProps) {
   const provisional = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const totalDirectDiscount = items.reduce(
     (acc, item) => acc + (item.price - item.discountedPrice) * item.quantity,
@@ -41,7 +47,7 @@ export default function CheckoutSummary({ items, className, clientSecret }: Chec
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `${window.location.origin}/checkout/result`,
+        return_url: `${window.location.origin}/checkout/result?orderId=${orderId}`,
       },
     });
 

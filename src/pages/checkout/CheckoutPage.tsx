@@ -1,13 +1,13 @@
-import { Anchor, Box, Divider, Loader, useComputedColorScheme } from "@mantine/core";
+import { Anchor, Box, Divider, useComputedColorScheme } from "@mantine/core";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft } from "lucide-react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import SummaryDecorator from "../../components/SummaryDecorator";
 import { CartItemVm } from "../../react-query/cart/cart.types";
 import CheckoutForm from "./_c/CheckoutForm";
-import CheckoutSummary from "./_c/CheckoutSummary";
 import CheckoutItem from "./_c/CheckoutItem";
-import SummaryDecorator from "../../components/SummaryDecorator";
+import CheckoutSummary from "./_c/CheckoutSummary";
 
 const stripePromise = loadStripe(
   "pk_test_51RRb7XRoRYlKkzyrjHFredaX8Ha0wJNHj0v60IJa1BycyHTVgTeO7VlUkveFVbN2GVbtvaQkcCPDoXLJPmR1WKMv00fBzMO0yS",
@@ -21,30 +21,23 @@ export default function CheckoutPage() {
   });
   const stripeTheme = computedColorScheme === "dark" ? "night" : "stripe";
 
-  const items: CartItemVm[] | undefined = location.state?.selectedItems;
+  // ✅ Lấy dữ liệu từ state
+  const items: CartItemVm[] = location.state?.selectedItems;
   const clientSecret: string | null = location.state?.clientSecret ?? null;
+  const orderId: string | null = location.state?.orderId ?? null;
 
-  // Nếu không có item được chọn -> về lại cart
-  if (!items || items.length === 0 || !clientSecret) {
+  // ✅ Điều kiện hợp lệ để hiển thị trang checkout
+  if (!items || items.length === 0 || !clientSecret || !orderId) {
     return <Navigate to="/cart" replace />;
   }
-
-  if (!clientSecret)
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader />
-      </div>
-    );
 
   return (
     <Elements
       stripe={stripePromise}
       options={{
-        clientSecret: clientSecret,
+        clientSecret,
         locale: "en",
-        appearance: {
-          theme: stripeTheme,
-        },
+        appearance: { theme: stripeTheme },
       }}
     >
       <div className="flex-1 bg-[#EDF0F3] dark:bg-dark-5">
@@ -83,9 +76,9 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* right section: checkout summary*/}
+            {/* Right section: checkout summary */}
             <div>
-              <CheckoutSummary items={items} clientSecret={clientSecret} />
+              <CheckoutSummary items={items} clientSecret={clientSecret} orderId={orderId} />
               <SummaryDecorator />
             </div>
           </div>

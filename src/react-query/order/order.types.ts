@@ -1,10 +1,10 @@
 import { BaseQueryCriteria } from "../../http-client/api.types";
 
-export type CreatePaymentIntentCommand = {
+export type CreateOrderCommand = {
   cartItemIds: string[];
 };
 
-export type ConfirmPaymentIntentCommand = {
+export type ConfirmOrderCommand = {
   paymentIntentId: string;
 };
 

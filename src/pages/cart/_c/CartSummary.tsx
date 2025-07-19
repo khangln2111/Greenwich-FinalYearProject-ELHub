@@ -2,8 +2,9 @@ import { Button, Text } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { CartItemVm } from "../../../react-query/cart/cart.types";
-import { useCreatePaymentIntent } from "../../../react-query/order/orderHooks";
+import { useCreateOrder } from "../../../react-query/order/orderHooks";
 import { cn } from "../../../utils/cn";
+import { showErrorToast } from "../../../utils/toastHelper";
 
 type CartSummaryProps = {
   selectedItems: CartItemVm[];
@@ -20,7 +21,7 @@ export default function CartSummary({ selectedItems, className }: CartSummaryPro
 
   const navigate = useNavigate();
 
-  const createPaymentIntentMutation = useCreatePaymentIntent();
+  const createPaymentIntentMutation = useCreateOrder();
 
   const handleCheckout = () => {
     createPaymentIntentMutation.mutate(
@@ -29,10 +30,18 @@ export default function CartSummary({ selectedItems, className }: CartSummaryPro
       },
       {
         onSuccess: (data) => {
-          const clientSecret = data.data?.clientSecret;
-          if (clientSecret) {
+          if (!data.data) {
+            showErrorToast("Invalid response from server.");
+            return;
+          }
+          const { clientSecret, orderId, isFree } = data.data;
+
+          // Nếu free, chuyển thẳng tới /checkout/result?orderId=...
+          if (isFree) {
+            navigate(`/checkout/result?orderId=${orderId}`);
+          } else if (clientSecret) {
             navigate("/checkout", {
-              state: { selectedItems, clientSecret },
+              state: { selectedItems, clientSecret, orderId },
             });
           }
         },
