@@ -17,7 +17,9 @@ public class CourseGridifyMapper : GridifyMapper<Course>
         AddMap("CategoryId", c => c.CategoryId);
         AddMap("SectionCount", c => c.Sections.Count);
         AddMap("LectureCount", c => c.Sections.SelectMany(s => s.Lectures).Count());
+        AddMap("Status", c => c.Status);
         AddMap("CreatedAt", c => c.CreatedAt);
         AddMap("UpdatedAt", c => c.UpdatedAt);
+        AddMap("InstructorName", c => c.Instructor.DisplayName);
     }
 }

@@ -31,9 +31,9 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public ICollection<Experience> Experiences { get; init; } = new List<Experience>();
 
-    public bool IsActivated { get; set; } = false;
+    public bool IsActivated { get; set; } = true;
 
-    public bool IsInitialPasswordChanged { get; set; } = false;
+    public bool IsInitialPasswordChanged { get; set; } = true;
 
     public Cart Cart { get; set; } = new();
 

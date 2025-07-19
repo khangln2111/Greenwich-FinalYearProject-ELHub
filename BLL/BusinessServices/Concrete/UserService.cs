@@ -1,7 +1,98 @@
-﻿using BLL.BusinessServices.Abstract;
+﻿using AutoMapper;
+using BLL.BusinessServices.Abstract;
+using BLL.DTOs.UserDTOs;
+using BLL.Exceptions;
+using BLL.Gridify;
+using BLL.Gridify.CustomModels;
+using BLL.Models;
+using BLL.Validations;
+using DAL.Data;
+using DAL.Data.Entities;
+using DAL.Data.Enums;
+using DAL.Utilities.CurrentUserUtility;
+using DAL.Utilities.MediaUtility.Abstract;
+using Gridify;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.BusinessServices.Concrete;
 
-public class UserService : IUserService
+public class UserService(
+    ApplicationDbContext context,
+    UserManager<ApplicationUser> userManager,
+    IMapper mapper,
+    IGridifyMapper<ApplicationUser> gridifyMapper,
+    IValidationService validationService,
+    IMediaManager mediaManager,
+    ICurrentUserUtility currentUserUtility) : IUserService
 {
+    public async Task<Paged<UserVm>> GetList(GridifyQuery query)
+    {
+        return await context.Users
+            .AsNoTracking()
+            .GridifyToAsync<ApplicationUser, UserVm>(query, mapper, gridifyMapper);
+    }
+
+    public async Task<UserDetailVm> GetById(Guid id)
+    {
+        var user = await context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (user == null) throw new NotFoundException(nameof(ApplicationUser), id);
+
+        return mapper.Map<UserDetailVm>(user);
+    }
+
+    public async Task<Success> AssignRolesToUser(AssignRolesToUserCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        var user = await userManager.FindByIdAsync(command.UserId);
+        if (user == null) throw new NotFoundException(nameof(ApplicationUser), command.UserId);
+
+        var currentRoles = await userManager.GetRolesAsync(user);
+
+        var removeResult = await userManager.RemoveFromRolesAsync(user, currentRoles);
+        if (!removeResult.Succeeded) throw new BadRequestException(removeResult.Errors);
+
+        var addResult = await userManager.AddToRolesAsync(user, command.RoleNames);
+        if (!addResult.Succeeded) throw new BadRequestException(addResult.Errors);
+
+        return new Success("Roles assigned successfully.");
+    }
+
+    public async Task<Success> SetUserActivation(SetUserActivationCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        var user = await userManager.FindByIdAsync(command.UserId);
+        if (user == null) throw new NotFoundException(nameof(ApplicationUser), command.UserId);
+        if (user.IsActivated == command.IsActive)
+            return new Success("No changes made, user is already in the desired state.");
+        user.IsActivated = command.IsActive;
+        await userManager.UpdateAsync(user);
+        return new Success($"User activation status set to {command.IsActive}.");
+    }
+
+    public async Task<Success> UpdateUserProfile(UpdateUserCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        var user = await context.Users
+            .Include(u => u.Avatar)
+            .FirstOrDefaultAsync(u => u.Id == command.Id);
+        if (user == null) throw new NotFoundException(nameof(ApplicationUser), command.Id);
+
+        if (command.Avatar != null && user.Avatar == null)
+        {
+            var avatar = await mediaManager.SaveFileAsync(command.Avatar, MediaType.Image);
+            await context.Media.AddAsync(avatar);
+            user.Avatar = avatar;
+        }
+
+        if (command.Avatar != null && user.Avatar != null)
+            await mediaManager.UpdateFileAsync(user.Avatar, command.Avatar);
+        mapper.Map(command, user);
+        await userManager.UpdateAsync(user);
+        await context.SaveChangesAsync();
+        return new Success("User profile updated successfully.");
+    }
 }

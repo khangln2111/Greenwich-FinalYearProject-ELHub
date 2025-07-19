@@ -408,7 +408,7 @@ namespace DAL.Data.Migrations
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PromoVideoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     InstructorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RejectionCount = table.Column<int>(type: "int", nullable: false),
+                    RetryCount = table.Column<int>(type: "int", nullable: false),
                     LastRejectedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),

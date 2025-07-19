@@ -43,7 +43,7 @@ public class Course : BaseEntity
 
     public ApplicationUser Instructor { get; set; } = null!;
 
-    public int RejectionCount { get; set; } = 0;
+    public int RetryCount { get; set; } = 0;
     public DateTime? LastRejectedAt { get; set; }
 
     public DateTime? SubmittedAt { get; set; }

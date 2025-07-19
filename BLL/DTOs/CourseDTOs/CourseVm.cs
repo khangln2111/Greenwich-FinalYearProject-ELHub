@@ -55,5 +55,7 @@ public class CourseVm
 
     public int RejectionCount { get; init; }
 
+    public DateTime? SubmittedAt { get; init; }
+
     public DateTime? LastRejectedAt { get; init; }
 }

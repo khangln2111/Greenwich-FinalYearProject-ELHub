@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250710094641_Initial")]
+    [Migration("20250714195534_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -323,7 +323,7 @@ namespace DAL.Data.Migrations
                     b.Property<Guid?>("PromoVideoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("RejectionCount")
+                    b.Property<int>("RetryCount")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")

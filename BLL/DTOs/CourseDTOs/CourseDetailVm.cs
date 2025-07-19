@@ -62,11 +62,13 @@ public class CourseDetailVm
 
     public int InstructorStudentCount { get; init; }
 
-    public int RejectionCount { get; init; }
+    public int RetryCount { get; init; }
 
     public CourseApprovalHistoryVm[] ApprovalHistories { get; init; } = [];
 
     public DateTime? LastRejectedAt { get; init; }
+
+    public DateTime? SubmittedAt { get; init; }
 
     public DateTime CreatedAt { get; init; }
 

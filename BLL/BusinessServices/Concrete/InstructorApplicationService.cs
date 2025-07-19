@@ -85,13 +85,14 @@ public class InstructorApplicationService(
             throw new NotFoundException("No rejected instructor application found for the current user.");
 
         if (application.RetryCount >= MaxRetryCount)
-            throw new BadRequestException("You have reached the maximum number of retry attempts.",
+            throw new BadRequestException(
+                $"You have reached the maximum retry limit of {MaxRetryCount} for your instructor application.",
                 ErrorCode.RetryLimitExceeded);
 
         if (application.LastRejectedAt.HasValue)
         {
             var cooldownEnd = application.LastRejectedAt.Value.AddDays(RetryCooldownDays);
-            if (DateTime.UtcNow < cooldownEnd)
+            if (DateTime.Now < cooldownEnd)
                 throw new BadRequestException(
                     $"Please retry after {cooldownEnd:g}.",
                     ErrorCode.RetryCooldown);
@@ -126,7 +127,7 @@ public class InstructorApplicationService(
             return false;
 
         if (latestRejected.LastRejectedAt.HasValue &&
-            (DateTime.UtcNow - latestRejected.LastRejectedAt.Value).TotalDays < RetryCooldownDays)
+            (DateTime.Now - latestRejected.LastRejectedAt.Value).TotalDays < RetryCooldownDays)
             return false;
 
         return true;
@@ -148,7 +149,7 @@ public class InstructorApplicationService(
             throw new BadRequestException("This application has already been reviewed.", ErrorCode.InvalidOperation);
 
         application.Note = command.Note;
-        application.ReviewedAt = DateTime.UtcNow;
+        application.ReviewedAt = DateTime.Now;
 
         if (command.IsApproved)
         {
@@ -170,7 +171,7 @@ public class InstructorApplicationService(
         else
         {
             application.Status = InstructorApplicationStatus.Rejected;
-            application.LastRejectedAt = DateTime.UtcNow;
+            application.LastRejectedAt = DateTime.Now;
         }
 
         await context.SaveChangesAsync();

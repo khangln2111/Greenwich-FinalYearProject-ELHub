@@ -320,7 +320,7 @@ namespace DAL.Data.Migrations
                     b.Property<Guid?>("PromoVideoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("RejectionCount")
+                    b.Property<int>("RetryCount")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
