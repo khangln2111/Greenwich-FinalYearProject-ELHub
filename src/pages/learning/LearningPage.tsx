@@ -87,8 +87,8 @@ export default function LearningCoursePage() {
               <Hourglass size={48} className="text-gray-400 mb-2" />
               <h2 className="text-xl font-semibold">Course coming soon</h2>
               <p className="text-sm text-gray-300">
-                It looks like the instructor is still working on this course. Once lectures are
-                added, they’ll show up here!
+                The instructor is still working on this course. Once lectures are added, they’ll
+                show up here!
               </p>
             </div>
           ) : (
