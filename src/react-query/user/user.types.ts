@@ -12,7 +12,7 @@ export interface SetUserActivationCommand {
 
 export interface UserVm {
   id: string;
-  fullName?: string;
+  fullName: string;
   email: string;
   avatarUrl?: string;
   roles: string[];

@@ -16,85 +16,25 @@ import { modals } from "@mantine/modals";
 import dayjs from "dayjs";
 import { PencilIcon, Search } from "lucide-react";
 import { useState } from "react";
-
-const mockUsers = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  name: `User ${i + 1}`,
-  email: `user${i + 1}@example.com`,
-  avatar: `https://api.dicebear.com/7.x/initials/svg?seed=User${i + 1}`,
-  role: i % 5 === 0 ? "Admin" : i % 4 === 0 ? "Instructor" : "Student",
-  status: i % 6 === 0 ? "Banned" : "Active",
-  joinedAt: dayjs()
-    .subtract(i * 3, "days")
-    .toISOString(),
-}));
+import { useGetUsers } from "../../../react-query/user/userHooks";
+import CenterLoader from "../../../components/CenterLoader";
 
 export default function AdminUsersPage() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const [users, setUsers] = useState(mockUsers);
 
-  const handleToggleStatus = (id: number) => {
-    setUsers((prev) =>
-      prev.map((user) =>
-        user.id === id
-          ? {
-              ...user,
-              status: user.status === "Active" ? "Banned" : "Active",
-            }
-          : user,
-      ),
+  const { data, isPending, error } = useGetUsers();
+
+  if (isPending) return <CenterLoader />;
+
+  if (error) {
+    return (
+      <Text c="red" ta="center">
+        Error loading users: {error.message}
+      </Text>
     );
-  };
-
-  const handleChangeRole = (id: number, newRole: string) => {
-    setUsers((prev) => prev.map((user) => (user.id === id ? { ...user, role: newRole } : user)));
-  };
-
-  const openEditRoleModal = (user: (typeof users)[number]) => {
-    let selectedRole = user.role;
-
-    modals.open({
-      title: `Edit role for ${user.name}`,
-      centered: true,
-      children: (
-        <div className="space-y-4">
-          <Select
-            label="Select Role"
-            data={["Student", "Instructor", "Admin"]}
-            defaultValue={user.role}
-            onChange={(value) => {
-              if (value) selectedRole = value;
-            }}
-            checkIconPosition="right"
-          />
-          <Group justify="end" mt="md">
-            <Button variant="default" onClick={() => modals.closeAll()}>
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                handleChangeRole(user.id, selectedRole);
-                modals.closeAll();
-              }}
-            >
-              Confirm
-            </Button>
-          </Group>
-        </div>
-      ),
-    });
-  };
-
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase());
-    const matchesRole = !roleFilter || user.role === roleFilter;
-    const matchesStatus = !statusFilter || user.status === statusFilter;
-    return matchesSearch && matchesRole && matchesStatus;
-  });
+  }
 
   return (
     <div className="flex-1 p-4 sm:p-6 xl:p-8 space-y-6">
@@ -148,14 +88,19 @@ export default function AdminUsersPage() {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {filteredUsers.map((user) => (
+                {data?.items.map((user) => (
                   <Table.Tr key={user.id}>
                     <Table.Td>
                       <div className="flex items-center gap-x-4 whitespace-nowrap">
-                        <Avatar src={user.avatar} radius="xl" size="md" />
+                        <Avatar
+                          src={user.avatarUrl || user.fullName}
+                          radius="xl"
+                          size="md"
+                          color="initials"
+                        />
                         <div className="flex flex-col">
                           <Text size="md" fw={600} className="text-gray-900 dark:text-gray-100">
-                            {user.name}
+                            {user.fullName}
                           </Text>
                           <Text size="sm" className="text-gray-600 dark:text-gray-400 break-all">
                             {user.email}
@@ -169,38 +114,34 @@ export default function AdminUsersPage() {
                         variant="light"
                         className="min-w-[120px] text-center text-[13px] px-2"
                         color={
-                          user.role === "Admin"
+                          user.roles.includes("Admin")
                             ? "red"
-                            : user.role === "Instructor"
+                            : user.roles.includes("Instructor")
                               ? "blue"
                               : "gray"
                         }
                       >
-                        {user.role}
+                        {user.roles.join(", ") || "User"}
                       </Badge>
                     </Table.Td>
 
                     <Table.Td>
                       <Switch
                         size="sm"
-                        color={user.status === "Banned" ? "gray" : "green"}
-                        checked={user.status === "Active"}
-                        onChange={() => handleToggleStatus(user.id)}
-                        label={user.status}
+                        color={user.isActivated ? "green" : "gray"}
+                        checked={user.isActivated}
+                        label={user.isActivated ? "Active" : "Banned"}
                       />
                     </Table.Td>
 
                     <Table.Td>
-                      <Text size="sm">{dayjs(user.joinedAt).format("DD/MM/YYYY")}</Text>
+                      <Text size="sm">
+                        {user.dateOfBirth ? dayjs(user.dateOfBirth).format("DD/MM/YYYY") : "-"}
+                      </Text>
                     </Table.Td>
 
                     <Table.Td>
-                      <Button
-                        size="xs"
-                        variant="subtle"
-                        leftSection={<PencilIcon size={14} />}
-                        onClick={() => openEditRoleModal(user)}
-                      >
+                      <Button size="xs" variant="subtle" leftSection={<PencilIcon size={14} />}>
                         Edit
                       </Button>
                     </Table.Td>
@@ -211,7 +152,7 @@ export default function AdminUsersPage() {
           </TableScrollContainer>
         </div>
 
-        {filteredUsers.length === 0 && (
+        {data?.count === 0 && (
           <Text ta="center" c="dimmed" mt="md">
             No users found.
           </Text>
