@@ -10,7 +10,7 @@ export function formatCurrency(amount: number): string {
 
 interface FormatDateOptions {
   input: string | number | Date;
-  formatType?: "longMonth" | "ddmmyyyy";
+  formatType?: "longMonth" | "ddmmyyyy" | "longMonthWithTime" | "ddmmyyyyWithTime";
 }
 
 export function formatDate({ input, formatType = "longMonth" }: FormatDateOptions): string {
@@ -23,12 +23,34 @@ export function formatDate({ input, formatType = "longMonth" }: FormatDateOption
         day: "numeric",
         year: "numeric",
       });
+
     case "ddmmyyyy":
       return date.toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
       });
+
+    case "longMonthWithTime":
+      return date.toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
+    case "ddmmyyyyWithTime":
+      return date.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
     default:
       return date.toISOString();
   }

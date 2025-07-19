@@ -42,7 +42,7 @@ const OrderDetailHeader = ({ order }: { order: OrderDetailVm }) => {
         <div>
           <p className="text-gray-500 dark:text-gray-400 mb-1">Purchase Date</p>
           <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
-            {formatDate({ input: order.createdAt, formatType: "longMonth" })}
+            {formatDate({ input: order.createdAt, formatType: "longMonthWithTime" })}
           </p>
         </div>
       </div>
