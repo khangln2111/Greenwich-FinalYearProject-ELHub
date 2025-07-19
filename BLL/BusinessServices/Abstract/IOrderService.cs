@@ -11,9 +11,9 @@ public interface IOrderService
 
     Task<OrderVm> GetById(Guid id);
 
-    Task<Success> CreatePaymentIntent(CreatePaymentIntentCommand command);
+    Task<Success> CreateOrder(CreateOrderCommand command);
 
-    Task<Success> ConfirmPaymentIntent(string paymentIntentId);
+    Task<Success> ConfirmOrder(Guid id);
 
     Task<Paged<OrderVm>> GetListSelf(GridifyQuery query);
 

@@ -28,31 +28,31 @@ public class OrderService(
     : IOrderService
 {
     //payment by selected cart items
-    public async Task<Success> CreatePaymentIntent(CreatePaymentIntentCommand command)
+    public async Task<Success> CreateOrder(CreateOrderCommand command)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
 
-        var currentUserId = currentUser.Id;
-
         var cart = await context.Carts
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course)
-            .FirstOrDefaultAsync(x => x.UserId == currentUserId);
+            .FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
 
-        if (cart == null) throw new NotFoundException("Cart belongs to user not found");
+        if (cart == null) throw new NotFoundException("Cart not found");
 
-        var cartItems = cart.CartItems.Where(x => command.CartItemIds.Contains(x.Id)).ToList();
-        if (cartItems.Count == 0) throw new NotFoundException("Cart items not found");
+        var cartItems = cart.CartItems
+            .Where(x => command.CartItemIds.Contains(x.Id))
+            .ToList();
+
+        if (cartItems.Count == 0) throw new NotFoundException("Selected cart items not found");
 
         var totalAmount = cartItems.Sum(i => i.Course.DiscountedPrice * i.Quantity);
         var totalAmountInCents = (long)(totalAmount * 100);
 
-        // Create Order with status Pending
-        var newOrder = new Order
+        var order = new Order
         {
-            UserId = currentUserId,
-            Status = OrderStatus.Incomplete,
+            UserId = currentUser.Id,
+            Status = totalAmountInCents == 0 ? OrderStatus.Completed : OrderStatus.Incomplete,
             OrderItems = cartItems.Select(x => new OrderItem
             {
                 CourseId = x.CourseId,
@@ -62,131 +62,156 @@ public class OrderService(
             }).ToList()
         };
 
-        await context.Orders.AddAsync(newOrder);
+        await context.Orders.AddAsync(order);
         await context.SaveChangesAsync();
 
+        var courseIds = order.OrderItems.Select(oi => oi.CourseId).ToList();
+
+        if (order.Status == OrderStatus.Completed)
+        {
+            // Xóa cart item
+            var cartItemsToRemove = cartItems
+                .Where(ci => courseIds.Contains(ci.CourseId))
+                .ToList();
+            context.CartItems.RemoveRange(cartItemsToRemove);
+
+            // Cập nhật inventory
+            var inventory = await context.Inventories
+                .Where(i => i.UserId == order.UserId)
+                .FirstAsync();
+
+            var inventoryItems = await context.InventoryItems
+                .Where(ii => ii.InventoryId == inventory.Id && courseIds.Contains(ii.CourseId))
+                .ToDictionaryAsync(ii => ii.CourseId);
+
+            foreach (var item in order.OrderItems)
+                if (inventoryItems.TryGetValue(item.CourseId, out var invItem))
+                    invItem.Quantity += item.Quantity;
+                else
+                    await context.InventoryItems.AddAsync(new InventoryItem
+                    {
+                        InventoryId = inventory.Id,
+                        CourseId = item.CourseId,
+                        Quantity = item.Quantity
+                    });
+
+            await context.SaveChangesAsync();
+
+            return new Success("Free order processed successfully", new
+            {
+                orderId = order.Id,
+                isFree = true,
+                status = order.Status.ToString()
+            });
+        }
+
+        // Stripe payment intent
         var options = new PaymentIntentCreateOptions
         {
             Amount = totalAmountInCents,
             Currency = "usd",
             Metadata = new Dictionary<string, string>
             {
-                { "orderId", newOrder.Id.ToString() },
-                { "userId", currentUserId.ToString() }
+                { "orderId", order.Id.ToString() },
+                { "userId", currentUser.Id.ToString() }
             },
             Description = "Thank you for your purchase",
             ReceiptEmail = currentUser.Email
         };
 
-        var service = new PaymentIntentService();
-        var paymentIntent = await service.CreateAsync(options);
+        var paymentIntent = await new PaymentIntentService().CreateAsync(options);
 
-        // Save PaymentIntentId to Order
-        newOrder.PaymentIntentId = paymentIntent.Id;
+        order.PaymentIntentId = paymentIntent.Id;
         await context.SaveChangesAsync();
 
-        return new Success("Payment intent created successfully", new { paymentIntent.ClientSecret });
+        return new Success("Payment intent created successfully", new
+        {
+            orderId = order.Id,
+            clientSecret = paymentIntent.ClientSecret,
+            isFree = false,
+            status = order.Status.ToString()
+        });
     }
 
-
-    public async Task<Success> ConfirmPaymentIntent(string paymentIntentId)
+    public async Task<Success> ConfirmOrder(Guid id)
     {
-        var intent = await stripePaymentUtility.GetPaymentIntent(paymentIntentId);
-        var metadata = intent.Metadata;
-
-        if (!metadata.TryGetValue("orderId", out var orderIdStr) || !Guid.TryParse(orderIdStr, out var orderId))
-            throw new BadRequestException("Missing or invalid orderId in metadata", ErrorCode.InvalidPaymentIntent);
-
         var order = await context.Orders
             .Include(o => o.OrderItems)
-            .FirstOrDefaultAsync(o => o.Id == orderId);
+            .FirstOrDefaultAsync(o => o.Id == id);
 
-        if (order == null)
-            throw new NotFoundException("Order not found");
+        if (order == null) throw new NotFoundException("Order not found");
 
-        // Avoid double processing
         if (order.Status != OrderStatus.Incomplete)
-            return new Success("Payment already processed", new
+            return new Success("Order already processed", new
             {
-                OrderId = order.Id,
-                Status = order.Status.ToString()
+                orderId = order.Id,
+                status = order.Status.ToString()
             });
 
-        // Step 1: Update Order status
-        order.Status = intent.Status == "succeeded"
-            ? OrderStatus.Completed
-            : OrderStatus.Failed;
-
-        // Step 2: Extract payment method info
-        var paymentMethodId = intent.PaymentMethodId;
-        if (!string.IsNullOrEmpty(paymentMethodId))
+        var intent = await stripePaymentUtility.GetPaymentIntent(order.PaymentIntentId!);
+        if (intent.Status != "succeeded")
         {
-            var paymentMethodService = new PaymentMethodService();
-            var paymentMethod = await paymentMethodService.GetAsync(paymentMethodId);
+            order.Status = OrderStatus.Failed;
+            await context.SaveChangesAsync();
 
-            if (paymentMethod.Type == "card" && paymentMethod.Card != null)
+            return new Success("Payment failed", new
+            {
+                orderId = order.Id,
+                status = order.Status.ToString()
+            });
+        }
+
+        order.Status = OrderStatus.Completed;
+
+        // Payment method info
+        var paymentMethod = await new PaymentMethodService().GetAsync(intent.PaymentMethodId!);
+        if (paymentMethod != null)
+        {
+            order.PaymentMethodType = paymentMethod.Type;
+            if (paymentMethod.Card != null)
             {
                 order.PaymentMethodBrand = paymentMethod.Card.Brand;
                 order.PaymentMethodLast4 = paymentMethod.Card.Last4;
-                order.PaymentMethodType = paymentMethod.Type;
             }
+        }
+
+        // Xoá cart item
+        var courseIds = order.OrderItems.Select(oi => oi.CourseId).ToList();
+        var cartItems = await context.CartItems
+            .Where(ci => ci.Cart.UserId == order.UserId && courseIds.Contains(ci.CourseId))
+            .ToListAsync();
+
+        context.CartItems.RemoveRange(cartItems);
+
+        // Cập nhật inventory
+        var inventory = await context.Inventories
+            .Where(i => i.UserId == order.UserId)
+            .FirstAsync();
+
+        var inventoryItems = await context.InventoryItems
+            .Where(ii => ii.InventoryId == inventory.Id && courseIds.Contains(ii.CourseId))
+            .ToDictionaryAsync(ii => ii.CourseId);
+
+        foreach (var item in order.OrderItems)
+            if (inventoryItems.TryGetValue(item.CourseId, out var invItem))
+                invItem.Quantity += item.Quantity;
             else
-            {
-                order.PaymentMethodType = paymentMethod.Type;
-            }
-        }
-
-
-        if (order.Status == OrderStatus.Completed)
-        {
-            // Step 3: Remove related cart items
-            var courseIds = order.OrderItems.Select(oi => oi.CourseId).ToList();
-
-            var cartItems = await context.CartItems
-                .Where(ci => ci.Cart.UserId == order.UserId && courseIds.Contains(ci.CourseId))
-                .ToListAsync();
-
-            if (cartItems.Count != 0)
-                context.CartItems.RemoveRange(cartItems);
-
-            // Step 4: Ensure inventory
-            var inventory = await context.Inventories
-                .FirstOrDefaultAsync(i => i.UserId == order.UserId);
-
-            // Query InventoryItems of this user and index
-            var inventoryItems = await context.InventoryItems
-                .Where(ii => ii.InventoryId == inventory!.Id && courseIds.Contains(ii.CourseId))
-                .ToDictionaryAsync(ii => ii.CourseId);
-
-
-            foreach (var orderItem in order.OrderItems)
-                if (inventoryItems.TryGetValue(orderItem.CourseId, out var item))
+                await context.InventoryItems.AddAsync(new InventoryItem
                 {
-                    item.Quantity += orderItem.Quantity;
-                }
-                else
-                {
-                    var newItem = new InventoryItem
-                    {
-                        InventoryId = inventory!.Id,
-                        CourseId = orderItem.CourseId,
-                        Quantity = orderItem.Quantity
-                    };
-                    await context.InventoryItems.AddAsync(newItem);
-                }
-        }
+                    InventoryId = inventory.Id,
+                    CourseId = item.CourseId,
+                    Quantity = item.Quantity
+                });
 
         await context.SaveChangesAsync();
 
-        return new Success(
-            order.Status == OrderStatus.Completed ? "Payment succeeded" : "Payment failed",
-            new
-            {
-                OrderId = order.Id,
-                Status = order.Status.ToString()
-            }
-        );
+        return new Success("Payment succeeded", new
+        {
+            orderId = order.Id,
+            status = order.Status.ToString()
+        });
     }
+
 
     public Task<Paged<OrderVm>> GetList(GridifyQuery query)
     {

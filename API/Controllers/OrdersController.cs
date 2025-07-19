@@ -51,21 +51,20 @@ public class OrdersController(IOrderService orderService) : ControllerBase
     }
 
 
-    [HttpPost("CreatePaymentIntent")]
+    [HttpPost("Create")]
     [Authorize]
-    public async Task<IActionResult> CreatePaymentIntent([FromBody] CreatePaymentIntentCommand command)
+    public async Task<IActionResult> Create([FromBody] CreateOrderCommand command)
     {
-        var result = await orderService.CreatePaymentIntent(command);
+        var result = await orderService.CreateOrder(command);
         return Ok(result);
     }
 
-    [HttpGet("ConfirmPaymentIntent/{paymentIntentId}")]
+    [HttpGet("{id:guid}/Confirm")]
     [Authorize]
-    public async Task<IActionResult> ConfirmPaymentIntent(string paymentIntentId)
+    public async Task<IActionResult> ConfirmOrder(Guid id)
     {
-        if (string.IsNullOrEmpty(paymentIntentId))
-            return BadRequest("paymentIntentId is required.");
-        var result = await orderService.ConfirmPaymentIntent(paymentIntentId);
+        if (id == Guid.Empty) return BadRequest("Invalid order ID.");
+        var result = await orderService.ConfirmOrder(id);
         return Ok(result);
     }
 }
