@@ -10,6 +10,16 @@ export interface SetUserActivationCommand {
   isActive: boolean;
 }
 
+export interface UpdateUserCommand {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  displayName?: string;
+  avatar?: File;
+  dateOfBirth?: string;
+  professionalTitle?: string;
+}
+
 export interface UserVm {
   id: string;
   fullName: string;

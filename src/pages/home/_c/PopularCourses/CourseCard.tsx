@@ -79,7 +79,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
           transitionProps={{ duration: 200 }}
         >
           <Text
-            className="font-bold text-xl text-left cursor-pointer md:line-clamp-2 xl:line-clamp-1"
+            className="font-bold text-xl text-left cursor-pointer md:line-clamp-2 xl:line-clamp-2"
             component={Link}
             to={`/courses/${course.id}`}
           >
@@ -88,7 +88,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
         </Tooltip>
       </div>
 
-      {/* Author (mocked for now) */}
+      {/* Author */}
       <div className="flex gap-2 items-center text-wrap mt-2 px-md">
         <Avatar
           color="initials"

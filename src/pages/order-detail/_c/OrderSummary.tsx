@@ -1,14 +1,17 @@
 import { Title } from "@mantine/core";
 import { OrderDetailVm, OrderStatus } from "../../../react-query/order/order.types";
+import VisaCardLogo from "../../../assets/icons/VisaCardLogo.svg";
+import MastercardCardLogo from "../../../assets/icons/MastercardCardLogo.svg";
+import CreditCard from "../../../assets/icons/CreditCardIcon.svg";
 
 export function getPaymentBrandIcon(brand?: string): string {
   switch (brand?.toLowerCase()) {
     case "visa":
-      return "https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg";
+      return VisaCardLogo;
     case "mastercard":
-      return "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg";
+      return MastercardCardLogo;
     default:
-      return "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Credit_card_font_awesome.svg/1200px-Credit_card_font_awesome.svg.png";
+      return CreditCard;
   }
 }
 

@@ -4,6 +4,7 @@ import apiClient from "../../http-client/apiClient";
 import {
   AssignRoleToUserCommand,
   SetUserActivationCommand,
+  UpdateUserCommand,
   UserQueryCriteria,
   UserVm,
 } from "./user.types";
@@ -66,5 +67,12 @@ export const assignRolesToUser = async (command: AssignRoleToUserCommand) => {
 
 export const setUserActivation = async (command: SetUserActivationCommand) => {
   const response = await apiClient.post(`${BASE_URL}/set-activation`, command);
+  return response.data;
+};
+
+export const updateUserProfile = async (command: UpdateUserCommand) => {
+  const response = await apiClient.put(`${BASE_URL}`, command, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return response.data;
 };
