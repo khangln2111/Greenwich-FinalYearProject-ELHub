@@ -45,7 +45,7 @@ export const useCreateOrder = () => {
 
 export const useConfirmOrder = (id: string) => {
   return useQuery({
-    queryKey: keyFac.orders.confirmPaymentIntent(id).queryKey,
+    queryKey: keyFac.orders.confirmOrder(id).queryKey,
     queryFn: () => confirmOrder(id),
     enabled: !!id,
     retry: false,

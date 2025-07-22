@@ -2,7 +2,7 @@ import { createQueryKeys } from "@lukemorales/query-key-factory";
 import { OrderQueryCriteria } from "./order.types";
 
 export const orderKeyFac = createQueryKeys("orders", {
-  confirmPaymentIntent: (paymentIntentId: string) => ({
+  confirmOrder: (paymentIntentId: string) => ({
     queryKey: [paymentIntentId],
   }),
   getOrdersSelf: (query?: OrderQueryCriteria) => ({
