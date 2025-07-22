@@ -8,23 +8,30 @@ import CusModal from "../../../../components/CusModal";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
 import { UpdateUserCommand, UserVm } from "../../../../react-query/user/user.types";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import { useUpdateUser } from "../../../../react-query/user/userHooks";
 
 const EditUserSchema = z.object({
-  id: z.string(),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
+  firstName: z.string().optional(),
+
+  lastName: z.string().optional(),
+
   professionalTitle: z.string().optional(),
-  dateOfBirth: z.string().optional(),
+
+  dateOfBirth: z.date().max(new Date(), "Date of birth cannot be in the future").optional(),
+
   avatar: z
-    .instanceof(File)
-    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-      message: "Only JPG, JPEG, PNG, WEBP images are allowed",
-    })
-    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
-      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
-    })
-    .optional()
-    .or(z.string()),
+    .union([
+      z
+        .instanceof(File)
+        .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
+          message: "Only JPG, JPEG, PNG, WEBP images are allowed",
+        })
+        .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
+          message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
+        }),
+      z.string(),
+    ])
+    .optional(),
 });
 
 type EditUserFormValues = z.infer<typeof EditUserSchema>;
@@ -33,19 +40,19 @@ type Props = {
   opened: boolean;
   onClose: () => void;
   user: UserVm;
-  onSubmit: (values: UpdateUserCommand) => void;
 };
 
-export default function EditUserInfoModal({ opened, onClose, user, onSubmit }: Props) {
+export default function EditUserInfoModal({ opened, onClose, user }: Props) {
+  const updateUserMutation = useUpdateUser();
+
   const form = useForm<EditUserFormValues>({
     mode: "uncontrolled",
     validate: zodResolver(EditUserSchema),
     initialValues: {
-      id: user.id,
       firstName: user.firstName ?? "",
       lastName: user.lastName ?? "",
       professionalTitle: user.professionalTitle ?? "",
-      dateOfBirth: user.dateOfBirth ?? "",
+      dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth) : undefined,
       avatar: user.avatarUrl ?? "",
     },
   });
@@ -54,15 +61,19 @@ export default function EditUserInfoModal({ opened, onClose, user, onSubmit }: P
 
   const handleSubmit = (values: EditUserFormValues) => {
     const payload: UpdateUserCommand = {
-      id: values.id,
+      id: user.id,
       firstName: values.firstName,
       lastName: values.lastName,
       professionalTitle: values.professionalTitle,
-      dateOfBirth: values.dateOfBirth,
+      dateOfBirth: values.dateOfBirth ? new Date(values.dateOfBirth) : undefined,
       avatar: values.avatar instanceof File ? values.avatar : undefined,
     };
-    onSubmit(payload);
-    onClose();
+
+    updateUserMutation.mutate(payload, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   };
 
   return (
@@ -160,6 +171,7 @@ export default function EditUserInfoModal({ opened, onClose, user, onSubmit }: P
           radius="md"
           size="md"
           disabled={!form.isDirty()}
+          loading={updateUserMutation.isPending}
           onClick={() => formSubmitWithFocus(form, handleSubmit)()}
         >
           Save Changes

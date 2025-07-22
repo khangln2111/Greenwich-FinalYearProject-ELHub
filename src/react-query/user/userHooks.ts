@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { showErrorToast } from "../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
@@ -23,6 +23,7 @@ export const useUpdateUser = () => {
     mutationFn: (command: UpdateUserCommand) => updateUser(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.users._def });
+      showSuccessToast("Success", "User updated successfully.");
     },
     onError: (error) =>
       handleApiError(error, {
@@ -43,6 +44,7 @@ export const useAssignRolesToUser = () => {
     mutationFn: (command: AssignRoleToUserCommand) => assignRolesToUser(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.users._def });
+      showSuccessToast("Success", "User roles updated successfully.");
     },
     onError: (error) =>
       handleApiError(error, {

@@ -19,12 +19,7 @@ const UpdateUserProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   gender: z.nativeEnum(Gender),
-  dateOfBirth: z
-    .date({
-      required_error: "Date of birth is required",
-      invalid_type_error: "Invalid date format",
-    })
-    .max(new Date(), "Date of birth cannot be in the future"),
+  dateOfBirth: z.date().max(new Date(), "Date of birth cannot be in the future").optional(),
   avatar: z
     .instanceof(File, {
       message: "Profile photo is required",
@@ -52,7 +47,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
     initialValues: {
       firstName: user.firstName ?? "",
       lastName: user.lastName ?? "",
-      dateOfBirth: new Date(user.dateOfBirth) ?? new Date(),
+      dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth) : undefined,
       gender: user.gender ?? Gender.Other,
       avatar: user.avatarUrl ?? "",
     },
@@ -63,7 +58,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
     const payload: UpdateUserProfileSelfCommand = {
       firstName: values.firstName,
       lastName: values.lastName,
-      dateOfBirth: values.dateOfBirth,
+      dateOfBirth: values.dateOfBirth ? new Date(values.dateOfBirth) : undefined,
       gender: values.gender,
       avatar: values.avatar instanceof File ? values.avatar : undefined,
     };

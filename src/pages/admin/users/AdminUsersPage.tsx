@@ -1,5 +1,4 @@
 import {
-  ActionIcon,
   Avatar,
   Badge,
   Button,
@@ -16,15 +15,11 @@ import {
 import dayjs from "dayjs";
 import { PencilIcon, Search, ShieldQuestionIcon } from "lucide-react";
 import { useState } from "react";
-import { useGetUsers } from "../../../react-query/user/userHooks";
 import CenterLoader from "../../../components/CenterLoader";
-import {
-  AssignRoleToUserCommand,
-  UpdateUserCommand,
-  UserVm,
-} from "../../../react-query/user/user.types";
-import EditUserRoleModal from "./_c/EditUserRoleModal";
+import { UserVm } from "../../../react-query/user/user.types";
+import { useGetUsers } from "../../../react-query/user/userHooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
+import EditUserRoleModal from "./_c/EditUserRoleModal";
 
 export default function AdminUsersPage() {
   const [search, setSearch] = useState("");
@@ -36,16 +31,6 @@ export default function AdminUsersPage() {
 
   const handleEditUser = (user: UserVm) => setEditingUser(user);
   const handleEditRole = (user: UserVm) => setEditingRoleUser(user);
-
-  const handleSubmitUser = (form: UpdateUserCommand) => {
-    console.log("Submit user info", form);
-    setEditingUser(null);
-  };
-
-  const handleSubmitRole = (form: AssignRoleToUserCommand) => {
-    console.log("Submit roles", form);
-    setEditingRoleUser(null);
-  };
 
   const { data, isPending, error } = useGetUsers();
 
@@ -116,14 +101,15 @@ export default function AdminUsersPage() {
                     <Table.Td>
                       <div className="flex items-center gap-x-4 whitespace-nowrap">
                         <Avatar
-                          src={user.avatarUrl || user.firstName + " " + user.lastName}
+                          src={user.avatarUrl}
                           radius="xl"
                           size="md"
                           color="initials"
+                          name={user.fullName ?? undefined}
                         />
                         <div className="flex flex-col">
                           <Text size="md" fw={600} className="text-gray-900 dark:text-gray-100">
-                            {`${user.firstName} ${user.lastName}`}
+                            {user.fullName}
                           </Text>
                           <Text size="sm" className="text-gray-600 dark:text-gray-400 break-all">
                             {user.email}
