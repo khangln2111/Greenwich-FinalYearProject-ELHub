@@ -50,4 +50,15 @@ public class UsersController(IUserService userService) : ControllerBase
         var result = await userService.SetUserActivation(command);
         return Ok(result);
     }
+
+    // PUT: api/Users
+    [HttpPut]
+    [ProducesResponseType<Success>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateUser([FromForm] UpdateUserCommand command)
+    {
+        var result = await userService.UpdateUser(command);
+        return Ok(result);
+    }
 }

@@ -12,5 +12,14 @@ public class UserProfiles : Profile
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
             .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.Roles.Select(r => r.Name).ToArray()))
             .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.Avatar == null ? null : src.Avatar.Url));
+
+
+        CreateMap<UpdateUserCommand, ApplicationUser>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForAllMembers(opts =>
+            {
+                opts.AllowNull();
+                opts.Condition((src, dest, srcMember) => srcMember != null);
+            });
     }
 }

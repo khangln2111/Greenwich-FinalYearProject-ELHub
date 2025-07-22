@@ -11,4 +11,5 @@ public interface IUserService
     Task<UserDetailVm> GetById(Guid id);
     Task<Success> AssignRolesToUser(AssignRolesToUserCommand command);
     Task<Success> SetUserActivation(SetUserActivationCommand command);
+    Task<Success> UpdateUser(UpdateUserCommand command);
 }

@@ -73,7 +73,7 @@ public class UserService(
         return new Success($"User activation status set to {command.IsActive}.");
     }
 
-    public async Task<Success> UpdateUserProfile(UpdateUserCommand command)
+    public async Task<Success> UpdateUser(UpdateUserCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await context.Users
