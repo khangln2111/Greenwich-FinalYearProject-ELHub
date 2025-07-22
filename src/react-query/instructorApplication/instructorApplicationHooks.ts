@@ -16,6 +16,7 @@ import {
 import { handleApiError } from "../common-service/handleApiError";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { ErrorCode } from "../../http-client/api.types";
+import { useAppStore } from "../../zustand/store";
 
 export const useGetInstructorApplications = (query?: InstructorApplicationQueryCriteria) => {
   return useQuery({
@@ -25,6 +26,8 @@ export const useGetInstructorApplications = (query?: InstructorApplicationQueryC
 };
 
 export const useGetInstructorApplicationSelf = () => {
+  const currentUser = useAppStore.use.currentUser();
+
   return useQuery({
     queryKey: keyFac.instructorApplications.getInstructorApplicationSelf.queryKey,
     queryFn: getInstructorApplicationSelf,
@@ -36,6 +39,7 @@ export const useGetInstructorApplicationSelf = () => {
       // ✅ Retry tối đa 2 lần cho lỗi khác
       return failureCount < 2;
     },
+    enabled: !!currentUser,
   });
 };
 

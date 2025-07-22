@@ -21,9 +21,11 @@ export interface UpdateUserCommand {
 }
 
 export interface UserVm {
+  professionalTitle: string;
   id: string;
   fullName: string;
   email: string;
+  displayName?: string;
   avatarUrl?: string;
   roles: string[];
   isActivated: boolean;

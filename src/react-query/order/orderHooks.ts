@@ -51,26 +51,3 @@ export const useConfirmOrder = (id: string) => {
     retry: false,
   });
 };
-
-// export const useConfirmPaymentIntent = () => {
-//   return useMutation({
-//     mutationFn: (command: ConfirmPaymentIntentCommand) => confirmPaymentIntent(command),
-//     onSuccess: () => {
-//       showSuccessToast("Payment successful", "Your payment was successful");
-//     },
-//     onError: (error) =>
-//       handleApiError(error, {
-//         matchers: [
-//           {
-//             status: 404,
-//             handler: () => showErrorToast("Not Found", "The cart or cart item was not found"),
-//           },
-//           {
-//             status: 402,
-//             errorCode: ErrorCode.PaymentFailed,
-//             handler: () => showErrorToast("Payment failed", "The payment was not successful"),
-//           },
-//         ],
-//       }),
-//   });
-// };

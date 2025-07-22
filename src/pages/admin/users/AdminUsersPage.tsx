@@ -18,11 +18,34 @@ import { PencilIcon, Search, ShieldQuestionIcon } from "lucide-react";
 import { useState } from "react";
 import { useGetUsers } from "../../../react-query/user/userHooks";
 import CenterLoader from "../../../components/CenterLoader";
+import {
+  AssignRoleToUserCommand,
+  UpdateUserCommand,
+  UserVm,
+} from "../../../react-query/user/user.types";
+import EditUserRoleModal from "./_c/EditUserRoleModal";
+import { EditUserInfoModal } from "./_c/EditUserInfoModal";
 
 export default function AdminUsersPage() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+
+  const [editingUser, setEditingUser] = useState<UserVm | null>(null);
+  const [editingRoleUser, setEditingRoleUser] = useState<UserVm | null>(null);
+
+  const handleEditUser = (user: UserVm) => setEditingUser(user);
+  const handleEditRole = (user: UserVm) => setEditingRoleUser(user);
+
+  const handleSubmitUser = (form: UpdateUserCommand) => {
+    console.log("Submit user info", form);
+    setEditingUser(null);
+  };
+
+  const handleSubmitRole = (form: AssignRoleToUserCommand) => {
+    console.log("Submit roles", form);
+    setEditingRoleUser(null);
+  };
 
   const { data, isPending, error } = useGetUsers();
 
@@ -176,6 +199,21 @@ export default function AdminUsersPage() {
           </Text>
         )}
       </Card>
+      {editingUser && (
+        <EditUserInfoModal
+          opened={!!editingUser}
+          onClose={() => setEditingUser(null)}
+          user={editingUser}
+        />
+      )}
+
+      {editingRoleUser && (
+        <EditUserRoleModal
+          opened={!!editingRoleUser}
+          onClose={() => setEditingRoleUser(null)}
+          user={editingRoleUser}
+        />
+      )}
     </div>
   );
 }
