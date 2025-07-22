@@ -301,7 +301,7 @@ export const useRefreshToken = () => {
   });
 };
 
-export const useUpdateUserProfile = () => {
+export const useUpdateUserProfileSelf = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (command: UpdateUserProfileSelfCommand) => updateUserProfileSelf(command),
@@ -336,7 +336,7 @@ export const useGetWorkProfileSelf = () => {
   });
 };
 
-export const useUpdateWorkProfile = () => {
+export const useUpdateWorkProfileSelf = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (command: UpdateWorkProfileSelfCommand) => updateWorkProfileSelf(command),

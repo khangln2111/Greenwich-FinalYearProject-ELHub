@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
@@ -17,8 +17,19 @@ export default function CheckoutResultPage() {
 
   const { data, isPending, isError, isSuccess } = useConfirmOrder(validId);
 
-  if (isPending) return <CenterLoader />;
-
+  if (isPending) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4">
+        <div className="bg-white dark:bg-dark rounded-2xl shadow-lg p-8 w-full text-center max-w-[576px]">
+          <Loader size={48} color="blue" className="mx-auto mb-4" />
+          <h1 className="text-2xl font-bold">Processing Payment</h1>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">
+            Please do not close or leave this page while we confirm your payment.
+          </p>
+        </div>
+      </div>
+    );
+  }
   if (isSuccess) {
     // Optional: invalidate all cart, inventory, orders cache
     queryClient.invalidateQueries();
@@ -47,13 +58,14 @@ export default function CheckoutResultPage() {
             <XCircle className="text-red-500 w-16 h-16 mx-auto" />
             <h1 className="text-2xl font-bold mt-4">Payment Failed</h1>
             <p className="text-gray-600 dark:text-gray-300 mt-2">
-              Something went wrong with your payment. Please try again or contact support.
+              Your payment failed because we didn't receive a payment confirmation. Please contact
+              support if you think this is an error.
             </p>
             <Button
               variant="light"
               className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white rounded-full"
-              component="a"
-              href="/cart"
+              component={Link}
+              to="/cart"
             >
               Return to Cart
             </Button>

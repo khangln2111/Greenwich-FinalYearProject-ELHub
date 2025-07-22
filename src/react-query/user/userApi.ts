@@ -61,16 +61,16 @@ export const getUsers = async (query?: UserQueryCriteria) => {
 };
 
 export const assignRolesToUser = async (command: AssignRoleToUserCommand) => {
-  const response = await apiClient.post(`${BASE_URL}/assign-roles`, command);
+  const response = await apiClient.post(`${BASE_URL}/AssignRoles`, command);
   return response.data;
 };
 
 export const setUserActivation = async (command: SetUserActivationCommand) => {
-  const response = await apiClient.post(`${BASE_URL}/set-activation`, command);
+  const response = await apiClient.post(`${BASE_URL}/SetActivation`, command);
   return response.data;
 };
 
-export const updateUserProfile = async (command: UpdateUserCommand) => {
+export const updateUser = async (command: UpdateUserCommand) => {
   const response = await apiClient.put(`${BASE_URL}`, command, {
     headers: { "Content-Type": "multipart/form-data" },
   });

@@ -1,11 +1,84 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { showErrorToast } from "../../utils/toastHelper";
+import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { getUsers } from "./userApi";
-import { UserQueryCriteria } from "./user.types";
+import {
+  AssignRoleToUserCommand,
+  SetUserActivationCommand,
+  UpdateUserCommand,
+  UserQueryCriteria,
+} from "./user.types";
+import { assignRolesToUser, getUsers, setUserActivation, updateUser } from "./userApi";
 
 export const useGetUsers = (query?: UserQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.users.getUsers(query).queryKey,
     queryFn: () => getUsers(),
+  });
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: UpdateUserCommand) => updateUser(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.users._def });
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast("Not Found", "The user you are trying to update does not exist."),
+          },
+        ],
+      }),
+  });
+};
+
+export const useAssignRolesToUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: AssignRoleToUserCommand) => assignRolesToUser(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.users._def });
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast(
+                "Not Found",
+                "The user you are trying to assign roles does not exist.",
+              ),
+          },
+        ],
+      }),
+  });
+};
+
+export const useSetUserActivation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: SetUserActivationCommand) => setUserActivation(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.users._def });
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast(
+                "Not Found",
+                "The user you are trying to set activation status does not exist.",
+              ),
+          },
+        ],
+      }),
   });
 };

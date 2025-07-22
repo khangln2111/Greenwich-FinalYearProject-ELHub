@@ -10,7 +10,7 @@ import {
   Gender,
   UpdateUserProfileSelfCommand,
 } from "../../../react-query/auth/identity.types";
-import { useUpdateUserProfile } from "../../../react-query/auth/identityHooks";
+import { useUpdateUserProfileSelf } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 import { parseDateUTC } from "../../../utils/format";
 import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
@@ -45,7 +45,7 @@ type UpdateUserProfileFormProps = {
 };
 
 export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormProps) {
-  const updateUserProfileMutation = useUpdateUserProfile();
+  const updateUserProfileMutation = useUpdateUserProfileSelf();
 
   const form = useForm<UpdateUserProfileFormType>({
     mode: "uncontrolled",

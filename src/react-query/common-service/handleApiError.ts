@@ -5,12 +5,6 @@ import { showErrorToast } from "../../utils/toastHelper";
 
 type ErrorHandler = (error: AxiosError<ApiErrorResponse>) => void;
 
-// interface ApiErrorMatch {
-//   status?: number;
-//   errorCode?: ErrorCode;
-//   handler: ErrorHandler;
-// }
-
 type ApiErrorMatch =
   | { status: number; errorCode?: ErrorCode; handler: ErrorHandler }
   | { errorCode: ErrorCode; status?: number; handler: ErrorHandler };
@@ -54,6 +48,28 @@ export const handleApiError = (
     );
 
     showErrorToast("Validation Error", message);
+    return;
+  }
+
+  if (status === 400 && errorCode === ErrorCode.IdentityError && data?.errors) {
+    const listItems = Object.entries(data.errors).map(([field, messages]) =>
+      React.createElement(
+        "li",
+        { key: field },
+        React.createElement("strong", null, field),
+        ": ",
+        messages.join(", "),
+      ),
+    );
+
+    const message = React.createElement(
+      "div",
+      null,
+      React.createElement("div", null, "The following identity errors occurred:"),
+      React.createElement("ul", { className: "list-disc list-inside" }, ...listItems),
+    );
+
+    showErrorToast("Identity Error", message);
     return;
   }
 

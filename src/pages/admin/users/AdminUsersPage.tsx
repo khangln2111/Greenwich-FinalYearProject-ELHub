@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Avatar,
   Badge,
   Button,
@@ -12,9 +13,8 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
 import dayjs from "dayjs";
-import { PencilIcon, Search } from "lucide-react";
+import { PencilIcon, Search, ShieldQuestionIcon } from "lucide-react";
 import { useState } from "react";
 import { useGetUsers } from "../../../react-query/user/userHooks";
 import CenterLoader from "../../../components/CenterLoader";
@@ -141,9 +141,27 @@ export default function AdminUsersPage() {
                     </Table.Td>
 
                     <Table.Td>
-                      <Button size="xs" variant="subtle" leftSection={<PencilIcon size={14} />}>
-                        Edit
-                      </Button>
+                      <Group gap="xs" wrap="nowrap">
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          color="blue"
+                          leftSection={<PencilIcon size={14} />}
+                          onClick={() => handleEditUser(user)}
+                        >
+                          Edit
+                        </Button>
+
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          color="gray"
+                          leftSection={<ShieldQuestionIcon size={14} />}
+                          onClick={() => handleEditRole(user)}
+                        >
+                          Role
+                        </Button>
+                      </Group>
                     </Table.Td>
                   </Table.Tr>
                 ))}

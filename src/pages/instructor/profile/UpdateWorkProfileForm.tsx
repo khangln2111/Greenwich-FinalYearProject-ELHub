@@ -7,7 +7,7 @@ import {
   UpdateWorkProfileSelfCommand,
   WorkProfileVm,
 } from "../../../react-query/auth/identity.types";
-import { useUpdateWorkProfile } from "../../../react-query/auth/identityHooks";
+import { useUpdateWorkProfileSelf } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
@@ -36,7 +36,7 @@ type Props = {
 };
 
 export default function UpdateWorkProfileForm({ profile }: Props) {
-  const updateWorkProfileMutation = useUpdateWorkProfile();
+  const updateWorkProfileMutation = useUpdateWorkProfileSelf();
 
   const form = useForm<UpdateWorkProfileFormType>({
     mode: "uncontrolled",
