@@ -1,17 +1,19 @@
 import { BaseQueryCriteria } from "../../http-client/api.types";
 
 export interface CreateInstructorApplicationCommand {
-  displayName: string;
+  firstName: string;
+  lastName: string;
   professionalTitle: string;
   about: string;
-  workAvatar: File;
+  avatar: File;
 }
 
 export interface RetryInstructorApplicationCommand {
-  displayName?: string;
+  firstName?: string;
+  lastName?: string;
   professionalTitle?: string;
   about?: string;
-  workAvatar?: File;
+  avatar?: File;
 }
 
 export interface ReviewInstructorApplicationCommand {
@@ -23,12 +25,12 @@ export interface ReviewInstructorApplicationCommand {
 export interface InstructorApplicationVm {
   id: string;
   email: string;
-  displayName: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   professionalTitle: string;
   about: string;
   retryCount: number;
-  workAvatarUrl?: string;
+  avatarUrl?: string;
   status: InstructorApplicationStatus;
   createdAt: string;
   reviewedAt?: string;
@@ -38,7 +40,7 @@ export interface InstructorApplicationVm {
 
 export type InstructorApplicationOrderableFields =
   | "createdAt"
-  | "displayName"
+  | "fullName"
   | "professionalTitle"
   | "status"
   | "reviewedAt";

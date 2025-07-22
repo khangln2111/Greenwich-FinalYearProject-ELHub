@@ -96,10 +96,11 @@ export interface CurrentUser {
 
 export interface WorkProfileVm {
   id: string;
-  displayName?: string;
+  firstName: string;
+  lastName: string;
   professionalTitle?: string;
   about?: string;
-  workAvatarUrl?: string;
+  avatarUrl?: string;
   favoriteQuote?: string;
   favoriteQuoteCite?: string;
 }
@@ -113,10 +114,11 @@ export interface UpdateUserProfileSelfCommand {
 }
 
 export interface UpdateWorkProfileSelfCommand {
-  displayName?: string;
+  firstName?: string;
+  lastName?: string;
   professionalTitle?: string;
   about?: string;
-  workAvatar?: File;
+  avatar?: File;
   favoriteQuote?: string;
   favoriteQuoteCite?: string;
 }

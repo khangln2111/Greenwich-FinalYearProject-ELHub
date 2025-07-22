@@ -1,7 +1,7 @@
 import { useAppStore } from "../../zustand/store";
 import InstructorHeader from "./_c/InstructorHeader";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import InstructorSidebar from "./_c/InstructorSideBar";
+import InstructorSidebar from "./_c/InstructorSidebar";
 
 const InstructorLayout = () => {
   const sidebarCollapsed = useAppStore.use.desktopInstructorSidebarCollapsed();

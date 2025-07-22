@@ -342,6 +342,7 @@ export const useUpdateWorkProfileSelf = () => {
     mutationFn: (command: UpdateWorkProfileSelfCommand) => updateWorkProfileSelf(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.identity.getWorkProfileSelf.queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
       showSuccessToast(
         "Working Profile Updated",
         "Your work profile has been updated successfully.",

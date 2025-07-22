@@ -14,7 +14,6 @@ export interface UpdateUserCommand {
   id: string;
   firstName?: string;
   lastName?: string;
-  displayName?: string;
   avatar?: File;
   dateOfBirth?: string;
   professionalTitle?: string;
@@ -23,9 +22,9 @@ export interface UpdateUserCommand {
 export interface UserVm {
   professionalTitle: string;
   id: string;
-  fullName: string;
+  firstName: string | null;
+  lastName: string | null;
   email: string;
-  displayName?: string;
   avatarUrl?: string;
   roles: string[];
   isActivated: boolean;

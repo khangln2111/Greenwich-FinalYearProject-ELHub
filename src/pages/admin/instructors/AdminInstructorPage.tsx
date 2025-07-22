@@ -242,10 +242,10 @@ export default function AdminInstructorPage() {
             >
               <Stack gap="sm">
                 <Group align="start">
-                  <Avatar src={app.workAvatarUrl} size="lg" radius="xl" />
+                  <Avatar src={app.avatarUrl} size="lg" radius="xl" />
                   <div className="flex-1">
                     <Text size="md" fw={600} lineClamp={1}>
-                      {app.displayName} ({app.fullName})
+                      {`${app.firstName} ${app.lastName}`}
                     </Text>
                     <Text size="sm" c="dimmed" lineClamp={1}>
                       {app.email}
@@ -315,7 +315,7 @@ export default function AdminInstructorPage() {
         {viewApp && (
           <Stack align="center" gap="md">
             <Stack align="center" gap={8}>
-              <Avatar src={viewApp.workAvatarUrl} size={100} radius="xl" />
+              <Avatar src={viewApp.avatarUrl} size={100} radius="xl" />
 
               <Group gap="xs">
                 <Badge color={getStatusColor(viewApp.status)} size="md">
@@ -335,14 +335,7 @@ export default function AdminInstructorPage() {
                 <Text c="dimmed" size="sm">
                   Full Name
                 </Text>
-                <Text fw={500}>{viewApp.fullName}</Text>
-              </Group>
-
-              <Group justify="space-between">
-                <Text c="dimmed" size="sm">
-                  Display Name
-                </Text>
-                <Text fw={500}>{viewApp.displayName}</Text>
+                <Text fw={500}>{`${viewApp.firstName} ${viewApp.lastName}`}</Text>
               </Group>
 
               <Group justify="space-between">

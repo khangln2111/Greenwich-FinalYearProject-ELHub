@@ -100,6 +100,13 @@ export const mockCourses: CourseVm[] = [
     updatedAt: "2024-04-01T08:00:00Z",
     learningOutcomes: null,
     prerequisites: null,
+    instructorId: "instructor-4",
+    instructorName: "Jane Doe",
+    instructorAvatarUrl: "https://randomuser.me/api/portraits/women/4.jpg",
+    instructorProfessionalTitle: "Senior Software Architect",
+    instructorBio: "Jane has 15 years of experience building enterprise .NET applications.",
+    instructorSocialLinks: ["https://linkedin.com/in/janedoe"],
+    instructorRating: 4.8,
   },
   {
     id: "course-5",

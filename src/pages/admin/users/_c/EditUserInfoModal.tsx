@@ -1,143 +1,170 @@
-import { Avatar, Button, FileButton, Group, Modal, Text, TextInput, Title } from "@mantine/core";
+import { Avatar, Button, FileButton, Group, Stack, Text, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { useForm } from "@mantine/form";
-import { useEffect, useState } from "react";
-import { UserVm, UpdateUserCommand } from "../../../../react-query/user/user.types";
+import { useForm, zodResolver } from "@mantine/form";
+import { CalendarIcon, CameraIcon } from "lucide-react";
+import { z } from "zod";
+import avatarPlaceholder from "../../../../assets/placeholder/profile-avatar-placeholder.svg";
+import CusModal from "../../../../components/CusModal";
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
+import { UpdateUserCommand, UserVm } from "../../../../react-query/user/user.types";
+import { formSubmitWithFocus } from "../../../../utils/form";
 
-interface EditUserModalProps {
+const EditUserSchema = z.object({
+  id: z.string(),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  professionalTitle: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  avatar: z
+    .instanceof(File)
+    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
+      message: "Only JPG, JPEG, PNG, WEBP images are allowed",
+    })
+    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
+      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
+    })
+    .optional()
+    .or(z.string()),
+});
+
+type EditUserFormValues = z.infer<typeof EditUserSchema>;
+
+type Props = {
   opened: boolean;
   onClose: () => void;
-  user: UserVm | null;
-  onSubmit: (input: UpdateUserCommand) => void;
-}
+  user: UserVm;
+  onSubmit: (values: UpdateUserCommand) => void;
+};
 
-export function EditUserInfoModal({ opened, onClose, user, onSubmit }: EditUserModalProps) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  const form = useForm<UpdateUserCommand>({
+export default function EditUserInfoModal({ opened, onClose, user, onSubmit }: Props) {
+  const form = useForm<EditUserFormValues>({
+    mode: "uncontrolled",
+    validate: zodResolver(EditUserSchema),
     initialValues: {
-      id: user?.id ?? "",
-      firstName: "",
-      lastName: "",
-      displayName: "",
-      dateOfBirth: "",
-      professionalTitle: "",
-      avatar: undefined,
+      id: user.id,
+      firstName: user.firstName ?? "",
+      lastName: user.lastName ?? "",
+      professionalTitle: user.professionalTitle ?? "",
+      dateOfBirth: user.dateOfBirth ?? "",
+      avatar: user.avatarUrl ?? "",
     },
   });
 
-  useEffect(() => {
-    if (user) {
-      const [firstName, ...rest] = user.fullName?.split(" ") ?? [];
-      form.setValues({
-        id: user.id,
-        firstName: firstName ?? "",
-        lastName: rest.join(" "),
-        displayName: user.displayName ?? "",
-        dateOfBirth: user.dateOfBirth ?? "",
-        professionalTitle: user.professionalTitle ?? "",
-        avatar: undefined,
-      });
-      setPreviewUrl(null);
-    }
-  }, [user]);
+  const avatar = form.getValues().avatar;
 
-  const handleSubmit = form.onSubmit((values) => {
-    onSubmit(values);
+  const handleSubmit = (values: EditUserFormValues) => {
+    const payload: UpdateUserCommand = {
+      id: values.id,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      professionalTitle: values.professionalTitle,
+      dateOfBirth: values.dateOfBirth,
+      avatar: values.avatar instanceof File ? values.avatar : undefined,
+    };
+    onSubmit(payload);
     onClose();
-  });
-
-  const handleAvatarChange = (file: File | null) => {
-    form.setFieldValue("avatar", file || undefined);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPreviewUrl(null);
-    }
   };
 
   return (
-    <Modal
-      opened={opened}
-      onClose={onClose}
-      title={<Title order={4}>Edit User Profile</Title>}
-      size="lg"
-      centered
-    >
-      <form onSubmit={handleSubmit} className="space-y-5 px-1 py-2">
-        {/* Avatar section */}
-        <div className="flex flex-col items-center gap-2">
-          <Avatar src={previewUrl ?? user?.avatarUrl ?? user?.fullName} size={96} radius="xl" />
-          <FileButton accept="image/*" onChange={handleAvatarChange}>
+    <CusModal opened={opened} onClose={onClose} title="Edit User Info" size="700px">
+      <Stack gap="xl">
+        {/* Avatar Section */}
+        <div className="flex flex-col items-center gap-3">
+          <Avatar
+            size={100}
+            radius="xl"
+            className="shadow-lg border"
+            src={
+              avatar instanceof File
+                ? URL.createObjectURL(avatar)
+                : user.avatarUrl || user.firstName + " " + user.lastName || avatarPlaceholder
+            }
+          />
+          <FileButton
+            accept={ALLOWED_IMAGE_TYPES.join(",")}
+            key={form.key("avatar")}
+            onChange={(file) => {
+              if (file) {
+                form.setFieldValue("avatar", file);
+                form.setDirty({ avatar: true });
+              }
+            }}
+          >
             {(props) => (
-              <Button size="xs" variant="outline" {...props}>
+              <Button
+                variant="light"
+                {...props}
+                leftSection={<CameraIcon size={16} />}
+                className="text-sm"
+              >
                 Change Avatar
               </Button>
             )}
           </FileButton>
-          {form.values.avatar && (
-            <Text size="xs" c="dimmed">
-              Selected file: {form.values.avatar.name}
+          {form.errors.avatar && (
+            <Text size="xs" c="red">
+              {form.errors.avatar}
             </Text>
           )}
         </div>
 
-        {/* Email */}
-        <TextInput
-          label="Email"
-          value={user?.email ?? ""}
-          readOnly
-          disabled
-          description="User's email used for login and identification"
-        />
+        {/* Form Fields */}
+        <Stack>
+          <TextInput
+            label="Email"
+            value={user.email}
+            disabled
+            readOnly
+            description="Email cannot be changed"
+          />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <TextInput
-            label="First Name"
-            placeholder="e.g. John"
-            required
-            {...form.getInputProps("firstName")}
-          />
-          <TextInput
-            label="Last Name"
-            placeholder="e.g. Smith"
-            required
-            {...form.getInputProps("lastName")}
-          />
-          <TextInput
-            label="Display Name"
-            placeholder="e.g. Barack Obama"
-            description="Name displayed publicly for instructor profile"
-            {...form.getInputProps("displayName")}
-          />
+          <Group grow>
+            <TextInput
+              label="First Name"
+              placeholder="e.g. John"
+              {...form.getInputProps("firstName")}
+              description="User's given name"
+            />
+            <TextInput
+              label="Last Name"
+              placeholder="e.g. Doe"
+              {...form.getInputProps("lastName")}
+              description="User's family name"
+            />
+          </Group>
+
           <TextInput
             label="Professional Title"
-            description="User's current job title or role"
-            placeholder="e.g. Full-Stack Developer"
+            placeholder="e.g. UI Designer"
             {...form.getInputProps("professionalTitle")}
+            description="Optional: Showcases their profession or role"
           />
-        </div>
 
-        <DateInput
-          label="Date of Birth"
-          description="Used for analytics and public profile info"
-          value={form.values.dateOfBirth ? new Date(form.values.dateOfBirth) : null}
-          onChange={(date) => form.setFieldValue("dateOfBirth", date ? date.toISOString() : "")}
-        />
+          <DateInput
+            {...form.getInputProps("dateOfBirth")}
+            key={form.key("dateOfBirth")}
+            label="Date of Birth"
+            hideWeekdays
+            rightSection={<CalendarIcon size={16} />}
+            placeholder="Birth date"
+            pointer
+            valueFormat="DD/MM/YYYY"
+            className="w-full"
+            maxDate={new Date()}
+          />
+        </Stack>
 
-        <Group justify="end" mt="md">
-          <Button variant="default" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type="submit" color="blue">
-            Save Changes
-          </Button>
-        </Group>
-      </form>
-    </Modal>
+        {/* Submit */}
+        <Button
+          fullWidth
+          radius="md"
+          size="md"
+          disabled={!form.isDirty()}
+          onClick={() => formSubmitWithFocus(form, handleSubmit)()}
+        >
+          Save Changes
+        </Button>
+      </Stack>
+    </CusModal>
   );
 }

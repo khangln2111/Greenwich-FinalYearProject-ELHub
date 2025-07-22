@@ -13,7 +13,7 @@ const schema = z.object({
   displayName: z.string().optional(),
   professionalTitle: z.string().optional(),
   about: z.string().optional(),
-  workAvatar: z.instanceof(File).optional(),
+  avatar: z.instanceof(File).optional(),
 });
 
 type Props = {
@@ -24,10 +24,11 @@ type Props = {
 const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
   const form = useForm<RetryInstructorApplicationCommand>({
     initialValues: {
-      displayName: application.displayName ?? "",
+      firstName: application.firstName ?? "",
+      lastName: application.lastName ?? "",
       professionalTitle: application.professionalTitle ?? "",
       about: application.about ?? "",
-      workAvatar: undefined,
+      avatar: undefined,
     },
     validate: zodResolver(schema),
   });
@@ -50,13 +51,21 @@ const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
             <p className="mt-1 whitespace-pre-line">{application.note}</p>
           </div>
         )}
+        <Group grow>
+          <TextInput
+            label="First Name"
+            size="md"
+            placeholder="e.g. John"
+            {...form.getInputProps("firstName")}
+          />
+          <TextInput
+            label="Last Name"
+            size="md"
+            placeholder="e.g. Doe"
+            {...form.getInputProps("lastName")}
+          />
+        </Group>
 
-        <TextInput
-          label="Display Name"
-          placeholder="e.g. John Doe"
-          size="md"
-          {...form.getInputProps("displayName")}
-        />
         <TextInput
           label="Professional Title"
           size="md"
@@ -73,11 +82,11 @@ const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
         />
         <FileUploadField
           previewMediaType="image"
-          previewUrl={application.workAvatarUrl}
-          label="Work Avatar"
+          previewUrl={application.avatarUrl}
+          label="Avatar"
           description="Upload a professional-looking avatar (JPG, PNG, WEBP)"
           accept={ALLOWED_IMAGE_TYPES}
-          {...form.getInputProps("workAvatar")}
+          {...form.getInputProps("avatar")}
         />
         <Group justify="flex-end">
           {onCancel && (

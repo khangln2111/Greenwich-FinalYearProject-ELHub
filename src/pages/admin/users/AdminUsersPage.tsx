@@ -24,7 +24,7 @@ import {
   UserVm,
 } from "../../../react-query/user/user.types";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
-import { EditUserInfoModal } from "./_c/EditUserInfoModal";
+import EditUserInfoModal from "./_c/EditUserInfoModal";
 
 export default function AdminUsersPage() {
   const [search, setSearch] = useState("");
@@ -116,14 +116,14 @@ export default function AdminUsersPage() {
                     <Table.Td>
                       <div className="flex items-center gap-x-4 whitespace-nowrap">
                         <Avatar
-                          src={user.avatarUrl || user.fullName}
+                          src={user.avatarUrl || user.firstName + " " + user.lastName}
                           radius="xl"
                           size="md"
                           color="initials"
                         />
                         <div className="flex flex-col">
                           <Text size="md" fw={600} className="text-gray-900 dark:text-gray-100">
-                            {user.fullName}
+                            {`${user.firstName} ${user.lastName}`}
                           </Text>
                           <Text size="sm" className="text-gray-600 dark:text-gray-400 break-all">
                             {user.email}

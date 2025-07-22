@@ -1,4 +1,4 @@
-import { Avatar, Button, FileButton, Textarea, TextInput } from "@mantine/core";
+import { Avatar, Button, FileButton, Group, Textarea, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconCamera } from "@tabler/icons-react";
 import { z } from "zod";
@@ -12,12 +12,13 @@ import { formSubmitWithFocus } from "../../../utils/form";
 import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
 const UpdateWorkProfileSchema = z.object({
-  displayName: z.string().optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   professionalTitle: z.string().optional(),
   about: z.string().max(2000, "About must be under 2000 characters").optional(),
   favoriteQuote: z.string().optional(),
   favoriteQuoteCite: z.string().optional(),
-  workAvatar: z
+  avatar: z
     .instanceof(File)
     .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
       message: "Only JPG, JPEG, PNG, WEBP images are allowed",
@@ -41,26 +42,28 @@ export default function UpdateWorkProfileForm({ profile }: Props) {
   const form = useForm<UpdateWorkProfileFormType>({
     mode: "uncontrolled",
     initialValues: {
-      displayName: profile.displayName ?? "",
+      firstName: profile.firstName ?? "",
+      lastName: profile.lastName ?? "",
       professionalTitle: profile.professionalTitle ?? "",
       about: profile.about ?? "",
       favoriteQuote: profile.favoriteQuote ?? "",
       favoriteQuoteCite: profile.favoriteQuoteCite ?? "",
-      workAvatar: profile.workAvatarUrl ?? "",
+      avatar: profile.avatarUrl ?? "",
     },
     validate: zodResolver(UpdateWorkProfileSchema),
   });
 
-  const avatar = form.getValues().workAvatar;
+  const avatar = form.getValues().avatar;
 
   const handleSubmit = (values: UpdateWorkProfileFormType) => {
     const payload: UpdateWorkProfileSelfCommand = {
-      displayName: values.displayName,
+      firstName: values.firstName,
+      lastName: values.lastName,
       professionalTitle: values.professionalTitle,
       about: values.about,
       favoriteQuote: values.favoriteQuote,
       favoriteQuoteCite: values.favoriteQuoteCite,
-      workAvatar: values.workAvatar instanceof File ? values.workAvatar : undefined,
+      avatar: values.avatar instanceof File ? values.avatar : undefined,
     };
 
     updateWorkProfileMutation.mutate(payload, {
@@ -78,16 +81,16 @@ export default function UpdateWorkProfileForm({ profile }: Props) {
           src={
             avatar instanceof File
               ? URL.createObjectURL(avatar)
-              : profile.workAvatarUrl || avatarPlaceholder
+              : profile.avatarUrl || avatarPlaceholder
           }
         />
         <FileButton
           accept={ALLOWED_IMAGE_TYPES.join(",")}
-          key={form.key("workAvatar")}
+          key={form.key("avatar")}
           onChange={(file) => {
             if (file) {
-              form.setFieldValue("workAvatar", file);
-              form.setDirty({ workAvatar: true });
+              form.setFieldValue("avatar", file);
+              form.setDirty({ avatar: true });
             }
           }}
         >
@@ -108,13 +111,20 @@ export default function UpdateWorkProfileForm({ profile }: Props) {
       </div>
 
       <div className="flex flex-col gap-4">
-        <TextInput
-          label="Display Name"
-          placeholder="e.g. John Doe, as it will appear on your course instructor profile"
-          size="md"
-          key={form.key("displayName")}
-          {...form.getInputProps("displayName")}
-        />
+        <Group grow>
+          <TextInput
+            label="First Name"
+            size="md"
+            placeholder="e.g. John"
+            {...form.getInputProps("firstName")}
+          />
+          <TextInput
+            label="Last Name"
+            size="md"
+            placeholder="e.g. Doe"
+            {...form.getInputProps("lastName")}
+          />
+        </Group>
 
         <TextInput
           label="Professional Title"
