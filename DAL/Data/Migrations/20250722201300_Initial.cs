@@ -78,8 +78,6 @@ namespace DAL.Data.Migrations
                     Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: true),
-                    DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    WorkAvatarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ProfessionalTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     About = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     FavoriteQuote = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -109,11 +107,6 @@ namespace DAL.Data.Migrations
                         column: x => x.AvatarId,
                         principalTable: "Media",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Media_WorkAvatarId",
-                        column: x => x.WorkAvatarId,
-                        principalTable: "Media",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -134,30 +127,6 @@ namespace DAL.Data.Migrations
                         column: x => x.ImageId,
                         principalTable: "Media",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationRoleApplicationUser",
-                columns: table => new
-                {
-                    RolesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationRoleApplicationUser", x => new { x.RolesId, x.UsersId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationRoleApplicationUser_AspNetRoles_RolesId",
-                        column: x => x.RolesId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationRoleApplicationUser_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -295,10 +264,11 @@ namespace DAL.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
                     ProfessionalTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     About = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    WorkAvatarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AvatarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     RetryCount = table.Column<int>(type: "int", nullable: false),
@@ -317,8 +287,8 @@ namespace DAL.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InstructorApplications_Media_WorkAvatarId",
-                        column: x => x.WorkAvatarId,
+                        name: "FK_InstructorApplications_Media_AvatarId",
+                        column: x => x.AvatarId,
                         principalTable: "Media",
                         principalColumn: "Id");
                 });
@@ -720,11 +690,6 @@ namespace DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationRoleApplicationUser_UsersId",
-                table: "ApplicationRoleApplicationUser",
-                column: "UsersId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -760,11 +725,6 @@ namespace DAL.Data.Migrations
                 name: "IX_AspNetUsers_AvatarId",
                 table: "AspNetUsers",
                 column: "AvatarId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_WorkAvatarId",
-                table: "AspNetUsers",
-                column: "WorkAvatarId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -850,14 +810,14 @@ namespace DAL.Data.Migrations
                 column: "InventoryItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InstructorApplications_AvatarId",
+                table: "InstructorApplications",
+                column: "AvatarId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InstructorApplications_UserId",
                 table: "InstructorApplications",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InstructorApplications_WorkAvatarId",
-                table: "InstructorApplications",
-                column: "WorkAvatarId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inventories_UserId",
@@ -942,9 +902,6 @@ namespace DAL.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ApplicationRoleApplicationUser");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

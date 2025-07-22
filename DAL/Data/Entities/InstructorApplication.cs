@@ -9,11 +9,15 @@ public class InstructorApplication : BaseEntity
 
     public ApplicationUser User { get; set; } = null!;
 
-    public required string DisplayName { get; set; }
+    public required string FirstName { get; set; }
+
+    public required string LastName { get; set; }
+
     public required string ProfessionalTitle { get; set; }
+
     public required string About { get; set; }
 
-    public Media? WorkAvatar { get; set; }
+    public Media? Avatar { get; set; }
 
     public InstructorApplicationStatus Status { get; set; } = InstructorApplicationStatus.Pending;
 

@@ -10,10 +10,10 @@ public class InstructorApplicationProfiles : Profile
     public InstructorApplicationProfiles()
     {
         CreateMap<CreateInstructorApplicationCommand, InstructorApplication>()
-            .ForMember(dest => dest.WorkAvatar, opt => opt.Ignore());
+            .ForMember(dest => dest.Avatar, opt => opt.Ignore());
 
         CreateMap<RetryInstructorApplicationCommand, InstructorApplication>()
-            .ForMember(dest => dest.WorkAvatar, opt => opt.Ignore())
+            .ForMember(dest => dest.Avatar, opt => opt.Ignore())
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();
@@ -21,9 +21,8 @@ public class InstructorApplicationProfiles : Profile
             });
 
         CreateMap<InstructorApplication, InstructorApplicationVm>()
-            .ForMember(dest => dest.WorkAvatarUrl,
-                opt => opt.MapFrom(src => src.WorkAvatar != null ? src.WorkAvatar.Url : null))
-            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
+            .ForMember(dest => dest.AvatarUrl,
+                opt => opt.MapFrom(src => src.Avatar != null ? src.Avatar.Url : null))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
     }
 }

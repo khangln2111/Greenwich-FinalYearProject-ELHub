@@ -9,8 +9,11 @@ public class InstructorApplicationConfiguration : IEntityTypeConfiguration<Instr
 {
     public void Configure(EntityTypeBuilder<InstructorApplication> builder)
     {
-        builder.Property(i => i.DisplayName)
-            .HasMaxLength(AppConstants.InstructorApplication.DisplayNameMaxLength);
+        builder.Property(i => i.FirstName)
+            .HasMaxLength(AppConstants.InstructorApplication.FirstNameMaxLength);
+
+        builder.Property(i => i.LastName)
+            .HasMaxLength(AppConstants.InstructorApplication.LastNameMaxLength);
 
         builder.Property(i => i.ProfessionalTitle)
             .HasMaxLength(AppConstants.InstructorApplication.ProfessionalTitleMaxLength);

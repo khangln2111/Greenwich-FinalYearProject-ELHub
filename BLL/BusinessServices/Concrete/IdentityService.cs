@@ -290,7 +290,7 @@ public class IdentityService(
 
         var user = await context.Users
             .Include(u => u.Avatar)
-            .Include(u => u.Roles)
+            .Include(u => u.UserRoles)
             .ProjectTo<InfoMeVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(u => u.Id == currentUser.Id);
 
@@ -307,7 +307,7 @@ public class IdentityService(
             throw new UnauthorizedAccessException("User not authenticated");
 
         var workProfile = await context.Users
-            .Include(u => u.WorkAvatar)
+            .Include(u => u.Avatar)
             .Include(u => u.Roles)
             .ProjectTo<WorkProfileVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(u => u.Id == currentUser.Id);
@@ -325,15 +325,15 @@ public class IdentityService(
         if (user == null) throw new NotFoundException("Current user not found");
 
         // if the user does not have an avatar, create a new one
-        if (selfCommand.WorkAvatar != null && user.WorkAvatar == null)
+        if (selfCommand.Avatar != null && user.Avatar == null)
         {
-            var avatar = await mediaManager.SaveFileAsync(selfCommand.WorkAvatar, MediaType.Image);
+            var avatar = await mediaManager.SaveFileAsync(selfCommand.Avatar, MediaType.Image);
             await context.Media.AddAsync(avatar);
-            user.WorkAvatar = avatar;
+            user.Avatar = avatar;
         }
 
-        if (selfCommand.WorkAvatar != null && user.WorkAvatar != null)
-            await mediaManager.UpdateFileAsync(user.WorkAvatar, selfCommand.WorkAvatar);
+        if (selfCommand.Avatar != null && user.Avatar != null)
+            await mediaManager.UpdateFileAsync(user.Avatar, selfCommand.Avatar);
 
         mapper.Map(selfCommand, user);
         await context.SaveChangesAsync();

@@ -29,8 +29,8 @@ public class InstructorApplicationService(
     ICurrentUserUtility currentUserUtility,
     UserManager<ApplicationUser> userManager) : IInstructorApplicationService
 {
-    private const int MaxRetryCount = 3;
-    private const int RetryCooldownDays = 1;
+    private const int MaxRetryCount = AppConstants.InstructorApplication.MaxRetryCount;
+    private const int RetryCooldownDays = AppConstants.InstructorApplication.RetryCooldownDays;
 
     public async Task<Success> Create(CreateInstructorApplicationCommand command)
     {
@@ -57,12 +57,12 @@ public class InstructorApplicationService(
 
         await validationService.ValidateAsync(command);
 
-        var media = await mediaManager.SaveFileAsync(command.WorkAvatar, MediaType.Image);
+        var media = await mediaManager.SaveFileAsync(command.Avatar, MediaType.Image);
         await context.Media.AddAsync(media);
 
         var application = mapper.Map<InstructorApplication>(command);
         application.UserId = currentUser.Id;
-        application.WorkAvatar = media;
+        application.Avatar = media;
 
         await context.InstructorApplications.AddAsync(application);
         await context.SaveChangesAsync();
@@ -77,7 +77,7 @@ public class InstructorApplicationService(
 
         var application = await context.InstructorApplications
             .Where(a => a.UserId == currentUser.Id)
-            .Include(a => a.WorkAvatar)
+            .Include(a => a.Avatar)
             .OrderByDescending(a => a.CreatedAt)
             .FirstOrDefaultAsync();
 
@@ -100,8 +100,8 @@ public class InstructorApplicationService(
 
         await validationService.ValidateAsync(command);
 
-        if (command.WorkAvatar != null && application.WorkAvatar != null)
-            await mediaManager.UpdateFileAsync(application.WorkAvatar, command.WorkAvatar);
+        if (command.Avatar != null && application.Avatar != null)
+            await mediaManager.UpdateFileAsync(application.Avatar, command.Avatar);
 
         mapper.Map(command, application);
         application.Status = InstructorApplicationStatus.Pending;
@@ -139,7 +139,7 @@ public class InstructorApplicationService(
 
         var application = await context.InstructorApplications
             .Include(x => x.User)
-            .Include(x => x.WorkAvatar)
+            .Include(x => x.Avatar)
             .FirstOrDefaultAsync(x => x.Id == command.Id);
 
         if (application == null)
@@ -156,10 +156,11 @@ public class InstructorApplicationService(
             application.Status = InstructorApplicationStatus.Approved;
 
             var user = application.User;
-            user.DisplayName = application.DisplayName;
+            user.FirstName = application.FirstName;
+            user.LastName = application.LastName;
             user.ProfessionalTitle = application.ProfessionalTitle;
             user.About = application.About;
-            user.WorkAvatar = application.WorkAvatar;
+            user.Avatar = application.Avatar;
 
             if (!await userManager.IsInRoleAsync(user, AppConstants.RoleNames.Instructor))
             {
@@ -182,7 +183,7 @@ public class InstructorApplicationService(
     {
         return await context.InstructorApplications
             .AsNoTracking()
-            .Include(a => a.WorkAvatar)
+            .Include(a => a.Avatar)
             .Include(a => a.User)
             .GridifyToAsync<InstructorApplication, InstructorApplicationVm>(query, mapper, gridifyMapper);
     }
@@ -194,7 +195,7 @@ public class InstructorApplicationService(
         var application = await context.InstructorApplications
             .AsNoTracking()
             .Where(a => a.UserId == currentUser.Id)
-            .Include(x => x.WorkAvatar)
+            .Include(x => x.Avatar)
             .ProjectTo<InstructorApplicationVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
 

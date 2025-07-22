@@ -22,21 +22,6 @@ namespace DAL.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
-                {
-                    b.Property<Guid>("RolesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("RolesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationRoleApplicationUser");
-                });
-
             modelBuilder.Entity("DAL.Data.Entities.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
@@ -95,10 +80,6 @@ namespace DAL.Data.Migrations
 
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DisplayName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -169,9 +150,6 @@ namespace DAL.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<Guid?>("WorkAvatarId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AvatarId");
@@ -183,8 +161,6 @@ namespace DAL.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("WorkAvatarId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -503,13 +479,21 @@ namespace DAL.Data.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<Guid?>("AvatarId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DisplayName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<DateTime?>("LastRejectedAt")
                         .HasColumnType("datetime2");
@@ -538,14 +522,11 @@ namespace DAL.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("WorkAvatarId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AvatarId");
 
-                    b.HasIndex("WorkAvatarId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("InstructorApplications");
                 });
@@ -1013,34 +994,13 @@ namespace DAL.Data.Migrations
                     b.HasDiscriminator().HasValue(2);
                 });
 
-            modelBuilder.Entity("ApplicationRoleApplicationUser", b =>
-                {
-                    b.HasOne("DAL.Data.Entities.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Data.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DAL.Data.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("DAL.Data.Entities.MediaEntities.Media", "Avatar")
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
-                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "WorkAvatar")
-                        .WithMany()
-                        .HasForeignKey("WorkAvatarId");
-
                     b.Navigation("Avatar");
-
-                    b.Navigation("WorkAvatar");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Cart", b =>
@@ -1179,19 +1139,19 @@ namespace DAL.Data.Migrations
 
             modelBuilder.Entity("DAL.Data.Entities.InstructorApplication", b =>
                 {
+                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "Avatar")
+                        .WithMany()
+                        .HasForeignKey("AvatarId");
+
                     b.HasOne("DAL.Data.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Data.Entities.MediaEntities.Media", "WorkAvatar")
-                        .WithMany()
-                        .HasForeignKey("WorkAvatarId");
+                    b.Navigation("Avatar");
 
                     b.Navigation("User");
-
-                    b.Navigation("WorkAvatar");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Inventory", b =>
@@ -1357,13 +1317,13 @@ namespace DAL.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.HasOne("DAL.Data.Entities.ApplicationRole", null)
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DAL.Data.Entities.ApplicationUser", null)
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1376,6 +1336,11 @@ namespace DAL.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DAL.Data.Entities.ApplicationRole", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.ApplicationUser", b =>
@@ -1397,6 +1362,8 @@ namespace DAL.Data.Migrations
                     b.Navigation("ReceivedNotifications");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Cart", b =>

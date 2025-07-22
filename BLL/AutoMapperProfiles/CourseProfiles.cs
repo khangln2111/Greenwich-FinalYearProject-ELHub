@@ -35,9 +35,10 @@ public class CourseProfiles : Profile
                         .Where(e => e.Review != null)
                         .Select(e => (double?)e.Review!.Rating)
                         .Average()))
-            .ForMember(dest => dest.InstructorName, opt => opt.MapFrom(src => src.Instructor.DisplayName))
+            .ForMember(dest => dest.InstructorName,
+                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
             .ForMember(dest => dest.InstructorAvatarUrl,
-                opt => opt.MapFrom(src => src.Instructor.WorkAvatar == null ? null : src.Instructor.WorkAvatar.Url))
+                opt => opt.MapFrom(src => src.Instructor.Avatar == null ? null : src.Instructor.Avatar.Url))
             .ForMember(dest => dest.InstructorProfessionalTitle,
                 opt => opt.MapFrom(src => src.Instructor.ProfessionalTitle))
             .ForMember(dest => dest.InstructorAbout,
@@ -94,9 +95,10 @@ public class CourseProfiles : Profile
             .ForMember(dest => dest.DiscountPercentage, opt => opt.MapFrom(src =>
                 src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)
             ))
-            .ForMember(dest => dest.InstructorName, opt => opt.MapFrom(src => src.Instructor.DisplayName))
+            .ForMember(dest => dest.InstructorName,
+                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
             .ForMember(dest => dest.InstructorAvatarUrl,
-                opt => opt.MapFrom(src => src.Instructor.WorkAvatar == null ? null : src.Instructor.WorkAvatar.Url))
+                opt => opt.MapFrom(src => src.Instructor.Avatar == null ? null : src.Instructor.Avatar.Url))
             .ForMember(dest => dest.InstructorProfessionalTitle,
                 opt => opt.MapFrom(src => src.Instructor.ProfessionalTitle))
             .ForMember(dest => dest.EnrollmentCount, opt => opt.MapFrom(src => src.Enrollments.Count))

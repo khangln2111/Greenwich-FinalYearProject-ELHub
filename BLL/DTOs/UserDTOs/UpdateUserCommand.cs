@@ -14,7 +14,5 @@ public class UpdateUserCommand
 
     public DateTime? DateOfBirth { get; set; }
 
-    public string? DisplayName { get; set; }
-
     public string? ProfessionalTitle { get; set; }
 }

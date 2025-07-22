@@ -21,9 +21,6 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
         builder.Property(x => x.Bio)
             .HasMaxLength(AppConstants.User.BioMaxLength);
 
-        builder.Property(x => x.DisplayName)
-            .HasMaxLength(AppConstants.User.DisplayNameMaxLength);
-
         builder.Property(x => x.ProfessionalTitle)
             .HasMaxLength(AppConstants.User.ProfessionalTitleMaxLength);
 

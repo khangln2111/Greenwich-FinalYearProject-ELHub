@@ -10,10 +10,15 @@ public class UpdateWorkProfileSelfCommandValidator : AbstractValidator<UpdateWor
 {
     public UpdateWorkProfileSelfCommandValidator(IMediaManager mediaManager)
     {
-        RuleFor(x => x.DisplayName)
-            .MaximumLength(AppConstants.User.DisplayNameMaxLength)
-            .WithMessage($"Display name must not exceed {AppConstants.User.DisplayNameMaxLength} characters.")
-            .When(x => !string.IsNullOrWhiteSpace(x.DisplayName));
+        RuleFor(x => x.FirstName)
+            .MaximumLength(AppConstants.User.FirstNameMaxLength)
+            .WithMessage($"First name must not exceed {AppConstants.User.FirstNameMaxLength} characters.")
+            .When(x => !string.IsNullOrWhiteSpace(x.FirstName));
+
+        RuleFor(x => x.LastName)
+            .MaximumLength(AppConstants.User.LastNameMaxLength)
+            .WithMessage($"Last name must not exceed {AppConstants.User.LastNameMaxLength} characters.")
+            .When(x => !string.IsNullOrWhiteSpace(x.LastName));
 
         RuleFor(x => x.ProfessionalTitle)
             .MaximumLength(AppConstants.User.ProfessionalTitleMaxLength)
@@ -37,13 +42,13 @@ public class UpdateWorkProfileSelfCommandValidator : AbstractValidator<UpdateWor
                 $"Favorite quote cite must not exceed {AppConstants.User.FavoriteQuoteCiteMaxLength} characters.")
             .When(x => !string.IsNullOrWhiteSpace(x.FavoriteQuoteCite));
 
-        RuleFor(x => x.WorkAvatar)
+        RuleFor(x => x.Avatar)
             .Must(file =>
                 file == null || mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedImageExtensions))
             .WithMessage(
                 $"Unsupported image file extension. Supported extensions: {string.Join(", ", AppConstants.Media.AllowedImageExtensions)}.")
             .Must(file => file == null || mediaManager.IsFileUnderMaxSize(file, AppConstants.User.AvatarMaxSizeBytes))
             .WithMessage($"Avatar size cannot exceed {AppConstants.User.AvatarMaxSizeBytes.Bytes().Humanize()}.")
-            .When(x => x.WorkAvatar != null);
+            .When(x => x.Avatar != null);
     }
 }

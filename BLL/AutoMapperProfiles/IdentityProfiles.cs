@@ -17,7 +17,7 @@ public class IdentityProfiles : Profile
             });
 
         CreateMap<UpdateWorkProfileSelfCommand, ApplicationUser>()
-            .ForMember(dest => dest.WorkAvatar, opt => opt.Ignore())
+            .ForMember(dest => dest.Avatar, opt => opt.Ignore())
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();
@@ -25,8 +25,8 @@ public class IdentityProfiles : Profile
             });
 
         CreateMap<ApplicationUser, WorkProfileVm>()
-            .ForMember(dest => dest.WorkAvatarUrl,
-                opt => opt.MapFrom(src => src.WorkAvatar != null ? src.WorkAvatar.Url : null));
+            .ForMember(dest => dest.AvatarUrl,
+                opt => opt.MapFrom(src => src.Avatar != null ? src.Avatar.Url : null));
 
         CreateMap<ApplicationUser, InfoMeVm>()
             .ForMember(dest => dest.AvatarUrl,

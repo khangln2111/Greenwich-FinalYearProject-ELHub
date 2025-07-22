@@ -6,7 +6,7 @@ namespace DAL.Data.Entities;
 
 public class ApplicationUser : IdentityUser<Guid>
 {
-    //constructor
+//constructor
 
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
@@ -15,10 +15,6 @@ public class ApplicationUser : IdentityUser<Guid>
     public string? Bio { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public Gender? Gender { get; set; }
-
-    public string? DisplayName { get; set; }
-
-    public Media? WorkAvatar { get; set; }
 
     public string? ProfessionalTitle { get; set; }
 
@@ -37,7 +33,8 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public Inventory Inventory { get; set; } = new();
 
-    public ICollection<ApplicationRole> Roles { get; init; } = new List<ApplicationRole>();
+    public ICollection<IdentityUserRole<Guid>> UserRoles { get; set; } = new List<IdentityUserRole<Guid>>();
+    public ICollection<ApplicationRole> Roles { get; set; } = new List<ApplicationRole>();
 
     public ICollection<Review> Reviews { get; init; } = new List<Review>();
 
@@ -47,7 +44,7 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public ICollection<Enrollment> Enrollments { get; init; } = new List<Enrollment>();
 
-    // public ICollection<RefreshToken> RefreshTokens { get; set; }
+// public ICollection<RefreshToken> RefreshTokens { get; set; }
 
 
     public ICollection<Notification> ReceivedNotifications { get; init; } = new List<Notification>();

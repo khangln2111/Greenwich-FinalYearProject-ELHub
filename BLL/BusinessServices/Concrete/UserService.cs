@@ -30,6 +30,8 @@ public class UserService(
     {
         return await context.Users
             .AsNoTracking()
+            .Include(u => u.Roles)
+            .Include(u => u.Avatar)
             .GridifyToAsync<ApplicationUser, UserVm>(query, mapper, gridifyMapper);
     }
 
@@ -55,8 +57,11 @@ public class UserService(
         var removeResult = await userManager.RemoveFromRolesAsync(user, currentRoles);
         if (!removeResult.Succeeded) throw new BadRequestException(removeResult.Errors);
 
-        var addResult = await userManager.AddToRolesAsync(user, command.RoleNames);
+        var upperRoleNames = command.Roles.Select(r => r.ToUpper()).ToList();
+
+        var addResult = await userManager.AddToRolesAsync(user, upperRoleNames);
         if (!addResult.Succeeded) throw new BadRequestException(addResult.Errors);
+        await userManager.UpdateAsync(user);
 
         return new Success("Roles assigned successfully.");
     }

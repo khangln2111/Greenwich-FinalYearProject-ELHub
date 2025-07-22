@@ -9,6 +9,7 @@ using BLL.Gridify;
 using BLL.Gridify.CustomModels;
 using BLL.Models;
 using BLL.Validations;
+using DAL.Constants;
 using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Data.Entities.MediaEntities;
@@ -29,8 +30,8 @@ public class CourseService(
     ICurrentUserUtility currentUserUtility)
     : ICourseService
 {
-    private const int MaxRetryCount = 3;
-    private const int RetryCooldownDays = 2;
+    private const int MaxRetryCount = AppConstants.Course.MaxRetryCount;
+    private const int RetryCooldownDays = AppConstants.Course.RetryCooldownDays;
 
     public async Task<LearningCourseVm> GetCourseLearning(Guid id)
     {

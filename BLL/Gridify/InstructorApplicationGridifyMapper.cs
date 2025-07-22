@@ -10,7 +10,6 @@ public class InstructorApplicationGridifyMapper : GridifyMapper<InstructorApplic
         AddMap("Id", x => x.Id);
         AddMap("UserId", x => x.UserId);
         AddMap("Status", x => x.Status);
-        AddMap("DisplayName", x => x.DisplayName);
         AddMap("ProfessionalTitle", x => x.ProfessionalTitle);
         AddMap("Email", x => x.User.Email);
         AddMap("FullName", x => x.User.FirstName + " " + x.User.LastName);

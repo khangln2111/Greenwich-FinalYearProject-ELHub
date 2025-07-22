@@ -11,13 +11,13 @@ public class UpdateUserProfileSelfCommandValidator : AbstractValidator<UpdateUse
     public UpdateUserProfileSelfCommandValidator(IMediaManager mediaManager)
     {
         RuleFor(x => x.FirstName)
-            .MaximumLength(50)
-            .WithMessage("First name must be at most 50 characters.")
+            .MaximumLength(AppConstants.User.FirstNameMaxLength)
+            .WithMessage($"First name must be at most {AppConstants.User.FirstNameMaxLength} characters.")
             .When(x => !string.IsNullOrWhiteSpace(x.FirstName));
 
         RuleFor(x => x.LastName)
-            .MaximumLength(50)
-            .WithMessage("Last name must be at most 50 characters.")
+            .MaximumLength(AppConstants.User.LastNameMaxLength)
+            .WithMessage($"Last name must be at most {AppConstants.User.LastNameMaxLength} characters.")
             .When(x => !string.IsNullOrWhiteSpace(x.LastName));
 
         RuleFor(x => x.Gender)

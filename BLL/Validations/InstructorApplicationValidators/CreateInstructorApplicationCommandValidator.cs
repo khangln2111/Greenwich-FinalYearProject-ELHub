@@ -10,12 +10,19 @@ public class CreateInstructorApplicationCommandValidator : AbstractValidator<Cre
 {
     public CreateInstructorApplicationCommandValidator(IMediaManager mediaManager)
     {
-        RuleFor(x => x.DisplayName)
+        RuleFor(x => x.FirstName)
             .NotEmpty()
-            .WithMessage("Display name is required.")
-            .MaximumLength(AppConstants.InstructorApplication.DisplayNameMaxLength)
+            .WithMessage("First name is required.")
+            .MaximumLength(AppConstants.InstructorApplication.FirstNameMaxLength)
             .WithMessage(
-                $"Display name cannot exceed {AppConstants.InstructorApplication.DisplayNameMaxLength} characters.");
+                $"First name cannot exceed {AppConstants.InstructorApplication.FirstNameMaxLength} characters.");
+
+        RuleFor(x => x.LastName)
+            .NotEmpty()
+            .WithMessage("Last name is required.")
+            .MaximumLength(AppConstants.InstructorApplication.LastNameMaxLength)
+            .WithMessage(
+                $"Last name cannot exceed {AppConstants.InstructorApplication.LastNameMaxLength} characters.");
 
         RuleFor(x => x.ProfessionalTitle)
             .NotEmpty()
@@ -31,7 +38,7 @@ public class CreateInstructorApplicationCommandValidator : AbstractValidator<Cre
             .WithMessage(
                 $"About section cannot exceed {AppConstants.InstructorApplication.AboutMaxLength} characters.");
 
-        RuleFor(x => x.WorkAvatar)
+        RuleFor(x => x.Avatar)
             .NotEmpty()
             .WithMessage("Work avatar is required.")
             .Must(file => mediaManager.FileHasValidExtension(file, AppConstants.Media.AllowedImageExtensions))

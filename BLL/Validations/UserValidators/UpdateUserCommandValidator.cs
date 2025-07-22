@@ -1,30 +1,39 @@
-﻿using BLL.DTOs.InstructorApplicationDTOs;
+﻿using BLL.DTOs.UserDTOs;
 using DAL.Constants;
 using DAL.Utilities.MediaUtility.Abstract;
+using DAL.Utilities.MediaUtility.Concrete;
 using FluentValidation;
 using Humanizer;
 
-namespace BLL.Validations.InstructorApplicationValidators;
+namespace BLL.Validations.UserValidators;
 
-public class RetryInstructorApplicationCommandValidator : AbstractValidator<RetryInstructorApplicationCommand>
+public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
-    public RetryInstructorApplicationCommandValidator(IMediaManager mediaManager)
+    public UpdateUserCommandValidator(IMediaManager mediaManager)
     {
         RuleFor(x => x.FirstName)
             .MaximumLength(AppConstants.InstructorApplication.FirstNameMaxLength)
-            .When(x => !string.IsNullOrEmpty(x.FirstName));
+            .WithMessage(
+                $"First name cannot exceed {AppConstants.InstructorApplication.FirstNameMaxLength} characters.")
+            .When(x => !string.IsNullOrWhiteSpace(x.FirstName));
+
 
         RuleFor(x => x.LastName)
             .MaximumLength(AppConstants.InstructorApplication.LastNameMaxLength)
-            .When(x => !string.IsNullOrEmpty(x.LastName));
+            .WithMessage(
+                $"Last name cannot exceed {AppConstants.InstructorApplication.LastNameMaxLength} characters.")
+            .When(x => !string.IsNullOrWhiteSpace(x.LastName));
 
         RuleFor(x => x.ProfessionalTitle)
             .MaximumLength(AppConstants.InstructorApplication.ProfessionalTitleMaxLength)
-            .When(x => !string.IsNullOrEmpty(x.ProfessionalTitle));
+            .WithMessage(
+                $"Professional title cannot exceed {AppConstants.InstructorApplication.ProfessionalTitleMaxLength} characters.")
+            .When(x => !string.IsNullOrWhiteSpace(x.ProfessionalTitle));
 
-        RuleFor(x => x.About)
-            .MaximumLength(AppConstants.InstructorApplication.AboutMaxLength)
-            .When(x => !string.IsNullOrEmpty(x.About));
+        RuleFor(x => x.DateOfBirth)
+            .LessThan(DateTime.Today)
+            .WithMessage("DateOfBirth must be in the past.")
+            .When(x => x.DateOfBirth.HasValue);
 
         RuleFor(x => x.Avatar)
             .Must(file =>

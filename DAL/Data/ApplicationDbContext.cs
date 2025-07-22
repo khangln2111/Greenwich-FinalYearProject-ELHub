@@ -1,5 +1,6 @@
 using DAL.Data.Entities;
 using DAL.Data.Entities.MediaEntities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,5 +57,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        builder.Entity<ApplicationUser>()
+            .HasMany(u => u.Roles)
+            .WithMany(r => r.Users)
+            .UsingEntity<IdentityUserRole<Guid>>
+            (au => au.HasOne<ApplicationRole>().WithMany(role => role.UserRoles).HasForeignKey(u => u.RoleId),
+                au => au.HasOne<ApplicationUser>().WithMany(user => user.UserRoles).HasForeignKey(r => r.UserId));
     }
 }
