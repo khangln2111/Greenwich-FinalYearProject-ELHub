@@ -79,6 +79,14 @@ public class MediaManager(
         existingMedia.FileSizeInBytes = newFile.Length;
         existingMedia.LocalFilePath = localFilePath;
         existingMedia.Url = urlFilePath;
+
+        // Update duration if it's a DurationMedia
+        if (existingMedia is DurationMedia durationMedia &&
+            (existingMedia.Type == MediaType.Video || existingMedia.Type == MediaType.Audio))
+        {
+            var duration = await mediaProcessor.GetDurationAsync(localFilePath);
+            durationMedia.DurationInSeconds = (int)Math.Round(duration.TotalSeconds);
+        }
     }
 
     public bool FileHasValidExtension(IFormFile file, string[] allowedExtensions)

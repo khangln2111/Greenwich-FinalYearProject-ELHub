@@ -5,7 +5,6 @@ namespace BLL.DTOs.CourseDTOs;
 
 public class UpdateCourseCommand
 {
-    //properties for updating course
     public Guid Id { get; set; }
 
     public string? Title { get; set; }
