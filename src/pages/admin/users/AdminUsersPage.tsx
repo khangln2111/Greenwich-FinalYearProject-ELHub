@@ -17,7 +17,7 @@ import { PencilIcon, Search, ShieldQuestionIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
 import { UserVm } from "../../../react-query/user/user.types";
-import { useGetUsers } from "../../../react-query/user/userHooks";
+import { useGetUsers, useSetUserActivation } from "../../../react-query/user/userHooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
 
@@ -28,9 +28,13 @@ export default function AdminUsersPage() {
 
   const [editingUser, setEditingUser] = useState<UserVm | null>(null);
   const [editingRoleUser, setEditingRoleUser] = useState<UserVm | null>(null);
+  const setActivation = useSetUserActivation();
 
   const handleEditUser = (user: UserVm) => setEditingUser(user);
   const handleEditRole = (user: UserVm) => setEditingRoleUser(user);
+  const handleToggleActivation = (userId: string, isCurrentlyActive: boolean) => {
+    setActivation.mutate({ userId, isActive: !isCurrentlyActive });
+  };
 
   const { data, isPending, error } = useGetUsers();
 
@@ -117,21 +121,29 @@ export default function AdminUsersPage() {
                         </div>
                       </div>
                     </Table.Td>
-
                     <Table.Td>
-                      <Badge
-                        variant="light"
-                        className="min-w-[120px] text-center text-[13px] px-2"
-                        color={
-                          user.roles.includes("Admin")
-                            ? "red"
-                            : user.roles.includes("Instructor")
-                              ? "blue"
-                              : "gray"
-                        }
-                      >
-                        {user.roles.join(", ") || "User"}
-                      </Badge>
+                      <div className="flex flex-col gap-2 min-w-[120px]">
+                        <Badge
+                          variant="light"
+                          color="gray"
+                          className="text-[13px] px-2 text-center w-fit"
+                        >
+                          User
+                        </Badge>
+                        {user.roles.length > 0 &&
+                          user.roles.map((role: string) => (
+                            <Badge
+                              key={role}
+                              variant="light"
+                              className="text-[13px] px-2 text-center w-fit"
+                              color={
+                                role === "Admin" ? "red" : role === "Instructor" ? "blue" : "gray"
+                              }
+                            >
+                              {role}
+                            </Badge>
+                          ))}
+                      </div>
                     </Table.Td>
 
                     <Table.Td>
@@ -140,6 +152,7 @@ export default function AdminUsersPage() {
                         color={user.isActivated ? "green" : "gray"}
                         checked={user.isActivated}
                         label={user.isActivated ? "Active" : "Banned"}
+                        onChange={() => handleToggleActivation(user.id, user.isActivated)}
                       />
                     </Table.Td>
 

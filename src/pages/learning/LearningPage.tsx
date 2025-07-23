@@ -81,7 +81,7 @@ export default function LearningCoursePage() {
       {/* Main content */}
       <div className="flex-1 flex overflow-hidden transition-all duration-300">
         {/* Video area */}
-        <main className="flex-1 bg-black flex items-center justify-center px-4 text-white text-center">
+        <main className="flex-1 bg-black flex items-center justify-center text-white text-center">
           {allLectures.length === 0 ? (
             <div className="space-y-3 flex flex-col items-center">
               <Hourglass size={48} className="text-gray-400 mb-2" />

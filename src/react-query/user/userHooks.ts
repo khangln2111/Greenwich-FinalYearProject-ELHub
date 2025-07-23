@@ -68,6 +68,7 @@ export const useSetUserActivation = () => {
     mutationFn: (command: SetUserActivationCommand) => setUserActivation(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.users._def });
+      showSuccessToast("Success", "User activation status updated successfully.");
     },
     onError: (error) =>
       handleApiError(error, {

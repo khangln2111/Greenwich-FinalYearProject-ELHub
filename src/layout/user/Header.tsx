@@ -115,8 +115,8 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className="min-h-[55px] px-md border-b border-gray-300 dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
-        z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-sm"
+      className="min-h-[55px] px-md dark:border-b dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
+        z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-md"
     >
       {/* mobile search box */}
       <Modal

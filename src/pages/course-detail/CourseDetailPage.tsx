@@ -205,13 +205,10 @@ const CourseDetailPage = () => {
             </Tabs>
           </div>
           {/* 2nd column */}
-          <div
-            className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-2xl
-              overflow-hidden"
-          >
+          <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-xl overflow-hidden">
             <div className="p-6 size-full dark:bg-dark-6 bg-white rounded-[inherit]">
               {/* Price box */}
-              <div className="bg-violet-600 text-white p-4 rounded-xl shadow-xl flex flex-col items-center lg:item-center">
+              <div className="bg-violet-600 text-white p-4 shadow-md rounded-xl flex flex-col items-center lg:item-center">
                 <p className="text-md font-semibold">This Course Fee:</p>
                 <div className="flex items-center gap-2 mt-1">
                   {course.discountedPrice === 0 ? (

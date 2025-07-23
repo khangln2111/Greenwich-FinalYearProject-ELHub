@@ -66,7 +66,7 @@ export const assignRolesToUser = async (command: AssignRoleToUserCommand) => {
 };
 
 export const setUserActivation = async (command: SetUserActivationCommand) => {
-  const response = await apiClient.post(`${BASE_URL}/SetActivation`, command);
+  const response = await apiClient.put(`${BASE_URL}/SetActivation`, command);
   return response.data;
 };
 

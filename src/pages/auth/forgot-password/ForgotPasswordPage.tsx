@@ -164,6 +164,7 @@ const ForgotPasswordPage = () => {
                 label="Email"
                 placeholder="you@example.com"
                 required
+                size="md"
                 {...emailForm.getInputProps("email")}
               />
               <Button mt="sm" fullWidth onClick={handleSendOtp} loading={sendOtpMutation.isPending}>
@@ -182,6 +183,7 @@ const ForgotPasswordPage = () => {
                   value={otpValue}
                   onChange={setOtpValue}
                   oneTimeCode
+                  size="md"
                   disabled={verifyOtpMutation.isPending}
                 />
               </Group>
@@ -207,9 +209,14 @@ const ForgotPasswordPage = () => {
             {/* Step 3: New Password */}
             <Stepper.Step label="Reset Password" description="Set a new password">
               <form onSubmit={passwordForm.onSubmit(handleResetPassword)} className="space-y-4">
-                <PasswordInput label="New Password" {...passwordForm.getInputProps("password")} />
+                <PasswordInput
+                  label="New Password"
+                  {...passwordForm.getInputProps("password")}
+                  size="md"
+                />
                 <PasswordInput
                   label="Confirm Password"
+                  size="md"
                   {...passwordForm.getInputProps("confirmPassword")}
                 />
                 <Button type="submit" fullWidth loading={resetPasswordMutation.isPending}>
