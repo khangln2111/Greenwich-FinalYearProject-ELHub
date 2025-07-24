@@ -3,7 +3,7 @@ export interface ReviewVm {
   content: string;
   rating: number;
   userFullName: string;
-  userAvatarUrl: string | null;
+  avatarUrl: string | null;
   createdAt: string;
   updatedAt: string;
 }

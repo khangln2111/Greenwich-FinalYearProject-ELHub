@@ -4,10 +4,9 @@ import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
-import avatar from "../../../assets/placeholder/profile-avatar-placeholder.svg";
-
-import CenterLoader from "../../../components/CenterLoader";
-import { useGetReviewsByCourseId } from "../../../react-query/review/reviewHooks";
+import avatar from "../../../../../assets/placeholder/profile-avatar-placeholder.svg";
+import CenterLoader from "../../../../../components/CenterLoader";
+import { useGetReviewsByCourseId } from "../../../../../react-query/review/reviewHooks";
 
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
   const stars = parseInt(option.value);
@@ -23,14 +22,14 @@ const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked
   );
 };
 
-interface ReviewTabProps {
+interface ReviewManagerProps {
   rating: number;
   totalReviews: number;
   stars: { stars: number; percentage: number }[];
   courseId: string;
 }
 
-const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) => {
+const ReviewManager = ({ rating, totalReviews, stars, courseId }: ReviewManagerProps) => {
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearch] = useDebouncedValue(searchInput, 300);
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
@@ -130,7 +129,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
         {reviews.items.map((review) => (
           <div
             key={review.id}
-            className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 mx-auto w-full"
+            className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 self-start w-full"
           >
             <div className="flex items-center gap-4">
               <img
@@ -160,4 +159,4 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
   );
 };
 
-export default ReviewTab;
+export default ReviewManager;

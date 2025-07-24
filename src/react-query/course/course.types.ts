@@ -49,8 +49,8 @@ export interface CourseVm {
   rejectionCount: number;
   submittedAt: string | null;
   lastRejectedAt: string | null;
-  createdAt: string | null;
-  updatedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CourseDetailVm {
@@ -153,7 +153,7 @@ export interface CourseApprovalHistoryVm {
   isApproved: boolean;
   note: string;
   createdAt: string;
-  updastedAt: string;
+  updatedAt: string;
 }
 
 export interface CreateCourseCommand {

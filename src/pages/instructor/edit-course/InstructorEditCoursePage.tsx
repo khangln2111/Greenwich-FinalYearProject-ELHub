@@ -8,13 +8,13 @@ import CenterLoader from "../../../components/CenterLoader";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import {
   useGetCourseDetail,
-  useSubmitCourse,
   useRetrySubmitCourse,
+  useSubmitCourse,
 } from "../../../react-query/course/courseHooks";
-import ReviewTab from "../../course-detail/_c/ReviewTab";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
-import OverviewForm from "./_c/OverviewForm/OverviewForm";
 import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmission";
+import OverviewForm from "./_c/OverviewForm/OverviewForm";
+import ReviewManager from "./_c/ReviewManager/ReviewManager";
 
 enum CourseDetailTab {
   Overview = "Overview",
@@ -182,7 +182,7 @@ export default function InstructorEditCoursePage() {
 
           {/* Reviews Tab */}
           <Tabs.Panel value={CourseDetailTab.Reviews}>
-            <ReviewTab
+            <ReviewManager
               courseId={courseId}
               rating={4.6}
               totalReviews={2533}

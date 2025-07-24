@@ -149,7 +149,7 @@ export default function AdminUsersPage() {
                     <Table.Td>
                       <Switch
                         size="sm"
-                        color={user.isActivated ? "green" : "gray"}
+                        color="green"
                         checked={user.isActivated}
                         label={user.isActivated ? "Active" : "Banned"}
                         onChange={() => handleToggleActivation(user.id, user.isActivated)}
