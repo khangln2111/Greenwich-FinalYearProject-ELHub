@@ -141,7 +141,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
                 />
                 <div className="flex-1 flex flex-col gap-1 md:gap-0">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <p className="text-xl font-medium dark:text-white">{review.userFullName}</p>
+                    <p className="text-lg font-medium dark:text-white">{review.userFullName}</p>
                     <Rating value={review.rating} readOnly size="md" />
                   </div>
                   <p className="text-sm text-gray-500 dark:text-dark-2">
@@ -176,13 +176,13 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
                           <span>Instructor</span>
                         </div>
                       </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         {dayjs(review.reply.updatedAt).fromNow()}
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-sm text-gray-800 dark:text-gray-300 leading-relaxed">
+                  <p className="text-gray-800 dark:text-gray-300 leading-relaxed">
                     {review.reply.content}
                   </p>
                 </div>
