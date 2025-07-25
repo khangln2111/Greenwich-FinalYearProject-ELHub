@@ -2,7 +2,7 @@ import { Group, Progress, Rating, Select, SelectProps, TextInput, Title } from "
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, ShieldCheckIcon } from "lucide-react";
 import { useState } from "react";
 import avatar from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
@@ -159,22 +159,35 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
 
               {/* Reply (if any) */}
               {review.reply && (
-                <div className="mt-4 ml-6 border-l-4 border-primary-6 pl-4 py-2 bg-[#f9f9f9] dark:bg-[#1e1e1e] rounded-md">
-                  <div className="flex items-center gap-3 mb-1">
+                <div
+                  className="relative mt-4 ml-6 border-l-4 border-primary-6 pl-4 pr-3 py-3 rounded-md bg-[#f9f9f9]
+                    dark:bg-[#1e1e1e]"
+                >
+                  <div className="flex items-center gap-3 mb-2">
                     <img
                       src={review.reply.creatorAvatarUrl || avatar}
                       alt="Instructor avatar"
                       className="size-10 rounded-full object-cover"
                     />
                     <div className="flex-1">
-                      <p className="font-semibold text-primary-7 dark:text-primary-4">
-                        {review.reply.creatorFullName}
-                      </p>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="font-semibold text-primary-700 dark:text-primary-300">
+                          {review.reply.creatorFullName}
+                        </p>
+                        <div
+                          className="flex items-center gap-1 text-[10px] font-semibold uppercase text-primary-700 bg-primary-100
+                            dark:bg-primary-900 dark:text-primary-300 px-2 py-0.5 rounded-full"
+                        >
+                          <ShieldCheckIcon size={14} strokeWidth={2} />
+                          <span>Instructor</span>
+                        </div>
+                      </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {dayjs(review.reply.updatedAt).fromNow()}
                       </p>
                     </div>
                   </div>
+
                   <p className="text-sm text-gray-800 dark:text-gray-300 leading-relaxed">
                     {review.reply.content}
                   </p>
