@@ -1,12 +1,12 @@
-import { Badge, Button, Image, Text, TextInput, Title, ActionIcon } from "@mantine/core";
+import { ActionIcon, Badge, Button, Image, Text, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Pencil, Plus, Search } from "lucide-react";
 import { useState } from "react";
-import { useGetCategories } from "../../../react-query/category/categoryHooks";
 import CenterLoader from "../../../components/CenterLoader";
 import { CategoryVm } from "../../../react-query/category/category.types";
-import UpdateCategoryModal from "./_c/UpdateCategoryModal";
+import { useGetCategories } from "../../../react-query/category/categoryHooks";
 import CreateCategoryModal from "./_c/CreateCategoryModal";
+import UpdateCategoryModal from "./_c/UpdateCategoryModal";
 
 export default function AdminCategoriesPage() {
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
@@ -20,8 +20,8 @@ export default function AdminCategoriesPage() {
 
   if (error) return <Text>Error loading categories: {error.message}</Text>;
 
-  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
     setSearchTerm(searchInput.trim());
   };
 
@@ -41,9 +41,14 @@ export default function AdminCategoriesPage() {
               className="w-60"
               value={searchInput}
               onChange={(e) => setSearchInput(e.currentTarget.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearchSubmit(e);
+                }
+              }}
               rightSectionPointerEvents="all"
               rightSection={
-                searchInput ? (
+                searchTerm ? (
                   <ActionIcon
                     variant="subtle"
                     size="lg"
@@ -55,8 +60,8 @@ export default function AdminCategoriesPage() {
                     ✕
                   </ActionIcon>
                 ) : (
-                  <ActionIcon type="submit" variant="subtle" size="lg">
-                    <Search className="w-5 h-5 text-gray-500" />
+                  <ActionIcon type="submit" variant="subtle" size="lg" onClick={handleSearchSubmit}>
+                    <Search className="text-gray-500" size={16} />
                   </ActionIcon>
                 )
               }

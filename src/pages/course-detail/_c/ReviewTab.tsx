@@ -58,7 +58,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg mt-10">
         {/* Left section */}
         <div
-          className="flex flex-col items-center justify-center md:col-span-4 xl:col-span-3 gap-3 p-sm border-r
+          className="flex flex-col items-center justify-center md:col-span-4 xl:col-span-3 gap-3 p-sm md:border-r
             md:aspect-square"
         >
           <div className="text-orange-500 text-5xl font-bold">{rating.toFixed(1)}</div>

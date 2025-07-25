@@ -1,12 +1,19 @@
-import { Group, Progress, Rating, Select, SelectProps, TextInput, Title } from "@mantine/core";
-import { useDebouncedValue } from "@mantine/hooks";
+import {
+  ActionIcon,
+  Group,
+  Progress,
+  Rating,
+  Select,
+  SelectProps,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
-import dayjs from "dayjs";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
-import avatar from "../../../../../assets/placeholder/profile-avatar-placeholder.svg";
 import CenterLoader from "../../../../../components/CenterLoader";
 import { useGetReviewsByCourseId } from "../../../../../react-query/review/reviewHooks";
+import InstructorReviewManagerCard from "./_c/InstructorReviewManagerCard";
 
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
   const stars = parseInt(option.value);
@@ -35,16 +42,22 @@ const InstructorReviewManager = ({
   stars,
   courseId,
 }: InstructorReviewManagerProps) => {
-  const [searchInput, setSearchInput] = useState("");
-  const [debouncedSearch] = useDebouncedValue(searchInput, 300);
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
+
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
+    setSearchTerm(searchInput.trim());
+  };
 
   const {
     data: reviews,
     isPending,
     error,
   } = useGetReviewsByCourseId(courseId, {
-    content: debouncedSearch,
+    content: searchTerm,
     rating: selectedRating ? parseInt(selectedRating) : undefined,
   });
 
@@ -62,7 +75,7 @@ const InstructorReviewManager = ({
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg mt-10">
         {/* Left section */}
         <div
-          className="flex flex-col items-center justify-center md:col-span-4 xl:col-span-3 gap-3 p-sm border-r
+          className="flex flex-col items-center justify-center md:col-span-4 xl:col-span-3 gap-3 p-sm md:border-r
             md:aspect-square"
         >
           <div className="text-orange-500 text-5xl font-bold">{rating.toFixed(1)}</div>
@@ -103,10 +116,30 @@ const InstructorReviewManager = ({
             className="grow"
             size="md"
             type="search"
-            rightSection={<SearchIcon size={16} />}
             placeholder="Search"
             value={searchInput}
             onChange={(e) => setSearchInput(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearchSubmit(e);
+            }}
+            rightSection={
+              searchTerm ? (
+                <ActionIcon
+                  variant="subtle"
+                  size="lg"
+                  onClick={() => {
+                    setSearchInput("");
+                    setSearchTerm("");
+                  }}
+                >
+                  ✕
+                </ActionIcon>
+              ) : (
+                <ActionIcon type="submit" variant="subtle" size="lg" onClick={handleSearchSubmit}>
+                  <SearchIcon className="text-gray-500" size={16} />
+                </ActionIcon>
+              )
+            }
           />
           <Select
             placeholder="Filter by stars"
@@ -127,37 +160,16 @@ const InstructorReviewManager = ({
           />
         </div>
         {/* Reviews */}
-        <div className="flex flex-col items-center justify-center gap-6">
+        <div className="flex flex-col items-start gap-6">
           {reviews.items.length === 0 && (
             <p className="text-center text-gray-500">No reviews found.</p>
           )}
           {reviews.items.map((review) => (
-            <div
+            <InstructorReviewManagerCard
               key={review.id}
-              className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 self-start w-full"
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={review.avatarUrl || avatar}
-                  alt="User avatar"
-                  className="size-16 rounded-full object-cover"
-                />
-                <div className="flex-1 flex flex-col gap-1 md:gap-0">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <p className="text-xl font-medium">{review.userFullName}</p>
-                    <Rating value={review.rating} readOnly size="md" />
-                  </div>
-                  <p className="text-sm text-gray-500 dark:text-dark-2">
-                    {dayjs(review.updatedAt).fromNow()}
-                  </p>
-                </div>
-              </div>
-              <div>
-                <p className="mt-2 text-gray-700 dark:text-gray-300 leading-relaxed">
-                  {review.content}
-                </p>
-              </div>
-            </div>
+              review={review}
+              className="max-w-(--container-2xl)"
+            />
           ))}
         </div>
       </div>

@@ -95,8 +95,8 @@ export default function InstructorEditCoursePage() {
 
       {/* Status bar */}
       <div
-        className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-100 dark:bg-dark-6 p-4
-          rounded-xl mb-6 gap-4 text-sm"
+        className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-between bg-gray-100 dark:bg-dark-6
+          p-4 rounded-xl mb-6 gap-4 text-sm"
       >
         <Group gap="xs">
           <Text>Status:</Text>
