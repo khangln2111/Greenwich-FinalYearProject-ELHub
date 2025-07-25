@@ -160,7 +160,7 @@ const InstructorReviewManager = ({
           />
         </div>
         {/* Reviews */}
-        <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-col items-center gap-6">
           {reviews.items.length === 0 && (
             <p className="text-center text-gray-500">No reviews found.</p>
           )}
@@ -168,7 +168,7 @@ const InstructorReviewManager = ({
             <InstructorReviewManagerCard
               key={review.id}
               review={review}
-              className="max-w-(--container-4xl)"
+              className="max-w-(--container-3xl)"
             />
           ))}
         </div>

@@ -132,6 +132,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
               key={review.id}
               className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 mx-auto w-full"
             >
+              {/* Review header */}
               <div className="flex items-center gap-4">
                 <img
                   src={review.userAvatarUrl || avatar}
@@ -148,11 +149,37 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
                   </p>
                 </div>
               </div>
+
+              {/* Review content */}
               <div>
                 <p className="mt-2 text-gray-800 dark:text-gray-300 leading-relaxed">
                   {review.content}
                 </p>
               </div>
+
+              {/* Reply (if any) */}
+              {review.reply && (
+                <div className="mt-4 ml-6 border-l-4 border-primary-6 pl-4 py-2 bg-[#f9f9f9] dark:bg-[#1e1e1e] rounded-md">
+                  <div className="flex items-center gap-3 mb-1">
+                    <img
+                      src={review.reply.creatorAvatarUrl || avatar}
+                      alt="Instructor avatar"
+                      className="size-10 rounded-full object-cover"
+                    />
+                    <div className="flex-1">
+                      <p className="font-semibold text-primary-7 dark:text-primary-4">
+                        {review.reply.creatorFullName}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {dayjs(review.reply.updatedAt).fromNow()}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-800 dark:text-gray-300 leading-relaxed">
+                    {review.reply.content}
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>

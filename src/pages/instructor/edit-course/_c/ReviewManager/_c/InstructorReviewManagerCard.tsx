@@ -3,7 +3,10 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import avatarPlaceholder from "../../../../../../assets/placeholder/profile-avatar-placeholder.svg";
 import { ReviewVm } from "../../../../../../react-query/review/review.types";
-import { useReplyToReview } from "../../../../../../react-query/review/reviewHooks";
+import {
+  useReplyToReview,
+  useUpdateReviewReply,
+} from "../../../../../../react-query/review/reviewHooks";
 import { cn } from "../../../../../../utils/cn";
 
 interface InstructorReviewManagerCardProps {
@@ -15,13 +18,39 @@ const InstructorReviewManagerCard = ({ review, className }: InstructorReviewMana
   const [replyContent, setReplyContent] = useState("");
   const [isReplying, setIsReplying] = useState(false);
 
+  const [isEditingReply, setIsEditingReply] = useState(false);
+  const [editedReplyContent, setEditedReplyContent] = useState(review.reply?.content ?? "");
+
   const replyMutation = useReplyToReview();
+  const updateReplyMutation = useUpdateReviewReply();
 
   const handleReply = () => {
-    replyMutation.mutate({
-      id: review.id,
-      content: replyContent.trim(),
-    });
+    replyMutation.mutate(
+      {
+        id: review.id,
+        content: replyContent.trim(),
+      },
+      {
+        onSuccess: () => {
+          setIsReplying(false);
+          setReplyContent("");
+        },
+      },
+    );
+  };
+
+  const handleUpdateReply = () => {
+    updateReplyMutation.mutate(
+      {
+        id: review.reply?.id ?? "",
+        content: editedReplyContent.trim(),
+      },
+      {
+        onSuccess: () => {
+          setIsEditingReply(false);
+        },
+      },
+    );
   };
 
   return (
@@ -57,10 +86,49 @@ const InstructorReviewManagerCard = ({ review, className }: InstructorReviewMana
       {/* Reply section */}
       {review.reply ? (
         <div className="border-l-4 border-primary-6 pl-4 mt-2">
-          <Text className="text-sm text-gray-600 dark:text-dark-3 italic mb-1">
-            Replied {dayjs(review.reply.updatedAt).fromNow()}
-          </Text>
-          <Text className="text-gray-800 dark:text-gray-100">{review.reply.content}</Text>
+          <div className="flex items-start justify-between">
+            <Text className="text-sm text-gray-600 dark:text-dark-3 italic mb-1">
+              Replied {dayjs(review.reply.updatedAt).fromNow()}
+            </Text>
+            {!isEditingReply && (
+              <Button
+                size="xs"
+                variant="subtle"
+                onClick={() => {
+                  setEditedReplyContent(review.reply?.content ?? "");
+                  setIsEditingReply(true);
+                }}
+              >
+                Edit
+              </Button>
+            )}
+          </div>
+
+          {isEditingReply ? (
+            <div className="flex flex-col gap-2 mt-1">
+              <Textarea
+                value={editedReplyContent}
+                onChange={(e) => setEditedReplyContent(e.currentTarget.value)}
+                autosize
+                minRows={2}
+              />
+              <Group justify="flex-end" gap="sm">
+                <Button variant="outline" size="xs" onClick={() => setIsEditingReply(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  size="xs"
+                  loading={updateReplyMutation.isPending}
+                  disabled={!editedReplyContent.trim()}
+                  onClick={handleUpdateReply}
+                >
+                  Update Reply
+                </Button>
+              </Group>
+            </div>
+          ) : (
+            <Text className="text-gray-800 dark:text-gray-100 mt-1">{review.reply.content}</Text>
+          )}
         </div>
       ) : (
         <div className="flex flex-col gap-2">
