@@ -3,7 +3,17 @@ export interface ReviewVm {
   content: string;
   rating: number;
   userFullName: string;
-  avatarUrl: string | null;
+  userAvatarUrl: string | null;
+  reply: ReviewReplyVm | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReviewReplyVm {
+  id: string;
+  content: string;
+  creatorFullName: string;
+  creatorAvatarUrl: string | null;
   createdAt: string;
   updatedAt: string;
 }

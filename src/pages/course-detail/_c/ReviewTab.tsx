@@ -134,7 +134,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
             >
               <div className="flex items-center gap-4">
                 <img
-                  src={review.avatarUrl || avatar}
+                  src={review.userAvatarUrl || avatar}
                   alt="User avatar"
                   className="size-16 rounded-full object-cover"
                 />

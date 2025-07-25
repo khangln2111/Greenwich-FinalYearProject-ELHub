@@ -19,7 +19,7 @@ const InstructorReviewManagerCard = ({ review, className }: InstructorReviewMana
     >
       <div className="flex items-center gap-4">
         <img
-          src={review.avatarUrl || avatarPlaceholder}
+          src={review.userAvatarUrl || avatarPlaceholder}
           alt="User avatar"
           className="size-16 rounded-full object-cover"
         />
