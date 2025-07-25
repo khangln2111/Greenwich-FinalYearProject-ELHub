@@ -1,7 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createReview, deleteReview, getReviewsByCourseId, updateReview } from "./reviewApi";
+import {
+  createReview,
+  deleteReview,
+  getReviewsByCourseId,
+  replyToReview,
+  updateReview,
+} from "./reviewApi";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { CreateReviewCommand, ReviewQueryCriteria, UpdateReviewCommand } from "./review.types";
+import {
+  CreateReviewCommand,
+  ReplyToReviewCommand,
+  ReviewQueryCriteria,
+  UpdateReviewCommand,
+} from "./review.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { ErrorCode } from "../../http-client/api.types";
@@ -91,6 +102,34 @@ export const useDeleteReview = () => {
           {
             status: 404,
             handler: () => showErrorToast("Not Found", "The review not found"),
+          },
+        ],
+      }),
+  });
+};
+
+export const useReplyToReview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (command: ReplyToReviewCommand) => replyToReview(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: keyFac.reviews._def,
+      });
+      showSuccessToast("Reply Sent", "Your reply has been successfully sent");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The review not found"),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.InvalidOperation,
+            handler: () => showErrorToast("Invalid Operation", "This review already has a reply"),
           },
         ],
       }),

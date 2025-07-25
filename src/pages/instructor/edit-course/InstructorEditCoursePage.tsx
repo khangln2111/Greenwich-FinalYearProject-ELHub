@@ -14,7 +14,7 @@ import {
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmission";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
-import ReviewManager from "./_c/ReviewManager/ReviewManager";
+import InstructorReviewManager from "./_c/ReviewManager/InstructorReviewManager";
 
 enum CourseDetailTab {
   Overview = "Overview",
@@ -182,7 +182,7 @@ export default function InstructorEditCoursePage() {
 
           {/* Reviews Tab */}
           <Tabs.Panel value={CourseDetailTab.Reviews}>
-            <ReviewManager
+            <InstructorReviewManager
               courseId={courseId}
               rating={4.6}
               totalReviews={2533}

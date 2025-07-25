@@ -3,6 +3,7 @@ import { ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
 import {
   CreateReviewCommand,
+  ReplyToReviewCommand,
   ReviewQueryCriteria,
   ReviewVm,
   UpdateReviewCommand,
@@ -53,5 +54,10 @@ export const updateReview = async (command: UpdateReviewCommand) => {
 
 export const deleteReview = async (id: string) => {
   const response = await apiClient.delete(`${BASE_URL}/${id}`);
+  return response.data;
+};
+
+export const replyToReview = async (command: ReplyToReviewCommand) => {
+  const response = await apiClient.post<ReviewVm>(`${BASE_URL}/reply`, command);
   return response.data;
 };

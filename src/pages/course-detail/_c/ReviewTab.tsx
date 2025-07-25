@@ -54,6 +54,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
     <div>
       <Title order={2}>What our students are saying</Title>
 
+      {/* review summary */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg mt-10">
         {/* Left section */}
         <div
@@ -90,71 +91,71 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
         </div>
       </div>
 
-      {/* Search + Filter */}
-      <div className="mt-10 flex items-center gap-5">
-        <TextInput
-          className="grow"
-          size="md"
-          type="search"
-          rightSection={<SearchIcon size={16} />}
-          placeholder="Search"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.currentTarget.value)}
-        />
-
-        <Select
-          placeholder="Filter by stars"
-          size="md"
-          checkIconPosition="right"
-          leftSection={<IconStarFilled size={22} className="text-yellow" />}
-          renderOption={renderStarOptionIconOnly}
-          clearable
-          value={selectedRating}
-          onChange={setSelectedRating}
-          data={[
-            { value: "5", label: "5" },
-            { value: "4", label: "4" },
-            { value: "3", label: "3" },
-            { value: "2", label: "2" },
-            { value: "1", label: "1" },
-          ]}
-        />
-      </div>
-
-      {/* Reviews */}
-      <div className="mt-10 flex flex-col items-center justify-center gap-6">
-        {reviews.items.length === 0 && (
-          <p className="text-center text-gray-500">No reviews found.</p>
-        )}
-
-        {reviews.items.map((review) => (
-          <div
-            key={review.id}
-            className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 mx-auto w-full"
-          >
-            <div className="flex items-center gap-4">
-              <img
-                src={review.avatarUrl || avatar}
-                alt="User avatar"
-                className="size-16 rounded-full object-cover"
-              />
-              <div className="flex-1 flex flex-col gap-1 md:gap-0">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                  <p className="text-xl font-medium">{review.userFullName}</p>
-                  <Rating value={review.rating} readOnly size="md" />
+      {/* bottom section wrapper */}
+      <div className="mt-10 flex flex-col gap-7">
+        {/* Search + Filter */}
+        <div className="flex items-center gap-5">
+          <TextInput
+            className="grow"
+            size="md"
+            type="search"
+            rightSection={<SearchIcon size={16} />}
+            placeholder="Search"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.currentTarget.value)}
+          />
+          <Select
+            placeholder="Filter by stars"
+            size="md"
+            checkIconPosition="right"
+            leftSection={<IconStarFilled size={22} className="text-yellow" />}
+            renderOption={renderStarOptionIconOnly}
+            clearable
+            value={selectedRating}
+            onChange={setSelectedRating}
+            data={[
+              { value: "5", label: "5" },
+              { value: "4", label: "4" },
+              { value: "3", label: "3" },
+              { value: "2", label: "2" },
+              { value: "1", label: "1" },
+            ]}
+          />
+        </div>
+        {/* Reviews */}
+        <div className="flex flex-col items-center justify-center gap-6">
+          {reviews.items.length === 0 && (
+            <p className="text-center text-gray-500">No reviews found.</p>
+          )}
+          {reviews.items.map((review) => (
+            <div
+              key={review.id}
+              className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 mx-auto w-full"
+            >
+              <div className="flex items-center gap-4">
+                <img
+                  src={review.avatarUrl || avatar}
+                  alt="User avatar"
+                  className="size-16 rounded-full object-cover"
+                />
+                <div className="flex-1 flex flex-col gap-1 md:gap-0">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <p className="text-xl font-medium dark:text-white">{review.userFullName}</p>
+                    <Rating value={review.rating} readOnly size="md" />
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-dark-2">
+                    {dayjs(review.updatedAt).fromNow()}
+                  </p>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-dark-2">
-                  {dayjs(review.updatedAt).fromNow()}
+              </div>
+              <div>
+                <p className="mt-2 text-gray-800 dark:text-gray-300 leading-relaxed">
+                  {review.content}
                 </p>
               </div>
             </div>
-            <div>
-              <p className="mt-2 text-gray-600 dark:text-slate-400 leading-relaxed">
-                {review.content}
-              </p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

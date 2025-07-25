@@ -20,6 +20,11 @@ export interface UpdateReviewCommand {
   content?: string;
 }
 
+export interface ReplyToReviewCommand {
+  id: string;
+  content: string;
+}
+
 export interface ReviewQueryCriteria {
   pageIndex?: number;
   pageSize?: number;
