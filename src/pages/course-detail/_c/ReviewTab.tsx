@@ -159,10 +159,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
 
               {/* Reply (if any) */}
               {review.reply && (
-                <div
-                  className="relative mt-4 ml-6 border-l-4 border-primary-6 pl-4 pr-3 py-3 rounded-md bg-[#f9f9f9]
-                    dark:bg-[#1e1e1e]"
-                >
+                <div className="relative mt-4 ml-6 border-l-4 pl-4 pr-3 py-3 rounded-md bg-[#f9f9f9] dark:bg-[#1e1e1e]">
                   <div className="flex items-center gap-3 mb-2">
                     <img
                       src={review.reply.creatorAvatarUrl || avatar}
@@ -176,7 +173,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
                         </p>
                         <div
                           className="flex items-center gap-1 text-[10px] font-semibold uppercase text-primary-700 bg-primary-100
-                            dark:bg-primary-900 dark:text-primary-300 px-2 py-0.5 rounded-full"
+                            dark:bg-primary-900 dark:text-primary-300 px-2 py-0.5 rounded-full leading-none"
                         >
                           <ShieldCheckIcon size={14} strokeWidth={2} />
                           <span>Instructor</span>
