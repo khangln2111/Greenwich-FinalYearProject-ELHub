@@ -168,7 +168,7 @@ const InstructorReviewManager = ({
             <InstructorReviewManagerCard
               key={review.id}
               review={review}
-              className="max-w-(--container-2xl)"
+              className="max-w-(--container-4xl)"
             />
           ))}
         </div>

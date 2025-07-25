@@ -1,5 +1,5 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
-import { ListData } from "../../http-client/api.types";
+import { ApiSuccessResponse, ListData } from "../../http-client/api.types";
 import apiClient from "../../http-client/apiClient";
 import {
   CreateReviewCommand,
@@ -7,6 +7,7 @@ import {
   ReviewQueryCriteria,
   ReviewVm,
   UpdateReviewCommand,
+  UpdateReviewReplyCommand,
 } from "./review.types";
 
 const BASE_URL = "/reviews";
@@ -43,21 +44,26 @@ export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
 };
 
 export const createReview = async (command: CreateReviewCommand) => {
-  const response = await apiClient.post<ReviewVm>(`${BASE_URL}`, command);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, command);
   return response.data;
 };
 
 export const updateReview = async (command: UpdateReviewCommand) => {
-  const response = await apiClient.put<ReviewVm>(`${BASE_URL}`, command);
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}`, command);
   return response.data;
 };
 
 export const deleteReview = async (id: string) => {
-  const response = await apiClient.delete(`${BASE_URL}/${id}`);
+  const response = await apiClient.delete<ApiSuccessResponse>(`${BASE_URL}/${id}`);
   return response.data;
 };
 
 export const replyToReview = async (command: ReplyToReviewCommand) => {
-  const response = await apiClient.post<ReviewVm>(`${BASE_URL}/reply`, command);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/reply`, command);
+  return response.data;
+};
+
+export const updateReviewReply = async (command: UpdateReviewReplyCommand) => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/reply`, command);
   return response.data;
 };

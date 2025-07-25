@@ -5,6 +5,7 @@ import {
   getReviewsByCourseId,
   replyToReview,
   updateReview,
+  updateReviewReply,
 } from "./reviewApi";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
@@ -12,6 +13,7 @@ import {
   ReplyToReviewCommand,
   ReviewQueryCriteria,
   UpdateReviewCommand,
+  UpdateReviewReplyCommand,
 } from "./review.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
@@ -130,6 +132,29 @@ export const useReplyToReview = () => {
             status: 400,
             errorCode: ErrorCode.InvalidOperation,
             handler: () => showErrorToast("Invalid Operation", "This review already has a reply"),
+          },
+        ],
+      }),
+  });
+};
+
+export const useUpdateReviewReply = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (command: UpdateReviewReplyCommand) => updateReviewReply(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: keyFac.reviews._def,
+      });
+      showSuccessToast("Reply Updated", "Your reply has been successfully updated");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The review not found"),
           },
         ],
       }),

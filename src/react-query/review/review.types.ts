@@ -4,8 +4,8 @@ export interface ReviewVm {
   rating: number;
   userFullName: string;
   userAvatarUrl: string | null;
-  reply: ReviewReplyVm | null;
   createdAt: string;
+  reply: ReviewReplyVm | null;
   updatedAt: string;
 }
 
@@ -31,6 +31,11 @@ export interface UpdateReviewCommand {
 }
 
 export interface ReplyToReviewCommand {
+  id: string;
+  content: string;
+}
+
+export interface UpdateReviewReplyCommand {
   id: string;
   content: string;
 }
