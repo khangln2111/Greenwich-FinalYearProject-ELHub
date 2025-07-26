@@ -91,7 +91,10 @@ const CourseDetailPage = () => {
         pb="5xl"
         pt={{ base: "xl", md: "2xl" }}
       >
-        <div className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr] items-start">
+        <div
+          className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr] items-start
+            justify-items-center"
+        >
           {/* 1st column */}
           <div>
             <div>
@@ -205,7 +208,10 @@ const CourseDetailPage = () => {
             </Tabs>
           </div>
           {/* 2nd column */}
-          <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-xl overflow-hidden">
+          <div
+            className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-xl overflow-hidden
+              max-lg:max-w-(--container-lg) w-full"
+          >
             <div className="p-6 size-full dark:bg-dark-6 bg-white rounded-[inherit]">
               {/* Price box */}
               <div className="bg-violet-600 text-white p-4 shadow-md rounded-xl flex flex-col items-center lg:item-center">

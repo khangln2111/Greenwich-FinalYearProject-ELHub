@@ -8,7 +8,6 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useDebouncedValue } from "@mantine/hooks";
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
