@@ -61,8 +61,6 @@ const InstructorReviewManager = ({
     rating: selectedRating ? parseInt(selectedRating) : undefined,
   });
 
-  if (isPending) return <CenterLoader />;
-
   if (error) {
     return <p className="text-red-500 text-center">Error loading reviews: {error.message}</p>;
   }
@@ -160,17 +158,20 @@ const InstructorReviewManager = ({
           />
         </div>
         {/* Reviews */}
-        <div className="flex flex-col items-center gap-6">
-          {reviews.items.length === 0 && (
+        <div className="flex flex-col justify-center items-center gap-6 min-h-[300px]">
+          {isPending ? (
+            <CenterLoader />
+          ) : reviews.items.length === 0 ? (
             <p className="text-center text-gray-500">No reviews found.</p>
+          ) : (
+            reviews.items.map((review) => (
+              <InstructorReviewManagerCard
+                key={review.id}
+                review={review}
+                className="max-w-(--container-3xl)"
+              />
+            ))
           )}
-          {reviews.items.map((review) => (
-            <InstructorReviewManagerCard
-              key={review.id}
-              review={review}
-              className="max-w-(--container-3xl)"
-            />
-          ))}
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import {
   UpdateReviewCommand,
   UpdateReviewReplyCommand,
 } from "./review.types";
+import { applyConditions } from "../../utils/gridifyHelper";
 
 const BASE_URL = "/reviews";
 
@@ -21,7 +22,7 @@ export const getReviewsByCourseId = async (courseId: string, query: ReviewQueryC
 
 export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
   const queryBuilder = new GridifyQueryBuilder();
-  queryBuilder.setPage(query.pageIndex ?? 1);
+  queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
   queryBuilder.addOrderBy("createdAt", true);
 
@@ -35,10 +36,7 @@ export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
     conditions.push(() => queryBuilder.addCondition("rating", op.Equal, query.rating!));
   }
 
-  conditions.forEach((addConditionFn, index) => {
-    if (index > 0) queryBuilder.and();
-    addConditionFn();
-  });
+  applyConditions(queryBuilder, conditions);
 
   return queryBuilder.build();
 };

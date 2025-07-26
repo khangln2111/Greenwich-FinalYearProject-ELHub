@@ -1,3 +1,5 @@
+import { BaseQueryCriteria } from "../../http-client/api.types";
+
 export interface ReviewVm {
   id: string;
   content: string;
@@ -40,9 +42,10 @@ export interface UpdateReviewReplyCommand {
   content: string;
 }
 
-export interface ReviewQueryCriteria {
-  pageIndex?: number;
-  pageSize?: number;
+export type ReviewOrderableFields = keyof ReviewVm;
+
+export interface ReviewQueryCriteria extends BaseQueryCriteria<ReviewOrderableFields> {
   rating?: number;
   content?: string;
+  isReplied?: boolean;
 }

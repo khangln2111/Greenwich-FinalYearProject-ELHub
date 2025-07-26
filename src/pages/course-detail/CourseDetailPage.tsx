@@ -213,7 +213,7 @@ const CourseDetailPage = () => {
                 <div className="flex items-center gap-2 mt-1">
                   {course.discountedPrice === 0 ? (
                     <>
-                      <span className="text-4xl font-bold leading-normal text-green-300">Free</span>
+                      <span className="text-4xl font-bold leading-normal">Free</span>
                       <span className="line-through opacity-80 text-xl font-semibold leading-normal">
                         ${course.price.toFixed(2)}
                       </span>

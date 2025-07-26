@@ -1,13 +1,21 @@
-import { Group, Progress, Rating, Select, SelectProps, TextInput, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Group,
+  Progress,
+  Rating,
+  Select,
+  SelectProps,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
-import dayjs from "dayjs";
-import { SearchIcon, ShieldCheckIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { useState } from "react";
-import avatar from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetReviewsByCourseId } from "../../../react-query/review/reviewHooks";
+import ReviewCard from "./ReviewCard";
 
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
   const stars = parseInt(option.value);
@@ -32,7 +40,7 @@ interface ReviewTabProps {
 
 const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) => {
   const [searchInput, setSearchInput] = useState("");
-  const [debouncedSearch] = useDebouncedValue(searchInput, 300);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
 
   const {
@@ -40,15 +48,18 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
     isPending,
     error,
   } = useGetReviewsByCourseId(courseId, {
-    content: debouncedSearch,
+    content: searchTerm,
     rating: selectedRating ? parseInt(selectedRating) : undefined,
   });
-
-  if (isPending) return <CenterLoader />;
 
   if (error) {
     return <p className="text-red-500 text-center">Error loading reviews: {error.message}</p>;
   }
+
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
+    setSearchTerm(searchInput.trim());
+  };
 
   return (
     <div>
@@ -99,10 +110,30 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
             className="grow"
             size="md"
             type="search"
-            rightSection={<SearchIcon size={16} />}
             placeholder="Search"
             value={searchInput}
             onChange={(e) => setSearchInput(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearchSubmit(e);
+            }}
+            rightSection={
+              searchTerm ? (
+                <ActionIcon
+                  variant="subtle"
+                  size="lg"
+                  onClick={() => {
+                    setSearchInput("");
+                    setSearchTerm("");
+                  }}
+                >
+                  ✕
+                </ActionIcon>
+              ) : (
+                <ActionIcon type="submit" variant="subtle" size="lg" onClick={handleSearchSubmit}>
+                  <SearchIcon className="text-gray-500" size={16} />
+                </ActionIcon>
+              )
+            }
           />
           <Select
             placeholder="Filter by stars"
@@ -123,72 +154,14 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
           />
         </div>
         {/* Reviews */}
-        <div className="flex flex-col items-center justify-center gap-6">
-          {reviews.items.length === 0 && (
+        <div className="flex flex-col items-center justify-center gap-6 min-h-[300px]">
+          {isPending ? (
+            <CenterLoader />
+          ) : reviews.items.length === 0 ? (
             <p className="text-center text-gray-500">No reviews found.</p>
+          ) : (
+            reviews.items.map((review) => <ReviewCard key={review.id} review={review} />)
           )}
-          {reviews.items.map((review) => (
-            <div
-              key={review.id}
-              className="p-6 border rounded-lg shadow-sm bg-body flex flex-col gap-4 mx-auto w-full"
-            >
-              {/* Review header */}
-              <div className="flex items-center gap-4">
-                <img
-                  src={review.userAvatarUrl || avatar}
-                  alt="User avatar"
-                  className="size-16 rounded-full object-cover"
-                />
-                <div className="flex-1 flex flex-col gap-1 md:gap-0">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <p className="text-lg font-medium dark:text-white">{review.userFullName}</p>
-                    <Rating value={review.rating} readOnly size="md" />
-                  </div>
-                  <p className="text-sm text-gray-500 dark:text-dark-2">
-                    {dayjs(review.updatedAt).fromNow()}
-                  </p>
-                </div>
-              </div>
-
-              {/* Review content */}
-              <div>
-                <p className="mt-2 text-gray-800 dark:text-gray-300 leading-relaxed">
-                  {review.content}
-                </p>
-              </div>
-
-              {/* Reply (if any) */}
-              {review.reply && (
-                <div className="relative mt-4 ml-6 border-l-4 pl-4 pr-3 py-3 rounded-md bg-gray-50 dark:bg-dark-8">
-                  <div className="flex items-center gap-3 mb-2">
-                    <img
-                      src={review.reply.creatorAvatarUrl || avatar}
-                      alt="Instructor avatar"
-                      className="size-10 rounded-full object-cover"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <p className="font-semibold text-primary-700 dark:text-primary-300">
-                          {review.reply.creatorFullName}
-                        </p>
-                        <div className="flex items-center gap-1 text-sm text-green-600 dark:text-green-300">
-                          <ShieldCheckIcon size={16} strokeWidth={2.2} />
-                          <span>Instructor</span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {dayjs(review.reply.updatedAt).fromNow()}
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-800 dark:text-gray-300 leading-relaxed">
-                    {review.reply.content}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
         </div>
       </div>
     </div>

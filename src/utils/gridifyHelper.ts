@@ -11,3 +11,7 @@ export function applyConditions(queryBuilder: GridifyQueryBuilder, conditions: C
     conditionFn();
   });
 }
+
+export function keyOf<T>(key: keyof T): keyof T {
+  return key;
+}
