@@ -28,15 +28,15 @@ export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
 
   const conditions: Array<() => void> = [];
 
-  if (query.content && query.content) {
+  if (query.content !== undefined) {
     conditions.push(() => queryBuilder.addCondition("content", op.Contains, query.content!, false));
   }
 
-  if (query.rating && query.rating) {
+  if (query.rating !== undefined) {
     conditions.push(() => queryBuilder.addCondition("rating", op.Equal, query.rating!));
   }
 
-  if (query.isReplied && query.isReplied) {
+  if (query.isReplied !== undefined) {
     conditions.push(() => queryBuilder.addCondition("isReplied", op.Equal, query.isReplied!));
   }
 

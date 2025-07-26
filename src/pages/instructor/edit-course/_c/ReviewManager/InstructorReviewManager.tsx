@@ -11,6 +11,7 @@ import {
 import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
+
 import CenterLoader from "../../../../../components/CenterLoader";
 import { useGetReviewsByCourseId } from "../../../../../react-query/review/reviewHooks";
 import InstructorReviewManagerCard from "./_c/InstructorReviewManagerCard";
@@ -43,7 +44,7 @@ const InstructorReviewManager = ({
   courseId,
 }: InstructorReviewManagerProps) => {
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
-
+  const [selectedReplyStatus, setSelectedReplyStatus] = useState<string | null>("all");
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -52,6 +53,13 @@ const InstructorReviewManager = ({
     setSearchTerm(searchInput.trim());
   };
 
+  const isReplied =
+    selectedReplyStatus === "replied"
+      ? true
+      : selectedReplyStatus === "unreplied"
+        ? false
+        : undefined;
+
   const {
     data: reviews,
     isPending,
@@ -59,6 +67,7 @@ const InstructorReviewManager = ({
   } = useGetReviewsByCourseId(courseId, {
     content: searchTerm,
     rating: selectedRating ? parseInt(selectedRating) : undefined,
+    isReplied: isReplied,
   });
 
   if (error) {
@@ -109,7 +118,7 @@ const InstructorReviewManager = ({
       {/* bottom section wrapper */}
       <div className="mt-10 flex flex-col gap-7">
         {/* Search + Filter */}
-        <div className="flex items-center gap-5">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-5">
           <TextInput
             className="grow"
             size="md"
@@ -139,6 +148,7 @@ const InstructorReviewManager = ({
               )
             }
           />
+
           <Select
             placeholder="Filter by stars"
             size="md"
@@ -156,7 +166,20 @@ const InstructorReviewManager = ({
               { value: "1", label: "1" },
             ]}
           />
+
+          <Select
+            placeholder="Reply status"
+            size="md"
+            value={selectedReplyStatus}
+            onChange={(value) => setSelectedReplyStatus(value)}
+            data={[
+              { value: "all", label: "All" },
+              { value: "replied", label: "Replied" },
+              { value: "unreplied", label: "Unreplied" },
+            ]}
+          />
         </div>
+
         {/* Reviews */}
         <div className="flex flex-col justify-center items-center gap-6 min-h-[300px]">
           {isPending ? (

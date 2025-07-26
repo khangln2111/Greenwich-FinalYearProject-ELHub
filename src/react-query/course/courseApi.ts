@@ -30,7 +30,7 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
 
   const conditions: Array<() => void> = [];
 
-  if (query.search) {
+  if (query.search !== undefined) {
     conditions.push(() =>
       qb
         .startGroup()
@@ -41,17 +41,19 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
     );
   }
 
-  if (query.minPrice)
+  if (query.minPrice !== undefined)
     conditions.push(() => qb.addCondition("price", op.GreaterThanOrEqual, query.minPrice!));
-  if (query.maxPrice)
+  if (query.maxPrice !== undefined)
     conditions.push(() => qb.addCondition("price", op.LessThanOrEqual, query.maxPrice!));
-  if (query.categoryId)
+  if (query.categoryId !== undefined)
     conditions.push(() => qb.addCondition("categoryId", op.Equal, query.categoryId!));
-  if (query.level) conditions.push(() => qb.addCondition("level", op.Equal, query.level!));
-  if (query.durationInSeconds)
+  if (query.level !== undefined)
+    conditions.push(() => qb.addCondition("level", op.Equal, query.level!));
+  if (query.durationInSeconds !== undefined)
     conditions.push(() => qb.addCondition("durationInSeconds", op.Equal, query.durationInSeconds!));
 
-  if (query.status) conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
+  if (query.status !== undefined)
+    conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
 
   applyConditions(qb, conditions);
 

@@ -46,14 +46,14 @@ const buildOrderQuery = (query: OrderQueryCriteria = {}) => {
   queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
 
-  if (query.orderBy) {
+  if (query.orderBy !== undefined) {
     queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
   } else {
     // Mặc định sắp xếp theo createdAt giảm dần (mới nhất trước)
     queryBuilder.addOrderBy("createdAt", true);
   }
 
-  if (query.status) queryBuilder.addCondition("status", op.Equal, query.status);
+  if (query.status !== undefined) queryBuilder.addCondition("status", op.Equal, query.status);
 
   return queryBuilder.build();
 };
