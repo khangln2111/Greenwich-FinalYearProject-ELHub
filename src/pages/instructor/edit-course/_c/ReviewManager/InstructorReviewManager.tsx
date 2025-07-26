@@ -15,9 +15,24 @@ import { useState } from "react";
 import CenterLoader from "../../../../../components/CenterLoader";
 import { useGetReviewsByCourseId } from "../../../../../react-query/review/reviewHooks";
 import InstructorReviewManagerCard from "./_c/InstructorReviewManagerCard";
+import { OrderBy } from "../../../../../http-client/api.types";
+import { ReviewOrderableFields } from "../../../../../react-query/review/review.types";
 
+// ----- TYPESAFE SORT OPTIONS -----
+const REVIEW_SORT_OPTIONS: {
+  value: string;
+  label: string;
+  orderBy: OrderBy<ReviewOrderableFields>;
+}[] = [
+  { value: "newest", label: "Newest", orderBy: { field: "createdAt", direction: "desc" } },
+  { value: "oldest", label: "Oldest", orderBy: { field: "createdAt", direction: "asc" } },
+  { value: "highest", label: "Highest rating", orderBy: { field: "rating", direction: "desc" } },
+  { value: "lowest", label: "Lowest rating", orderBy: { field: "rating", direction: "asc" } },
+];
+
+// ----- STAR OPTION RENDER -----
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
-  const stars = parseInt(option.value);
+  const stars = Number(option.value);
   return (
     <Group justify="space-between" flex="1" px="xs" py={4}>
       <Group gap={4}>
@@ -45,6 +60,7 @@ const InstructorReviewManager = ({
 }: InstructorReviewManagerProps) => {
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
   const [selectedReplyStatus, setSelectedReplyStatus] = useState<string | null>("all");
+  const [selectedSort, setSelectedSort] = useState("newest");
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -67,7 +83,8 @@ const InstructorReviewManager = ({
   } = useGetReviewsByCourseId(courseId, {
     content: searchTerm,
     rating: selectedRating ? parseInt(selectedRating) : undefined,
-    isReplied: isReplied,
+    isReplied,
+    orderBy: REVIEW_SORT_OPTIONS.find((opt) => opt.value === selectedSort)!.orderBy,
   });
 
   if (error) {
@@ -117,7 +134,7 @@ const InstructorReviewManager = ({
 
       {/* bottom section wrapper */}
       <div className="mt-10 flex flex-col gap-7">
-        {/* Search + Filter */}
+        {/* Search + Filters */}
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-5">
           <TextInput
             className="grow"
@@ -158,25 +175,32 @@ const InstructorReviewManager = ({
             clearable
             value={selectedRating}
             onChange={setSelectedRating}
-            data={[
-              { value: "5", label: "5" },
-              { value: "4", label: "4" },
-              { value: "3", label: "3" },
-              { value: "2", label: "2" },
-              { value: "1", label: "1" },
-            ]}
+            data={Array.from({ length: 5 }, (_, i) => ({
+              value: (5 - i).toString(),
+              label: (5 - i).toString(),
+            }))}
           />
 
           <Select
             placeholder="Reply status"
             size="md"
             value={selectedReplyStatus}
+            checkIconPosition="right"
             onChange={(value) => setSelectedReplyStatus(value)}
             data={[
               { value: "all", label: "All" },
               { value: "replied", label: "Replied" },
               { value: "unreplied", label: "Unreplied" },
             ]}
+          />
+
+          <Select
+            placeholder="Sort by"
+            size="md"
+            checkIconPosition="right"
+            value={selectedSort}
+            onChange={(value) => setSelectedSort(value!)}
+            data={REVIEW_SORT_OPTIONS.map(({ value, label }) => ({ value, label }))}
           />
         </div>
 

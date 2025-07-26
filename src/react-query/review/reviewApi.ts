@@ -24,7 +24,11 @@ export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
   const queryBuilder = new GridifyQueryBuilder();
   queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
-  queryBuilder.addOrderBy("createdAt", true);
+  if (query.orderBy !== undefined) {
+    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
+  } else {
+    queryBuilder.addOrderBy("createdAt", true);
+  }
 
   const conditions: Array<() => void> = [];
 
