@@ -22,12 +22,14 @@ import { useGetUsers, useSetUserActivation } from "../../../react-query/user/use
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
 import { useSearchParamState } from "../../../hooks/useSearchParamState"; // Đường dẫn tùy dự án bạn
+import { useSearchParams } from "react-router-dom";
 
 export default function AdminUsersPage() {
   const [search, setSearch] = useSearchParamState<string>("search", "");
   const [searchInput, setSearchInput] = useState(search);
   const [roleFilter, setRoleFilter] = useSearchParamState<string>("role");
   const [statusFilter, setStatusFilter] = useSearchParamState<string>("status");
+  const [_, setSearchParams] = useSearchParams();
 
   const [editingUser, setEditingUser] = useState<UserVm | null>(null);
   const [editingRoleUser, setEditingRoleUser] = useState<UserVm | null>(null);
@@ -98,41 +100,38 @@ export default function AdminUsersPage() {
             className="w-full lg:max-w-[400px]"
           />
 
-          <Group className="flex-wrap gap-2 w-full lg:w-auto justify-start lg:justify-end">
+          <div className="flex flex-wrap gap-2 w-full lg:w-auto justify-start items-end lg:justify-end">
             <Select
               data={["Student", "Instructor", "Admin"]}
               placeholder="Role"
               checkIconPosition="right"
               clearable
               label="Filter by Role"
-              value={roleFilter ?? undefined}
-              onChange={(val) => val && setRoleFilter(val)}
-              onClear={() => setRoleFilter(undefined)}
+              value={roleFilter ?? null}
+              onChange={(val) => setRoleFilter(val ?? undefined)}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
             />
             <Select
               data={["Active", "Banned"]}
               placeholder="Status"
               checkIconPosition="right"
-              clearable
               label="Filter by Status"
-              value={statusFilter ?? ""}
-              onChange={(val) => val && setStatusFilter(val)}
-              onClear={() => setStatusFilter(undefined)}
+              clearable
+              value={statusFilter ?? null}
+              onChange={(val) => setStatusFilter(val ?? undefined)}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
             />
             <Button
               variant="light"
               color="gray"
               onClick={() => {
-                setSearch("");
-                setRoleFilter(undefined);
-                setStatusFilter(undefined);
+                setSearchParams(new URLSearchParams());
+                setSearchInput("");
               }}
             >
               Reset Filters
             </Button>
-          </Group>
+          </div>
         </div>
 
         <div className="max-h-[500px] overflow-y-auto">
