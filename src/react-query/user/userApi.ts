@@ -16,40 +16,44 @@ const buildUserQuery = (query: UserQueryCriteria = {}) => {
   const qb = new GridifyQueryBuilder();
   qb.setPage(query.page ?? 1);
   qb.setPageSize(query.pageSize ?? 10);
+
   const conditions: Array<() => void> = [];
-  if (query.search) {
+
+  if (query.search?.trim()) {
     conditions.push(() =>
       qb
         .startGroup()
-        .addCondition("fullName", op.Contains, query.search!)
+        .addCondition("fullName", op.Contains, query.search!, false)
         .or()
-        .addCondition("email", op.Contains, query.search!)
+        .addCondition("email", op.Contains, query.search!, false)
         .endGroup(),
     );
   }
-  if (query.role) {
+  if (query.role?.trim()) {
     conditions.push(() => qb.addCondition("roles", op.Contains, query.role!));
   }
 
-  if (query.isActivated) {
+  if (query.isActivated !== undefined) {
     conditions.push(() => qb.addCondition("isActivated", op.Equal, query.isActivated!));
   }
 
-  if (query.fullName) {
+  if (query.fullName?.trim()) {
     conditions.push(() => qb.addCondition("fullName", op.Contains, query.fullName!));
   }
 
-  if (query.email) {
-    conditions.push(() => qb.addCondition("email", op.Contains, query.email!));
+  if (query.email?.trim()) {
+    conditions.push(() => qb.addCondition("email", op.Equal, query.email!));
   }
 
   applyConditions(qb, conditions);
 
   if (query.orderBy) {
-    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "asc");
+    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
   } else {
-    qb.addOrderBy("fullName", true);
+    qb.addOrderBy("fullName", false); // true = desc
   }
+
+  return qb.build();
 };
 
 export const getUsers = async (query?: UserQueryCriteria) => {

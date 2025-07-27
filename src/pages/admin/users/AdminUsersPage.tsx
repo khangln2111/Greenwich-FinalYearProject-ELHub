@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Avatar,
   Badge,
   Button,
@@ -13,18 +14,20 @@ import {
   Title,
 } from "@mantine/core";
 import dayjs from "dayjs";
-import { PencilIcon, Search, ShieldQuestionIcon } from "lucide-react";
+import { PencilIcon, Search, SearchIcon, ShieldQuestionIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
 import { UserVm } from "../../../react-query/user/user.types";
 import { useGetUsers, useSetUserActivation } from "../../../react-query/user/userHooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
+import { useSearchParamState } from "../../../hooks/useSearchParamState"; // Đường dẫn tùy dự án bạn
 
 export default function AdminUsersPage() {
-  const [search, setSearch] = useState("");
-  const [roleFilter, setRoleFilter] = useState<string | null>(null);
-  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [search, setSearch] = useSearchParamState<string>("search", "");
+  const [searchInput, setSearchInput] = useState(search);
+  const [roleFilter, setRoleFilter] = useSearchParamState<string>("role");
+  const [statusFilter, setStatusFilter] = useSearchParamState<string>("status");
 
   const [editingUser, setEditingUser] = useState<UserVm | null>(null);
   const [editingRoleUser, setEditingRoleUser] = useState<UserVm | null>(null);
@@ -36,7 +39,16 @@ export default function AdminUsersPage() {
     setActivation.mutate({ userId, isActive: !isCurrentlyActive });
   };
 
-  const { data, isPending, error } = useGetUsers();
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
+    setSearch(searchInput.trim());
+  };
+
+  const { data, isPending, error } = useGetUsers({
+    search: search,
+    role: roleFilter,
+    isActivated: statusFilter === "Active" ? true : statusFilter === "Banned" ? false : undefined,
+  });
 
   if (isPending) return <CenterLoader />;
 
@@ -58,8 +70,31 @@ export default function AdminUsersPage() {
             placeholder="Search by name or email"
             label="Search Users"
             leftSection={<Search size={16} />}
-            value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setSearch(searchInput);
+              }
+            }}
+            rightSection={
+              search ? (
+                <ActionIcon
+                  variant="subtle"
+                  size="lg"
+                  onClick={() => {
+                    setSearchInput("");
+                    setSearch("");
+                  }}
+                >
+                  ✕
+                </ActionIcon>
+              ) : (
+                <ActionIcon type="submit" variant="subtle" size="lg" onClick={handleSearchSubmit}>
+                  <SearchIcon className="text-gray-500" size={16} />
+                </ActionIcon>
+              )
+            }
             className="w-full lg:max-w-[400px]"
           />
 
@@ -70,8 +105,9 @@ export default function AdminUsersPage() {
               checkIconPosition="right"
               clearable
               label="Filter by Role"
-              value={roleFilter}
-              onChange={setRoleFilter}
+              value={roleFilter ?? undefined}
+              onChange={(val) => val && setRoleFilter(val)}
+              onClear={() => setRoleFilter(undefined)}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
             />
             <Select
@@ -80,10 +116,22 @@ export default function AdminUsersPage() {
               checkIconPosition="right"
               clearable
               label="Filter by Status"
-              value={statusFilter}
-              onChange={setStatusFilter}
+              value={statusFilter ?? ""}
+              onChange={(val) => val && setStatusFilter(val)}
+              onClear={() => setStatusFilter(undefined)}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
             />
+            <Button
+              variant="light"
+              color="gray"
+              onClick={() => {
+                setSearch("");
+                setRoleFilter(undefined);
+                setStatusFilter(undefined);
+              }}
+            >
+              Reset Filters
+            </Button>
           </Group>
         </div>
 
@@ -198,6 +246,7 @@ export default function AdminUsersPage() {
           </Text>
         )}
       </Card>
+
       {editingUser && (
         <EditUserInfoModal
           opened={!!editingUser}

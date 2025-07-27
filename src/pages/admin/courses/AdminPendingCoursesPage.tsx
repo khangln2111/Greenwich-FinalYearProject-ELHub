@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Badge, Group, Select, TextInput, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Select, TextInput, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import {
   ArrowUpAzIcon,
@@ -55,12 +55,14 @@ export default function AdminPendingCoursesPage() {
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
       <div className="mx-auto space-y-6">
-        <Group justify="space-between" align="end" className="flex-wrap gap-y-4">
+        {/* Header and controls */}
+        <div className="flex flex-col md:flex-row items-center md:justify-between gap-4">
           <Title order={2}>Pending Courses</Title>
 
-          <Group grow className="w-full sm:w-auto" gap="sm">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <TextInput
               placeholder="Search course..."
+              className="flex-1"
               leftSection={<SearchIcon size={16} />}
               value={searchInput}
               onChange={(e) => setSearchInput(e.currentTarget.value)}
@@ -93,13 +95,14 @@ export default function AdminPendingCoursesPage() {
               }))}
               label="Sort by"
               placeholder="Sort by"
+              className="flex-1"
               value={orderByParam}
               onChange={(value) => value && setOrderByParam(value)}
               leftSection={<ArrowUpAzIcon size={16} />}
               checkIconPosition="right"
             />
-          </Group>
-        </Group>
+          </div>
+        </div>
 
         {isPending ? (
           <CenterLoader />

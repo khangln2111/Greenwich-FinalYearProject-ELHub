@@ -21,41 +21,41 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   qb.setPage(query.page ?? 1);
   qb.setPageSize(query.pageSize ?? 10);
 
-  if (query.orderBy) {
-    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
-  } else {
-    // Mặc định sắp xếp theo createdAt giảm dần (mới nhất trước)
-    qb.addOrderBy("createdAt", true);
-  }
-
   const conditions: Array<() => void> = [];
 
-  if (query.search !== undefined) {
+  if (query.search?.trim()) {
     conditions.push(() =>
       qb
         .startGroup()
-        .addCondition("title", op.Contains, query.search!)
+        .addCondition("title", op.Contains, query.search!, false)
         .or()
-        .addCondition("description", op.Contains, query.search!)
+        .addCondition("description", op.Contains, query.search!, false)
         .endGroup(),
     );
   }
 
   if (query.minPrice !== undefined)
     conditions.push(() => qb.addCondition("price", op.GreaterThanOrEqual, query.minPrice!));
+
   if (query.maxPrice !== undefined)
     conditions.push(() => qb.addCondition("price", op.LessThanOrEqual, query.maxPrice!));
-  if (query.categoryId !== undefined)
+  if (query.categoryId?.trim())
     conditions.push(() => qb.addCondition("categoryId", op.Equal, query.categoryId!));
-  if (query.level !== undefined)
-    conditions.push(() => qb.addCondition("level", op.Equal, query.level!));
+  if (query.level?.trim()) conditions.push(() => qb.addCondition("level", op.Equal, query.level!));
+
   if (query.durationInSeconds !== undefined)
     conditions.push(() => qb.addCondition("durationInSeconds", op.Equal, query.durationInSeconds!));
 
-  if (query.status !== undefined)
+  if (query.status?.trim())
     conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
 
   applyConditions(qb, conditions);
+
+  if (query.orderBy) {
+    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
+  } else {
+    qb.addOrderBy("createdAt", true); // true = desc
+  }
 
   return qb.build();
 };

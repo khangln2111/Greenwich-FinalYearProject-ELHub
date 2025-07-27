@@ -11,15 +11,15 @@ import {
 const BASE_URL = "/categories";
 
 const buildCategoryQuery = (query: CategoryQueryCriteria = {}) => {
-  const queryBuilder = new GridifyQueryBuilder();
+  const qb = new GridifyQueryBuilder();
 
-  queryBuilder.setPage(query.page ?? 1);
-  queryBuilder.setPageSize(query.pageSize ?? 20);
-  if (query.name) {
-    queryBuilder.addCondition("name", op.Contains, query.name, false);
+  qb.setPage(query.page ?? 1);
+  qb.setPageSize(query.pageSize ?? 20);
+  if (query.name?.trim()) {
+    qb.addCondition("name", op.Contains, query.name, false);
   }
 
-  return queryBuilder.build();
+  return qb.build();
 };
 
 export const getCategories = async (query: CategoryQueryCriteria = {}) => {

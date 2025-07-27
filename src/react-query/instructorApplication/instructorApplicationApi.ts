@@ -19,29 +19,27 @@ export const buildInstructorApplicationQuery = (query: InstructorApplicationQuer
 
   const conditions: Array<() => void> = [];
 
-  if (query.search) {
+  if (query.search?.trim()) {
     conditions.push(() =>
       qb
         .startGroup()
-        .addCondition("displayName", op.Contains, query.search!)
+        .addCondition("email", op.Contains, query.search!, false)
         .or()
-        .addCondition("email", op.Contains, query.search!)
+        .addCondition("professionalTitle", op.Contains, query.search!, false)
         .or()
-        .addCondition("professionalTitle", op.Contains, query.search!)
-        .or()
-        .addCondition("fullName", op.Contains, query.search!)
+        .addCondition("fullName", op.Contains, query.search!, false)
         .endGroup(),
     );
   }
 
-  if (query.status) {
+  if (query.status?.trim()) {
     conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
   }
 
   applyConditions(qb, conditions);
 
-  if (query.orderBy) {
-    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "asc");
+  if (query.orderBy !== undefined) {
+    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
   } else {
     qb.addOrderBy("createdAt", true); // true = desc
   }

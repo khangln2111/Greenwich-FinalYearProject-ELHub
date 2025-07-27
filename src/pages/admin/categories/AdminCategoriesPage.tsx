@@ -1,6 +1,6 @@
 import { ActionIcon, Badge, Button, Image, Text, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Pencil, Plus, Search } from "lucide-react";
+import { Pencil, Plus, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
 import { CategoryVm } from "../../../react-query/category/category.types";
@@ -61,7 +61,7 @@ export default function AdminCategoriesPage() {
                   </ActionIcon>
                 ) : (
                   <ActionIcon type="submit" variant="subtle" size="lg" onClick={handleSearchSubmit}>
-                    <Search className="text-gray-500" size={16} />
+                    <SearchIcon className="text-gray-500" size={16} />
                   </ActionIcon>
                 )
               }

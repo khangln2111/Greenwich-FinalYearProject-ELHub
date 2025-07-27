@@ -13,7 +13,7 @@ import { assignRolesToUser, getUsers, setUserActivation, updateUser } from "./us
 export const useGetUsers = (query?: UserQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.users.getUsers(query).queryKey,
-    queryFn: () => getUsers(),
+    queryFn: () => getUsers(query),
   });
 };
 

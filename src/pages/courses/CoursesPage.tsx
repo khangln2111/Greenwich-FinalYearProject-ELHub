@@ -1,7 +1,7 @@
-import { Box, Grid, GridCol } from "@mantine/core";
+import { Box, Grid, GridCol, Paper } from "@mantine/core";
 import { useAppStore } from "../../zustand/store";
 import CourseMain from "./_c/CourseMain";
-import CourseDesktopFilter from "./_c/course-filter/CourseDesktopFilter";
+import CourseFilter from "./_c/course-filter/CourseFilter";
 
 const CoursesPage = () => {
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
@@ -15,16 +15,18 @@ const CoursesPage = () => {
         size="xl"
       >
         <Grid py="md" gutter="xl">
-          {/* Sidebar Filters cố định */}
+          {/* Column 1: desktop sidebar filter */}
           <GridCol
             visibleFrom="lg"
             span={{ lg: 3.5, xl: 2.8 }}
             className={`transition-all transition-discrete duration-300 starting:-translate-x-full starting:opacity-0
               ${isDesktopFilterOpen ? "opacity-100" : "-translate-x-full opacity-0 hidden"} `}
           >
-            <CourseDesktopFilter />
+            <Paper withBorder className="pt-lg px-sm xl:px-lg rounded-2xl">
+              <CourseFilter />
+            </Paper>
           </GridCol>
-          {/* Main content column for courses*/}
+          {/* Column 2: Main content with course grid*/}
           <GridCol span="auto" className="transition-all duration-300 ease-in-out">
             <CourseMain />
           </GridCol>

@@ -18,29 +18,22 @@ import { RotateCcw } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useGetCategories } from "../../../../react-query/category/categoryHooks";
 import CourseSorter from "./CourseSorter";
+import { useSearchParamState } from "../../../../hooks/useSearchParamState";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
-type CourseFilterProps = {};
+const CourseFilter = () => {
+  const [_, setSearchParams] = useSearchParams();
 
-const CourseFilter = ({}: CourseFilterProps) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { data: categories, isPending, isError } = useGetCategories(); // Lấy danh sách category từ API
+  const [categoryId, setCategoryId] = useSearchParamState("categoryId");
+  const [priceRange, setPriceRange] = useSearchParamState("price_range");
+  const [duration, setDuration] = useSearchParamState("duration");
+  const [level, setLevel] = useSearchParamState("level");
+  const [priceMode, setPriceMode] = useSearchParamState("price_mode");
 
-  // Hàm để thay đổi search params
-  const handleFilterChange = (param: string, value: string) => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    if (value) {
-      newParams.set(param, value);
-    } else {
-      newParams.delete(param);
-    }
-    setSearchParams(newParams, { preventScrollReset: true }); // Thay đổi URL mà không cần navigate
-  };
+  const { data: categories, isPending, isError } = useGetCategories();
 
-  const handleResetFilters = () => {
-    setSearchParams(new URLSearchParams()); // Xóa hết params trên URL
-  };
+  const handleResetFilters = () => setSearchParams(new URLSearchParams());
 
   return (
     <>
@@ -60,39 +53,40 @@ const CourseFilter = ({}: CourseFilterProps) => {
           </div>
         </div>
       </div>
+
       <Divider className="my-lg -mx-lg" />
+
       <Stack className="py-md">
         <CourseSorter />
       </Stack>
+
       <Divider className="mt-lg -mx-lg" />
+
       <Accordion
         mx="-lg"
         multiple
         radius={0}
-        classNames={{
-          item: "border-x-0",
-        }}
+        classNames={{ item: "border-x-0" }}
         defaultValue={defaultOpenedItems}
         transitionDuration={400}
       >
-        {/* Category filter */}
+        {/* Category */}
         <AccordionItem value="Category">
           <AccordionControl>
             <Text className="font-medium text-sm">Category</Text>
           </AccordionControl>
           <AccordionPanel>
             <Select
-              value={searchParams.get("categoryId")}
+              value={categoryId}
               placeholder={
                 isPending ? "Loading categories..." : isError ? "Failed to load" : "Select category"
               }
-              data={categories?.items.map((category) => {
-                return { value: category.id, label: category.name };
-              })}
+              data={categories?.items.map((cat) => ({ value: cat.id, label: cat.name })) || []}
               disabled={isPending || isError}
               searchable
               clearable
-              checkIconPosition="right"
+              onClear={() => setCategoryId("")}
+              onChange={(val) => val && setCategoryId(val)}
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
               classNames={{
                 root: "my-md",
@@ -101,14 +95,14 @@ const CourseFilter = ({}: CourseFilterProps) => {
                   "bg-[#f0f0f0] border border-[#ccc] shadow-[0_4px_6px_rbga(0,0,0,0.1)] dark:bg-dark-6",
                 input: "border-2",
               }}
-              onChange={(value) => handleFilterChange("categoryId", value as string)}
             />
           </AccordionPanel>
         </AccordionItem>
-        {/* Price range filter */}
+
+        {/* Price range */}
         <AccordionItem value="Price range">
           <AccordionControl>
-            <Text className="font-medium text-sm">Price Range:</Text>
+            <Text className="font-medium text-sm">Price Range</Text>
           </AccordionControl>
           <AccordionPanel>
             <Slider
@@ -119,16 +113,17 @@ const CourseFilter = ({}: CourseFilterProps) => {
                 { value: 0, label: "$0" },
                 { value: 100, label: "$100" },
               ]}
-              defaultValue={parseInt(searchParams.get("price_range") || "0")}
+              defaultValue={parseInt(priceRange || "0", 10)}
+              onChangeEnd={(val) => setPriceRange(val.toString())}
               className="my-xl"
-              onChangeEnd={(value) => handleFilterChange("price_range", value.toString())}
             />
           </AccordionPanel>
         </AccordionItem>
-        {/* Duration filter */}
+
+        {/* Duration */}
         <AccordionItem value="Duration">
           <AccordionControl>
-            <Text className="font-medium text-sm">Duration (minutes):</Text>
+            <Text className="font-medium text-sm">Duration (minutes)</Text>
           </AccordionControl>
           <AccordionPanel>
             <Slider
@@ -139,30 +134,33 @@ const CourseFilter = ({}: CourseFilterProps) => {
                 { value: 0, label: "0" },
                 { value: 120, label: "120" },
               ]}
-              defaultValue={parseInt(searchParams.get("duration") || "0", 10)}
+              defaultValue={parseInt(duration || "0", 10)}
+              onChangeEnd={(val) => setDuration(val.toString())}
               className="my-[30px]"
-              onChangeEnd={(value) => handleFilterChange("duration", value.toString())}
             />
           </AccordionPanel>
         </AccordionItem>
-        {/* Level filtering */}
+
+        {/* Level */}
         <AccordionItem value="Level">
           <AccordionControl>
             <Text className="font-medium text-sm">Level</Text>
           </AccordionControl>
           <AccordionPanel>
-            <div className="flex flex-col gap-md">
-              <Checkbox label="Beginner" onChange={() => handleFilterChange("level", "beginner")} />
-              <Checkbox
-                label="Intermediate"
-                onChange={() => handleFilterChange("level", "intermediate")}
-              />
-              <Checkbox label="Advanced" onChange={() => handleFilterChange("level", "advanced")} />
-              <Checkbox label="All levels" onChange={() => handleFilterChange("level", "")} />
-            </div>
+            <Stack gap="xs">
+              {["beginner", "intermediate", "advanced", "all"].map((lv) => (
+                <Checkbox
+                  key={lv}
+                  label={lv === "all" ? "All levels" : lv.charAt(0).toUpperCase() + lv.slice(1)}
+                  checked={lv === "all" ? !level : level === lv}
+                  onChange={() => setLevel(lv === "all" ? "" : lv)}
+                />
+              ))}
+            </Stack>
           </AccordionPanel>
         </AccordionItem>
-        {/* Price mode filtering */}
+
+        {/* Price mode */}
         <AccordionItem value="Price mode">
           <AccordionControl>
             <Text className="font-medium text-sm">Price mode</Text>
@@ -170,12 +168,20 @@ const CourseFilter = ({}: CourseFilterProps) => {
           <AccordionPanel>
             <div className="flex gap-2 my-sm items-center">
               <Tooltip label="Getting all free course" refProp="rootRef">
-                <Chip defaultChecked variant="outline">
+                <Chip
+                  variant="outline"
+                  checked={priceMode === "free"}
+                  onClick={() => setPriceMode(priceMode === "free" ? "" : "free")}
+                >
                   Free
                 </Chip>
               </Tooltip>
               <Tooltip label="Getting all paid course" refProp="rootRef">
-                <Chip defaultChecked variant="outline">
+                <Chip
+                  variant="outline"
+                  checked={priceMode === "paid"}
+                  onClick={() => setPriceMode(priceMode === "paid" ? "" : "paid")}
+                >
                   Paid
                 </Chip>
               </Tooltip>

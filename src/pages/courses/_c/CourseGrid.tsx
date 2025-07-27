@@ -4,9 +4,16 @@ import CenterLoader from "../../../components/CenterLoader";
 import { useGetCourses } from "../../../react-query/course/courseHooks";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import CoursePagination from "./CoursePagination";
+import { useSearchParamState } from "../../../hooks/useSearchParamState";
 
 const CourseGrid = () => {
-  const { data, isPending, isError } = useGetCourses();
+  const [categoryId] = useSearchParamState("categoryId");
+  const [level] = useSearchParamState("level");
+
+  const { data, isPending, isError } = useGetCourses({
+    categoryId,
+    level,
+  });
 
   if (isPending) return <CenterLoader />;
 

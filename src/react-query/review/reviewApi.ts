@@ -24,15 +24,10 @@ export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
   const queryBuilder = new GridifyQueryBuilder();
   queryBuilder.setPage(query.page ?? 1);
   queryBuilder.setPageSize(query.pageSize ?? 10);
-  if (query.orderBy !== undefined) {
-    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
-  } else {
-    queryBuilder.addOrderBy("createdAt", true);
-  }
 
   const conditions: Array<() => void> = [];
 
-  if (query.content !== undefined) {
+  if (query.content?.trim()) {
     conditions.push(() => queryBuilder.addCondition("content", op.Contains, query.content!, false));
   }
 
@@ -45,6 +40,12 @@ export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
   }
 
   applyConditions(queryBuilder, conditions);
+
+  if (query.orderBy !== undefined) {
+    queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
+  } else {
+    queryBuilder.addOrderBy("createdAt", true); // true = desc
+  }
 
   return queryBuilder.build();
 };
