@@ -36,9 +36,9 @@ export interface UserVm {
 export type UserOrderableFields = "fullName" | "email" | "dateOfBirth" | "gender| roles";
 
 export interface UserQueryCriteria extends BaseQueryCriteria<UserOrderableFields> {
-  search?: string;
-  role?: string;
-  isActivated?: boolean;
-  fullName?: string;
-  email?: string;
+  search?: string | null;
+  role?: string | null;
+  isActivated?: boolean | null;
+  fullName?: string | null;
+  email?: string | null;
 }

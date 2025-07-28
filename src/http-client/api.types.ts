@@ -53,9 +53,9 @@ export interface OrderBy<TField extends string> {
 }
 
 export interface BaseQueryCriteria<TField extends string> {
-  page?: number;
-  pageSize?: number;
-  orderBy?: OrderBy<TField>;
+  page?: number | null;
+  pageSize?: number | null;
+  orderBy?: OrderBy<TField> | null;
 }
 
 export type OrderOption<TField extends string> = `${TField}_${OrderDirection}`;

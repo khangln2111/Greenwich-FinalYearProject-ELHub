@@ -32,13 +32,12 @@ export const buildInstructorApplicationQuery = (query: InstructorApplicationQuer
     );
   }
 
-  if (query.status?.trim()) {
+  if (query.status != null)
     conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
-  }
 
   applyConditions(qb, conditions);
 
-  if (query.orderBy !== undefined) {
+  if (query.orderBy != null) {
     qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
   } else {
     qb.addOrderBy("createdAt", true); // true = desc

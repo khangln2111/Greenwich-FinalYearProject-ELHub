@@ -29,21 +29,15 @@ const buildUserQuery = (query: UserQueryCriteria = {}) => {
         .endGroup(),
     );
   }
-  if (query.role?.trim()) {
-    conditions.push(() => qb.addCondition("roles", op.Contains, query.role!));
-  }
+  if (query.role?.trim()) conditions.push(() => qb.addCondition("roles", op.Contains, query.role!));
 
-  if (query.isActivated !== undefined) {
+  if (query.isActivated != null)
     conditions.push(() => qb.addCondition("isActivated", op.Equal, query.isActivated!));
-  }
 
-  if (query.fullName?.trim()) {
+  if (query.fullName?.trim())
     conditions.push(() => qb.addCondition("fullName", op.Contains, query.fullName!));
-  }
 
-  if (query.email?.trim()) {
-    conditions.push(() => qb.addCondition("email", op.Equal, query.email!));
-  }
+  if (query.email?.trim()) conditions.push(() => qb.addCondition("email", op.Equal, query.email!));
 
   applyConditions(qb, conditions);
 

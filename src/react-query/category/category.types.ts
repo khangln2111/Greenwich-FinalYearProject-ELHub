@@ -1,3 +1,5 @@
+import { BaseQueryCriteria } from "../../http-client/api.types";
+
 export interface CategoryVm {
   id: string;
   name: string;
@@ -18,8 +20,8 @@ export interface UpdateCategoryCommand {
   image?: File;
 }
 
-export interface CategoryQueryCriteria {
-  page?: number;
-  pageSize?: number;
-  name?: string;
+export type CategoryOrderableFields = "createdAt" | "updatedAt" | "name" | "courseCount";
+
+export interface CategoryQueryCriteria extends BaseQueryCriteria<CategoryOrderableFields> {
+  name?: string | null;
 }

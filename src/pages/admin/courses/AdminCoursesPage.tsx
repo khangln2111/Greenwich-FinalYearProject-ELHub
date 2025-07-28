@@ -38,7 +38,7 @@ export default function AdminCoursesPage() {
   };
 
   const { data, isPending, error } = useGetCourses({
-    search: search || undefined,
+    search: search,
     status: statusFilter !== "All" ? statusFilter : undefined,
     orderBy,
   });
@@ -69,7 +69,7 @@ export default function AdminCoursesPage() {
                   size="lg"
                   onClick={() => {
                     setSearchInput("");
-                    setSearch("");
+                    setSearch(null);
                   }}
                 >
                   ✕

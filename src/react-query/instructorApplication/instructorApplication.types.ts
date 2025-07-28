@@ -47,8 +47,8 @@ export type InstructorApplicationOrderableFields =
 
 export interface InstructorApplicationQueryCriteria
   extends BaseQueryCriteria<InstructorApplicationOrderableFields> {
-  search?: string;
-  status?: InstructorApplicationStatus;
+  search?: string | null;
+  status?: InstructorApplicationStatus | null;
 }
 
 export enum InstructorApplicationStatus {

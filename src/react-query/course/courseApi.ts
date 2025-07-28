@@ -34,19 +34,21 @@ const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
     );
   }
 
-  if (query.minPrice !== undefined)
+  if (query.minPrice != null)
     conditions.push(() => qb.addCondition("price", op.GreaterThanOrEqual, query.minPrice!));
 
-  if (query.maxPrice !== undefined)
+  if (query.maxPrice != null)
     conditions.push(() => qb.addCondition("price", op.LessThanOrEqual, query.maxPrice!));
+
   if (query.categoryId?.trim())
     conditions.push(() => qb.addCondition("categoryId", op.Equal, query.categoryId!));
+
   if (query.level?.trim()) conditions.push(() => qb.addCondition("level", op.Equal, query.level!));
 
-  if (query.durationInSeconds !== undefined)
+  if (query.durationInSeconds != null)
     conditions.push(() => qb.addCondition("durationInSeconds", op.Equal, query.durationInSeconds!));
 
-  if (query.status?.trim())
+  if (query.status != null)
     conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
 
   applyConditions(qb, conditions);

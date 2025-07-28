@@ -66,5 +66,5 @@ export type OrderOrderableFields =
   | "totalDirectDiscount";
 
 export interface OrderQueryCriteria extends BaseQueryCriteria<OrderOrderableFields> {
-  status?: OrderStatus;
+  status?: OrderStatus | null;
 }

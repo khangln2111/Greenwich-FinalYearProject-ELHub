@@ -101,7 +101,7 @@ export default function AdminInstructorPage() {
   const [reviewApp, setReviewApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
   const [search, setSearch] = useSearchParamState<string>("search", "");
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState(search);
 
   const [statusFilter, setStatusFilter] = useSearchParamState<"All" | InstructorApplicationStatus>(
     "status",
@@ -184,13 +184,13 @@ export default function AdminInstructorPage() {
             }
           }}
           rightSection={
-            searchInput && (
+            search && (
               <ActionIcon
                 variant="subtle"
                 size="lg"
                 onClick={() => {
                   setSearchInput("");
-                  setSearch("");
+                  setSearch(null);
                 }}
               >
                 ✕

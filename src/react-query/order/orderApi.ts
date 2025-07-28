@@ -49,12 +49,12 @@ const buildOrderQuery = (query: OrderQueryCriteria = {}) => {
 
   const conditions: Array<() => void> = [];
 
-  if (query.status?.trim()) {
+  if (query.status != null)
     conditions.push(() => queryBuilder.addCondition("status", op.Equal, query.status!));
-  }
+
   applyConditions(queryBuilder, conditions);
 
-  if (query.orderBy !== undefined) {
+  if (query.orderBy != null) {
     queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
   } else {
     queryBuilder.addOrderBy("createdAt", true); // true = desc

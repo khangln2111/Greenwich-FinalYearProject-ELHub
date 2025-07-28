@@ -14,15 +14,15 @@ import {
   Title,
 } from "@mantine/core";
 import dayjs from "dayjs";
-import { PencilIcon, Search, SearchIcon, ShieldQuestionIcon } from "lucide-react";
+import { PencilIcon, SearchIcon, ShieldQuestionIcon } from "lucide-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
+import { useSearchParamState } from "../../../hooks/useSearchParamState"; // Đường dẫn tùy dự án bạn
 import { UserVm } from "../../../react-query/user/user.types";
 import { useGetUsers, useSetUserActivation } from "../../../react-query/user/userHooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
-import { useSearchParamState } from "../../../hooks/useSearchParamState"; // Đường dẫn tùy dự án bạn
-import { useSearchParams } from "react-router-dom";
 
 export default function AdminUsersPage() {
   const [search, setSearch] = useSearchParamState<string>("search", "");
@@ -71,7 +71,6 @@ export default function AdminUsersPage() {
           <TextInput
             placeholder="Search by name or email"
             label="Search Users"
-            leftSection={<Search size={16} />}
             value={searchInput}
             onChange={(e) => setSearchInput(e.currentTarget.value)}
             onKeyDown={(e) => {
@@ -86,7 +85,7 @@ export default function AdminUsersPage() {
                   size="lg"
                   onClick={() => {
                     setSearchInput("");
-                    setSearch("");
+                    setSearch(null);
                   }}
                 >
                   ✕
@@ -107,8 +106,8 @@ export default function AdminUsersPage() {
               checkIconPosition="right"
               clearable
               label="Filter by Role"
-              value={roleFilter ?? null}
-              onChange={(val) => setRoleFilter(val ?? undefined)}
+              value={roleFilter}
+              onChange={(val) => setRoleFilter(val)}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
             />
             <Select
@@ -117,8 +116,8 @@ export default function AdminUsersPage() {
               checkIconPosition="right"
               label="Filter by Status"
               clearable
-              value={statusFilter ?? null}
-              onChange={(val) => setStatusFilter(val ?? undefined)}
+              value={statusFilter}
+              onChange={(val) => setStatusFilter(val)}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
             />
             <Button

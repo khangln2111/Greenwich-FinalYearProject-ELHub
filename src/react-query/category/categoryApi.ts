@@ -15,9 +15,7 @@ const buildCategoryQuery = (query: CategoryQueryCriteria = {}) => {
 
   qb.setPage(query.page ?? 1);
   qb.setPageSize(query.pageSize ?? 20);
-  if (query.name?.trim()) {
-    qb.addCondition("name", op.Contains, query.name, false);
-  }
+  if (query.name?.trim()) qb.addCondition("name", op.Contains, query.name, false);
 
   return qb.build();
 };

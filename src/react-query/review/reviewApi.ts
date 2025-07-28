@@ -27,21 +27,18 @@ export const buildReviewQuery = (query: ReviewQueryCriteria = {}) => {
 
   const conditions: Array<() => void> = [];
 
-  if (query.content?.trim()) {
+  if (query.content?.trim())
     conditions.push(() => queryBuilder.addCondition("content", op.Contains, query.content!, false));
-  }
 
-  if (query.rating !== undefined) {
+  if (query.rating != null)
     conditions.push(() => queryBuilder.addCondition("rating", op.Equal, query.rating!));
-  }
 
-  if (query.isReplied !== undefined) {
+  if (query.isReplied != null)
     conditions.push(() => queryBuilder.addCondition("isReplied", op.Equal, query.isReplied!));
-  }
 
   applyConditions(queryBuilder, conditions);
 
-  if (query.orderBy !== undefined) {
+  if (query.orderBy != null) {
     queryBuilder.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
   } else {
     queryBuilder.addOrderBy("createdAt", true); // true = desc

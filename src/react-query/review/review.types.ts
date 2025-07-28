@@ -45,7 +45,7 @@ export interface UpdateReviewReplyCommand {
 export type ReviewOrderableFields = keyof ReviewVm;
 
 export interface ReviewQueryCriteria extends BaseQueryCriteria<ReviewOrderableFields> {
-  rating?: number;
-  content?: string;
-  isReplied?: boolean;
+  rating?: number | null;
+  content?: string | null;
+  isReplied?: boolean | null;
 }

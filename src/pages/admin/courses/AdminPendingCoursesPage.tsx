@@ -29,7 +29,7 @@ const COURSE_ORDER_OPTIONS: {
 ];
 
 export default function AdminPendingCoursesPage() {
-  const [search, setSearch] = useSearchParamState<string>("search");
+  const [search, setSearch] = useSearchParamState<string>("search", "");
   const [searchInput, setSearchInput] = useState(search);
   const [orderByParam, setOrderByParam] = useSearchParamState<string>(
     "orderBy",
@@ -79,7 +79,7 @@ export default function AdminPendingCoursesPage() {
                     size="lg"
                     onClick={() => {
                       setSearchInput("");
-                      setSearch("");
+                      setSearch(null);
                     }}
                   >
                     ✕

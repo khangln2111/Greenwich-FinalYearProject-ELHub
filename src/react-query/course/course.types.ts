@@ -187,15 +187,15 @@ export interface UpdateCourseCommand {
 }
 
 export interface CourseQueryCriteria extends BaseQueryCriteria<CourseOrderableFields> {
-  search?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  categoryId?: string;
-  level?: string;
-  durationInSeconds?: number;
-  language?: string;
-  sectionCount?: number;
-  status?: CourseStatus;
+  search?: string | null;
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  categoryId?: string | null;
+  level?: string | null;
+  durationInSeconds?: number | null;
+  language?: string | null;
+  sectionCount?: number | null;
+  status?: CourseStatus | null;
 }
 
 export type CourseOrderableFields =
