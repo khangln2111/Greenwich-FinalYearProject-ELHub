@@ -52,8 +52,6 @@ export default function AdminUsersPage() {
     isActivated: statusFilter === "Active" ? true : statusFilter === "Banned" ? false : undefined,
   });
 
-  if (isPending) return <CenterLoader />;
-
   if (error) {
     return (
       <Text c="red" ta="center">
@@ -146,103 +144,115 @@ export default function AdminUsersPage() {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {data?.items.map((user) => (
-                  <Table.Tr key={user.id}>
-                    <Table.Td>
-                      <div className="flex items-center gap-x-4 whitespace-nowrap">
-                        <Avatar
-                          src={user.avatarUrl}
-                          radius="xl"
-                          size="md"
-                          color="initials"
-                          name={user.fullName ?? undefined}
-                        />
-                        <div className="flex flex-col">
-                          <Text size="md" fw={600} className="text-gray-900 dark:text-gray-100">
-                            {user.fullName}
-                          </Text>
-                          <Text size="sm" className="text-gray-600 dark:text-gray-400 break-all">
-                            {user.email}
-                          </Text>
-                        </div>
-                      </div>
-                    </Table.Td>
-                    <Table.Td>
-                      <div className="flex flex-col gap-2 min-w-[120px]">
-                        <Badge
-                          variant="light"
-                          color="gray"
-                          className="text-[13px] px-2 text-center w-fit"
-                        >
-                          User
-                        </Badge>
-                        {user.roles.length > 0 &&
-                          user.roles.map((role: string) => (
-                            <Badge
-                              key={role}
-                              variant="light"
-                              className="text-[13px] px-2 text-center w-fit"
-                              color={
-                                role === "Admin" ? "red" : role === "Instructor" ? "blue" : "gray"
-                              }
-                            >
-                              {role}
-                            </Badge>
-                          ))}
-                      </div>
-                    </Table.Td>
-
-                    <Table.Td>
-                      <Switch
-                        size="sm"
-                        color="green"
-                        checked={user.isActivated}
-                        label={user.isActivated ? "Active" : "Banned"}
-                        onChange={() => handleToggleActivation(user.id, user.isActivated)}
-                      />
-                    </Table.Td>
-
-                    <Table.Td>
-                      <Text size="sm">
-                        {user.dateOfBirth ? dayjs(user.dateOfBirth).format("DD/MM/YYYY") : "-"}
-                      </Text>
-                    </Table.Td>
-
-                    <Table.Td>
-                      <Group gap="xs" wrap="nowrap">
-                        <Button
-                          size="xs"
-                          variant="outline"
-                          color="blue"
-                          leftSection={<PencilIcon size={14} />}
-                          onClick={() => handleEditUser(user)}
-                        >
-                          Edit
-                        </Button>
-
-                        <Button
-                          size="xs"
-                          variant="outline"
-                          color="gray"
-                          leftSection={<ShieldQuestionIcon size={14} />}
-                          onClick={() => handleEditRole(user)}
-                        >
-                          Role
-                        </Button>
-                      </Group>
+                {isPending ? (
+                  <Table.Tr>
+                    <Table.Td colSpan={5} className="text-center">
+                      <CenterLoader height={200} />
                     </Table.Td>
                   </Table.Tr>
-                ))}
+                ) : data?.items.length === 0 ? (
+                  <Table.Tr>
+                    <Table.Td colSpan={5} className="text-center">
+                      <div className="min-h-[200px] grid place-content-center">
+                        <Text ta="center" c="dimmed" mt="md">
+                          No users found.
+                        </Text>
+                      </div>
+                    </Table.Td>
+                  </Table.Tr>
+                ) : (
+                  data?.items.map((user) => (
+                    <Table.Tr key={user.id}>
+                      <Table.Td>
+                        <div className="flex items-center gap-x-4 whitespace-nowrap">
+                          <Avatar
+                            src={user.avatarUrl}
+                            radius="xl"
+                            size="md"
+                            color="initials"
+                            name={user.fullName ?? undefined}
+                          />
+                          <div className="flex flex-col">
+                            <Text size="md" fw={600} className="text-gray-900 dark:text-gray-100">
+                              {user.fullName}
+                            </Text>
+                            <Text size="sm" className="text-gray-600 dark:text-gray-400 break-all">
+                              {user.email}
+                            </Text>
+                          </div>
+                        </div>
+                      </Table.Td>
+                      <Table.Td>
+                        <div className="flex flex-col gap-2 min-w-[120px]">
+                          <Badge
+                            variant="light"
+                            color="gray"
+                            className="text-[13px] px-2 text-center w-fit"
+                          >
+                            User
+                          </Badge>
+                          {user.roles.length > 0 &&
+                            user.roles.map((role: string) => (
+                              <Badge
+                                key={role}
+                                variant="light"
+                                className="text-[13px] px-2 text-center w-fit"
+                                color={
+                                  role === "Admin" ? "red" : role === "Instructor" ? "blue" : "gray"
+                                }
+                              >
+                                {role}
+                              </Badge>
+                            ))}
+                        </div>
+                      </Table.Td>
+
+                      <Table.Td>
+                        <Switch
+                          size="sm"
+                          color="green"
+                          checked={user.isActivated}
+                          label={user.isActivated ? "Active" : "Banned"}
+                          onChange={() => handleToggleActivation(user.id, user.isActivated)}
+                        />
+                      </Table.Td>
+
+                      <Table.Td>
+                        <Text size="sm">
+                          {user.dateOfBirth ? dayjs(user.dateOfBirth).format("DD/MM/YYYY") : "-"}
+                        </Text>
+                      </Table.Td>
+
+                      <Table.Td>
+                        <Group gap="xs" wrap="nowrap">
+                          <Button
+                            size="xs"
+                            variant="outline"
+                            color="blue"
+                            leftSection={<PencilIcon size={14} />}
+                            onClick={() => handleEditUser(user)}
+                          >
+                            Edit
+                          </Button>
+
+                          <Button
+                            size="xs"
+                            variant="outline"
+                            color="gray"
+                            leftSection={<ShieldQuestionIcon size={14} />}
+                            onClick={() => handleEditRole(user)}
+                          >
+                            Role
+                          </Button>
+                        </Group>
+                      </Table.Td>
+                    </Table.Tr>
+                  ))
+                )}
               </Table.Tbody>
             </Table>
           </TableScrollContainer>
         </div>
-
-        {data?.count === 0 && (
-          <Text ta="center" c="dimmed" mt="md">
-            No users found.
-          </Text>
-        )}
       </Card>
 
       {editingUser && (

@@ -31,7 +31,13 @@ const CourseFilter = () => {
   const [level, setLevel] = useSearchParamState("level");
   const [priceMode, setPriceMode] = useSearchParamState("price_mode");
 
-  const { data: categories, isPending, isError } = useGetCategories();
+  const {
+    data: categories,
+    isPending,
+    isError,
+  } = useGetCategories({
+    pageSize: 100,
+  });
 
   const handleResetFilters = () => setSearchParams(new URLSearchParams());
 
@@ -85,8 +91,7 @@ const CourseFilter = () => {
               disabled={isPending || isError}
               searchable
               clearable
-              onClear={() => setCategoryId("")}
-              onChange={(val) => val && setCategoryId(val)}
+              onChange={(val) => setCategoryId(val)}
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
               classNames={{
                 root: "my-md",

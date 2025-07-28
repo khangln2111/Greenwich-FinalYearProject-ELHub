@@ -31,7 +31,7 @@ const AdminCourseInstructorTab = ({ courseDetail }: AdminCourseInstructorTabProp
               {courseDetail.instructorName || "ELHub Instructor"}
             </h3>
             <p className="font-medium text-gray-500 dark:text-zinc-400">
-              {courseDetail.instructorProfessionalTitle || "Software Engineer & Instructor"}
+              {courseDetail.instructorProfessionalTitle || "ELHub Instructor"}
             </p>
 
             {/* Stats */}

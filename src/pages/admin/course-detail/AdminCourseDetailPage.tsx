@@ -16,7 +16,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { IconArrowLeft } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import { z } from "zod";
 import CenterLoader from "../../../components/CenterLoader";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
@@ -61,6 +61,9 @@ const AdminCourseDetailPage = () => {
   const reviewCourseMutation = useModerateCourse();
   const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
 
+  const location = useLocation();
+  const from = location.state?.from || "/admin/courses";
+
   const [approveModalOpen, setApproveModalOpen] = useState(false);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [archiveModalOpen, setArchiveModalOpen] = useState(false);
@@ -94,7 +97,7 @@ const AdminCourseDetailPage = () => {
       <div className="flex items-center justify-between gap-3 mb-6">
         <Button
           component={Link}
-          to="/admin/courses"
+          to={from}
           variant="default"
           size="sm"
           leftSection={<IconArrowLeft size={16} />}

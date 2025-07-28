@@ -13,7 +13,7 @@ export default function AdminCourseCard({ course }: AdminCourseCardProps) {
   return (
     <Link
       to={`/admin/courses/${course.id}`}
-      key={course.id}
+      state={{ from: location.pathname }}
       className="border rounded-2xl overflow-hidden shadow-sm transition-all bg-white dark:bg-zinc-900 flex flex-col
         cursor-pointer hover:shadow-lg hover:scale-[1.01]"
     >
@@ -102,9 +102,11 @@ export default function AdminCourseCard({ course }: AdminCourseCardProps) {
             size="md"
             radius="xl"
           />
-          <div className="text-sm leading-tight">
+          <div className="text-sm">
             <div className="font-medium text-text">{course.instructorName}</div>
-            <div className="text-gray-500 text-xs">{course.instructorProfessionalTitle}</div>
+            <div className="text-gray-500 text-xs">
+              {course.instructorProfessionalTitle ?? "ELHub Instructor"}
+            </div>
           </div>
         </div>
       </div>

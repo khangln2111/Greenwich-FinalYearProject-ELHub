@@ -1,5 +1,5 @@
 import { ActionIcon, Select, TextInput, Title } from "@mantine/core";
-import { ArrowUpAzIcon, BookmarkIcon, Search } from "lucide-react";
+import { ArrowUpAzIcon, BookmarkIcon, InboxIcon, Search } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
 import { useSearchParamState } from "../../../hooks/useSearchParamState";
@@ -120,8 +120,14 @@ export default function AdminCoursesPage() {
         {/* Main content */}
         {isPending ? (
           <CenterLoader />
-        ) : data?.items.length === 0 ? (
-          <div className="text-gray-500 text-center col-span-full py-10">No courses found</div>
+        ) : data.items?.length === 0 ? (
+          <div className="py-24 text-center text-gray-500 dark:text-gray-400 flex flex-col items-center justify-center">
+            <InboxIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mb-4" />
+            <p className="text-lg font-semibold">No courses found</p>
+            <p className="text-sm mt-1 max-w-[600px] mx-auto">
+              There are currently no courses matching your search criteria.
+            </p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-6">
             {data?.items.map((course) => <AdminCourseCard key={course.id} course={course} />)}
