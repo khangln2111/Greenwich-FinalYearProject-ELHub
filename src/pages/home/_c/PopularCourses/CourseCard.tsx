@@ -67,8 +67,8 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
             <Text
               component={Link}
               to={`/courses/${course.id}`}
-              className="text-xl font-semibold leading-snug line-clamp-2 hover:text-primary-600 dark:hover:text-primary-400
-                transition"
+              className="text-[21px] font-semibold leading-snug line-clamp-2 hover:text-primary-600
+                dark:hover:text-primary-400 transition flex-1"
             >
               {course.title}
             </Text>
