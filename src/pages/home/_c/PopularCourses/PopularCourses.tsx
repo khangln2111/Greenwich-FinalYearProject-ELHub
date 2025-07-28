@@ -51,7 +51,7 @@ const PopularCourses = () => {
 
       <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
         {mockCourses.map((course) => (
-          <CourseCard key={course.id} course={course} />
+          <CourseCard key={course.id} course={course} className="border" />
         ))}
       </SimpleGrid>
 

@@ -10,7 +10,7 @@ type CourseCardProps = {
   className?: string; // Optional className prop for additional styling
 };
 
-const CourseCard = ({ course, className }: CourseCardProps) => {
+const CourseCardVer2 = ({ course, className }: CourseCardProps) => {
   const stats = [
     {
       label: formatDuration({
@@ -81,7 +81,7 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
             </Text>
           </div>
           {/* Rating */}
-          <div className="flex gap-2 mt-2 items-center leading-none">
+          <div className="flex gap-2 mt-3 items-center leading-none">
             <Rating
               value={course.averageRating ?? 0}
               fractions={3}
@@ -89,17 +89,18 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
               readOnly
               className="flex items-center justify-center"
             />
-            <p className="text-yellow font-bold">{course.averageRating?.toFixed(1) ?? 0.0}</p>
+            <p className="text-yellow-6 font-bold">{course.averageRating?.toFixed(1) ?? 0.0}</p>
             <p className="text-gray-500">({course.reviewCount ?? 0})</p>
           </div>
           {/* Stats */}
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4 mt-3">
+          <div className="flex flex-wrap gap-2 mt-auto pt-2">
             {stats.map(({ label, icon: Icon }) => (
               <div
                 key={label}
-                className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400"
+                className="flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-dark-4 rounded-full text-xs text-gray-700
+                  dark:text-gray-300"
               >
-                <Icon size={16} className="text-primary-4 dark:text-primary-5" strokeWidth={2.3} />
+                <Icon size={14} className="text-gray-500 dark:text-gray-400" strokeWidth={2} />
                 {label}
               </div>
             ))}
@@ -137,4 +138,4 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
   );
 };
 
-export default CourseCard;
+export default CourseCardVer2;
