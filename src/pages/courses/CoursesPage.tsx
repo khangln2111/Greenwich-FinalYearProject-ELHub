@@ -7,7 +7,7 @@ const CoursesPage = () => {
   const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
 
   return (
-    <div className="flex-1 bg-gray-2 dark:bg-dark-5">
+    <div className="flex-1 bg-gray-100 dark:bg-dark-5">
       <Box
         className="container"
         px={{ base: "15px", md: "20px", lg: "30px", xl: "50px" }}

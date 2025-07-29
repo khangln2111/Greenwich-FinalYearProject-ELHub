@@ -91,6 +91,7 @@ const CourseFilter = () => {
               disabled={isPending || isError}
               searchable
               clearable
+              checkIconPosition="right"
               onChange={(val) => setCategoryId(val)}
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
               classNames={{

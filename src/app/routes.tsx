@@ -44,7 +44,14 @@ const userRoute: RouteObject = {
     { path: "cart", element: <CartPage /> },
     { path: "checkout", element: <CheckoutPage /> },
     { path: "checkout/result", element: <CheckoutResultPage /> },
-
+    {
+      path: "instructors",
+      element: <p>Instructors Page</p>,
+    },
+    {
+      path: "instructors/:instructorId",
+      element: <p>Instructor Detail Page</p>,
+    },
     {
       path: "become-instructor",
       element: <BecomeInstructorPage />,

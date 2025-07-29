@@ -46,7 +46,7 @@ export default function LearningSidebar({
             >
               <div className="flex flex-col items-center gap-2">
                 <HourglassIcon size={48} className="text-gray-400 mb-2" />
-                <p className="font-medium text-base">No course content available</p>
+                <p className="font-medium text-lg">No course content available</p>
                 <p className="text-sm">The instructor hasn't added any sections or lectures yet.</p>
               </div>
             </div>
