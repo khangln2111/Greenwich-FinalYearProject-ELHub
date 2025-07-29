@@ -46,8 +46,9 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
         className,
       )}
     >
-      {/* Image */}
-      <div className="p-4 flex flex-col flex-grow">
+      {/* padding wrapper */}
+      <div className="p-4 flex flex-col flex-1">
+        {/* Image */}
         <div className="relative w-full aspect-video overflow-hidden mb-3">
           <Image
             src={course.imageUrl ?? ""}
@@ -61,14 +62,14 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
           )}
         </div>
         {/* Content */}
-        <div className="flex flex-col flex-grow space-y-2">
+        <div className="flex flex-col flex-1 gap-y-2">
           {/* Title */}
           <Tooltip label={course.title} withArrow position="bottom">
             <Text
               component={Link}
               to={`/courses/${course.id}`}
               className="text-[21px] font-semibold leading-snug line-clamp-2 hover:text-primary-600
-                dark:hover:text-primary-400 transition flex-1"
+                dark:hover:text-primary-400 transition"
             >
               {course.title}
             </Text>
@@ -106,7 +107,7 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
           </div>
         </div>
         {/* Footer */}
-        <div className="flex items-center justify-between pt-4">
+        <div className="flex items-center justify-between pt-4 mt-auto">
           {/* Price */}
           <div className="flex items-center gap-2">
             {course.discountedPrice === 0 ? (
