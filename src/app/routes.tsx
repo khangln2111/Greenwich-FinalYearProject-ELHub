@@ -2,10 +2,10 @@ import { createBrowserRouter, RouteObject } from "react-router-dom";
 import InstructorLayout from "../layout/instructor/InstructorLayout";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import UserLayout from "../layout/user/UserLayout";
-import VerifyEmailPage from "../pages/verify-email/VerifyEmailPage";
-import ForgotPasswordPage from "../pages/auth/forgot-password/ForgotPasswordPage";
-import LoginPage from "../pages/auth/login/LoginPage";
-import RegisterPage from "../pages/auth/register/RegisterPage";
+import VerifyEmailPage from "../pages/pages-auth/verify-email/VerifyEmailPage";
+import ForgotPasswordPage from "../pages/pages-auth/forgot-password/ForgotPasswordPage";
+import LoginPage from "../pages/pages-auth/login/LoginPage";
+import RegisterPage from "../pages/pages-auth/register/RegisterPage";
 import CartPage from "../pages/cart/CartPage";
 import CheckoutResultPage from "../pages/checkout-result/CheckoutResultPage";
 import CheckoutPage from "../pages/checkout/CheckoutPage";
@@ -14,24 +14,24 @@ import CoursesPage from "../pages/courses/CoursesPage";
 import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
 import ErrorPage from "../pages/error/ErrorPage";
 import HomePage from "../pages/home/HomePage";
-import InstructorDashboard from "../pages/instructor/InstructorDashboard";
-import InstructorCoursesPage from "../pages/instructor/courses/InstructorCoursesPage";
+import InstructorDashboard from "../pages/pages-instructor/InstructorDashboard";
+import InstructorCoursesPage from "../pages/pages-instructor/courses/InstructorCoursesPage";
 import InventoryPage from "../pages/inventory/InventoryPage";
 import LearningPage from "../pages/learning/LearningPage";
 import MyAccountPage from "../pages/my-account/MyAccountPage";
 import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
 import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
-import InstructorProfilePage from "../pages/instructor/profile/InstructorProfilePage";
-import InstructorEditCoursePage from "../pages/instructor/edit-course/InstructorEditCoursePage";
+import InstructorProfilePage from "../pages/pages-instructor/profile/InstructorProfilePage";
+import InstructorEditCoursePage from "../pages/pages-instructor/edit-course/InstructorEditCoursePage";
 import GiftsPage from "../pages/gift/GiftsPage";
 import AdminLayout from "../layout/admin/AdminLayout";
-import AdminCategoriesPage from "../pages/admin/categories/AdminCategoriesPage";
+import AdminCategoriesPage from "../pages/pages-admin/categories/AdminCategoriesPage";
 import BecomeInstructorPage from "../pages/become-instructor/BecomeInstructorPage";
-import AdminInstructorPage from "../pages/admin/instructors/AdminInstructorPage";
-import AdminCoursesPage from "../pages/admin/courses/AdminCoursesPage";
-import AdminCourseDetailPage from "../pages/admin/course-detail/AdminCourseDetailPage";
-import AdminPendingCoursesPage from "../pages/admin/courses/AdminPendingCoursesPage";
-import AdminUsersPage from "../pages/admin/users/AdminUsersPage";
+import AdminInstructorPage from "../pages/pages-admin/instructors/AdminInstructorPage";
+import AdminCoursesPage from "../pages/pages-admin/courses/AdminCoursesPage";
+import AdminCourseDetailPage from "../pages/pages-admin/course-detail/AdminCourseDetailPage";
+import AdminPendingCoursesPage from "../pages/pages-admin/courses/AdminPendingCoursesPage";
+import AdminUsersPage from "../pages/pages-admin/users/AdminUsersPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -164,12 +164,21 @@ const authRoutes: RouteObject[] = [
   { path: "/register", element: <RegisterPage /> },
   { path: "/forgot-password", element: <ForgotPasswordPage /> },
   { path: "/verify-email", element: <VerifyEmailPage /> },
+];
+
+const otherRoutes: RouteObject[] = [
   {
     path: "learning/:courseId",
     element: <LearningPage />,
   },
 ];
 
-const router = createBrowserRouter([userRoute, instructorRoute, adminRoute, ...authRoutes]);
+const router = createBrowserRouter([
+  userRoute,
+  instructorRoute,
+  adminRoute,
+  ...authRoutes,
+  ...otherRoutes,
+]);
 
 export default router;
