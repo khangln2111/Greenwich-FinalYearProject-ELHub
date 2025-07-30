@@ -92,11 +92,11 @@ const CourseDetailPage = () => {
         pt={{ base: "xl", md: "2xl" }}
       >
         <div
-          className="py-md gap-xl grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr] items-start
-            justify-items-center"
+          className="py-md gap-x-15 gap-y-10 grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr]
+            items-start justify-items-center"
         >
           {/* 1st column */}
-          <div>
+          <div className="w-full">
             <div>
               <Breadcrumbs separator="→" separatorMargin="md">
                 {items}
@@ -149,7 +149,7 @@ const CourseDetailPage = () => {
                 </div>
               </div>
               {/* course preview */}
-              <div className="aspect-video rounded-lg overflow-hidden cursor-pointer mt-10 border">
+              <div className="aspect-video w-full rounded-lg overflow-hidden cursor-pointer mt-10 border">
                 <VideoPlayerWithThumbnail
                   classNames={{
                     playIconWrapper: "md:size-16",

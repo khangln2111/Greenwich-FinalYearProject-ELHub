@@ -49,7 +49,7 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
       {/* padding wrapper */}
       <div className="p-4 flex flex-col flex-1">
         {/* Image */}
-        <div className="relative w-full aspect-video mb-3 rounded-md overflow-hidden">
+        <div className="relative w-full aspect-video mb-3 rounded-md overflow-hidden shadow-sm">
           <Image
             src={course.imageUrl ?? ""}
             alt={course.title}
@@ -60,10 +60,6 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
               -{course.discountPercentage}%
             </div>
           )}
-          <div
-            className="absolute inset-0 pointer-events-none rounded-[inherit]"
-            style={{ boxShadow: "inset 0 2px 4px 0 hsla(0,0%,0%,0.1)" }}
-          />
         </div>
         {/* Content */}
         <div className="flex flex-col flex-1 gap-y-2">
