@@ -107,14 +107,6 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         <Menu.Divider />
 
         <Menu.Label>Sites navigation</Menu.Label>
-        <Menu.Item
-          leftSection={<IconBriefcase size={15} />}
-          className="cursor-pointer"
-          component={Link}
-          to="/instructor/courses"
-        >
-          Instructor dashboard
-        </Menu.Item>
 
         {/* menu item as link to /home student */}
         <Menu.Item
@@ -124,6 +116,14 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           leftSection={<GraduationCap size={15} />}
         >
           Student sites
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<IconBriefcase size={15} />}
+          className="cursor-pointer"
+          component={Link}
+          to="/instructor/courses"
+        >
+          Instructor dashboard
         </Menu.Item>
         <Menu.Item
           className="cursor-pointer"
