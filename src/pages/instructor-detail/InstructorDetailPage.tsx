@@ -41,17 +41,17 @@ export default function InstructorDetailPage() {
   return (
     <div className="bg-gray-50 dark:bg-body relative">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 pb-24 pt-12 text-white">
-        <Container size="lg" className="flex flex-col items-center text-center mb-10">
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 pb-20 pt-12 text-white">
+        <Container size="lg" className="flex flex-col items-center text-center mb-10 px-4">
           <Avatar
             src={instructor.avatarUrl}
-            size={120}
+            size={100}
             radius={999}
-            className="ring-4 ring-white dark:ring-gray-900 shadow-lg"
+            className="ring-4 ring-white dark:ring-gray-900 shadow-lg mb-4"
           />
-          <p className="text-sm uppercase tracking-widest mt-4 text-white/80">Instructor</p>
-          <h1 className="text-3xl font-bold">{instructor.name}</h1>
-          <p className="opacity-90 text-lg">{instructor.professionalTitle}</p>
+          <p className="text-xs sm:text-sm uppercase tracking-widest text-white/80">Instructor</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">{instructor.name}</h1>
+          <p className="opacity-90 text-sm sm:text-lg">{instructor.professionalTitle}</p>
           <Badge mt="sm" color="gray" variant="filled" radius="md">
             UDEMY INSTRUCTOR PARTNER
           </Badge>
@@ -66,8 +66,8 @@ export default function InstructorDetailPage() {
       </div>
 
       {/* Stats */}
-      <Container size="lg" className="-translate-y-1/2">
-        <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
+      <Container size="lg" className="-mt-16 px-4">
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
           <StatCard
             icon={<IconUsers size={28} />}
             label="Total Students"
@@ -93,7 +93,7 @@ export default function InstructorDetailPage() {
       </Container>
 
       {/* About */}
-      <Container size="lg" pb="xl">
+      <Container size="lg" pb="xl" pt="xl" className="px-4">
         <Title order={3} mb="md">
           About Me
         </Title>
@@ -120,7 +120,7 @@ export default function InstructorDetailPage() {
       </Container>
 
       {/* Courses */}
-      <Container size="lg" pb="xl">
+      <Container size="lg" pb="xl" className="px-4">
         <Title order={3} my="md">
           Courses by {instructor.name}
         </Title>
@@ -180,7 +180,7 @@ function SocialIcon({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <Button
       variant="white"
-      color="gray"
+      color="dark"
       size="sm"
       radius="md"
       px="sm"
