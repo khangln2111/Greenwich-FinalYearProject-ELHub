@@ -39,7 +39,7 @@ export default function InstructorDetailPage() {
   if (isInstructorError) return <Container py="xl">Instructor not found.</Container>;
 
   return (
-    <div className="bg-gray-50 dark:bg-body">
+    <div className="bg-gray-50 dark:bg-body pb-20">
       {/* Hero */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 py-12 md:pb-20 text-white">
         <Container
@@ -95,8 +95,9 @@ export default function InstructorDetailPage() {
         </SimpleGrid>
       </Container>
 
-      {/* About */}
-      <Container size="lg" className="px-4 mt-18 md:mt-0">
+      {/* Content */}
+      <Container size="lg" className="px-4 mt-18 md:mt-0 space-y-15">
+        {/* quote */}
         {instructor.favoriteQuote && (
           <Blockquote
             icon={<IconQuote size={18} />}
@@ -109,38 +110,37 @@ export default function InstructorDetailPage() {
             {instructor.favoriteQuote}
           </Blockquote>
         )}
-        <Title order={2} className="mt-12">
-          About Me
-        </Title>
-        {instructor.about ? (
-          <Text className="leading-relaxed text-lg text-gray-800 dark:text-gray-300 mt-3">
-            {instructor.about}
-          </Text>
-        ) : (
-          <Text c="dimmed">This instructor has not written an about section yet.</Text>
-        )}
-      </Container>
+        {/* about me */}
+        <div className="space-y-2 text-justify">
+          <Title order={2}>About Me</Title>
+          {instructor.about ? (
+            <Text className="leading-relaxed text-lg text-gray-800 dark:text-gray-300">
+              {instructor.about}
+            </Text>
+          ) : (
+            <Text c="dimmed">This instructor has not written an about section yet.</Text>
+          )}
+        </div>
 
-      {/* Courses */}
-      <Container size="lg" className="px-4 mt-12">
-        <Title order={2} my="md">
-          Courses by {instructor.name}
-        </Title>
-        {isCoursesLoading ? (
-          <Text>Loading courses...</Text>
-        ) : courses?.items.length ? (
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-            {courses.items.map((course) => (
-              <CourseCard
-                key={course.id}
-                course={course}
-                className="border border-gray-200 dark:border-gray-800"
-              />
-            ))}
-          </SimpleGrid>
-        ) : (
-          <Text c="dimmed">No published courses yet.</Text>
-        )}
+        {/* courses */}
+        <div className="space-y-3">
+          <Title order={2}>Courses by {instructor.name}</Title>
+          {isCoursesLoading ? (
+            <Text>Loading courses...</Text>
+          ) : courses?.items.length ? (
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+              {courses.items.map((course) => (
+                <CourseCard
+                  key={course.id}
+                  course={course}
+                  className="border border-gray-200 dark:border-gray-800"
+                />
+              ))}
+            </SimpleGrid>
+          ) : (
+            <Text c="dimmed">No published courses yet.</Text>
+          )}
+        </div>
       </Container>
     </div>
   );
