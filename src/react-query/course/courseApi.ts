@@ -6,16 +6,16 @@ import {
   CourseQueryCriteria,
   CourseVm,
   CreateCourseCommand,
-  InstructorVm,
   LearningCourseVm,
   ReviewCourseCommand,
   UpdateCourseCommand,
 } from "./course.types";
 import { applyConditions } from "../../utils/gridifyHelper";
+import { InstructorVm } from "../instructor/instructor.types";
 
 const BASE_URL = "/courses";
 
-const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
+export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   const qb = new GridifyQueryBuilder();
 
   qb.setPage(query.page ?? 1);

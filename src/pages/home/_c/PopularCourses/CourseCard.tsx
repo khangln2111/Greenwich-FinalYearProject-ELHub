@@ -49,7 +49,10 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
       {/* padding wrapper */}
       <div className="p-4 flex flex-col flex-1">
         {/* Image */}
-        <div className="relative w-full aspect-video mb-3 rounded-md overflow-hidden shadow-sm">
+        <div
+          className="relative w-full aspect-video mb-3 rounded-md overflow-hidden border border-black/10
+            dark:border-white/10"
+        >
           <Image
             src={course.imageUrl ?? ""}
             alt={course.title}

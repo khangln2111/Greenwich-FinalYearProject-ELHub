@@ -15,7 +15,7 @@ const levelColorMap: Record<CourseLevel, string> = {
   [CourseLevel.All]: "gray", // Trung tính, dùng cho mọi đối tượng
 };
 
-const CourseCard = ({ course }: CourseCardProps) => {
+const Test = ({ course }: CourseCardProps) => {
   const features = [
     {
       label: formatDuration({ seconds: course.durationInSeconds, formatType: "long" }),
@@ -165,4 +165,4 @@ const CourseCard = ({ course }: CourseCardProps) => {
   );
 };
 
-export default CourseCard;
+export default Test;

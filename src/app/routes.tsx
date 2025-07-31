@@ -7,7 +7,7 @@ import AdminCategoriesPage from "../pages/(admin)/categories/AdminCategoriesPage
 import AdminCourseDetailPage from "../pages/(admin)/course-detail/AdminCourseDetailPage";
 import AdminCoursesPage from "../pages/(admin)/courses/AdminCoursesPage";
 import AdminPendingCoursesPage from "../pages/(admin)/courses/AdminPendingCoursesPage";
-import AdminInstructorPage from "../pages/(admin)/instructors/AdminInstructorPage";
+import AdminInstructorApprovalPage from "../pages/(admin)/instructors/AdminInstructorPage";
 import AdminUsersPage from "../pages/(admin)/users/AdminUsersPage";
 import ForgotPasswordPage from "../pages/(auth)/forgot-password/ForgotPasswordPage";
 import LoginPage from "../pages/(auth)/login/LoginPage";
@@ -32,6 +32,7 @@ import LearningPage from "../pages/learning/LearningPage";
 import MyAccountPage from "../pages/my-account/MyAccountPage";
 import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
 import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
+import InstructorDetailPage from "../pages/instructor-detail/InstructorDetailPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -50,7 +51,7 @@ const userRoute: RouteObject = {
     },
     {
       path: "instructors/:instructorId",
-      element: <p>Instructor Detail Page</p>,
+      element: <InstructorDetailPage />,
     },
     {
       path: "become-instructor",
@@ -107,7 +108,6 @@ const instructorRoute: RouteObject = {
     {
       path: "courses",
       element: <InstructorCoursesPage />,
-      children: [{ path: "create", element: <p>Create</p> }],
     },
     {
       path: "courses/:courseId/edit",
@@ -138,7 +138,7 @@ const adminRoute: RouteObject = {
     },
     {
       path: "instructor-applications",
-      element: <AdminInstructorPage />,
+      element: <AdminInstructorApprovalPage />,
     },
     {
       path: "courses",

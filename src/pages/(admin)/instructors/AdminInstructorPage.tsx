@@ -94,7 +94,7 @@ const ORDER_BY_OPTIONS: {
   { label: "Reviewed (Oldest)", value: { field: "reviewedAt", direction: "asc" } },
 ];
 
-export default function AdminInstructorPage() {
+export default function AdminInstructorApprovalPage() {
   const modalStack = useModalsStack(["view", "review"]);
 
   const [viewApp, setViewApp] = useState<InstructorApplicationVm | null>(null);

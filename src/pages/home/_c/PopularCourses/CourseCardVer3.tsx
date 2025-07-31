@@ -10,7 +10,7 @@ type CourseCardProps = {
   className?: string;
 };
 
-const CourseCard = ({ course, className }: CourseCardProps) => {
+const CourseCardVer3 = ({ course, className }: CourseCardProps) => {
   const stats = [
     {
       label: formatDuration({
@@ -143,4 +143,4 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
   );
 };
 
-export default CourseCard;
+export default CourseCardVer3;

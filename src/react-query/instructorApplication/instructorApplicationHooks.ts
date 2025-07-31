@@ -32,11 +32,11 @@ export const useGetInstructorApplicationSelf = () => {
     queryKey: keyFac.instructorApplications.getInstructorApplicationSelf.queryKey,
     queryFn: getInstructorApplicationSelf,
     retry: (failureCount, error) => {
-      // ❌ Không retry nếu là 404
+      // ❌ Do not retry if 404
       if (error && error.response?.status === 404) {
         return false;
       }
-      // ✅ Retry tối đa 2 lần cho lỗi khác
+      // ✅ Retry maximum 2 times for other errors
       return failureCount < 2;
     },
     enabled: !!currentUser,
