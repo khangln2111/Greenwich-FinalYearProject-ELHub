@@ -47,7 +47,7 @@ export default function InstructorDetailPage() {
   return (
     <div>
       {/* Header Section */}
-      <div className="relative bg-blue-50 dark:bg-blue-900/10 pb-40">
+      <div className="relative bg-blue-100 dark:bg-blue-900/10 pb-40">
         <Container size="lg" py="xl" className="relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-[120px] h-[120px]">
@@ -66,10 +66,8 @@ export default function InstructorDetailPage() {
               <h2 className="text-2xl font-bold text-blue-800 dark:text-blue-300">
                 {instructor.name}
               </h2>
-              <p className="text-gray-500 dark:text-gray-400 mt-2">
-                {instructor.professionalTitle}
-              </p>
-              <Badge mt="sm" color="blue" variant="light">
+              <p className="font-medium mt-2">{instructor.professionalTitle}</p>
+              <Badge mt="sm" color="blue" variant="light" radius="md">
                 Udemy Instructor Partner
               </Badge>
 
@@ -85,7 +83,7 @@ export default function InstructorDetailPage() {
       </div>
 
       {/* Stats Section */}
-      <Container size="lg" className="-mt-28 z-10 relative">
+      <Container size="lg" className="-mt-20 z-10 relative">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <StatCard
             icon={<IconUsers size={32} />}
@@ -103,7 +101,6 @@ export default function InstructorDetailPage() {
 
       {/* About */}
       <Container size="lg" py="xl">
-        <Divider my="md" />
         <Title order={3} mb="md">
           About me
         </Title>
@@ -131,7 +128,6 @@ export default function InstructorDetailPage() {
 
       {/* Courses */}
       <Container size="lg" pb="xl">
-        <Divider my="md" />
         <Title order={3} my="md">
           Courses by {instructor.name}
         </Title>
@@ -161,7 +157,7 @@ function StatCard({
   label: string;
 }) {
   return (
-    <Paper shadow="sm" radius="lg" p="lg" className="bg-white dark:bg-gray-800 text-center">
+    <Paper shadow="md" radius="lg" p="lg" className="bg-white dark:bg-gray-800 text-center">
       <div className="flex flex-col items-center gap-2">
         <div className="text-blue-600 dark:text-blue-300">{icon}</div>
         <Text fw={700} size="xl">
