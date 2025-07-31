@@ -70,7 +70,7 @@ export default function InstructorDetailPage() {
                 Udemy Instructor Partner
               </Badge>
 
-              <div className="flex gap-2 mt-3 justify-center md:justify-start">
+              <div className="flex gap-2 mt-3 justify-center md:justify-start flex-wrap">
                 <SocialIcon icon={<IconExternalLink size={18} />} />
                 <SocialIcon icon={<IconBrandLinkedin size={18} />} />
                 <SocialIcon icon={<IconBrandX size={18} />} />
@@ -85,16 +85,26 @@ export default function InstructorDetailPage() {
       <Container size="lg" className="-mt-20 z-10 relative">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <StatCard
-            icon={<IconUsers size={32} />}
-            label="Learners"
+            icon={<IconUsers size={28} />}
+            label="Total Students"
             value={instructor.studentCount.toLocaleString()}
+            iconColor="text-violet-600"
+            iconBg="bg-violet-100"
           />
           <StatCard
-            icon={<IconStar size={32} />}
+            icon={<IconStar size={28} />}
             label="Reviews"
             value={instructor.reviewCount.toLocaleString()}
+            iconColor="text-orange-500"
+            iconBg="bg-orange-100"
           />
-          <StatCard icon={<IconBooks size={32} />} label="Courses" value={instructor.courseCount} />
+          <StatCard
+            icon={<IconBooks size={28} />}
+            label="Courses"
+            value={instructor.courseCount}
+            iconColor="text-blue-600"
+            iconBg="bg-blue-100"
+          />
         </div>
       </Container>
 
@@ -150,22 +160,33 @@ function StatCard({
   icon,
   value,
   label,
+  iconColor,
+  iconBg,
 }: {
   icon: React.ReactNode;
   value: string | number;
   label: string;
+  iconColor: string;
+  iconBg: string;
 }) {
   return (
-    <Paper shadow="md" radius="lg" p="lg" className="bg-white dark:bg-gray-800 text-center">
-      <div className="flex flex-col items-center gap-2">
-        <div className="text-blue-600 dark:text-blue-300">{icon}</div>
-        <Text fw={700} size="xl">
-          {value}
-        </Text>
-        <Text size="sm" className="text-gray-600 dark:text-gray-400">
-          {label}
-        </Text>
+    <Paper
+      shadow="md"
+      radius="lg"
+      p="lg"
+      className="bg-white dark:bg-gray-800 text-center flex flex-col items-center"
+    >
+      <div
+        className={`size-14 flex items-center justify-center rounded-full shadow-md mb-4 ${iconBg}`}
+      >
+        <div className={`${iconColor}`}>{icon}</div>
       </div>
+      <Text fw={700} size="xl" className="text-gray-900 dark:text-white">
+        {value}
+      </Text>
+      <Text size="sm" className="text-gray-600 dark:text-gray-400 uppercase tracking-wide mt-1">
+        {label}
+      </Text>
     </Paper>
   );
 }
