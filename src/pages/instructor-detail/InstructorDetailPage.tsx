@@ -4,26 +4,25 @@ import {
   Blockquote,
   Button,
   Container,
-  Divider,
   Paper,
   SimpleGrid,
   Text,
   Title,
 } from "@mantine/core";
 import {
+  IconBooks,
   IconBrandLinkedin,
   IconBrandX,
   IconBrandYoutube,
   IconExternalLink,
   IconQuote,
-  IconUsers,
   IconStar,
-  IconBooks,
+  IconUsers,
 } from "@tabler/icons-react";
 import { useParams } from "react-router-dom";
 import {
-  useGetInstructorById,
   useGetCoursesByInstructorId,
+  useGetInstructorById,
 } from "../../react-query/instructor/instructorHooks";
 import CourseCard from "../home/_c/PopularCourses/CourseCard";
 
