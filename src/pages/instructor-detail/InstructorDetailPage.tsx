@@ -45,9 +45,9 @@ export default function InstructorDetailPage() {
         <Container size="lg" className="flex flex-col items-center gap-1 text-center mb-10 px-4">
           <Avatar
             src={instructor.avatarUrl}
-            size={100}
+            size={150}
             radius={999}
-            className="outline-3 outline-white shadow-lg mb-4"
+            className="outline-4 outline-white shadow-lg mb-4"
           />
           <p className="text-xs sm:text-sm uppercase tracking-widest">Instructor</p>
           <h1 className="text-2xl sm:text-3xl font-bold">{instructor.name}</h1>
