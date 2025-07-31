@@ -39,10 +39,13 @@ export default function InstructorDetailPage() {
   if (isInstructorError) return <Container py="xl">Instructor not found.</Container>;
 
   return (
-    <div className="bg-gray-50 dark:bg-body relative">
+    <div className="bg-gray-50 dark:bg-body">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 pb-20 pt-12 text-white">
-        <Container size="lg" className="flex flex-col items-center gap-1 text-center mb-10 px-4">
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 py-12 md:pb-20 text-white">
+        <Container
+          size="lg"
+          className="flex flex-col items-center justify-center gap-1 text-center md:pb-13 px-4"
+        >
           <Avatar
             src={instructor.avatarUrl}
             size={150}
@@ -66,7 +69,7 @@ export default function InstructorDetailPage() {
       </div>
 
       {/* Stats */}
-      <Container size="lg" className="-mt-16 px-4">
+      <Container size="lg" className="px-4 pt-14 md:-translate-y-1/2 md:pt-0">
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
           <StatCard
             icon={<IconUsers size={28} />}
@@ -93,11 +96,10 @@ export default function InstructorDetailPage() {
       </Container>
 
       {/* About */}
-      <Container size="lg" pb="xl" pt="xl" className="px-4">
+      <Container size="lg" className="px-4 mt-18 md:mt-0">
         {instructor.favoriteQuote && (
           <Blockquote
             icon={<IconQuote size={18} />}
-            mt="xl"
             color="blue"
             className="max-w-(--container-2xl) mx-auto text-xl text-center dark:bg-blue-900/20 dark:border-blue-500"
             cite={
@@ -107,11 +109,11 @@ export default function InstructorDetailPage() {
             {instructor.favoriteQuote}
           </Blockquote>
         )}
-        <Title order={2} className="mt-15">
+        <Title order={2} className="mt-12">
           About Me
         </Title>
         {instructor.about ? (
-          <Text className="leading-relaxed text-lg text-gray-800 dark:text-gray-300 mt-5">
+          <Text className="leading-relaxed text-lg text-gray-800 dark:text-gray-300 mt-3">
             {instructor.about}
           </Text>
         ) : (
@@ -120,7 +122,7 @@ export default function InstructorDetailPage() {
       </Container>
 
       {/* Courses */}
-      <Container size="lg" pb="xl" className="px-4">
+      <Container size="lg" className="px-4 mt-12">
         <Title order={2} my="md">
           Courses by {instructor.name}
         </Title>
