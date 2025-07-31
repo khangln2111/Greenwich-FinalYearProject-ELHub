@@ -10,11 +10,11 @@ import {
   Title,
 } from "@mantine/core";
 import {
-  IconBooks,
   IconBrandLinkedin,
   IconBrandX,
   IconBrandYoutube,
   IconExternalLink,
+  IconPlayerPlay,
   IconQuote,
   IconStar,
   IconUsers,
@@ -42,18 +42,18 @@ export default function InstructorDetailPage() {
     <div className="bg-gray-50 dark:bg-body relative">
       {/* Hero */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 pb-20 pt-12 text-white">
-        <Container size="lg" className="flex flex-col items-center text-center mb-10 px-4">
+        <Container size="lg" className="flex flex-col items-center gap-1 text-center mb-10 px-4">
           <Avatar
             src={instructor.avatarUrl}
             size={100}
             radius={999}
-            className="ring-4 ring-white dark:ring-gray-900 shadow-lg mb-4"
+            className="outline-3 outline-white shadow-lg mb-4"
           />
-          <p className="text-xs sm:text-sm uppercase tracking-widest text-white/80">Instructor</p>
+          <p className="text-xs sm:text-sm uppercase tracking-widest">Instructor</p>
           <h1 className="text-2xl sm:text-3xl font-bold">{instructor.name}</h1>
-          <p className="opacity-90 text-sm sm:text-lg">{instructor.professionalTitle}</p>
-          <Badge mt="sm" color="gray" variant="filled" radius="md">
-            UDEMY INSTRUCTOR PARTNER
+          <p className="text-sm sm:text-lg">{instructor.professionalTitle}</p>
+          <Badge mt="sm" color="dark" variant="filled" radius="md">
+            ELHub INSTRUCTOR PARTNER
           </Badge>
 
           <div className="flex gap-2 mt-4 flex-wrap justify-center">
@@ -83,7 +83,7 @@ export default function InstructorDetailPage() {
             iconBg="bg-orange-100"
           />
           <StatCard
-            icon={<IconBooks size={28} />}
+            icon={<IconPlayerPlay size={28} />}
             label="Courses"
             value={instructor.courseCount}
             iconColor="text-blue-600"
@@ -94,22 +94,12 @@ export default function InstructorDetailPage() {
 
       {/* About */}
       <Container size="lg" pb="xl" pt="xl" className="px-4">
-        <Title order={3} mb="md">
-          About Me
-        </Title>
-        {instructor.about ? (
-          <Text className="leading-relaxed text-md text-gray-800 dark:text-gray-300">
-            {instructor.about}
-          </Text>
-        ) : (
-          <Text c="dimmed">This instructor has not written an about section yet.</Text>
-        )}
-
         {instructor.favoriteQuote && (
           <Blockquote
             icon={<IconQuote size={18} />}
             mt="xl"
             color="blue"
+            className="max-w-(--container-2xl) mx-auto text-xl text-center dark:bg-blue-900/20 dark:border-blue-500"
             cite={
               instructor.favoriteQuoteCite ? `- ${instructor.favoriteQuoteCite}` : instructor.name
             }
@@ -117,11 +107,21 @@ export default function InstructorDetailPage() {
             {instructor.favoriteQuote}
           </Blockquote>
         )}
+        <Title order={2} className="mt-15">
+          About Me
+        </Title>
+        {instructor.about ? (
+          <Text className="leading-relaxed text-lg text-gray-800 dark:text-gray-300 mt-5">
+            {instructor.about}
+          </Text>
+        ) : (
+          <Text c="dimmed">This instructor has not written an about section yet.</Text>
+        )}
       </Container>
 
       {/* Courses */}
       <Container size="lg" pb="xl" className="px-4">
-        <Title order={3} my="md">
+        <Title order={2} my="md">
           Courses by {instructor.name}
         </Title>
         {isCoursesLoading ? (
@@ -129,7 +129,11 @@ export default function InstructorDetailPage() {
         ) : courses?.items.length ? (
           <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
             {courses.items.map((course) => (
-              <CourseCard key={course.id} course={course} />
+              <CourseCard
+                key={course.id}
+                course={course}
+                className="border border-gray-200 dark:border-gray-800"
+              />
             ))}
           </SimpleGrid>
         ) : (
@@ -158,7 +162,7 @@ function StatCard({
     <Paper
       radius="lg"
       p="lg"
-      className="bg-white dark:bg-gray-800 text-center flex flex-col items-center shadow-md"
+      className="bg-white dark:bg-dark-6 text-center flex flex-col items-center shadow-md"
     >
       <div
         className={`size-14 flex items-center justify-center rounded-full shadow-md mb-4 ${iconBg}`}
