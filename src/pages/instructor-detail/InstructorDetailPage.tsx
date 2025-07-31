@@ -49,8 +49,8 @@ export default function InstructorDetailPage() {
       {/* Header Section */}
       <div className="relative bg-blue-50 dark:bg-blue-900/10 pb-40">
         <Container size="lg" py="xl" className="relative z-10">
-          <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
-            <div className="relative w-[120px] h-[120px] -mt-12 z-10">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="relative w-[120px] h-[120px]">
               <Avatar
                 src={instructor.avatarUrl}
                 size={120}
