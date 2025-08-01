@@ -24,16 +24,16 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
       icon: LibraryBig,
     },
     {
-      label: course.categoryName,
-      icon: Tag,
-    },
-    {
       label: course.level,
       icon: Layers,
     },
     {
       label: `${course.enrollmentCount ?? 0} enrolled`,
       icon: Users,
+    },
+    {
+      label: course.categoryName,
+      icon: Tag,
     },
   ];
 
@@ -98,15 +98,29 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
           </div>
           {/* Stats */}
           <div className="grid grid-cols-2 gap-y-2 gap-x-4 mt-3">
-            {stats.map(({ label, icon: Icon }) => (
-              <div
-                key={label}
-                className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400"
-              >
-                <Icon size={16} className="text-primary-4 dark:text-primary-5" strokeWidth={2.3} />
-                {label}
-              </div>
-            ))}
+            {stats.map(({ label, icon: Icon }, index) => {
+              const isLast = index === stats.length - 1;
+              const isOdd = stats.length % 2 !== 0;
+
+              return (
+                <div
+                  key={label}
+                  className={cn(
+                    "flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400",
+                    {
+                      "col-span-2": isLast && isOdd,
+                    },
+                  )}
+                >
+                  <Icon
+                    size={16}
+                    className="text-primary-4 dark:text-primary-5"
+                    strokeWidth={2.3}
+                  />
+                  {label}
+                </div>
+              );
+            })}
           </div>
         </div>
         {/* Footer */}

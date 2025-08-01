@@ -15,7 +15,7 @@ import RegisterPage from "../pages/(auth)/register/RegisterPage";
 import VerifyEmailPage from "../pages/(auth)/verify-email/VerifyEmailPage";
 import InstructorCoursesPage from "../pages/(instructor)/courses/InstructorCoursesPage";
 import InstructorEditCoursePage from "../pages/(instructor)/edit-course/InstructorEditCoursePage";
-import InstructorDashboard from "../pages/(instructor)/InstructorDashboard";
+import InstructorAnalyticsPage from "../pages/(instructor)/analytics/InstructorAnalyticsPage";
 import InstructorProfilePage from "../pages/(instructor)/profile/InstructorProfilePage";
 import BecomeInstructorPage from "../pages/become-instructor/BecomeInstructorPage";
 import CartPage from "../pages/cart/CartPage";
@@ -33,6 +33,7 @@ import MyAccountPage from "../pages/my-account/MyAccountPage";
 import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
 import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
 import InstructorDetailPage from "../pages/instructor-detail/InstructorDetailPage";
+import AdminAnalyticsPage from "../pages/(admin)/analytics/AdminAnalyticsPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -103,7 +104,7 @@ const instructorRoute: RouteObject = {
   element: <InstructorLayout />,
   path: "/instructor",
   children: [
-    { path: "analytics", element: <InstructorDashboard /> },
+    { path: "analytics", element: <InstructorAnalyticsPage /> },
     { path: "students", element: <p>Instructor Students Page</p> },
     {
       path: "courses",
@@ -130,7 +131,7 @@ const adminRoute: RouteObject = {
   children: [
     {
       path: "analytics",
-      element: <p>Admin Dashboard</p>,
+      element: <AdminAnalyticsPage />,
     },
     {
       path: "categories",
