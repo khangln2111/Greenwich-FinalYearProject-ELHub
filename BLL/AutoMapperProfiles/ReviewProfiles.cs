@@ -23,5 +23,11 @@ public class ReviewProfiles : Profile
                 opts.AllowNull();
                 opts.Condition((_, _, srcMember) => srcMember != null);
             });
+
+        CreateMap<ReviewReply, ReviewReplyVm>()
+            .ForMember(dest => dest.CreatorFullName,
+                opt => opt.MapFrom(src => src.Creator.FirstName + " " + src.Creator.LastName))
+            .ForMember(dest => dest.CreatorAvatarUrl,
+                opt => opt.MapFrom(src => src.Creator.Avatar != null ? src.Creator.Avatar.Url : null));
     }
 }

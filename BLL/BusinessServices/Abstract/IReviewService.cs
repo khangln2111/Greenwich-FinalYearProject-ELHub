@@ -16,4 +16,8 @@ public interface IReviewService
     Task<Success> Update(UpdateReviewCommand command);
 
     Task<Success> Delete(Guid id);
+
+    Task<Success> ReplyToReview(ReplyToReviewCommand command);
+
+    Task<Success> UpdateReviewReply(UpdateReviewReplyCommand command);
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.DTOs.CourseDTOs;
+using BLL.DTOs.InstructorDTO;
 using DAL.Data.Entities;
 
 namespace BLL.AutoMapperProfiles;
@@ -9,6 +10,7 @@ public class InstructorProfiles : Profile
     public InstructorProfiles()
     {
         CreateMap<ApplicationUser, InstructorVm>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
             .ForMember(dest => dest.AvatarUrl,
                 opt => opt.MapFrom(src => src.Avatar != null ? src.Avatar.Url : null))
             .ForMember(dest => dest.ReviewCount, opt => opt.MapFrom(src =>

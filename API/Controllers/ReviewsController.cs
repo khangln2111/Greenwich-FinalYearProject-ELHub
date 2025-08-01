@@ -62,4 +62,26 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
         var result = await reviewService.Delete(id);
         return Ok(result);
     }
+
+    //POST: /api/Reviews/reply
+    [HttpPost("reply")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ReplyToReview([FromBody] ReplyToReviewCommand command)
+    {
+        var result = await reviewService.ReplyToReview(command);
+        return Ok(result);
+    }
+
+    //PUT: /api/Reviews/reply
+    [HttpPut("reply")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateReplyToReview([FromBody] UpdateReviewReplyCommand command)
+    {
+        var result = await reviewService.UpdateReviewReply(command);
+        return Ok(result);
+    }
 }

@@ -39,6 +39,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<Review> Reviews { get; set; }
 
+    public DbSet<ReviewReply> ReviewReplies { get; set; }
+
     public DbSet<LectureProgress> LectureProgresses { get; set; }
 
     public DbSet<InstructorApplication> InstructorApplications { get; set; }

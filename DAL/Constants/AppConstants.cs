@@ -88,6 +88,11 @@ public static class AppConstants
         public const int MinRating = 1;
     }
 
+    public static class ReviewReply
+    {
+        public const int ContentMaxLength = 500;
+    }
+
     public static class Gift
     {
         public const int ReceiverEmailMaxLength = 254; // Standard max email length

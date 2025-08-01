@@ -663,6 +663,33 @@ namespace DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReviewReplies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReviewId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReviewReplies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReviewReplies_AspNetUsers_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReviewReplies_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LectureProgresses",
                 columns: table => new
                 {
@@ -883,6 +910,17 @@ namespace DAL.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ReviewReplies_CreatorId",
+                table: "ReviewReplies",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReviewReplies_ReviewId",
+                table: "ReviewReplies",
+                column: "ReviewId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ApplicationUserId",
                 table: "Reviews",
                 column: "ApplicationUserId");
@@ -942,7 +980,7 @@ namespace DAL.Data.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "ReviewReplies");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -960,13 +998,16 @@ namespace DAL.Data.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Enrollments");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Inventories");
 
             migrationBuilder.DropTable(
                 name: "Sections");
+
+            migrationBuilder.DropTable(
+                name: "Enrollments");
 
             migrationBuilder.DropTable(
                 name: "Courses");

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250722201300_Initial")]
+    [Migration("20250725201912_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -850,6 +850,39 @@ namespace DAL.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.ReviewReply", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("ReviewId")
+                        .IsUnique();
+
+                    b.ToTable("ReviewReplies");
+                });
+
             modelBuilder.Entity("DAL.Data.Entities.Section", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1279,6 +1312,25 @@ namespace DAL.Data.Migrations
                     b.Navigation("Enrollment");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.ReviewReply", b =>
+                {
+                    b.HasOne("DAL.Data.Entities.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Data.Entities.Review", "Review")
+                        .WithOne("Reply")
+                        .HasForeignKey("DAL.Data.Entities.ReviewReply", "ReviewId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("Review");
+                });
+
             modelBuilder.Entity("DAL.Data.Entities.Section", b =>
                 {
                     b.HasOne("DAL.Data.Entities.Course", "Course")
@@ -1412,6 +1464,11 @@ namespace DAL.Data.Migrations
             modelBuilder.Entity("DAL.Data.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("DAL.Data.Entities.Review", b =>
+                {
+                    b.Navigation("Reply");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Section", b =>

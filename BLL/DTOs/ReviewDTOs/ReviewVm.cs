@@ -7,6 +7,7 @@ public class ReviewVm
     public int Rating { get; set; }
     public required string UserFullName { get; set; }
     public string? UserAvatarUrl { get; set; }
+    public ReviewReplyVm? Reply { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

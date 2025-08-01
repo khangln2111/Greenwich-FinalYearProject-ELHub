@@ -29,6 +29,7 @@ public class ReviewService(
         var result = await context.Reviews
             .AsNoTracking()
             .Where(r => r.Enrollment.Course.Id == courseId)
+            .Include(r => r.Reply).ThenInclude(rr => rr!.Creator)
             .Include(r => r.Enrollment).ThenInclude(e => e.Course)
             .GridifyToAsync<Review, ReviewVm>(query, mapper, gridifyMapper);
 
@@ -101,6 +102,46 @@ public class ReviewService(
 
         await context.SaveChangesAsync();
         return new Success("Review updated successfully.");
+    }
+
+    public async Task<Success> ReplyToReview(ReplyToReviewCommand command)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
+
+        await validationService.ValidateAsync(command);
+
+        var review = await context.Reviews
+            .Include(r => r.Enrollment).ThenInclude(e => e.User).Include(review => review.Reply)
+            .FirstOrDefaultAsync(r => r.Id == command.Id && r.Enrollment.Course.InstructorId == currentUser.Id);
+
+        if (review == null) throw new NotFoundException("Review not found or you do not have permission to reply.");
+
+        if (review.Reply != null)
+            throw new BadRequestException("This review already has a reply.", ErrorCode.InvalidOperation);
+
+        var reply = new ReviewReply { Content = command.Content, ReviewId = review.Id, CreatorId = currentUser.Id };
+        await context.ReviewReplies.AddAsync(reply);
+        await context.SaveChangesAsync();
+        return new Success("Reply added successfully.");
+    }
+
+    public async Task<Success> UpdateReviewReply(UpdateReviewReplyCommand command)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
+
+        await validationService.ValidateAsync(command);
+
+        var reply = await context.ReviewReplies
+            .Include(r => r.Review).ThenInclude(r => r.Enrollment).ThenInclude(e => e.User)
+            .FirstOrDefaultAsync(r => r.Id == command.Id && r.Review.Enrollment.UserId == currentUser.Id);
+
+        if (reply == null) throw new NotFoundException("Reply not found or you do not have permission to update it.");
+
+        reply.Content = command.Content;
+        await context.SaveChangesAsync();
+        return new Success("Reply updated successfully.");
     }
 
     public async Task<Success> Delete(Guid id)

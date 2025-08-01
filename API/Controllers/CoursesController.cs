@@ -1,5 +1,6 @@
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CourseDTOs;
+using BLL.DTOs.InstructorDTO;
 using BLL.Gridify.CustomModels;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;

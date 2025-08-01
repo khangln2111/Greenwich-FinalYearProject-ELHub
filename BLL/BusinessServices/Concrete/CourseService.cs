@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.CourseDTOs;
+using BLL.DTOs.InstructorDTO;
 using BLL.DTOs.LectureDTOs;
 using BLL.DTOs.SectionDTOs;
 using BLL.Exceptions;

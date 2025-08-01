@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.CourseDTOs;
+using BLL.DTOs.InstructorDTO;
 using BLL.Gridify.CustomModels;
 using BLL.Models;
 using Gridify;

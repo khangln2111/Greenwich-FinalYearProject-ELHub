@@ -34,6 +34,7 @@ public static class BusinessLogicDependencyInjection
         services.AddScoped<IReviewService, ReviewService>();
         services.AddScoped<IInstructorApplicationService, InstructorApplicationService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IInstructorService, InstructorService>();
     }
 
     private static void ConfigureGridify(this IServiceCollection services)
