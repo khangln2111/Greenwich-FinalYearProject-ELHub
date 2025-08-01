@@ -30,8 +30,9 @@ import {
 } from "@tabler/icons-react";
 import { PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
+import { useSearchParamState } from "../../hooks/useSearchParamState";
 import { useGetCart } from "../../react-query/cart/cartHooks";
 import { useAppStore } from "../../zustand/store";
 import AvatarMenu from "./_c/AvatarMenu";
@@ -78,9 +79,9 @@ const Header = () => {
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
   // get search value from url
-  const [searchParams] = useSearchParams();
+  const [searchParam, setSearchParam] = useSearchParamState("search", "");
 
-  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
+  const [searchValue, setSearchValue] = useState<string>(searchParam);
   const navigate = useNavigate();
 
   const { data: cart } = useGetCart();
@@ -164,7 +165,10 @@ const Header = () => {
             value={searchValue}
             onChange={setSearchValue}
             onSearch={handleSearch}
-            onClear={() => setSearchValue("")}
+            onClear={() => {
+              setSearchValue("");
+              setSearchParam(null);
+            }}
             size="md"
             placeholder="Search courses..."
             radius="3xl"

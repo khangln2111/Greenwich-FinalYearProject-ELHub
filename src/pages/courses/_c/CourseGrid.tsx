@@ -5,14 +5,21 @@ import { useGetCourses } from "../../../react-query/course/courseHooks";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import CoursePagination from "./CoursePagination";
 import { useSearchParamState } from "../../../hooks/useSearchParamState";
+import { decodeOrderOption } from "../../../http-client/api.types";
+import { CourseOrderableFields } from "../../../react-query/course/course.types";
 
 const CourseGrid = () => {
   const [categoryId] = useSearchParamState("categoryId");
   const [level] = useSearchParamState("level");
+  const [orderByParam] = useSearchParamState("orderBy");
+  const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
+  const [search] = useSearchParamState("search", "");
 
   const { data, isPending, isError } = useGetCourses({
     categoryId,
     level,
+    orderBy,
+    search,
   });
 
   if (isPending) return <CenterLoader />;
@@ -40,12 +47,12 @@ const CourseGrid = () => {
   }
 
   return (
-    <>
-      <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" my={25} className="auto-rows-auto">
+    <div className="@container">
+      <div className="grid grid-cols-1 @md:grid-cols-2 @xl:grid-cols-3 gap-md my-[25px]">
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}
-      </SimpleGrid>
+      </div>
       {/* <div className="grid grid-cols-fill-[250px] gap-lg mx-auto my-[25px]">
         {courses.map((course) => (
           <CourseCard key={course.id} />
@@ -54,7 +61,7 @@ const CourseGrid = () => {
       <Flex justify="center" mt="50">
         <CoursePagination />
       </Flex>
-    </>
+    </div>
   );
 };
 export default CourseGrid;

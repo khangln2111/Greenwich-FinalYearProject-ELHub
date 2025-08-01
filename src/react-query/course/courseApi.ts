@@ -30,6 +30,8 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
         .addCondition("title", op.Contains, query.search!, false)
         .or()
         .addCondition("description", op.Contains, query.search!, false)
+        .or()
+        .addCondition("instructorName", op.Contains, query.search!, false)
         .endGroup(),
     );
   }

@@ -3,96 +3,130 @@ import {
   IconArrowDown,
   IconArrowUp,
   IconClock,
-  IconEye,
+  IconCoin,
   IconSortAZ,
   IconStar,
-  IconThumbUp,
+  IconUserPlus,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParamState } from "../../../../hooks/useSearchParamState";
+import {
+  decodeOrderOption,
+  encodeOrderOption,
+  OrderBy,
+  OrderDirection,
+} from "../../../../http-client/api.types";
+import { CourseOrderableFields } from "../../../../react-query/course/course.types";
 
-const sortingOptions = [
-  { value: "date", label: "DATE", icon: <IconClock size={18} /> },
-  { value: "likes", label: "LIKES", icon: <IconThumbUp size={18} /> },
-  { value: "views", label: "VIEWS", icon: <IconEye size={18} /> },
-  { value: "alphabet", label: "A-Z", icon: <IconSortAZ size={18} /> },
-  { value: "rating", label: "RATING", icon: <IconStar size={18} /> },
+const SORTING_OPTIONS: {
+  value: OrderBy<CourseOrderableFields>;
+  label: string;
+  icon: React.ReactNode;
+}[] = [
+  {
+    value: { field: "createdAt", direction: "desc" },
+    label: "DATE",
+    icon: <IconClock size={18} />,
+  },
+  {
+    value: { field: "discountedPrice", direction: "asc" },
+    label: "PRICE",
+    icon: <IconCoin size={18} />,
+  },
+  {
+    value: { field: "enrollmentCount", direction: "desc" },
+    label: "POPULAR",
+    icon: <IconUserPlus size={18} />,
+  },
+  {
+    value: { field: "title", direction: "asc" },
+    label: "A-Z",
+    icon: <IconSortAZ size={18} />,
+  },
+  {
+    value: { field: "averageRating", direction: "desc" },
+    label: "RATING",
+    icon: <IconStar size={18} />,
+  },
 ];
 
 const CourseSorter = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  // Lấy giá trị sort từ URL hoặc dùng mặc định "date"
-  const selectedSort = searchParams.get("orderBy") || "date";
-  // Lấy giá trị asc từ URL và chuyển đổi sang boolean
-  const isAsc = searchParams.get("acs") === "true" || false;
+  const [orderByParam, setOrderByParam] = useSearchParamState<string>(
+    "orderBy",
+    encodeOrderOption({ field: "createdAt", direction: "desc" }),
+  );
 
-  const [hoveredSort, setHoveredSort] = useState<string | null>(null);
+  const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
 
-  const handleSortChange = (orderBy: string, asc: boolean) => {
-    // Cập nhật searchParams mới
-    const params = new URLSearchParams(searchParams);
-    params.set("orderBy", orderBy);
-    params.set("acs", asc ? "true" : "false");
+  const [hoveredSort, setHoveredSort] = useState<CourseOrderableFields | null>(null);
 
-    setSearchParams(params, { preventScrollReset: true });
+  const handleFieldChange = (field: string) => {
+    const found = SORTING_OPTIONS.find((opt) => opt.value.field === field);
+    if (!found) return;
+    setOrderByParam(
+      encodeOrderOption({ field: field as CourseOrderableFields, direction: orderBy.direction }),
+    );
+  };
+
+  const toggleSortDirection = () => {
+    const newDirection: OrderDirection = orderBy.direction === "asc" ? "desc" : "asc";
+    const updated = { ...orderBy, direction: newDirection };
+    setOrderByParam(encodeOrderOption(updated));
   };
 
   return (
     <>
-      {/* Header + Reverse Sorting Button */}
       <div className="flex justify-between items-center mb-2">
-        <div className="flex items-center gap-2">
-          <Text fw={500} size="sm">
-            Sorting:
-          </Text>
-        </div>
+        <Text fw={500} size="sm">
+          Sorting:
+        </Text>
 
-        <div className="flex items-center justify-center gap-2">
-          <Text className="font-semibold text-sm" component="div">
-            <motion.p
-              key={hoveredSort || selectedSort}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {hoveredSort
-                ? sortingOptions.find((opt) => opt.value === hoveredSort)?.label
-                : sortingOptions.find((opt) => opt.value === selectedSort)?.label}{" "}
-              {selectedSort === "date" || hoveredSort === "date"
-                ? isAsc
-                  ? "(Oldest)"
-                  : "(Newest)"
-                : isAsc
-                  ? "(Asc)"
-                  : "(Desc)"}
-            </motion.p>
-          </Text>
+        <div className="flex items-center gap-2">
+          <motion.p
+            key={hoveredSort ?? orderBy.field}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-sm font-semibold"
+          >
+            {
+              SORTING_OPTIONS.find((opt) => opt.value.field === (hoveredSort ?? orderBy.field))
+                ?.label
+            }{" "}
+            {orderBy.field === "createdAt"
+              ? orderBy.direction === "asc"
+                ? "(Oldest)"
+                : "(Newest)"
+              : orderBy.direction === "asc"
+                ? "(Asc)"
+                : "(Desc)"}
+          </motion.p>
+
           <Button
             variant="default"
             size="compact-xs"
             className="p-0 w-7 h-7 flex items-center justify-center"
-            onClick={() => handleSortChange(selectedSort, !isAsc)}
+            onClick={toggleSortDirection}
           >
-            {isAsc ? <IconArrowUp size={16} /> : <IconArrowDown size={16} />}
+            {orderBy.direction === "asc" ? <IconArrowUp size={16} /> : <IconArrowDown size={16} />}
           </Button>
         </div>
       </div>
 
-      {/* Sorting Options */}
       <SegmentedControl
         radius="full"
         className="grid auto-cols-fr grid-flow-col-dense"
         color="blue"
-        value={selectedSort}
-        onChange={(value) => handleSortChange(value, isAsc)}
-        data={sortingOptions.map((option) => ({
-          value: option.value,
+        value={orderBy.field}
+        onChange={handleFieldChange}
+        data={SORTING_OPTIONS.map((option) => ({
+          value: option.value.field,
           label: (
             <div
               className="flex justify-center items-center"
-              onMouseEnter={() => setHoveredSort(option.value)}
+              onMouseEnter={() => setHoveredSort(option.value.field)}
               onMouseLeave={() => setHoveredSort(null)}
             >
               {option.icon}

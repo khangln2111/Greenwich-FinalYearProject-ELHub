@@ -201,11 +201,14 @@ export interface CourseQueryCriteria extends BaseQueryCriteria<CourseOrderableFi
 export type CourseOrderableFields =
   | "createdAt"
   | "updatedAt"
-  | "averateRating"
+  | "averageRating"
   | "title"
   | "price"
   | "discountedPrice"
-  | "durationInSeconds";
+  | "discountedPrice"
+  | "durationInSeconds"
+  | "enrollmentCount"
+  | "lectureCount";
 
 export interface Experience {
   organizationName: string;

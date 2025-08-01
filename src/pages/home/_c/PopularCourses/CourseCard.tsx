@@ -1,6 +1,6 @@
 import { Avatar, Button, Image, Rating, Text, Tooltip } from "@mantine/core";
 import { Clock, LibraryBig, Layers, Tag, Users } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CourseVm } from "../../../../react-query/course/course.types";
 import { formatDuration } from "../../../../utils/format";
 import { cn } from "../../../../utils/cn";
@@ -11,6 +11,7 @@ type CourseCardProps = {
 };
 
 const CourseCard = ({ course, className }: CourseCardProps) => {
+  const navigate = useNavigate();
   const stats = [
     {
       label: formatDuration({
@@ -69,8 +70,6 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
           {/* Title */}
           <Tooltip label={course.title} withArrow position="bottom">
             <Text
-              component={Link}
-              to={`/courses/${course.id}`}
               className="text-[21px] font-semibold leading-snug line-clamp-2 hover:text-primary-600
                 dark:hover:text-primary-400 transition"
             >
@@ -146,7 +145,7 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
             )}
           </div>
           {/* CTA */}
-          <Button component={Link} to={`/courses/${course.id}`} size="sm" variant="outline">
+          <Button onClick={() => navigate(`/courses/${course.id}`)} size="sm" variant="outline">
             Learn More
           </Button>
         </div>
