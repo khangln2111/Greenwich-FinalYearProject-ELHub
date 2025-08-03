@@ -1,6 +1,7 @@
 import { Button, Container, Image, List, Text, ThemeIcon, Title } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import image1 from "../../../assets/homePageImages/HeroImage2.png";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -53,9 +54,11 @@ const Hero = () => {
             </Button>
           </Group> */}
           <div className="grid grid-cols-2 md:grid-cols-[min-content_min-content] gap-md mt-[30px]">
-            <Button size="md">Get started</Button>
+            <Button size="md" component={Link} to="/courses" className="flex-1">
+              Get started
+            </Button>
             <Button variant="default" size="md">
-              Source code
+              Help
             </Button>
           </div>
         </div>

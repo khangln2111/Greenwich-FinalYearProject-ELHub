@@ -1,12 +1,12 @@
-import { Flex, SimpleGrid } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { Search } from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader";
-import { useGetCourses } from "../../../react-query/course/courseHooks";
-import CourseCard from "../../home/_c/PopularCourses/CourseCard";
-import CoursePagination from "./CoursePagination";
 import { useSearchParamState } from "../../../hooks/useSearchParamState";
 import { decodeOrderOption } from "../../../http-client/api.types";
 import { CourseOrderableFields } from "../../../react-query/course/course.types";
+import { useGetCourses } from "../../../react-query/course/courseHooks";
+import CourseCard from "../../home/_c/PopularCourses/CourseCard";
+import CoursePagination from "./CoursePagination";
 
 const CourseGrid = () => {
   const [categoryId] = useSearchParamState("categoryId");
@@ -48,7 +48,7 @@ const CourseGrid = () => {
 
   return (
     <div className="@container">
-      <div className="grid grid-cols-1 @md:grid-cols-2 @xl:grid-cols-3 gap-md my-[25px]">
+      <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-md my-[25px]">
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}

@@ -78,7 +78,12 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
           </Tooltip>
           {/* Instructor */}
           <div className="flex items-center gap-2 mt-1">
-            <Avatar size="sm" src={course.instructorAvatarUrl} />
+            <Avatar
+              size="sm"
+              src={course.instructorAvatarUrl}
+              name={course.instructorName}
+              color="initials"
+            />
             <Text className="text-sm text-gray-600 dark:text-gray-400 truncate">
               by <span className="font-medium">{course.instructorName}</span>
             </Text>

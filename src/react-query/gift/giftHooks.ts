@@ -67,6 +67,7 @@ export const useRedeemGift = () => {
   return useMutation({
     mutationFn: (giftId: string) => redeemGift(giftId),
     onSuccess: () => {
+      showSuccessToast("Gift Redeemed", "The gift has been redeemed successfully!");
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts.queryKey });
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
       queryClient.invalidateQueries({ queryKey: keyFac.enrollments.getEnrollmentsSelf._def });

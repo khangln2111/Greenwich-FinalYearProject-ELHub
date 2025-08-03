@@ -145,6 +145,7 @@ const RegisterForm = () => {
           mt="xl"
           variant="gradient"
           type="submit"
+          radius="2xl"
           gradient={{ from: "red", to: "pink", deg: 90 }}
           rightSection={<IconRegistered />}
           loading={registerMutation.isPending}

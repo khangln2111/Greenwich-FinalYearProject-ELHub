@@ -93,6 +93,7 @@ const LoginForm = () => {
           gradient={{ from: "red", to: "pink", deg: 90 }}
           rightSection={<IconLogin2 />}
           loading={isLoginPending}
+          radius="2xl"
         >
           Sign in
         </Button>
@@ -105,6 +106,7 @@ const LoginForm = () => {
         leftSection={<GoogleIcon />}
         onClick={() => login()}
         loading={isLoginWithGooglePending}
+        radius="2xl"
       >
         Continue with Google
       </Button>

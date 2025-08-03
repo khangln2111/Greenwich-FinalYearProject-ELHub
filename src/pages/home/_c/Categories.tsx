@@ -2,6 +2,7 @@ import { Badge, Box, Card, Container, Image, Stack, Text, Title, Tooltip } from 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useGetCategories } from "../../../react-query/category/categoryHooks";
 import CenterLoader from "../../../components/CenterLoader";
+import { Link } from "react-router-dom";
 
 const Categories = () => {
   const { data, isPending, error } = useGetCategories();
@@ -58,6 +59,8 @@ const Categories = () => {
               radius="md"
               withBorder
               className="h-full overflow-hidden border border-gray-2 dark:border-dark-5"
+              component={Link}
+              to={`/courses?categoryId=${category.id}`}
             >
               <Card.Section className="relative aspect-video">
                 <Image

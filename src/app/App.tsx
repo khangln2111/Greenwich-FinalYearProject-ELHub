@@ -13,6 +13,7 @@ import "../styles/globals.css";
 import theme from "../styles/theme";
 import IdentityProvider from "./providers/IdentityProvider";
 import router from "./routes";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -31,7 +32,7 @@ const App = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       <QueryClientProvider client={queryClient}>
-        {/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}
+        <ReactQueryDevtools buttonPosition="bottom-left" />
         <Notifications />
         <IdentityProvider>
           <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">

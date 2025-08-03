@@ -25,6 +25,7 @@ import {
   useGetInstructorById,
 } from "../../react-query/instructor/instructorHooks";
 import CourseCard from "../home/_c/PopularCourses/CourseCard";
+import avatarPlaceholder from "../../assets/placeholder/profile-avatar-placeholder.svg";
 
 export default function InstructorDetailPage() {
   const { instructorId } = useParams<{ instructorId: string }>();
@@ -47,10 +48,11 @@ export default function InstructorDetailPage() {
           className="flex flex-col items-center justify-center gap-1 text-center md:pb-13 px-4"
         >
           <Avatar
-            src={instructor.avatarUrl}
+            src={instructor.avatarUrl || avatarPlaceholder}
             size={150}
             radius={999}
             className="outline-4 outline-white shadow-lg mb-4"
+            name={instructor.name}
           />
           <p className="text-xs sm:text-sm uppercase tracking-widest">Instructor</p>
           <h1 className="text-2xl sm:text-3xl font-bold">{instructor.name}</h1>
