@@ -55,14 +55,6 @@ const PopularCourses = () => {
         ))}
       </SimpleGrid>
 
-      {/* <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
-        <TestCard />
-        <TestCard />
-        <TestCard />
-        <TestCard />
-        <TestCard />
-        <TestCard />
-      </SimpleGrid> */}
       {/* beautiful button to view all courses */}
       <Button
         variant="gradient"

@@ -55,7 +55,7 @@ const TestSortList = ({
                           <Center className="cursor-grab" {...draggableProvided.dragHandleProps}>
                             <IconGripVertical size={18} />
                           </Center>
-                          <ActionIcon variant="light" color="red" onClick={() => onRemove(index)}>
+                          <ActionIcon variant="subtle" color="red" onClick={() => onRemove(index)}>
                             <IconTrash size={18} />
                           </ActionIcon>
                         </div>

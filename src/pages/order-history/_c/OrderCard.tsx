@@ -31,7 +31,7 @@ export function OrderCard({ order }: Props) {
     <div className="bg-body rounded-lg mb-6">
       <div
         className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-dark-4 text-sm
-          text-gray-600 dark:text-gray-300 gap-2 flex-wrap"
+          text-gray-600 dark:text-gray-100 gap-2 flex-wrap"
       >
         <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
           <span className="font-bold text-sm md:text-md uppercase">#{order.id}</span>
@@ -40,7 +40,7 @@ export function OrderCard({ order }: Props) {
             Paid via: <span className="capitalize">{order.paymentMethodType ?? "None"}</span>
           </span>
           <span className="text-gray-400 visible-from-md">|</span>
-          <span className="text-gray-600 dark:text-gray-300 font-semibold text-md">
+          <span className="text-gray-600 dark:text-gray-100 font-semibold text-md">
             {formatDate({ input: order.createdAt, formatType: "longMonthWithTime" })}
           </span>
         </div>

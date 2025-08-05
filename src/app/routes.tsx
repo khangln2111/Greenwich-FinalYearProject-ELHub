@@ -1,21 +1,22 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
+import { RouteObject, createBrowserRouter } from "react-router-dom";
 import AdminLayout from "../layout/admin/AdminLayout";
 import InstructorLayout from "../layout/instructor/InstructorLayout";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import UserLayout from "../layout/user/UserLayout";
+import AdminAnalyticsPage from "../pages/(admin)/analytics/AdminAnalyticsPage";
 import AdminCategoriesPage from "../pages/(admin)/categories/AdminCategoriesPage";
 import AdminCourseDetailPage from "../pages/(admin)/course-detail/AdminCourseDetailPage";
 import AdminCoursesPage from "../pages/(admin)/courses/AdminCoursesPage";
 import AdminPendingCoursesPage from "../pages/(admin)/courses/AdminPendingCoursesPage";
-import AdminInstructorApprovalPage from "../pages/(admin)/instructors/AdminInstructorPage";
+import AdminInstructorApprovalPage from "../pages/(admin)/instructors/AdminInstructorApprovalPage";
 import AdminUsersPage from "../pages/(admin)/users/AdminUsersPage";
 import ForgotPasswordPage from "../pages/(auth)/forgot-password/ForgotPasswordPage";
 import LoginPage from "../pages/(auth)/login/LoginPage";
 import RegisterPage from "../pages/(auth)/register/RegisterPage";
 import VerifyEmailPage from "../pages/(auth)/verify-email/VerifyEmailPage";
+import InstructorAnalyticsPage from "../pages/(instructor)/analytics/InstructorAnalyticsPage";
 import InstructorCoursesPage from "../pages/(instructor)/courses/InstructorCoursesPage";
 import InstructorEditCoursePage from "../pages/(instructor)/edit-course/InstructorEditCoursePage";
-import InstructorAnalyticsPage from "../pages/(instructor)/analytics/InstructorAnalyticsPage";
 import InstructorProfilePage from "../pages/(instructor)/profile/InstructorProfilePage";
 import BecomeInstructorPage from "../pages/become-instructor/BecomeInstructorPage";
 import CartPage from "../pages/cart/CartPage";
@@ -27,13 +28,12 @@ import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
 import ErrorPage from "../pages/error/ErrorPage";
 import GiftsPage from "../pages/gift/GiftsPage";
 import HomePage from "../pages/home/HomePage";
+import InstructorDetailPage from "../pages/instructor-detail/InstructorDetailPage";
 import InventoryPage from "../pages/inventory/InventoryPage";
 import LearningPage from "../pages/learning/LearningPage";
 import MyAccountPage from "../pages/my-account/MyAccountPage";
 import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
 import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
-import InstructorDetailPage from "../pages/instructor-detail/InstructorDetailPage";
-import AdminAnalyticsPage from "../pages/(admin)/analytics/AdminAnalyticsPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
