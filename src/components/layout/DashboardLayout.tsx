@@ -25,7 +25,7 @@ const DashboardLayout = ({
 
   return (
     <div
-      className="min-h-dvh flex bg-body text-gray-800 dark:text-white"
+      className="min-h-dvh bg-body text-gray-800 dark:text-white"
       style={
         {
           "--sidebar-width": rem(sidebarWidth),
@@ -41,10 +41,7 @@ const DashboardLayout = ({
       </aside>
 
       {/* Main Content */}
-      <div
-        className="flex flex-col flex-1 min-w-0 h-full transition-all lg:duration-300 bg-body text-gray-900
-          dark:text-white lg:pl-(--sidebar-width)"
-      >
+      <div className="h-full transition-all lg:duration-300 bg-body text-gray-900 dark:text-white lg:pl-(--sidebar-width)">
         {/* Drawer Sidebar (mobile) */}
         <Drawer
           opened={mobileSidebarOpened}
@@ -60,12 +57,12 @@ const DashboardLayout = ({
           hiddenFrom="lg"
           zIndex={1000000}
         >
-          <aside className="h-full w-full">{sidebar}</aside>
+          <aside className="h-full">{sidebar}</aside>
         </Drawer>
 
         {header}
 
-        <main className="flex flex-col flex-1 min-w-0">
+        <main>
           <Outlet />
         </main>
       </div>

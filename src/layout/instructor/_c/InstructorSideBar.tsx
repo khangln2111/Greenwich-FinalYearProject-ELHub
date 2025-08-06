@@ -70,9 +70,12 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
         fw={900}
         variant="gradient"
         gradient={{ from: "blue", to: "cyan", deg: 90 }}
-        className={cn("px-4", {
-          hidden: collapsedToIcon,
-        })}
+        className={cn(
+          "px-4 starting:opacity-0 starting:-translate-x-full transition-all duration-300",
+          {
+            hidden: collapsedToIcon,
+          },
+        )}
       >
         Instructor dashboard
       </Text>
