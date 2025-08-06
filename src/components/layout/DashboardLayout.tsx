@@ -25,26 +25,27 @@ const DashboardLayout = ({
 
   return (
     <div
-      className="min-h-dvh flex relative bg-body text-gray-800 dark:text-white"
+      className="min-h-dvh flex bg-body text-gray-800 dark:text-white"
       style={
         {
-          "--sidebar-width": `${rem(sidebarWidth)}`,
+          "--sidebar-width": rem(sidebarWidth),
         } as React.CSSProperties
       }
     >
-      {/* Desktop Sidebar */}
+      {/* Fixed Sidebar (desktop) */}
       <aside
         className="fixed top-0 left-0 h-full bg-neutral-50 dark:bg-neutral-800 transition-all duration-300 border-r
-          border-gray-200 dark:border-dark-5 w-[var(--sidebar-width)] visible-from-lg"
+          border-gray-200 dark:border-dark-5 w-(--sidebar-width) z-50 hidden lg:block"
       >
         {sidebar}
       </aside>
 
-      {/* Main Content Wrapper */}
+      {/* Main Content */}
       <div
         className="flex flex-col flex-1 min-w-0 h-full transition-all lg:duration-300 bg-body text-gray-900
-          dark:text-white lg:ml-[calc(var(--sidebar-width)+1px)]"
+          dark:text-white lg:pl-(--sidebar-width)"
       >
+        {/* Drawer Sidebar (mobile) */}
         <Drawer
           opened={mobileSidebarOpened}
           onClose={closeMobileSidebar}
@@ -59,9 +60,7 @@ const DashboardLayout = ({
           hiddenFrom="lg"
           zIndex={1000000}
         >
-          <aside className="h-full transition-all duration-300 ease-in-out flex flex-col w-full">
-            {sidebar}
-          </aside>
+          <aside className="h-full w-full">{sidebar}</aside>
         </Drawer>
 
         {header}

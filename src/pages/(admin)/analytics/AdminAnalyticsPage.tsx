@@ -163,7 +163,7 @@ const AdminAnalyticsPage = () => {
   } = mockAnalytics;
 
   return (
-    <div className="flex-1 p-6 xl:p-8">
+    <div className="flex-1 p-6 xl:p-8 bg-gray-100 dark:bg-dark-5">
       <Title order={2} mb="md">
         Admin Dashboard
       </Title>
@@ -186,6 +186,9 @@ const AdminAnalyticsPage = () => {
           </Text>
           <LineChart
             h={250}
+            lineProps={{
+              isAnimationActive: true,
+            }}
             data={revenueByMonth}
             dataKey="month"
             series={[{ name: "revenue", color: "blue.6" }]}
@@ -201,6 +204,9 @@ const AdminAnalyticsPage = () => {
           <LineChart
             h={250}
             data={userByMonth}
+            lineProps={{
+              isAnimationActive: true,
+            }}
             dataKey="month"
             series={[{ name: "users", color: "green.6" }]}
             curveType="monotone"
@@ -216,6 +222,9 @@ const AdminAnalyticsPage = () => {
           </Text>
           <LineChart
             h={250}
+            lineProps={{
+              isAnimationActive: true,
+            }}
             data={ordersByMonth}
             dataKey="month"
             series={[{ name: "orders", color: "orange.6" }]}
@@ -230,6 +239,9 @@ const AdminAnalyticsPage = () => {
           <LineChart
             h={250}
             data={ratingByMonth}
+            lineProps={{
+              isAnimationActive: true,
+            }}
             dataKey="month"
             series={[{ name: "rating", color: "yellow.6" }]}
             curveType="monotone"
@@ -243,14 +255,30 @@ const AdminAnalyticsPage = () => {
           <Text size="lg" fw={600} mb="md">
             Enrollment Success Rate
           </Text>
-          <PieChart data={enrollmentSuccessRate} withLabels />
+          <PieChart
+            data={enrollmentSuccessRate}
+            withLabels
+            pieProps={{
+              isAnimationActive: true,
+            }}
+          />
         </Card>
 
         <Card withBorder radius="xl" p="lg" shadow="sm">
           <Text size="lg" fw={600} mb="md">
             Age Distribution
           </Text>
-          <RadialBarChart h={260} data={ageDistribution} dataKey="value" withLabels />
+          <RadialBarChart
+            h={260}
+            data={ageDistribution}
+            dataKey="value"
+            withLabels
+            radialBarProps={{
+              isAnimationActive: true,
+
+              dataKey: "value",
+            }}
+          />
         </Card>
       </SimpleGrid>
 
@@ -260,14 +288,14 @@ const AdminAnalyticsPage = () => {
           <Text size="lg" fw={600} mb="md">
             User Role Distribution
           </Text>
-          <DonutChart data={userRoles} withLabels />
+          <DonutChart data={userRoles} withLabels pieProps={{ isAnimationActive: true }} />
         </Card>
 
         <Card withBorder radius="xl" p="lg" shadow="sm">
           <Text size="lg" fw={600} mb="md">
             Revenue by Type
           </Text>
-          <PieChart data={revenueByType} withLabels />
+          <PieChart data={revenueByType} withLabels pieProps={{ isAnimationActive: true }} />
         </Card>
 
         <Card withBorder radius="xl" p="lg" shadow="sm">
@@ -279,6 +307,7 @@ const AdminAnalyticsPage = () => {
             data={usersByCountry}
             dataKey="country"
             series={[{ name: "users", color: "teal.6" }]}
+            barProps={{ isAnimationActive: true }}
           />
         </Card>
       </SimpleGrid>
@@ -294,6 +323,7 @@ const AdminAnalyticsPage = () => {
             data={topCourses}
             dataKey="course"
             series={[{ name: "enrollments", color: "violet.6" }]}
+            barProps={{ isAnimationActive: true }}
           />
         </Card>
 
@@ -306,6 +336,7 @@ const AdminAnalyticsPage = () => {
             data={topInstructors}
             dataKey="name"
             series={[{ name: "students", color: "blue.6" }]}
+            barProps={{ isAnimationActive: true }}
           />
         </Card>
       </SimpleGrid>
@@ -319,6 +350,7 @@ const AdminAnalyticsPage = () => {
           data={instructorRevenue}
           dataKey="name"
           series={[{ name: "revenue", color: "green.6" }]}
+          barProps={{ isAnimationActive: true }}
         />
       </Card>
     </div>
