@@ -15,11 +15,15 @@ import {
 import { useForm } from "@mantine/form";
 import { IconArrowLeft } from "@tabler/icons-react";
 import dayjs from "dayjs";
+import { zodResolver } from "mantine-form-zod-resolver";
 import { useState } from "react";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
-import { z } from "zod";
 import CenterLoader from "../../../components/CenterLoader";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
+import {
+  CourseApprovalFormValues,
+  courseApprovalSchema,
+} from "../../../react-query/course/course.schema";
 import { CourseStatus } from "../../../react-query/course/course.types";
 import { useGetCourseDetail, useModerateCourse } from "../../../react-query/course/courseHooks";
 import { formatDuration } from "../../../utils/format";
@@ -27,13 +31,6 @@ import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
 import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";
-import { zodResolver } from "mantine-form-zod-resolver";
-
-const courseApprovalSchema = z.object({
-  note: z.string().min(5, "Note must be at least 5 characters long"),
-});
-
-type CourseApprovalFormValues = z.infer<typeof courseApprovalSchema>;
 
 const getStatusBadge = (status: CourseStatus) => {
   switch (status) {

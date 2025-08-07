@@ -2,12 +2,15 @@
 import { Button, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FileType, ScrollText } from "lucide-react";
-import { z } from "zod";
+import { zodResolver } from "mantine-form-zod-resolver";
 import CusModal from "../../../../../components/CusModal";
+import {
+  UpdateSectionFormValues,
+  editSectionFormSchema,
+} from "../../../../../react-query/section/section.schema";
 import { SectionVm, UpdateSectionCommand } from "../../../../../react-query/section/section.types";
 import { useUpdateSection } from "../../../../../react-query/section/sectionHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
-import { zodResolver } from "mantine-form-zod-resolver";
 
 interface EditSectionalModalProps {
   opened: boolean;
@@ -15,19 +18,11 @@ interface EditSectionalModalProps {
   section: SectionVm;
 }
 
-export const EditSectionFormSchema = z.object({
-  id: z.string().min(1, "Section ID is required"),
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-});
-
-export type UpdateSectionFormValues = z.infer<typeof EditSectionFormSchema>;
-
 export const UpdateSectionModal = ({ opened, onClose, section }: EditSectionalModalProps) => {
   const form = useForm<UpdateSectionFormValues>({
     mode: "uncontrolled",
     initialValues: section,
-    validate: zodResolver(EditSectionFormSchema),
+    validate: zodResolver(editSectionFormSchema),
   });
 
   const updateSectionMutation = useUpdateSection();

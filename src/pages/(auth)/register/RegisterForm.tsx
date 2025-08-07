@@ -7,33 +7,7 @@ import { RegisterCommand } from "../../../react-query/auth/identity.types";
 import { useRegister } from "../../../react-query/auth/identityHooks";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { formSubmitWithFocus } from "../../../utils/form";
-
-const registerSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "Please enter at least 2 characters")
-      .max(50, "That’s too long – max 50 characters allowed"),
-    lastName: z
-      .string()
-      .min(2, "Please enter at least 2 characters")
-      .max(50, "That’s too long – max 50 characters allowed"),
-    email: z.string().min(1, { message: "Please enter your email" }).email("Invalid email address"),
-    password: z
-      .string()
-      .min(8, "Password must have at least 8 characters")
-      .regex(/[0-9]/, "Include at least one number in your password")
-      .regex(/[a-z]/, "Add at least one lowercase letter")
-      .regex(/[A-Z]/, "Add at least one uppercase letter")
-      .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Use at least one special symbol like !@#$"),
-    confirmPassword: z.string(),
-  })
-  .refine((values) => values.password === values.confirmPassword, {
-    message: "Confirm passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-type RegisterFormValues = z.infer<typeof registerSchema>;
+import { RegisterFormValues, registerSchema } from "../../../react-query/auth/identity.schema";
 
 function getPasswordRequirements(
   schema: z.ZodObject<any>,

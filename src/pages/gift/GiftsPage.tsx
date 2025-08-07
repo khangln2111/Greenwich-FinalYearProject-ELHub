@@ -11,7 +11,7 @@ import {
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
 import { SentGiftItemCard } from "./_c/SentGiftItemCard";
 import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
-import { ChangeReceiverModal } from "./_c/ChangeReceiverModal";
+import { ChangeGiftReceiverModal } from "./_c/ChangeGiftReceiverModal";
 import { modals } from "@mantine/modals";
 import { Link } from "react-router-dom";
 
@@ -167,7 +167,7 @@ export default function GiftsPage() {
       {activeTab === "sent" ? renderSent() : renderReceived()}
 
       <RedeemGiftModal open={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
-      <ChangeReceiverModal
+      <ChangeGiftReceiverModal
         key={selectedGift?.id}
         opened={changeModalOpen}
         onClose={() => setChangeModalOpen(false)}

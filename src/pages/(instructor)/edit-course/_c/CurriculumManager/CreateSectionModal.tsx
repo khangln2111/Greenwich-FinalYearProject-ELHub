@@ -2,12 +2,15 @@
 import { Button, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FileType, ScrollText } from "lucide-react";
-import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
 import { CreateSectionCommand } from "../../../../../react-query/section/section.types";
 import { useCreateSection } from "../../../../../react-query/section/sectionHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import { zodResolver } from "mantine-form-zod-resolver";
+import {
+  CreateSectionFormValues,
+  createSectionFormSchema,
+} from "../../../../../react-query/section/section.schema";
 
 interface CreateSectionModalProps {
   opened: boolean;
@@ -15,19 +18,10 @@ interface CreateSectionModalProps {
   courseId: string;
 }
 
-export const CreateSectionFormSchema = z.object({
-  title: z.string({ message: "Title is required" }).min(1, "Title must be at least 1 character"),
-  description: z
-    .string({ message: "Description is required" })
-    .min(1, "Description must be at least 1 character"),
-});
-
-export type CreateSectionFormValues = z.infer<typeof CreateSectionFormSchema>;
-
 export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionModalProps) => {
   const form = useForm<CreateSectionFormValues>({
     mode: "uncontrolled",
-    validate: zodResolver(CreateSectionFormSchema),
+    validate: zodResolver(createSectionFormSchema),
   });
 
   const createSectionMutation = useCreateSection();

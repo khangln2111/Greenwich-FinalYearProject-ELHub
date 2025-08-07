@@ -1,35 +1,20 @@
 import { Button, Switch, Text, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { EyeIcon, EyeOffIcon, FileText, ScrollText } from "lucide-react";
-import { z } from "zod";
+import { zodResolver } from "mantine-form-zod-resolver";
 import CusModal from "../../../../../components/CusModal";
 import FileUploadField from "../../../../../components/media/FileUploadField";
 import {
   ALLOWED_VIDEO_TYPES,
   MAX_VIDEO_SIZE_MB,
 } from "../../../../../constants/ValidationConstants";
+import {
+  CreateLectureFormValues,
+  createLectureSchema,
+} from "../../../../../react-query/lecture/lecture.schema";
 import { CreateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
 import { useCreateLecture } from "../../../../../react-query/lecture/lectureHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
-import { zodResolver } from "mantine-form-zod-resolver";
-
-const CreateLectureSchema = z.object({
-  title: z.string({ message: "Title is required" }).min(1, "Title must be at least 1 character"),
-  description: z
-    .string({ message: "Description is required" })
-    .min(1, "Description must be at least 1 character"),
-  isPreview: z.boolean().default(false),
-  video: z
-    .instanceof(File, { message: "Video is required" })
-    .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
-      message: "Only MP4, WebM, or OGG videos are allowed",
-    })
-    .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
-      message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
-    }),
-});
-
-type CreateLectureFormValues = z.infer<typeof CreateLectureSchema>;
 
 interface CreateLectureModalProps {
   opened: boolean;
@@ -41,7 +26,7 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
   const form = useForm<CreateLectureFormValues>({
     mode: "uncontrolled",
 
-    validate: zodResolver(CreateLectureSchema),
+    validate: zodResolver(createLectureSchema),
   });
 
   const createLectureMutation = useCreateLecture();

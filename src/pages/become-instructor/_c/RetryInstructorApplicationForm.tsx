@@ -1,9 +1,12 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { z } from "zod";
 import FileUploadField from "../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
+import {
+  RetryInstructorApplicationFormValues,
+  retryInstructorApplicationSchema,
+} from "../../../react-query/instructorApplication/instructorApplication.schema";
 import {
   InstructorApplicationVm,
   RetryInstructorApplicationCommand,
@@ -11,22 +14,15 @@ import {
 import { useRetryInstructorApplication } from "../../../react-query/instructorApplication/instructorApplicationHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
-const retryInstructorApplicationSchema = z.object({
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  professionalTitle: z.string().optional(),
-  about: z.string().optional(),
-  avatar: z.instanceof(File).optional(),
-});
-
-type Props = {
+type RetryInstructorApplicationFormProps = {
   application: InstructorApplicationVm;
   onCancel?: () => void;
 };
 
-type RetryInstructorApplicationFormValues = z.infer<typeof retryInstructorApplicationSchema>;
-
-const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
+const RetryInstructorApplicationForm = ({
+  application,
+  onCancel,
+}: RetryInstructorApplicationFormProps) => {
   const form = useForm<RetryInstructorApplicationFormValues>({
     initialValues: {
       firstName: application.firstName ?? "",

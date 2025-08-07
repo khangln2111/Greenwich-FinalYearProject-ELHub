@@ -18,7 +18,6 @@ import { IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { ArrowUpAzIcon, FileQuestion } from "lucide-react";
 import { useState } from "react";
-import { z } from "zod";
 import CenterLoader from "../../../components/CenterLoader";
 import CusModal from "../../../components/CusModal";
 import { useSearchParamState } from "../../../hooks/useSearchParamState";
@@ -36,6 +35,10 @@ import {
 import { cn } from "../../../utils/cn";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { formSubmitWithFocus } from "../../../utils/form";
+import {
+  ReviewCourseFormValues,
+  reviewCourseSchema,
+} from "../../../react-query/course/course.schema";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -47,12 +50,6 @@ const getStatusColor = (status: InstructorApplicationStatus) => {
       return "red";
   }
 };
-
-const reviewCourseSchema = z.object({
-  note: z.string().min(1, { message: "Note is required" }),
-});
-
-type ReviewCourseFormValues = z.infer<typeof reviewCourseSchema>;
 
 const statuses: ("All" | InstructorApplicationStatus)[] = [
   "All",

@@ -1,7 +1,7 @@
 import { useAppStore } from "../../zustand/store";
 import AdminSidebar from "./_c/AdminSidebar";
 import AdminHeader from "./_c/AdminHeader";
-import DashboardLayout from "../../components/layout/DashboardLayout";
+import SidebarLayout from "../../components/layout/SidebarLayout";
 import { useMediaQuery } from "@mantine/hooks";
 import { useMantineTheme } from "@mantine/core";
 
@@ -13,7 +13,7 @@ const AdminLayout = () => {
   const isTabletOrSmaller = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   return (
-    <DashboardLayout
+    <SidebarLayout
       sidebar={<AdminSidebar collapsedToIcon={isTabletOrSmaller ? false : sidebarCollapsed} />}
       header={<AdminHeader />}
       sidebarCollapsed={sidebarCollapsed}

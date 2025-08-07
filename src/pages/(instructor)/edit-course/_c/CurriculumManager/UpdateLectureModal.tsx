@@ -1,41 +1,26 @@
 import { Button, Switch, Text, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { EyeIcon, EyeOffIcon, FileText, ScrollText } from "lucide-react";
-import { z } from "zod";
+import { zodResolver } from "mantine-form-zod-resolver";
 import CusModal from "../../../../../components/CusModal";
 import FileUploadField from "../../../../../components/media/FileUploadField";
 import {
   ALLOWED_VIDEO_TYPES,
   MAX_VIDEO_SIZE_MB,
 } from "../../../../../constants/ValidationConstants";
+import {
+  UpdateLectureFormValues,
+  UpdateLectureSchema,
+} from "../../../../../react-query/lecture/lecture.schema";
 import { LectureVm, UpdateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
 import { useUpdateLecture } from "../../../../../react-query/lecture/lectureHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
-import { zodResolver } from "mantine-form-zod-resolver";
 
 interface UpdateLectureModalProps {
   opened: boolean;
   onClose: () => void;
   lecture: LectureVm;
 }
-
-const UpdateLectureSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  video: z
-    .instanceof(File, { message: "Promotional video is required" })
-    .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
-      message: "Only MP4, WebM, or OGG videos are allowed",
-    })
-    .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
-      message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
-    })
-    .or(z.string()),
-  isPreview: z.boolean(),
-});
-
-type UpdateLectureFormValues = z.infer<typeof UpdateLectureSchema>;
 
 export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureModalProps) => {
   const initialValues = {

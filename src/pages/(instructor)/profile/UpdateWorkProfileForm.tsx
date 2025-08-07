@@ -1,43 +1,25 @@
 import { Avatar, Button, FileButton, Group, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCamera } from "@tabler/icons-react";
-import { z } from "zod";
-import { MAX_IMAGE_SIZE_MB, ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
+import { zodResolver } from "mantine-form-zod-resolver";
+import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
+import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
+import {
+  UpdateWorkProfileFormType,
+  updateWorkProfileSchema,
+} from "../../../react-query/auth/identity.schema";
 import {
   UpdateWorkProfileSelfCommand,
   WorkProfileVm,
 } from "../../../react-query/auth/identity.types";
-import { zodResolver } from "mantine-form-zod-resolver";
 import { useUpdateWorkProfileSelf } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
-import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
-const UpdateWorkProfileSchema = z.object({
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  professionalTitle: z.string().optional(),
-  about: z.string().max(2000, "About must be under 2000 characters").optional(),
-  favoriteQuote: z.string().optional(),
-  favoriteQuoteCite: z.string().optional(),
-  avatar: z
-    .instanceof(File)
-    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-      message: "Only JPG, JPEG, PNG, WEBP images are allowed",
-    })
-    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
-      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
-    })
-    .optional()
-    .or(z.string()),
-});
-
-export type UpdateWorkProfileFormType = z.infer<typeof UpdateWorkProfileSchema>;
-
-type Props = {
+type UpdateWorkProfileFormProps = {
   profile: WorkProfileVm;
 };
 
-export default function UpdateWorkProfileForm({ profile }: Props) {
+export default function UpdateWorkProfileForm({ profile }: UpdateWorkProfileFormProps) {
   const updateWorkProfileMutation = useUpdateWorkProfileSelf();
 
   const form = useForm<UpdateWorkProfileFormType>({
@@ -51,7 +33,7 @@ export default function UpdateWorkProfileForm({ profile }: Props) {
       favoriteQuoteCite: profile.favoriteQuoteCite ?? "",
       avatar: profile.avatarUrl ?? "",
     },
-    validate: zodResolver(UpdateWorkProfileSchema),
+    validate: zodResolver(updateWorkProfileSchema),
   });
 
   const avatar = form.getValues().avatar;

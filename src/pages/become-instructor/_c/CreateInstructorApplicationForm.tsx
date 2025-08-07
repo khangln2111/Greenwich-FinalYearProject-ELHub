@@ -1,28 +1,21 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { z } from "zod";
 import { zodResolver } from "mantine-form-zod-resolver";
 import FileUploadField from "../../../components/media/FileUploadField";
+import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
+import {
+  CreateInstructorApplicationFormValues,
+  createInstructorApplicationSchema,
+} from "../../../react-query/instructorApplication/instructorApplication.schema";
 import { CreateInstructorApplicationCommand } from "../../../react-query/instructorApplication/instructorApplication.types";
 import { useCreateInstructorApplication } from "../../../react-query/instructorApplication/instructorApplicationHooks";
-import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
 import { formSubmitWithFocus } from "../../../utils/form";
 
-type Props = {
+type CreateInstructorApplicationFormProps = {
   onCancel?: () => void;
 };
 
-const createInstructorApplicationSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  professionalTitle: z.string().min(1, "Professional title is required"),
-  about: z.string().min(1, "About section is required"),
-  avatar: z.instanceof(File, { message: "Avatar is required" }),
-});
-
-type CreateInstructorApplicationFormValues = z.infer<typeof createInstructorApplicationSchema>;
-
-const CreateInstructorApplicationForm = ({ onCancel }: Props) => {
+const CreateInstructorApplicationForm = ({ onCancel }: CreateInstructorApplicationFormProps) => {
   const form = useForm<CreateInstructorApplicationFormValues>({
     mode: "uncontrolled",
     validate: zodResolver(createInstructorApplicationSchema),

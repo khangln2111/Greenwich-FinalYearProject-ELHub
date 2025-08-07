@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 const DASHBOARD_SIDEBAR_WIDTH = "256px";
 const DASHBOARD_SIDEBAR_WIDTH_COLLAPSED = "70px";
 
-type DashboardLayoutProps = {
+type SidebarLayoutProps = {
   sidebar: React.ReactNode;
   header: React.ReactNode;
   sidebarCollapsed: boolean;
@@ -12,13 +12,13 @@ type DashboardLayoutProps = {
   closeMobileSidebar: () => void;
 };
 
-const DashboardLayout = ({
+const SidebarLayout = ({
   sidebar,
   header,
   sidebarCollapsed,
   mobileSidebarOpened,
   closeMobileSidebar,
-}: DashboardLayoutProps) => {
+}: SidebarLayoutProps) => {
   const sidebarWidth = sidebarCollapsed
     ? DASHBOARD_SIDEBAR_WIDTH_COLLAPSED
     : DASHBOARD_SIDEBAR_WIDTH;
@@ -70,4 +70,4 @@ const DashboardLayout = ({
   );
 };
 
-export default DashboardLayout;
+export default SidebarLayout;

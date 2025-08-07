@@ -1,11 +1,15 @@
 import { Avatar, Button, Progress, Rating, Text, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Play, Star } from "lucide-react";
+import { zodResolver } from "mantine-form-zod-resolver";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { z } from "zod";
 import CusModal from "../../../components/CusModal";
 import { EnrollmentVm } from "../../../react-query/enrollment/enrollment.types";
+import {
+  CreateReviewFormSchema,
+  CreateReviewFormValues,
+} from "../../../react-query/review/review.schema";
 import { CreateReviewCommand, UpdateReviewCommand } from "../../../react-query/review/review.types";
 import {
   useCreateReview,
@@ -13,21 +17,10 @@ import {
   useUpdateReview,
 } from "../../../react-query/review/reviewHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
-import { zodResolver } from "mantine-form-zod-resolver";
 
 interface EnrolledCourseCardProps {
   enrollment: EnrollmentVm;
 }
-
-export const CreateReviewFormSchema = z.object({
-  rating: z.number().min(1, "Rating must be at least 1").max(5, "Rating cannot exceed 5"),
-  content: z
-    .string()
-    .min(1, "Content is required")
-    .max(1000, "Content cannot exceed 1000 characters"),
-});
-
-export type CreateReviewFormValues = z.infer<typeof CreateReviewFormSchema>;
 
 export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardProps) {
   const navigate = useNavigate();

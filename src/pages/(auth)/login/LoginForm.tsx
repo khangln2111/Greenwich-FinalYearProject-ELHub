@@ -2,22 +2,13 @@ import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from
 import { useForm } from "@mantine/form";
 import { useGoogleLogin } from "@react-oauth/google";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
+import { zodResolver } from "mantine-form-zod-resolver";
+import { Link } from "react-router-dom";
 import GoogleIcon from "../../../components/svg-icons/GoogleIcon";
+import { LoginFormValues, loginSchema } from "../../../react-query/auth/identity.schema";
 import { LoginCommand } from "../../../react-query/auth/identity.types";
 import { useLogin, useLoginWithGoogle } from "../../../react-query/auth/identityHooks";
-import { Link } from "react-router-dom";
-import { zodResolver } from "mantine-form-zod-resolver";
-import { z } from "zod";
 import { formSubmitWithFocus } from "../../../utils/form";
-
-// Zod schema for login form validation
-
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Please enter at least 8 characters"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const form = useForm<LoginFormValues>({

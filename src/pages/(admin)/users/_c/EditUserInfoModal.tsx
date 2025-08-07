@@ -2,47 +2,13 @@ import { Avatar, Button, FileButton, Group, Stack, Text, TextInput } from "@mant
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { CalendarIcon, CameraIcon } from "lucide-react";
-import { z } from "zod";
+import { zodResolver } from "mantine-form-zod-resolver";
 import CusModal from "../../../../components/CusModal";
-import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
+import { ALLOWED_IMAGE_TYPES } from "../../../../constants/ValidationConstants";
+import { EditUserFormValues, editUserSchema } from "../../../../react-query/user/user.schema";
 import { UpdateUserCommand, UserVm } from "../../../../react-query/user/user.types";
 import { useUpdateUser } from "../../../../react-query/user/userHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
-import { zodResolver } from "mantine-form-zod-resolver";
-
-const EditUserSchema = z.object({
-  firstName: z.string().optional(),
-
-  lastName: z.string().optional(),
-
-  professionalTitle: z.string().optional(),
-
-  dateOfBirth: z
-    .string()
-    .optional()
-    .refine((val) => !val || !isNaN(new Date(val).getTime()), {
-      message: "Invalid date",
-    })
-    .refine((val) => !val || new Date(val) <= new Date(), {
-      message: "Date of birth cannot be in the future",
-    }),
-
-  avatar: z
-    .union([
-      z
-        .instanceof(File)
-        .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-          message: "Only JPG, JPEG, PNG, WEBP images are allowed",
-        })
-        .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
-          message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
-        }),
-      z.string(),
-    ])
-    .optional(),
-});
-
-type EditUserFormValues = z.infer<typeof EditUserSchema>;
 
 type Props = {
   opened: boolean;
@@ -55,7 +21,7 @@ export default function EditUserInfoModal({ opened, onClose, user }: Props) {
 
   const form = useForm<EditUserFormValues>({
     mode: "uncontrolled",
-    validate: zodResolver(EditUserSchema),
+    validate: zodResolver(editUserSchema),
     initialValues: {
       firstName: user.firstName ?? "",
       lastName: user.lastName ?? "",

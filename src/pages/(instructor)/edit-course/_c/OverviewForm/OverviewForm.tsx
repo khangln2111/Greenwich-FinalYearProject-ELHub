@@ -11,7 +11,7 @@ import {
   MAX_VIDEO_SIZE_MB,
 } from "../../../../../constants/ValidationConstants";
 import {
-  UpdateCourseOverviewFormSchema,
+  updateCourseOverviewSchema,
   UpdateCourseOverviewFormValues,
 } from "../../../../../react-query/course/course.schema";
 import {
@@ -33,21 +33,19 @@ type CourseOverviewFormProps = {
 const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   const updateCourseOverviewMutation = useUpdateCourse();
 
-  const initialValues = {
-    title: courseDetail.title,
-    description: courseDetail.description,
-    learningOutcomes:
-      courseDetail.learningOutcomes?.map((value) => ({ id: randomId(), value })) ?? [],
-    prerequisites: courseDetail.prerequisites?.map((value) => ({ id: randomId(), value })) ?? [],
-    image: courseDetail.imageUrl ?? "",
-    promoVideo: courseDetail.promoVideoUrl ?? "",
-    level: courseDetail.level ?? CourseLevel.Beginner,
-  };
-
   const form = useForm<UpdateCourseOverviewFormValues>({
     mode: "uncontrolled",
-    initialValues: initialValues,
-    validate: zodResolver(UpdateCourseOverviewFormSchema),
+    initialValues: {
+      title: courseDetail.title,
+      description: courseDetail.description,
+      learningOutcomes:
+        courseDetail.learningOutcomes?.map((value) => ({ id: randomId(), value })) ?? [],
+      prerequisites: courseDetail.prerequisites?.map((value) => ({ id: randomId(), value })) ?? [],
+      image: courseDetail.imageUrl ?? "",
+      promoVideo: courseDetail.promoVideoUrl ?? "",
+      level: courseDetail.level ?? CourseLevel.Beginner,
+    },
+    validate: zodResolver(updateCourseOverviewSchema),
   });
 
   const addLearning = () => form.insertListItem("learningOutcomes", { id: randomId(), value: "" });

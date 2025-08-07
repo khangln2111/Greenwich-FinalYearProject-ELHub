@@ -1,8 +1,13 @@
 // components/GiftModal.tsx
 import { Button, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useCreateGift } from "../../../react-query/gift/giftHooks";
+import { zodResolver } from "mantine-form-zod-resolver";
+import {
+  CreateGiftSchemaFormValues,
+  createGiftSchema,
+} from "../../../react-query/gift/gift.schema";
 import { CreateGiftCommand } from "../../../react-query/gift/gift.types";
+import { useCreateGift } from "../../../react-query/gift/giftHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 interface GiftingModalProps {
@@ -12,23 +17,24 @@ interface GiftingModalProps {
 }
 
 const GiftingModal = ({ opened, onClose, inventoryItemId }: GiftingModalProps) => {
-  const form = useForm<CreateGiftCommand>({
+  const form = useForm<CreateGiftSchemaFormValues>({
     mode: "uncontrolled",
-    validate: { receiverEmail: (v) => (/^\S+@\S+$/.test(v) ? null : "Invalid email") },
+    validate: zodResolver(createGiftSchema),
   });
 
   const createGiftMutation = useCreateGift();
 
-  const handleSubmit = (values: CreateGiftCommand) => {
-    createGiftMutation.mutate(
-      { receiverEmail: values.receiverEmail, inventoryItemId },
-      {
-        onSuccess: () => {
-          form.reset();
-          onClose();
-        },
+  const handleSubmit = (values: CreateGiftSchemaFormValues) => {
+    const payload: CreateGiftCommand = {
+      receiverEmail: values.receiverEmail.trim(),
+      inventoryItemId,
+    };
+    createGiftMutation.mutate(payload, {
+      onSuccess: () => {
+        form.reset();
+        onClose();
       },
-    );
+    });
   };
 
   return (

@@ -1,26 +1,15 @@
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { z } from "zod";
 import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
 import { useCreateCategory } from "../../../../react-query/category/categoryHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-
-const createCategorySchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  image: z
-    .instanceof(File, { message: "Image is required" })
-    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-      message: "Only PNG, JPG, JPEG, or WEBP images are allowed",
-    })
-    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
-      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
-    }),
-});
-
-type CreateCategoryFormValues = z.infer<typeof createCategorySchema>;
+import {
+  CreateCategoryFormValues,
+  createCategorySchema,
+} from "../../../../react-query/category/category.schema";
 
 interface Props {
   opened: boolean;

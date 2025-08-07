@@ -1,34 +1,22 @@
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { z } from "zod";
+import { zodResolver } from "mantine-form-zod-resolver";
 import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
+import {
+  UpdateCategoryFormValues,
+  updateCategorySchema,
+} from "../../../../react-query/category/category.schema";
 import { CategoryVm, UpdateCategoryCommand } from "../../../../react-query/category/category.types";
 import { useUpdateCategory } from "../../../../react-query/category/categoryHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
-import { zodResolver } from "mantine-form-zod-resolver";
-
-const updateCategorySchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  image: z
-    .instanceof(File, { message: "Image is required" })
-    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-      message: "Only PNG, JPG, JPEG, or WEBP images are allowed",
-    })
-    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
-      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
-    })
-    .or(z.string()),
-});
 
 interface Props {
   opened: boolean;
   onClose: () => void;
   category: CategoryVm | null;
 }
-
-type UpdateCategoryFormValues = z.infer<typeof updateCategorySchema>;
 
 export default function UpdateCategoryModal({ opened, onClose, category }: Props) {
   const form = useForm<UpdateCategoryFormValues>({

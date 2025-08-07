@@ -8,7 +8,43 @@ import {
 } from "../../constants/ValidationConstants";
 import { CourseLevel } from "./course.types";
 
-export const UpdateCourseOverviewFormSchema = z.object({
+// schema for creating a course
+export const createCourseSchema = z.object({
+  title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
+  description: z
+    .string({ message: "Description is required" })
+    .min(10, "Description must be at least 10 characters"),
+  price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
+  discountedPrice: z
+    .number({ message: "Discounted price is required" })
+    .min(0, { message: "Discounted price must be ≥ 0" }),
+  image: z
+    .instanceof(File, { message: "Course image is required" })
+    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
+      message: "Only JPG, PNG, WEBP images are allowed",
+    })
+    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
+      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
+    }),
+  promoVideo: z
+    .instanceof(File, { message: "Promotional video is required" })
+    .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
+      message: "Only MP4, WebM, or OGG videos are allowed",
+    })
+    .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
+      message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
+    }),
+  categoryId: z.string({ message: "Category is required" }).min(1, "Select a category"),
+  level: z.nativeEnum(CourseLevel, {
+    required_error: "Level is required",
+    invalid_type_error: "Invalid level selected",
+  }),
+});
+
+export type CreateCourseFormValues = z.infer<typeof createCourseSchema>;
+
+// Schema for updating course overview
+export const updateCourseOverviewSchema = z.object({
   title: z.string().min(1, "Course title is required"),
   description: z.string().min(1, "Course description is required"),
   learningOutcomes: z.array(
@@ -47,14 +83,18 @@ export const UpdateCourseOverviewFormSchema = z.object({
     .or(z.string()),
 });
 
-export type UpdateCourseOverviewFormValues = z.infer<typeof UpdateCourseOverviewFormSchema>;
+export type UpdateCourseOverviewFormValues = z.infer<typeof updateCourseOverviewSchema>;
 
-export const UpdateCourseOverviewCommandSchema = UpdateCourseOverviewFormSchema.extend({
-  id: z.string(),
-}).transform((data) => ({
-  ...data,
-  learningOutcomes: data.learningOutcomes.map((item) => item.value),
-  prerequisites: data.prerequisites.map((item) => item.value),
-}));
+// Schema for course approval
+export const courseApprovalSchema = z.object({
+  note: z.string().min(5, "Note must be at least 5 characters long"),
+});
 
-export type UpdateCourseOverviewCommand = z.infer<typeof UpdateCourseOverviewCommandSchema>;
+export type CourseApprovalFormValues = z.infer<typeof courseApprovalSchema>;
+
+// schema for course review
+export const reviewCourseSchema = z.object({
+  note: z.string().min(1, { message: "Note is required" }),
+});
+
+export type ReviewCourseFormValues = z.infer<typeof reviewCourseSchema>;

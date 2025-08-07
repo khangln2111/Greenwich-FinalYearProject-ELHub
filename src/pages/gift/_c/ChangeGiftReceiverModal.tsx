@@ -1,35 +1,34 @@
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { z } from "zod";
-import CusModal from "../../../components/CusModal";
-import { formSubmitWithFocus } from "../../../utils/form";
 import { zodResolver } from "mantine-form-zod-resolver";
+import CusModal from "../../../components/CusModal";
+import {
+  ChangeGiftReceiverFormValues,
+  changeGiftReceiverSchema,
+} from "../../../react-query/gift/gift.schema";
+import { formSubmitWithFocus } from "../../../utils/form";
 
-const schema = z.object({
-  receiverEmail: z.string().email("Invalid email address"),
-});
-
-type ChangeReceiverModalProps = {
+type ChangeGiftReceiverModalProps = {
   opened: boolean;
   onClose: () => void;
   onSubmit: (receiverEmail: string) => void;
-  defaultEmail?: string;
+  defaultEmail: string;
   submitting: boolean;
 };
 
-export function ChangeReceiverModal({
+export function ChangeGiftReceiverModal({
   opened,
   onClose,
   onSubmit,
   defaultEmail,
   submitting,
-}: ChangeReceiverModalProps) {
-  const form = useForm({
+}: ChangeGiftReceiverModalProps) {
+  const form = useForm<ChangeGiftReceiverFormValues>({
     mode: "uncontrolled",
     initialValues: {
       receiverEmail: defaultEmail,
     },
-    validate: zodResolver(schema),
+    validate: zodResolver(changeGiftReceiverSchema),
   });
 
   const handleSubmit = (values: { receiverEmail: string | undefined }) => {

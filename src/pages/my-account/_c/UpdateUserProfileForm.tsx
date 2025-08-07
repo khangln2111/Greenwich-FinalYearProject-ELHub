@@ -3,8 +3,13 @@ import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCamera } from "@tabler/icons-react";
 import { CalendarIcon } from "lucide-react";
-import { z } from "zod";
-import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../constants/ValidationConstants";
+import { zodResolver } from "mantine-form-zod-resolver";
+import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
+import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
+import {
+  UpdateUserProfileFormType,
+  updateUserProfileSchema,
+} from "../../../react-query/auth/identity.schema";
 import {
   CurrentUser,
   Gender,
@@ -12,38 +17,6 @@ import {
 } from "../../../react-query/auth/identity.types";
 import { useUpdateUserProfileSelf } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
-import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
-import { zodResolver } from "mantine-form-zod-resolver";
-
-const UpdateUserProfileSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  gender: z.nativeEnum(Gender),
-  dateOfBirth: z
-    .string()
-    .refine(
-      (val) => {
-        if (!val) return true;
-        const date = new Date(val);
-        return !isNaN(date.getTime()) && date <= new Date();
-      },
-      { message: "Invalid or future date" },
-    )
-    .optional(),
-  avatar: z
-    .instanceof(File, {
-      message: "Profile photo is required",
-    })
-    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
-      message: "Only JPG, JPEG, PNG, WEBP images are allowed",
-    })
-    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
-      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
-    })
-    .or(z.string()),
-});
-
-export type UpdateUserProfileFormType = z.infer<typeof UpdateUserProfileSchema>;
 
 type UpdateUserProfileFormProps = {
   user: CurrentUser;
@@ -61,7 +34,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
       gender: user.gender ?? Gender.Other,
       avatar: user.avatarUrl ?? "",
     },
-    validate: zodResolver(UpdateUserProfileSchema),
+    validate: zodResolver(updateUserProfileSchema),
   });
 
   const handleSubmit = (values: UpdateUserProfileFormType) => {

@@ -1,6 +1,6 @@
 import { useAppStore } from "../../zustand/store";
 import InstructorHeader from "./_c/InstructorHeader";
-import DashboardLayout from "../../components/layout/DashboardLayout";
+import SidebarLayout from "../../components/layout/SidebarLayout";
 import InstructorSidebar from "./_c/InstructorSidebar";
 
 const InstructorLayout = () => {
@@ -9,7 +9,7 @@ const InstructorLayout = () => {
   const closeMobileSidebar = useAppStore.use.closeMobileInstructorSidebar();
 
   return (
-    <DashboardLayout
+    <SidebarLayout
       sidebar={<InstructorSidebar collapsedToIcon={sidebarCollapsed} />}
       header={<InstructorHeader />}
       sidebarCollapsed={sidebarCollapsed}
