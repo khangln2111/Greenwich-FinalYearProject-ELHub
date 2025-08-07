@@ -1,8 +1,9 @@
 import { Button, TextInput } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { z } from "zod";
 import CusModal from "../../../components/CusModal";
 import { formSubmitWithFocus } from "../../../utils/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 
 const schema = z.object({
   receiverEmail: z.string().email("Invalid email address"),

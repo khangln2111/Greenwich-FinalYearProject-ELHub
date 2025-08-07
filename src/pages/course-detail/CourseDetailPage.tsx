@@ -210,7 +210,7 @@ const CourseDetailPage = () => {
           {/* 2nd column */}
           <div
             className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-xl overflow-hidden
-              max-lg:max-w-(--container-lg) w-full"
+              max-lg:max-w-lg w-full"
           >
             <div className="p-6 size-full dark:bg-dark-6 bg-white rounded-[inherit]">
               {/* Price box */}

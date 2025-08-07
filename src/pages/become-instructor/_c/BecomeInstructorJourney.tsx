@@ -60,7 +60,7 @@ const BecomeInstructorJourney = () => {
   const currentTab = tabs[activeTab];
 
   return (
-    <section className="py-16 px-4 max-w-(--container-5xl) mx-auto">
+    <section className="py-16 px-4 max-w-5xl mx-auto">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900 dark:text-gray-100">
         How to <span className="underline decoration-yellow-400">Start</span> Your Journey
       </h2>

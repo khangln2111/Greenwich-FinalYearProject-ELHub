@@ -104,7 +104,7 @@ export default function InstructorDetailPage() {
           <Blockquote
             icon={<IconQuote size={18} />}
             color="blue"
-            className="max-w-(--container-2xl) mx-auto text-xl text-center dark:bg-blue-900/20 dark:border-blue-500"
+            className="max-w-2xl mx-auto text-xl text-center dark:bg-blue-900/20 dark:border-blue-500"
             cite={
               instructor.favoriteQuoteCite ? `- ${instructor.favoriteQuoteCite}` : instructor.name
             }

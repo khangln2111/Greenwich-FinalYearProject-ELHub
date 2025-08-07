@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 // Auth tokens + user info
 export interface AuthResponse {
   accessToken: string;
@@ -9,40 +7,19 @@ export interface AuthResponse {
 }
 
 // Login
-export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Please enter at least 8 characters"),
-});
-
-export type LoginCommand = z.infer<typeof loginSchema>;
+export interface LoginCommand {
+  email: string;
+  password: string;
+}
 
 // Register
-export const registerSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "Please enter at least 2 characters")
-      .max(50, "That’s too long – max 50 characters allowed"),
-    lastName: z
-      .string()
-      .min(2, "Please enter at least 2 characters")
-      .max(50, "That’s too long – max 50 characters allowed"),
-    email: z.string().email("Invalid email address"),
-    password: z
-      .string()
-      .min(8, "Password must have at least 8 characters")
-      .regex(/[0-9]/, "Include at least one number in your password")
-      .regex(/[a-z]/, "Add at least one lowercase letter")
-      .regex(/[A-Z]/, "Add at least one uppercase letter")
-      .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Use at least one special symbol like !@#$"),
-    confirmPassword: z.string(),
-  })
-  .refine((values) => values.password === values.confirmPassword, {
-    message: "Confirm passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-export type RegisterCommand = z.infer<typeof registerSchema>;
+export type RegisterCommand = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 // Google Login
 export interface LoginWithGoogleCommand {
@@ -89,7 +66,7 @@ export interface CurrentUser {
   firstName?: string;
   lastName?: string;
   avatarUrl?: string;
-  dateOfBirth: Date;
+  dateOfBirth: string;
   gender: Gender;
   roles: string[]; // ["Admin", "User"]
 }
@@ -109,7 +86,7 @@ export interface UpdateUserProfileSelfCommand {
   firstName?: string;
   lastName?: string;
   gender?: Gender;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   avatar?: File;
 }
 

@@ -1,12 +1,18 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { z } from "zod";
+import { zodResolver } from "mantine-form-zod-resolver";
 import FileUploadField from "../../../components/media/FileUploadField";
 import { CreateInstructorApplicationCommand } from "../../../react-query/instructorApplication/instructorApplication.types";
 import { useCreateInstructorApplication } from "../../../react-query/instructorApplication/instructorApplicationHooks";
 import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
+import { formSubmitWithFocus } from "../../../utils/form";
 
-const schema = z.object({
+type Props = {
+  onCancel?: () => void;
+};
+
+const createInstructorApplicationSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   professionalTitle: z.string().min(1, "Professional title is required"),
@@ -14,19 +20,25 @@ const schema = z.object({
   avatar: z.instanceof(File, { message: "Avatar is required" }),
 });
 
-type Props = {
-  onCancel?: () => void;
-};
+type CreateInstructorApplicationFormValues = z.infer<typeof createInstructorApplicationSchema>;
 
 const CreateInstructorApplicationForm = ({ onCancel }: Props) => {
-  const form = useForm<CreateInstructorApplicationCommand>({
-    validate: zodResolver(schema),
+  const form = useForm<CreateInstructorApplicationFormValues>({
+    mode: "uncontrolled",
+    validate: zodResolver(createInstructorApplicationSchema),
   });
 
   const { mutate: createApplication, isPending } = useCreateInstructorApplication();
 
-  const handleSubmit = (values: CreateInstructorApplicationCommand) => {
-    createApplication(values, {
+  const handleSubmit = (values: CreateInstructorApplicationFormValues) => {
+    const payload: CreateInstructorApplicationCommand = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      professionalTitle: values.professionalTitle,
+      about: values.about,
+      avatar: values.avatar,
+    };
+    createApplication(payload, {
       onSuccess: () => {
         form.reset();
         if (onCancel) onCancel();
@@ -35,7 +47,7 @@ const CreateInstructorApplicationForm = ({ onCancel }: Props) => {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={formSubmitWithFocus(form, handleSubmit)} noValidate>
       <Stack>
         <Group grow>
           <TextInput

@@ -212,11 +212,7 @@ const InstructorReviewManager = ({
             <p className="text-center text-gray-500">No reviews found.</p>
           ) : (
             reviews.items.map((review) => (
-              <InstructorReviewManagerCard
-                key={review.id}
-                review={review}
-                className="max-w-(--container-3xl)"
-              />
+              <InstructorReviewManagerCard key={review.id} review={review} className="max-w-3xl" />
             ))
           )}
         </div>

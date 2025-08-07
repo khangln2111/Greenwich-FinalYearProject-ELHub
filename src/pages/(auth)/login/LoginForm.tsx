@@ -1,16 +1,26 @@
 import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { useGoogleLogin } from "@react-oauth/google";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 import GoogleIcon from "../../../components/svg-icons/GoogleIcon";
-import { LoginCommand, loginSchema } from "../../../react-query/auth/identity.types";
+import { LoginCommand } from "../../../react-query/auth/identity.types";
 import { useLogin, useLoginWithGoogle } from "../../../react-query/auth/identityHooks";
 import { Link } from "react-router-dom";
+import { zodResolver } from "mantine-form-zod-resolver";
+import { z } from "zod";
+import { formSubmitWithFocus } from "../../../utils/form";
 
 // Zod schema for login form validation
 
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Please enter at least 8 characters"),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
+
 const LoginForm = () => {
-  const form = useForm<LoginCommand>({
+  const form = useForm<LoginFormValues>({
     mode: "uncontrolled",
     initialValues: {
       email: "",
@@ -33,8 +43,12 @@ const LoginForm = () => {
     },
   });
 
-  const handleSubmit = (values: typeof form.values) => {
-    loginMutate(values);
+  const handleSubmit = (values: LoginFormValues) => {
+    const payload: LoginCommand = {
+      email: values.email,
+      password: values.password,
+    };
+    loginMutate(payload);
   };
 
   return (
@@ -46,7 +60,7 @@ const LoginForm = () => {
       radius="md"
       className="rounded-[15px] bg-white/80 dark:bg-neutral-900/80 border border-white/30 backdrop-blur-md"
     >
-      <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
+      <form onSubmit={formSubmitWithFocus(form, handleSubmit)} noValidate>
         <TextInput
           mt="md"
           required

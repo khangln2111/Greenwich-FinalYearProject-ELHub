@@ -1,6 +1,6 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Box, Button, Group, Select, Textarea, TextInput, Title } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { randomId } from "@mantine/hooks";
 import { ArrowUpNarrowWide } from "lucide-react";
 import FileUploadField from "../../../../../components/media/FileUploadField";
@@ -23,6 +23,7 @@ import { useUpdateCourse } from "../../../../../react-query/course/courseHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import SortableInputList from "./SortableInputList";
 import TestSortList from "./TestSortList";
+import { zodResolver } from "mantine-form-zod-resolver";
 
 type CourseOverviewFormProps = {
   courseDetail: CourseDetailVm;

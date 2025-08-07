@@ -1,6 +1,6 @@
 import { Avatar, Button, FileButton, Group, Radio, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { IconCamera } from "@tabler/icons-react";
 import { CalendarIcon } from "lucide-react";
 import { z } from "zod";
@@ -12,14 +12,24 @@ import {
 } from "../../../react-query/auth/identity.types";
 import { useUpdateUserProfileSelf } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
-import { parseDateUTC } from "../../../utils/format";
 import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
+import { zodResolver } from "mantine-form-zod-resolver";
 
 const UpdateUserProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   gender: z.nativeEnum(Gender),
-  dateOfBirth: z.date().max(new Date(), "Date of birth cannot be in the future").optional(),
+  dateOfBirth: z
+    .string()
+    .refine(
+      (val) => {
+        if (!val) return true;
+        const date = new Date(val);
+        return !isNaN(date.getTime()) && date <= new Date();
+      },
+      { message: "Invalid or future date" },
+    )
+    .optional(),
   avatar: z
     .instanceof(File, {
       message: "Profile photo is required",
@@ -47,7 +57,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
     initialValues: {
       firstName: user.firstName ?? "",
       lastName: user.lastName ?? "",
-      dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth) : undefined,
+      dateOfBirth: user.dateOfBirth ?? "",
       gender: user.gender ?? Gender.Other,
       avatar: user.avatarUrl ?? "",
     },
@@ -58,7 +68,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
     const payload: UpdateUserProfileSelfCommand = {
       firstName: values.firstName,
       lastName: values.lastName,
-      dateOfBirth: values.dateOfBirth ? new Date(values.dateOfBirth) : undefined,
+      dateOfBirth: values.dateOfBirth || undefined, // string
       gender: values.gender,
       avatar: values.avatar instanceof File ? values.avatar : undefined,
     };
@@ -91,9 +101,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
           onChange={(file) => {
             if (file) {
               form.setFieldValue("avatar", file);
-              form.setDirty({
-                avatar: true,
-              });
+              form.setDirty({ avatar: true });
             }
           }}
         >
@@ -159,11 +167,10 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
             rightSection={<CalendarIcon size={16} />}
             placeholder="Birth date"
             size="md"
-            pointer={true}
+            pointer
             valueFormat="DD/MM/YYYY"
             className="w-full"
             maxDate={new Date()}
-            dateParser={parseDateUTC}
           />
         </div>
       </div>
@@ -174,7 +181,7 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
         size="md"
         loading={updateUserProfileMutation.isPending}
         disabled={!form.isDirty()}
-        onClick={() => formSubmitWithFocus(form, handleSubmit)()}
+        onClick={formSubmitWithFocus(form, handleSubmit)}
       >
         Update Information
       </Button>

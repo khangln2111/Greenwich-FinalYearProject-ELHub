@@ -15,7 +15,7 @@ export interface UpdateUserCommand {
   firstName?: string;
   lastName?: string;
   avatar?: File;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   professionalTitle?: string;
 }
 
@@ -29,7 +29,7 @@ export interface UserVm {
   avatarUrl?: string;
   roles: string[];
   isActivated: boolean;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   gender?: string;
 }
 

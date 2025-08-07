@@ -30,7 +30,7 @@ export default function CheckoutResultPage() {
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 bg-gray-2 dark:bg-dark-7">
-      <div className="bg-white dark:bg-dark-9 rounded-2xl shadow-xl p-8 w-full text-center max-w-(--container-xl)">
+      <div className="bg-white dark:bg-dark-9 rounded-2xl shadow-xl p-8 w-full text-center max-w-xl">
         {isPending && <PaymentProcessing />}
         {isSuccess && isCompleted && <PaymentSuccess />}
         {(isError || (isSuccess && !isCompleted)) && <PaymentFailed />}

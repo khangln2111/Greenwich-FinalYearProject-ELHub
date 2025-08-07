@@ -13,7 +13,7 @@ import {
   Title,
   useModalsStack,
 } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { ArrowUpAzIcon, FileQuestion } from "lucide-react";
@@ -27,12 +27,15 @@ import {
   InstructorApplicationOrderableFields,
   InstructorApplicationStatus,
   InstructorApplicationVm,
+  ReviewInstructorApplicationCommand,
 } from "../../../react-query/instructorApplication/instructorApplication.types";
 import {
   useGetInstructorApplications,
   useReviewInstructorApplication,
 } from "../../../react-query/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
+import { zodResolver } from "mantine-form-zod-resolver";
+import { formSubmitWithFocus } from "../../../utils/form";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -45,9 +48,11 @@ const getStatusColor = (status: InstructorApplicationStatus) => {
   }
 };
 
-const reviewSchema = z.object({
+const reviewCourseSchema = z.object({
   note: z.string().min(1, { message: "Note is required" }),
 });
+
+type ReviewCourseFormValues = z.infer<typeof reviewCourseSchema>;
 
 const statuses: ("All" | InstructorApplicationStatus)[] = [
   "All",
@@ -118,12 +123,12 @@ export default function AdminInstructorApprovalPage() {
     "desc",
   );
 
-  const form = useForm({
+  const form = useForm<ReviewCourseFormValues>({
     initialValues: { note: "" },
-    validate: zodResolver(reviewSchema),
+    validate: zodResolver(reviewCourseSchema),
   });
 
-  const { mutate: reviewApplication, isPending } = useReviewInstructorApplication();
+  const { mutate, isPending } = useReviewInstructorApplication();
 
   const handleSearchSubmit = () => {
     setSearch(searchInput);
@@ -140,19 +145,17 @@ export default function AdminInstructorApprovalPage() {
     if (!reviewApp) return;
     const result = form.validate();
     if (!result.hasErrors) {
-      reviewApplication(
-        {
-          id: reviewApp.id,
-          isApproved: approveMode,
-          note: form.values.note.trim(),
+      const payload: ReviewInstructorApplicationCommand = {
+        id: reviewApp.id,
+        isApproved: approveMode,
+        note: form.values.note.trim(),
+      };
+      mutate(payload, {
+        onSuccess: () => {
+          modalStack.close("review");
+          modalStack.close("view");
         },
-        {
-          onSuccess: () => {
-            modalStack.close("review");
-            modalStack.close("view");
-          },
-        },
-      );
+      });
     }
   };
 
@@ -224,7 +227,7 @@ export default function AdminInstructorApprovalPage() {
         <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
           <FileQuestion className="w-16 h-16 mb-4" />
           <p className="text-lg font-semibold">No instructor applications found</p>
-          <p className="text-sm mt-1 max-w-(--container-md)">
+          <p className="text-sm mt-1 max-w-md">
             We couldn’t find any applications to display. This could be due to filters, search
             terms, or simply because no one has applied yet.
           </p>
@@ -386,7 +389,7 @@ export default function AdminInstructorApprovalPage() {
         {...modalStack.register("review")}
         size="400px"
       >
-        <form onSubmit={form.onSubmit(handleSubmitReview)}>
+        <form onSubmit={formSubmitWithFocus(form, handleSubmitReview)}>
           <Stack>
             <Textarea
               size="md"

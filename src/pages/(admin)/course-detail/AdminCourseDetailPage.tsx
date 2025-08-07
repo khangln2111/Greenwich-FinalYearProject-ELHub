@@ -12,7 +12,7 @@ import {
   Title,
   Tooltip,
 } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { IconArrowLeft } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -27,10 +27,13 @@ import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
 import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";
+import { zodResolver } from "mantine-form-zod-resolver";
 
-const noteSchema = z.object({
+const courseApprovalSchema = z.object({
   note: z.string().min(5, "Note must be at least 5 characters long"),
 });
+
+type CourseApprovalFormValues = z.infer<typeof courseApprovalSchema>;
 
 const getStatusBadge = (status: CourseStatus) => {
   switch (status) {
@@ -68,22 +71,22 @@ const AdminCourseDetailPage = () => {
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [archiveModalOpen, setArchiveModalOpen] = useState(false);
 
-  const approveForm = useForm({
+  const approveForm = useForm<CourseApprovalFormValues>({
     mode: "uncontrolled",
     initialValues: { note: "" },
-    validate: zodResolver(noteSchema),
+    validate: zodResolver(courseApprovalSchema),
   });
 
-  const rejectForm = useForm({
+  const rejectForm = useForm<CourseApprovalFormValues>({
     mode: "uncontrolled",
     initialValues: { note: "" },
-    validate: zodResolver(noteSchema),
+    validate: zodResolver(courseApprovalSchema),
   });
 
-  const archiveForm = useForm({
+  const archiveForm = useForm<CourseApprovalFormValues>({
     mode: "uncontrolled",
     initialValues: { note: "" },
-    validate: zodResolver(noteSchema),
+    validate: zodResolver(courseApprovalSchema),
   });
 
   if (isPending) return <CenterLoader />;
@@ -271,12 +274,12 @@ const AdminCourseDetailPage = () => {
         >
           <Textarea
             label="Approval Note"
+            size="md"
             placeholder="Enter approval note..."
             {...approveForm.getInputProps("note")}
+            key={approveForm.key("note")}
             autosize
             minRows={3}
-            {...approveForm.getInputProps("note")}
-            key={approveForm.key("note")}
           />
           <Group justify="end" mt="md">
             <Button variant="default" onClick={() => setApproveModalOpen(false)}>
@@ -308,12 +311,12 @@ const AdminCourseDetailPage = () => {
         >
           <Textarea
             label="Rejection Note"
+            size="md"
             placeholder="Please provide a reason for rejection..."
             {...rejectForm.getInputProps("note")}
+            key={rejectForm.key("note")}
             autosize
             minRows={3}
-            {...rejectForm.getInputProps("note")}
-            key={rejectForm.key("note")}
           />
           <Group justify="end" mt="md">
             <Button variant="default" onClick={() => setRejectModalOpen(false)}>

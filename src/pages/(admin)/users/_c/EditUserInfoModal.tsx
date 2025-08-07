@@ -1,6 +1,6 @@
 import { Avatar, Button, FileButton, Group, Stack, Text, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { CalendarIcon, CameraIcon } from "lucide-react";
 import { z } from "zod";
 import CusModal from "../../../../components/CusModal";
@@ -8,6 +8,7 @@ import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/Va
 import { UpdateUserCommand, UserVm } from "../../../../react-query/user/user.types";
 import { useUpdateUser } from "../../../../react-query/user/userHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 
 const EditUserSchema = z.object({
   firstName: z.string().optional(),
@@ -16,7 +17,15 @@ const EditUserSchema = z.object({
 
   professionalTitle: z.string().optional(),
 
-  dateOfBirth: z.date().max(new Date(), "Date of birth cannot be in the future").optional(),
+  dateOfBirth: z
+    .string()
+    .optional()
+    .refine((val) => !val || !isNaN(new Date(val).getTime()), {
+      message: "Invalid date",
+    })
+    .refine((val) => !val || new Date(val) <= new Date(), {
+      message: "Date of birth cannot be in the future",
+    }),
 
   avatar: z
     .union([
@@ -51,7 +60,7 @@ export default function EditUserInfoModal({ opened, onClose, user }: Props) {
       firstName: user.firstName ?? "",
       lastName: user.lastName ?? "",
       professionalTitle: user.professionalTitle ?? "",
-      dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth) : undefined,
+      dateOfBirth: user.dateOfBirth ?? "",
       avatar: user.avatarUrl ?? "",
     },
   });
@@ -64,7 +73,7 @@ export default function EditUserInfoModal({ opened, onClose, user }: Props) {
       firstName: values.firstName,
       lastName: values.lastName,
       professionalTitle: values.professionalTitle,
-      dateOfBirth: values.dateOfBirth ? new Date(values.dateOfBirth) : undefined,
+      dateOfBirth: values.dateOfBirth,
       avatar: values.avatar instanceof File ? values.avatar : undefined,
     };
 

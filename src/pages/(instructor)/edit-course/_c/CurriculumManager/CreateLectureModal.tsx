@@ -1,5 +1,5 @@
 import { Button, Switch, Text, TextInput, Textarea } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { EyeIcon, EyeOffIcon, FileText, ScrollText } from "lucide-react";
 import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
@@ -11,12 +11,7 @@ import {
 import { CreateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
 import { useCreateLecture } from "../../../../../react-query/lecture/lectureHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
-
-interface CreateLectureModalProps {
-  opened: boolean;
-  onClose: () => void;
-  sectionId: string;
-}
+import { zodResolver } from "mantine-form-zod-resolver";
 
 const CreateLectureSchema = z.object({
   title: z.string({ message: "Title is required" }).min(1, "Title must be at least 1 character"),
@@ -35,6 +30,12 @@ const CreateLectureSchema = z.object({
 });
 
 type CreateLectureFormValues = z.infer<typeof CreateLectureSchema>;
+
+interface CreateLectureModalProps {
+  opened: boolean;
+  onClose: () => void;
+  sectionId: string;
+}
 
 export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLectureModalProps) => {
   const form = useForm<CreateLectureFormValues>({
@@ -77,18 +78,14 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
             variant="filled"
             loading={createLectureMutation.isPending}
             type="submit"
-            onClick={() => formSubmitWithFocus(form, handleCreateLecture)()}
+            onClick={formSubmitWithFocus(form, handleCreateLecture)}
           >
             Save
           </Button>
         </div>
       }
     >
-      <form
-        onSubmit={form.onSubmit(handleCreateLecture)}
-        className="flex flex-col gap-y-6"
-        noValidate
-      >
+      <form className="flex flex-col gap-y-6" noValidate>
         <TextInput
           size="md"
           label="Title"

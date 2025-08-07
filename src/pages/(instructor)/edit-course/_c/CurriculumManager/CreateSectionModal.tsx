@@ -1,12 +1,13 @@
 // CurriculumManager/CreateSectionModal.tsx
 import { Button, TextInput, Textarea } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { FileType, ScrollText } from "lucide-react";
 import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
 import { CreateSectionCommand } from "../../../../../react-query/section/section.types";
 import { useCreateSection } from "../../../../../react-query/section/sectionHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 
 interface CreateSectionModalProps {
   opened: boolean;
@@ -61,14 +62,14 @@ export const CreateSectionModal = ({ opened, onClose, courseId }: CreateSectionM
             variant="filled"
             loading={createSectionMutation.isPending}
             type="submit"
-            onClick={() => formSubmitWithFocus(form, handleCreateSection)()}
+            onClick={formSubmitWithFocus(form, handleCreateSection)}
           >
             Save
           </Button>
         </div>
       }
     >
-      <form className="space-y-6" onSubmit={form.onSubmit(handleCreateSection)} noValidate>
+      <form className="space-y-6" noValidate>
         <TextInput
           size="md"
           label="Title"

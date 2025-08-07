@@ -42,10 +42,7 @@ export default function InstructorCourseCard({ course }: Props) {
   };
 
   return (
-    <div
-      className="bg-white dark:bg-dark-6 border border-gray-200 dark:border-dark-4 rounded-2xl shadow p-4 flex
-        flex-col relative transition-colors"
-    >
+    <div className="bg-white dark:bg-dark-6 border rounded-2xl shadow p-4 flex flex-col relative transition-colors">
       <div className="absolute top-2 right-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded-full">
         {/* Hiển thị giá */}
         {course.discountedPrice ? (

@@ -1,5 +1,5 @@
 import { Button, Switch, Text, TextInput, Textarea } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { EyeIcon, EyeOffIcon, FileText, ScrollText } from "lucide-react";
 import { z } from "zod";
 import CusModal from "../../../../../components/CusModal";
@@ -11,6 +11,7 @@ import {
 import { LectureVm, UpdateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
 import { useUpdateLecture } from "../../../../../react-query/lecture/lectureHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 
 interface UpdateLectureModalProps {
   opened: boolean;
@@ -88,14 +89,14 @@ export const UpdateLectureModal = ({ opened, onClose, lecture }: UpdateLectureMo
             loading={updateLectureMutation.isPending}
             type="submit"
             disabled={!form.isDirty()}
-            onClick={() => formSubmitWithFocus(form, handleUpdateLecture)()}
+            onClick={formSubmitWithFocus(form, handleUpdateLecture)}
           >
             Save
           </Button>
         </div>
       }
     >
-      <form className="space-y-6" onSubmit={form.onSubmit(handleUpdateLecture)} noValidate>
+      <form className="space-y-6" noValidate>
         <TextInput
           size="md"
           label="Title"

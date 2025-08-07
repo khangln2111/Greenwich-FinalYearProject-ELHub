@@ -1,4 +1,5 @@
 import { UseFormReturnType } from "@mantine/form";
+import { SyntheticEvent } from "react";
 
 /**
  * Wraps Mantine form's onSubmit to auto-focus the first invalid field.
@@ -7,10 +8,20 @@ export function formSubmitWithFocus<TValues>(
   form: UseFormReturnType<TValues>,
   onValid: (values: TValues) => void,
 ) {
-  return form.onSubmit(onValid, (errors) => {
-    const firstErrorPath = Object.keys(errors)[0];
-    form.getInputNode(firstErrorPath)?.focus();
-  });
+  return (event?: SyntheticEvent) => {
+    event?.preventDefault();
+
+    const result = form.validate();
+
+    if (result.hasErrors) {
+      const firstErrorPath = Object.keys(result.errors)[0];
+      form.getInputNode(firstErrorPath)?.focus();
+      return;
+    }
+
+    const values = form.getValues();
+    onValid(values);
+  };
 }
 
 export function extractThumbnailFromVideoUrl(videoUrl: string, seekTime = 1): Promise<string> {

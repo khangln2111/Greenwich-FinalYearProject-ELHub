@@ -1,10 +1,39 @@
 import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { IconAt, IconLock, IconRegistered } from "@tabler/icons-react";
 import { z } from "zod";
 import PasswordStrength from "../../../components/PasswordStrength/PasswordStrength";
-import { RegisterCommand, registerSchema } from "../../../react-query/auth/identity.types";
+import { RegisterCommand } from "../../../react-query/auth/identity.types";
 import { useRegister } from "../../../react-query/auth/identityHooks";
+import { zodResolver } from "mantine-form-zod-resolver";
+import { formSubmitWithFocus } from "../../../utils/form";
+
+const registerSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(2, "Please enter at least 2 characters")
+      .max(50, "That’s too long – max 50 characters allowed"),
+    lastName: z
+      .string()
+      .min(2, "Please enter at least 2 characters")
+      .max(50, "That’s too long – max 50 characters allowed"),
+    email: z.string().min(1, { message: "Please enter your email" }).email("Invalid email address"),
+    password: z
+      .string()
+      .min(8, "Password must have at least 8 characters")
+      .regex(/[0-9]/, "Include at least one number in your password")
+      .regex(/[a-z]/, "Add at least one lowercase letter")
+      .regex(/[A-Z]/, "Add at least one uppercase letter")
+      .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Use at least one special symbol like !@#$"),
+    confirmPassword: z.string(),
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: "Confirm passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
 function getPasswordRequirements(
   schema: z.ZodObject<any>,
@@ -37,7 +66,7 @@ function getPasswordRequirements(
 
 const RegisterForm = () => {
   const registerMutation = useRegister();
-  const form = useForm<RegisterCommand>({
+  const form = useForm<RegisterFormValues>({
     initialValues: {
       firstName: "",
       lastName: "",
@@ -50,8 +79,16 @@ const RegisterForm = () => {
 
   const passwordRequirements = getPasswordRequirements(registerSchema.innerType());
 
-  const handleSubmit = (values: typeof form.values) => {
-    registerMutation.mutate(values, {
+  const handleSubmit = (values: RegisterFormValues) => {
+    const payload: RegisterCommand = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+      confirmPassword: values.confirmPassword,
+    };
+
+    registerMutation.mutate(payload, {
       onSuccess: () => {
         form.reset();
       },
@@ -67,7 +104,7 @@ const RegisterForm = () => {
       radius="md"
       className="rounded-[15px] bg-white/80 dark:bg-neutral-900/80 border border-white/30 backdrop-blur-md"
     >
-      <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
+      <form onSubmit={formSubmitWithFocus(form, handleSubmit)} noValidate>
         <div className="flex items-stretch gap-2 *:grow">
           <TextInput
             label="First Name"

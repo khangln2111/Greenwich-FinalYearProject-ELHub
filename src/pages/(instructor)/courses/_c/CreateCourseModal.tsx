@@ -1,5 +1,5 @@
 import { Button, NumberInput, Select, TextInput, Textarea } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import {
   ArrowUpNarrowWide,
   DollarSign,
@@ -17,19 +17,51 @@ import {
   MAX_VIDEO_SIZE_MB,
 } from "../../../../constants/ValidationConstants";
 import { useGetCategories } from "../../../../react-query/category/categoryHooks";
-import {
-  CreateCourseFormValues,
-  createCourseFormSchema,
-} from "../../../../react-query/course/course.schema";
 import { CourseLevel, CreateCourseCommand } from "../../../../react-query/course/course.types";
 import { useCreateCourse } from "../../../../react-query/course/courseHooks";
 import { mockCourses } from "../../../../react-query/mockData";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import { zodResolver } from "mantine-form-zod-resolver";
+import z from "zod";
 
 type CreateCourseModalProps = {
   opened: boolean;
   onClose: () => void;
 };
+
+const createCourseFormSchema = z.object({
+  title: z.string({ message: "Title is required" }).min(3, "Title must be at least 3 characters"),
+  description: z
+    .string({ message: "Description is required" })
+    .min(10, "Description must be at least 10 characters"),
+  price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
+  discountedPrice: z
+    .number({ message: "Discounted price is required" })
+    .min(0, { message: "Discounted price must be ≥ 0" }),
+  image: z
+    .instanceof(File, { message: "Course image is required" })
+    .refine((file) => ALLOWED_IMAGE_TYPES.includes(file.type), {
+      message: "Only JPG, PNG, WEBP images are allowed",
+    })
+    .refine((file) => file.size <= MAX_IMAGE_SIZE_MB * 1024 * 1024, {
+      message: `Image must be less than ${MAX_IMAGE_SIZE_MB}MB`,
+    }),
+  promoVideo: z
+    .instanceof(File, { message: "Promotional video is required" })
+    .refine((file) => ALLOWED_VIDEO_TYPES.includes(file.type), {
+      message: "Only MP4, WebM, or OGG videos are allowed",
+    })
+    .refine((file) => file.size <= MAX_VIDEO_SIZE_MB * 1024 * 1024, {
+      message: `Video must be less than ${MAX_VIDEO_SIZE_MB}MB`,
+    }),
+  categoryId: z.string({ message: "Category is required" }).min(1, "Select a category"),
+  level: z.nativeEnum(CourseLevel, {
+    required_error: "Level is required",
+    invalid_type_error: "Invalid level selected",
+  }),
+});
+
+type CreateCourseFormValues = z.infer<typeof createCourseFormSchema>;
 
 export default function CreateCourseModal({ opened, onClose }: CreateCourseModalProps) {
   const form = useForm<CreateCourseFormValues>({
@@ -87,7 +119,7 @@ export default function CreateCourseModal({ opened, onClose }: CreateCourseModal
             Cancel
           </Button>
           <Button
-            onClick={() => formSubmitWithFocus(form, handleSubmit)()}
+            onClick={formSubmitWithFocus(form, handleSubmit)}
             variant="filled"
             loading={createCourseMutation.isPending}
           >

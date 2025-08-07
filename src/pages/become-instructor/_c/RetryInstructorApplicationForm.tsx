@@ -1,16 +1,19 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 import { z } from "zod";
 import FileUploadField from "../../../components/media/FileUploadField";
+import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
 import {
-  RetryInstructorApplicationCommand,
   InstructorApplicationVm,
+  RetryInstructorApplicationCommand,
 } from "../../../react-query/instructorApplication/instructorApplication.types";
 import { useRetryInstructorApplication } from "../../../react-query/instructorApplication/instructorApplicationHooks";
-import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
+import { formSubmitWithFocus } from "../../../utils/form";
 
-const schema = z.object({
-  displayName: z.string().optional(),
+const retryInstructorApplicationSchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   professionalTitle: z.string().optional(),
   about: z.string().optional(),
   avatar: z.instanceof(File).optional(),
@@ -21,8 +24,10 @@ type Props = {
   onCancel?: () => void;
 };
 
+type RetryInstructorApplicationFormValues = z.infer<typeof retryInstructorApplicationSchema>;
+
 const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
-  const form = useForm<RetryInstructorApplicationCommand>({
+  const form = useForm<RetryInstructorApplicationFormValues>({
     initialValues: {
       firstName: application.firstName ?? "",
       lastName: application.lastName ?? "",
@@ -30,17 +35,24 @@ const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
       about: application.about ?? "",
       avatar: undefined,
     },
-    validate: zodResolver(schema),
+    validate: zodResolver(retryInstructorApplicationSchema),
   });
 
   const { mutate: retryApplication, isPending } = useRetryInstructorApplication();
 
-  const handleSubmit = (values: RetryInstructorApplicationCommand) => {
-    retryApplication(values);
+  const handleSubmit = (values: RetryInstructorApplicationFormValues) => {
+    const payload: RetryInstructorApplicationCommand = {
+      firstName: values.firstName || application.firstName,
+      lastName: values.lastName || application.lastName,
+      professionalTitle: values.professionalTitle || application.professionalTitle,
+      about: values.about || application.about,
+      avatar: values.avatar instanceof File ? values.avatar : undefined,
+    };
+    retryApplication(payload);
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={formSubmitWithFocus(form, handleSubmit)}>
       <Stack>
         {application.note && (
           <div

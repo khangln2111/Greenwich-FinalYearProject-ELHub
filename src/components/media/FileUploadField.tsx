@@ -4,8 +4,12 @@ import { useUncontrolled } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { ImageIcon, UploadIcon, VideoIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Accept } from "react-dropzone-esm";
 import VideoPlayerWithThumbnail from "./VideoPlayerWithThumbnail";
+
+interface Accept {
+  [key: string]: readonly string[];
+}
+
 interface FileUploadFieldProps {
   label?: string;
   description?: string;

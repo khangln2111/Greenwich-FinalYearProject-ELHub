@@ -1,13 +1,14 @@
 import { Button, TextInput } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { z } from "zod";
 import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
 import { useCreateCategory } from "../../../../react-query/category/categoryHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 
-const schema = z.object({
+const createCategorySchema = z.object({
   name: z.string().min(1, "Name is required"),
   image: z
     .instanceof(File, { message: "Image is required" })
@@ -19,20 +20,22 @@ const schema = z.object({
     }),
 });
 
+type CreateCategoryFormValues = z.infer<typeof createCategorySchema>;
+
 interface Props {
   opened: boolean;
   onClose: () => void;
 }
 
 export default function CreateCategoryModal({ opened, onClose }: Props) {
-  const form = useForm<z.infer<typeof schema>>({
+  const form = useForm<CreateCategoryFormValues>({
     mode: "uncontrolled",
-    validate: zodResolver(schema),
+    validate: zodResolver(createCategorySchema),
   });
 
   const { mutate, isPending } = useCreateCategory();
 
-  const handleSubmit = (values: z.infer<typeof schema>) => {
+  const handleSubmit = (values: CreateCategoryFormValues) => {
     if (!(values.image instanceof File)) return;
     mutate(
       {

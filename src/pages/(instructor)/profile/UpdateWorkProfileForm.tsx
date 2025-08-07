@@ -1,5 +1,5 @@
 import { Avatar, Button, FileButton, Group, Textarea, TextInput } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { IconCamera } from "@tabler/icons-react";
 import { z } from "zod";
 import { MAX_IMAGE_SIZE_MB, ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
@@ -7,6 +7,7 @@ import {
   UpdateWorkProfileSelfCommand,
   WorkProfileVm,
 } from "../../../react-query/auth/identity.types";
+import { zodResolver } from "mantine-form-zod-resolver";
 import { useUpdateWorkProfileSelf } from "../../../react-query/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
@@ -172,7 +173,7 @@ export default function UpdateWorkProfileForm({ profile }: Props) {
         size="md"
         loading={updateWorkProfileMutation.isPending}
         disabled={!form.isDirty()}
-        onClick={() => formSubmitWithFocus(form, handleSubmit)()}
+        onClick={formSubmitWithFocus(form, handleSubmit)}
       >
         Update Work Profile
       </Button>

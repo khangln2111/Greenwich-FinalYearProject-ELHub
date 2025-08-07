@@ -1,9 +1,10 @@
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { TextInput, Button } from "@mantine/core";
 import CusModal from "../../../components/CusModal";
 import { useRedeemGift } from "../../../react-query/gift/giftHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 import { z } from "zod";
+import { zodResolver } from "mantine-form-zod-resolver";
 
 type RedeemGiftModalProps = {
   open: boolean;

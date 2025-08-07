@@ -1,14 +1,15 @@
 import { Button, TextInput } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { z } from "zod";
 import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
-import { CategoryVm } from "../../../../react-query/category/category.types";
+import { CategoryVm, UpdateCategoryCommand } from "../../../../react-query/category/category.types";
 import { useUpdateCategory } from "../../../../react-query/category/categoryHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 
-const schema = z.object({
+const updateCategorySchema = z.object({
   name: z.string().min(1, "Name is required"),
   image: z
     .instanceof(File, { message: "Image is required" })
@@ -27,30 +28,30 @@ interface Props {
   category: CategoryVm | null;
 }
 
+type UpdateCategoryFormValues = z.infer<typeof updateCategorySchema>;
+
 export default function UpdateCategoryModal({ opened, onClose, category }: Props) {
-  const form = useForm<z.infer<typeof schema>>({
+  const form = useForm<UpdateCategoryFormValues>({
     mode: "uncontrolled",
     initialValues: { name: category?.name ?? "", image: category?.imageUrl ?? "" },
-    validate: zodResolver(schema),
+    validate: zodResolver(updateCategorySchema),
   });
 
   const { mutate, isPending } = useUpdateCategory();
 
-  const handleSubmit = (values: z.infer<typeof schema>) => {
+  const handleSubmit = (values: UpdateCategoryFormValues) => {
     if (!category) return;
-    mutate(
-      {
-        id: category.id,
-        name: values.name.trim(),
-        image: values.image instanceof File ? values.image : undefined,
+    const payload: UpdateCategoryCommand = {
+      id: category.id,
+      name: values.name.trim(),
+      image: values.image instanceof File ? values.image : undefined,
+    };
+    mutate(payload, {
+      onSuccess: () => {
+        form.resetDirty();
+        onClose();
       },
-      {
-        onSuccess: () => {
-          form.resetDirty();
-          onClose();
-        },
-      },
-    );
+    });
   };
 
   const image = form.getValues().image;

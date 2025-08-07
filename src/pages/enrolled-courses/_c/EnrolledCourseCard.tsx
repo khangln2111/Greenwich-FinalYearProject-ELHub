@@ -1,5 +1,5 @@
 import { Avatar, Button, Progress, Rating, Text, Textarea } from "@mantine/core";
-import { useForm, zodResolver } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { Play, Star } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import {
   useUpdateReview,
 } from "../../../react-query/review/reviewHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
+import { zodResolver } from "mantine-form-zod-resolver";
 
 interface EnrolledCourseCardProps {
   enrollment: EnrollmentVm;
@@ -123,7 +124,7 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
             )}
             <Button
               loading={createReviewMutation.isPending || updateReviewMutation.isPending}
-              onClick={() => formSubmitWithFocus(form, handleSubmitReview)()}
+              onClick={formSubmitWithFocus(form, handleSubmitReview)}
               className="self-end"
             >
               {isEditing ? "Edit Review" : "Submit"}
