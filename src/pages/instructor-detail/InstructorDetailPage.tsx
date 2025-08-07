@@ -23,7 +23,7 @@ import { useParams } from "react-router-dom";
 import {
   useGetCoursesByInstructorId,
   useGetInstructorById,
-} from "../../react-query/instructor/instructorHooks";
+} from "../../features/instructor/instructorHooks";
 import CourseCard from "../home/_c/PopularCourses/CourseCard";
 import avatarPlaceholder from "../../assets/placeholder/profile-avatar-placeholder.svg";
 

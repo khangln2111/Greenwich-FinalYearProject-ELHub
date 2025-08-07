@@ -1,6 +1,6 @@
 import { Checkbox } from "@mantine/core";
 import { CheckCircle, MonitorPlayIcon } from "lucide-react";
-import { LectureVm } from "../../../react-query/lecture/lecture.types";
+import { LectureVm } from "../../../features/lecture/lecture.types";
 import { cn } from "../../../utils/cn";
 import { formatDuration } from "../../../utils/format";
 

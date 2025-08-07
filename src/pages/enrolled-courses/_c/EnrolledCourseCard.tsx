@@ -5,17 +5,17 @@ import { zodResolver } from "mantine-form-zod-resolver";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CusModal from "../../../components/CusModal";
-import { EnrollmentVm } from "../../../react-query/enrollment/enrollment.types";
+import { EnrollmentVm } from "../../../features/enrollment/enrollment.types";
 import {
   CreateReviewFormSchema,
   CreateReviewFormValues,
-} from "../../../react-query/review/review.schema";
-import { CreateReviewCommand, UpdateReviewCommand } from "../../../react-query/review/review.types";
+} from "../../../features/review/review.schema";
+import { CreateReviewCommand, UpdateReviewCommand } from "../../../features/review/review.types";
 import {
   useCreateReview,
   useDeleteReview,
   useUpdateReview,
-} from "../../../react-query/review/reviewHooks";
+} from "../../../features/review/reviewHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 interface EnrolledCourseCardProps {

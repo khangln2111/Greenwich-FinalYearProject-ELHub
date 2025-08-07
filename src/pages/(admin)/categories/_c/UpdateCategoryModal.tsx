@@ -7,9 +7,9 @@ import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/Va
 import {
   UpdateCategoryFormValues,
   updateCategorySchema,
-} from "../../../../react-query/category/category.schema";
-import { CategoryVm, UpdateCategoryCommand } from "../../../../react-query/category/category.types";
-import { useUpdateCategory } from "../../../../react-query/category/categoryHooks";
+} from "../../../../features/category/category.schema";
+import { CategoryVm, UpdateCategoryCommand } from "../../../../features/category/category.types";
+import { useUpdateCategory } from "../../../../features/category/categoryHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 
 interface Props {

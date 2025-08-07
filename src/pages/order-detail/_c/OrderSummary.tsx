@@ -1,6 +1,6 @@
 import { Button, Title } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import { OrderDetailVm, OrderStatus } from "../../../react-query/order/order.types";
+import { OrderDetailVm, OrderStatus } from "../../../features/order/order.types";
 import VisaCardLogo from "../../../assets/icons/VisaCardLogo.svg";
 import MastercardCardLogo from "../../../assets/icons/MastercardCardLogo.svg";
 import CreditCard from "../../../assets/icons/CreditCardIcon.svg";

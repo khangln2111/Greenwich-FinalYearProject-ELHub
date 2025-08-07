@@ -23,9 +23,9 @@ import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithT
 import {
   CourseApprovalFormValues,
   courseApprovalSchema,
-} from "../../../react-query/course/course.schema";
-import { CourseStatus } from "../../../react-query/course/course.types";
-import { useGetCourseDetail, useModerateCourse } from "../../../react-query/course/courseHooks";
+} from "../../../features/course/course.schema";
+import { CourseStatus } from "../../../features/course/course.types";
+import { useGetCourseDetail, useModerateCourse } from "../../../features/course/courseHooks";
 import { formatDuration } from "../../../utils/format";
 import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";

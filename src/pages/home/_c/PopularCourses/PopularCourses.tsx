@@ -13,7 +13,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { mockCourses } from "../../../../react-query/mockData";
+import { mockCourses } from "../../../../features/mockData";
 import CourseCard from "./CourseCard";
 
 const PopularCourses = () => {

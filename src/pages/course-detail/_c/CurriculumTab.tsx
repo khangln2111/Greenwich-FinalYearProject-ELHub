@@ -2,7 +2,7 @@ import { Accordion, Button, Modal, Text, Title } from "@mantine/core";
 import { ChevronDownIcon, LayoutListIcon, Video } from "lucide-react";
 import { useState } from "react";
 import ReactPlayer from "react-player";
-import { SectionVm } from "../../../react-query/section/section.types";
+import { SectionVm } from "../../../features/section/section.types";
 import { formatDuration } from "../../../utils/format";
 
 type CurriculumTabProps = {

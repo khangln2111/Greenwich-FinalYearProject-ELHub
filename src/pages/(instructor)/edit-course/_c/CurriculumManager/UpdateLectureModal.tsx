@@ -11,9 +11,9 @@ import {
 import {
   UpdateLectureFormValues,
   UpdateLectureSchema,
-} from "../../../../../react-query/lecture/lecture.schema";
-import { LectureVm, UpdateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
-import { useUpdateLecture } from "../../../../../react-query/lecture/lectureHooks";
+} from "../../../../../features/lecture/lecture.schema";
+import { LectureVm, UpdateLectureCommand } from "../../../../../features/lecture/lecture.types";
+import { useUpdateLecture } from "../../../../../features/lecture/lectureHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 
 interface UpdateLectureModalProps {

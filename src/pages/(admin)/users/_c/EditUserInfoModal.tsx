@@ -5,9 +5,9 @@ import { CalendarIcon, CameraIcon } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
 import CusModal from "../../../../components/CusModal";
 import { ALLOWED_IMAGE_TYPES } from "../../../../constants/ValidationConstants";
-import { EditUserFormValues, editUserSchema } from "../../../../react-query/user/user.schema";
-import { UpdateUserCommand, UserVm } from "../../../../react-query/user/user.types";
-import { useUpdateUser } from "../../../../react-query/user/userHooks";
+import { EditUserFormValues, editUserSchema } from "../../../../features/user/user.schema";
+import { UpdateUserCommand, UserVm } from "../../../../features/user/user.types";
+import { useUpdateUser } from "../../../../features/user/userHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 
 type Props = {

@@ -1,5 +1,5 @@
 import { create, StateCreator } from "zustand";
-import { CurrentUser } from "../react-query/auth/identity.types";
+import { CurrentUser } from "../features/auth/identity.types";
 import { authStorageHelper } from "../utils/storageHelper";
 import { createSelectors } from "./auto-selectors";
 

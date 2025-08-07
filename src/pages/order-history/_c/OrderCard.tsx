@@ -2,7 +2,7 @@ import { ChevronRight } from "lucide-react";
 import { FirstOrderItemPreviewer } from "./FirstOrderItemPreviewer";
 import { Box } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { OrderStatus, OrderVm } from "../../../react-query/order/order.types";
+import { OrderStatus, OrderVm } from "../../../features/order/order.types";
 import { formatDate } from "../../../utils/format";
 
 type Props = {

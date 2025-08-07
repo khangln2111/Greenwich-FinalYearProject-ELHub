@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core";
-import { SentGiftVm, GiftStatus } from "../../../react-query/gift/gift.types";
+import { SentGiftVm, GiftStatus } from "../../../features/gift/gift.types";
 import { formatDate } from "../../../utils/format";
 import { GiftStatusBadge } from "./GiftStatusBadge";
 

@@ -11,9 +11,9 @@ import {
 import {
   CreateLectureFormValues,
   createLectureSchema,
-} from "../../../../../react-query/lecture/lecture.schema";
-import { CreateLectureCommand } from "../../../../../react-query/lecture/lecture.types";
-import { useCreateLecture } from "../../../../../react-query/lecture/lectureHooks";
+} from "../../../../../features/lecture/lecture.schema";
+import { CreateLectureCommand } from "../../../../../features/lecture/lecture.types";
+import { useCreateLecture } from "../../../../../features/lecture/lectureHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 
 interface CreateLectureModalProps {

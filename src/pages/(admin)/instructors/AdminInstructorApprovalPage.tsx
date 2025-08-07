@@ -21,24 +21,21 @@ import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
 import CusModal from "../../../components/CusModal";
 import { useSearchParamState } from "../../../hooks/useSearchParamState";
-import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../http-client/api.types";
+import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import {
   InstructorApplicationOrderableFields,
   InstructorApplicationStatus,
   InstructorApplicationVm,
   ReviewInstructorApplicationCommand,
-} from "../../../react-query/instructorApplication/instructorApplication.types";
+} from "../../../features/instructorApplication/instructorApplication.types";
 import {
   useGetInstructorApplications,
   useReviewInstructorApplication,
-} from "../../../react-query/instructorApplication/instructorApplicationHooks";
+} from "../../../features/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { formSubmitWithFocus } from "../../../utils/form";
-import {
-  ReviewCourseFormValues,
-  reviewCourseSchema,
-} from "../../../react-query/course/course.schema";
+import { ReviewCourseFormValues, reviewCourseSchema } from "../../../features/course/course.schema";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {

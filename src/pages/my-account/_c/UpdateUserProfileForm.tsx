@@ -9,13 +9,13 @@ import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
 import {
   UpdateUserProfileFormType,
   updateUserProfileSchema,
-} from "../../../react-query/auth/identity.schema";
+} from "../../../features/auth/identity.schema";
 import {
   CurrentUser,
   Gender,
   UpdateUserProfileSelfCommand,
-} from "../../../react-query/auth/identity.types";
-import { useUpdateUserProfileSelf } from "../../../react-query/auth/identityHooks";
+} from "../../../features/auth/identity.types";
+import { useUpdateUserProfileSelf } from "../../../features/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 type UpdateUserProfileFormProps = {

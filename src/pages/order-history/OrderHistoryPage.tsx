@@ -4,9 +4,9 @@ import { ArrowUpDownIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import CenterLoader from "../../components/CenterLoader";
 import { useSearchParamState } from "../../hooks/useSearchParamState";
-import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../http-client/api.types";
-import { OrderOrderableFields, OrderStatus } from "../../react-query/order/order.types";
-import { useGetOrdersSelf } from "../../react-query/order/orderHooks";
+import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../api-client/api.types";
+import { OrderOrderableFields, OrderStatus } from "../../features/order/order.types";
+import { useGetOrdersSelf } from "../../features/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
 

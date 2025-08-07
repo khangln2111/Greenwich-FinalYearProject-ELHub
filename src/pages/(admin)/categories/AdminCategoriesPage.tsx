@@ -3,8 +3,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { Pencil, Plus, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
-import { CategoryVm } from "../../../react-query/category/category.types";
-import { useGetCategories } from "../../../react-query/category/categoryHooks";
+import { CategoryVm } from "../../../features/category/category.types";
+import { useGetCategories } from "../../../features/category/categoryHooks";
 import CreateCategoryModal from "./_c/CreateCategoryModal";
 import UpdateCategoryModal from "./_c/UpdateCategoryModal";
 

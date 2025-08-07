@@ -19,8 +19,8 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
 import { useSearchParamState } from "../../../hooks/useSearchParamState"; // Đường dẫn tùy dự án bạn
-import { UserVm } from "../../../react-query/user/user.types";
-import { useGetUsers, useSetUserActivation } from "../../../react-query/user/userHooks";
+import { UserVm } from "../../../features/user/user.types";
+import { useGetUsers, useSetUserActivation } from "../../../features/user/userHooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
 

@@ -1,5 +1,5 @@
 import { Loader } from "@mantine/core";
-import { useCurrentUser } from "../../react-query/auth/identityHooks";
+import { useCurrentUser } from "../../features/auth/identityHooks";
 import UpdateUserProfileForm from "./_c/UpdateUserProfileForm";
 
 export default function MyAccountPage() {

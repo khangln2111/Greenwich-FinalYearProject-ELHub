@@ -4,7 +4,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft } from "lucide-react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import SummaryDecorator from "../../components/SummaryDecorator";
-import { CartItemVm } from "../../react-query/cart/cart.types";
+import { CartItemVm } from "../../features/cart/cart.types";
 import CheckoutForm from "./_c/CheckoutForm";
 import CheckoutItem from "./_c/CheckoutItem";
 import CheckoutSummary from "./_c/CheckoutSummary";

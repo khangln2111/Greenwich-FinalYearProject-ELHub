@@ -2,7 +2,7 @@ import { Avatar, Badge, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { BookOpenIcon, ClockIcon, FilmIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
+import { CourseStatus, CourseVm } from "../../../../features/course/course.types";
 import { formatDuration } from "../../../../utils/format";
 
 interface AdminCourseCardProps {

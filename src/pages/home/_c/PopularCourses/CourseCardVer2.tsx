@@ -1,7 +1,7 @@
 import { Avatar, Button, Image, Rating, Text, Tooltip } from "@mantine/core";
 import { Clock, LibraryBig, Layers, Tag, Users } from "lucide-react";
 import { Link } from "react-router-dom";
-import { CourseVm } from "../../../../react-query/course/course.types";
+import { CourseVm } from "../../../../features/course/course.types";
 import { formatDuration } from "../../../../utils/format";
 import { cn } from "../../../../utils/cn";
 

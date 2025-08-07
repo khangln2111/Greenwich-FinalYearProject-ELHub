@@ -16,7 +16,7 @@ import {
 import { IconFilterCog } from "@tabler/icons-react";
 import { RotateCcw } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
-import { useGetCategories } from "../../../../react-query/category/categoryHooks";
+import { useGetCategories } from "../../../../features/category/categoryHooks";
 import CourseSorter from "./CourseSorter";
 import { useSearchParamState } from "../../../../hooks/useSearchParamState";
 

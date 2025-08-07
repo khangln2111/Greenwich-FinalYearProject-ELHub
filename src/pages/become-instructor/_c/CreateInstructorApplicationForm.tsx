@@ -6,9 +6,9 @@ import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
 import {
   CreateInstructorApplicationFormValues,
   createInstructorApplicationSchema,
-} from "../../../react-query/instructorApplication/instructorApplication.schema";
-import { CreateInstructorApplicationCommand } from "../../../react-query/instructorApplication/instructorApplication.types";
-import { useCreateInstructorApplication } from "../../../react-query/instructorApplication/instructorApplicationHooks";
+} from "../../../features/instructorApplication/instructorApplication.schema";
+import { CreateInstructorApplicationCommand } from "../../../features/instructorApplication/instructorApplication.types";
+import { useCreateInstructorApplication } from "../../../features/instructorApplication/instructorApplicationHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 type CreateInstructorApplicationFormProps = {

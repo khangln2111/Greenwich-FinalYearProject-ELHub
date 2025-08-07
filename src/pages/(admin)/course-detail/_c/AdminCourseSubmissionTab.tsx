@@ -1,7 +1,7 @@
 import { Badge, Paper, Stack, Text, Timeline, Title, Group } from "@mantine/core";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { CourseApprovalHistoryVm } from "../../../../react-query/course/course.types";
+import { CourseApprovalHistoryVm } from "../../../../features/course/course.types";
 
 interface Props {
   history: CourseApprovalHistoryVm[];

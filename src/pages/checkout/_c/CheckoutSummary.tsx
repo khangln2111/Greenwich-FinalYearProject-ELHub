@@ -3,7 +3,7 @@ import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { PaymentIntentResult } from "@stripe/stripe-js";
 import { LockIcon } from "lucide-react";
 import { useState } from "react";
-import { CartItemVm } from "../../../react-query/cart/cart.types";
+import { CartItemVm } from "../../../features/cart/cart.types";
 import { cn } from "../../../utils/cn";
 import { showErrorToast } from "../../../utils/toastHelper";
 

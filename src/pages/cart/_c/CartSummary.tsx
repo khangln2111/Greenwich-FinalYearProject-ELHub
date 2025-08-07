@@ -1,8 +1,8 @@
 import { Button, Text } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import { CartItemVm } from "../../../react-query/cart/cart.types";
-import { useCreateOrder } from "../../../react-query/order/orderHooks";
+import { CartItemVm } from "../../../features/cart/cart.types";
+import { useCreateOrder } from "../../../features/order/orderHooks";
 import { cn } from "../../../utils/cn";
 import { showErrorToast } from "../../../utils/toastHelper";
 

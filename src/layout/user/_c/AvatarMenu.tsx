@@ -18,7 +18,7 @@ import {
   PackageIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useLogout } from "../../../react-query/auth/identityHooks";
+import { useLogout } from "../../../features/auth/identityHooks";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/store";
 

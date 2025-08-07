@@ -17,14 +17,14 @@ import {
   MAX_IMAGE_SIZE_MB,
   MAX_VIDEO_SIZE_MB,
 } from "../../../../constants/ValidationConstants";
-import { useGetCategories } from "../../../../react-query/category/categoryHooks";
+import { useGetCategories } from "../../../../features/category/categoryHooks";
 import {
   CreateCourseFormValues,
   createCourseSchema,
-} from "../../../../react-query/course/course.schema";
-import { CourseLevel, CreateCourseCommand } from "../../../../react-query/course/course.types";
-import { useCreateCourse } from "../../../../react-query/course/courseHooks";
-import { mockCourses } from "../../../../react-query/mockData";
+} from "../../../../features/course/course.schema";
+import { CourseLevel, CreateCourseCommand } from "../../../../features/course/course.types";
+import { useCreateCourse } from "../../../../features/course/courseHooks";
+import { mockCourses } from "../../../../features/mockData";
 import { formSubmitWithFocus } from "../../../../utils/form";
 
 type CreateCourseModalProps = {

@@ -5,12 +5,12 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
-import { CourseStatus } from "../../../react-query/course/course.types";
+import { CourseStatus } from "../../../features/course/course.types";
 import {
   useGetCourseDetail,
   useRetrySubmitCourse,
   useSubmitCourse,
-} from "../../../react-query/course/courseHooks";
+} from "../../../features/course/courseHooks";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmission";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";

@@ -6,12 +6,12 @@ import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
 import {
   RetryInstructorApplicationFormValues,
   retryInstructorApplicationSchema,
-} from "../../../react-query/instructorApplication/instructorApplication.schema";
+} from "../../../features/instructorApplication/instructorApplication.schema";
 import {
   InstructorApplicationVm,
   RetryInstructorApplicationCommand,
-} from "../../../react-query/instructorApplication/instructorApplication.types";
-import { useRetryInstructorApplication } from "../../../react-query/instructorApplication/instructorApplicationHooks";
+} from "../../../features/instructorApplication/instructorApplication.types";
+import { useRetryInstructorApplication } from "../../../features/instructorApplication/instructorApplicationHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 type RetryInstructorApplicationFormProps = {

@@ -1,4 +1,4 @@
-import { CartItemVm } from "../../../react-query/cart/cart.types";
+import { CartItemVm } from "../../../features/cart/cart.types";
 import { cn } from "../../../utils/cn";
 
 interface CheckoutItemProps {

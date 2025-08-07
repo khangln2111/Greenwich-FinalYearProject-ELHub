@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CenterLoader from "../../components/CenterLoader";
-import { useGetInventoryItemsSelf } from "../../react-query/inventory/inventoryHooks";
+import { useGetInventoryItemsSelf } from "../../features/inventory/inventoryHooks";
 import GiftingModal from "./_c/GiftingModal";
 import InventoryItemCard from "./_c/InventoryItemCard";
 import { PackageOpenIcon } from "lucide-react";

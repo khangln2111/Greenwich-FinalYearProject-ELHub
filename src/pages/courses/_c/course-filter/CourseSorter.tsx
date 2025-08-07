@@ -16,8 +16,8 @@ import {
   encodeOrderOption,
   OrderBy,
   OrderDirection,
-} from "../../../../http-client/api.types";
-import { CourseOrderableFields } from "../../../../react-query/course/course.types";
+} from "../../../../api-client/api.types";
+import { CourseOrderableFields } from "../../../../features/course/course.types";
 
 const SORTING_OPTIONS: {
   value: OrderBy<CourseOrderableFields>;

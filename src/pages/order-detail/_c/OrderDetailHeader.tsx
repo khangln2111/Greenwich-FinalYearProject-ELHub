@@ -1,5 +1,5 @@
 import { Divider } from "@mantine/core";
-import { OrderDetailVm, OrderStatus } from "../../../react-query/order/order.types";
+import { OrderDetailVm, OrderStatus } from "../../../features/order/order.types";
 import { cn } from "../../../utils/cn";
 import { formatDate } from "../../../utils/format";
 

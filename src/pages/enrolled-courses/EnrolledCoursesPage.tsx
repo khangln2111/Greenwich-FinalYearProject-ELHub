@@ -1,6 +1,6 @@
 import { GraduationCapIcon } from "lucide-react";
 import CenterLoader from "../../components/CenterLoader";
-import { useGetEnrollmentsSelf } from "../../react-query/enrollment/enrollmentHooks";
+import { useGetEnrollmentsSelf } from "../../features/enrollment/enrollmentHooks";
 import EnrolledCourseCard from "./_c/EnrolledCourseCard";
 import { Link } from "react-router-dom";
 

@@ -2,7 +2,7 @@ import { Spoiler, Title, Button } from "@mantine/core";
 import { MessageSquare, PlayCircle, Star, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import image from "../../../assets/placeholder/avatar-placeholder.jpg";
-import { CourseDetailVm } from "../../../react-query/course/course.types";
+import { CourseDetailVm } from "../../../features/course/course.types";
 
 type InstructorTabProps = {
   courseDetail: CourseDetailVm;

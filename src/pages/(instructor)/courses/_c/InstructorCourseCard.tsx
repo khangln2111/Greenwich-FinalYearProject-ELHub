@@ -3,8 +3,8 @@ import { Button, Rating } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { CourseStatus, CourseVm } from "../../../../react-query/course/course.types";
-import { useDeleteCourse } from "../../../../react-query/course/courseHooks";
+import { CourseStatus, CourseVm } from "../../../../features/course/course.types";
+import { useDeleteCourse } from "../../../../features/course/courseHooks";
 import { formatCurrency, formatDuration } from "../../../../utils/format";
 
 const statusBadgeMap: Record<CourseStatus, string> = {

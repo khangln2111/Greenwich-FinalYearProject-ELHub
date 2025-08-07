@@ -1,4 +1,4 @@
-import { OrderItemVm } from "../../../react-query/order/order.types";
+import { OrderItemVm } from "../../../features/order/order.types";
 
 type Props = {
   item: OrderItemVm;

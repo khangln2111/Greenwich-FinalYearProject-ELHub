@@ -7,9 +7,9 @@ import CusModal from "../../../../../components/CusModal";
 import {
   UpdateSectionFormValues,
   editSectionFormSchema,
-} from "../../../../../react-query/section/section.schema";
-import { SectionVm, UpdateSectionCommand } from "../../../../../react-query/section/section.types";
-import { useUpdateSection } from "../../../../../react-query/section/sectionHooks";
+} from "../../../../../features/section/section.schema";
+import { SectionVm, UpdateSectionCommand } from "../../../../../features/section/section.types";
+import { useUpdateSection } from "../../../../../features/section/sectionHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 
 interface EditSectionalModalProps {

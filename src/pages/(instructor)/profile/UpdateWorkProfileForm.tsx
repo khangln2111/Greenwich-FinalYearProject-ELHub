@@ -7,12 +7,9 @@ import { ALLOWED_IMAGE_TYPES } from "../../../constants/ValidationConstants";
 import {
   UpdateWorkProfileFormType,
   updateWorkProfileSchema,
-} from "../../../react-query/auth/identity.schema";
-import {
-  UpdateWorkProfileSelfCommand,
-  WorkProfileVm,
-} from "../../../react-query/auth/identity.types";
-import { useUpdateWorkProfileSelf } from "../../../react-query/auth/identityHooks";
+} from "../../../features/auth/identity.schema";
+import { UpdateWorkProfileSelfCommand, WorkProfileVm } from "../../../features/auth/identity.types";
+import { useUpdateWorkProfileSelf } from "../../../features/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 type UpdateWorkProfileFormProps = {

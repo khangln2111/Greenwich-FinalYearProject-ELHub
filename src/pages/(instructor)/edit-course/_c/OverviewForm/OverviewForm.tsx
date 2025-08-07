@@ -13,13 +13,13 @@ import {
 import {
   updateCourseOverviewSchema,
   UpdateCourseOverviewFormValues,
-} from "../../../../../react-query/course/course.schema";
+} from "../../../../../features/course/course.schema";
 import {
   CourseDetailVm,
   CourseLevel,
   UpdateCourseCommand,
-} from "../../../../../react-query/course/course.types";
-import { useUpdateCourse } from "../../../../../react-query/course/courseHooks";
+} from "../../../../../features/course/course.types";
+import { useUpdateCourse } from "../../../../../features/course/courseHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import SortableInputList from "./SortableInputList";
 import TestSortList from "./TestSortList";

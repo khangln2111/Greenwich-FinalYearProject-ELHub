@@ -2,8 +2,8 @@ import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import CusModal from "../../../components/CusModal";
-import { RedeemGiftFormValues, redeemGiftSchema } from "../../../react-query/gift/gift.schema";
-import { useRedeemGift } from "../../../react-query/gift/giftHooks";
+import { RedeemGiftFormValues, redeemGiftSchema } from "../../../features/gift/gift.schema";
+import { useRedeemGift } from "../../../features/gift/giftHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 type RedeemGiftModalProps = {

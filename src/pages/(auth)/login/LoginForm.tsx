@@ -5,9 +5,9 @@ import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../../../components/svg-icons/GoogleIcon";
-import { LoginFormValues, loginSchema } from "../../../react-query/auth/identity.schema";
-import { LoginCommand } from "../../../react-query/auth/identity.types";
-import { useLogin, useLoginWithGoogle } from "../../../react-query/auth/identityHooks";
+import { LoginFormValues, loginSchema } from "../../../features/auth/identity.schema";
+import { LoginCommand } from "../../../features/auth/identity.types";
+import { useLogin, useLoginWithGoogle } from "../../../features/auth/identityHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 const LoginForm = () => {

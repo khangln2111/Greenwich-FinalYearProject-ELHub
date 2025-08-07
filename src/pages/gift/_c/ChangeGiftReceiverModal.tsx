@@ -5,7 +5,7 @@ import CusModal from "../../../components/CusModal";
 import {
   ChangeGiftReceiverFormValues,
   changeGiftReceiverSchema,
-} from "../../../react-query/gift/gift.schema";
+} from "../../../features/gift/gift.schema";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 type ChangeGiftReceiverModalProps = {

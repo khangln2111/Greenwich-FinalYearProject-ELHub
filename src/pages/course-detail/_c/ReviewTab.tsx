@@ -13,7 +13,7 @@ import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 
 import CenterLoader from "../../../components/CenterLoader";
-import { useGetReviewsByCourseId } from "../../../react-query/review/reviewHooks";
+import { useGetReviewsByCourseId } from "../../../features/review/reviewHooks";
 import ReviewCard from "./ReviewCard";
 
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {

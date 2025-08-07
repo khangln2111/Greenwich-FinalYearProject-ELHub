@@ -3,11 +3,11 @@ import { useForm } from "@mantine/form";
 import { IconAt, IconLock, IconRegistered } from "@tabler/icons-react";
 import { z } from "zod";
 import PasswordStrength from "../../../components/PasswordStrength/PasswordStrength";
-import { RegisterCommand } from "../../../react-query/auth/identity.types";
-import { useRegister } from "../../../react-query/auth/identityHooks";
+import { RegisterCommand } from "../../../features/auth/identity.types";
+import { useRegister } from "../../../features/auth/identityHooks";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { formSubmitWithFocus } from "../../../utils/form";
-import { RegisterFormValues, registerSchema } from "../../../react-query/auth/identity.schema";
+import { RegisterFormValues, registerSchema } from "../../../features/auth/identity.schema";
 
 function getPasswordRequirements(
   schema: z.ZodObject<any>,

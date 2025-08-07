@@ -2,12 +2,9 @@
 import { Button, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-import {
-  CreateGiftSchemaFormValues,
-  createGiftSchema,
-} from "../../../react-query/gift/gift.schema";
-import { CreateGiftCommand } from "../../../react-query/gift/gift.types";
-import { useCreateGift } from "../../../react-query/gift/giftHooks";
+import { CreateGiftSchemaFormValues, createGiftSchema } from "../../../features/gift/gift.schema";
+import { CreateGiftCommand } from "../../../features/gift/gift.types";
+import { useCreateGift } from "../../../features/gift/giftHooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 interface GiftingModalProps {

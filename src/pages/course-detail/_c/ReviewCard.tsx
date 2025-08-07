@@ -1,7 +1,7 @@
 import { Rating } from "@mantine/core";
 import dayjs from "dayjs";
 import { ShieldCheckIcon } from "lucide-react";
-import { ReviewVm } from "../../../react-query/review/review.types";
+import { ReviewVm } from "../../../features/review/review.types";
 import avatar from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
 interface ReviewCardProps {

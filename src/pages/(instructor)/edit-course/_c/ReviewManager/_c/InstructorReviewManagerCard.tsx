@@ -2,11 +2,11 @@ import { Button, Group, Rating, Text, Textarea } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
 import avatarPlaceholder from "../../../../../../assets/placeholder/profile-avatar-placeholder.svg";
-import { ReviewVm } from "../../../../../../react-query/review/review.types";
+import { ReviewVm } from "../../../../../../features/review/review.types";
 import {
   useReplyToReview,
   useUpdateReviewReply,
-} from "../../../../../../react-query/review/reviewHooks";
+} from "../../../../../../features/review/reviewHooks";
 import { cn } from "../../../../../../utils/cn";
 
 interface InstructorReviewManagerCardProps {

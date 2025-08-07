@@ -1,7 +1,7 @@
 import { Button, Checkbox, Group, Modal, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useAssignRolesToUser } from "../../../../react-query/user/userHooks";
-import { UserVm, AssignRoleToUserCommand } from "../../../../react-query/user/user.types";
+import { useAssignRolesToUser } from "../../../../features/user/userHooks";
+import { UserVm, AssignRoleToUserCommand } from "../../../../features/user/user.types";
 
 interface Props {
   user: UserVm;

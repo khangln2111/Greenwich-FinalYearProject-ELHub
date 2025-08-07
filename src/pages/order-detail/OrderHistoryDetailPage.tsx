@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import CenterLoader from "../../components/CenterLoader";
 import SummaryDecorator from "../../components/SummaryDecorator";
-import { useGetOrderDetailSelf } from "../../react-query/order/orderHooks";
+import { useGetOrderDetailSelf } from "../../features/order/orderHooks";
 import OrderDetailHeader from "./_c/OrderDetailHeader";
 import OrderItemList from "./_c/OrderItemList";
 import OrderSummary from "./_c/OrderSummary";

@@ -5,11 +5,11 @@ import CreateInstructorApplicationForm from "./CreateInstructorApplicationForm";
 import RetryInstructorApplicationForm from "./RetryInstructorApplicationForm";
 import { Loader } from "@mantine/core";
 import dayjs from "dayjs";
-import { useGetInstructorApplicationSelf } from "../../../react-query/instructorApplication/instructorApplicationHooks";
+import { useGetInstructorApplicationSelf } from "../../../features/instructorApplication/instructorApplicationHooks";
 import CusModal from "../../../components/CusModal";
 import ApplicationStatusModal from "./ApplicationStatusModal"; // import thêm modal đẹp mắt
 import { useState } from "react";
-import { InstructorApplicationStatus } from "../../../react-query/instructorApplication/instructorApplication.types";
+import { InstructorApplicationStatus } from "../../../features/instructorApplication/instructorApplication.types";
 
 const MAX_RETRY = 2;
 const RETRY_DELAY_DAYS = 7;

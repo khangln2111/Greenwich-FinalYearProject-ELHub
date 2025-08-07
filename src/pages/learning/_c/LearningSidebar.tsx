@@ -6,8 +6,8 @@ import {
   HourglassIcon,
   MonitorPlayIcon,
 } from "lucide-react";
-import { LectureVm } from "../../../react-query/lecture/lecture.types";
-import { LearningSectionVm } from "../../../react-query/section/section.types";
+import { LectureVm } from "../../../features/lecture/lecture.types";
+import { LearningSectionVm } from "../../../features/section/section.types";
 import { cn } from "../../../utils/cn";
 import { formatDuration } from "../../../utils/format";
 

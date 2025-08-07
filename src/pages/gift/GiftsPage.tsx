@@ -7,7 +7,7 @@ import {
   useGetReceivedGifts,
   useGetSentGifts,
   useRevokeGift,
-} from "../../react-query/gift/giftHooks";
+} from "../../features/gift/giftHooks";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
 import { SentGiftItemCard } from "./_c/SentGiftItemCard";
 import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";

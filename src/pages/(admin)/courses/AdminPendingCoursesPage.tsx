@@ -3,9 +3,9 @@ import { ArrowUpAzIcon, InboxIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
 import { useSearchParamState } from "../../../hooks/useSearchParamState";
-import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../http-client/api.types";
-import { CourseOrderableFields, CourseStatus } from "../../../react-query/course/course.types";
-import { useGetCourses } from "../../../react-query/course/courseHooks";
+import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
+import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
+import { useGetCourses } from "../../../features/course/courseHooks";
 import AdminCourseCard from "./_c/AdminCourseCard";
 
 const COURSE_ORDER_OPTIONS: {

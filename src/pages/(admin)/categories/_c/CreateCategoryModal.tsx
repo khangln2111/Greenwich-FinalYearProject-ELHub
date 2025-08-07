@@ -3,13 +3,13 @@ import { useForm } from "@mantine/form";
 import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
-import { useCreateCategory } from "../../../../react-query/category/categoryHooks";
+import { useCreateCategory } from "../../../../features/category/categoryHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import {
   CreateCategoryFormValues,
   createCategorySchema,
-} from "../../../../react-query/category/category.schema";
+} from "../../../../features/category/category.schema";
 
 interface Props {
   opened: boolean;

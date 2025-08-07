@@ -1,4 +1,4 @@
-import { OrderStatus } from "../../../react-query/order/order.types";
+import { OrderStatus } from "../../../features/order/order.types";
 
 type Props = {
   activeTab: "All" | OrderStatus;

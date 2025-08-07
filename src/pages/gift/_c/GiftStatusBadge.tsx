@@ -1,4 +1,4 @@
-import { GiftStatus } from "../../../react-query/gift/gift.types";
+import { GiftStatus } from "../../../features/gift/gift.types";
 
 export function GiftStatusBadge({ status }: { status: GiftStatus }) {
   const base = "px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap";

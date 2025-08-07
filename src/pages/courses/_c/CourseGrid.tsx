@@ -2,9 +2,9 @@ import { Flex } from "@mantine/core";
 import { Search } from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader";
 import { useSearchParamState } from "../../../hooks/useSearchParamState";
-import { decodeOrderOption } from "../../../http-client/api.types";
-import { CourseOrderableFields } from "../../../react-query/course/course.types";
-import { useGetCourses } from "../../../react-query/course/courseHooks";
+import { decodeOrderOption } from "../../../api-client/api.types";
+import { CourseOrderableFields } from "../../../features/course/course.types";
+import { useGetCourses } from "../../../features/course/courseHooks";
 import CourseCard from "../../home/_c/PopularCourses/CourseCard";
 import CoursePagination from "./CoursePagination";
 

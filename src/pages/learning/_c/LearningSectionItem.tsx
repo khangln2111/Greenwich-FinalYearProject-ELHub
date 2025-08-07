@@ -1,8 +1,8 @@
 import { Collapse } from "@mantine/core";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import LearningLectureItem from "./LearningLectureItem";
-import { LectureVm } from "../../../react-query/lecture/lecture.types";
-import { SectionVm } from "../../../react-query/section/section.types";
+import { LectureVm } from "../../../features/lecture/lecture.types";
+import { SectionVm } from "../../../features/section/section.types";
 import { formatDuration } from "../../../utils/format";
 
 interface SectionItemProps {

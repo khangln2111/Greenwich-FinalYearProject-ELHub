@@ -33,7 +33,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../components/ThemeToggler";
 import { useSearchParamState } from "../../hooks/useSearchParamState";
-import { useGetCart } from "../../react-query/cart/cartHooks";
+import { useGetCart } from "../../features/cart/cartHooks";
 import { useAppStore } from "../../zustand/store";
 import AvatarMenu from "./_c/AvatarMenu";
 import CustomNavLink from "./_c/CustomNavLink";

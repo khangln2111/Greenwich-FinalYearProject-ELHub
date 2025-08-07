@@ -18,9 +18,9 @@ import {
   useSendResetPasswordOtp,
   useResetPassword,
   useValidateResetPasswordOtp,
-} from "../../../react-query/auth/identityHooks";
+} from "../../../features/auth/identityHooks";
 import { useMediaQuery } from "@mantine/hooks";
-import { ErrorCode } from "../../../http-client/api.types";
+import { ErrorCode } from "../../../api-client/api.types";
 import { ArrowLeftIcon } from "lucide-react";
 
 const ForgotPasswordPage = () => {

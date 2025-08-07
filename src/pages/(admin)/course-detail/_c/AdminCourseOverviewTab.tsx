@@ -1,6 +1,6 @@
 import { Paper, Text, ThemeIcon, Title } from "@mantine/core";
 import { ArrowRight, AwardIcon, InfoIcon } from "lucide-react";
-import { CourseDetailVm } from "../../../../react-query/course/course.types";
+import { CourseDetailVm } from "../../../../features/course/course.types";
 
 type AdminCourseOverviewTabProps = {
   course: CourseDetailVm;

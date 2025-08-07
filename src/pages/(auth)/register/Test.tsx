@@ -1,7 +1,7 @@
 import { Avatar, Badge, Button, Center, Image, Rating, Text, Tooltip } from "@mantine/core";
 import { Clock, LibraryBig, Users } from "lucide-react";
 import { Link } from "react-router-dom";
-import { CourseVm, CourseLevel } from "../../../react-query/course/course.types";
+import { CourseVm, CourseLevel } from "../../../features/course/course.types";
 import { formatDuration } from "../../../utils/format";
 
 type CourseCardProps = {
