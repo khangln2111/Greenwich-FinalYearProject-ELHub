@@ -1,6 +1,6 @@
 import { Outlet, ScrollRestoration } from "react-router-dom";
-import Footer from "./Footer";
-import Header from "./Header";
+import Footer from "./_c/Footer";
+import Header from "./_c/Header";
 
 const UserLayout = () => {
   return (

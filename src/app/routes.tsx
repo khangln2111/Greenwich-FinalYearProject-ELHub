@@ -18,22 +18,22 @@ import InstructorAnalyticsPage from "../pages/(instructor)/analytics/InstructorA
 import InstructorCoursesPage from "../pages/(instructor)/courses/InstructorCoursesPage";
 import InstructorEditCoursePage from "../pages/(instructor)/edit-course/InstructorEditCoursePage";
 import InstructorProfilePage from "../pages/(instructor)/profile/InstructorProfilePage";
-import BecomeInstructorPage from "../pages/become-instructor/BecomeInstructorPage";
-import CartPage from "../pages/cart/CartPage";
-import CheckoutResultPage from "../pages/checkout-result/CheckoutResultPage";
-import CheckoutPage from "../pages/checkout/CheckoutPage";
-import CourseDetailPage from "../pages/course-detail/CourseDetailPage";
-import CoursesPage from "../pages/courses/CoursesPage";
-import EnrolledCoursesPage from "../pages/enrolled-courses/EnrolledCoursesPage";
-import ErrorPage from "../pages/error/ErrorPage";
-import GiftsPage from "../pages/gift/GiftsPage";
-import HomePage from "../pages/home/HomePage";
-import InstructorDetailPage from "../pages/instructor-detail/InstructorDetailPage";
-import InventoryPage from "../pages/inventory/InventoryPage";
-import LearningPage from "../pages/learning/LearningPage";
-import MyAccountPage from "../pages/my-account/MyAccountPage";
-import OrderHistoryDetailPage from "../pages/order-detail/OrderHistoryDetailPage";
-import OrderHistoryPage from "../pages/order-history/OrderHistoryPage";
+import BecomeInstructorPage from "../pages/(main)/become-instructor/BecomeInstructorPage";
+import CartPage from "../pages/(main)/cart/CartPage";
+import CheckoutResultPage from "../pages/(main)/checkout-result/CheckoutResultPage";
+import CheckoutPage from "../pages/(main)/checkout/CheckoutPage";
+import CourseDetailPage from "../pages/(main)/course-detail/CourseDetailPage";
+import CoursesPage from "../pages/(main)/courses/CoursesPage";
+import EnrolledCoursesPage from "../pages/(main)/enrolled-courses/EnrolledCoursesPage";
+import ErrorPage from "../pages/(main)/error/ErrorPage";
+import GiftsPage from "../pages/(main)/gift/GiftsPage";
+import HomePage from "../pages/(main)/home/HomePage";
+import InstructorDetailPage from "../pages/(main)/instructor-detail/InstructorDetailPage";
+import InventoryPage from "../pages/(main)/inventory/InventoryPage";
+import LearningPage from "../pages/(main)/learning/LearningPage";
+import MyAccountPage from "../pages/(main)/my-account/MyAccountPage";
+import OrderHistoryDetailPage from "../pages/(main)/order-detail/OrderHistoryDetailPage";
+import OrderHistoryPage from "../pages/(main)/order-history/OrderHistoryPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
