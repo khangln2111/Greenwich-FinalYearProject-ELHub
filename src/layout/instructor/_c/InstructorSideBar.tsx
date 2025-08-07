@@ -71,7 +71,7 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
         variant="gradient"
         gradient={{ from: "blue", to: "cyan", deg: 90 }}
         className={cn(
-          "px-4 starting:opacity-0 starting:-translate-x-full transition-all duration-300",
+          "px-4 starting:opacity-0 starting:-translate-x-full transition-all duration-600 ease-in-out",
           {
             hidden: collapsedToIcon,
           },

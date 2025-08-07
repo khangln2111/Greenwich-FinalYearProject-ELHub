@@ -9,12 +9,12 @@ const CoursesPage = () => {
   return (
     <div className="flex-1 bg-gray-100 dark:bg-dark-5">
       <Box
-        className="container"
+        className="container w-full"
         px={{ base: "15px", md: "20px", lg: "30px", xl: "50px" }}
         py="xl"
         size="xl"
       >
-        <Grid py="md" gutter="xl">
+        <Grid py="md" gutter={{ lg: "xl" }}>
           {/* Column 1: desktop sidebar filter */}
           <GridCol
             visibleFrom="lg"
