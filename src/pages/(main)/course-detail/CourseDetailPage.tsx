@@ -18,10 +18,10 @@ import { useAddCartItem } from "../../../features/cart/cartHooks";
 import { useGetCourseDetail } from "../../../features/course/courseHooks";
 import { formatDate, formatDuration } from "../../../utils/format";
 import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
-import CurriculumTab from "./_c/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
+import CurriculumTab from "./_c/CurriculumTab/CurriculumTab";
 
 const items = [
   { title: "Home", href: "/" },

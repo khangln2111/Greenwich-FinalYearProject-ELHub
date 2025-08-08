@@ -156,10 +156,10 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
                   chevron={<ChevronDownIcon className="md:size-[26px]" />}
                   classNames={{
                     root: "flex flex-col",
-                    item: "border-0 mb-7",
+                    item: "border-0 mb-7 data-active:shadow-lg rounded-xl bg-white dark:bg-zinc-900",
                     control:
                       "bg-gray-200 dark:bg-dark-5 rounded-xl data-active:rounded-b-none transition",
-                    content: "shadow-lg rounded-lg rounded-t-none dark:bg-zinc-900 p-0",
+                    content: "p-0",
                   }}
                 >
                   {sections.map((section, index) => (

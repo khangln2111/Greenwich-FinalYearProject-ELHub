@@ -71,7 +71,7 @@ export default function LearningSidebar({
               </button>
               <Collapse in={isOpen} transitionTimingFunction="linear">
                 <ul>
-                  {section.lectures?.map((lecture) => {
+                  {section.lectures?.map((lecture, index) => {
                     const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
                     const isActive = lectureIndex === currentLectureIndex;
                     // lecture mapping
@@ -103,7 +103,7 @@ export default function LearningSidebar({
                               "font-semibold": isActive,
                             })}
                           >
-                            {lectureIndex + 1}. {lecture.title}
+                            {`${index + 1} - ${lecture.title}`}
                           </div>
                           <div
                             className={cn(

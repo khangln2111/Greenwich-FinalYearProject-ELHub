@@ -46,9 +46,9 @@ const AdminCourseCurriculumTab = ({ sections }: AdminCourseCurriculumTabProps) =
           chevron={<ChevronDownIcon size={26} />}
           classNames={{
             root: "flex flex-col gap-6",
-            item: "border-0",
-            control: "bg-gray-2 dark:bg-dark-5 rounded-xl",
-            content: "shadow-lg rounded-lg dark:bg-zinc-900",
+            item: "border-0 bg-white dark:bg-zinc-900 rounded-xl data-active:shadow-lg",
+            control: "bg-gray-2 dark:bg-dark-5 rounded-xl data-active:rounded-b-none",
+            content: "rounded-xl",
           }}
         >
           {sections.map((section, secIndex) => (
