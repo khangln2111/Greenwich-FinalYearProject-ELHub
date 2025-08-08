@@ -20,7 +20,7 @@ interface CustomModalProps {
   size?: string;
   bodyMaxHeight?: string;
   keepMounted?: boolean;
-  stackId?: string; // ✅ stackId để quản lý z-index
+  stackId?: string; // ✅ stackId to manage z-index
 }
 
 const ModalContext = createContext<Pick<CustomModalProps, "title" | "onClose" | "classNames">>({
@@ -65,7 +65,7 @@ function Footer({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ✅ Tính z-index từ stackId
+// ✅ Calculate z-index based on stackId
 function getZIndexFromStackId(stackId?: string, base = 200) {
   if (!stackId) return base;
   const numeric = parseInt(stackId.replace(/\D/g, ""));

@@ -36,7 +36,7 @@ export default function CartSummary({ selectedItems, className }: CartSummaryPro
           }
           const { clientSecret, orderId, isFree } = data.data;
 
-          // Nếu free, chuyển thẳng tới /checkout/result?orderId=...
+          //  if the order is free, navigate to /checkout/result?orderId=...
           if (isFree) {
             navigate(`/checkout/result?orderId=${orderId}`);
           } else if (clientSecret) {

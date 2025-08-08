@@ -88,7 +88,9 @@ export const SectionItem = ({ section, index, onUpdate }: SectionItemProps) => {
             <Accordion.Control>
               <div className="grid grid-cols-[1fr_auto] items-center gap-4">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                  <Text className="font-semibold text-sm md:text-xl flex-1">{section.title}</Text>
+                  <Text className="font-semibold text-sm md:text-xl flex-1">
+                    {index + 1}. {section.title.trim()}
+                  </Text>
                   <Text className="text-gray-500 dark:text-dark-1">
                     {section.lectures?.length} lectures
                   </Text>

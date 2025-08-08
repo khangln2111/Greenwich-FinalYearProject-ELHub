@@ -10,6 +10,7 @@ import LearningFooter from "./_c/LearningFooter";
 import LearningHeader from "./_c/LearningHeader";
 import LearningSidebar from "./_c/LearningSidebar";
 import { Hourglass } from "lucide-react";
+import CenterLoader from "../../../components/CenterLoader";
 
 export default function LearningCoursePage() {
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
@@ -24,7 +25,7 @@ export default function LearningCoursePage() {
 
   const completeLectureMutation = useCompleteLecture();
 
-  if (isPending) return <div>Loading...</div>;
+  if (isPending) return <CenterLoader height="800px" />;
 
   if (error || !courseId) return <Navigate to="/404" replace />;
 
@@ -96,6 +97,7 @@ export default function LearningCoursePage() {
               classNames={{
                 playIconWrapper: "md:size-16",
                 playIcon: "md:size-8",
+                previewImage: "h-full",
               }}
               videoUrl={currentLecture?.videoUrl}
               onVideoEnd={onVideoEnd}

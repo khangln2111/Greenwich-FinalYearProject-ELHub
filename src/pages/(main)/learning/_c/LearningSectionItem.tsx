@@ -34,7 +34,7 @@ export default function LearningSectionItem({
       >
         <div className="flex flex-col items-start gap-3">
           <span className="font-semibold text-md leading-none">
-            Section {section.order + 1}: {section.title.trim()}
+            {section.order + 1}. {section.title.trim()}
           </span>
           <span className="text-sm text-gray-600 dark:text-gray-400">
             {section.lectures?.length ?? 0} lectures ·{" "}
@@ -54,6 +54,7 @@ export default function LearningSectionItem({
               <LearningLectureItem
                 key={lecture.id}
                 lecture={lecture}
+                index={lectureIndex}
                 isActive={lecture.id === currentLectureId}
                 isDone={completed.has(lecture.id)}
                 onClick={() => onLectureClick(lecture.id)}

@@ -56,10 +56,10 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
       const [moved] = updatedSections.splice(source.index, 1);
       updatedSections.splice(destination.index, 0, moved);
 
-      // Chỉ cập nhật local state
+      // update local state
       setSections(updatedSections);
 
-      // Gửi mutation
+      // send mutation
       reorderSectionMutation.mutate({
         id: moved.id,
         newOrder: destination.index,
@@ -82,7 +82,7 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
       const movedLecture = sourceSection.lectures?.[source.index];
       if (!movedLecture) return;
 
-      // --- Cập nhật lectures trong localState ---
+      // --- Update lectures in localState ---
       const updatedSections = [...sections];
       const sourceSectionIndex = updatedSections.findIndex((s) => s.id === sourceSection.id);
       const destinationSectionIndex = updatedSections.findIndex(
@@ -90,20 +90,20 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
       );
 
       if (sourceSectionIndex !== -1 && destinationSectionIndex !== -1) {
-        // Xóa lecture khỏi source section
+        // Remove lecture from source section
         updatedSections[sourceSectionIndex].lectures?.splice(source.index, 1);
-        // Thêm lecture vào destination section
+        // Add lecture to destination section
         updatedSections[destinationSectionIndex].lectures?.splice(
           destination.index,
           0,
           movedLecture,
         );
 
-        // Cập nhật lại state sections
+        // Update local state
         setSections(updatedSections);
       }
 
-      // Gửi mutation để cập nhật lectures trên server
+      // Send mutation to update lectures on server
       reorderLectureMutation.mutate({
         id: movedLecture.id,
         newOrder: destination.index,

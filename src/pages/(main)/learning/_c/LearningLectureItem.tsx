@@ -7,6 +7,7 @@ import { formatDuration } from "../../../../utils/format";
 interface LectureItemProps {
   lecture: LectureVm;
   isActive: boolean;
+  index?: number;
   isDone: boolean;
   onClick: () => void;
   onToggleComplete: () => void;
@@ -14,6 +15,7 @@ interface LectureItemProps {
 
 export default function LearningLectureItem({
   lecture,
+  index,
   isActive,
   isDone,
   onClick,
@@ -39,7 +41,8 @@ export default function LearningLectureItem({
       />
       <div className="flex-1 flex flex-col gap-3">
         <div className={cn("text-[15px] leading-none", { "font-semibold": isActive })}>
-          {lecture.title}
+          {index !== undefined ? `${index + 1}. ` : ""}
+          {lecture.title.trim()}
         </div>
         <div
           className={cn("flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400", {

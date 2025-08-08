@@ -7,7 +7,7 @@ import { Loader } from "@mantine/core";
 import dayjs from "dayjs";
 import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplicationHooks";
 import CusModal from "../../../../components/CusModal";
-import ApplicationStatusModal from "./ApplicationStatusModal"; // import thêm modal đẹp mắt
+import ApplicationStatusModal from "./ApplicationStatusModal";
 import { useState } from "react";
 import { InstructorApplicationStatus } from "../../../../features/instructorApplication/instructorApplication.types";
 
@@ -37,7 +37,7 @@ const BecomeInstructorCTA = () => {
     }
 
     if (!application) {
-      open(); // mở form tạo mới
+      open(); // open create new form
       return;
     }
 
@@ -60,7 +60,7 @@ const BecomeInstructorCTA = () => {
           dayjs().diff(dayjs(application.lastRejectedAt), "day") >= RETRY_DELAY_DAYS);
 
       if (canRetry) {
-        open(); // mở form retry
+        open(); // open retry form
       } else {
         setStatusType("rejected-wait");
         openStatusModal();

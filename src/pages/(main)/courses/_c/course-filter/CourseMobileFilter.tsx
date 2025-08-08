@@ -1,41 +1,38 @@
-import { Stack, Text, ThemeIcon } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import { ListFilter } from "lucide-react";
-import { Vaul } from "mantine-vaul";
-import { useAppStore } from "../../../../../zustand/store";
+import { Stack } from "@mantine/core";
+import { ResponsiveDialog } from "mantine-vaul";
 import CourseFilter from "./CourseFilter";
 
-type CourseMobileFilterProps = {};
+type CourseMobileFilterProps = {
+  opened: boolean;
+  onClose: () => void;
+};
 
-export default function CourseMobileFilter({}: CourseMobileFilterProps) {
-  const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
-  const closeMobileFilter = useAppStore.use.closeMobileFilter();
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
-
-  if (isDesktop) {
-    return null; // Don't render on larger screens
-  }
-
+const CourseMobileFilter = ({ opened, onClose }: CourseMobileFilterProps) => {
   return (
-    <Vaul
+    <ResponsiveDialog
+      opened={opened}
+      onClose={() => onClose()}
       radius="xl"
       shadow="xl"
-      title={<Text className="text-h4 font-h4">Advanced filter</Text>}
-      target={
-        <Vaul.Target>
-          <ThemeIcon size={35} hiddenFrom="lg" variant={isMobileFilterOpen ? "filled" : "default"}>
-            <ListFilter strokeWidth={1.5} />
-          </ThemeIcon>
-        </Vaul.Target>
-      }
-      onCloseAnimationEnd={closeMobileFilter}
-      classNames={{
-        footer: "border-t-0",
+      title={<p className="text-h4 font-h4">Advanced filter</p>}
+      vaulProps={{
+        classNames: {
+          footer: "border-t-0",
+        },
+      }}
+      drawerProps={{
+        className: "lg:hidden",
+      }}
+      matches={{
+        base: "vaul",
+        md: "drawer",
       }}
     >
       <Stack className="pt-lg px-sm xl:px-lg mx-auto">
         <CourseFilter />
       </Stack>
-    </Vaul>
+    </ResponsiveDialog>
   );
-}
+};
+
+export default CourseMobileFilter;

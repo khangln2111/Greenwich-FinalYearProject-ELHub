@@ -42,7 +42,7 @@ export const CreateLectureModal = ({ opened, onClose, sectionId }: CreateLecture
 
     createLectureMutation.mutate(payload, {
       onSuccess: () => {
-        form.reset(); // reset form về mặc định
+        form.reset(); // reset form to initial values
         onClose();
       },
     });

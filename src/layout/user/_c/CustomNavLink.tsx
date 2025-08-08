@@ -7,10 +7,7 @@ type CustomNavLinkProps = BoxProps & {
   children?: React.ReactNode;
 };
 
-/**
- * NavLink dùng để hiển thị các link trong header với Tailwind.
- * Bạn có thể mở rộng thêm các props nếu cần.
- */
+// CustomNavLink styled with tailwind
 const _CustomNavLink = forwardRef<HTMLAnchorElement, CustomNavLinkProps>(
   ({ className, children, ...props }, ref) => {
     const baseClass =

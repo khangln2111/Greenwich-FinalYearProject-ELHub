@@ -1,19 +1,16 @@
 // app/courses/components/CourseList.tsx
-import { ActionIcon, Button, Group, TextInput, Title } from "@mantine/core";
+import { ActionIcon, Button, Group, TextInput, ThemeIcon, Title } from "@mantine/core";
 import { LayoutGrid, List, ListFilter, Search } from "lucide-react";
 import { useAppStore } from "../../../../zustand/store";
-import CourseMobileFilter from "./course-filter/CourseMobileFilter";
 import CourseGrid from "./CourseGrid";
 
 type CourseMainProps = {};
 
 const CourseMain = ({}: CourseMainProps) => {
-  const toggleDesktopFilter = useAppStore.use.toggleDesktopFilter();
-  const isDesktopFilterOpen = useAppStore.use.isDesktopFilterOpen();
-
-  const isMobileFilterOpen = useAppStore.use.isMobileFilterOpen();
-  const closeMobileFilter = useAppStore.use.closeMobileFilter();
-  const openMobileFilter = useAppStore.use.openMobileFilter();
+  const toggleDesktopFilter = useAppStore((s) => s.toggleDesktopFilter);
+  const isDesktopFilterOpen = useAppStore((s) => s.isDesktopFilterOpen);
+  const isMobileFilterOpen = useAppStore((s) => s.isMobileFilterOpen);
+  const openMobileFilter = useAppStore((s) => s.openMobileFilter);
 
   return (
     <>
@@ -30,6 +27,14 @@ const CourseMain = ({}: CourseMainProps) => {
           >
             Filter
           </Button>
+          <ThemeIcon
+            size={35}
+            hiddenFrom="lg"
+            variant={isMobileFilterOpen ? "filled" : "default"}
+            onClick={openMobileFilter}
+          >
+            <ListFilter strokeWidth={1.5} />
+          </ThemeIcon>
           <ActionIcon size={35}>
             <LayoutGrid strokeWidth={1.5} />
           </ActionIcon>
@@ -37,7 +42,6 @@ const CourseMain = ({}: CourseMainProps) => {
             <List strokeWidth={1.5} />
           </ActionIcon>
           {/* Mobile filter toggler */}
-          <CourseMobileFilter />
 
           <TextInput
             placeholder="Search..."

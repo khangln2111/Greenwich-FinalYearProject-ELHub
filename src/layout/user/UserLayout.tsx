@@ -10,7 +10,7 @@ const UserLayout = () => {
       <main className="flex flex-col flex-1">
         <Outlet />
       </main>
-      <Footer /> {/* Sử dụng margin-top: auto */}
+      <Footer /> {/* using margin-top: auto */}
     </div>
   );
 };

@@ -29,7 +29,7 @@ export function extractThumbnailFromVideoUrl(videoUrl: string, seekTime = 1): Pr
     const video = document.createElement("video");
     const canvas = document.createElement("canvas");
 
-    video.crossOrigin = "anonymous"; // Bắt buộc nếu video từ domain khác
+    video.crossOrigin = "anonymous"; // Compulsory if video from different domain
     video.src = videoUrl;
     video.preload = "auto";
     video.muted = true;

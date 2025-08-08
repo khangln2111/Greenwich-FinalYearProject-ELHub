@@ -56,7 +56,9 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
               {/* Accordion header */}
               <Accordion.Control>
                 <div className="grid md:grid-cols-[1fr_auto] items-center">
-                  <Text className="font-semibold md:text-xl">{section.title}</Text>
+                  <Text className="font-semibold md:text-xl">
+                    {secIndex + 1}. {section.title.trim()}
+                  </Text>
                   <Text className="text-gray-500 dark:text-dark-1">
                     {section.lectures.length} lectures
                   </Text>

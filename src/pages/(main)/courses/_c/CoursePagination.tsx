@@ -12,7 +12,7 @@ export default function CoursePagination() {
     } else {
       params.delete("page");
     }
-    setSearchParams(params); // Điều này sẽ tự động cập nhật URL
+    setSearchParams(params); // Update URL with new page number
   };
 
   return <Pagination total={10} withEdges value={currentPage} onChange={handlePageChange} />;

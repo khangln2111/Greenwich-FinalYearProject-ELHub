@@ -72,7 +72,8 @@ const CourseFilter = () => {
         mx="-lg"
         multiple
         radius={0}
-        classNames={{ item: "border-x-0" }}
+        classNames={{ item: "border-0" }}
+        className="divide-y!"
         defaultValue={defaultOpenedItems}
         transitionDuration={400}
       >

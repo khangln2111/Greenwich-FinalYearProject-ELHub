@@ -36,7 +36,7 @@ export default function CheckoutSummary({
 
     setLoading(true);
 
-    // ✅ Submit các field trong PaymentElement trước khi confirm
+    // ✅ Submit fields in PaymentElement before confirming
     const { error: submitError } = await elements.submit();
     if (submitError) {
       setLoading(false);

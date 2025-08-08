@@ -74,7 +74,6 @@ export default function LearningSidebar({
                   {section.lectures?.map((lecture) => {
                     const lectureIndex = allLectures.findIndex((l) => l.id === lecture.id);
                     const isActive = lectureIndex === currentLectureIndex;
-
                     // lecture mapping
                     return (
                       <li

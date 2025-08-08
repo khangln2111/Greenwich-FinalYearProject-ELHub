@@ -21,12 +21,12 @@ export default function CheckoutPage() {
   });
   const stripeTheme = computedColorScheme === "dark" ? "night" : "stripe";
 
-  // ✅ Lấy dữ liệu từ state
+  // ✅ Get items, clientSecret, and orderId from location state
   const items: CartItemVm[] = location.state?.selectedItems;
   const clientSecret: string | null = location.state?.clientSecret ?? null;
   const orderId: string | null = location.state?.orderId ?? null;
 
-  // ✅ Điều kiện hợp lệ để hiển thị trang checkout
+  // ✅ Valid conditions to display the checkout page
   if (!items || items.length === 0 || !clientSecret || !orderId) {
     return <Navigate to="/cart" replace />;
   }
