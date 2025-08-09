@@ -27,7 +27,7 @@ import {
 import { CourseStatus } from "../../../features/course/course.types";
 import { useGetCourseDetail, useModerateCourse } from "../../../features/course/courseHooks";
 import { formatDuration } from "../../../utils/format";
-import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab";
+import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
 import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";

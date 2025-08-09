@@ -22,6 +22,7 @@ import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
 import CurriculumTab from "./_c/CurriculumTab/CurriculumTab";
+import { cn } from "../../../utils/cn";
 
 const items = [
   { title: "Home", href: "/" },
@@ -32,11 +33,10 @@ const items = [
     to={item.href}
     key={index}
     component={Link}
-    className={
-      item.isActive
-        ? "pointer-events-none dark:text-gray-400 text-gray-800 font-semibold cursor-default"
-        : ""
-    }
+    className={cn("", {
+      "pointer-events-none dark:text-gray-400 text-gray-800 font-semibold cursor-default":
+        item.isActive,
+    })}
   >
     {item.title}
   </Anchor>
