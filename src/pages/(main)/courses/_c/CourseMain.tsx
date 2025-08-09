@@ -1,16 +1,17 @@
 // app/courses/components/CourseList.tsx
 import { ActionIcon, Button, Group, TextInput, ThemeIcon, Title } from "@mantine/core";
 import { LayoutGrid, List, ListFilter, Search } from "lucide-react";
-import { useAppStore } from "../../../../zustand/store";
+import { useCourseFilterStore } from "../../../../zustand/courseFilterStore";
 import CourseGrid from "./CourseGrid";
+import CourseMobileFilter from "./course-filter/CourseMobileFilter";
 
 type CourseMainProps = {};
 
 const CourseMain = ({}: CourseMainProps) => {
-  const toggleDesktopFilter = useAppStore((s) => s.toggleDesktopFilter);
-  const isDesktopFilterOpen = useAppStore((s) => s.isDesktopFilterOpen);
-  const isMobileFilterOpen = useAppStore((s) => s.isMobileFilterOpen);
-  const openMobileFilter = useAppStore((s) => s.openMobileFilter);
+  const toggleDesktopFilter = useCourseFilterStore((s) => s.toggleDesktopFilter);
+  const isDesktopFilterOpen = useCourseFilterStore((s) => s.isDesktopFilterOpen);
+  const isMobileFilterOpen = useCourseFilterStore((s) => s.isMobileFilterOpen);
+  const openMobileFilter = useCourseFilterStore((s) => s.openMobileFilter);
 
   return (
     <>
@@ -54,6 +55,7 @@ const CourseMain = ({}: CourseMainProps) => {
         </Group>
       </Group>
       <CourseGrid />
+      <CourseMobileFilter />
     </>
   );
 };

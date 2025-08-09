@@ -1,13 +1,10 @@
 import { Box, Grid, GridCol, Paper } from "@mantine/core";
-import { useAppStore } from "../../../zustand/store";
 import CourseMain from "./_c/CourseMain";
 import CourseFilter from "./_c/course-filter/CourseFilter";
-import CourseMobileFilter from "./_c/course-filter/CourseMobileFilter";
+import { useCourseFilterStore } from "../../../zustand/courseFilterStore";
 
 const CoursesPage = () => {
-  const isDesktopFilterOpen = useAppStore((s) => s.isDesktopFilterOpen);
-  const isMobileFilterOpen = useAppStore((s) => s.isMobileFilterOpen);
-  const closeMobileFilter = useAppStore((s) => s.closeMobileFilter);
+  const isDesktopFilterOpen = useCourseFilterStore((s) => s.isDesktopFilterOpen);
 
   return (
     <div className="flex-1 bg-gray-100 dark:bg-dark-5">
@@ -32,7 +29,6 @@ const CoursesPage = () => {
           {/* Column 2: Main content with course grid*/}
           <GridCol span="auto" className="transition-all duration-300 ease-in-out">
             <CourseMain />
-            <CourseMobileFilter opened={isMobileFilterOpen} onClose={closeMobileFilter} />
           </GridCol>
         </Grid>
       </Box>

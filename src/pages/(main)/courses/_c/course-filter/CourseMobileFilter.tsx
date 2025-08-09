@@ -1,17 +1,18 @@
 import { Stack } from "@mantine/core";
 import { ResponsiveDialog } from "mantine-vaul";
 import CourseFilter from "./CourseFilter";
+import { useCourseFilterStore } from "../../../../../zustand/courseFilterStore";
 
-type CourseMobileFilterProps = {
-  opened: boolean;
-  onClose: () => void;
-};
+type CourseMobileFilterProps = {};
 
-const CourseMobileFilter = ({ opened, onClose }: CourseMobileFilterProps) => {
+const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
+  const isMobileFilterOpen = useCourseFilterStore((s) => s.isMobileFilterOpen);
+  const closeMobileFilter = useCourseFilterStore((s) => s.closeMobileFilter);
+
   return (
     <ResponsiveDialog
-      opened={opened}
-      onClose={() => onClose()}
+      opened={isMobileFilterOpen}
+      onClose={() => closeMobileFilter()}
       radius="xl"
       shadow="xl"
       title={<p className="text-h4 font-h4">Advanced filter</p>}

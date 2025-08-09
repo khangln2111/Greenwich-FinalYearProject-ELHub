@@ -43,23 +43,6 @@ export const createInstructorLayoutSlice: StateCreator<InstructorLayoutSlice> = 
 });
 
 // Slice for managing the state of the course filter
-interface CourseFilterSlice {
-  isDesktopFilterOpen: boolean;
-  isMobileFilterOpen: boolean;
-  toggleDesktopFilter: () => void;
-  toggleMobileFilter: () => void;
-  openMobileFilter: () => void;
-  closeMobileFilter: () => void;
-}
-
-export const createCourseFilterSlice: StateCreator<CourseFilterSlice> = (set) => ({
-  isDesktopFilterOpen: true,
-  isMobileFilterOpen: false,
-  toggleDesktopFilter: () => set((state) => ({ isDesktopFilterOpen: !state.isDesktopFilterOpen })),
-  toggleMobileFilter: () => set((state) => ({ isMobileFilterOpen: !state.isMobileFilterOpen })),
-  closeMobileFilter: () => set({ isMobileFilterOpen: false }),
-  openMobileFilter: () => set({ isMobileFilterOpen: true }),
-});
 
 // Slice for managing the state of the sidebar
 interface AuthSlice {
@@ -88,10 +71,9 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   setUser: (user) => set({ currentUser: user }),
 });
 
-type AppStore = CourseFilterSlice & AuthSlice & InstructorLayoutSlice & AdminLayoutSlice;
+type AppStore = AuthSlice & InstructorLayoutSlice & AdminLayoutSlice;
 
 const useAppStoreBase = create<AppStore>()((...a) => ({
-  ...createCourseFilterSlice(...a),
   ...createAuthSlice(...a),
   ...createInstructorLayoutSlice(...a),
   ...createAdminLayoutSlice(...a),

@@ -61,12 +61,16 @@ export default function LearningFooter({
       </ActionIcon>
       <ActionIcon
         radius="full"
-        variant="default"
         size="lg"
         className="hidden-from-lg"
+        variant="default"
         onClick={onOpenDrawer}
       >
-        <MenuIcon className="size-[60%]" />
+        {desktopSidebarOpened ? (
+          <ArrowRightIcon className="size-[60%]" />
+        ) : (
+          <MenuIcon className="size-[60%]" />
+        )}
       </ActionIcon>
     </footer>
   );

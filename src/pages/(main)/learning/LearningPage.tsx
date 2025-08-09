@@ -171,7 +171,7 @@ export default function LearningCoursePage() {
         nextDisabled={currentLectureIndex >= allLectures.length - 1}
         onToggleSidebar={() => setdesktopSidebarOpened((prev) => !prev)}
         onOpenDrawer={() => setDrawerOpened(true)}
-        desktopSidebarOpened={false}
+        desktopSidebarOpened={isMobileOrTablet ? false : desktopSidebarOpened}
       />
     </div>
   );
