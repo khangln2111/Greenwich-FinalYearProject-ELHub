@@ -4,9 +4,9 @@ import SidebarLayout from "../../components/layout/SidebarLayout";
 import InstructorSidebar from "./_c/InstructorSidebar";
 
 const InstructorLayout = () => {
-  const sidebarCollapsed = useAppStore.use.desktopInstructorSidebarCollapsed();
-  const mobileSidebarOpened = useAppStore.use.mobileInstructorSidebarOpened();
-  const closeMobileSidebar = useAppStore.use.closeMobileInstructorSidebar();
+  const sidebarCollapsed = useAppStore((s) => s.desktopInstructorSidebarCollapsed);
+  const mobileSidebarOpened = useAppStore((s) => s.mobileInstructorSidebarOpened);
+  const closeMobileSidebar = useAppStore((s) => s.closeMobileInstructorSidebar);
 
   return (
     <SidebarLayout

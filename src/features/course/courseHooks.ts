@@ -156,7 +156,7 @@ export const useRetrySubmitCourse = () => {
 };
 
 export const useGetCourseLearning = (id: string) => {
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
     queryKey: keyFac.courses.getCourseLearning(id).queryKey,
     queryFn: () => getCourseLearning(id),

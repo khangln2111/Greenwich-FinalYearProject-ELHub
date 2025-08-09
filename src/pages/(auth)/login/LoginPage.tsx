@@ -7,7 +7,7 @@ import { useAppStore } from "../../../zustand/store";
 import LoginForm from "./LoginForm";
 
 const LoginPage = () => {
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
 
   useEffect(() => {
     if (loginSessionStorageHelper.shouldShowSessionExpiredToast()) {

@@ -4,7 +4,7 @@ import { keyFac } from "../common-service/queryKeyFactory";
 import { useAppStore } from "../../zustand/store";
 
 export const useGetInventoryItemsSelf = () => {
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
     queryKey: keyFac.inventories.getInventoryItemsSelf().queryKey,
     queryFn: getInventoryItemsSelf,

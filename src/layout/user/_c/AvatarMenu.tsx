@@ -28,7 +28,7 @@ interface AvatarMenuProps {
 
 const AvatarMenu = ({ className }: AvatarMenuProps) => {
   const handleLogout = useLogout();
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
   return (
     <Menu
       transitionProps={{ transition: "pop-top-right" }}

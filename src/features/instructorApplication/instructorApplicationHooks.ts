@@ -26,7 +26,7 @@ export const useGetInstructorApplications = (query?: InstructorApplicationQueryC
 };
 
 export const useGetInstructorApplicationSelf = () => {
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
 
   return useQuery({
     queryKey: keyFac.instructorApplications.getInstructorApplicationSelf.queryKey,

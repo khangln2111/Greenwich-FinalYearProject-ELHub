@@ -8,7 +8,7 @@ import { enrollFromInventory, getEnrollmentsSelf } from "./enrollmentApi";
 import { ErrorCode } from "../../api-client/api.types";
 
 export const useGetEnrollmentsSelf = () => {
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
 
   return useQuery({
     queryKey: keyFac.enrollments.getEnrollmentsSelf().queryKey,

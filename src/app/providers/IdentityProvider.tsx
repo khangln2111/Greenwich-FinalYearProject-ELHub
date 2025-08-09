@@ -5,8 +5,8 @@ import { useCurrentUser } from "../../features/auth/identityHooks";
 import { useAppStore } from "../../zustand/store";
 
 const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
-  const accessToken = useAppStore.use.accessToken();
-  const setUser = useAppStore.use.setUser();
+  const accessToken = useAppStore((s) => s.accessToken);
+  const setUser = useAppStore((s) => s.setUser);
 
   const { data, isPending } = useCurrentUser();
 

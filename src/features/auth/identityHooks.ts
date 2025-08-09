@@ -36,7 +36,7 @@ import {
 } from "./identityApi";
 
 export const useCurrentUser = () => {
-  const accessToken = useAppStore.use.accessToken();
+  const accessToken = useAppStore((s) => s.accessToken);
   return useQuery({
     queryKey: keyFac.identity.getCurrentUser.queryKey,
     queryFn: getCurrentUser,
@@ -48,7 +48,7 @@ export const useCurrentUser = () => {
 export const useLogout = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const logout = useAppStore.use.logout();
+  const logout = useAppStore((s) => s.logout);
 
   const handleLogout = () => {
     queryClient.clear();
@@ -86,7 +86,7 @@ export const useRegister = () => {
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
-  const setTokens = useAppStore.use.setTokens();
+  const setTokens = useAppStore((s) => s.setTokens);
   const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: LoginCommand) => login(data),
@@ -123,7 +123,7 @@ export const useLogin = () => {
 
 export const useLoginWithGoogle = () => {
   const queryClient = useQueryClient();
-  const setTokens = useAppStore.use.setTokens();
+  const setTokens = useAppStore((s) => s.setTokens);
   const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: LoginWithGoogleCommand) => loginWithGoogle(data),
@@ -326,7 +326,7 @@ export const useUpdateUserProfileSelf = () => {
 };
 
 export const useGetWorkProfileSelf = () => {
-  const accessToken = useAppStore.use.accessToken();
+  const accessToken = useAppStore((s) => s.accessToken);
 
   return useQuery({
     queryKey: keyFac.identity.getWorkProfileSelf.queryKey,

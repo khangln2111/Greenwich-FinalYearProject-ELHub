@@ -16,7 +16,7 @@ const RETRY_DELAY_DAYS = 7;
 
 const BecomeInstructorCTA = () => {
   const navigate = useNavigate();
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
   const [opened, { open, close }] = useDisclosure(false);
   const [statusModal, { open: openStatusModal, close: closeStatusModal }] = useDisclosure(false);
   const [statusType, setStatusType] = useState<"pending" | "rejected-wait" | "approved" | null>(

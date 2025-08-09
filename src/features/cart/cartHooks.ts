@@ -7,7 +7,7 @@ import { AddCartItemCommand, UpdateCartItemCommand } from "./cart.types";
 import { addCartItem, deleteCartItem, getCartSelf, updateCartItem } from "./cartApi";
 
 export const useGetCart = () => {
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
     queryKey: keyFac.cart._def,
     queryFn: getCartSelf,

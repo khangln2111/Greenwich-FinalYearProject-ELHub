@@ -6,9 +6,9 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useMantineTheme } from "@mantine/core";
 
 const AdminLayout = () => {
-  const sidebarCollapsed = useAppStore.use.desktopAdminSidebarCollapsed();
-  const mobileSidebarOpened = useAppStore.use.mobileAdminSidebarOpened();
-  const closeMobileSidebar = useAppStore.use.closeMobileAdminSidebar();
+  const sidebarCollapsed = useAppStore((s) => s.desktopAdminSidebarCollapsed);
+  const mobileSidebarOpened = useAppStore((s) => s.mobileAdminSidebarOpened);
+  const closeMobileSidebar = useAppStore((s) => s.closeMobileAdminSidebar);
   const theme = useMantineTheme();
   const isTabletOrSmaller = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 

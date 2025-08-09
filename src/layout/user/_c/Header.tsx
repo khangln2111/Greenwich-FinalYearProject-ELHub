@@ -73,7 +73,7 @@ const mockdata = [
 ];
 
 const Header = () => {
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =

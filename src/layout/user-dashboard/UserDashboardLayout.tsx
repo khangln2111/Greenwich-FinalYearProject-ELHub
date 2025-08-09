@@ -67,7 +67,7 @@ export default function UserDashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const currentUser = useAppStore.use.currentUser();
+  const currentUser = useAppStore((s) => s.currentUser);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const isActive = (href: string) => location.pathname === href;

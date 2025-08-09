@@ -11,10 +11,10 @@ import AvatarMenu from "../../user/_c/AvatarMenu";
 import SearchBox from "../../user/_c/SearchBox";
 
 const InstructorHeader = () => {
-  const currentUser = useAppStore.use.currentUser();
-  const desktopAdminSidebarCollapsed = useAppStore.use.desktopAdminSidebarCollapsed();
-  const toggleDesktopAdminSidebar = useAppStore.use.toggleDesktopAdminSidebar();
-  const openMobileAdminSidebar = useAppStore.use.openMobileAdminSidebar();
+  const currentUser = useAppStore((s) => s.currentUser);
+  const desktopAdminSidebarCollapsed = useAppStore((s) => s.desktopAdminSidebarCollapsed);
+  const toggleDesktopAdminSidebar = useAppStore((s) => s.toggleDesktopAdminSidebar);
+  const openMobileAdminSidebar = useAppStore((s) => s.openMobileAdminSidebar);
 
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
