@@ -1,11 +1,11 @@
 import { Box, Grid, GridCol, Paper } from "@mantine/core";
 import CourseMain from "./_c/CourseMain";
 import CourseFilter from "./_c/course-filter/CourseFilter";
-import { useCourseFilterStore } from "../../../zustand/courseFilterStore";
+import { useCoursesPageStore } from "../../../zustand/coursesPageStore";
 import CourseMobileFilter from "./_c/course-filter/CourseMobileFilter";
 
 const CoursesPage = () => {
-  const isDesktopFilterOpen = useCourseFilterStore((s) => s.isDesktopFilterOpen);
+  const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
 
   return (
     <div className="flex-1 bg-gray-100 dark:bg-dark-5">

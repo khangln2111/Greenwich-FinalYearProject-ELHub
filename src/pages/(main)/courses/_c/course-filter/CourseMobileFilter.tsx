@@ -1,13 +1,13 @@
 import { Stack } from "@mantine/core";
 import { ResponsiveDialog } from "mantine-vaul";
 import CourseFilter from "./CourseFilter";
-import { useCourseFilterStore } from "../../../../../zustand/courseFilterStore";
+import { useCoursesPageStore } from "../../../../../zustand/coursesPageStore";
 
 type CourseMobileFilterProps = {};
 
 const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
-  const isMobileFilterOpen = useCourseFilterStore((s) => s.isMobileFilterOpen);
-  const closeMobileFilter = useCourseFilterStore((s) => s.closeMobileFilter);
+  const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
+  const closeMobileFilter = useCoursesPageStore((s) => s.closeMobileFilter);
 
   return (
     <ResponsiveDialog
