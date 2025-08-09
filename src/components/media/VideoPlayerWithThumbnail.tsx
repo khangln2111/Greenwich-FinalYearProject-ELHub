@@ -67,7 +67,7 @@ export default function VideoPlayerWithThumbnail({
             <img
               src={thumbnail}
               alt="thumbnail"
-              className={cn("object-cover aspect-video", classNames?.previewImage)}
+              className={cn("object-cover max-h-full max-w-full", classNames?.previewImage)}
             />
           ) : (
             <div className="bg-black size-full" />

@@ -97,7 +97,6 @@ export default function LearningCoursePage() {
               classNames={{
                 playIconWrapper: "md:size-16",
                 playIcon: "md:size-8",
-                previewImage: "h-full",
               }}
               videoUrl={currentLecture?.videoUrl}
               onVideoEnd={onVideoEnd}
