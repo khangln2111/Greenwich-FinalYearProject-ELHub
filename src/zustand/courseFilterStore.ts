@@ -1,6 +1,6 @@
-import { create, StateCreator } from "zustand";
+import { create } from "zustand";
 
-interface CourseFilterSlice {
+interface CourseFilterStore {
   isDesktopFilterOpen: boolean;
   isMobileFilterOpen: boolean;
   toggleDesktopFilter: () => void;
@@ -9,17 +9,11 @@ interface CourseFilterSlice {
   closeMobileFilter: () => void;
 }
 
-export const createCourseFilterSlice: StateCreator<CourseFilterSlice> = (set) => ({
+export const useCourseFilterStore = create<CourseFilterStore>((set) => ({
   isDesktopFilterOpen: true,
   isMobileFilterOpen: false,
   toggleDesktopFilter: () => set((state) => ({ isDesktopFilterOpen: !state.isDesktopFilterOpen })),
   toggleMobileFilter: () => set((state) => ({ isMobileFilterOpen: !state.isMobileFilterOpen })),
-  closeMobileFilter: () => set({ isMobileFilterOpen: false }),
   openMobileFilter: () => set({ isMobileFilterOpen: true }),
-});
-
-type CourseFilterStore = CourseFilterSlice;
-
-export const useCourseFilterStore = create<CourseFilterStore>()((...a) => ({
-  ...createCourseFilterSlice(...a),
+  closeMobileFilter: () => set({ isMobileFilterOpen: false }),
 }));

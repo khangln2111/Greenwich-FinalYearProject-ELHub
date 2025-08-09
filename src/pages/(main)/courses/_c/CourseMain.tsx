@@ -3,7 +3,6 @@ import { ActionIcon, Button, Group, TextInput, ThemeIcon, Title } from "@mantine
 import { LayoutGrid, List, ListFilter, Search } from "lucide-react";
 import { useCourseFilterStore } from "../../../../zustand/courseFilterStore";
 import CourseGrid from "./CourseGrid";
-import CourseMobileFilter from "./course-filter/CourseMobileFilter";
 
 type CourseMainProps = {};
 
@@ -55,7 +54,6 @@ const CourseMain = ({}: CourseMainProps) => {
         </Group>
       </Group>
       <CourseGrid />
-      <CourseMobileFilter />
     </>
   );
 };

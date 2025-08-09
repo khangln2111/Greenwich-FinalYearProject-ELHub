@@ -12,7 +12,7 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
   return (
     <ResponsiveDialog
       opened={isMobileFilterOpen}
-      onClose={() => closeMobileFilter()}
+      onClose={closeMobileFilter}
       radius="xl"
       shadow="xl"
       title={<p className="text-h4 font-h4">Advanced filter</p>}

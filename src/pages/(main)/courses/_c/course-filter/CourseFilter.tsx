@@ -112,18 +112,20 @@ const CourseFilter = () => {
             <Text className="font-medium text-sm">Price Range</Text>
           </AccordionControl>
           <AccordionPanel>
-            <Slider
-              min={0}
-              max={100}
-              step={1}
-              marks={[
-                { value: 0, label: "$0" },
-                { value: 100, label: "$100" },
-              ]}
-              defaultValue={parseInt(priceRange || "0", 10)}
-              onChangeEnd={(val) => setPriceRange(val.toString())}
-              className="my-xl"
-            />
+            <div className="px-1 md:px-0">
+              <Slider
+                min={0}
+                max={100}
+                step={1}
+                marks={[
+                  { value: 0, label: "$0" },
+                  { value: 100, label: "$100" },
+                ]}
+                defaultValue={parseInt(priceRange || "0", 10)}
+                onChangeEnd={(val) => setPriceRange(val.toString())}
+                className="my-xl"
+              />
+            </div>
           </AccordionPanel>
         </AccordionItem>
 
@@ -133,18 +135,20 @@ const CourseFilter = () => {
             <Text className="font-medium text-sm">Duration (minutes)</Text>
           </AccordionControl>
           <AccordionPanel>
-            <Slider
-              min={0}
-              max={120}
-              step={1}
-              marks={[
-                { value: 0, label: "0" },
-                { value: 120, label: "120" },
-              ]}
-              defaultValue={parseInt(duration || "0", 10)}
-              onChangeEnd={(val) => setDuration(val.toString())}
-              className="my-[30px]"
-            />
+            <div className="px-1 md:px-0">
+              <Slider
+                min={0}
+                max={120}
+                step={1}
+                marks={[
+                  { value: 0, label: "0" },
+                  { value: 120, label: "120" },
+                ]}
+                defaultValue={parseInt(duration || "0", 10)}
+                onChangeEnd={(val) => setDuration(val.toString())}
+                className="my-[30px]"
+              />
+            </div>
           </AccordionPanel>
         </AccordionItem>
 

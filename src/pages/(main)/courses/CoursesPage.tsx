@@ -2,6 +2,7 @@ import { Box, Grid, GridCol, Paper } from "@mantine/core";
 import CourseMain from "./_c/CourseMain";
 import CourseFilter from "./_c/course-filter/CourseFilter";
 import { useCourseFilterStore } from "../../../zustand/courseFilterStore";
+import CourseMobileFilter from "./_c/course-filter/CourseMobileFilter";
 
 const CoursesPage = () => {
   const isDesktopFilterOpen = useCourseFilterStore((s) => s.isDesktopFilterOpen);
@@ -27,8 +28,9 @@ const CoursesPage = () => {
             </Paper>
           </GridCol>
           {/* Column 2: Main content with course grid*/}
-          <GridCol span="auto" className="transition-all duration-300 ease-in-out">
+          <GridCol span="auto" className="transition-all duration-300">
             <CourseMain />
+            <CourseMobileFilter />
           </GridCol>
         </Grid>
       </Box>
