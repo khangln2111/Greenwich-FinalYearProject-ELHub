@@ -1,19 +1,21 @@
 import { Pagination } from "@mantine/core";
-import { useSearchParams } from "react-router-dom";
 
-export default function CoursePagination() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = parseInt(searchParams.get("page") || "1", 10);
+type CoursePaginationProps = {
+  page: number;
+  pageSize: number;
+  total: number;
+  onPageChange: (page: number) => void;
+};
 
-  const handlePageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    if (page > 1) {
-      params.set("page", page.toString());
-    } else {
-      params.delete("page");
-    }
-    setSearchParams(params); // Update URL with new page number
-  };
+const CoursePagination = ({ page, pageSize, total, onPageChange }: CoursePaginationProps) => {
+  const totalPages = Math.ceil(total / pageSize);
 
-  return <Pagination total={10} withEdges value={currentPage} onChange={handlePageChange} />;
-}
+  if (totalPages <= 1) {
+    // if there is only one page, do not show pagination
+    return null;
+  }
+
+  return <Pagination total={totalPages} withEdges value={page} onChange={onPageChange} />;
+};
+
+export default CoursePagination;

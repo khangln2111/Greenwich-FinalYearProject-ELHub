@@ -1,23 +1,25 @@
 import { create } from "zustand";
 
+export type CoursesPageLayout = "grid" | "list";
+
 interface CourseFilterStore {
   isDesktopFilterOpen: boolean;
   isMobileFilterOpen: boolean;
-  isGridView: boolean; // true = grid, false = list
+  layout: CoursesPageLayout;
   toggleDesktopFilter: () => void;
   toggleMobileFilter: () => void;
   openMobileFilter: () => void;
   closeMobileFilter: () => void;
-  toggleLayout: () => void; // chuyển đổi layout
+  setLayout: (layout: CoursesPageLayout) => void;
 }
 
 export const useCoursesPageStore = create<CourseFilterStore>((set) => ({
   isDesktopFilterOpen: true,
   isMobileFilterOpen: false,
-  isGridView: true,
+  layout: "grid",
   toggleDesktopFilter: () => set((state) => ({ isDesktopFilterOpen: !state.isDesktopFilterOpen })),
   toggleMobileFilter: () => set((state) => ({ isMobileFilterOpen: !state.isMobileFilterOpen })),
   openMobileFilter: () => set({ isMobileFilterOpen: true }),
   closeMobileFilter: () => set({ isMobileFilterOpen: false }),
-  toggleLayout: () => set((state) => ({ isGridView: !state.isGridView })),
+  setLayout: (layout) => set({ layout }),
 }));
