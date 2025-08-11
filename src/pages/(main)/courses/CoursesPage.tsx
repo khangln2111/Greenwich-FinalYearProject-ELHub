@@ -1,7 +1,7 @@
 import { Box, Grid, GridCol, Paper } from "@mantine/core";
 import CourseMain from "./_c/CourseMain";
 import CourseFilter from "./_c/course-filter/CourseFilter";
-import { useCoursesPageStore } from "../../../zustand/coursesPageStore";
+import { useCoursesPageStore } from "../../../zustand/stores/coursesPageStore";
 import CourseMobileFilter from "./_c/course-filter/CourseMobileFilter";
 
 const CoursesPage = () => {

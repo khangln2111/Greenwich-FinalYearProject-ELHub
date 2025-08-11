@@ -33,11 +33,11 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
 import { useGetCart } from "../../../features/cart/cartHooks";
-import { useAppStore } from "../../../zustand/store";
+import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "./AvatarMenu";
 import CustomNavLink from "./CustomNavLink";
 import SearchBox from "./SearchBox";
-import { useCoursesPageState } from "../../../hooks/useCoursesPageState";
+import { useCoursesQueryState } from "../../../hooks/useCoursesQueryState";
 
 const mockdata = [
   {
@@ -79,7 +79,7 @@ const Header = () => {
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
   // get search value from url
-  const [{ search }, setCoursesPageState] = useCoursesPageState();
+  const [{ search }, setCoursesPageState] = useCoursesQueryState();
   const location = useLocation();
 
   const [searchValue, setSearchValue] = useState<string>(search);

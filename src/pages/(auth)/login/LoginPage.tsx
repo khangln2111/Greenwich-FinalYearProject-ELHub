@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { loginSessionStorageHelper } from "../../../utils/storageHelper";
 import { showErrorToast } from "../../../utils/toastHelper";
-import { useAppStore } from "../../../zustand/store";
+import { useAppStore } from "../../../zustand/stores/appStore";
 import LoginForm from "./LoginForm";
 
 const LoginPage = () => {

@@ -20,7 +20,7 @@ import {
   submitCourse,
   updateCourse,
 } from "./courseApi";
-import { useAppStore } from "../../zustand/store";
+import { useAppStore } from "../../zustand/stores/appStore";
 import { ErrorCode } from "../../api-client/api.types";
 
 export const useGetCourses = (query?: CourseQueryCriteria) => {

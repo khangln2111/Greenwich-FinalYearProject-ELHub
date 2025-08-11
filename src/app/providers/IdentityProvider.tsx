@@ -2,7 +2,7 @@ import { Center, Loader, Stack } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import React from "react";
 import { useCurrentUser } from "../../features/auth/identityHooks";
-import { useAppStore } from "../../zustand/store";
+import { useAppStore } from "../../zustand/stores/appStore";
 
 const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
   const accessToken = useAppStore((s) => s.accessToken);

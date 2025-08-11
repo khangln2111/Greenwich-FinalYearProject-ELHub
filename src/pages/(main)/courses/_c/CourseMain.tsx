@@ -4,8 +4,8 @@ import { LayoutGrid, LayoutList, ListFilter, Search } from "lucide-react";
 import CenterLoader from "../../../../components/CenterLoader";
 import { CourseVm } from "../../../../features/course/course.types";
 import { useGetCourses } from "../../../../features/course/courseHooks";
-import { useCoursesPageState } from "../../../../hooks/useCoursesPageState";
-import { useCoursesPageStore } from "../../../../zustand/coursesPageStore";
+import { useCoursesQueryState } from "../../../../hooks/useCoursesQueryState";
+import { useCoursesPageStore } from "../../../../zustand/stores/coursesPageStore";
 import CourseGrid from "./CourseGrid";
 import CourseList from "./CourseList";
 import CoursePagination from "./CoursePagination";
@@ -20,7 +20,8 @@ const CourseMain = ({}: CourseMainProps) => {
   const layout = useCoursesPageStore((s) => s.layout);
   const setLayout = useCoursesPageStore((s) => s.setLayout);
 
-  const [{ categoryId, level, orderBy, search, page }, setCoursesPageState] = useCoursesPageState();
+  const [{ categoryId, level, orderBy, search, page }, setCoursesPageState] =
+    useCoursesQueryState();
   const pageSize = layout === "grid" ? 6 : 5;
 
   const { data, isPending, isError } = useGetCourses({

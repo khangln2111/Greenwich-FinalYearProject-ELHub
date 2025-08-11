@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAppStore } from "../../../../zustand/store";
+import { useAppStore } from "../../../../zustand/stores/appStore";
 import { useDisclosure } from "@mantine/hooks";
 import CreateInstructorApplicationForm from "./CreateInstructorApplicationForm";
 import RetryInstructorApplicationForm from "./RetryInstructorApplicationForm";

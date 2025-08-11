@@ -18,7 +18,7 @@ import { RotateCcw } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
 import CourseSorter from "./CourseSorter";
-import { useCoursesPageState } from "../../../../../hooks/useCoursesPageState";
+import { useCoursesQueryState } from "../../../../../hooks/useCoursesQueryState";
 import { parseAsInteger, useQueryState } from "nuqs";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
@@ -30,7 +30,7 @@ const CourseFilter = () => {
   const [duration, setDuration] = useQueryState("duration", parseAsInteger);
   const [priceMode, setPriceMode] = useQueryState("price_mode");
 
-  const [{ categoryId, level }, setStates] = useCoursesPageState();
+  const [{ categoryId, level }, setStates] = useCoursesQueryState();
   const {
     data: categories,
     isPending,

@@ -2,7 +2,7 @@ import { useQueryStates, parseAsString, parseAsInteger } from "nuqs";
 import { OrderBy, decodeOrderOption, encodeOrderOption } from "../api-client/api.types";
 import { CourseOrderableFields } from "../features/course/course.types";
 
-export function useCoursesPageState() {
+export function useCoursesQueryState() {
   const [states, setStates] = useQueryStates(
     {
       categoryId: parseAsString,
@@ -28,7 +28,7 @@ export function useCoursesPageState() {
     "desc",
   );
 
-  const setCoursesPageState = (newValues: Partial<typeof states>) => {
+  const setCoursesQueryState = (newValues: Partial<typeof states>) => {
     const keys = Object.keys(newValues);
 
     // Nếu chỉ thay đổi page
@@ -49,6 +49,6 @@ export function useCoursesPageState() {
       ...states,
       orderBy,
     },
-    setCoursesPageState,
+    setCoursesQueryState,
   ] as const;
 }

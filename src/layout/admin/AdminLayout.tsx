@@ -1,4 +1,4 @@
-import { useAppStore } from "../../zustand/store";
+import { useAppStore } from "../../zustand/stores/appStore";
 import AdminSidebar from "./_c/AdminSidebar";
 import AdminHeader from "./_c/AdminHeader";
 import SidebarLayout from "../../components/layout/SidebarLayout";

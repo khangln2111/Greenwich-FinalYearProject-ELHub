@@ -20,7 +20,7 @@ import {
 import { Link } from "react-router-dom";
 import { useLogout } from "../../../features/auth/identityHooks";
 import { cn } from "../../../utils/cn";
-import { useAppStore } from "../../../zustand/store";
+import { useAppStore } from "../../../zustand/stores/appStore";
 
 interface AvatarMenuProps {
   className?: string;

@@ -22,7 +22,7 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import avatarPlaceholder from "../../assets/placeholder/profile-avatar-placeholder.svg";
 import background from "../../assets/userDashboard/background-info.png";
 import { cn } from "../../utils/cn";
-import { useAppStore } from "../../zustand/store";
+import { useAppStore } from "../../zustand/stores/appStore";
 
 type MenuItem = {
   label: string;

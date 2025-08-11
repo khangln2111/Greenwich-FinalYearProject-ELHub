@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { encodeOrderOption, OrderBy, OrderDirection } from "../../../../../api-client/api.types";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
-import { useCoursesPageState } from "../../../../../hooks/useCoursesPageState";
+import { useCoursesQueryState } from "../../../../../hooks/useCoursesQueryState";
 
 const SORTING_OPTIONS: {
   value: OrderBy<CourseOrderableFields>;
@@ -47,7 +47,7 @@ const SORTING_OPTIONS: {
 ];
 
 const CourseSorter = () => {
-  const [{ orderBy }, setCoursesPageState] = useCoursesPageState();
+  const [{ orderBy }, setCoursesPageState] = useCoursesQueryState();
 
   const [hoveredSort, setHoveredSort] = useState<CourseOrderableFields | null>(null);
 
@@ -113,6 +113,7 @@ const CourseSorter = () => {
         radius="full"
         className="grid auto-cols-fr grid-flow-col-dense"
         color="blue"
+        size="lg"
         value={orderBy.field}
         onChange={handleFieldChange}
         data={SORTING_OPTIONS.map((option) => ({

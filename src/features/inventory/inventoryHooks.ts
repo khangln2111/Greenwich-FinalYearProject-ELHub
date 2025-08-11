@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getInventoryItemsSelf } from "./inventoryApi";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { useAppStore } from "../../zustand/store";
+import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetInventoryItemsSelf = () => {
   const currentUser = useAppStore((s) => s.currentUser);

@@ -1,7 +1,7 @@
 import { Stack } from "@mantine/core";
 import { ResponsiveDialog } from "mantine-vaul";
 import CourseFilter from "./CourseFilter";
-import { useCoursesPageStore } from "../../../../../zustand/coursesPageStore";
+import { useCoursesPageStore } from "../../../../../zustand/stores/coursesPageStore";
 
 type CourseMobileFilterProps = {};
 

@@ -16,7 +16,7 @@ import {
 import { handleApiError } from "../common-service/handleApiError";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { ErrorCode } from "../../api-client/api.types";
-import { useAppStore } from "../../zustand/store";
+import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetInstructorApplications = (query?: InstructorApplicationQueryCriteria) => {
   return useQuery({

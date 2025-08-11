@@ -6,7 +6,7 @@ import { PanelLeftCloseIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-re
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
-import { useAppStore } from "../../../zustand/store";
+import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "../../user/_c/AvatarMenu";
 import SearchBox from "../../user/_c/SearchBox";
 
