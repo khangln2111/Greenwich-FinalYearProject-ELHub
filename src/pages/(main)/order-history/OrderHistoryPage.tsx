@@ -1,10 +1,10 @@
 import { Select } from "@mantine/core";
 import { IconReceipt } from "@tabler/icons-react";
 import { ArrowUpDownIcon } from "lucide-react";
+import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { Link } from "react-router-dom";
-import CenterLoader from "../../../components/CenterLoader";
-import { useSearchParamState } from "../../../hooks/useSearchParamState";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
+import CenterLoader from "../../../components/CenterLoader";
 import { OrderOrderableFields, OrderStatus } from "../../../features/order/order.types";
 import { useGetOrdersSelf } from "../../../features/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";
@@ -21,10 +21,13 @@ const ORDER_BY_OPTIONS: {
 ];
 
 export default function OrderHistoryPage() {
-  const [statusParam, setStatusParam] = useSearchParamState<"All" | OrderStatus>("status", "All");
-  const [orderByParam, setOrderByParam] = useSearchParamState<string>(
+  const [statusParam, setStatusParam] = useQueryState(
+    "status",
+    parseAsStringLiteral(["All", ...Object.values(OrderStatus)]).withDefault("All"),
+  );
+  const [orderByParam, setOrderByParam] = useQueryState(
     "orderBy",
-    encodeOrderOption<OrderOrderableFields>({ field: "createdAt", direction: "desc" }),
+    parseAsString.withDefault(encodeOrderOption({ field: "createdAt", direction: "desc" })),
   );
   const orderBy = decodeOrderOption<OrderOrderableFields>(orderByParam, "createdAt", "desc");
 

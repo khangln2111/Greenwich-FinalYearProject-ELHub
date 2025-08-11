@@ -30,14 +30,14 @@ import {
 } from "@tabler/icons-react";
 import { PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
-import { useSearchParamState } from "../../../hooks/useSearchParamState";
 import { useGetCart } from "../../../features/cart/cartHooks";
 import { useAppStore } from "../../../zustand/store";
 import AvatarMenu from "./AvatarMenu";
 import CustomNavLink from "./CustomNavLink";
 import SearchBox from "./SearchBox";
+import { useCoursesPageState } from "../../../hooks/useCoursesPageState";
 
 const mockdata = [
   {
@@ -79,16 +79,22 @@ const Header = () => {
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
   // get search value from url
-  const [searchParam, setSearchParam] = useSearchParamState("search", "");
+  const [{ search }, setCoursesPageState] = useCoursesPageState();
+  const location = useLocation();
 
-  const [searchValue, setSearchValue] = useState<string>(searchParam);
+  const [searchValue, setSearchValue] = useState<string>(search);
   const navigate = useNavigate();
 
   const { data: cart } = useGetCart();
 
   const handleSearch = () => {
-    if (searchValue.trim()) {
-      navigate(`/courses?search=${encodeURIComponent(searchValue.trim())}`);
+    const trimmed = searchValue.trim();
+    if (!trimmed) return;
+
+    if (location.pathname === "/courses") {
+      setCoursesPageState({ search: trimmed });
+    } else {
+      navigate(`/courses?search=${encodeURIComponent(trimmed)}`);
     }
   };
 
@@ -167,7 +173,7 @@ const Header = () => {
             onSearch={handleSearch}
             onClear={() => {
               setSearchValue("");
-              setSearchParam(null);
+              setCoursesPageState({ search: "" });
             }}
             size="md"
             placeholder="Search courses..."

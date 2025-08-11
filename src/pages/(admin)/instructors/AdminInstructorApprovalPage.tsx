@@ -20,7 +20,6 @@ import { ArrowUpAzIcon, FileQuestion } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
 import CusModal from "../../../components/CusModal";
-import { useSearchParamState } from "../../../hooks/useSearchParamState";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import {
   InstructorApplicationOrderableFields,
@@ -36,6 +35,7 @@ import { cn } from "../../../utils/cn";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { formSubmitWithFocus } from "../../../utils/form";
 import { ReviewCourseFormValues, reviewCourseSchema } from "../../../features/course/course.schema";
+import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -99,16 +99,19 @@ export default function AdminInstructorApprovalPage() {
   const [viewApp, setViewApp] = useState<InstructorApplicationVm | null>(null);
   const [reviewApp, setReviewApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
-  const [search, setSearch] = useSearchParamState<string>("search", "");
+  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
 
-  const [statusFilter, setStatusFilter] = useSearchParamState<"All" | InstructorApplicationStatus>(
+  const [statusFilter, setStatusFilter] = useQueryState(
     "status",
-    InstructorApplicationStatus.Pending,
+    parseAsStringLiteral(["All", ...Object.values(InstructorApplicationStatus)]).withDefault(
+      InstructorApplicationStatus.Pending,
+    ),
   );
-  const [orderByParam, setOrderByParam] = useSearchParamState<string>(
+
+  const [orderByParam, setOrderByParam] = useQueryState(
     "orderBy",
-    encodeOrderOption({ field: "createdAt", direction: "desc" }),
+    parseAsString.withDefault(encodeOrderOption({ field: "createdAt", direction: "desc" })),
   );
 
   const orderBy = decodeOrderOption<InstructorApplicationOrderableFields>(

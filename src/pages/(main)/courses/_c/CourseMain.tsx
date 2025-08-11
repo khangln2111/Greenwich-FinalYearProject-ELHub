@@ -1,11 +1,10 @@
 import { ActionIcon, Button, Flex } from "@mantine/core";
 import { LayoutGrid, LayoutList, ListFilter, Search } from "lucide-react";
 
-import { decodeOrderOption } from "../../../../api-client/api.types";
 import CenterLoader from "../../../../components/CenterLoader";
-import { CourseOrderableFields, CourseVm } from "../../../../features/course/course.types";
+import { CourseVm } from "../../../../features/course/course.types";
 import { useGetCourses } from "../../../../features/course/courseHooks";
-import { useSearchParamState } from "../../../../hooks/useSearchParamState";
+import { useCoursesPageState } from "../../../../hooks/useCoursesPageState";
 import { useCoursesPageStore } from "../../../../zustand/coursesPageStore";
 import CourseGrid from "./CourseGrid";
 import CourseList from "./CourseList";
@@ -21,17 +20,12 @@ const CourseMain = ({}: CourseMainProps) => {
   const layout = useCoursesPageStore((s) => s.layout);
   const setLayout = useCoursesPageStore((s) => s.setLayout);
 
-  const [categoryId] = useSearchParamState("categoryId");
-  const [level] = useSearchParamState("level");
-  const [orderByParam] = useSearchParamState("orderBy");
-  const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
-  const [search] = useSearchParamState("search", "");
-  const [page, setPage] = useSearchParamState("page", 1);
-  const [pageSize] = useSearchParamState("pageSize", layout === "grid" ? 6 : 5);
+  const [{ categoryId, level, orderBy, search, page }, setCoursesPageState] = useCoursesPageState();
+  const pageSize = layout === "grid" ? 6 : 5;
 
   const { data, isPending, isError } = useGetCourses({
-    categoryId,
-    level,
+    categoryId: categoryId,
+    level: level,
     orderBy,
     search,
     page,
@@ -141,7 +135,7 @@ const CourseMain = ({}: CourseMainProps) => {
             page={page}
             pageSize={pageSize}
             total={data?.count ?? 0}
-            onPageChange={setPage}
+            onPageChange={(newPage) => setCoursesPageState({ page: newPage })}
           />
         </Flex>
       </div>

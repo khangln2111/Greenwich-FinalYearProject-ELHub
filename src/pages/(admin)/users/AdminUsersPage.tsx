@@ -18,17 +18,17 @@ import { PencilIcon, SearchIcon, ShieldQuestionIcon } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
-import { useSearchParamState } from "../../../hooks/useSearchParamState"; // Đường dẫn tùy dự án bạn
 import { UserVm } from "../../../features/user/user.types";
 import { useGetUsers, useSetUserActivation } from "../../../features/user/userHooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
+import { parseAsString, useQueryState } from "nuqs";
 
 export default function AdminUsersPage() {
-  const [search, setSearch] = useSearchParamState<string>("search", "");
+  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
-  const [roleFilter, setRoleFilter] = useSearchParamState<string>("role");
-  const [statusFilter, setStatusFilter] = useSearchParamState<string>("status");
+  const [roleFilter, setRoleFilter] = useQueryState("role");
+  const [statusFilter, setStatusFilter] = useQueryState("status");
   const [_, setSearchParams] = useSearchParams();
 
   const [editingUser, setEditingUser] = useState<UserVm | null>(null);

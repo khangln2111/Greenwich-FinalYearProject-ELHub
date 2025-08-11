@@ -10,14 +10,9 @@ import {
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useSearchParamState } from "../../../../../hooks/useSearchParamState";
-import {
-  decodeOrderOption,
-  encodeOrderOption,
-  OrderBy,
-  OrderDirection,
-} from "../../../../../api-client/api.types";
+import { encodeOrderOption, OrderBy, OrderDirection } from "../../../../../api-client/api.types";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
+import { useCoursesPageState } from "../../../../../hooks/useCoursesPageState";
 
 const SORTING_OPTIONS: {
   value: OrderBy<CourseOrderableFields>;
@@ -52,27 +47,26 @@ const SORTING_OPTIONS: {
 ];
 
 const CourseSorter = () => {
-  const [orderByParam, setOrderByParam] = useSearchParamState<string>(
-    "orderBy",
-    encodeOrderOption({ field: "createdAt", direction: "desc" }),
-  );
-
-  const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
+  const [{ orderBy }, setCoursesPageState] = useCoursesPageState();
 
   const [hoveredSort, setHoveredSort] = useState<CourseOrderableFields | null>(null);
 
   const handleFieldChange = (field: string) => {
     const found = SORTING_OPTIONS.find((opt) => opt.value.field === field);
     if (!found) return;
-    setOrderByParam(
-      encodeOrderOption({ field: field as CourseOrderableFields, direction: orderBy.direction }),
-    );
+    setCoursesPageState({
+      orderBy: encodeOrderOption({
+        field: field as CourseOrderableFields,
+        direction: orderBy.direction,
+      }),
+    });
   };
 
   const toggleSortDirection = () => {
     const newDirection: OrderDirection = orderBy.direction === "asc" ? "desc" : "asc";
-    const updated = { ...orderBy, direction: newDirection };
-    setOrderByParam(encodeOrderOption(updated));
+    setCoursesPageState({
+      orderBy: encodeOrderOption({ field: orderBy.field, direction: newDirection }),
+    });
   };
 
   return (

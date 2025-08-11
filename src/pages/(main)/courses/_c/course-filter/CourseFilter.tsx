@@ -18,19 +18,19 @@ import { RotateCcw } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
 import CourseSorter from "./CourseSorter";
-import { useSearchParamState } from "../../../../../hooks/useSearchParamState";
+import { useCoursesPageState } from "../../../../../hooks/useCoursesPageState";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
 const CourseFilter = () => {
   const [_, setSearchParams] = useSearchParams();
 
-  const [categoryId, setCategoryId] = useSearchParamState("categoryId");
-  const [priceRange, setPriceRange] = useSearchParamState("price_range");
-  const [duration, setDuration] = useSearchParamState("duration");
-  const [level, setLevel] = useSearchParamState("level");
-  const [priceMode, setPriceMode] = useSearchParamState("price_mode");
+  const [priceRange, setPriceRange] = useQueryState("price_range", parseAsInteger);
+  const [duration, setDuration] = useQueryState("duration", parseAsInteger);
+  const [priceMode, setPriceMode] = useQueryState("price_mode");
 
+  const [{ categoryId, level }, setStates] = useCoursesPageState();
   const {
     data: categories,
     isPending,
@@ -93,7 +93,7 @@ const CourseFilter = () => {
               searchable
               clearable
               checkIconPosition="right"
-              onChange={(val) => setCategoryId(val)}
+              onChange={(val) => setStates({ categoryId: val })}
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
               classNames={{
                 root: "my-md",
@@ -121,8 +121,8 @@ const CourseFilter = () => {
                   { value: 0, label: "$0" },
                   { value: 100, label: "$100" },
                 ]}
-                defaultValue={parseInt(priceRange || "0", 10)}
-                onChangeEnd={(val) => setPriceRange(val.toString())}
+                defaultValue={priceRange || 0}
+                onChangeEnd={(val) => setPriceRange(val)}
                 className="my-xl"
               />
             </div>
@@ -144,8 +144,8 @@ const CourseFilter = () => {
                   { value: 0, label: "0" },
                   { value: 120, label: "120" },
                 ]}
-                defaultValue={parseInt(duration || "0", 10)}
-                onChangeEnd={(val) => setDuration(val.toString())}
+                defaultValue={duration || 0}
+                onChangeEnd={(val) => setDuration(val)}
                 className="my-[30px]"
               />
             </div>
@@ -164,7 +164,7 @@ const CourseFilter = () => {
                   key={lv}
                   label={lv === "all" ? "All levels" : lv.charAt(0).toUpperCase() + lv.slice(1)}
                   checked={lv === "all" ? !level : level === lv}
-                  onChange={() => setLevel(lv === "all" ? "" : lv)}
+                  onChange={() => setStates({ level: lv === "all" ? "" : lv })}
                 />
               ))}
             </Stack>

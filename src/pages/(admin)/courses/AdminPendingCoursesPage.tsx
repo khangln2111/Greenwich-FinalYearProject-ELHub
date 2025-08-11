@@ -2,11 +2,11 @@ import { ActionIcon, Select, TextInput, Title } from "@mantine/core";
 import { ArrowUpAzIcon, InboxIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
-import { useSearchParamState } from "../../../hooks/useSearchParamState";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
 import { useGetCourses } from "../../../features/course/courseHooks";
 import AdminCourseCard from "./_c/AdminCourseCard";
+import { parseAsString, useQueryState } from "nuqs";
 
 const COURSE_ORDER_OPTIONS: {
   label: string;
@@ -20,14 +20,16 @@ const COURSE_ORDER_OPTIONS: {
 ];
 
 export default function AdminPendingCoursesPage() {
-  const [search, setSearch] = useSearchParamState<string>("search", "");
+  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
-  const [orderByParam, setOrderByParam] = useSearchParamState<string>(
+  const [orderByParam, setOrderByParam] = useQueryState(
     "orderBy",
-    encodeOrderOption<CourseOrderableFields>({
-      field: "createdAt",
-      direction: "desc",
-    }),
+    parseAsString.withDefault(
+      encodeOrderOption<CourseOrderableFields>({
+        field: "createdAt",
+        direction: "desc",
+      }),
+    ),
   );
   const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
 
