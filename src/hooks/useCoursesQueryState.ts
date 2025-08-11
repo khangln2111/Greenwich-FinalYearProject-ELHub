@@ -2,8 +2,8 @@ import { useQueryStates, parseAsString, parseAsInteger } from "nuqs";
 import { OrderBy, decodeOrderOption, encodeOrderOption } from "../api-client/api.types";
 import { CourseOrderableFields } from "../features/course/course.types";
 
-export function useCoursesQueryState() {
-  const [states, setStates] = useQueryStates(
+export function useCourseQueryState() {
+  const [states, setCourseQuery] = useQueryStates(
     {
       categoryId: parseAsString,
       level: parseAsString,
@@ -33,12 +33,12 @@ export function useCoursesQueryState() {
 
     // Nếu chỉ thay đổi page
     if (keys.length === 1 && keys[0] === "page") {
-      setStates({ page: newValues.page });
+      setCourseQuery({ page: newValues.page });
       return;
     }
 
     // Ngược lại: cập nhật filter/sort, reset page về null
-    setStates({
+    setCourseQuery({
       ...newValues,
       page: null,
     });

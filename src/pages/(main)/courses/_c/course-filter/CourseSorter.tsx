@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { encodeOrderOption, OrderBy, OrderDirection } from "../../../../../api-client/api.types";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
-import { useCoursesQueryState } from "../../../../../hooks/useCoursesQueryState";
+import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 
 const SORTING_OPTIONS: {
   value: OrderBy<CourseOrderableFields>;
@@ -47,14 +47,14 @@ const SORTING_OPTIONS: {
 ];
 
 const CourseSorter = () => {
-  const [{ orderBy }, setCoursesPageState] = useCoursesQueryState();
+  const [{ orderBy }, setCourseQuery] = useCourseQueryState();
 
   const [hoveredSort, setHoveredSort] = useState<CourseOrderableFields | null>(null);
 
   const handleFieldChange = (field: string) => {
     const found = SORTING_OPTIONS.find((opt) => opt.value.field === field);
     if (!found) return;
-    setCoursesPageState({
+    setCourseQuery({
       orderBy: encodeOrderOption({
         field: field as CourseOrderableFields,
         direction: orderBy.direction,
@@ -64,7 +64,7 @@ const CourseSorter = () => {
 
   const toggleSortDirection = () => {
     const newDirection: OrderDirection = orderBy.direction === "asc" ? "desc" : "asc";
-    setCoursesPageState({
+    setCourseQuery({
       orderBy: encodeOrderOption({ field: orderBy.field, direction: newDirection }),
     });
   };

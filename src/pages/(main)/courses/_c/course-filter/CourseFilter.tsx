@@ -18,7 +18,7 @@ import { RotateCcw } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
 import CourseSorter from "./CourseSorter";
-import { useCoursesQueryState } from "../../../../../hooks/useCoursesQueryState";
+import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 import { parseAsInteger, useQueryState } from "nuqs";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
@@ -30,7 +30,7 @@ const CourseFilter = () => {
   const [duration, setDuration] = useQueryState("duration", parseAsInteger);
   const [priceMode, setPriceMode] = useQueryState("price_mode");
 
-  const [{ categoryId, level }, setStates] = useCoursesQueryState();
+  const [{ categoryId, level }, setCourseQuery] = useCourseQueryState();
   const {
     data: categories,
     isPending,
@@ -93,7 +93,7 @@ const CourseFilter = () => {
               searchable
               clearable
               checkIconPosition="right"
-              onChange={(val) => setStates({ categoryId: val })}
+              onChange={(val) => setCourseQuery({ categoryId: val })}
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
               classNames={{
                 root: "my-md",
@@ -164,7 +164,7 @@ const CourseFilter = () => {
                   key={lv}
                   label={lv === "all" ? "All levels" : lv.charAt(0).toUpperCase() + lv.slice(1)}
                   checked={lv === "all" ? !level : level === lv}
-                  onChange={() => setStates({ level: lv === "all" ? "" : lv })}
+                  onChange={() => setCourseQuery({ level: lv === "all" ? "" : lv })}
                 />
               ))}
             </Stack>

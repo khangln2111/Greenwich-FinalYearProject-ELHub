@@ -37,7 +37,7 @@ import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "./AvatarMenu";
 import CustomNavLink from "./CustomNavLink";
 import SearchBox from "./SearchBox";
-import { useCoursesQueryState } from "../../../hooks/useCoursesQueryState";
+import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
 
 const mockdata = [
   {
@@ -79,7 +79,7 @@ const Header = () => {
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
   // get search value from url
-  const [{ search }, setCoursesPageState] = useCoursesQueryState();
+  const [{ search }, setCoursesQuery] = useCourseQueryState();
   const location = useLocation();
 
   const [searchValue, setSearchValue] = useState<string>(search);
@@ -92,7 +92,7 @@ const Header = () => {
     if (!trimmed) return;
 
     if (location.pathname === "/courses") {
-      setCoursesPageState({ search: trimmed });
+      setCoursesQuery({ search: trimmed });
     } else {
       navigate(`/courses?search=${encodeURIComponent(trimmed)}`);
     }
@@ -173,7 +173,7 @@ const Header = () => {
             onSearch={handleSearch}
             onClear={() => {
               setSearchValue("");
-              setCoursesPageState({ search: "" });
+              setCoursesQuery({ search: "" });
             }}
             size="md"
             placeholder="Search courses..."
