@@ -77,7 +77,7 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
           },
         )}
       >
-        Instructor dashboard
+        Instructor site
       </Text>
       {/* Sidebar Body */}
       <nav className="flex-1 p-2 flex flex-col gap-2">

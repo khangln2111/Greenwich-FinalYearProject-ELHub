@@ -123,7 +123,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           component={Link}
           to="/instructor/courses"
         >
-          Instructor dashboard
+          Instructor sites
         </Menu.Item>
         <Menu.Item
           className="cursor-pointer"
@@ -131,7 +131,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           to="/admin/analytics"
           leftSection={<IconUserCog size={15} />}
         >
-          Admin dashboard
+          Admin sites
         </Menu.Item>
 
         <Menu.Divider />

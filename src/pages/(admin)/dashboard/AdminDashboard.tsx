@@ -140,7 +140,7 @@ const StatCard = ({
   </Card>
 );
 
-const AdminAnalyticsPage = () => {
+const AdminDashboard = () => {
   const {
     totalUsers,
     totalCourses,
@@ -357,4 +357,4 @@ const AdminAnalyticsPage = () => {
   );
 };
 
-export default AdminAnalyticsPage;
+export default AdminDashboard;

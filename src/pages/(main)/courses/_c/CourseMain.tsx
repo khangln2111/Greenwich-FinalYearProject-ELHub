@@ -49,7 +49,7 @@ const CourseMain = ({}: CourseMainProps) => {
         </span>
 
         {/* Actions */}
-        <div className="flex sm:items-center gap-2">
+        <div className="flex sm:items-center gap-4">
           {/* Filter buttons */}
           <div className="flex gap-2">
             <Button

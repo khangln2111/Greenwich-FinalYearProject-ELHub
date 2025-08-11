@@ -3,7 +3,7 @@ import AdminLayout from "../layout/admin/AdminLayout";
 import InstructorLayout from "../layout/instructor/InstructorLayout";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import UserLayout from "../layout/user/UserLayout";
-import AdminAnalyticsPage from "../pages/(admin)/analytics/AdminAnalyticsPage";
+import AdminDashboard from "../pages/(admin)/dashboard/AdminDashboard";
 import AdminCategoriesPage from "../pages/(admin)/categories/AdminCategoriesPage";
 import AdminCourseDetailPage from "../pages/(admin)/course-detail/AdminCourseDetailPage";
 import AdminCoursesPage from "../pages/(admin)/courses/AdminCoursesPage";
@@ -14,7 +14,7 @@ import ForgotPasswordPage from "../pages/(auth)/forgot-password/ForgotPasswordPa
 import LoginPage from "../pages/(auth)/login/LoginPage";
 import RegisterPage from "../pages/(auth)/register/RegisterPage";
 import VerifyEmailPage from "../pages/(auth)/verify-email/VerifyEmailPage";
-import InstructorAnalyticsPage from "../pages/(instructor)/analytics/InstructorAnalyticsPage";
+import InstructorDashboard from "../pages/(instructor)/analytics/InstructorDashboard";
 import InstructorCoursesPage from "../pages/(instructor)/courses/InstructorCoursesPage";
 import InstructorEditCoursePage from "../pages/(instructor)/edit-course/InstructorEditCoursePage";
 import InstructorProfilePage from "../pages/(instructor)/profile/InstructorProfilePage";
@@ -104,7 +104,7 @@ const instructorRoute: RouteObject = {
   element: <InstructorLayout />,
   path: "/instructor",
   children: [
-    { path: "analytics", element: <InstructorAnalyticsPage /> },
+    { path: "analytics", element: <InstructorDashboard /> },
     { path: "students", element: <p>Instructor Students Page</p> },
     {
       path: "courses",
@@ -131,7 +131,7 @@ const adminRoute: RouteObject = {
   children: [
     {
       path: "analytics",
-      element: <AdminAnalyticsPage />,
+      element: <AdminDashboard />,
     },
     {
       path: "categories",

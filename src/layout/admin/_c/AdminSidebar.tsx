@@ -104,7 +104,7 @@ const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
           },
         )}
       >
-        Admin dashboard
+        Admin site
       </Text>
       {/* Body */}
       <nav className="flex-1 p-2 flex flex-col gap-2">
