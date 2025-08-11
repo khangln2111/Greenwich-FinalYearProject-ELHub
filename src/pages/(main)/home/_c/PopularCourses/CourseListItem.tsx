@@ -51,11 +51,7 @@ const CourseListItem = ({ course, className }: CourseListItemProps) => {
         className="relative w-full md:size-56 flex-shrink-0 aspect-video md:aspect-square rounded-lg overflow-hidden
           shadow-md"
       >
-        <img
-          src={course.imageUrl ?? ""}
-          alt={course.title}
-          className="object-cover w-full h-full"
-        />
+        <img src={course.imageUrl ?? ""} alt={course.title} className="object-cover size-full" />
         {course.discountPercentage > 0 && (
           <Badge
             color="red"
