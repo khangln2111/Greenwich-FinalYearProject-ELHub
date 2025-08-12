@@ -1,11 +1,37 @@
+import { GridifyQueryBuilder } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../api-client/api.types";
 import apiClient from "../../api-client/apiClient";
-import { EnrollFromInventoryCommand, EnrollmentVm } from "./enrollment.types";
+import {
+  EnrollFromInventoryCommand,
+  EnrollmentQueryCriteria,
+  EnrollmentVm,
+} from "./enrollment.types";
+import { applyConditions } from "../../utils/gridifyHelper";
 
 const BASE_URL = "/enrollments";
 
-export const getEnrollmentsSelf = async () => {
-  const response = await apiClient.get<ListData<EnrollmentVm>>(`${BASE_URL}/self`);
+export const buildEnrollmentQuery = (query: EnrollmentQueryCriteria = {}) => {
+  const qb = new GridifyQueryBuilder();
+
+  qb.setPage(query.page ?? 1);
+  qb.setPageSize(query.pageSize ?? 10);
+
+  const conditions: Array<() => void> = [];
+
+  applyConditions(qb, conditions);
+
+  if (query.orderBy) {
+    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
+  } else {
+    qb.addOrderBy("createdAt", true); // true = desc
+  }
+  return qb.build();
+};
+
+export const getEnrollmentsSelf = async (query?: EnrollmentQueryCriteria) => {
+  const response = await apiClient.get<ListData<EnrollmentVm>>(`${BASE_URL}/self`, {
+    params: buildEnrollmentQuery(query),
+  });
   return response.data;
 };
 

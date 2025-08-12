@@ -8,22 +8,27 @@ import {
   redeemGift,
   revokeGift,
 } from "./giftApi";
-import { ChangeGiftReceiverCommand, CreateGiftCommand } from "./gift.types";
+import { ChangeGiftReceiverCommand, CreateGiftCommand, GiftQueryCriteria } from "./gift.types";
 import { handleApiError } from "../common-service/handleApiError";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { ErrorCode } from "../../api-client/api.types";
+import { useAppStore } from "../../zustand/stores/appStore";
 
-export const useGetSentGifts = () => {
+export const useGetSentGifts = (query?: GiftQueryCriteria) => {
+  const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
-    queryKey: keyFac.gifts.getSentGifts.queryKey,
-    queryFn: getSentGifts,
+    queryKey: keyFac.gifts.getSentGifts(query).queryKey,
+    queryFn: () => getSentGifts(query),
+    enabled: !!currentUser,
   });
 };
 
-export const useGetReceivedGifts = () => {
+export const useGetReceivedGifts = (query?: GiftQueryCriteria) => {
+  const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
-    queryKey: keyFac.gifts.getReceivedGifts.queryKey,
-    queryFn: getReceivedGifts,
+    queryKey: keyFac.gifts.getReceivedGifts(query).queryKey,
+    queryFn: () => getReceivedGifts(query),
+    enabled: !!currentUser,
   });
 };
 
@@ -33,8 +38,8 @@ export const useCreateGift = () => {
   return useMutation({
     mutationFn: (command: CreateGiftCommand) => createGift(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts.queryKey });
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts._def });
       queryClient.invalidateQueries({ queryKey: keyFac.enrollments.getEnrollmentsSelf._def });
       queryClient.invalidateQueries({ queryKey: keyFac.inventories.getInventoryItemsSelf._def });
       showSuccessToast("Gift Sent", "Your gift has been sent successfully!");
@@ -68,8 +73,8 @@ export const useRedeemGift = () => {
     mutationFn: (giftId: string) => redeemGift(giftId),
     onSuccess: () => {
       showSuccessToast("Gift Redeemed", "The gift has been redeemed successfully!");
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts.queryKey });
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts._def });
       queryClient.invalidateQueries({ queryKey: keyFac.enrollments.getEnrollmentsSelf._def });
       queryClient.invalidateQueries({ queryKey: keyFac.inventories.getInventoryItemsSelf._def });
     },
@@ -103,8 +108,8 @@ export const useRevokeGift = () => {
   return useMutation({
     mutationFn: (giftId: string) => revokeGift(giftId), // Assuming revokeGift is similar to redeemGift
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts.queryKey });
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts._def });
       queryClient.invalidateQueries({ queryKey: keyFac.enrollments.getEnrollmentsSelf._def });
       queryClient.invalidateQueries({ queryKey: keyFac.inventories.getInventoryItemsSelf._def });
       showSuccessToast("Gift Revoked", "The gift has been revoked successfully!");
@@ -143,8 +148,8 @@ export const useChangeGiftReceiver = () => {
   return useMutation({
     mutationFn: (command: ChangeGiftReceiverCommand) => changeGiftReceiver(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts.queryKey });
-      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts.queryKey });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts._def });
       showSuccessToast("Receiver Changed", "The gift receiver has been changed successfully!");
     },
     onError: (error) =>

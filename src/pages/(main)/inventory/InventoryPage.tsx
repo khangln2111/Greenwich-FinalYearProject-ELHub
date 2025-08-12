@@ -5,10 +5,20 @@ import GiftingModal from "./_c/GiftingModal";
 import InventoryItemCard from "./_c/InventoryItemCard";
 import { PackageOpenIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Flex } from "@mantine/core";
+import AppPagination from "../../../components/AppPagination/AppPagination";
+import { useQueryState, parseAsInteger } from "nuqs";
+
+const pageSize = 6;
 
 export default function InventoryPage() {
-  const { data, isPending, error } = useGetInventoryItemsSelf();
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
+  const { data, isPending, error } = useGetInventoryItemsSelf({
+    page: page,
+    pageSize: pageSize,
+  });
 
   if (isPending) return <CenterLoader />;
 
@@ -51,6 +61,15 @@ export default function InventoryPage() {
           inventoryItemId={selectedItemId}
         />
       )}
+      <Flex justify="center" mt="40">
+        <AppPagination
+          page={page}
+          pageSize={pageSize}
+          itemsCount={data?.count ?? 0}
+          onPageChange={setPage}
+          withEdges
+        />
+      </Flex>
     </div>
   );
 }

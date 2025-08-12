@@ -152,6 +152,7 @@ const CourseMain = ({}: CourseMainProps) => {
             pageSize={pageSize}
             itemsCount={data?.count ?? 0}
             onPageChange={(newPage) => setCourseQuery({ page: newPage })}
+            withEdges
           />
         </Flex>
       </div>

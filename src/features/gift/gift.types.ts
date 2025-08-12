@@ -1,3 +1,5 @@
+import { BaseQueryCriteria } from "../../api-client/api.types";
+
 export interface GiftVm {
   id: string;
   receiverEmail: string;
@@ -48,3 +50,7 @@ export interface ChangeGiftReceiverCommand {
   id: string;
   receiverEmail: string;
 }
+
+export type GiftOrderableFields = "createdAt" | "updatedAt";
+
+export interface GiftQueryCriteria extends BaseQueryCriteria<GiftOrderableFields> {}

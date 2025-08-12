@@ -1,3 +1,4 @@
+import { BaseQueryCriteria } from "../../api-client/api.types";
 import { ReviewVm } from "../review/review.types";
 
 export interface EnrollmentVm {
@@ -9,8 +10,9 @@ export interface EnrollmentVm {
   progressPercentage: number;
   review: ReviewVm | null;
 }
+type EnrollmentOrderableFields = "createdAt" | "updatedAt";
 
-export interface EnrollmentQueryCriteria {}
+export interface EnrollmentQueryCriteria extends BaseQueryCriteria<EnrollmentOrderableFields> {}
 
 export interface EnrollFromInventoryCommand {
   inventoryItemId: string;

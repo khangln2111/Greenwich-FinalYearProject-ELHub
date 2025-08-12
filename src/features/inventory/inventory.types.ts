@@ -1,3 +1,5 @@
+import { BaseQueryCriteria } from "../../api-client/api.types";
+
 export interface InventoryItemVm {
   id: string;
   courseId: string;
@@ -8,4 +10,7 @@ export interface InventoryItemVm {
   quantity: number;
 }
 
-export interface InventoryItemQueryCriteria {}
+export type InventoryItemOrderableFields = "createdAt" | "updatedAt" | "courseTitle" | "quantity";
+
+export interface InventoryItemQueryCriteria
+  extends BaseQueryCriteria<InventoryItemOrderableFields> {}

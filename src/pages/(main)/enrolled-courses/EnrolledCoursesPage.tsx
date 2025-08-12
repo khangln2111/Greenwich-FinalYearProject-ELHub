@@ -1,11 +1,20 @@
+import { Flex } from "@mantine/core";
 import { GraduationCapIcon } from "lucide-react";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { Link } from "react-router-dom";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetEnrollmentsSelf } from "../../../features/enrollment/enrollmentHooks";
 import EnrolledCourseCard from "./_c/EnrolledCourseCard";
-import { Link } from "react-router-dom";
+
+const pageSize = 6;
 
 export default function EnrolledCoursesPage() {
-  const { data, isPending, error } = useGetEnrollmentsSelf();
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const { data, isPending, error } = useGetEnrollmentsSelf({
+    page,
+    pageSize,
+  });
 
   if (isPending) return <CenterLoader />;
 
@@ -42,6 +51,16 @@ export default function EnrolledCoursesPage() {
           ))}
         </div>
       )}
+
+      <Flex justify="center" mt="40">
+        <AppPagination
+          page={page}
+          pageSize={pageSize}
+          itemsCount={data?.count ?? 0}
+          onPageChange={setPage}
+          withEdges
+        />
+      </Flex>
     </div>
   );
 }

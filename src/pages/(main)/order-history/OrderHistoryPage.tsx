@@ -1,7 +1,7 @@
-import { Select } from "@mantine/core";
+import { Flex, Select } from "@mantine/core";
 import { IconReceipt } from "@tabler/icons-react";
 import { ArrowUpDownIcon } from "lucide-react";
-import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
+import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { Link } from "react-router-dom";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import CenterLoader from "../../../components/CenterLoader";
@@ -9,6 +9,7 @@ import { OrderOrderableFields, OrderStatus } from "../../../features/order/order
 import { useGetOrdersSelf } from "../../../features/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 
 const ORDER_BY_OPTIONS: {
   label: string;
@@ -31,9 +32,12 @@ export default function OrderHistoryPage() {
   );
   const orderBy = decodeOrderOption<OrderOrderableFields>(orderByParam, "createdAt", "desc");
 
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+
   const { data, isPending, error } = useGetOrdersSelf({
     orderBy: orderBy,
     status: statusParam === "All" ? undefined : statusParam,
+    page: page,
   });
 
   if (error) return <div>Error loading orders: {error.message}</div>;
@@ -85,6 +89,15 @@ export default function OrderHistoryPage() {
           ))}
         </div>
       )}
+      <Flex justify="center" mt="40">
+        <AppPagination
+          page={page}
+          pageSize={5}
+          itemsCount={data?.count ?? 0}
+          onPageChange={setPage}
+          withEdges
+        />
+      </Flex>
     </div>
   );
 }

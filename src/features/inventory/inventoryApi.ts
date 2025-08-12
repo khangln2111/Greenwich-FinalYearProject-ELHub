@@ -1,12 +1,35 @@
+import { GridifyQueryBuilder } from "gridify-client";
 import { ListData } from "../../api-client/api.types";
 import apiClient from "../../api-client/apiClient";
-import { InventoryItemVm } from "./inventory.types";
+import { applyConditions } from "../../utils/gridifyHelper";
+import { InventoryItemQueryCriteria, InventoryItemVm } from "./inventory.types";
 
 const BASE_URL = "/inventories";
 
-export const getInventoryItemsSelf = async () => {
+export const buildInventoryItemQuery = (query: InventoryItemQueryCriteria = {}) => {
+  const qb = new GridifyQueryBuilder();
+
+  qb.setPage(query.page ?? 1);
+  qb.setPageSize(query.pageSize ?? 10);
+
+  const conditions: Array<() => void> = [];
+
+  applyConditions(qb, conditions);
+
+  if (query.orderBy) {
+    qb.addOrderBy(query.orderBy.field, query.orderBy.direction === "desc");
+  } else {
+    qb.addOrderBy("createdAt", true); // true = desc
+  }
+  return qb.build();
+};
+
+export const getInventoryItemsSelf = async (query?: InventoryItemQueryCriteria) => {
   const response = await apiClient.get<ListData<InventoryItemVm>>(
     `${BASE_URL}/InventoryItems/self`,
+    {
+      params: buildInventoryItemQuery(query),
+    },
   );
   return response.data;
 };

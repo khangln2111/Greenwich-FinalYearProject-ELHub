@@ -3,16 +3,16 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { useAppStore } from "../../zustand/stores/appStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { EnrollFromInventoryCommand } from "./enrollment.types";
+import { EnrollFromInventoryCommand, EnrollmentQueryCriteria } from "./enrollment.types";
 import { enrollFromInventory, getEnrollmentsSelf } from "./enrollmentApi";
 import { ErrorCode } from "../../api-client/api.types";
 
-export const useGetEnrollmentsSelf = () => {
+export const useGetEnrollmentsSelf = (query?: EnrollmentQueryCriteria) => {
   const currentUser = useAppStore((s) => s.currentUser);
 
   return useQuery({
-    queryKey: keyFac.enrollments.getEnrollmentsSelf().queryKey,
-    queryFn: getEnrollmentsSelf,
+    queryKey: keyFac.enrollments.getEnrollmentsSelf(query).queryKey,
+    queryFn: () => getEnrollmentsSelf(query),
     enabled: !!currentUser,
   });
 };

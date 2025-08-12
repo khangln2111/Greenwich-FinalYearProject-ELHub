@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Flex } from "@mantine/core";
 import { GemIcon, GiftIcon } from "lucide-react";
 import { useState } from "react";
 import CenterLoader from "../../../components/CenterLoader";
@@ -14,22 +14,41 @@ import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
 import { ChangeGiftReceiverModal } from "./_c/ChangeGiftReceiverModal";
 import { modals } from "@mantine/modals";
 import { Link } from "react-router-dom";
-import { parseAsStringLiteral, useQueryState } from "nuqs";
+import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
+import AppPagination from "../../../components/AppPagination/AppPagination";
+
+const pageSize = 6;
+const GIFT_PAGE_TABS = ["sent", "received"];
+type GiftPageTab = (typeof GIFT_PAGE_TABS)[number];
 
 export default function GiftsPage() {
   const [activeTab, setActiveTab] = useQueryState(
     "type",
-    parseAsStringLiteral(["sent", "received"]).withDefault("sent"),
+    parseAsStringLiteral(GIFT_PAGE_TABS).withDefault("sent"),
   );
-  const [redeemModalOpen, setRedeemModalOpen] = useState(false);
 
-  const { data: sentGifts, isPending: pendingSent } = useGetSentGifts();
-  const { data: receivedGifts, isPending: pendingReceived } = useGetReceivedGifts();
+  // Shared state for 2 tabs
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+
+  const { data: sentGifts, isPending: pendingSent } = useGetSentGifts({ page, pageSize });
+
+  const { data: receivedGifts, isPending: pendingReceived } = useGetReceivedGifts({
+    page,
+    pageSize,
+  });
+
   const changeReceiverMutation = useChangeGiftReceiver();
   const revokeGiftMutation = useRevokeGift();
 
   const [selectedGiftId, setSelectedGiftId] = useState<string | null>(null);
   const [changeModalOpen, setChangeModalOpen] = useState(false);
+  const [redeemModalOpen, setRedeemModalOpen] = useState(false);
+
+  //  Handle tab changes and reset page
+  const handleTabChange = (tab: GiftPageTab) => {
+    setActiveTab(tab);
+    setPage(1);
+  };
 
   const handleOpenChangeGiftReceiverModal = (giftId: string) => {
     setSelectedGiftId(giftId);
@@ -102,6 +121,7 @@ export default function GiftsPage() {
       </div>
     );
   };
+
   const renderReceived = () => {
     if (pendingReceived) return <CenterLoader />;
 
@@ -137,7 +157,7 @@ export default function GiftsPage() {
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-y-5">
         <div className="flex gap-x-4">
           <button
-            onClick={() => setActiveTab("sent")}
+            onClick={() => handleTabChange("sent")}
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
               activeTab === "sent"
                 ? "bg-blue-600 text-white dark:bg-blue-700"
@@ -147,7 +167,7 @@ export default function GiftsPage() {
             Sent
           </button>
           <button
-            onClick={() => setActiveTab("received")}
+            onClick={() => handleTabChange("received")}
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
               activeTab === "received"
                 ? "bg-blue-600 text-white dark:bg-blue-700"
@@ -169,6 +189,16 @@ export default function GiftsPage() {
       </div>
 
       {activeTab === "sent" ? renderSent() : renderReceived()}
+
+      <Flex justify="center" mt="40">
+        <AppPagination
+          page={page}
+          pageSize={pageSize}
+          itemsCount={activeTab === "sent" ? (sentGifts?.count ?? 0) : (receivedGifts?.count ?? 0)}
+          onPageChange={setPage}
+          withEdges
+        />
+      </Flex>
 
       <RedeemGiftModal open={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
       <ChangeGiftReceiverModal

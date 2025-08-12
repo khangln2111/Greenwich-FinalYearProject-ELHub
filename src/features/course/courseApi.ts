@@ -64,7 +64,7 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   return qb.build();
 };
 
-export const getCourses = async (query: CourseQueryCriteria = {}) => {
+export const getCourses = async (query?: CourseQueryCriteria) => {
   const response = await apiClient.get<ListData<CourseVm>>(`${BASE_URL}`, {
     params: buildCourseQuery(query),
   });
