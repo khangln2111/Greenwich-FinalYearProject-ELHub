@@ -19,7 +19,7 @@ public class CourseGridifyMapper : GridifyMapper<Course>
         AddMap("LectureCount", c => c.Sections.SelectMany(s => s.Lectures).Count());
         AddMap("AverageRating", c => c.Enrollments
             .Where(e => e.Review != null)
-            .Select(e => (double?)e.Review!.Rating)
+            .Select(e => e.Review!.Rating)
             .Average());
         AddMap("EnrollmentCount", c => c.Enrollments.Count);
         AddMap("Price", c => c.Price);

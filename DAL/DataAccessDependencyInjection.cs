@@ -29,7 +29,7 @@ public static class DataAccessDependencyInjection
         services.AddDbContext<ApplicationDbContext>(opts =>
         {
             opts.EnableDetailedErrors();
-            opts.EnableSensitiveDataLogging();
+            // opts.EnableSensitiveDataLogging();
         });
     }
 
