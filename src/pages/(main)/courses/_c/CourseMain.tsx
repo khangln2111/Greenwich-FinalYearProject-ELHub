@@ -1,6 +1,7 @@
 import { ActionIcon, Button, Flex } from "@mantine/core";
 import { LayoutGrid, LayoutList, ListFilter, Search } from "lucide-react";
 
+import AppPagination from "../../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../../components/CenterLoader";
 import { CourseVm } from "../../../../features/course/course.types";
 import { useGetCourses } from "../../../../features/course/courseHooks";
@@ -8,7 +9,6 @@ import { useCourseQueryState } from "../../../../hooks/useCoursesQueryState";
 import { useCoursesPageStore } from "../../../../zustand/stores/coursesPageStore";
 import CourseGrid from "./CourseGrid";
 import CourseList from "./CourseList";
-import CoursePagination from "./CoursePagination";
 
 type CourseMainProps = {};
 
@@ -21,7 +21,7 @@ const CourseMain = ({}: CourseMainProps) => {
   const setLayout = useCoursesPageStore((s) => s.setLayout);
 
   const [{ categoryId, level, orderBy, search, page }, setCourseQuery] = useCourseQueryState();
-  const pageSize = layout === "grid" ? 6 : 5;
+  const pageSize = layout === "grid" ? 6 : 4;
 
   const { data, isPending, isError } = useGetCourses({
     categoryId: categoryId,
@@ -40,10 +40,20 @@ const CourseMain = ({}: CourseMainProps) => {
       <div className="flex items-center justify-between gap-3 mb-4">
         {/* Course count */}
         <span className="text-sm text-gray-500">
-          Showing{" "}
           {!isPending && !isError && data && (
             <>
-              <strong>{courses.length}</strong> of <strong>{data?.count}</strong> courses
+              {(() => {
+                const total = data.count ?? 0;
+                const firstItem = (page - 1) * pageSize + 1;
+                const lastItem = Math.min(page * pageSize, total);
+
+                return (
+                  <>
+                    Showing <strong>{firstItem}</strong>–<strong>{lastItem}</strong> of{" "}
+                    <strong>{total}</strong> courses
+                  </>
+                );
+              })()}
             </>
           )}
         </span>
@@ -137,10 +147,10 @@ const CourseMain = ({}: CourseMainProps) => {
 
         {/* Pagination */}
         <Flex justify="center" mt="40">
-          <CoursePagination
+          <AppPagination
             page={page}
             pageSize={pageSize}
-            total={data?.count ?? 0}
+            itemsCount={data?.count ?? 0}
             onPageChange={(newPage) => setCourseQuery({ page: newPage })}
           />
         </Flex>

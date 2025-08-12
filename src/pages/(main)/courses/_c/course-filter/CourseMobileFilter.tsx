@@ -2,12 +2,16 @@ import { Stack } from "@mantine/core";
 import { ResponsiveDialog } from "mantine-vaul";
 import CourseFilter from "./CourseFilter";
 import { useCoursesPageStore } from "../../../../../zustand/stores/coursesPageStore";
+import { useMediaQuery } from "@mantine/hooks";
 
 type CourseMobileFilterProps = {};
 
 const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
   const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
   const closeMobileFilter = useCoursesPageStore((s) => s.closeMobileFilter);
+  const isMobileOrTablet = useMediaQuery("(max-width: 1024px)");
+
+  if (!isMobileOrTablet) return null;
 
   return (
     <ResponsiveDialog

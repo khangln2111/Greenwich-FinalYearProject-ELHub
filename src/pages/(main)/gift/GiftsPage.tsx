@@ -14,9 +14,13 @@ import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
 import { ChangeGiftReceiverModal } from "./_c/ChangeGiftReceiverModal";
 import { modals } from "@mantine/modals";
 import { Link } from "react-router-dom";
+import { parseAsStringLiteral, useQueryState } from "nuqs";
 
 export default function GiftsPage() {
-  const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
+  const [activeTab, setActiveTab] = useQueryState(
+    "type",
+    parseAsStringLiteral(["sent", "received"]).withDefault("sent"),
+  );
   const [redeemModalOpen, setRedeemModalOpen] = useState(false);
 
   const { data: sentGifts, isPending: pendingSent } = useGetSentGifts();
