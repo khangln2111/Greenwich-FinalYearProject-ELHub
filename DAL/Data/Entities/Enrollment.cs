@@ -12,5 +12,7 @@ public class Enrollment : BaseEntity
 
     public ICollection<LectureProgress> LectureProgresses { get; set; } = new List<LectureProgress>();
 
+    public Guid? ReviewId { get; set; }
+
     public Review? Review { get; set; }
 }

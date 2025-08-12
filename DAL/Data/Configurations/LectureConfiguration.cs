@@ -15,5 +15,8 @@ public class LectureConfiguration : IEntityTypeConfiguration<Lecture>
 
         builder.Property(l => l.Description)
             .HasMaxLength(AppConstants.Lecture.DescriptionMaxLength); // Limit the length of Description
+
+        // Indexing for faster lookups
+        builder.HasIndex(x => new { x.SectionId, x.Id });
     }
 }

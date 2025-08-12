@@ -15,5 +15,7 @@ public class SectionConfiguration : IEntityTypeConfiguration<Section>
 
         builder.Property(x => x.Description)
             .HasMaxLength(AppConstants.Section.DescriptionMaxLength);
+
+        builder.HasIndex(s => new { s.CourseId, s.Id });
     }
 }

@@ -15,5 +15,8 @@ public class MediaConfiguration : IEntityTypeConfiguration<Media>
             .HasValue<Media>(MediaType.Document)
             .HasValue<DurationMedia>(MediaType.Video)
             .HasValue<DurationMedia>(MediaType.Audio);
+
+        // Indexing for faster lookups
+        builder.HasIndex(m => m.Type);
     }
 }

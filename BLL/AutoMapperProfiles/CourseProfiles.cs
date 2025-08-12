@@ -79,7 +79,7 @@ public class CourseProfiles : Profile
                 opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
             .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)));
 
-        CreateMap<Course, CourseVm>()
+        CreateProjection<Course, CourseVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
             .ForMember(dest => dest.DurationInSeconds, opt => opt
                 .MapFrom(src => src.Sections
