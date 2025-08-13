@@ -12,7 +12,9 @@ export interface EnrollmentVm {
 }
 type EnrollmentOrderableFields = "createdAt" | "updatedAt";
 
-export interface EnrollmentQueryCriteria extends BaseQueryCriteria<EnrollmentOrderableFields> {}
+export interface EnrollmentQueryCriteria extends BaseQueryCriteria<EnrollmentOrderableFields> {
+  search?: string | null;
+}
 
 export interface EnrollFromInventoryCommand {
   inventoryItemId: string;

@@ -49,7 +49,7 @@ export default function AdminPendingCoursesPage() {
     <div className="flex-1 p-6 xl:p-8 @container">
       <div className="mx-auto space-y-6">
         {/* Header and controls */}
-        <div className="flex flex-col md:flex-row items-center md:justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <Title order={2}>Pending Courses</Title>
 
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">

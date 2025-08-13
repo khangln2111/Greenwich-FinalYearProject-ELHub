@@ -1,32 +1,86 @@
-import { useState } from "react";
+import { ActionIcon, Flex, TextInput } from "@mantine/core";
+import { PackageOpenIcon, SearchIcon } from "lucide-react";
+import { Link } from "react-router-dom";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetInventoryItemsSelf } from "../../../features/inventory/inventoryHooks";
-import GiftingModal from "./_c/GiftingModal";
 import InventoryItemCard from "./_c/InventoryItemCard";
-import { PackageOpenIcon } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Flex } from "@mantine/core";
-import AppPagination from "../../../components/AppPagination/AppPagination";
-import { useQueryState, parseAsInteger } from "nuqs";
+import GiftingModal from "./_c/GiftingModal";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import { useState } from "react";
 
 const pageSize = 6;
 
 export default function InventoryPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
+  const [searchInput, setSearchInput] = useState(search);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
+  // Gọi API với page + pageSize + search
   const { data, isPending, error } = useGetInventoryItemsSelf({
-    page: page,
-    pageSize: pageSize,
+    page,
+    pageSize,
+    search: search,
   });
+
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
+    setSearch(searchInput);
+    setPage(1);
+  };
 
   if (isPending) return <CenterLoader />;
 
-  if (error) return <div>Error loading orders: {error.message}</div>;
+  if (error) return <div>Error loading inventory items: {error.message}</div>;
 
   return (
     <div className="mx-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6">My Inventory</h1>
+      {/* Header: Title + Search Input */}
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white">
+          My Inventory
+        </h1>
+
+        <TextInput
+          placeholder="Search inventory items..."
+          className="w-60"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.currentTarget.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchSubmit(e);
+            }
+          }}
+          rightSectionPointerEvents="all"
+          rightSection={
+            search ? (
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                onClick={() => {
+                  setSearchInput("");
+                  setSearch("");
+                  setPage(1);
+                }}
+                aria-label="Clear search"
+              >
+                ✕
+              </ActionIcon>
+            ) : (
+              <ActionIcon
+                type="submit"
+                variant="subtle"
+                size="lg"
+                onClick={handleSearchSubmit}
+                aria-label="Search"
+              >
+                <SearchIcon className="text-gray-500" size={16} />
+              </ActionIcon>
+            )
+          }
+        />
+      </div>
 
       <div className="space-y-5">
         {data.items.length === 0 ? (
@@ -54,6 +108,7 @@ export default function InventoryPage() {
           ))
         )}
       </div>
+
       {selectedItemId && (
         <GiftingModal
           opened={!!selectedItemId}
@@ -61,6 +116,7 @@ export default function InventoryPage() {
           inventoryItemId={selectedItemId}
         />
       )}
+
       <Flex justify="center" mt="40">
         <AppPagination
           page={page}

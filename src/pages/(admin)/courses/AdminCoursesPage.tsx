@@ -84,7 +84,7 @@ export default function AdminCoursesPage() {
         </div>
 
         {/* Status Filter + Sort */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <Select
             data={[
               { value: "All", label: "All" },

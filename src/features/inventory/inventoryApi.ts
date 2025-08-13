@@ -1,4 +1,4 @@
-import { GridifyQueryBuilder } from "gridify-client";
+import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { ListData } from "../../api-client/api.types";
 import apiClient from "../../api-client/apiClient";
 import { applyConditions } from "../../utils/gridifyHelper";
@@ -13,6 +13,19 @@ export const buildInventoryItemQuery = (query: InventoryItemQueryCriteria = {}) 
   qb.setPageSize(query.pageSize ?? 10);
 
   const conditions: Array<() => void> = [];
+
+  if (query.search?.trim()) {
+    conditions.push(() =>
+      qb
+        .startGroup()
+        .addCondition("courseTitle", op.Contains, query.search!, false)
+        .or()
+        .addCondition("courseDescription", op.Contains, query.search!, false)
+        .or()
+        .addCondition("instructorName", op.Contains, query.search!, false)
+        .endGroup(),
+    );
+  }
 
   applyConditions(qb, conditions);
 

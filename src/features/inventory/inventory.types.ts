@@ -13,4 +13,6 @@ export interface InventoryItemVm {
 export type InventoryItemOrderableFields = "createdAt" | "updatedAt" | "courseTitle" | "quantity";
 
 export interface InventoryItemQueryCriteria
-  extends BaseQueryCriteria<InventoryItemOrderableFields> {}
+  extends BaseQueryCriteria<InventoryItemOrderableFields> {
+  search?: string | null;
+}

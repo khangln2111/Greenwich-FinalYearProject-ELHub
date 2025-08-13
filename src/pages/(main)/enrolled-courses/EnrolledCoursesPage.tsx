@@ -1,31 +1,78 @@
-import { Flex } from "@mantine/core";
-import { GraduationCapIcon } from "lucide-react";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { ActionIcon, TextInput } from "@mantine/core";
+import { GraduationCapIcon, SearchIcon } from "lucide-react";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { Link } from "react-router-dom";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetEnrollmentsSelf } from "../../../features/enrollment/enrollmentHooks";
 import EnrolledCourseCard from "./_c/EnrolledCourseCard";
+import { useState } from "react";
 
 const pageSize = 6;
 
 export default function EnrolledCoursesPage() {
+  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
+  const [searchInput, setSearchInput] = useState(search);
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+
   const { data, isPending, error } = useGetEnrollmentsSelf({
     page,
     pageSize,
+    search: search,
   });
+
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
+    setSearch(searchInput);
+    setPage(1);
+  };
 
   if (isPending) return <CenterLoader />;
 
-  if (error) return <div>Error loading orders: {error.message}</div>;
+  if (error) return <div>Error loading enrollments: {error.message}</div>;
 
   return (
     <div>
-      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-        Enrolled courses
-      </h1>
+      {/* Header: Title + Search Input */}
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white">
+          Enrolled courses
+        </h2>
 
+        <TextInput
+          placeholder="Search courses..."
+          className="w-60"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.currentTarget.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchSubmit(e);
+            }
+          }}
+          rightSectionPointerEvents="all"
+          rightSection={
+            search ? (
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                onClick={() => {
+                  setSearchInput("");
+                  setSearch("");
+                  setPage(1);
+                }}
+              >
+                ✕
+              </ActionIcon>
+            ) : (
+              <ActionIcon type="submit" variant="subtle" size="lg" onClick={handleSearchSubmit}>
+                <SearchIcon className="text-gray-500" size={16} />
+              </ActionIcon>
+            )
+          }
+        />
+      </div>
+
+      {/* Content */}
       {data.items.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
           <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full">
@@ -52,7 +99,7 @@ export default function EnrolledCoursesPage() {
         </div>
       )}
 
-      <Flex justify="center" mt="40">
+      <div className="flex justify-center mt-10">
         <AppPagination
           page={page}
           pageSize={pageSize}
@@ -60,7 +107,7 @@ export default function EnrolledCoursesPage() {
           onPageChange={setPage}
           withEdges
         />
-      </Flex>
+      </div>
     </div>
   );
 }
