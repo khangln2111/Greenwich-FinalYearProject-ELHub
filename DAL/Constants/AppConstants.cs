@@ -18,7 +18,10 @@ public static class AppConstants
 
     public static class Order
     {
-        public const int PaymentIntentIdMaxLength = 500;
+        public const int PaymentIntentIdMaxLength = 1000;
+        public const int PaymentMethodTypeMaxLength = 100;
+        public const int PaymentMethodBrandMaxLength = 100;
+        public const int PaymentMethodLast4MaxLength = 10;
     }
 
     public static class Category
