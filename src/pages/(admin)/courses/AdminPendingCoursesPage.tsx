@@ -1,12 +1,13 @@
 import { ActionIcon, Select, TextInput, Title } from "@mantine/core";
 import { ArrowUpAzIcon, InboxIcon, SearchIcon } from "lucide-react";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
-import CenterLoader from "../../../components/CenterLoader";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
+import AppPagination from "../../../components/AppPagination/AppPagination";
+import CenterLoader from "../../../components/CenterLoader";
 import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
 import { useGetCourses } from "../../../features/course/courseHooks";
 import AdminCourseCard from "./_c/AdminCourseCard";
-import { parseAsString, useQueryState } from "nuqs";
 
 const COURSE_ORDER_OPTIONS: {
   label: string;
@@ -20,6 +21,8 @@ const COURSE_ORDER_OPTIONS: {
 ];
 
 export default function AdminPendingCoursesPage() {
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
   const [orderByParam, setOrderByParam] = useQueryState(
@@ -112,6 +115,14 @@ export default function AdminPendingCoursesPage() {
             {data.items?.map((course) => <AdminCourseCard key={course.id} course={course} />)}
           </div>
         )}
+        <AppPagination
+          page={page}
+          pageSize={pageSize}
+          itemsCount={data?.count ?? 0}
+          onPageChange={setPage}
+          withEdges
+          className="flex justify-center items-center mt-10"
+        />
       </div>
     </div>
   );

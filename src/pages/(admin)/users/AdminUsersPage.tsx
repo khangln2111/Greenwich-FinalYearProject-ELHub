@@ -13,22 +13,26 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { IconFilterCog } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { PencilIcon, SearchIcon, ShieldQuestionIcon } from "lucide-react";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import { UserVm } from "../../../features/user/user.types";
 import { useGetUsers, useSetUserActivation } from "../../../features/user/userHooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
-import { parseAsString, useQueryState } from "nuqs";
 
 export default function AdminUsersPage() {
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
   const [roleFilter, setRoleFilter] = useQueryState("role");
   const [statusFilter, setStatusFilter] = useQueryState("status");
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [_, setSearchParams] = useSearchParams();
 
   const [editingUser, setEditingUser] = useState<UserVm | null>(null);
@@ -50,6 +54,8 @@ export default function AdminUsersPage() {
     search: search,
     role: roleFilter,
     isActivated: statusFilter === "Active" ? true : statusFilter === "Banned" ? false : undefined,
+    page,
+    pageSize,
   });
 
   if (error) {
@@ -120,7 +126,7 @@ export default function AdminUsersPage() {
             />
             <Button
               variant="light"
-              color="gray"
+              leftSection={<IconFilterCog size={16} />}
               onClick={() => {
                 setSearchParams(new URLSearchParams());
                 setSearchInput("");
@@ -252,6 +258,14 @@ export default function AdminUsersPage() {
               </Table.Tbody>
             </Table>
           </TableScrollContainer>
+          <AppPagination
+            page={page}
+            pageSize={pageSize}
+            itemsCount={data?.count ?? 0}
+            onPageChange={setPage}
+            withEdges
+            className="my-3 flex items-center justify-center"
+          />
         </div>
       </Card>
 

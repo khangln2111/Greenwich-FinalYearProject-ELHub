@@ -1,7 +1,9 @@
 import { ActionIcon, Badge, Button, Image, Text, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Pencil, Plus, SearchIcon } from "lucide-react";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import { CategoryVm } from "../../../features/category/category.types";
 import { useGetCategories } from "../../../features/category/categoryHooks";
@@ -13,16 +15,19 @@ export default function AdminCategoriesPage() {
   const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
   const [editingCategory, setEditingCategory] = useState<CategoryVm | null>(null);
 
-  const [searchInput, setSearchInput] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(8));
 
-  const { data, isPending, error } = useGetCategories({ name: searchTerm });
+  const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+
+  const { data, isPending, error } = useGetCategories({ name: search, page, pageSize });
 
   if (error) return <Text>Error loading categories: {error.message}</Text>;
 
   const handleSearchSubmit = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
-    setSearchTerm(searchInput.trim());
+    setSearch(searchInput.trim());
   };
 
   const handleEdit = (category: CategoryVm) => {
@@ -48,13 +53,13 @@ export default function AdminCategoriesPage() {
               }}
               rightSectionPointerEvents="all"
               rightSection={
-                searchTerm ? (
+                search ? (
                   <ActionIcon
                     variant="subtle"
                     size="lg"
                     onClick={() => {
                       setSearchInput("");
-                      setSearchTerm("");
+                      setSearch("");
                     }}
                   >
                     ✕
@@ -109,6 +114,15 @@ export default function AdminCategoriesPage() {
           ))}
         </div>
       )}
+
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={data?.count ?? 0}
+        onPageChange={(newPage) => setPage(newPage)}
+        withEdges
+        className="flex justify-center items-center mt-[50px]"
+      />
 
       {/* Modals */}
       <CreateCategoryModal opened={createOpened} onClose={closeCreate} />

@@ -1,19 +1,18 @@
-import { ActionIcon, Flex, TextInput } from "@mantine/core";
+import { ActionIcon, TextInput } from "@mantine/core";
 import { PackageOpenIcon, SearchIcon } from "lucide-react";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetInventoryItemsSelf } from "../../../features/inventory/inventoryHooks";
-import InventoryItemCard from "./_c/InventoryItemCard";
 import GiftingModal from "./_c/GiftingModal";
-import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
-import { useState } from "react";
-
-const pageSize = 6;
+import InventoryItemCard from "./_c/InventoryItemCard";
 
 export default function InventoryPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [searchInput, setSearchInput] = useState(search);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
@@ -117,15 +116,14 @@ export default function InventoryPage() {
         />
       )}
 
-      <Flex justify="center" mt="40">
-        <AppPagination
-          page={page}
-          pageSize={pageSize}
-          itemsCount={data?.count ?? 0}
-          onPageChange={setPage}
-          withEdges
-        />
-      </Flex>
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={data?.count ?? 0}
+        onPageChange={setPage}
+        withEdges
+        className="flex items-center justify-center mt-10"
+      />
     </div>
   );
 }

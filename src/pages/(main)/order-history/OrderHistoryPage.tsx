@@ -1,15 +1,15 @@
-import { Flex, Select } from "@mantine/core";
+import { Select } from "@mantine/core";
 import { IconReceipt } from "@tabler/icons-react";
 import { ArrowUpDownIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { Link } from "react-router-dom";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import { OrderOrderableFields, OrderStatus } from "../../../features/order/order.types";
 import { useGetOrdersSelf } from "../../../features/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
-import AppPagination from "../../../components/AppPagination/AppPagination";
 
 const ORDER_BY_OPTIONS: {
   label: string;
@@ -33,6 +33,7 @@ export default function OrderHistoryPage() {
   const orderBy = decodeOrderOption<OrderOrderableFields>(orderByParam, "createdAt", "desc");
 
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(5));
 
   const { data, isPending, error } = useGetOrdersSelf({
     orderBy: orderBy,
@@ -89,15 +90,14 @@ export default function OrderHistoryPage() {
           ))}
         </div>
       )}
-      <Flex justify="center" mt="40">
-        <AppPagination
-          page={page}
-          pageSize={5}
-          itemsCount={data?.count ?? 0}
-          onPageChange={setPage}
-          withEdges
-        />
-      </Flex>
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={data?.count ?? 0}
+        onPageChange={setPage}
+        withEdges
+        className="flex justify-center items-center mt-10"
+      />
     </div>
   );
 }

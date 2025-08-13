@@ -1,19 +1,18 @@
 import { ActionIcon, TextInput } from "@mantine/core";
 import { GraduationCapIcon, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetEnrollmentsSelf } from "../../../features/enrollment/enrollmentHooks";
 import EnrolledCourseCard from "./_c/EnrolledCourseCard";
-import { useState } from "react";
-
-const pageSize = 6;
 
 export default function EnrolledCoursesPage() {
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
 
   const { data, isPending, error } = useGetEnrollmentsSelf({
     page,
@@ -99,15 +98,14 @@ export default function EnrolledCoursesPage() {
         </div>
       )}
 
-      <div className="flex justify-center mt-10">
-        <AppPagination
-          page={page}
-          pageSize={pageSize}
-          itemsCount={data?.count ?? 0}
-          onPageChange={setPage}
-          withEdges
-        />
-      </div>
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={data?.count ?? 0}
+        onPageChange={setPage}
+        withEdges
+        className="flex justify-center items-center mt-10"
+      />
     </div>
   );
 }

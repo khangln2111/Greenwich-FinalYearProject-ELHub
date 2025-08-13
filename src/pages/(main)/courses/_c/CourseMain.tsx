@@ -1,6 +1,7 @@
-import { ActionIcon, Button, Flex } from "@mantine/core";
+import { ActionIcon, Button } from "@mantine/core";
 import { LayoutGrid, LayoutList, ListFilter, Search } from "lucide-react";
 
+import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import AppPagination from "../../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../../components/CenterLoader";
 import { CourseVm } from "../../../../features/course/course.types";
@@ -17,11 +18,16 @@ const CourseMain = ({}: CourseMainProps) => {
   const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
   const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
   const openMobileFilter = useCoursesPageStore((s) => s.openMobileFilter);
-  const layout = useCoursesPageStore((s) => s.layout);
-  const setLayout = useCoursesPageStore((s) => s.setLayout);
+  const [layout, setLayout] = useQueryState(
+    "layout",
+    parseAsStringLiteral(["grid", "list"]).withDefault("grid"),
+  );
 
   const [{ categoryId, level, orderBy, search, page }, setCourseQuery] = useCourseQueryState();
-  const pageSize = layout === "grid" ? 6 : 4;
+  const [pageSize] = useQueryState(
+    "pageSize",
+    parseAsInteger.withDefault(layout === "grid" ? 6 : 4),
+  );
 
   const { data, isPending, isError } = useGetCourses({
     categoryId: categoryId,
@@ -146,15 +152,14 @@ const CourseMain = ({}: CourseMainProps) => {
           (layout === "grid" ? <CourseGrid courses={courses} /> : <CourseList courses={courses} />)}
 
         {/* Pagination */}
-        <Flex justify="center" mt="40">
-          <AppPagination
-            page={page}
-            pageSize={pageSize}
-            itemsCount={data?.count ?? 0}
-            onPageChange={(newPage) => setCourseQuery({ page: newPage })}
-            withEdges
-          />
-        </Flex>
+        <AppPagination
+          page={page}
+          pageSize={pageSize}
+          itemsCount={data?.count ?? 0}
+          onPageChange={(newPage) => setCourseQuery({ page: newPage })}
+          withEdges
+          className="flex justify-center items-center mt-10"
+        />
       </div>
     </>
   );

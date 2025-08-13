@@ -17,10 +17,14 @@ import { useForm } from "@mantine/form";
 import { IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { ArrowUpAzIcon, FileQuestion } from "lucide-react";
+import { zodResolver } from "mantine-form-zod-resolver";
+import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useState } from "react";
+import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import CusModal from "../../../components/CusModal";
-import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
+import { ReviewCourseFormValues, reviewCourseSchema } from "../../../features/course/course.schema";
 import {
   InstructorApplicationOrderableFields,
   InstructorApplicationStatus,
@@ -32,10 +36,7 @@ import {
   useReviewInstructorApplication,
 } from "../../../features/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
-import { zodResolver } from "mantine-form-zod-resolver";
 import { formSubmitWithFocus } from "../../../utils/form";
-import { ReviewCourseFormValues, reviewCourseSchema } from "../../../features/course/course.schema";
-import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -99,6 +100,8 @@ export default function AdminInstructorApprovalPage() {
   const [viewApp, setViewApp] = useState<InstructorApplicationVm | null>(null);
   const [reviewApp, setReviewApp] = useState<InstructorApplicationVm | null>(null);
   const [approveMode, setApproveMode] = useState(true);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
 
@@ -296,6 +299,15 @@ export default function AdminInstructorApprovalPage() {
           ))}
         </div>
       )}
+
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={data?.count ?? 0}
+        onPageChange={setPage}
+        withEdges
+        className="flex justify-center items-center mt-10"
+      />
 
       <CusModal
         title="Application Detail"

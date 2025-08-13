@@ -1,6 +1,10 @@
-import { Button, Flex } from "@mantine/core";
+import { Button } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { GemIcon, GiftIcon } from "lucide-react";
+import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
 import {
   useChangeGiftReceiver,
@@ -8,16 +12,11 @@ import {
   useGetSentGifts,
   useRevokeGift,
 } from "../../../features/gift/giftHooks";
+import { ChangeGiftReceiverModal } from "./_c/ChangeGiftReceiverModal";
+import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
 import { SentGiftItemCard } from "./_c/SentGiftItemCard";
-import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
-import { ChangeGiftReceiverModal } from "./_c/ChangeGiftReceiverModal";
-import { modals } from "@mantine/modals";
-import { Link } from "react-router-dom";
-import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
-import AppPagination from "../../../components/AppPagination/AppPagination";
 
-const pageSize = 6;
 const GIFT_PAGE_TABS = ["sent", "received"];
 type GiftPageTab = (typeof GIFT_PAGE_TABS)[number];
 
@@ -29,6 +28,8 @@ export default function GiftsPage() {
 
   // Shared state for 2 tabs
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
 
   const { data: sentGifts, isPending: pendingSent } = useGetSentGifts({ page, pageSize });
 
@@ -190,15 +191,14 @@ export default function GiftsPage() {
 
       {activeTab === "sent" ? renderSent() : renderReceived()}
 
-      <Flex justify="center" mt="40">
-        <AppPagination
-          page={page}
-          pageSize={pageSize}
-          itemsCount={activeTab === "sent" ? (sentGifts?.count ?? 0) : (receivedGifts?.count ?? 0)}
-          onPageChange={setPage}
-          withEdges
-        />
-      </Flex>
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={activeTab === "sent" ? (sentGifts?.count ?? 0) : (receivedGifts?.count ?? 0)}
+        onPageChange={setPage}
+        withEdges
+        className="flex justify-center items-center mt-10"
+      />
 
       <RedeemGiftModal open={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
       <ChangeGiftReceiverModal
