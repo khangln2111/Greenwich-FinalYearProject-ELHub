@@ -13,6 +13,8 @@ public class EnrollmentProfiles : Profile
             .ForMember(dest => dest.CourseImageUrl,
                 opt => opt.MapFrom(src => src.Course.Image != null ? src.Course.Image.Url : null))
             .ForMember(dest => dest.CourseDescription, opt => opt.MapFrom(src => src.Course.Description))
+            .ForMember(dest => dest.InstructorName,
+                opt => opt.MapFrom(src => src.Course.Instructor.FirstName + " " + src.Course.Instructor.LastName))
             .ForMember(dest => dest.ProgressPercentage,
                 opt => opt.MapFrom(src =>
                     src.Course.Sections.SelectMany(s => s.Lectures).Any()
