@@ -9,51 +9,51 @@ import {
   IconUserPlus,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { encodeOrderOption, OrderBy, OrderDirection } from "../../../../../api-client/api.types";
+import { useMemo, useState } from "react";
+import { encodeOrderOption, OrderDirection } from "../../../../../api-client/api.types";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 
+// SORTING_OPTIONS chỉ giữ field, label và icon
 const SORTING_OPTIONS: {
-  value: OrderBy<CourseOrderableFields>;
+  field: CourseOrderableFields;
   label: string;
   icon: React.ReactNode;
 }[] = [
-  {
-    value: { field: "createdAt", direction: "desc" },
-    label: "DATE",
-    icon: <IconClock size={18} />,
-  },
-  {
-    value: { field: "discountedPrice", direction: "asc" },
-    label: "PRICE",
-    icon: <IconCoin size={18} />,
-  },
-  {
-    value: { field: "enrollmentCount", direction: "desc" },
-    label: "POPULAR",
-    icon: <IconUserPlus size={18} />,
-  },
-  {
-    value: { field: "title", direction: "asc" },
-    label: "A-Z",
-    icon: <IconSortAZ size={18} />,
-  },
-  {
-    value: { field: "averageRating", direction: "desc" },
-    label: "RATING",
-    icon: <IconStar size={18} />,
-  },
+  { field: "createdAt", label: "DATE", icon: <IconClock size={18} /> },
+  { field: "discountedPrice", label: "PRICE", icon: <IconCoin size={18} /> },
+  { field: "enrollmentCount", label: "POPULAR", icon: <IconUserPlus size={18} /> },
+  { field: "title", label: "A-Z", icon: <IconSortAZ size={18} /> },
+  { field: "averageRating", label: "RATING", icon: <IconStar size={18} /> },
 ];
 
 const CourseSorter = () => {
   const [{ orderBy }, setCourseQuery] = useCourseQueryState();
-
   const [hoveredSort, setHoveredSort] = useState<CourseOrderableFields | null>(null);
 
+  // Current option (hovered or selected)
+  const currentOption = useMemo(
+    () => SORTING_OPTIONS.find((opt) => opt.field === (hoveredSort ?? orderBy.field)),
+    [hoveredSort, orderBy.field],
+  );
+
+  // Display label with direction
+  const displayLabel = useMemo(() => {
+    if (!currentOption) return "";
+    const fieldLabel = currentOption.label;
+    const directionLabel =
+      currentOption.field === "createdAt"
+        ? orderBy.direction === "asc"
+          ? "(Oldest)"
+          : "(Newest)"
+        : orderBy.direction === "asc"
+          ? "(Asc)"
+          : "(Desc)";
+    return `${fieldLabel} ${directionLabel}`;
+  }, [currentOption, orderBy.direction]);
+
+  // Change sorting field (keep current direction)
   const handleFieldChange = (field: string) => {
-    const found = SORTING_OPTIONS.find((opt) => opt.value.field === field);
-    if (!found) return;
     setCourseQuery({
       orderBy: encodeOrderOption({
         field: field as CourseOrderableFields,
@@ -62,6 +62,7 @@ const CourseSorter = () => {
     });
   };
 
+  // Toggle direction for current field
   const toggleSortDirection = () => {
     const newDirection: OrderDirection = orderBy.direction === "asc" ? "desc" : "asc";
     setCourseQuery({
@@ -71,6 +72,7 @@ const CourseSorter = () => {
 
   return (
     <>
+      {/* Header */}
       <div className="flex justify-between items-center mb-2">
         <Text fw={500} size="sm">
           Sorting:
@@ -85,17 +87,7 @@ const CourseSorter = () => {
             transition={{ duration: 0.3 }}
             className="text-sm font-semibold"
           >
-            {
-              SORTING_OPTIONS.find((opt) => opt.value.field === (hoveredSort ?? orderBy.field))
-                ?.label
-            }{" "}
-            {orderBy.field === "createdAt"
-              ? orderBy.direction === "asc"
-                ? "(Oldest)"
-                : "(Newest)"
-              : orderBy.direction === "asc"
-                ? "(Asc)"
-                : "(Desc)"}
+            {displayLabel}
           </motion.p>
 
           <Button
@@ -109,19 +101,23 @@ const CourseSorter = () => {
         </div>
       </div>
 
+      {/* SegmentedControl */}
       <SegmentedControl
         radius="full"
         className="grid auto-cols-fr grid-flow-col-dense"
         color="blue"
         size="lg"
+        classNames={{
+          label: "not-data-active:hover:bg-gray-4 not-data-active:dark:hover:bg-dark-5",
+        }}
         value={orderBy.field}
         onChange={handleFieldChange}
         data={SORTING_OPTIONS.map((option) => ({
-          value: option.value.field,
+          value: option.field,
           label: (
             <div
               className="flex justify-center items-center"
-              onMouseEnter={() => setHoveredSort(option.value.field)}
+              onMouseEnter={() => setHoveredSort(option.field)}
               onMouseLeave={() => setHoveredSort(null)}
             >
               {option.icon}
