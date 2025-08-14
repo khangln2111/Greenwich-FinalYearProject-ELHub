@@ -32,13 +32,17 @@ export default function OrderHistoryPage() {
   );
   const orderBy = decodeOrderOption<OrderOrderableFields>(orderByParam, "createdAt", "desc");
 
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(5));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(3));
 
   const { data, isPending, error } = useGetOrdersSelf({
     orderBy: orderBy,
     status: statusParam === "All" ? undefined : statusParam,
     page: page,
+    pageSize: pageSize,
   });
 
   if (error) return <div>Error loading orders: {error.message}</div>;

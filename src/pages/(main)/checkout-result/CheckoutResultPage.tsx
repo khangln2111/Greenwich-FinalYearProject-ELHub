@@ -79,9 +79,9 @@ function PaymentFailed() {
         variant="light"
         className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white rounded-full"
         component={Link}
-        to="/cart"
+        to="/dashboard/order-history"
       >
-        Return to Cart
+        Return to Order History
       </Button>
     </>
   );

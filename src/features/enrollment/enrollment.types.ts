@@ -7,6 +7,7 @@ export interface EnrollmentVm {
   courseTitle: string;
   courseDescription: string;
   courseImageUrl?: string;
+  instructorName: string;
   progressPercentage: number;
   review: ReviewVm | null;
 }

@@ -39,7 +39,7 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/enrolled-courses",
   },
   {
-    label: "Purchase history",
+    label: "Order history",
     icon: <HistoryIcon className="size-5" />,
     href: "/dashboard/order-history",
   },

@@ -75,7 +75,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           component={Link}
           to="/dashboard/order-history"
         >
-          Purchase history
+          Order history
         </Menu.Item>
         <Menu.Item
           leftSection={<PackageIcon size={15} />}

@@ -172,10 +172,10 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
                 color="initials"
                 size="sm"
                 radius="xl"
-                name="Nguyen Khang"
+                name={enrollment.instructorName}
               />
               <Text className="text-gray-500 text-sm dark:text-gray-400">
-                by <span className="font-semibold">Nguyen Khang</span>
+                by <span className="font-semibold">{enrollment.instructorName}</span>
               </Text>
             </div>
           </div>
