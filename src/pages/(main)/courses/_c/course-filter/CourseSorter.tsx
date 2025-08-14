@@ -1,4 +1,4 @@
-import { Button, SegmentedControl, Text } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
 import {
   IconArrowDown,
   IconArrowUp,
@@ -11,6 +11,7 @@ import {
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { encodeOrderOption, OrderDirection } from "../../../../../api-client/api.types";
+import { AppSegmentedControl } from "../../../../../components/AppSegmentedControl";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 
@@ -102,7 +103,7 @@ const CourseSorter = () => {
       </div>
 
       {/* SegmentedControl */}
-      <SegmentedControl
+      <AppSegmentedControl
         radius="full"
         className="grid auto-cols-fr grid-flow-col-dense"
         color="blue"
@@ -114,15 +115,11 @@ const CourseSorter = () => {
         onChange={handleFieldChange}
         data={SORTING_OPTIONS.map((option) => ({
           value: option.field,
-          label: (
-            <div
-              className="flex justify-center items-center"
-              onMouseEnter={() => setHoveredSort(option.field)}
-              onMouseLeave={() => setHoveredSort(null)}
-            >
-              {option.icon}
-            </div>
-          ),
+          label: <div className="flex justify-center items-center">{option.icon}</div>,
+          labelProps: {
+            onMouseEnter: () => setHoveredSort(option.field),
+            onMouseLeave: () => setHoveredSort(null),
+          },
         }))}
       />
     </>
