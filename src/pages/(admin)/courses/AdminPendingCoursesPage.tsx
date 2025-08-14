@@ -34,7 +34,11 @@ export default function AdminPendingCoursesPage() {
       }),
     ),
   );
-  const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
+  const decodedOrderBy = decodeOrderOption<CourseOrderableFields>(
+    orderByParam,
+    "createdAt",
+    "desc",
+  );
 
   const handleSearchSubmit = () => {
     setSearch(searchInput);
@@ -42,7 +46,7 @@ export default function AdminPendingCoursesPage() {
 
   const { data, isPending, error } = useGetCourses({
     search: search || undefined,
-    orderBy,
+    orderBy: decodedOrderBy,
     status: CourseStatus.Pending,
   });
 

@@ -11,7 +11,7 @@ import { useGetOrdersSelf } from "../../../features/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
 
-const ORDER_BY_OPTIONS: {
+const ORDER_SORT_OPTIONS: {
   label: string;
   value: OrderBy<OrderOrderableFields>;
 }[] = [
@@ -30,7 +30,7 @@ export default function OrderHistoryPage() {
     "orderBy",
     parseAsString.withDefault(encodeOrderOption({ field: "createdAt", direction: "desc" })),
   );
-  const orderBy = decodeOrderOption<OrderOrderableFields>(orderByParam, "createdAt", "desc");
+  const decodedOrderBy = decodeOrderOption<OrderOrderableFields>(orderByParam, "createdAt", "desc");
 
   const [page, setPage] = useQueryState(
     "page",
@@ -39,7 +39,7 @@ export default function OrderHistoryPage() {
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(3));
 
   const { data, isPending, error } = useGetOrdersSelf({
-    orderBy: orderBy,
+    orderBy: decodedOrderBy,
     status: statusParam === "All" ? undefined : statusParam,
     page: page,
     pageSize: pageSize,
@@ -53,7 +53,7 @@ export default function OrderHistoryPage() {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">My Orders</h1>
 
         <Select
-          data={ORDER_BY_OPTIONS.map((opt) => ({
+          data={ORDER_SORT_OPTIONS.map((opt) => ({
             label: opt.label,
             value: encodeOrderOption(opt.value),
           }))}

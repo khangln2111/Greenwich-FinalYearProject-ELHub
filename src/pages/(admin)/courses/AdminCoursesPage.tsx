@@ -34,11 +34,15 @@ export default function AdminCoursesPage() {
     parseAsString.withDefault(encodeOrderOption({ field: "createdAt", direction: "desc" })),
   );
 
+  const decodedOrderBy = decodeOrderOption<CourseOrderableFields>(
+    orderByParam,
+    "createdAt",
+    "desc",
+  );
+
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
-
-  const orderBy = decodeOrderOption<CourseOrderableFields>(orderByParam, "createdAt", "desc");
 
   const handleSearchSubmit = () => {
     setSearch(searchInput);
@@ -47,7 +51,7 @@ export default function AdminCoursesPage() {
   const { data, isPending, error } = useGetCourses({
     search: search,
     status: statusFilter !== "All" ? statusFilter : undefined,
-    orderBy,
+    orderBy: decodedOrderBy,
     page,
     pageSize,
   });

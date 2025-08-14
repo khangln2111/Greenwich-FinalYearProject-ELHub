@@ -117,7 +117,7 @@ export default function AdminInstructorApprovalPage() {
     parseAsString.withDefault(encodeOrderOption({ field: "createdAt", direction: "desc" })),
   );
 
-  const orderBy = decodeOrderOption<InstructorApplicationOrderableFields>(
+  const decodedOrderBy = decodeOrderOption<InstructorApplicationOrderableFields>(
     orderByParam,
     "createdAt",
     "desc",
@@ -166,7 +166,7 @@ export default function AdminInstructorApprovalPage() {
   } = useGetInstructorApplications({
     search,
     status: statusFilter === "All" ? undefined : statusFilter,
-    orderBy,
+    orderBy: decodedOrderBy,
   });
 
   const apps = data?.items ?? [];

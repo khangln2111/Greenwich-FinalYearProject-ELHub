@@ -16,7 +16,7 @@ import { CourseOrderableFields } from "../../../../../features/course/course.typ
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 
 // SORTING_OPTIONS chỉ giữ field, label và icon
-const SORTING_OPTIONS: {
+const COURSE_SORTING_OPTIONS: {
   field: CourseOrderableFields;
   label: string;
   icon: React.ReactNode;
@@ -30,20 +30,21 @@ const SORTING_OPTIONS: {
 
 const CourseSorter = () => {
   const [{ orderBy }, setCourseQuery] = useCourseQueryState();
-  const [hoveredSort, setHoveredSort] = useState<CourseOrderableFields | null>(null);
+  const [currentHoveredField, setCurrentHoveredSort] = useState<CourseOrderableFields | null>(null);
 
-  // Current option (hovered or selected)
-  const currentOption = useMemo(
-    () => SORTING_OPTIONS.find((opt) => opt.field === (hoveredSort ?? orderBy.field)),
-    [hoveredSort, orderBy.field],
+  // Computed current displayed option (hovered or selected)
+  const currentDisplayedField = useMemo(
+    () =>
+      COURSE_SORTING_OPTIONS.find((opt) => opt.field === (currentHoveredField ?? orderBy.field)),
+    [currentHoveredField, orderBy.field],
   );
 
-  // Display label with direction
+  // Display label = <fieldLabel> + <directionLabel>
   const displayLabel = useMemo(() => {
-    if (!currentOption) return "";
-    const fieldLabel = currentOption.label;
+    if (!currentDisplayedField) return "";
+    const fieldLabel = currentDisplayedField.label;
     const directionLabel =
-      currentOption.field === "createdAt"
+      currentDisplayedField.field === "createdAt"
         ? orderBy.direction === "asc"
           ? "(Oldest)"
           : "(Newest)"
@@ -51,7 +52,7 @@ const CourseSorter = () => {
           ? "(Asc)"
           : "(Desc)";
     return `${fieldLabel} ${directionLabel}`;
-  }, [currentOption, orderBy.direction]);
+  }, [currentDisplayedField, orderBy.direction]);
 
   // Change sorting field (keep current direction)
   const handleFieldChange = (field: string) => {
@@ -81,7 +82,7 @@ const CourseSorter = () => {
 
         <div className="flex items-center gap-2">
           <motion.p
-            key={hoveredSort ?? orderBy.field}
+            key={currentHoveredField ?? orderBy.field}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -107,18 +108,18 @@ const CourseSorter = () => {
         radius="full"
         className="grid auto-cols-fr grid-flow-col-dense"
         color="blue"
-        size="lg"
+        size={"lg"}
         classNames={{
           label: "not-data-active:hover:bg-gray-4 not-data-active:dark:hover:bg-dark-5",
         }}
         value={orderBy.field}
         onChange={handleFieldChange}
-        data={SORTING_OPTIONS.map((option) => ({
+        data={COURSE_SORTING_OPTIONS.map((option) => ({
           value: option.field,
           label: <div className="flex justify-center items-center">{option.icon}</div>,
           labelProps: {
-            onMouseEnter: () => setHoveredSort(option.field),
-            onMouseLeave: () => setHoveredSort(null),
+            onMouseEnter: () => setCurrentHoveredSort(option.field),
+            onMouseLeave: () => setCurrentHoveredSort(null),
           },
         }))}
       />
