@@ -39,7 +39,7 @@ const CourseListItem = ({ course, className }: CourseListItemProps) => {
   return (
     <div
       className={cn(
-        `group flex flex-col md:flex-row bg-white dark:bg-dark-6 rounded-xl border overflow-hidden
+        `group flex flex-col md:flex-row bg-white dark:bg-dark-6 rounded-xl border shadow-md overflow-hidden
         hover:shadow-xl transition-all duration-400 outline-2 outline-transparent hover:outline-blue-500
         cursor-pointer select-none p-4 md:p-6 gap-4`,
         className,
@@ -49,7 +49,7 @@ const CourseListItem = ({ course, className }: CourseListItemProps) => {
       {/* Left: Image with subtle ring on hover */}
       <div
         className="relative w-full md:size-56 flex-shrink-0 aspect-video md:aspect-square rounded-lg overflow-hidden
-          shadow-md"
+          shadow-sm"
       >
         <img src={course.imageUrl ?? ""} alt={course.title} className="object-cover size-full" />
         {course.discountPercentage > 0 && (
