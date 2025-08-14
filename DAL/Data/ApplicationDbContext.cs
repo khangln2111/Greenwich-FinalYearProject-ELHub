@@ -48,13 +48,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CourseApprovalHistory> CourseApprovalHistories { get; set; }
 
 
-    protected override void OnConfiguring(DbContextOptionsBuilder builder)
-    {
-        var connectionString =
-            "Server=localhost\\SQLEXPRESS;Database=FinalProject;Trusted_Connection=True;TrustServerCertificate=True;";
-        builder.UseSqlServer(connectionString);
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

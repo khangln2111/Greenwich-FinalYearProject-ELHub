@@ -343,10 +343,10 @@ namespace DAL.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PaymentIntentId = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    PaymentMethodType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PaymentMethodBrand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PaymentMethodLast4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    PaymentMethodType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    PaymentMethodBrand = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    PaymentMethodLast4 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -467,6 +467,7 @@ namespace DAL.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReviewId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -807,14 +808,19 @@ namespace DAL.Data.Migrations
                 column: "PromoVideoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enrollments_CourseId",
+                name: "IX_Enrollments_CourseId_Id",
                 table: "Enrollments",
-                column: "CourseId");
+                columns: new[] { "CourseId", "Id" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enrollments_UserId",
+                name: "IX_Enrollments_CourseId_ReviewId",
                 table: "Enrollments",
-                column: "UserId");
+                columns: new[] { "CourseId", "ReviewId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Enrollments_UserId_CourseId",
+                table: "Enrollments",
+                columns: new[] { "UserId", "CourseId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Experience_UserId",
@@ -873,14 +879,19 @@ namespace DAL.Data.Migrations
                 column: "LectureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lectures_SectionId",
+                name: "IX_Lectures_SectionId_Id",
                 table: "Lectures",
-                column: "SectionId");
+                columns: new[] { "SectionId", "Id" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lectures_VideoId",
                 table: "Lectures",
                 column: "VideoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Media_Type",
+                table: "Media",
+                column: "Type");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_UserId",
@@ -932,9 +943,14 @@ namespace DAL.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sections_CourseId",
+                name: "IX_Reviews_Rating_EnrollmentId",
+                table: "Reviews",
+                columns: new[] { "Rating", "EnrollmentId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sections_CourseId_Id",
                 table: "Sections",
-                column: "CourseId");
+                columns: new[] { "CourseId", "Id" });
         }
 
         /// <inheritdoc />

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250725201912_Initial")]
+    [Migration("20250814152237_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace DAL.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -279,7 +279,7 @@ namespace DAL.Data.Migrations
                     b.Property<DateTime?>("LastRejectedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LearningOutcomes")
+                    b.PrimitiveCollection<string>("LearningOutcomes")
                         .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
@@ -288,7 +288,7 @@ namespace DAL.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("int");
 
-                    b.Property<string>("Prerequisites")
+                    b.PrimitiveCollection<string>("Prerequisites")
                         .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
@@ -372,6 +372,9 @@ namespace DAL.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("ReviewId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -380,9 +383,11 @@ namespace DAL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseId", "Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CourseId", "ReviewId");
+
+                    b.HasIndex("UserId", "CourseId");
 
                     b.ToTable("Enrollments");
                 });
@@ -622,9 +627,9 @@ namespace DAL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SectionId");
-
                     b.HasIndex("VideoId");
+
+                    b.HasIndex("SectionId", "Id");
 
                     b.ToTable("Lectures");
                 });
@@ -694,6 +699,8 @@ namespace DAL.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Type");
+
                     b.ToTable("Media");
 
                     b.HasDiscriminator<int>("MediaType").HasValue(3);
@@ -746,17 +753,20 @@ namespace DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentIntentId")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("PaymentMethodBrand")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PaymentMethodLast4")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("PaymentMethodType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -847,6 +857,8 @@ namespace DAL.Data.Migrations
                     b.HasIndex("EnrollmentId")
                         .IsUnique();
 
+                    b.HasIndex("Rating", "EnrollmentId");
+
                     b.ToTable("Reviews");
                 });
 
@@ -912,7 +924,7 @@ namespace DAL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseId", "Id");
 
                     b.ToTable("Sections");
                 });

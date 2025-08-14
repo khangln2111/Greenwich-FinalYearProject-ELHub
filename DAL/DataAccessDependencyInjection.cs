@@ -8,6 +8,8 @@ using DAL.Utilities.PaymentUtility;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DAL;
@@ -26,8 +28,11 @@ public static class DataAccessDependencyInjection
 
     private static void AddPersistence(this IServiceCollection services)
     {
-        services.AddDbContext<ApplicationDbContext>(opts =>
+        services.AddDbContext<ApplicationDbContext>((sp, opts) =>
         {
+            var configuration = sp.GetRequiredService<IConfiguration>();
+            var sqlServerConnectionString = configuration.GetConnectionString("SQLServerConnection");
+            opts.UseSqlServer(sqlServerConnectionString);
             opts.EnableDetailedErrors();
             // opts.EnableSensitiveDataLogging();
         });
