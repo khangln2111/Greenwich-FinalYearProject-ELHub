@@ -1,7 +1,8 @@
 import { Button, Select } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { GraduationCap, Plus } from "lucide-react";
-import { useState } from "react";
+import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import { CourseStatus } from "../../../features/course/course.types";
 import { useGetCourses } from "../../../features/course/courseHooks";
 import CreateCourseModal from "./_c/CreateCourseModal";
@@ -9,16 +10,21 @@ import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
 
 export default function InstructorCoursesPage() {
-  const [filter, setFilter] = useState<CourseStatus | "all">("all");
   const [createCourseModalOpened, { open: openCreateCourseModal, close: closeCreateCourseModal }] =
     useDisclosure(false);
 
-  const { data: courses, isPending: isCoursesPending } = useGetCourses();
+  const [status, setStatus] = useQueryState(
+    "status",
+    parseAsStringLiteral(["All", ...Object.values(CourseStatus)]).withDefault("All"),
+  );
 
-  const filteredCourses =
-    filter === "all"
-      ? (courses?.items ?? [])
-      : (courses?.items.filter((c) => c.status === filter) ?? []);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(9));
+  const { data, isPending: isCoursesPending } = useGetCourses({
+    page,
+    pageSize,
+    status: status === "All" ? undefined : status,
+  });
 
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
@@ -37,15 +43,16 @@ export default function InstructorCoursesPage() {
 
           <Select
             data={[
-              { label: "All", value: "all" },
+              { label: "All", value: "All" },
               { label: "Draft", value: CourseStatus.Draft },
               { label: "Published", value: CourseStatus.Published },
               { label: "Pending", value: CourseStatus.Pending },
+              { label: "Rejected", value: CourseStatus.Rejected },
             ]}
-            value={filter}
+            value={status}
             allowDeselect={false}
             checkIconPosition="right"
-            onChange={(val) => setFilter(val as CourseStatus | "all")}
+            onChange={(val) => setStatus(val as CourseStatus | "All")}
             placeholder="Filter by status"
             className="flex-1"
           />
@@ -57,7 +64,7 @@ export default function InstructorCoursesPage() {
         {isCoursesPending &&
           Array.from({ length: 9 }).map((_, i) => <InstructorCourseCardSkeleton key={i} />)}
 
-        {!isCoursesPending && filteredCourses.length === 0 ? (
+        {!isCoursesPending && data?.items.length === 0 ? (
           <div className="col-span-full flex flex-col items-center justify-center text-center py-16">
             <GraduationCap size={48} className="mb-4 text-blue" />
             <p className="text-lg font-medium mb-1">You haven’t created any courses yet</p>
@@ -73,9 +80,17 @@ export default function InstructorCoursesPage() {
             </Button>
           </div>
         ) : (
-          filteredCourses.map((course) => <InstructorCourseCard key={course.id} course={course} />)
+          data?.items.map((course) => <InstructorCourseCard key={course.id} course={course} />)
         )}
       </div>
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={data?.count ?? 0}
+        onPageChange={(newPage) => setPage(newPage)}
+        withEdges
+        className="flex justify-center items-center mt-[50px]"
+      />
 
       {/* Modal */}
       <CreateCourseModal opened={createCourseModalOpened} onClose={closeCreateCourseModal} />

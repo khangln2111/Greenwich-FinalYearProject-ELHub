@@ -15,11 +15,12 @@ import {
 } from "@mantine/core";
 import { IconFilterCog } from "@tabler/icons-react";
 import { RotateCcw } from "lucide-react";
+import { parseAsInteger, useQueryState } from "nuqs";
 import { useSearchParams } from "react-router-dom";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
-import CourseSorter from "./CourseSorter";
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
-import { parseAsInteger, useQueryState } from "nuqs";
+import CourseSorter from "./CourseSorter";
+import { CourseLevel } from "../../../../../features/course/course.types";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
@@ -30,7 +31,7 @@ const CourseFilter = () => {
   const [duration, setDuration] = useQueryState("duration", parseAsInteger);
   const [priceMode, setPriceMode] = useQueryState("price_mode");
 
-  const [{ categoryId, level }, setCourseQuery] = useCourseQueryState();
+  const [{ categoryId, levels }, setCourseQuery] = useCourseQueryState();
   const {
     data: categories,
     isPending,
@@ -158,16 +159,16 @@ const CourseFilter = () => {
             <Text className="font-medium text-sm">Level</Text>
           </AccordionControl>
           <AccordionPanel>
-            <Stack gap="xs">
-              {["beginner", "intermediate", "advanced", "all"].map((lv) => (
-                <Checkbox
-                  key={lv}
-                  label={lv === "all" ? "All levels" : lv.charAt(0).toUpperCase() + lv.slice(1)}
-                  checked={lv === "all" ? !level : level === lv}
-                  onChange={() => setCourseQuery({ level: lv === "all" ? "" : lv })}
-                />
-              ))}
-            </Stack>
+            <Checkbox.Group
+              value={levels}
+              onChange={(values) => setCourseQuery({ levels: values as CourseLevel[] })}
+            >
+              <Stack gap="xs">
+                {[...Object.values(CourseLevel)].map((lv) => (
+                  <Checkbox key={lv} label={lv} value={lv} />
+                ))}
+              </Stack>
+            </Checkbox.Group>
           </AccordionPanel>
         </AccordionItem>
 

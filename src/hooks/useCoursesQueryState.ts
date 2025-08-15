@@ -1,12 +1,18 @@
-import { useQueryStates, parseAsString, parseAsInteger } from "nuqs";
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  useQueryStates,
+} from "nuqs";
 import { OrderBy, decodeOrderOption, encodeOrderOption } from "../api-client/api.types";
-import { CourseOrderableFields } from "../features/course/course.types";
+import { CourseLevel, CourseOrderableFields } from "../features/course/course.types";
 
 export function useCourseQueryState() {
   const [states, setCourseQuery] = useQueryStates(
     {
       categoryId: parseAsString,
-      level: parseAsString,
+      levels: parseAsArrayOf(parseAsStringEnum(Object.values(CourseLevel))).withDefault([]),
       orderBy: parseAsString.withDefault(
         encodeOrderOption<CourseOrderableFields>({
           field: "createdAt",

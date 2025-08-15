@@ -23,7 +23,7 @@ const CourseMain = ({}: CourseMainProps) => {
     parseAsStringLiteral(["grid", "list"]).withDefault("grid"),
   );
 
-  const [{ categoryId, level, orderBy, search, page }, setCourseQuery] = useCourseQueryState();
+  const [{ categoryId, levels, orderBy, search, page }, setCourseQuery] = useCourseQueryState();
   const [pageSize] = useQueryState(
     "pageSize",
     parseAsInteger.withDefault(layout === "grid" ? 6 : 2),
@@ -31,7 +31,7 @@ const CourseMain = ({}: CourseMainProps) => {
 
   const { data, isPending, isError } = useGetCourses({
     categoryId: categoryId,
-    level: level,
+    level: levels,
     orderBy,
     search,
     page,

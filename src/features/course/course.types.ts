@@ -191,7 +191,7 @@ export interface CourseQueryCriteria extends BaseQueryCriteria<CourseOrderableFi
   minPrice?: number | null;
   maxPrice?: number | null;
   categoryId?: string | null;
-  level?: string | null;
+  level?: CourseLevel[] | null;
   durationInSeconds?: number | null;
   language?: string | null;
   sectionCount?: number | null;

@@ -19,7 +19,7 @@ export function SentGiftItemCard({ gift, onRevoke, onChangeReceiver }: Props) {
         <img
           src={gift.giftImageUrl || "/placeholder.png"}
           alt="Gift"
-          className="w-20 h-20 rounded object-cover border shrink-0"
+          className="size-20 rounded object-cover border shrink-0"
         />
         <div className="flex flex-col gap-1 text-sm">
           <div className="text-base font-semibold">{gift.giftName}</div>

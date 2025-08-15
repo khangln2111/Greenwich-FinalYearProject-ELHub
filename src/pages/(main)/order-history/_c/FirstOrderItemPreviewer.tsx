@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { OrderItemVm } from "../../../../features/order/order.types";
 
 type Props = {
@@ -9,7 +10,10 @@ export function FirstOrderItemPreviewer({ item, remainingCount = 0 }: Props) {
   const shouldShowOriginalPrice =
     item.discountedPrice !== undefined && item.discountedPrice < item.price;
   return (
-    <div className="flex items-center p-4 gap-4">
+    <Link
+      className="flex items-center p-4 gap-4 group cursor-pointer"
+      to={`/courses/${item.courseId}`}
+    >
       <div className="size-16 flex items-center justify-center border rounded-lg overflow-hidden">
         {item.courseImageUrl && (
           <img
@@ -20,7 +24,9 @@ export function FirstOrderItemPreviewer({ item, remainingCount = 0 }: Props) {
         )}
       </div>
       <div className="flex-1">
-        <p className="font-medium text-sm">{item.courseTitle}</p>
+        <p className="font-medium text-sm group-hover:text-blue-600 group-dark:hover:text-blue-400">
+          {item.courseTitle}
+        </p>
         {remainingCount > 0 && (
           <p className="text-sm text-gray-500 dark:text-dark-2">+{remainingCount} more item</p>
         )}
@@ -42,6 +48,6 @@ export function FirstOrderItemPreviewer({ item, remainingCount = 0 }: Props) {
 
         <p className="text-gray-500">x{item.quantity}</p>
       </div>
-    </div>
+    </Link>
   );
 }

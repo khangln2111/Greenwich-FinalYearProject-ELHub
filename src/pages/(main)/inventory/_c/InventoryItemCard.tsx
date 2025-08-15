@@ -4,6 +4,7 @@ import { CheckCircle, KeyIcon, GiftIcon } from "lucide-react";
 import { useEnrollFromInventory } from "../../../../features/enrollment/enrollmentHooks";
 import { InventoryItemVm } from "../../../../features/inventory/inventory.types";
 import { cn } from "../../../../utils/cn";
+import { Link, useNavigate } from "react-router-dom";
 
 type InventoryItemCardProps = {
   item: InventoryItemVm;
@@ -11,6 +12,7 @@ type InventoryItemCardProps = {
 };
 
 const InventoryItemCard = ({ item, onGift }: InventoryItemCardProps) => {
+  const navigate = useNavigate();
   const enrollFromInventoryMutation = useEnrollFromInventory();
 
   const handleConfirmEnroll = () => {
@@ -49,9 +51,13 @@ const InventoryItemCard = ({ item, onGift }: InventoryItemCardProps) => {
 
       <div className="flex-1 flex flex-col justify-between gap-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <Link
+            to={`/courses/${item.courseId}`}
+            className="text-lg font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+            onClick={() => navigate(`/courses/${item.courseId}`)}
+          >
             {item.courseTitle}
-          </h3>
+          </Link>
           <span
             className="text-xs px-2 py-0.5 rounded-full font-medium bg-gradient-to-br from-indigo-500 to-purple-500
               text-white shadow-sm w-fit"
