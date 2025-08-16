@@ -81,7 +81,7 @@ const CourseFilter = () => {
         {/* Category */}
         <AccordionItem value="Category">
           <AccordionControl>
-            <Text className="font-medium text-sm md:text-md">Category</Text>
+            <Text className="font-medium text-md">Category</Text>
           </AccordionControl>
           <AccordionPanel>
             <Select
@@ -96,11 +96,12 @@ const CourseFilter = () => {
               checkIconPosition="right"
               onChange={(val) => setCourseQuery({ categoryId: val })}
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
+              nothingFoundMessage="Nothing found..."
               classNames={{
                 root: "my-md",
                 option: "font-normal hover:bg-primary-6 hover:text-white",
-                dropdown:
-                  "bg-[#f0f0f0] border border-[#ccc] shadow-[0_4px_6px_rbga(0,0,0,0.1)] dark:bg-dark-6",
+                dropdown: `bg-[#f0f0f0] dark:bg-dark-6 border border-[#ccc] dark:border-dark-4
+                shadow-[0_4px_6px_rbga(0,0,0,0.1)] `,
                 input: "border-2",
               }}
             />
@@ -110,7 +111,7 @@ const CourseFilter = () => {
         {/* Price range */}
         <AccordionItem value="Price range">
           <AccordionControl>
-            <Text className="font-medium text-sm md:text-md">Price Range</Text>
+            <Text className="font-medium text-md">Price Range</Text>
           </AccordionControl>
           <AccordionPanel>
             <div className="px-1 md:px-0">
@@ -133,7 +134,7 @@ const CourseFilter = () => {
         {/* Duration */}
         <AccordionItem value="Duration">
           <AccordionControl>
-            <Text className="font-medium text-sm md:text-md">Duration (minutes)</Text>
+            <Text className="font-medium text-md">Duration (minutes)</Text>
           </AccordionControl>
           <AccordionPanel>
             <div className="px-1 md:px-0">
@@ -156,14 +157,15 @@ const CourseFilter = () => {
         {/* Level */}
         <AccordionItem value="Level">
           <AccordionControl>
-            <Text className="font-medium text-sm md:text-md">Level</Text>
+            <Text className="font-medium text-md">Level</Text>
           </AccordionControl>
           <AccordionPanel>
             <Checkbox.Group
+              className="py-md"
               value={levels}
               onChange={(values) => setCourseQuery({ levels: values as CourseLevel[] })}
             >
-              <Stack gap="xs">
+              <Stack gap="md">
                 {[...Object.values(CourseLevel)].map((lv) => (
                   <Checkbox key={lv} label={lv} value={lv} />
                 ))}
@@ -175,7 +177,7 @@ const CourseFilter = () => {
         {/* Price mode */}
         <AccordionItem value="Price mode">
           <AccordionControl>
-            <Text className="font-medium text-sm md:text-md">Price mode</Text>
+            <Text className="font-medium text-md">Price mode</Text>
           </AccordionControl>
           <AccordionPanel>
             <div className="flex gap-2 my-sm items-center">
