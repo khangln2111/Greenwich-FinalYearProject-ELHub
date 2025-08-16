@@ -19,7 +19,7 @@ import { RotateCcw } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useSearchParams } from "react-router-dom";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
-import { CourseLevel } from "../../../../../features/course/course.types";
+import { CourseLevel, CoursePriceMode } from "../../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 import CourseSorter from "./CourseSorter";
 
@@ -28,11 +28,19 @@ const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Pri
 const CourseFilter = () => {
   const [_, setSearchParams] = useSearchParams();
 
-  const [priceRange, setPriceRange] = useQueryState("price_range", parseAsInteger);
-  const [priceMode, setPriceMode] = useQueryState("price_mode");
+  const [
+    {
+      categoryId,
+      levels,
+      minDurationInSeconds,
+      maxDurationInSeconds,
+      priceMode,
+      minPrice,
+      maxPrice,
+    },
+    setCourseQuery,
+  ] = useCourseQueryState();
 
-  const [{ categoryId, levels, minDurationInSeconds, maxDurationInSeconds }, setCourseQuery] =
-    useCourseQueryState();
   const {
     data: categories,
     isPending,
@@ -65,12 +73,14 @@ const CourseFilter = () => {
 
       <Divider className="my-lg" />
 
+      {/* course sorter */}
       <Stack className="py-md px-sm lg:px-md xl:px-lg">
         <CourseSorter />
       </Stack>
 
       <Divider className="mt-lg" />
 
+      {/* filters with accordion */}
       <Accordion
         multiple
         radius={0}
@@ -115,16 +125,24 @@ const CourseFilter = () => {
           </AccordionControl>
           <AccordionPanel>
             <div className="px-1">
-              <Slider
+              <RangeSlider
                 min={0}
-                max={100}
+                max={500}
                 step={1}
                 marks={[
                   { value: 0, label: "$0" },
+                  { value: 50, label: "$50" },
                   { value: 100, label: "$100" },
+                  { value: 200, label: "$200" },
+                  { value: 300, label: "$300" },
+                  { value: 400, label: "$400" },
+                  { value: 500, label: "$500+" },
                 ]}
-                defaultValue={priceRange || 0}
-                onChangeEnd={(val) => setPriceRange(val)}
+                defaultValue={[minPrice ?? 0, maxPrice ?? 500]}
+                onChangeEnd={(val) => {
+                  const [min, max] = val;
+                  setCourseQuery({ minPrice: min, maxPrice: max });
+                }}
                 className="my-xl"
               />
             </div>
@@ -152,11 +170,6 @@ const CourseFilter = () => {
                   (minDurationInSeconds ?? 0) / 3600,
                   (maxDurationInSeconds ?? 16 * 3600) / 3600,
                 ]}
-                labelTransitionProps={{
-                  transition: "skew-down",
-                  duration: 150,
-                  timingFunction: "linear",
-                }}
                 restrictToMarks
                 onChangeEnd={(val) => {
                   const [minHours, maxHours] = val;
@@ -196,24 +209,22 @@ const CourseFilter = () => {
           </AccordionControl>
           <AccordionPanel>
             <div className="flex gap-2 my-sm items-center">
-              <Tooltip label="Getting all free course" refProp="rootRef">
-                <Chip
-                  variant="outline"
-                  checked={priceMode === "free"}
-                  onClick={() => setPriceMode(priceMode === "free" ? "" : "free")}
-                >
-                  Free
-                </Chip>
-              </Tooltip>
-              <Tooltip label="Getting all paid course" refProp="rootRef">
-                <Chip
-                  variant="outline"
-                  checked={priceMode === "paid"}
-                  onClick={() => setPriceMode(priceMode === "paid" ? "" : "paid")}
-                >
-                  Paid
-                </Chip>
-              </Tooltip>
+              <Chip.Group
+                value={priceMode}
+                onChange={(values) => setCourseQuery({ priceMode: values as CoursePriceMode[] })}
+                multiple={true}
+              >
+                <Tooltip label="Getting all free course" refProp="rootRef">
+                  <Chip key={CoursePriceMode.Free} variant="outline" value={CoursePriceMode.Free}>
+                    Free
+                  </Chip>
+                </Tooltip>
+                <Tooltip label="Getting all paid course" refProp="rootRef">
+                  <Chip key={CoursePriceMode.Paid} variant="outline" value={CoursePriceMode.Paid}>
+                    Paid
+                  </Chip>
+                </Tooltip>
+              </Chip.Group>
             </div>
           </AccordionPanel>
         </AccordionItem>

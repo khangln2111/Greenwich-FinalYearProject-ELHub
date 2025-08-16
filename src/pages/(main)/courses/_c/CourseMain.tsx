@@ -24,7 +24,16 @@ const CourseMain = ({}: CourseMainProps) => {
   );
 
   const [
-    { categoryId, levels, orderBy, minDurationInSeconds, maxDurationInSeconds, search, page },
+    {
+      categoryId,
+      levels,
+      orderBy,
+      minDurationInSeconds,
+      maxDurationInSeconds,
+      priceMode,
+      search,
+      page,
+    },
     setCourseQuery,
   ] = useCourseQueryState();
   const [pageSize] = useQueryState(
@@ -39,6 +48,7 @@ const CourseMain = ({}: CourseMainProps) => {
     search,
     minDurationInSeconds,
     maxDurationInSeconds,
+    priceMode,
     page,
     pageSize,
   });

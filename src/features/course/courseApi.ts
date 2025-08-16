@@ -3,6 +3,8 @@ import { ApiSuccessResponse, ListData } from "../../api-client/api.types";
 import apiClient from "../../api-client/apiClient";
 import {
   CourseDetailVm,
+  CourseLevel,
+  CoursePriceMode,
   CourseQueryCriteria,
   CourseVm,
   CreateCourseCommand,
@@ -58,7 +60,7 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   if (query.status != null)
     conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
 
-  if (query.level?.length) {
+  if (query.level?.length && query.level.length < Object.values(CourseLevel).length) {
     conditions.push(() => {
       qb.startGroup().addCondition("level", op.Equal, query.level![0]);
       for (let i = 1; i < query.level!.length; i++) {
@@ -66,6 +68,15 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
       }
       qb.endGroup();
     });
+  }
+
+  if (query.priceMode?.length && query.priceMode.length < Object.values(CoursePriceMode).length) {
+    const mode = query.priceMode[0];
+    if (mode === CoursePriceMode.Free) {
+      conditions.push(() => qb.addCondition("discountedPrice", op.Equal, 0));
+    } else if (mode === CoursePriceMode.Paid) {
+      conditions.push(() => qb.addCondition("discountedPrice", op.GreaterThan, 0));
+    }
   }
 
   applyConditions(qb, conditions);

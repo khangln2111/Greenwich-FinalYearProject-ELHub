@@ -6,7 +6,11 @@ import {
   useQueryStates,
 } from "nuqs";
 import { OrderBy, decodeOrderOption, encodeOrderOption } from "../api-client/api.types";
-import { CourseLevel, CourseOrderableFields } from "../features/course/course.types";
+import {
+  CourseLevel,
+  CourseOrderableFields,
+  CoursePriceMode,
+} from "../features/course/course.types";
 
 export function useCourseQueryState() {
   const [states, setCourseQuery] = useQueryStates(
@@ -21,7 +25,10 @@ export function useCourseQueryState() {
       ),
       minDurationInSeconds: parseAsInteger,
       maxDurationInSeconds: parseAsInteger,
+      minPrice: parseAsInteger,
+      maxPrice: parseAsInteger,
       search: parseAsString.withDefault(""),
+      priceMode: parseAsArrayOf(parseAsStringEnum(Object.values(CoursePriceMode))).withDefault([]),
       page: parseAsInteger.withDefault(1),
     },
     {

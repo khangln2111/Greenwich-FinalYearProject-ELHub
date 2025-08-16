@@ -186,6 +186,11 @@ export interface UpdateCourseCommand {
   categoryId?: string;
 }
 
+export enum CoursePriceMode {
+  Free = "free",
+  Paid = "paid",
+}
+
 export interface CourseQueryCriteria extends BaseQueryCriteria<CourseOrderableFields> {
   search?: string | null;
   minPrice?: number | null;
@@ -197,6 +202,7 @@ export interface CourseQueryCriteria extends BaseQueryCriteria<CourseOrderableFi
   language?: string | null;
   sectionCount?: number | null;
   status?: CourseStatus | null;
+  priceMode?: CoursePriceMode[] | null;
 }
 
 export type CourseOrderableFields =
