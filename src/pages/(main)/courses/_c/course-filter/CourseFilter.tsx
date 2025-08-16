@@ -81,7 +81,7 @@ const CourseFilter = () => {
         {/* Category */}
         <AccordionItem value="Category">
           <AccordionControl>
-            <Text className="font-medium text-sm">Category</Text>
+            <Text className="font-medium text-sm md:text-md">Category</Text>
           </AccordionControl>
           <AccordionPanel>
             <Select
@@ -110,7 +110,7 @@ const CourseFilter = () => {
         {/* Price range */}
         <AccordionItem value="Price range">
           <AccordionControl>
-            <Text className="font-medium text-sm">Price Range</Text>
+            <Text className="font-medium text-sm md:text-md">Price Range</Text>
           </AccordionControl>
           <AccordionPanel>
             <div className="px-1 md:px-0">
@@ -133,7 +133,7 @@ const CourseFilter = () => {
         {/* Duration */}
         <AccordionItem value="Duration">
           <AccordionControl>
-            <Text className="font-medium text-sm">Duration (minutes)</Text>
+            <Text className="font-medium text-sm md:text-md">Duration (minutes)</Text>
           </AccordionControl>
           <AccordionPanel>
             <div className="px-1 md:px-0">
@@ -156,7 +156,7 @@ const CourseFilter = () => {
         {/* Level */}
         <AccordionItem value="Level">
           <AccordionControl>
-            <Text className="font-medium text-sm">Level</Text>
+            <Text className="font-medium text-sm md:text-md">Level</Text>
           </AccordionControl>
           <AccordionPanel>
             <Checkbox.Group
@@ -175,7 +175,7 @@ const CourseFilter = () => {
         {/* Price mode */}
         <AccordionItem value="Price mode">
           <AccordionControl>
-            <Text className="font-medium text-sm">Price mode</Text>
+            <Text className="font-medium text-sm md:text-md">Price mode</Text>
           </AccordionControl>
           <AccordionPanel>
             <div className="flex gap-2 my-sm items-center">
