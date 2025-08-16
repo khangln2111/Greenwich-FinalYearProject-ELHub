@@ -28,7 +28,7 @@ export function useCourseQueryState() {
       minPrice: parseAsInteger,
       maxPrice: parseAsInteger,
       search: parseAsString.withDefault(""),
-      priceMode: parseAsArrayOf(parseAsStringEnum(Object.values(CoursePriceMode))).withDefault([]),
+      priceModes: parseAsArrayOf(parseAsStringEnum(Object.values(CoursePriceMode))).withDefault([]),
       page: parseAsInteger.withDefault(1),
     },
     {

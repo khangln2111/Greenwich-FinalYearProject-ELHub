@@ -8,7 +8,6 @@ import {
   Divider,
   RangeSlider,
   Select,
-  Slider,
   Stack,
   Text,
   Title,
@@ -16,7 +15,6 @@ import {
 } from "@mantine/core";
 import { IconFilterCog } from "@tabler/icons-react";
 import { RotateCcw } from "lucide-react";
-import { parseAsInteger, useQueryState } from "nuqs";
 import { useSearchParams } from "react-router-dom";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
 import { CourseLevel, CoursePriceMode } from "../../../../../features/course/course.types";
@@ -34,7 +32,7 @@ const CourseFilter = () => {
       levels,
       minDurationInSeconds,
       maxDurationInSeconds,
-      priceMode,
+      priceModes,
       minPrice,
       maxPrice,
     },
@@ -126,12 +124,13 @@ const CourseFilter = () => {
           <AccordionPanel>
             <div className="px-1">
               <RangeSlider
+                key={`price-range-${minPrice}-${maxPrice}`}
                 min={0}
                 max={500}
                 step={1}
+                disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
                 marks={[
                   { value: 0, label: "$0" },
-                  { value: 50, label: "$50" },
                   { value: 100, label: "$100" },
                   { value: 200, label: "$200" },
                   { value: 300, label: "$300" },
@@ -156,6 +155,7 @@ const CourseFilter = () => {
           <AccordionPanel>
             <div className="px-1">
               <RangeSlider
+                key={`duration-range-${minDurationInSeconds}-${maxDurationInSeconds}`}
                 min={0}
                 max={16}
                 marks={[
@@ -210,8 +210,24 @@ const CourseFilter = () => {
           <AccordionPanel>
             <div className="flex gap-2 my-sm items-center">
               <Chip.Group
-                value={priceMode}
-                onChange={(values) => setCourseQuery({ priceMode: values as CoursePriceMode[] })}
+                value={priceModes}
+                onChange={(values) => {
+                  const newPriceModes = values as CoursePriceMode[];
+                  setCourseQuery({
+                    priceModes: newPriceModes,
+                    // Nếu chỉ Free hoặc có Free thì bỏ filter price
+                    minPrice:
+                      newPriceModes.includes(CoursePriceMode.Free) &&
+                      !newPriceModes.includes(CoursePriceMode.Paid)
+                        ? null
+                        : minPrice,
+                    maxPrice:
+                      newPriceModes.includes(CoursePriceMode.Free) &&
+                      !newPriceModes.includes(CoursePriceMode.Paid)
+                        ? null
+                        : maxPrice,
+                  });
+                }}
                 multiple={true}
               >
                 <Tooltip label="Getting all free course" refProp="rootRef">
