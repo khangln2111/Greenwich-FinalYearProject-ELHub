@@ -76,7 +76,7 @@ const CourseSorter = () => {
     <>
       {/* Header */}
       <div className="flex justify-between items-center mb-2">
-        <Text fw={500} className="text-md">
+        <Text fw={500} className="text-md dark:text-white">
           Sorting:
         </Text>
 

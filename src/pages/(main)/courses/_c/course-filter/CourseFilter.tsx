@@ -47,7 +47,7 @@ const CourseFilter = () => {
       <div className="flex justify-between">
         <div className="flex gap-3 items-center">
           <IconFilterCog />
-          <Title order={3} fw={700}>
+          <Title order={3} fw={700} className="dark:text-white">
             Filters
           </Title>
         </div>
