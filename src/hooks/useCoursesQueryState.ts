@@ -19,6 +19,8 @@ export function useCourseQueryState() {
           direction: "desc",
         }),
       ),
+      minDurationInSeconds: parseAsInteger,
+      maxDurationInSeconds: parseAsInteger,
       search: parseAsString.withDefault(""),
       page: parseAsInteger.withDefault(1),
     },

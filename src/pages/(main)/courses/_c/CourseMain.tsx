@@ -23,7 +23,10 @@ const CourseMain = ({}: CourseMainProps) => {
     parseAsStringLiteral(["grid", "list"]).withDefault("grid"),
   );
 
-  const [{ categoryId, levels, orderBy, search, page }, setCourseQuery] = useCourseQueryState();
+  const [
+    { categoryId, levels, orderBy, minDurationInSeconds, maxDurationInSeconds, search, page },
+    setCourseQuery,
+  ] = useCourseQueryState();
   const [pageSize] = useQueryState(
     "pageSize",
     parseAsInteger.withDefault(layout === "grid" ? 6 : 2),
@@ -34,6 +37,8 @@ const CourseMain = ({}: CourseMainProps) => {
     level: levels,
     orderBy,
     search,
+    minDurationInSeconds,
+    maxDurationInSeconds,
     page,
     pageSize,
   });

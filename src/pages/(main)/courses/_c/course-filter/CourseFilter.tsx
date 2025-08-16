@@ -6,6 +6,7 @@ import {
   Checkbox,
   Chip,
   Divider,
+  RangeSlider,
   Select,
   Slider,
   Stack,
@@ -28,10 +29,10 @@ const CourseFilter = () => {
   const [_, setSearchParams] = useSearchParams();
 
   const [priceRange, setPriceRange] = useQueryState("price_range", parseAsInteger);
-  const [duration, setDuration] = useQueryState("duration", parseAsInteger);
   const [priceMode, setPriceMode] = useQueryState("price_mode");
 
-  const [{ categoryId, levels }, setCourseQuery] = useCourseQueryState();
+  const [{ categoryId, levels, minDurationInSeconds, maxDurationInSeconds }, setCourseQuery] =
+    useCourseQueryState();
   const {
     data: categories,
     isPending,
@@ -61,13 +62,13 @@ const CourseFilter = () => {
         </div>
       </div>
 
-      <Divider className="my-lg -mx-lg" />
+      <Divider className="my-lg -mx-md xl:-mx-lg" />
 
       <Stack className="py-md">
         <CourseSorter />
       </Stack>
 
-      <Divider className="mt-lg -mx-lg" />
+      <Divider className="mt-lg -mx-md xl:-mx-lg" />
 
       <Accordion
         mx="-lg"
@@ -114,7 +115,7 @@ const CourseFilter = () => {
             <Text className="font-medium text-md">Price Range</Text>
           </AccordionControl>
           <AccordionPanel>
-            <div className="px-1 md:px-0">
+            <div className="px-1">
               <Slider
                 min={0}
                 max={100}
@@ -137,17 +138,35 @@ const CourseFilter = () => {
             <Text className="font-medium text-md">Duration (minutes)</Text>
           </AccordionControl>
           <AccordionPanel>
-            <div className="px-1 md:px-0">
-              <Slider
+            <div className="px-1">
+              <RangeSlider
                 min={0}
-                max={120}
-                step={1}
+                max={16}
                 marks={[
-                  { value: 0, label: "0" },
-                  { value: 120, label: "120" },
+                  { value: 0, label: "0h" },
+                  { value: 2, label: "2h" },
+                  { value: 6, label: "6h" },
+                  { value: 9, label: "7h" },
+                  { value: 12, label: "14h" },
+                  { value: 16, label: "16h+" },
                 ]}
-                defaultValue={duration || 0}
-                onChangeEnd={(val) => setDuration(val)}
+                defaultValue={[
+                  (minDurationInSeconds ?? 0) / 3600,
+                  (maxDurationInSeconds ?? 16 * 3600) / 3600,
+                ]}
+                labelTransitionProps={{
+                  transition: "skew-down",
+                  duration: 150,
+                  timingFunction: "linear",
+                }}
+                restrictToMarks
+                onChangeEnd={(val) => {
+                  const [minHours, maxHours] = val;
+                  setCourseQuery({
+                    minDurationInSeconds: minHours > 0 ? minHours * 3600 : null,
+                    maxDurationInSeconds: maxHours < 16 ? maxHours * 3600 : null,
+                  });
+                }}
                 className="my-[30px]"
               />
             </div>

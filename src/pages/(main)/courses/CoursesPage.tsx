@@ -19,11 +19,11 @@ const CoursesPage = () => {
           {/* Column 1: desktop sidebar filter */}
           <GridCol
             visibleFrom="lg"
-            span={{ lg: 3.5, xl: 2.8 }}
+            span={{ lg: 4, xl: 3 }}
             className={`transition-all transition-discrete duration-300 starting:-translate-x-full starting:opacity-0
               ${isDesktopFilterOpen ? "opacity-100" : "-translate-x-full opacity-0 hidden"} `}
           >
-            <Paper withBorder className="pt-lg px-sm xl:px-lg rounded-2xl">
+            <Paper withBorder className="pt-lg px-sm lg:px-md xl:px-lg rounded-2xl">
               <CourseFilter />
             </Paper>
           </GridCol>

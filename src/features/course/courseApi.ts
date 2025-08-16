@@ -45,8 +45,15 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   if (query.categoryId?.trim())
     conditions.push(() => qb.addCondition("categoryId", op.Equal, query.categoryId!));
 
-  if (query.durationInSeconds != null)
-    conditions.push(() => qb.addCondition("durationInSeconds", op.Equal, query.durationInSeconds!));
+  if (query.minDurationInSeconds != null)
+    conditions.push(() =>
+      qb.addCondition("durationInSeconds", op.GreaterThanOrEqual, query.minDurationInSeconds!),
+    );
+
+  if (query.maxDurationInSeconds != null)
+    conditions.push(() =>
+      qb.addCondition("durationInSeconds", op.LessThanOrEqual, query.maxDurationInSeconds!),
+    );
 
   if (query.status != null)
     conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
