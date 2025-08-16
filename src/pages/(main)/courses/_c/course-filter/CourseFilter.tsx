@@ -22,6 +22,7 @@ import { useGetCategories } from "../../../../../features/category/categoryHooks
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 import CourseSorter from "./CourseSorter";
 import { CourseLevel } from "../../../../../features/course/course.types";
+import { base } from "framer-motion/client";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
@@ -71,7 +72,7 @@ const CourseFilter = () => {
       <Divider className="mt-lg -mx-md xl:-mx-lg" />
 
       <Accordion
-        mx="-lg"
+        mx={{ base: "-lg", lg: "-md", xl: "-lg" }}
         multiple
         radius={0}
         classNames={{ item: "border-0" }}

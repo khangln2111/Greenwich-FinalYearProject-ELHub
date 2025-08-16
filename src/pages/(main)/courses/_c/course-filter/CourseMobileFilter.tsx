@@ -9,9 +9,9 @@ type CourseMobileFilterProps = {};
 const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
   const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
   const closeMobileFilter = useCoursesPageStore((s) => s.closeMobileFilter);
-  const isMobileOrTablet = useMediaQuery("(max-width: 1024px)");
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  if (!isMobileOrTablet) return null;
+  if (isDesktop) return null;
 
   return (
     <ResponsiveDialog
@@ -33,7 +33,7 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
         md: "drawer",
       }}
     >
-      <Stack className="pt-lg px-sm xl:px-lg mx-auto">
+      <Stack gap="1" className="pt-lg px-sm xl:px-lg mx-auto">
         <CourseFilter />
       </Stack>
     </ResponsiveDialog>
