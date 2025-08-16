@@ -1,8 +1,7 @@
-import { Stack } from "@mantine/core";
-import { ResponsiveDialog } from "mantine-vaul";
-import CourseFilter from "./CourseFilter";
-import { useCoursesPageStore } from "../../../../../zustand/stores/coursesPageStore";
 import { useMediaQuery } from "@mantine/hooks";
+import { ResponsiveDialog } from "mantine-vaul";
+import { useCoursesPageStore } from "../../../../../zustand/stores/coursesPageStore";
+import CourseFilter from "./CourseFilter";
 
 type CourseMobileFilterProps = {};
 
@@ -33,9 +32,9 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
         md: "drawer",
       }}
     >
-      <Stack gap="0.5" className="pt-lg px-sm xl:px-lg mx-auto">
+      <div className="mx-auto">
         <CourseFilter />
-      </Stack>
+      </div>
     </ResponsiveDialog>
   );
 };

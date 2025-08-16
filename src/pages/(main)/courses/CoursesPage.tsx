@@ -23,7 +23,7 @@ const CoursesPage = () => {
             className={`transition-all transition-discrete duration-300 starting:-translate-x-full starting:opacity-0
               ${isDesktopFilterOpen ? "opacity-100" : "-translate-x-full opacity-0 hidden"} `}
           >
-            <Paper withBorder className="pt-lg px-sm lg:px-md xl:px-lg rounded-2xl">
+            <Paper withBorder className="rounded-2xl">
               <CourseFilter />
             </Paper>
           </GridCol>
