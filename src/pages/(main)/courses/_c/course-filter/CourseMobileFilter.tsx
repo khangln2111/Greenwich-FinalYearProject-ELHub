@@ -33,7 +33,7 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
         md: "drawer",
       }}
     >
-      <Stack gap="1" className="pt-lg px-sm xl:px-lg mx-auto">
+      <Stack gap="0.5" className="pt-lg px-sm xl:px-lg mx-auto">
         <CourseFilter />
       </Stack>
     </ResponsiveDialog>
