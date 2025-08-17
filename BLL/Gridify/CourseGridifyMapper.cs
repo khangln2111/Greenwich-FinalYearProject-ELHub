@@ -28,5 +28,6 @@ public class CourseGridifyMapper : GridifyMapper<Course>
         AddMap("CreatedAt", c => c.CreatedAt);
         AddMap("UpdatedAt", c => c.UpdatedAt);
         AddMap("InstructorName", c => c.Instructor.FirstName + " " + c.Instructor.LastName);
+        AddMap("Level", c => c.Level);
     }
 }
