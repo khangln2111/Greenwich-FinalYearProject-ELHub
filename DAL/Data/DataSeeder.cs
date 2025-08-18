@@ -1,21 +1,93 @@
 ﻿using DAL.Data.Entities;
 using DAL.Data.Entities.MediaEntities;
 using DAL.Data.Enums;
+using DAL.Utilities.MediaUtility.Abstract;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Data;
 
-public class DataSeeder(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager)
+public class DataSeeder(
+    ApplicationDbContext context,
+    RoleManager<ApplicationRole> roleManager,
+    IMediaManager mediaManager)
 {
     public async Task SeedAsync()
     {
-        await SeedRolesAsync();
-        await SeedCategoriesAsync();
+        await SeedRoles();
+        await SeedCategories();
+        // await SyncData();
+        // await mediaManager.CleanOrphanMediaFiles(context);
         await context.SaveChangesAsync();
     }
 
-    private async Task SeedCategoriesAsync()
+
+    private async Task SyncData()
+    {
+        // Sync Course data
+        var courses = await context.Courses
+            .Include(c => c.Sections)
+            .ThenInclude(s => s.Lectures)
+            .ThenInclude(l => l.Video)
+            .Include(c => c.Enrollments)
+            .ThenInclude(e => e.Review)
+            .ToListAsync();
+
+        foreach (var course in courses)
+        {
+            course.DurationInSeconds = course.Sections
+                .SelectMany(s => s.Lectures)
+                .Where(l => l.Video != null)
+                .Sum(l => l.Video!.DurationInSeconds);
+            course.SectionCount = course.Sections.Count;
+            course.LectureCount = course.Sections
+                .SelectMany(s => s.Lectures)
+                .Count();
+            course.EnrollmentCount = course.Enrollments.Count;
+            course.ReviewCount = course.Enrollments
+                .Count(e => e.Review != null);
+            course.AverageRating = course.Enrollments
+                .Where(e => e.Review != null)
+                .Select(e => (double?)e.Review!.Rating)
+                .Average() ?? 0.0;
+        }
+
+        // Sync Section data
+        var sections = await context.Sections
+            .Include(s => s.Lectures)
+            .ThenInclude(l => l.Video)
+            .ToListAsync();
+
+        foreach (var section in sections)
+        {
+            section.LectureCount = section.Lectures.Count;
+            section.DurationInSeconds = section.Lectures
+                .Where(l => l.Video != null)
+                .Sum(l => l.Video!.DurationInSeconds);
+        }
+
+        // Sync Enrollment data
+        var enrollments = await context.Enrollments
+            .Include(e => e.Course)
+            .ThenInclude(c => c.Sections)
+            .ThenInclude(s => s.Lectures)
+            .Include(e => e.LectureProgresses)
+            .ToListAsync();
+
+        foreach (var enrollment in enrollments)
+        {
+            var totalLectures = enrollment.Course.Sections
+                .SelectMany(s => s.Lectures)
+                .Count();
+
+            enrollment.ProgressPercentage = totalLectures > 0
+                ? (int)((double)enrollment.LectureProgresses.Count(lp => lp.Completed) / totalLectures * 100)
+                : 0;
+        }
+    }
+
+
+    private async Task SeedCategories()
     {
         if (!await context.Categories.AnyAsync())
         {
@@ -148,7 +220,7 @@ public class DataSeeder(ApplicationDbContext context, RoleManager<ApplicationRol
         }
     }
 
-    private async Task SeedRolesAsync()
+    private async Task SeedRoles()
     {
         string[] roleNames = ["Admin", "Instructor"];
 

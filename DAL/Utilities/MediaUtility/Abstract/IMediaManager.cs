@@ -1,4 +1,5 @@
-﻿using DAL.Data.Entities.MediaEntities;
+﻿using DAL.Data;
+using DAL.Data.Entities.MediaEntities;
 using DAL.Data.Enums;
 using Microsoft.AspNetCore.Http;
 
@@ -13,4 +14,6 @@ public interface IMediaManager
     bool FileHasValidExtension(IFormFile file, string[] allowedExtensions);
 
     bool IsFileUnderMaxSize(IFormFile file, int maxSize);
+
+    Task CleanOrphanMediaFiles(ApplicationDbContext context);
 }

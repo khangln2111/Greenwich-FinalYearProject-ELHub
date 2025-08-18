@@ -1,8 +1,10 @@
-﻿using DAL.Data.Entities.MediaEntities;
+﻿using DAL.Data;
+using DAL.Data.Entities.MediaEntities;
 using DAL.Data.Enums;
 using DAL.Utilities.MediaUtility.Abstract;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Utilities.MediaUtility.Concrete;
 
@@ -100,6 +102,38 @@ public class MediaManager(
         return file.Length <= maxSize;
     }
 
+    public async Task CleanOrphanMediaFiles(ApplicationDbContext context)
+    {
+        // Lấy tất cả Media Ids từ database
+        var mediaIds = await context.Media
+            .Select(m => m.Id.ToString())
+            .ToListAsync();
+
+
+        var mediaRoot = Path.Combine(webHostEnvironment.WebRootPath, "media");
+
+        if (!Directory.Exists(mediaRoot)) return;
+
+        // Scan all files in the media directory and its subdirectories
+        var files = Directory.GetFiles(mediaRoot, "*.*", SearchOption.AllDirectories);
+
+        foreach (var filePath in files)
+        {
+            var fileName = Path.GetFileNameWithoutExtension(filePath);
+
+            // If the file name (without extension) is not in the list of media IDs, delete it
+            if (!mediaIds.Contains(fileName))
+                try
+                {
+                    File.Delete(filePath);
+                    Console.WriteLine($"Deleted orphan file: {filePath}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete {filePath}: {ex.Message}");
+                }
+        }
+    }
 
     private string GetFileName(Guid fileId, string extension)
     {
