@@ -20,11 +20,17 @@ public class LectureProfiles : Profile
             .ForMember(dest => dest.DurationInSeconds,
                 opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0));
 
-        CreateMap<Lecture, LearningLectureVm>()
+        Guid? enrollmentId = null;
+
+        CreateMap<Lecture, EnrollmentLectureVm>()
             .ForMember(dest => dest.VideoUrl,
                 opt => opt.MapFrom(src => src.Video != null ? src.Video.Url : string.Empty))
             .ForMember(dest => dest.DurationInSeconds,
-                opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0));
+                opt => opt.MapFrom(src => src.Video != null ? src.Video.DurationInSeconds : 0))
+            .ForMember(dest => dest.Completed,
+                opt => opt.MapFrom(src =>
+                    src.LectureProgresses.Any(lp =>
+                        lp.LectureId == src.Id && lp.Completed && lp.EnrollmentId == enrollmentId)));
 
 
         CreateMap<CreateLectureCommand, Lecture>()

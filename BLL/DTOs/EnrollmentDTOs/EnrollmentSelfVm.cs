@@ -3,7 +3,7 @@ using Stripe;
 
 namespace BLL.DTOs.EnrollmentDTOs;
 
-public class EnrollmentVm
+public class EnrollmentSelfVm
 {
     public Guid Id { get; set; }
     public Guid CourseId { get; set; }

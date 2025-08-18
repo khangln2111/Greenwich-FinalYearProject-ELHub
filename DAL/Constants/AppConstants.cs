@@ -14,6 +14,10 @@ public static class AppConstants
         public const int AboutMaxLength = 1000;
         public const int FavoriteQuoteMaxLength = 500;
         public const int FavoriteQuoteCiteMaxLength = 100;
+
+        // Denormalized properties for performance optimization
+        public const int FullNameMaxLength = FirstNameMaxLength + LastNameMaxLength + 1;
+        public const int AvatarUrlMaxLength = 500;
     }
 
     public static class Order
@@ -106,6 +110,9 @@ public static class AppConstants
     {
         public static readonly string[] AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".webp", ".svg"];
         public static readonly string[] AllowedVideoExtensions = [".mp4", ".webm", ".ogg"];
+        public const int UrlMaxLength = 3000;
+        public const int LocalFilePathMaxLength = 3000;
+        public const int ExtensionMaxLength = 20;
     }
 
 

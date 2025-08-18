@@ -1,5 +1,6 @@
 using DAL.Constants;
 using DAL.Data.Entities;
+using LLL.AutoCompute.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -42,5 +43,35 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
             .WithMany(i => i.Courses)
             .HasForeignKey(c => c.InstructorId)
             .OnDelete(DeleteBehavior.NoAction);
+
+
+        builder.ComputedProperty(
+            c => c.DurationInSeconds,
+            c => c.Sections.SelectMany(s => s.Lectures)
+                .Where(l => l.Video != null)
+                .Sum(l => l.Video!.DurationInSeconds));
+
+        builder.ComputedProperty(
+            c => c.SectionCount,
+            c => c.Sections.Count);
+
+        builder.ComputedProperty(
+            c => c.LectureCount,
+            c => c.Sections.SelectMany(s => s.Lectures).Count());
+
+        builder.ComputedProperty(
+            c => c.EnrollmentCount,
+            c => c.Enrollments.Count);
+
+        builder.ComputedProperty(
+            c => c.ReviewCount,
+            c => c.Enrollments.Count(e => e.Review != null));
+
+        builder.ComputedProperty(
+            c => c.AverageRating,
+            c => c.Enrollments
+                .Where(e => e.Review != null)
+                .Select(e => (double?)e.Review!.Rating)
+                .Average() ?? 0.0);
     }
 }

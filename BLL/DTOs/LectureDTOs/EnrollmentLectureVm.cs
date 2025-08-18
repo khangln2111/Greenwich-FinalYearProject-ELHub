@@ -1,6 +1,6 @@
 ﻿namespace BLL.DTOs.LectureDTOs;
 
-public class LearningLectureVm
+public class EnrollmentLectureVm
 {
     public Guid Id { get; set; }
 

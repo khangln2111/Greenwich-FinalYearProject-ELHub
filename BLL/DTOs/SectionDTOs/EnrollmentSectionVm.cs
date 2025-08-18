@@ -2,7 +2,7 @@
 
 namespace BLL.DTOs.SectionDTOs;
 
-public class LearningSectionVm
+public class EnrollmentSectionVm
 {
     public Guid Id { get; init; }
 
@@ -16,7 +16,7 @@ public class LearningSectionVm
 
     public Guid CourseId { get; init; }
 
-    public LearningLectureVm[] Lectures { get; init; } = [];
+    public EnrollmentLectureVm[] Lectures { get; init; } = [];
 
     public int Order { get; init; }
 }

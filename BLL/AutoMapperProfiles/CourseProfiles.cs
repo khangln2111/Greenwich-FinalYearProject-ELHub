@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.DTOs.CourseDTOs;
+using BLL.DTOs.EnrollmentDTOs;
 using DAL.Data.Entities;
 
 namespace BLL.AutoMapperProfiles;
@@ -10,31 +11,38 @@ public class CourseProfiles : Profile
     {
         CreateMap<Course, CourseDetailVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
-            .ForMember(dest => dest.DurationInSeconds, opt => opt
-                .MapFrom(src => src.Sections
-                    .SelectMany(s => s.Lectures)
-                    .Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
             .ForMember(dest => dest.ImageUrl,
                 opt => opt.MapFrom(src => src.Image == null ? null : src.Image.Url))
             .ForMember(dest => dest.PromoVideoUrl,
                 opt => opt.MapFrom(src => src.PromoVideo == null ? null : src.PromoVideo.Url))
-            .ForMember(dest => dest.SectionCount, opt => opt.MapFrom(src => src.Sections.Count))
-            .ForMember(dest => dest.LectureCount,
-                opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
             .ForMember(dest => dest.DiscountPercentage, opt => opt.MapFrom(src =>
                 src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)
             ))
             .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)))
-            .ForMember(dest => dest.EnrollmentCount, opt => opt.MapFrom(src => src.Enrollments.Count))
-            .ForMember(
-                dest => dest.ReviewCount,
-                opt => opt.MapFrom(src => src.Enrollments.Count(e => e.Review != null)))
-            .ForMember(dest => dest.AverageRating,
-                opt => opt.MapFrom(src =>
-                    src.Enrollments
-                        .Where(e => e.Review != null)
-                        .Select(e => (double?)e.Review!.Rating)
-                        .Average()))
+            .ForMember(dest => dest.RatingDistribution, opt => opt.MapFrom(src =>
+                new CourseRatingDistributionVm
+                {
+                    Star1 = src.Enrollments.Any(e => e.Review != null)
+                        ? (int)Math.Round(src.Enrollments.Count(e => e.Review != null && e.Review.Rating == 1) * 100.0 /
+                                          src.Enrollments.Count(e => e.Review != null))
+                        : 0,
+                    Star2 = src.Enrollments.Any(e => e.Review != null)
+                        ? (int)Math.Round(src.Enrollments.Count(e => e.Review != null && e.Review.Rating == 2) * 100.0 /
+                                          src.Enrollments.Count(e => e.Review != null))
+                        : 0,
+                    Star3 = src.Enrollments.Any(e => e.Review != null)
+                        ? (int)Math.Round(src.Enrollments.Count(e => e.Review != null && e.Review.Rating == 3) * 100.0 /
+                                          src.Enrollments.Count(e => e.Review != null))
+                        : 0,
+                    Star4 = src.Enrollments.Any(e => e.Review != null)
+                        ? (int)Math.Round(src.Enrollments.Count(e => e.Review != null && e.Review.Rating == 4) * 100.0 /
+                                          src.Enrollments.Count(e => e.Review != null))
+                        : 0,
+                    Star5 = src.Enrollments.Any(e => e.Review != null)
+                        ? (int)Math.Round(src.Enrollments.Count(e => e.Review != null && e.Review.Rating == 5) * 100.0 /
+                                          src.Enrollments.Count(e => e.Review != null))
+                        : 0
+                }))
             .ForMember(dest => dest.InstructorName,
                 opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
             .ForMember(dest => dest.InstructorAvatarUrl,
@@ -59,58 +67,20 @@ public class CourseProfiles : Profile
                 opt => opt.MapFrom(src =>
                     src.Instructor.Courses.SelectMany(c => c.Enrollments).Count()));
 
-        CreateMap<Course, LearningCourseVm>()
-            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
-            .ForMember(dest => dest.DurationInSeconds, opt => opt
-                .MapFrom(src => src.Sections
-                    .SelectMany(s => s.Lectures)
-                    .Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
-            .ForMember(dest => dest.ImageUrl,
-                opt => opt.MapFrom(src => src.Image == null ? null : src.Image.Url))
-            .ForMember(dest => dest.PromoVideoUrl,
-                opt => opt.MapFrom(src => src.PromoVideo == null ? null : src.PromoVideo.Url))
-            .ForMember(dest => dest.SectionCount, opt => opt.MapFrom(src => src.Sections.Count))
-            .ForMember(dest => dest.LectureCount,
-                opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
-            .ForMember(dest => dest.DiscountPercentage, opt => opt.MapFrom(src =>
-                src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)
-            ))
-            .ForMember(dest => dest.InstructorName,
-                opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
-            .ForMember(dest => dest.Sections, opt => opt.MapFrom(src => src.Sections.OrderBy(s => s.Order)));
 
         CreateProjection<Course, CourseVm>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
-            .ForMember(dest => dest.DurationInSeconds, opt => opt
-                .MapFrom(src => src.Sections
-                    .SelectMany(s => s.Lectures)
-                    .Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0)))
-            .ForMember(dest => dest.ImageUrl,
-                opt => opt.MapFrom(src => src.Image == null ? null : src.Image.Url))
+            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Image != null ? src.Image.Url : null))
             .ForMember(dest => dest.PromoVideoUrl,
-                opt => opt.MapFrom(src => src.PromoVideo == null ? null : src.PromoVideo.Url))
-            .ForMember(dest => dest.SectionCount, opt => opt.MapFrom(src => src.Sections.Count))
-            .ForMember(dest => dest.LectureCount,
-                opt => opt.MapFrom(src => src.Sections.SelectMany(s => s.Lectures).Count()))
+                opt => opt.MapFrom(src => src.PromoVideo != null ? src.PromoVideo.Url : null))
             .ForMember(dest => dest.DiscountPercentage, opt => opt.MapFrom(src =>
-                src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)
-            ))
+                src.Price == 0 ? 0 : (int)Math.Round((src.Price - src.DiscountedPrice) / src.Price * 100)))
             .ForMember(dest => dest.InstructorName,
                 opt => opt.MapFrom(src => src.Instructor.FirstName + " " + src.Instructor.LastName))
             .ForMember(dest => dest.InstructorAvatarUrl,
-                opt => opt.MapFrom(src => src.Instructor.Avatar == null ? null : src.Instructor.Avatar.Url))
+                opt => opt.MapFrom(src => src.Instructor.Avatar != null ? src.Instructor.Avatar.Url : null))
             .ForMember(dest => dest.InstructorProfessionalTitle,
-                opt => opt.MapFrom(src => src.Instructor.ProfessionalTitle))
-            .ForMember(dest => dest.EnrollmentCount, opt => opt.MapFrom(src => src.Enrollments.Count))
-            .ForMember(
-                dest => dest.ReviewCount,
-                opt => opt.MapFrom(src => src.Enrollments.Count(e => e.Review != null)))
-            .ForMember(dest => dest.AverageRating,
-                opt => opt.MapFrom(src =>
-                    src.Enrollments
-                        .Where(e => e.Review != null)
-                        .Select(e => (double?)e.Review!.Rating)
-                        .Average()));
+                opt => opt.MapFrom(src => src.Instructor.ProfessionalTitle));
 
         CreateMap<CourseApprovalHistory, CourseApprovalHistoryVm>();
 

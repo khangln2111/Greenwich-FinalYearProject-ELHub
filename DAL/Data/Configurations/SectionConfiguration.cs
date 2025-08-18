@@ -1,5 +1,6 @@
 using DAL.Constants;
 using DAL.Data.Entities;
+using LLL.AutoCompute.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,5 +18,10 @@ public class SectionConfiguration : IEntityTypeConfiguration<Section>
             .HasMaxLength(AppConstants.Section.DescriptionMaxLength);
 
         builder.HasIndex(s => new { s.CourseId, s.Id });
+
+        // Denormalized properties for performance optimization
+        builder.ComputedProperty(
+            s => s.LectureCount,
+            s => s.Lectures.Count);
     }
 }

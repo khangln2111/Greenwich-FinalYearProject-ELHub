@@ -46,6 +46,7 @@ public class ApplicationUser : IdentityUser<Guid>
 
 // public ICollection<RefreshToken> RefreshTokens { get; set; }
 
-
     public ICollection<Notification> ReceivedNotifications { get; init; } = new List<Notification>();
+
+   
 }

@@ -10,7 +10,7 @@ using Microsoft.OpenApi.Models;
 
 namespace API;
 
-public static class PresentationDependencyInjection
+public static class PresentationLayerDependencyInjection
 {
     public static IServiceCollection AddPresentationLayer(this IServiceCollection services)
     {
@@ -67,7 +67,7 @@ public static class PresentationDependencyInjection
                 Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"),
                 true);
             o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
-                $"{typeof(BusinessLogicDependencyInjection).Assembly.GetName().Name}.xml"));
+                $"{typeof(BusinessLogicLayerDependencyInjection).Assembly.GetName().Name}.xml"));
         });
 
 

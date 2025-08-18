@@ -13,4 +13,6 @@ public class Media : BaseEntity
     public required string Extension { get; set; }
 
     public long FileSizeInBytes { get; set; }
+
+    public Lecture? Lecture { get; set; }
 }

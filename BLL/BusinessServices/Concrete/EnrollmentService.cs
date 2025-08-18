@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BLL.BusinessServices.Abstract;
 using BLL.DTOs.EnrollmentDTOs;
 using BLL.Exceptions;
@@ -63,7 +64,7 @@ public class EnrollmentService(
         return new Success("Enrolled successful");
     }
 
-    public async Task<Paged<EnrollmentVm>> GetListSelf(GridifyQuery query)
+    public async Task<Paged<EnrollmentSelfVm>> GetListSelf(GridifyQuery query)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
@@ -72,8 +73,34 @@ public class EnrollmentService(
         var enrollments = await context.Enrollments
             .AsNoTracking()
             .Where(e => e.UserId == currentUser.Id)
-            .GridifyToAsync<Enrollment, EnrollmentVm>(query, mapper, gridifyMapper);
+            .GridifyToAsync<Enrollment, EnrollmentSelfVm>(query, mapper, gridifyMapper);
 
         return enrollments;
+    }
+
+    public async Task<EnrollmentDetailSelfVm> GetByIdSelf(Guid id)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null)
+            throw new UnauthorizedException();
+
+        var enrollmentVm = await context.Enrollments
+            .AsNoTracking()
+            .Where(e => e.Id == id && e.UserId == currentUser.Id)
+            .Include(e => e.Course).ThenInclude(c => c.Category)
+            .Include(e => e.Course).ThenInclude(c => c.Image)
+            .Include(e => e.Course).ThenInclude(c => c.PromoVideo)
+            .Include(e => e.Course).ThenInclude(c => c.Instructor)
+            .Include(e => e.Course).ThenInclude(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
+            .ProjectTo<EnrollmentDetailSelfVm>(mapper.ConfigurationProvider, new
+            {
+                enrollmentId = id
+            })
+            .FirstOrDefaultAsync();
+
+        if (enrollmentVm == null)
+            throw new NotFoundException(nameof(Enrollment), id);
+
+        return enrollmentVm;
     }
 }

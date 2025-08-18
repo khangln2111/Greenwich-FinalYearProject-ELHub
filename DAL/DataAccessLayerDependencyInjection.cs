@@ -6,6 +6,7 @@ using DAL.Utilities.MediaUtility.Abstract;
 using DAL.Utilities.MediaUtility.Concrete;
 using DAL.Utilities.PaymentUtility;
 using Hangfire;
+using LLL.AutoCompute.EFCore;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DAL;
 
-public static class DataAccessDependencyInjection
+public static class DataAccessLayerDependencyInjection
 {
     public static void AddDataAccessLayer(this IServiceCollection services)
     {
@@ -33,6 +34,7 @@ public static class DataAccessDependencyInjection
             var configuration = sp.GetRequiredService<IConfiguration>();
             var sqlServerConnectionString = configuration.GetConnectionString("SQLServerConnection");
             opts.UseSqlServer(sqlServerConnectionString);
+            opts.UseAutoCompute();
             opts.EnableDetailedErrors();
             // opts.EnableSensitiveDataLogging();
         });

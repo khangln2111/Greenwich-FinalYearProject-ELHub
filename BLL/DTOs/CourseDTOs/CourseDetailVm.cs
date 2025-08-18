@@ -66,6 +66,8 @@ public class CourseDetailVm
 
     public CourseApprovalHistoryVm[] ApprovalHistories { get; init; } = [];
 
+    public required CourseRatingDistributionVm RatingDistribution { get; set; }
+
     public DateTime? LastRejectedAt { get; init; }
 
     public DateTime? SubmittedAt { get; init; }

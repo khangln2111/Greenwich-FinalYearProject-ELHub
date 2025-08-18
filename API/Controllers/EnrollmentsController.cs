@@ -22,4 +22,11 @@ public class EnrollmentsController(IEnrollmentService enrollmentService) : Contr
         var result = await enrollmentService.GetListSelf(query);
         return Ok(result);
     }
+
+    [HttpGet("self/{id:guid}")]
+    public async Task<IActionResult> GetByIdSelf(Guid id)
+    {
+        var result = await enrollmentService.GetByIdSelf(id);
+        return Ok(result);
+    }
 }

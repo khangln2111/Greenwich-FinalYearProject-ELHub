@@ -15,4 +15,7 @@ public class Enrollment : BaseEntity
     public Guid? ReviewId { get; set; }
 
     public Review? Review { get; set; }
+
+    //Denormalized properties for performance optimization
+    public int ProgressPercentage { get; set; }
 }

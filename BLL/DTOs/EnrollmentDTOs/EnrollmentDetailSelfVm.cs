@@ -1,8 +1,8 @@
 ﻿using BLL.DTOs.SectionDTOs;
 
-namespace BLL.DTOs.CourseDTOs;
+namespace BLL.DTOs.EnrollmentDTOs;
 
-public class LearningCourseVm
+public class EnrollmentDetailSelfVm
 {
     public Guid Id { get; init; }
 
@@ -14,17 +14,11 @@ public class LearningCourseVm
 
     public int LectureCount { get; init; }
 
-    public LearningSectionVm[] Sections { get; init; } = [];
+    public EnrollmentSectionVm[] Sections { get; init; } = [];
 
     public required string ImageUrl { get; init; }
 
     public required string PromoVideoUrl { get; init; }
-
-    public required decimal Price { get; init; }
-
-    public required int DiscountPercentage { get; init; }
-
-    public required decimal DiscountedPrice { get; init; }
 
     public int DurationInSeconds { get; init; }
 

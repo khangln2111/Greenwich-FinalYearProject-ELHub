@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs.CourseDTOs;
+using BLL.DTOs.EnrollmentDTOs;
 using BLL.DTOs.InstructorDTO;
 using BLL.Gridify.CustomModels;
 using BLL.Models;
@@ -15,8 +16,6 @@ public interface ICourseService
     Task<Success> Create(CreateCourseCommand command);
 
     Task<Success> Update(UpdateCourseCommand command);
-
-    Task<LearningCourseVm> GetCourseLearning(Guid id);
 
     Task<string> Delete(Guid id);
 

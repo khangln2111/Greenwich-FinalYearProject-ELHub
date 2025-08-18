@@ -8,5 +8,6 @@ namespace BLL.BusinessServices.Abstract;
 public interface IEnrollmentService
 {
     Task<Success> EnrollFromInventory(EnrollFromInventoryCommand command);
-    Task<Paged<EnrollmentVm>> GetListSelf(GridifyQuery query);
+    Task<Paged<EnrollmentSelfVm>> GetListSelf(GridifyQuery query);
+    Task<EnrollmentDetailSelfVm> GetByIdSelf(Guid id);
 }

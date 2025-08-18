@@ -10,6 +10,8 @@ public class Lecture : BaseEntity
 
     public required bool IsPreview { get; set; } = false;
 
+    public Guid? VideoId { get; set; }
+
     public DurationMedia? Video { get; set; }
 
     public Guid SectionId { get; set; }

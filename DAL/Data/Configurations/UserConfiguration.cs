@@ -1,5 +1,6 @@
 using DAL.Constants;
 using DAL.Data.Entities;
+using LLL.AutoCompute.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,6 +15,7 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 
         builder.Property(x => x.LastName)
             .HasMaxLength(AppConstants.User.LastNameMaxLength);
+
 
         builder.Property(x => x.Address)
             .HasMaxLength(AppConstants.User.AddressMaxLength);

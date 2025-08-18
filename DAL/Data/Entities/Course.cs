@@ -31,7 +31,6 @@ public class Course : BaseEntity
 
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
-
     public ICollection<Gift> Gifts { get; set; } = new List<Gift>();
 
     public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
@@ -46,4 +45,13 @@ public class Course : BaseEntity
     public DateTime? LastRejectedAt { get; set; }
 
     public DateTime? SubmittedAt { get; set; }
+
+
+    // Denormalized properties for performance optimization
+    public int DurationInSeconds { get; set; }
+    public int SectionCount { get; set; }
+    public int LectureCount { get; set; }
+    public int EnrollmentCount { get; set; }
+    public int ReviewCount { get; set; }
+    public double AverageRating { get; set; }
 }

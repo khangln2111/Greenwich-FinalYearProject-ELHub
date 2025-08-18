@@ -13,4 +13,7 @@ public class Section : BaseEntity
     public int Order { get; set; }
 
     public ICollection<Lecture> Lectures { get; } = new List<Lecture>();
+
+    // Denormalized properties for performance optimization
+    public int LectureCount { get; set; }
 }

@@ -8,7 +8,7 @@ using Gridify;
 
 namespace BLL;
 
-public static class BusinessLogicDependencyInjection
+public static class BusinessLogicLayerDependencyInjection
 {
     public static void AddBusinessLogicLayer(this IServiceCollection services)
     {
@@ -43,7 +43,7 @@ public static class BusinessLogicDependencyInjection
     private static void ConfigureGridify(this IServiceCollection services)
     {
         services.AddGridifyMappers(Assembly.GetExecutingAssembly());
-        GridifyGlobalConfiguration.IgnoreNotMappedFields = false;
         GridifyGlobalConfiguration.EnableEntityFrameworkCompatibilityLayer();
+        GridifyGlobalConfiguration.IgnoreNotMappedFields = false;
     }
 }
