@@ -169,7 +169,7 @@ const authRoutes: RouteObject[] = [
 
 const otherRoutes: RouteObject[] = [
   {
-    path: "learning/:courseId",
+    path: "learning/:enrollmentId",
     element: <LearningPage />,
   },
 ];

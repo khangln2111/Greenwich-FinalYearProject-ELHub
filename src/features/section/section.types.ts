@@ -1,4 +1,4 @@
-import { LearningLectureVm, LectureVm } from "../lecture/lecture.types";
+import { EnrollmentLectureVm as EnrollmentLectureVm, LectureVm } from "../lecture/lecture.types";
 
 export type SectionVm = {
   id: string;
@@ -11,14 +11,14 @@ export type SectionVm = {
   order: number;
 };
 
-export type LearningSectionVm = {
+export type EnrollmentSectionVm = {
   id: string;
   title: string;
   description: string;
   lectureCount: number;
   durationInSeconds: number;
   courseId: string;
-  lectures: LearningLectureVm[] | null;
+  lectures: EnrollmentLectureVm[] | null;
   order: number;
 };
 

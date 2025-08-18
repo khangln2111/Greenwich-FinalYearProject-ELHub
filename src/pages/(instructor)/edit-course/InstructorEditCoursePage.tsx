@@ -184,14 +184,14 @@ export default function InstructorEditCoursePage() {
           <Tabs.Panel value={CourseDetailTab.Reviews}>
             <InstructorReviewManager
               courseId={courseId}
-              rating={4.6}
-              totalReviews={2533}
+              rating={courseDetail.averageRating}
+              totalReviews={courseDetail.reviewCount}
               stars={[
-                { stars: 5, percentage: 77 },
-                { stars: 4, percentage: 54 },
-                { stars: 3, percentage: 14 },
-                { stars: 2, percentage: 5 },
-                { stars: 1, percentage: 2 },
+                { stars: 5, percentage: courseDetail.ratingDistribution.star5 },
+                { stars: 4, percentage: courseDetail.ratingDistribution.star4 },
+                { stars: 3, percentage: courseDetail.ratingDistribution.star3 },
+                { stars: 2, percentage: courseDetail.ratingDistribution.star2 },
+                { stars: 1, percentage: courseDetail.ratingDistribution.star1 },
               ]}
             />
           </Tabs.Panel>

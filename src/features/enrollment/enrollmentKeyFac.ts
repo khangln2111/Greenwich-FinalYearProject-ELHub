@@ -5,4 +5,7 @@ export const enrollmentKeyFac = createQueryKeys("enrollments", {
   getEnrollmentsSelf: (query?: EnrollmentQueryCriteria) => ({
     queryKey: [query],
   }),
+  getEnrollmentDetailSelf: (id: string) => ({
+    queryKey: [id],
+  }),
 });

@@ -3,7 +3,6 @@ import { ResponsiveDialog } from "mantine-vaul";
 import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
-import { useGetCourseLearning } from "../../../features/course/courseHooks";
 import { useCompleteLecture } from "../../../features/lecture/lectureHooks";
 import { cn } from "../../../utils/cn";
 import LearningFooter from "./_c/LearningFooter";
@@ -11,6 +10,7 @@ import LearningHeader from "./_c/LearningHeader";
 import LearningSidebar from "./_c/LearningSidebar";
 import { Hourglass } from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader";
+import { useGetEnrollmentDetailSelf } from "../../../features/enrollment/enrollmentHooks";
 
 export default function LearningCoursePage() {
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
@@ -19,15 +19,15 @@ export default function LearningCoursePage() {
   const [desktopSidebarOpened, setdesktopSidebarOpened] = useState(true);
   const isMobileOrTablet = useMediaQuery("(max-width: 768px)");
 
-  const { courseId } = useParams<{ courseId: string }>();
+  const { enrollmentId } = useParams<{ enrollmentId: string }>();
 
-  const { data, isPending, error } = useGetCourseLearning(courseId!);
+  const { data, isPending, error } = useGetEnrollmentDetailSelf(enrollmentId!);
 
   const completeLectureMutation = useCompleteLecture();
 
   if (isPending) return <CenterLoader height="800px" />;
 
-  if (error || !courseId) return <Navigate to="/404" replace />;
+  if (error || !enrollmentId) return <Navigate to="/404" replace />;
 
   const allLectures =
     data.sections?.flatMap(

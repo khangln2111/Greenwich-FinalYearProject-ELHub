@@ -1,7 +1,7 @@
 import { BaseQueryCriteria } from "../../api-client/api.types";
 import { ReviewVm } from "../review/review.types";
 
-export interface EnrollmentVm {
+export interface EnrollmentSelfVm {
   id: string;
   courseId: string;
   courseTitle: string;

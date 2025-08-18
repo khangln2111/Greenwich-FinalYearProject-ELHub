@@ -1,5 +1,5 @@
 import { BaseQueryCriteria } from "../../api-client/api.types";
-import { LearningSectionVm, SectionVm } from "../section/section.types";
+import { EnrollmentSectionVm as EnrollmentSectionVm, SectionVm } from "../section/section.types";
 
 // course.type.ts
 export enum CourseStatus {
@@ -98,13 +98,15 @@ export interface CourseDetailVm {
   retryCount: number;
   approvalHistories: CourseApprovalHistoryVm[];
 
+  ratingDistribution: CourseRatingDistributionVm;
+
   createdAt: string;
   updatedAt: string;
   submittedAt: string | null;
   lastRejectedAt: string | null;
 }
 
-export interface LearningCourseVm {
+export interface EnrollmentDetailSelfVm {
   id: string;
 
   title: string;
@@ -113,14 +115,10 @@ export interface LearningCourseVm {
   sectionCount: number;
   lectureCount: number;
 
-  sections: LearningSectionVm[] | null;
+  sections: EnrollmentSectionVm[] | null;
 
   imageUrl: string;
   promoVideoUrl: string;
-
-  price: number;
-  discountPercentage: number;
-  discountedPrice: number;
 
   durationInSeconds: number;
 
@@ -216,6 +214,14 @@ export type CourseOrderableFields =
   | "durationInSeconds"
   | "enrollmentCount"
   | "lectureCount";
+
+export interface CourseRatingDistributionVm {
+  star1: number;
+  star2: number;
+  star3: number;
+  star4: number;
+  star5: number;
+}
 
 export interface Experience {
   organizationName: string;

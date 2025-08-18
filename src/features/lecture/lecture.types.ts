@@ -9,7 +9,7 @@ export type LectureVm = {
   order: number;
 };
 
-export type LearningLectureVm = {
+export type EnrollmentLectureVm = {
   id: string;
   title: string;
   description: string;

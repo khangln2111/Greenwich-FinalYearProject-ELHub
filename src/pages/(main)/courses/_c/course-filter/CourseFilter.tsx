@@ -215,7 +215,7 @@ const CourseFilter = () => {
                   const newPriceModes = values as CoursePriceMode[];
                   setCourseQuery({
                     priceModes: newPriceModes,
-                    // Nếu chỉ Free hoặc có Free thì bỏ filter price
+                    // If only Free or has Free then remove price filter
                     minPrice:
                       newPriceModes.includes(CoursePriceMode.Free) &&
                       !newPriceModes.includes(CoursePriceMode.Paid)

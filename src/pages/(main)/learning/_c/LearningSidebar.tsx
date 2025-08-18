@@ -1,13 +1,13 @@
 import { HourglassIcon } from "lucide-react";
-import { LearningLectureVm } from "../../../../features/lecture/lecture.types";
-import { LearningSectionVm } from "../../../../features/section/section.types";
+import { EnrollmentLectureVm } from "../../../../features/lecture/lecture.types";
+import { EnrollmentSectionVm } from "../../../../features/section/section.types";
 import LearningSectionItem from "./LearningSectionItem";
 
 interface CourseSidebarProps {
-  sections: LearningSectionVm[];
+  sections: EnrollmentSectionVm[];
   currentLectureIndex: number;
   openedSections: Record<string, boolean>;
-  allLectures: (LearningLectureVm & { sectionTitle: string })[];
+  allLectures: (EnrollmentLectureVm & { sectionTitle: string })[];
   onLectureClick: (lectureIndex: number) => void;
   toggleSection: (sectionId: string) => void;
   onLectureComplete?: (lectureId: string) => void;

@@ -1,11 +1,11 @@
 import { Checkbox } from "@mantine/core";
 import { CheckCircle, MonitorPlayIcon } from "lucide-react";
-import { LearningLectureVm } from "../../../../features/lecture/lecture.types";
+import { EnrollmentLectureVm } from "../../../../features/lecture/lecture.types";
 import { cn } from "../../../../utils/cn";
 import { formatDuration } from "../../../../utils/format";
 
 interface LearningLectureItemProps {
-  lecture: LearningLectureVm;
+  lecture: EnrollmentLectureVm;
   index: number;
   lectureIndex: number;
   isActive: boolean;

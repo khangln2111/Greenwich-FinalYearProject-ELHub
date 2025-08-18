@@ -190,14 +190,14 @@ const CourseDetailPage = () => {
                 <Tabs.Panel value={CourseDetailTab.Reviews}>
                   <ReviewTab
                     courseId={courseId}
-                    rating={4.6}
-                    totalReviews={2533}
+                    rating={course.averageRating}
+                    totalReviews={course.reviewCount}
                     stars={[
-                      { stars: 5, percentage: 77 },
-                      { stars: 4, percentage: 54 },
-                      { stars: 3, percentage: 14 },
-                      { stars: 2, percentage: 5 },
-                      { stars: 1, percentage: 2 },
+                      { stars: 5, percentage: course.ratingDistribution.star5 },
+                      { stars: 4, percentage: course.ratingDistribution.star4 },
+                      { stars: 3, percentage: course.ratingDistribution.star3 },
+                      { stars: 2, percentage: course.ratingDistribution.star2 },
+                      { stars: 1, percentage: course.ratingDistribution.star1 },
                     ]}
                   />
                 </Tabs.Panel>

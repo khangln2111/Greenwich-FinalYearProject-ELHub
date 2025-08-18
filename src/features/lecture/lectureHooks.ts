@@ -47,9 +47,6 @@ export const useCompleteLecture = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.courses.getCourseLearning._def,
-      });
-      queryClient.invalidateQueries({
         queryKey: keyFac.enrollments._def,
       });
       showSuccessToast("Lecture Completed", "The lecture was completed successfully.");

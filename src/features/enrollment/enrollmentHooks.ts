@@ -4,7 +4,7 @@ import { useAppStore } from "../../zustand/stores/appStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { EnrollFromInventoryCommand, EnrollmentQueryCriteria } from "./enrollment.types";
-import { enrollFromInventory, getEnrollmentsSelf } from "./enrollmentApi";
+import { enrollFromInventory, getEnrollmentDetailSelf, getEnrollmentsSelf } from "./enrollmentApi";
 import { ErrorCode } from "../../api-client/api.types";
 
 export const useGetEnrollmentsSelf = (query?: EnrollmentQueryCriteria) => {
@@ -14,6 +14,23 @@ export const useGetEnrollmentsSelf = (query?: EnrollmentQueryCriteria) => {
     queryKey: keyFac.enrollments.getEnrollmentsSelf(query).queryKey,
     queryFn: () => getEnrollmentsSelf(query),
     enabled: !!currentUser,
+  });
+};
+
+export const useGetEnrollmentDetailSelf = (id: string) => {
+  const currentUser = useAppStore((s) => s.currentUser);
+  return useQuery({
+    queryKey: keyFac.enrollments.getEnrollmentDetailSelf(id).queryKey,
+    queryFn: () => getEnrollmentDetailSelf(id),
+    enabled: !!id && !!currentUser,
+    retry: (failureCount, error) => {
+      // ❌ Không retry nếu là 404
+      if (error && error.response?.status === 404) {
+        return false;
+      }
+      // ✅ Retry tối đa 2 lần cho lỗi khác
+      return failureCount < 2;
+    },
   });
 };
 

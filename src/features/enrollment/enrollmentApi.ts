@@ -4,9 +4,10 @@ import apiClient from "../../api-client/apiClient";
 import {
   EnrollFromInventoryCommand,
   EnrollmentQueryCriteria,
-  EnrollmentVm,
+  EnrollmentSelfVm,
 } from "./enrollment.types";
 import { applyConditions } from "../../utils/gridifyHelper";
+import { EnrollmentDetailSelfVm } from "../course/course.types";
 
 const BASE_URL = "/enrollments";
 
@@ -42,9 +43,14 @@ export const buildEnrollmentQuery = (query: EnrollmentQueryCriteria = {}) => {
 };
 
 export const getEnrollmentsSelf = async (query?: EnrollmentQueryCriteria) => {
-  const response = await apiClient.get<ListData<EnrollmentVm>>(`${BASE_URL}/self`, {
+  const response = await apiClient.get<ListData<EnrollmentSelfVm>>(`${BASE_URL}/self`, {
     params: buildEnrollmentQuery(query),
   });
+  return response.data;
+};
+
+export const getEnrollmentDetailSelf = async (id: string) => {
+  const response = await apiClient.get<EnrollmentDetailSelfVm>(`${BASE_URL}/self/${id}`);
   return response.data;
 };
 

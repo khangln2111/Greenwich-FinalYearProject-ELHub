@@ -40,7 +40,7 @@ const CourseMain = ({}: CourseMainProps) => {
   ] = useCourseQueryState();
   const [pageSize] = useQueryState(
     "pageSize",
-    parseAsInteger.withDefault(layout === "grid" ? 6 : 2),
+    parseAsInteger.withDefault(layout === "grid" ? 6 : 4),
   );
 
   const { data, isPending, isError } = useGetCourses({

@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ErrorCode } from "../../api-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
@@ -12,16 +13,13 @@ import {
   createCourse,
   deleteCourse,
   getCourseDetail,
-  getCourseLearning,
   getCourses,
   getInstructorByCourseId,
-  retrySubmitCourse,
   moderateCourse,
+  retrySubmitCourse,
   submitCourse,
   updateCourse,
 } from "./courseApi";
-import { useAppStore } from "../../zustand/stores/appStore";
-import { ErrorCode } from "../../api-client/api.types";
 
 export const useGetCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
@@ -152,23 +150,6 @@ export const useRetrySubmitCourse = () => {
           },
         ],
       }),
-  });
-};
-
-export const useGetCourseLearning = (id: string) => {
-  const currentUser = useAppStore((s) => s.currentUser);
-  return useQuery({
-    queryKey: keyFac.courses.getCourseLearning(id).queryKey,
-    queryFn: () => getCourseLearning(id),
-    enabled: !!id && !!currentUser,
-    retry: (failureCount, error) => {
-      // ❌ Không retry nếu là 404
-      if (error && error.response?.status === 404) {
-        return false;
-      }
-      // ✅ Retry tối đa 2 lần cho lỗi khác
-      return failureCount < 2;
-    },
   });
 };
 

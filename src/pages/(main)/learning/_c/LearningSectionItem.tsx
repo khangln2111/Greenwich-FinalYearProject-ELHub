@@ -1,15 +1,15 @@
 import { Collapse } from "@mantine/core";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { LearningSectionVm } from "../../../../features/section/section.types";
-import { LearningLectureVm } from "../../../../features/lecture/lecture.types";
+import { EnrollmentSectionVm } from "../../../../features/section/section.types";
+import { EnrollmentLectureVm } from "../../../../features/lecture/lecture.types";
 import { formatDuration } from "../../../../utils/format";
 import LearningLectureItem from "./LearningLectureItem";
 
 interface LearningSectionItemProps {
-  section: LearningSectionVm;
+  section: EnrollmentSectionVm;
   opened: boolean;
   toggleSection: (sectionId: string) => void;
-  allLectures: (LearningLectureVm & { sectionTitle: string })[];
+  allLectures: (EnrollmentLectureVm & { sectionTitle: string })[];
   currentLectureIndex: number;
   onLectureClick: (lectureIndex: number) => void;
   onLectureComplete?: (lectureId: string) => void;

@@ -5,7 +5,7 @@ import { zodResolver } from "mantine-form-zod-resolver";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CusModal from "../../../../components/CusModal";
-import { EnrollmentVm } from "../../../../features/enrollment/enrollment.types";
+import { EnrollmentSelfVm } from "../../../../features/enrollment/enrollment.types";
 import {
   CreateReviewFormSchema,
   CreateReviewFormValues,
@@ -19,7 +19,7 @@ import {
 import { formSubmitWithFocus } from "../../../../utils/form";
 
 interface EnrolledCourseCardProps {
-  enrollment: EnrollmentVm;
+  enrollment: EnrollmentSelfVm;
 }
 
 export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardProps) {
@@ -36,7 +36,7 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
   });
 
   const handleNavigateToLearningPage = () => {
-    navigate(`/learning/${enrollment.courseId}`);
+    navigate(`/learning/${enrollment.id}`);
   };
 
   const handleSubmitReview = (values: CreateReviewFormValues) => {

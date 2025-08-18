@@ -1,6 +1,8 @@
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { ApiSuccessResponse, ListData } from "../../api-client/api.types";
 import apiClient from "../../api-client/apiClient";
+import { applyConditions } from "../../utils/gridifyHelper";
+import { InstructorVm } from "../instructor/instructor.types";
 import {
   CourseDetailVm,
   CourseLevel,
@@ -8,12 +10,9 @@ import {
   CourseQueryCriteria,
   CourseVm,
   CreateCourseCommand,
-  LearningCourseVm,
   ReviewCourseCommand,
   UpdateCourseCommand,
 } from "./course.types";
-import { applyConditions } from "../../utils/gridifyHelper";
-import { InstructorVm } from "../instructor/instructor.types";
 
 const BASE_URL = "/courses";
 
@@ -99,11 +98,6 @@ export const getCourses = async (query?: CourseQueryCriteria) => {
 
 export const getCourseDetail = async (id: string) => {
   const response = await apiClient.get<CourseDetailVm>(`${BASE_URL}/${id}`);
-  return response.data;
-};
-
-export const getCourseLearning = async (id: string) => {
-  const response = await apiClient.get<LearningCourseVm>(`${BASE_URL}/Learning/${id}`);
   return response.data;
 };
 
