@@ -45,33 +45,45 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
             .OnDelete(DeleteBehavior.NoAction);
 
 
-        builder.ComputedProperty(
-            c => c.DurationInSeconds,
-            c => c.Sections.SelectMany(s => s.Lectures)
-                .Where(l => l.Video != null)
-                .Sum(l => l.Video!.DurationInSeconds));
+        builder
+            .ComputedProperty(
+                c => c.DurationInSeconds,
+                c => c.Sections.SelectMany(s => s.Lectures)
+                    .Where(l => l.Video != null)
+                    .Sum(l => l.Video!.DurationInSeconds))
+            .HasDefaultValue(0);
 
-        builder.ComputedProperty(
-            c => c.SectionCount,
-            c => c.Sections.Count);
+        builder
+            .ComputedProperty(
+                c => c.SectionCount,
+                c => c.Sections.Count)
+            .HasDefaultValue(0);
 
-        builder.ComputedProperty(
-            c => c.LectureCount,
-            c => c.Sections.SelectMany(s => s.Lectures).Count());
+        builder
+            .ComputedProperty(
+                c => c.LectureCount,
+                c => c.Sections.SelectMany(s => s.Lectures).Count())
+            .HasDefaultValue(0);
 
-        builder.ComputedProperty(
-            c => c.EnrollmentCount,
-            c => c.Enrollments.Count);
+        builder
+            .ComputedProperty(
+                c => c.EnrollmentCount,
+                c => c.Enrollments.Count)
+            .HasDefaultValue(0);
 
-        builder.ComputedProperty(
-            c => c.ReviewCount,
-            c => c.Enrollments.Count(e => e.Review != null));
+        builder
+            .ComputedProperty(
+                c => c.ReviewCount,
+                c => c.Enrollments.Count(e => e.Review != null))
+            .HasDefaultValue(0);
 
-        builder.ComputedProperty(
-            c => c.AverageRating,
-            c => c.Enrollments
-                .Where(e => e.Review != null)
-                .Select(e => (double?)e.Review!.Rating)
-                .Average() ?? 0.0);
+        builder
+            .ComputedProperty(
+                c => c.AverageRating,
+                c => c.Enrollments
+                    .Where(e => e.Review != null)
+                    .Select(e => (double?)e.Review!.Rating)
+                    .Average() ?? 0.0)
+            .HasDefaultValue(0.0);
     }
 }

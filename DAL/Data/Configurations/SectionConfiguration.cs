@@ -21,7 +21,13 @@ public class SectionConfiguration : IEntityTypeConfiguration<Section>
 
         // Denormalized properties for performance optimization
         builder.ComputedProperty(
-            s => s.LectureCount,
-            s => s.Lectures.Count);
+                s => s.LectureCount,
+                s => s.Lectures.Count)
+            .HasDefaultValue(0);
+
+        builder
+            .ComputedProperty(s => s.DurationInSeconds,
+                s => s.Lectures.Sum(l => l.Video != null ? l.Video.DurationInSeconds : 0))
+            .HasDefaultValue(0);
     }
 }

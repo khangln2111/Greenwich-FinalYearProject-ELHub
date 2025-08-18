@@ -10,8 +10,8 @@ public class UserProfiles : Profile
     {
         CreateMap<ApplicationUser, UserVm>()
             .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.Roles.Select(r => r.Name).ToArray()))
-            .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl))
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName));
+            .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.Avatar != null ? src.Avatar.Url : null))
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
 
 
         CreateMap<UpdateUserCommand, ApplicationUser>()

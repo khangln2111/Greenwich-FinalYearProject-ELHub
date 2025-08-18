@@ -16,4 +16,6 @@ public class Section : BaseEntity
 
     // Denormalized properties for performance optimization
     public int LectureCount { get; set; }
+
+    public int DurationInSeconds { get; set; }
 }
