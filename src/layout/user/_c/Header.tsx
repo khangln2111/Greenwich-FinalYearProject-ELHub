@@ -245,7 +245,7 @@ const Header = () => {
           duration: 200,
           timingFunction: "ease-out",
         }}
-        size="100%"
+        size="330"
         padding="md"
         title="Navigation"
         hiddenFrom="md"

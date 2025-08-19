@@ -31,6 +31,10 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
+  img {
+    overflow-clip-margin: unset;
+  }
 }
 
 @config "../../tailwind.config.ts";
