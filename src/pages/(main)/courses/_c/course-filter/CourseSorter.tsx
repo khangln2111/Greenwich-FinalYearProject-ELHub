@@ -10,12 +10,15 @@ import {
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { encodeOrderOption, OrderDirection } from "../../../../../api-client/api.types";
 import { AppSegmentedControl } from "../../../../../components/AppSegmentedControl";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
-import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
+import { OrderBy } from "../../../../../api-client/api.types";
 
-// SORTING_OPTIONS chỉ giữ field, label và icon
+export interface CourseSorterProps {
+  value: OrderBy<CourseOrderableFields>;
+  onChange: (val: OrderBy<CourseOrderableFields>) => void;
+}
+
 const COURSE_SORTING_OPTIONS: {
   field: CourseOrderableFields;
   label: string;
@@ -28,48 +31,39 @@ const COURSE_SORTING_OPTIONS: {
   { field: "averageRating", label: "RATING", icon: <IconStar size={18} /> },
 ];
 
-const CourseSorter = () => {
-  const [{ orderBy }, setCourseQuery] = useCourseQueryState();
-  const [currentHoveredField, setCurrentHoveredSort] = useState<CourseOrderableFields | null>(null);
-
-  // Computed current displayed option (hovered or selected)
-  const currentDisplayedField = useMemo(
-    () =>
-      COURSE_SORTING_OPTIONS.find((opt) => opt.field === (currentHoveredField ?? orderBy.field)),
-    [currentHoveredField, orderBy.field],
+export const CourseSorter = ({ value, onChange }: CourseSorterProps) => {
+  const [currentHoveredField, setCurrentHoveredField] = useState<CourseOrderableFields | null>(
+    null,
   );
 
-  // Display label = <fieldLabel> + <directionLabel>
+  const currentDisplayedField = useMemo(
+    () => COURSE_SORTING_OPTIONS.find((opt) => opt.field === (currentHoveredField ?? value.field)),
+    [currentHoveredField, value.field],
+  );
+
+  // Computed current displayed option (hovered or selected)
   const displayLabel = useMemo(() => {
     if (!currentDisplayedField) return "";
     const fieldLabel = currentDisplayedField.label;
     const directionLabel =
       currentDisplayedField.field === "createdAt"
-        ? orderBy.direction === "asc"
+        ? value.direction === "asc"
           ? "(Oldest)"
           : "(Newest)"
-        : orderBy.direction === "asc"
+        : value.direction === "asc"
           ? "(Asc)"
           : "(Desc)";
     return `${fieldLabel} ${directionLabel}`;
-  }, [currentDisplayedField, orderBy.direction]);
+  }, [currentDisplayedField, value.direction]);
 
-  // Change sorting field (keep current direction)
-  const handleFieldChange = (field: string) => {
-    setCourseQuery({
-      orderBy: encodeOrderOption({
-        field: field as CourseOrderableFields,
-        direction: orderBy.direction,
-      }),
-    });
+  // Toggle direction only for current field
+  const handleDirectionToggle = () => {
+    onChange({ ...value, direction: value.direction === "asc" ? "desc" : "asc" });
   };
 
-  // Toggle direction for current field
-  const toggleSortDirection = () => {
-    const newDirection: OrderDirection = orderBy.direction === "asc" ? "desc" : "asc";
-    setCourseQuery({
-      orderBy: encodeOrderOption({ field: orderBy.field, direction: newDirection }),
-    });
+  // Handle field change when a new field is selected
+  const handleFieldChange = (field: CourseOrderableFields) => {
+    onChange({ ...value, field });
   };
 
   return (
@@ -79,10 +73,9 @@ const CourseSorter = () => {
         <Text fw={500} className="text-md dark:text-white">
           Sorting:
         </Text>
-
         <div className="flex items-center gap-2">
           <motion.p
-            key={currentHoveredField ?? orderBy.field}
+            key={currentHoveredField ?? value.field}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -91,14 +84,13 @@ const CourseSorter = () => {
           >
             {displayLabel}
           </motion.p>
-
           <Button
             variant="default"
             size="compact-xs"
             className="p-0 w-7 h-7 flex items-center justify-center"
-            onClick={toggleSortDirection}
+            onClick={handleDirectionToggle}
           >
-            {orderBy.direction === "asc" ? <IconArrowUp size={16} /> : <IconArrowDown size={16} />}
+            {value.direction === "asc" ? <IconArrowUp size={16} /> : <IconArrowDown size={16} />}
           </Button>
         </div>
       </div>
@@ -108,23 +100,21 @@ const CourseSorter = () => {
         radius="full"
         className="grid auto-cols-fr grid-flow-col-dense"
         color="blue"
-        size={"lg"}
+        size="lg"
         classNames={{
           label: "not-data-active:hover:bg-gray-4 not-data-active:dark:hover:bg-dark-5",
         }}
-        value={orderBy.field}
-        onChange={handleFieldChange}
+        value={value.field}
+        onChange={(field) => handleFieldChange(field as CourseOrderableFields)}
         data={COURSE_SORTING_OPTIONS.map((option) => ({
           value: option.field,
           label: <div className="flex justify-center items-center">{option.icon}</div>,
           labelProps: {
-            onMouseEnter: () => setCurrentHoveredSort(option.field),
-            onMouseLeave: () => setCurrentHoveredSort(null),
+            onMouseEnter: () => setCurrentHoveredField(option.field),
+            onMouseLeave: () => setCurrentHoveredField(null),
           },
         }))}
       />
     </>
   );
 };
-
-export default CourseSorter;
