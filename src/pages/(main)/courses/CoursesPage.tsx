@@ -1,8 +1,8 @@
 import { Box, Grid, GridCol, Paper } from "@mantine/core";
-import CourseMain from "./_c/CourseMain";
-import CourseFilter from "./_c/course-filter/CourseFilter";
 import { useCoursesPageStore } from "../../../zustand/stores/coursesPageStore";
 import CourseMobileFilter from "./_c/course-filter/CourseMobileFilter";
+import CourseMain from "./_c/CourseMain";
+import CourseDesktopFilter from "./_c/course-filter/CourseDesktopFilter";
 
 const CoursesPage = () => {
   const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
@@ -24,7 +24,7 @@ const CoursesPage = () => {
               ${isDesktopFilterOpen ? "opacity-100" : "-translate-x-full opacity-0 hidden"} `}
           >
             <Paper withBorder className="rounded-2xl">
-              <CourseFilter />
+              <CourseDesktopFilter />
             </Paper>
           </GridCol>
           {/* Column 2: Main content with course grid*/}

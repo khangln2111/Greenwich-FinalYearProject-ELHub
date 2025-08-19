@@ -82,13 +82,13 @@ const Header = () => {
   const [{ search }, setCoursesQuery] = useCourseQueryState();
   const location = useLocation();
 
-  const [searchValue, setSearchValue] = useState<string>(search);
+  const [searchInput, setSearchInput] = useState<string>(search);
   const navigate = useNavigate();
 
   const { data: cart } = useGetCart();
 
   const handleSearch = () => {
-    const trimmed = searchValue.trim();
+    const trimmed = searchInput.trim();
     if (!trimmed) return;
 
     if (location.pathname === "/courses") {
@@ -140,13 +140,16 @@ const Header = () => {
       >
         <SearchBox
           autoFocus
-          value={searchValue}
-          onChange={setSearchValue}
+          value={searchInput}
+          onChange={setSearchInput}
           onSearch={() => {
             handleSearch();
             closeMobileSearch();
           }}
-          onClear={() => setSearchValue("")}
+          onClear={() => {
+            setSearchInput("");
+            setCoursesQuery({ search: "" });
+          }}
           size="lg"
           placeholder="Search courses..."
           radius="3xl"
@@ -168,11 +171,11 @@ const Header = () => {
         {/* Nav links (desktop) */}
         <div className="flex flex-1 justify-center items-center visible-from-md">
           <SearchBox
-            value={searchValue}
-            onChange={setSearchValue}
+            value={searchInput}
+            onChange={setSearchInput}
             onSearch={handleSearch}
             onClear={() => {
-              setSearchValue("");
+              setSearchInput("");
               setCoursesQuery({ search: "" });
             }}
             size="md"

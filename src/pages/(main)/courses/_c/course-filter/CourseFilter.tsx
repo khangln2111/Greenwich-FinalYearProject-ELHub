@@ -3,6 +3,7 @@ import {
   AccordionControl,
   AccordionItem,
   AccordionPanel,
+  Button,
   Checkbox,
   Chip,
   Divider,
@@ -15,17 +16,20 @@ import {
 } from "@mantine/core";
 import { IconFilterCog } from "@tabler/icons-react";
 import { RotateCcw } from "lucide-react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { encodeOrderOption } from "../../../../../api-client/api.types";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
 import { CourseLevel, CoursePriceMode } from "../../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
-import CourseSorter from "./CourseSorter";
+import { useCoursesPageStore } from "../../../../../zustand/stores/coursesPageStore";
+import { CourseSorter } from "./CourseSorter";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
-const CourseFilter = () => {
+export const CourseFilter = () => {
   const [_, setSearchParams] = useSearchParams();
-
+  const closeMobileFilter = useCoursesPageStore((s) => s.closeMobileFilter);
   const [
     {
       categoryId,
@@ -35,19 +39,51 @@ const CourseFilter = () => {
       priceModes,
       minPrice,
       maxPrice,
+      orderBy,
     },
     setCourseQuery,
   ] = useCourseQueryState();
 
-  const {
-    data: categories,
-    isPending,
-    isError,
-  } = useGetCategories({
-    pageSize: 100,
+  const { data: categories, isPending, isError } = useGetCategories({ pageSize: 100 });
+
+  // --- TEMP STATE giữ nguyên giá trị UI ---
+  const [tempFilters, setTempFilters] = useState({
+    categoryId,
+    levels,
+    minDurationInSeconds,
+    maxDurationInSeconds,
+    priceModes,
+    minPrice,
+    maxPrice,
   });
 
-  const handleResetFilters = () => setSearchParams(new URLSearchParams());
+  const [tempSorter, setTempSorter] = useState({
+    field: orderBy.field,
+    direction: orderBy.direction,
+  });
+
+  const handleResetFilters = () => {
+    setTempFilters({
+      categoryId: null,
+      levels: [],
+      minDurationInSeconds: null,
+      maxDurationInSeconds: null,
+      priceModes: [],
+      minPrice: null,
+      maxPrice: null,
+    });
+    setTempSorter({ field: "createdAt", direction: "desc" });
+    setSearchParams(new URLSearchParams());
+    closeMobileFilter();
+  };
+
+  const handleApply = () => {
+    setCourseQuery({
+      ...tempFilters,
+      orderBy: encodeOrderOption(tempSorter),
+    });
+    closeMobileFilter();
+  };
 
   return (
     <>
@@ -71,14 +107,14 @@ const CourseFilter = () => {
 
       <Divider className="my-lg" />
 
-      {/* course sorter */}
+      {/* Sorter */}
       <Stack className="py-md px-sm lg:px-md xl:px-lg">
-        <CourseSorter />
+        <CourseSorter value={tempSorter} onChange={setTempSorter} />
       </Stack>
 
       <Divider className="mt-lg" />
 
-      {/* filters with accordion */}
+      {/* Accordion filters */}
       <Accordion
         multiple
         radius={0}
@@ -94,7 +130,7 @@ const CourseFilter = () => {
           </AccordionControl>
           <AccordionPanel>
             <Select
-              value={categoryId}
+              value={tempFilters.categoryId}
               placeholder={
                 isPending ? "Loading categories..." : isError ? "Failed to load" : "Select category"
               }
@@ -103,7 +139,7 @@ const CourseFilter = () => {
               searchable
               clearable
               checkIconPosition="right"
-              onChange={(val) => setCourseQuery({ categoryId: val })}
+              onChange={(val) => setTempFilters((prev) => ({ ...prev, categoryId: val }))}
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
               nothingFoundMessage="Nothing found..."
               classNames={{
@@ -116,7 +152,7 @@ const CourseFilter = () => {
             />
           </AccordionPanel>
         </AccordionItem>
-        {/* Price range */}
+        {/* Price Range */}
         <AccordionItem value="Price range">
           <AccordionControl>
             <Text className="font-medium text-md">Price Range</Text>
@@ -124,11 +160,14 @@ const CourseFilter = () => {
           <AccordionPanel>
             <div className="px-1">
               <RangeSlider
-                key={`price-range-${minPrice}-${maxPrice}`}
+                key={`price-${tempFilters.minPrice}-${tempFilters.maxPrice}`}
                 min={0}
                 max={500}
                 step={1}
-                disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
+                disabled={
+                  tempFilters.priceModes.length === 1 &&
+                  tempFilters.priceModes.includes(CoursePriceMode.Free)
+                }
                 marks={[
                   { value: 0, label: "$0" },
                   { value: 100, label: "$100" },
@@ -137,11 +176,10 @@ const CourseFilter = () => {
                   { value: 400, label: "$400" },
                   { value: 500, label: "$500+" },
                 ]}
-                defaultValue={[minPrice ?? 0, maxPrice ?? 500]}
-                onChangeEnd={(val) => {
-                  const [min, max] = val;
-                  setCourseQuery({ minPrice: min, maxPrice: max });
-                }}
+                defaultValue={[tempFilters.minPrice ?? 0, tempFilters.maxPrice ?? 500]}
+                onChangeEnd={([min, max]) =>
+                  setTempFilters((prev) => ({ ...prev, minPrice: min, maxPrice: max }))
+                }
                 className="my-xl"
               />
             </div>
@@ -150,34 +188,34 @@ const CourseFilter = () => {
         {/* Duration */}
         <AccordionItem value="Duration">
           <AccordionControl>
-            <Text className="font-medium text-md">Duration (minutes)</Text>
+            <Text className="font-medium text-md">Duration (hours)</Text>
           </AccordionControl>
           <AccordionPanel>
             <div className="px-1">
               <RangeSlider
-                key={`duration-range-${minDurationInSeconds}-${maxDurationInSeconds}`}
+                key={`duration-${tempFilters.minDurationInSeconds}-${tempFilters.maxDurationInSeconds}`}
                 min={0}
                 max={16}
                 marks={[
                   { value: 0, label: "0h" },
                   { value: 2, label: "2h" },
                   { value: 6, label: "6h" },
-                  { value: 9, label: "7h" },
-                  { value: 12, label: "14h" },
+                  { value: 9, label: "9h" },
+                  { value: 12, label: "12h" },
                   { value: 16, label: "16h+" },
                 ]}
                 defaultValue={[
-                  (minDurationInSeconds ?? 0) / 3600,
-                  (maxDurationInSeconds ?? 16 * 3600) / 3600,
+                  (tempFilters.minDurationInSeconds ?? 0) / 3600,
+                  (tempFilters.maxDurationInSeconds ?? 16 * 3600) / 3600,
                 ]}
                 restrictToMarks
-                onChangeEnd={(val) => {
-                  const [minHours, maxHours] = val;
-                  setCourseQuery({
-                    minDurationInSeconds: minHours > 0 ? minHours * 3600 : null,
-                    maxDurationInSeconds: maxHours < 16 ? maxHours * 3600 : null,
-                  });
-                }}
+                onChangeEnd={([minH, maxH]) =>
+                  setTempFilters((prev) => ({
+                    ...prev,
+                    minDurationInSeconds: minH > 0 ? minH * 3600 : null,
+                    maxDurationInSeconds: maxH < 16 ? maxH * 3600 : null,
+                  }))
+                }
                 className="my-[30px]"
               />
             </div>
@@ -190,9 +228,11 @@ const CourseFilter = () => {
           </AccordionControl>
           <AccordionPanel>
             <Checkbox.Group
+              value={tempFilters.levels}
+              onChange={(values) =>
+                setTempFilters((prev) => ({ ...prev, levels: values as CourseLevel[] }))
+              }
               className="py-md"
-              value={levels}
-              onChange={(values) => setCourseQuery({ levels: values as CourseLevel[] })}
             >
               <Stack gap="md">
                 {[...Object.values(CourseLevel)].map((lv) => (
@@ -202,7 +242,7 @@ const CourseFilter = () => {
             </Checkbox.Group>
           </AccordionPanel>
         </AccordionItem>
-        {/* Price mode */}
+        {/* Price Mode */}
         <AccordionItem value="Price mode">
           <AccordionControl>
             <Text className="font-medium text-md">Price mode</Text>
@@ -210,25 +250,25 @@ const CourseFilter = () => {
           <AccordionPanel>
             <div className="flex gap-2 my-sm items-center">
               <Chip.Group
-                value={priceModes}
+                value={tempFilters.priceModes}
                 onChange={(values) => {
                   const newPriceModes = values as CoursePriceMode[];
-                  setCourseQuery({
+                  setTempFilters((prev) => ({
+                    ...prev,
                     priceModes: newPriceModes,
-                    // If only Free or has Free then remove price filter
                     minPrice:
                       newPriceModes.includes(CoursePriceMode.Free) &&
                       !newPriceModes.includes(CoursePriceMode.Paid)
                         ? null
-                        : minPrice,
+                        : prev.minPrice,
                     maxPrice:
                       newPriceModes.includes(CoursePriceMode.Free) &&
                       !newPriceModes.includes(CoursePriceMode.Paid)
                         ? null
-                        : maxPrice,
-                  });
+                        : prev.maxPrice,
+                  }));
                 }}
-                multiple={true}
+                multiple
               >
                 <Tooltip label="Getting all free course" refProp="rootRef">
                   <Chip key={CoursePriceMode.Free} variant="outline" value={CoursePriceMode.Free}>
@@ -245,8 +285,10 @@ const CourseFilter = () => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
+
+      <div className="flex justify-center px-sm lg:px-md xl:px-lg mb-md">
+        <Button onClick={handleApply}>Apply Filters & Sorter</Button>
+      </div>
     </>
   );
 };
-
-export default CourseFilter;

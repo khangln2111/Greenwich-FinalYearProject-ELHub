@@ -13,23 +13,38 @@ import {
 } from "../features/course/course.types";
 
 export function useCourseQueryState() {
+  const defaultValues = {
+    categoryId: null,
+    levels: [] as CourseLevel[],
+    orderBy: encodeOrderOption<CourseOrderableFields>({
+      field: "createdAt",
+      direction: "desc",
+    }),
+    minDurationInSeconds: null,
+    maxDurationInSeconds: null,
+    minPrice: null,
+    maxPrice: null,
+    search: "",
+    priceModes: [] as CoursePriceMode[],
+    page: 1,
+  };
+
   const [states, setCourseQuery] = useQueryStates(
     {
       categoryId: parseAsString,
-      levels: parseAsArrayOf(parseAsStringEnum(Object.values(CourseLevel))).withDefault([]),
-      orderBy: parseAsString.withDefault(
-        encodeOrderOption<CourseOrderableFields>({
-          field: "createdAt",
-          direction: "desc",
-        }),
+      levels: parseAsArrayOf(parseAsStringEnum(Object.values(CourseLevel))).withDefault(
+        defaultValues.levels,
       ),
+      orderBy: parseAsString.withDefault(defaultValues.orderBy),
       minDurationInSeconds: parseAsInteger,
       maxDurationInSeconds: parseAsInteger,
       minPrice: parseAsInteger,
       maxPrice: parseAsInteger,
-      search: parseAsString.withDefault(""),
-      priceModes: parseAsArrayOf(parseAsStringEnum(Object.values(CoursePriceMode))).withDefault([]),
-      page: parseAsInteger.withDefault(1),
+      search: parseAsString.withDefault(defaultValues.search),
+      priceModes: parseAsArrayOf(parseAsStringEnum(Object.values(CoursePriceMode))).withDefault(
+        defaultValues.priceModes,
+      ),
+      page: parseAsInteger.withDefault(defaultValues.page),
     },
     {
       scroll: true,
@@ -46,16 +61,23 @@ export function useCourseQueryState() {
   const setCoursesQueryState = (newValues: Partial<typeof states>) => {
     const keys = Object.keys(newValues);
 
-    // Nếu chỉ thay đổi page
+    // If only the page is changed
     if (keys.length === 1 && keys[0] === "page") {
       setCourseQuery({ page: newValues.page });
       return;
     }
 
-    // Ngược lại: cập nhật filter/sort, reset page về null
+    // Otherwise: update filter/sort, reset page to null
     setCourseQuery({
       ...newValues,
       page: null,
+    });
+  };
+
+  const resetCoursesQueryState = () => {
+    setCourseQuery({
+      ...defaultValues,
+      search: states.search,
     });
   };
 
@@ -65,5 +87,6 @@ export function useCourseQueryState() {
       orderBy,
     },
     setCoursesQueryState,
+    resetCoursesQueryState,
   ] as const;
 }
