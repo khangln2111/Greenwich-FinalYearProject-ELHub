@@ -234,7 +234,6 @@ export default function AdminUsersPage() {
                           <Button
                             size="xs"
                             variant="outline"
-                            color="blue"
                             leftSection={<PencilIcon size={14} />}
                             onClick={() => handleEditUser(user)}
                           >

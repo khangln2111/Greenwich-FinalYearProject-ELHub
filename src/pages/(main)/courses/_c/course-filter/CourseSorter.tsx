@@ -99,7 +99,7 @@ export const CourseSorter = ({ value, onChange }: CourseSorterProps) => {
       <AppSegmentedControl
         radius="full"
         className="grid auto-cols-fr grid-flow-col-dense"
-        color="blue"
+        color="primary"
         size="lg"
         classNames={{
           label: "not-data-active:hover:bg-gray-4 not-data-active:dark:hover:bg-dark-5",
