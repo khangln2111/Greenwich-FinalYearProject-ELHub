@@ -1,4 +1,4 @@
-import { ActionIcon, Divider, Drawer, Group, NavLink, ScrollArea } from "@mantine/core";
+import { ActionIcon, Divider, Drawer, Group, NavLink, ScrollArea, Text } from "@mantine/core";
 import { ShoppingCart } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
@@ -8,6 +8,16 @@ interface MobileHamburgerMenuProps {
   onClose: () => void;
 }
 
+const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+  <Text
+    size="sm"
+    className="font-bold uppercase px-md mt-sm mb-xs text-gray-600 dark:text-gray-300"
+    style={{ letterSpacing: 0.5 }}
+  >
+    {children}
+  </Text>
+);
+
 const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
   const location = useLocation();
 
@@ -16,15 +26,15 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
       opened={opened}
       onClose={onClose}
       transitionProps={{ transition: "fade-right", duration: 200, timingFunction: "ease-out" }}
-      size="330"
+      size="280"
       padding="md"
       title="Navigation"
       hiddenFrom="md"
     >
       <ScrollArea mx="-md">
-        <Divider my="sm" />
-
-        {/* User routes */}
+        {/* USER ROUTES */}
+        <Divider />
+        <SectionTitle>User</SectionTitle>
         <NavLink
           component={Link}
           to="/"
@@ -61,6 +71,7 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           onClick={onClose}
         />
 
+        {/* USER DASHBOARD */}
         <NavLink label="User Dashboard" defaultOpened={location.pathname.startsWith("/dashboard")}>
           <NavLink
             component={Link}
@@ -106,7 +117,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           />
         </NavLink>
 
-        {/* Instructor routes */}
+        {/* INSTRUCTOR */}
+        <Divider mt="md" />
+        <SectionTitle>Instructor</SectionTitle>
         <NavLink
           label="Instructor"
           childrenOffset={28}
@@ -149,7 +162,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           />
         </NavLink>
 
-        {/* Admin routes */}
+        {/* ADMIN */}
+        <Divider mt="md" />
+        <SectionTitle>Admin</SectionTitle>
         <NavLink
           label="Admin"
           childrenOffset={28}
@@ -199,8 +214,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           />
         </NavLink>
 
-        {/* Auth */}
-        <Divider my="sm" label="Account" />
+        {/* AUTH */}
+        <Divider mt="md" />
+        <SectionTitle>Account</SectionTitle>
         <NavLink
           component={Link}
           to="/login"
@@ -230,8 +246,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           onClick={onClose}
         />
 
-        {/* Extra pages */}
-        <Divider my="sm" label="Extra" />
+        {/* EXTRA */}
+        <Divider mt="md" />
+        <SectionTitle>Extra</SectionTitle>
         <NavLink
           component={Link}
           to="/faqs"
@@ -247,7 +264,8 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           onClick={onClose}
         />
 
-        <Divider my="sm" />
+        {/* FOOTER */}
+        <Divider my="md" />
         <Group justify="center" grow pb="xl" px="md">
           <ThemeToggler />
           <ActionIcon
