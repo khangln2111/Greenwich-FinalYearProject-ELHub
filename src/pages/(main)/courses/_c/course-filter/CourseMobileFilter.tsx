@@ -7,6 +7,7 @@ import {
   Checkbox,
   Chip,
   Divider,
+  NumberInput,
   RangeSlider,
   Select,
   Stack,
@@ -22,6 +23,7 @@ import { CourseLevel, CoursePriceMode } from "../../../../../features/course/cou
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 import { useCoursesPageStore } from "../../../../../zustand/stores/coursesPageStore";
 import { CourseSorter } from "./CourseSorter";
+import { DollarSignIcon } from "lucide-react";
 
 type CourseMobileFilterProps = {};
 
@@ -102,6 +104,8 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
     <ResponsiveDialog
       opened={isMobileFilterOpen}
       onClose={closeMobileFilter}
+      trapFocus={true}
+      closeOnClickOutside
       radius="xl"
       shadow="xl"
       title={<p className="text-h4 font-h4">Advanced filter</p>}
@@ -185,30 +189,45 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
               <Text className="font-medium text-md">Price Range</Text>
             </AccordionControl>
             <AccordionPanel>
-              <div className="px-1">
-                <RangeSlider
-                  key={`price-${tempFilters.minPrice}-${tempFilters.maxPrice}`}
-                  min={0}
-                  max={500}
-                  step={1}
-                  disabled={
-                    tempFilters.priceModes.length === 1 &&
-                    tempFilters.priceModes.includes(CoursePriceMode.Free)
-                  }
-                  marks={[
-                    { value: 0, label: "$0" },
-                    { value: 100, label: "$100" },
-                    { value: 200, label: "$200" },
-                    { value: 300, label: "$300" },
-                    { value: 400, label: "$400" },
-                    { value: 500, label: "$500+" },
-                  ]}
-                  defaultValue={[tempFilters.minPrice ?? 0, tempFilters.maxPrice ?? 500]}
-                  onChangeEnd={([min, max]) =>
-                    setTempFilters((prev) => ({ ...prev, minPrice: min, maxPrice: max }))
-                  }
-                  className="my-xl"
-                />
+              <div className="flex flex-col items-center justify-center gap-6 py-sm">
+                <div className="flex items-center justify-between gap-2">
+                  {/* Min Price */}
+                  <NumberInput
+                    key={`min-price-${minPrice}`}
+                    placeholder="Min"
+                    min={0}
+                    clampBehavior="strict"
+                    leftSection={<DollarSignIcon size={16} />}
+                    hideControls
+                    value={tempFilters.minPrice ?? undefined}
+                    onChange={(val) =>
+                      setTempFilters((prev) => ({ ...prev, minPrice: Number(val) }))
+                    }
+                    disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
+                  />
+                  <span>-</span>
+                  {/* Max Price */}
+                  <NumberInput
+                    key={`max-price-${maxPrice}`}
+                    placeholder="Max"
+                    min={0}
+                    clampBehavior="strict"
+                    leftSection={<DollarSignIcon size={16} />}
+                    hideControls
+                    value={tempFilters.maxPrice ?? undefined}
+                    onChange={(val) =>
+                      setTempFilters((prev) => ({ ...prev, maxPrice: Number(val) }))
+                    }
+                    disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
+                  />
+                </div>
+
+                {priceModes.includes(CoursePriceMode.Free) &&
+                  !priceModes.includes(CoursePriceMode.Paid) && (
+                    <Text size="sm" c="dimmed" className="text-center">
+                      Price filter is disabled for free courses.
+                    </Text>
+                  )}
               </div>
             </AccordionPanel>
           </AccordionItem>

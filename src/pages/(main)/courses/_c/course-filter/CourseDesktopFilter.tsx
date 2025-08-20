@@ -3,9 +3,11 @@ import {
   AccordionControl,
   AccordionItem,
   AccordionPanel,
+  Button,
   Checkbox,
   Chip,
   Divider,
+  NumberInput,
   RangeSlider,
   Select,
   Stack,
@@ -14,12 +16,13 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { IconFilterCog } from "@tabler/icons-react";
-import { RotateCcw } from "lucide-react";
+import { DollarSignIcon, RotateCcw } from "lucide-react";
 import { encodeOrderOption } from "../../../../../api-client/api.types";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
 import { CourseLevel, CoursePriceMode } from "../../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 import { CourseSorter } from "./CourseSorter";
+import { useState } from "react";
 
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
@@ -41,18 +44,17 @@ const CourseDesktopFilter = () => {
 
   const { data: categories, isPending, isError } = useGetCategories({ pageSize: 100 });
 
+  const [minPriceInput, setMinPriceInput] = useState<number | string | undefined>(
+    minPrice ?? undefined,
+  );
+  const [maxPriceInput, setMaxPriceInput] = useState<number | string | undefined>(
+    maxPrice ?? undefined,
+  );
+
   const handleResetFilters = () => {
-    setCourseQuery({
-      categoryId: null,
-      levels: [],
-      minDurationInSeconds: null,
-      maxDurationInSeconds: null,
-      priceModes: [],
-      minPrice: null,
-      maxPrice: null,
-      orderBy: encodeOrderOption({ field: "createdAt", direction: "desc" }),
-    });
     resetCourseQuery();
+    setMinPriceInput(undefined);
+    setMaxPriceInput(undefined);
   };
 
   return (
@@ -135,25 +137,57 @@ const CourseDesktopFilter = () => {
             <Text className="font-medium text-md">Price Range</Text>
           </AccordionControl>
           <AccordionPanel>
-            <div className="px-1">
-              <RangeSlider
-                key={`price-${minPrice}-${maxPrice}`}
-                min={0}
-                max={500}
-                step={1}
+            <div className="flex flex-col items-center justify-center gap-6 py-sm">
+              <div className="flex items-center justify-between gap-2">
+                {/* Min Price */}
+                <NumberInput
+                  key={`min-price-${minPrice}`}
+                  placeholder="Min"
+                  min={0}
+                  clampBehavior="strict"
+                  leftSection={<DollarSignIcon size={16} />}
+                  hideControls
+                  value={minPriceInput}
+                  onChange={(val) => setMinPriceInput(val)}
+                  disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
+                />
+                <span>-</span>
+                {/* Max Price */}
+                <NumberInput
+                  key={`max-price-${maxPrice}`}
+                  placeholder="Max"
+                  min={0}
+                  clampBehavior="strict"
+                  leftSection={<DollarSignIcon size={16} />}
+                  hideControls
+                  value={maxPriceInput}
+                  onChange={(val) => setMaxPriceInput(val)}
+                  disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
+                />
+              </div>
+
+              {/* Apply Button */}
+              <Button
+                size="sm"
+                onClick={() => {
+                  setCourseQuery({
+                    minPrice: Number(minPriceInput),
+                    maxPrice: Number(maxPriceInput),
+                  });
+                }}
+                fullWidth
+                variant="outline"
                 disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
-                marks={[
-                  { value: 0, label: "$0" },
-                  { value: 100, label: "$100" },
-                  { value: 200, label: "$200" },
-                  { value: 300, label: "$300" },
-                  { value: 400, label: "$400" },
-                  { value: 500, label: "$500+" },
-                ]}
-                defaultValue={[minPrice ?? 0, maxPrice ?? 500]}
-                onChangeEnd={([min, max]) => setCourseQuery({ minPrice: min, maxPrice: max })}
-                className="my-xl"
-              />
+              >
+                Apply
+              </Button>
+
+              {priceModes.includes(CoursePriceMode.Free) &&
+                !priceModes.includes(CoursePriceMode.Paid) && (
+                  <Text size="sm" c="dimmed" className="text-center">
+                    Price filter is disabled for free courses.
+                  </Text>
+                )}
             </div>
           </AccordionPanel>
         </AccordionItem>
