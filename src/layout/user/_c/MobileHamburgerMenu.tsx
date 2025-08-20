@@ -1,4 +1,14 @@
-import { ActionIcon, Divider, Drawer, Group, NavLink, ScrollArea, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Divider,
+  Drawer,
+  Group,
+  NavLink,
+  ScrollArea,
+  Text,
+  Button,
+  Stack,
+} from "@mantine/core";
 import {
   ChartNoAxesCombinedIcon,
   CircleUserIcon,
@@ -7,10 +17,16 @@ import {
   MonitorCheckIcon,
   PackageIcon,
   ShoppingCart,
+  ShieldCheckIcon,
+  GraduationCapIcon,
+  LogInIcon,
+  UserPlusIcon,
+  LogOutIcon,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
 import { MantineLogo } from "@mantinex/mantine-logo";
+import { useAppStore } from "../../../zustand/stores/appStore";
 
 interface MobileHamburgerMenuProps {
   opened: boolean;
@@ -29,6 +45,7 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 
 const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
   const location = useLocation();
+  const currentUser = useAppStore((state) => state.currentUser);
 
   return (
     <Drawer
@@ -37,6 +54,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
       transitionProps={{ transition: "fade-right", duration: 200, timingFunction: "ease-out" }}
       size="280"
       padding="md"
+      classNames={{
+        header: "border-b",
+      }}
       title={
         <Link
           to="/"
@@ -49,8 +69,103 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
       hiddenFrom="md"
     >
       <ScrollArea mx="-md">
+        {!currentUser ? (
+          <>
+            {/* Auth Section if not logged in */}
+            <Group px="md" py="md" grow>
+              <Button
+                component={Link}
+                to="/login"
+                leftSection={<LogInIcon size={16} />}
+                variant="filled"
+                onClick={onClose}
+              >
+                Login
+              </Button>
+              <Button
+                component={Link}
+                to="/register"
+                leftSection={<UserPlusIcon size={16} />}
+                variant="light"
+                onClick={onClose}
+              >
+                Sign Up
+              </Button>
+            </Group>
+          </>
+        ) : (
+          <>
+            {/* Account section */}
+            <SectionTitle>Account</SectionTitle>
+            <NavLink
+              component={Link}
+              label="My account"
+              to="/dashboard/my-account"
+              leftSection={<CircleUserIcon size={16} />}
+              active={location.pathname === "/dashboard/my-account"}
+              onClick={onClose}
+            />
+            <NavLink
+              component={Link}
+              label="Dashboard"
+              to="/dashboard"
+              leftSection={<ChartNoAxesCombinedIcon size={16} />}
+              active={location.pathname === "/dashboard"}
+              onClick={onClose}
+            />
+            <NavLink
+              component={Link}
+              label="Enrolled courses"
+              to="/dashboard/enrolled-courses"
+              leftSection={<MonitorCheckIcon size={16} />}
+              active={location.pathname === "/dashboard/enrolled-courses"}
+              onClick={onClose}
+            />
+            <NavLink
+              component={Link}
+              label="Order history"
+              to="/dashboard/order-history"
+              leftSection={<HistoryIcon size={16} />}
+              active={location.pathname === "/dashboard/order-history"}
+              onClick={onClose}
+            />
+            <NavLink
+              component={Link}
+              label="Inventory"
+              to="/dashboard/inventory"
+              leftSection={<PackageIcon size={16} />}
+              active={location.pathname === "/dashboard/inventory"}
+              onClick={onClose}
+            />
+            <NavLink
+              component={Link}
+              label="Gifts"
+              to="/dashboard/gifts"
+              leftSection={<GiftIcon size={16} />}
+              active={location.pathname === "/dashboard/gifts"}
+              onClick={onClose}
+            />
+
+            <NavLink
+              component={Link}
+              to="/instructor"
+              label="Instructor Site"
+              leftSection={<GraduationCapIcon size={16} />}
+              active={location.pathname.startsWith("/instructor")}
+              onClick={onClose}
+            />
+            <NavLink
+              component={Link}
+              to="/admin"
+              label="Admin Site"
+              leftSection={<ShieldCheckIcon size={16} />}
+              active={location.pathname.startsWith("/admin")}
+              onClick={onClose}
+            />
+          </>
+        )}
+        <Divider my="md" />
         {/* COMMON ROUTES */}
-        <Divider />
         <SectionTitle>COMMON</SectionTitle>
         <NavLink
           component={Link}
@@ -66,7 +181,6 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           active={location.pathname.startsWith("/courses")}
           onClick={onClose}
         />
-
         <NavLink
           component={Link}
           to="/become-instructor"
@@ -74,7 +188,6 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           active={location.pathname === "/become-instructor"}
           onClick={onClose}
         />
-
         <NavLink
           component={Link}
           to="/faqs"
@@ -90,73 +203,26 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           onClick={onClose}
         />
 
-        {/* Account */}
-        <Divider mt="md" />
-        <SectionTitle>Account</SectionTitle>
-        <NavLink
-          component={Link}
-          label="My account"
-          to="/dashboard/my-account"
-          leftSection={<CircleUserIcon size={16} />}
-          active={location.pathname === "/dashboard/my-account"}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          label="Dashboard"
-          to="/dashboard"
-          leftSection={<ChartNoAxesCombinedIcon size={16} />}
-          active={location.pathname === "/dashboard"}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          label="Enrolled courses"
-          to="/dashboard/enrolled-courses"
-          leftSection={<MonitorCheckIcon size={16} />}
-          active={location.pathname === "/dashboard/enrolled-courses"}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          label="Order history"
-          to="/dashboard/order-history"
-          leftSection={<HistoryIcon size={16} />}
-          active={location.pathname === "/dashboard/order-history"}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          label="Inventory"
-          to="/dashboard/inventory"
-          leftSection={<PackageIcon size={16} />}
-          active={location.pathname === "/dashboard/inventory"}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          label="Gifts"
-          to="/dashboard/gifts"
-          leftSection={<GiftIcon size={16} />}
-          active={location.pathname === "/dashboard/gifts"}
-          onClick={onClose}
-        />
-
         {/* FOOTER */}
         <Divider my="md" />
-        <Group justify="center" grow pb="xl" px="md">
-          <ThemeToggler />
-          <ActionIcon
-            variant="default"
-            size="lg"
-            aria-label="Shopping cart trigger"
-            component={Link}
-            to="/cart"
-            onClick={onClose}
-          >
-            <ShoppingCart size={19} strokeWidth={1.5} />
-          </ActionIcon>
-        </Group>
+        <Stack px="md" gap={20}>
+          <Group justify="center" grow>
+            <ThemeToggler />
+            <ActionIcon
+              variant="default"
+              size="lg"
+              aria-label="Shopping cart trigger"
+              component={Link}
+              to="/cart"
+              onClick={onClose}
+            >
+              <ShoppingCart size={19} strokeWidth={1.5} />
+            </ActionIcon>
+          </Group>
+          <Button variant="light" color="red" leftSection={<LogOutIcon size={16} />}>
+            Logout
+          </Button>
+        </Stack>
       </ScrollArea>
     </Drawer>
   );
