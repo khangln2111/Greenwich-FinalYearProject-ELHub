@@ -1,14 +1,4 @@
-import {
-  ActionIcon,
-  Divider,
-  Drawer,
-  Group,
-  NavLink,
-  ScrollArea,
-  Text,
-  Button,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon, Drawer, Group, NavLink, ScrollArea, Text, Button, Stack } from "@mantine/core";
 import {
   ChartNoAxesCombinedIcon,
   CircleUserIcon,
@@ -71,9 +61,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
     >
       <ScrollArea mx="-md">
         {!currentUser ? (
-          <>
+          <div>
             {/* Auth Section if not logged in */}
-            <Group px="md" py="md" grow>
+            <Group px="md" py="md" grow className="border-b">
               <Button
                 component={Link}
                 to="/login"
@@ -93,9 +83,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
                 Sign Up
               </Button>
             </Group>
-          </>
+          </div>
         ) : (
-          <>
+          <div className="pb-xs border-b">
             {/* Account section */}
             <SectionTitle>Account</SectionTitle>
             <NavLink
@@ -163,50 +153,51 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
               active={location.pathname.startsWith("/admin")}
               onClick={onClose}
             />
-          </>
+          </div>
         )}
-        <Divider my="md" />
+
         {/* COMMON ROUTES */}
-        <SectionTitle>COMMON</SectionTitle>
-        <NavLink
-          component={Link}
-          to="/"
-          label="Home"
-          active={location.pathname === "/"}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          to="/courses"
-          label="Courses"
-          active={location.pathname.startsWith("/courses")}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          to="/become-instructor"
-          label="Become Instructor"
-          active={location.pathname === "/become-instructor"}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          to="/faqs"
-          label="FAQs"
-          active={location.pathname === "/faqs"}
-          onClick={onClose}
-        />
-        <NavLink
-          component={Link}
-          to="/contact"
-          label="Contact"
-          active={location.pathname === "/contact"}
-          onClick={onClose}
-        />
+        <div className="pb-xs">
+          <SectionTitle>COMMON</SectionTitle>
+          <NavLink
+            component={Link}
+            to="/"
+            label="Home"
+            active={location.pathname === "/"}
+            onClick={onClose}
+          />
+          <NavLink
+            component={Link}
+            to="/courses"
+            label="Courses"
+            active={location.pathname.startsWith("/courses")}
+            onClick={onClose}
+          />
+          <NavLink
+            component={Link}
+            to="/become-instructor"
+            label="Become Instructor"
+            active={location.pathname === "/become-instructor"}
+            onClick={onClose}
+          />
+          <NavLink
+            component={Link}
+            to="/faqs"
+            label="FAQs"
+            active={location.pathname === "/faqs"}
+            onClick={onClose}
+          />
+          <NavLink
+            component={Link}
+            to="/contact"
+            label="Contact"
+            active={location.pathname === "/contact"}
+            onClick={onClose}
+          />
+        </div>
 
         {/* FOOTER */}
-        <Divider my="md" />
-        <Stack px="md" gap={20}>
+        <Stack gap={20} className="border-t px-md py-md">
           <Group justify="center" grow>
             <ThemeToggler />
             <ActionIcon
