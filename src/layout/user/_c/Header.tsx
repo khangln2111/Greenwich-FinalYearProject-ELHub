@@ -240,7 +240,6 @@ const Header = () => {
       <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
-        radius="xl"
         transitionProps={{
           transition: "fade-right",
           duration: 200,
