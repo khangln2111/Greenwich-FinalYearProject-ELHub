@@ -27,6 +27,7 @@ import { Link, useLocation } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import { useAppStore } from "../../../zustand/stores/appStore";
+import { useLogout } from "../../../features/auth/identityHooks";
 
 interface MobileHamburgerMenuProps {
   opened: boolean;
@@ -45,7 +46,8 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 
 const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
   const location = useLocation();
-  const currentUser = useAppStore((state) => state.currentUser);
+  const currentUser = useAppStore((s) => s.currentUser);
+  const handleLogout = useLogout();
 
   return (
     <Drawer
@@ -66,7 +68,6 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           <span className="font-[Inter] tracking-wide font-bold">ELHub</span>
         </Link>
       }
-      hiddenFrom="md"
     >
       <ScrollArea mx="-md">
         {!currentUser ? (
@@ -219,9 +220,16 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
               <ShoppingCart size={19} strokeWidth={1.5} />
             </ActionIcon>
           </Group>
-          <Button variant="light" color="red" leftSection={<LogOutIcon size={16} />}>
-            Logout
-          </Button>
+          {currentUser && (
+            <Button
+              variant="light"
+              color="red"
+              leftSection={<LogOutIcon size={16} />}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          )}
         </Stack>
       </ScrollArea>
     </Drawer>
