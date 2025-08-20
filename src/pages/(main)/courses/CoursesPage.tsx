@@ -30,9 +30,9 @@ const CoursesPage = () => {
           {/* Column 2: Main content with course grid*/}
           <GridCol span="auto" className="transition-all duration-300">
             <CourseMain />
-            <CourseMobileFilter />
           </GridCol>
         </Grid>
+        <CourseMobileFilter />
       </Box>
     </div>
   );

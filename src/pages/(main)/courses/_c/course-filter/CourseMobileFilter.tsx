@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { ResponsiveDialog } from "mantine-vaul";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { encodeOrderOption } from "../../../../../api-client/api.types";
 import { useGetCategories } from "../../../../../features/category/categoryHooks";
 import { CourseLevel, CoursePriceMode } from "../../../../../features/course/course.types";
@@ -28,6 +28,7 @@ type CourseMobileFilterProps = {};
 const defaultOpenedItems = ["Price range", "Duration", "Category", "Level", "Price mode"];
 
 const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
+  const [_, startTransition] = useTransition();
   const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
   const closeMobileFilter = useCoursesPageStore((s) => s.closeMobileFilter);
   const { data: categories, isPending, isError } = useGetCategories({ pageSize: 100 });
@@ -63,14 +64,18 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
   });
 
   const handleReset = () => {
-    resetCourseQuery();
+    startTransition(() => {
+      resetCourseQuery();
+    });
     closeMobileFilter();
   };
 
   const handleApply = () => {
-    setCourseQuery({
-      ...tempFilters,
-      orderBy: encodeOrderOption(tempSorter),
+    startTransition(() => {
+      setCourseQuery({
+        ...tempFilters,
+        orderBy: encodeOrderOption(tempSorter),
+      });
     });
     closeMobileFilter();
   };
