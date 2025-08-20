@@ -1,9 +1,8 @@
-import { Avatar, Indicator, Menu, Text } from "@mantine/core";
+import { Avatar, Indicator, Menu } from "@mantine/core";
 import {
   IconBell,
   IconBriefcase,
   IconMessageCircle,
-  IconSearch,
   IconSettings,
   IconTrash,
   IconUserCog,
@@ -55,7 +54,6 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
 
       <Menu.Dropdown className="shadow-xl max-h-[90dvh] overflow-y-auto">
         <Menu.Label>Personal</Menu.Label>
-        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Analytics</Menu.Item>
         <Menu.Item
           component={Link}
           to="/dashboard/my-account"
@@ -63,40 +61,30 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           My account
         </Menu.Item>
+        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Analytics</Menu.Item>
         <Menu.Item
-          leftSection={<MonitorCheckIcon size={15} />}
           component={Link}
+          leftSection={<MonitorCheckIcon size={15} />}
           to="/dashboard/enrolled-courses"
         >
           Enrolled courses
         </Menu.Item>
         <Menu.Item
-          leftSection={<HistoryIcon size={15} />}
           component={Link}
+          leftSection={<HistoryIcon size={15} />}
           to="/dashboard/order-history"
         >
           Order history
         </Menu.Item>
         <Menu.Item
-          leftSection={<PackageIcon size={15} />}
           component={Link}
+          leftSection={<PackageIcon size={15} />}
           to="/dashboard/inventory"
         >
           Inventory
         </Menu.Item>
-        <Menu.Item leftSection={<GiftIcon size={15} />} component={Link} to="/dashboard/gifts">
+        <Menu.Item component={Link} leftSection={<GiftIcon size={15} />} to="/dashboard/gifts">
           Gifts
-        </Menu.Item>
-
-        <Menu.Item
-          leftSection={<IconSearch size={15} />}
-          rightSection={
-            <Text size="xs" c="dimmed">
-              ⌘K
-            </Text>
-          }
-        >
-          Search
         </Menu.Item>
 
         <Menu.Divider />
