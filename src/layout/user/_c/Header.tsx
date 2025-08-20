@@ -240,6 +240,7 @@ const Header = () => {
       <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
+        radius="xl"
         transitionProps={{
           transition: "fade-right",
           duration: 200,
@@ -249,7 +250,6 @@ const Header = () => {
         padding="md"
         title="Navigation"
         hiddenFrom="md"
-        zIndex={1000000}
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />

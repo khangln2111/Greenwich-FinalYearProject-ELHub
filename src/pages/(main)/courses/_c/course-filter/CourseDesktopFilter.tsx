@@ -97,7 +97,10 @@ const CourseDesktopFilter = () => {
       <Accordion
         multiple
         radius={0}
-        classNames={{ item: "border-0", control: "px-sm lg:px-md xl:px-lg" }}
+        classNames={{
+          item: "border-0",
+          control: "px-sm lg:px-md xl:px-lg",
+        }}
         className="divide-y! mt-0.5"
         defaultValue={defaultOpenedItems}
         transitionDuration={400}
@@ -119,6 +122,7 @@ const CourseDesktopFilter = () => {
               clearable
               checkIconPosition="right"
               onChange={(val) => setCourseQuery({ categoryId: val })}
+              size="md"
               comboboxProps={{ shadow: "xl", transitionProps: { transition: "pop-top-left" } }}
               nothingFoundMessage="Nothing found..."
               classNames={{
@@ -247,7 +251,7 @@ const CourseDesktopFilter = () => {
         </AccordionItem>
         {/* Price Mode */}
         <AccordionItem value="Price mode">
-          <AccordionControl>
+          <AccordionControl className="not-data-active:hover:rounded-b-2xl">
             <Text className="font-medium text-md">Price mode</Text>
           </AccordionControl>
           <AccordionPanel>

@@ -37,6 +37,18 @@
   }
 }
 
+@layer mantine {
+  .mantine-Drawer-content,
+  .mantine-Drawer-root,
+  .mantine-Modal-content,
+  .mantine-Modal-root,
+  .mantine-VaulRoot-content,
+  .mantine-VaulRoot-body,
+  .mantine-VaulRoot-footer {
+    will-change: initial !important;
+  }
+}
+
 @config "../../tailwind.config.ts";
 
 @utility container {
