@@ -71,6 +71,7 @@ const Header = () => {
               setCoursesQuery({ search: "" });
             }}
             size="md"
+            rightIconSize={28}
             placeholder="Search courses..."
             radius="3xl"
             className="flex-1"

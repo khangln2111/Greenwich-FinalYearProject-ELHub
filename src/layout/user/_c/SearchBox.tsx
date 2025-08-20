@@ -9,6 +9,8 @@ type SearchBoxProps = {
   onSearch?: () => void;
   onClear?: () => void;
   autoFocus?: boolean;
+  leftIconSize?: number;
+  rightIconSize?: number;
 } & Omit<TextInputProps, "rightSection" | "value" | "onChange" | "onKeyDown">;
 
 const SearchBox = ({
@@ -18,6 +20,8 @@ const SearchBox = ({
   value,
   onChange,
   className,
+  leftIconSize = 28,
+  rightIconSize = 32,
   ...rest
 }: SearchBoxProps) => {
   const handleSearch = () => {
@@ -40,7 +44,7 @@ const SearchBox = ({
         <div className="flex items-center justify-end gap-1 max-w-full pr-2">
           {value && (
             <ActionIcon
-              size={28}
+              size={leftIconSize}
               variant="subtle"
               color="gray"
               radius="3xl"
@@ -57,7 +61,7 @@ const SearchBox = ({
             </ActionIcon>
           )}
           <ActionIcon
-            size={32}
+            size={rightIconSize}
             radius="3xl"
             color="primary"
             variant="filled"
