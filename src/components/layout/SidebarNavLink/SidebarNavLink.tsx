@@ -13,6 +13,7 @@ type SidebarNavLinkProps = {
   iconProps?: SVGProps<SVGSVGElement>;
   subLinks?: SubLink[];
   initiallyOpened?: boolean;
+  onClick?: () => void;
 };
 
 const SidebarNavLink = ({
@@ -23,6 +24,7 @@ const SidebarNavLink = ({
   iconProps,
   subLinks,
   initiallyOpened,
+  onClick,
 }: SidebarNavLinkProps) => {
   const location = useLocation();
   const hasSubLinks = Array.isArray(subLinks) && subLinks.length > 0;
@@ -40,6 +42,7 @@ const SidebarNavLink = ({
     isActive,
     isSubLinkActive,
     initiallyOpened,
+    onClick,
   };
 
   return collapsedToIcon ? (

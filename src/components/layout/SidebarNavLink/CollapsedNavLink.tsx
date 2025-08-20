@@ -9,6 +9,7 @@ type CollapsedNavLinkProps = {
   icon: ElementType;
   iconProps?: SVGProps<SVGSVGElement>;
   subLinks?: { label: string; href: string }[];
+  onClick?: () => void;
 };
 
 export const CollapsedNavLink = ({
@@ -17,6 +18,7 @@ export const CollapsedNavLink = ({
   icon: Icon,
   iconProps,
   subLinks,
+  onClick,
 }: CollapsedNavLinkProps) => {
   const location = useLocation();
   const isActive =
@@ -27,6 +29,7 @@ export const CollapsedNavLink = ({
       className="flex items-center justify-center aspect-square rounded-md cursor-pointer transition-all
         hover:bg-primary-light-hover group data-active:bg-primary-light"
       data-active={isActive || undefined}
+      onClick={onClick}
     >
       <Icon
         {...iconProps}
@@ -55,6 +58,7 @@ export const CollapsedNavLink = ({
               key={link.label}
               component={Link}
               to={link.href}
+              onClick={onClick}
               className={cn({
                 "font-semibold text-primary": location.pathname === link.href,
               })}

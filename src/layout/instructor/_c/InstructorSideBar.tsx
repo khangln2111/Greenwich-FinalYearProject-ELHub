@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { cn } from "../../../utils/cn";
+import { useAppStore } from "../../../zustand/stores/appStore";
 
 type InstructorSidebarProps = {
   collapsedToIcon?: boolean;
@@ -45,6 +46,8 @@ const navItems: NavItem[] = [
 ];
 
 const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
+  const closeMobileSidebar = useAppStore((s) => s.closeMobileInstructorSidebar);
+
   return (
     <div className="flex flex-col h-full">
       {/* Sidebar Header */}
@@ -89,6 +92,7 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
             icon={item.icon}
             collapsedToIcon={collapsedToIcon}
             subLinks={item.subLinks}
+            onClick={closeMobileSidebar}
           />
         ))}
       </nav>

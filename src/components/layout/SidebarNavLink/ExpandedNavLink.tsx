@@ -14,6 +14,7 @@ type ExpandedNavLinkProps = {
   isActive: boolean;
   isSubLinkActive: boolean;
   initiallyOpened?: boolean;
+  onClick?: () => void;
 };
 
 export const ExpandedNavLink = ({
@@ -26,12 +27,15 @@ export const ExpandedNavLink = ({
   isActive,
   isSubLinkActive,
   initiallyOpened = false,
+  onClick,
 }: ExpandedNavLinkProps) => {
   const [opened, setOpened] = useState(() => initiallyOpened || isSubLinkActive);
 
   const handleClick = () => {
     if (hasSubLinks) {
       setOpened((prev) => !prev);
+    } else {
+      onClick?.();
     }
   };
 

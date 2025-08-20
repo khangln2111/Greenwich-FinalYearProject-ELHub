@@ -1,14 +1,4 @@
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  Group,
-  Indicator,
-  ScrollArea,
-  rem,
-} from "@mantine/core";
+import { ActionIcon, Box, Button, Group, Indicator } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import { IconBell, IconSearch } from "@tabler/icons-react";
@@ -17,11 +7,11 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler";
 import { useGetCart } from "../../../features/cart/cartHooks";
+import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "./AvatarMenu";
-import CustomNavLink from "./CustomNavLink";
+import MobileHamburgerMenu from "./MobileHamburgerMenu";
 import SearchBox from "./SearchBox";
-import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
 
 const Header = () => {
   const currentUser = useAppStore((s) => s.currentUser);
@@ -178,54 +168,8 @@ const Header = () => {
         </div>
       )}
 
-      {/* Drawer cho mobile nav */}
-      <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        transitionProps={{ transition: "fade-right", duration: 200, timingFunction: "ease-out" }}
-        size="330"
-        padding="md"
-        title="Navigation"
-        hiddenFrom="md"
-      >
-        <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
-          <Divider my="sm" />
-          <CustomNavLink component={Link} to="/">
-            Home
-          </CustomNavLink>
-          <CustomNavLink component={Link} to="/courses">
-            Courses
-          </CustomNavLink>
-          <CustomNavLink component={Link} to="/become-instructor">
-            Become Instructor
-          </CustomNavLink>
-          <CustomNavLink component={Link} to="/faqs">
-            FAQs
-          </CustomNavLink>
-          <CustomNavLink component={Link} to="/contact">
-            Contact
-          </CustomNavLink>
-
-          <Divider my="sm" />
-
-          <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default" component={Link} to="/login">
-              Log in
-            </Button>
-            <ThemeToggler />
-            <ActionIcon
-              variant="default"
-              size="lg"
-              aria-label="Shopping cart trigger"
-              component={Link}
-              to="/cart"
-              onClick={closeDrawer}
-            >
-              <ShoppingCart size={19} strokeWidth={1.5} />
-            </ActionIcon>
-          </Group>
-        </ScrollArea>
-      </Drawer>
+      {/* Drawer for mobile nav */}
+      <MobileHamburgerMenu opened={drawerOpened} onClose={closeDrawer} />
     </Box>
   );
 };
