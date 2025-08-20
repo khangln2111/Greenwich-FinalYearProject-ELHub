@@ -12,7 +12,7 @@ const CoursesPage = () => {
       <Box
         className="container w-full"
         px={{ base: "15px", md: "20px", lg: "30px", xl: "50px" }}
-        py="xl"
+        py={{ base: "md", md: "xl" }}
         size="xl"
       >
         <Grid py="md" gutter={{ lg: "xl" }}>
