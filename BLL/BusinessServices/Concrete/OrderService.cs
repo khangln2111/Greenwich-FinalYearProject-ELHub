@@ -69,13 +69,13 @@ public class OrderService(
 
         if (order.Status == OrderStatus.Completed)
         {
-            // Xóa cart item
+            // Delete cart items for user
             var cartItemsToRemove = cartItems
                 .Where(ci => courseIds.Contains(ci.CourseId))
                 .ToList();
             context.CartItems.RemoveRange(cartItemsToRemove);
 
-            // Cập nhật inventory
+            // Update inventory items for user
             var inventory = await context.Inventories
                 .Where(i => i.UserId == order.UserId)
                 .FirstAsync();
@@ -175,7 +175,7 @@ public class OrderService(
             }
         }
 
-        // Xoá cart item
+        // Clean up cart items
         var courseIds = order.OrderItems.Select(oi => oi.CourseId).ToList();
         var cartItems = await context.CartItems
             .Where(ci => ci.Cart.UserId == order.UserId && courseIds.Contains(ci.CourseId))
@@ -183,7 +183,7 @@ public class OrderService(
 
         context.CartItems.RemoveRange(cartItems);
 
-        // Cập nhật inventory
+
         var inventory = await context.Inventories
             .Where(i => i.UserId == order.UserId)
             .FirstAsync();
@@ -194,6 +194,7 @@ public class OrderService(
 
         foreach (var item in order.OrderItems)
         {
+            // Update inventory items for user
             if (inventoryItems.TryGetValue(item.CourseId, out var invItem))
                 invItem.Quantity += item.Quantity;
             else
@@ -204,13 +205,13 @@ public class OrderService(
                     Quantity = item.Quantity
                 });
 
-            // ✅ Cập nhật ví cho instructor nếu course có giá > 0
+            // Update balance for instructor
             if (item.Course.DiscountedPrice > 0)
                 await context.WalletTransactions.AddAsync(new WalletTransaction
                 {
                     Id = Guid.NewGuid(),
-                    UserId = item.Course.InstructorId, // chủ khoá học
-                    Amount = item.DiscountedPrice * item.Quantity, // tiền nhận về
+                    UserId = item.Course.InstructorId,
+                    Amount = item.DiscountedPrice * item.Quantity,
                     Type = WalletTransactionType.CourseSale,
                     Description = $"Course sold: {item.Course.Title}",
                     CreatedAt = DateTime.UtcNow
