@@ -44,17 +44,13 @@ const CourseDesktopFilter = () => {
 
   const { data: categories, isPending, isError } = useGetCategories({ pageSize: 100 });
 
-  const [minPriceInput, setMinPriceInput] = useState<number | string | undefined>(
-    minPrice ?? undefined,
-  );
-  const [maxPriceInput, setMaxPriceInput] = useState<number | string | undefined>(
-    maxPrice ?? undefined,
-  );
+  const [minPriceInput, setMinPriceInput] = useState<number | null>(minPrice);
+  const [maxPriceInput, setMaxPriceInput] = useState<number | null>(maxPrice);
 
   const handleResetFilters = () => {
     resetCourseQuery();
-    setMinPriceInput(undefined);
-    setMaxPriceInput(undefined);
+    setMinPriceInput(null);
+    setMaxPriceInput(null);
   };
 
   return (
@@ -151,8 +147,9 @@ const CourseDesktopFilter = () => {
                   clampBehavior="strict"
                   leftSection={<DollarSignIcon size={16} />}
                   hideControls
-                  value={minPriceInput}
-                  onChange={(val) => setMinPriceInput(val)}
+                  thousandSeparator=","
+                  value={minPriceInput ?? undefined}
+                  onChange={(val) => setMinPriceInput(Number(val))}
                   disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
                 />
                 <span>-</span>
@@ -164,8 +161,9 @@ const CourseDesktopFilter = () => {
                   clampBehavior="strict"
                   leftSection={<DollarSignIcon size={16} />}
                   hideControls
-                  value={maxPriceInput}
-                  onChange={(val) => setMaxPriceInput(val)}
+                  thousandSeparator=","
+                  value={maxPriceInput ?? undefined}
+                  onChange={(val) => setMaxPriceInput(Number(val))}
                   disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
                 />
               </div>
@@ -175,8 +173,8 @@ const CourseDesktopFilter = () => {
                 size="sm"
                 onClick={() => {
                   setCourseQuery({
-                    minPrice: Number(minPriceInput),
-                    maxPrice: Number(maxPriceInput),
+                    minPrice: minPriceInput,
+                    maxPrice: maxPriceInput,
                   });
                 }}
                 fullWidth

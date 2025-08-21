@@ -200,6 +200,7 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
                       min={0}
                       clampBehavior="strict"
                       leftSection={<DollarSignIcon size={16} />}
+                      thousandSeparator=","
                       hideControls
                       value={tempFilters.minPrice ?? undefined}
                       onChange={(val) =>
@@ -217,6 +218,7 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
                       min={0}
                       clampBehavior="strict"
                       leftSection={<DollarSignIcon size={16} />}
+                      thousandSeparator=","
                       hideControls
                       value={tempFilters.maxPrice ?? undefined}
                       onChange={(val) =>
