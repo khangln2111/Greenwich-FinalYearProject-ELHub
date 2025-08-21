@@ -4,6 +4,7 @@ import QuantityControl from "./QuantityControl";
 
 import { CartItemVm } from "../../../../features/cart/cart.types";
 import { cn } from "../../../../utils/cn";
+import { Link } from "react-router-dom";
 
 type CartItemCardProps = {
   item: CartItemVm;
@@ -37,7 +38,12 @@ export default function CartItemCard({
         <div className="flex lg:block items-center">
           <div className="flex-1 flex flex-col">
             <div className="flex justify-between items-center gap-1 text-sm md:items-end md:text-md lg:gap-0 lead">
-              <p className="font-medium">{item.courseTitle}</p>
+              <Link
+                to={`/courses/${item.courseId}`}
+                className="font-medium hover:text-blue-600 dark:hover:text-blue-400"
+              >
+                {item.courseTitle}
+              </Link>
               <Trash2
                 className="text-dimmed cursor-pointer lg:hidden shrink-0 size-[18px] md:size-[20px]"
                 onClick={() => onRemove(item.id)}

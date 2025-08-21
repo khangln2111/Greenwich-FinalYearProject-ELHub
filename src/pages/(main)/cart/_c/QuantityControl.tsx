@@ -1,6 +1,7 @@
 import { NumberInput } from "@mantine/core";
 import { Minus, Plus } from "lucide-react";
 import { cn } from "../../../../utils/cn";
+import { useDebouncedCallback } from "@mantine/hooks";
 
 type QuantityControlProps = {
   quantity: number;
@@ -9,6 +10,10 @@ type QuantityControlProps = {
 };
 
 export default function QuantityControl({ quantity, onChange, className }: QuantityControlProps) {
+  const handleInputChange = useDebouncedCallback(
+    (value: number) => onChange(value - quantity),
+    500,
+  );
   return (
     <div
       className={cn(
@@ -35,7 +40,7 @@ export default function QuantityControl({ quantity, onChange, className }: Quant
           input: "focus-within:border-default-border text-center size-full p-0 font-medium",
         }}
         value={quantity}
-        onChange={(value) => onChange(Number(value) - quantity)}
+        onChange={(value) => handleInputChange(Number(value))}
       />
       <button
         onClick={() => onChange(1)}
