@@ -47,6 +47,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<CourseApprovalHistory> CourseApprovalHistories { get; set; }
 
+    public DbSet<WalletTransaction> WalletTransactions { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

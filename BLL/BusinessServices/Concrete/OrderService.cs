@@ -136,7 +136,7 @@ public class OrderService(
     public async Task<Success> ConfirmOrder(Guid id)
     {
         var order = await context.Orders
-            .Include(o => o.OrderItems)
+            .Include(o => o.OrderItems).ThenInclude(orderItem => orderItem.Course)
             .FirstOrDefaultAsync(o => o.Id == id);
 
         if (order == null) throw new NotFoundException("Order not found");
@@ -193,6 +193,7 @@ public class OrderService(
             .ToDictionaryAsync(ii => ii.CourseId);
 
         foreach (var item in order.OrderItems)
+        {
             if (inventoryItems.TryGetValue(item.CourseId, out var invItem))
                 invItem.Quantity += item.Quantity;
             else
@@ -202,6 +203,19 @@ public class OrderService(
                     CourseId = item.CourseId,
                     Quantity = item.Quantity
                 });
+
+            // ✅ Cập nhật ví cho instructor nếu course có giá > 0
+            if (item.Course.DiscountedPrice > 0)
+                await context.WalletTransactions.AddAsync(new WalletTransaction
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = item.Course.InstructorId, // chủ khoá học
+                    Amount = item.DiscountedPrice * item.Quantity, // tiền nhận về
+                    Type = WalletTransactionType.CourseSale,
+                    Description = $"Course sold: {item.Course.Title}",
+                    CreatedAt = DateTime.UtcNow
+                });
+        }
 
         await context.SaveChangesAsync();
 
