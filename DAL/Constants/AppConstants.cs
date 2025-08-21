@@ -20,6 +20,12 @@ public static class AppConstants
         public const int AvatarUrlMaxLength = 500;
     }
 
+    public static class WalletTransaction
+    {
+        public const int TypeMaxLength = 50;
+        public const int DescriptionMaxLength = 500;
+    }
+
     public static class Order
     {
         public const int PaymentIntentIdMaxLength = 1000;

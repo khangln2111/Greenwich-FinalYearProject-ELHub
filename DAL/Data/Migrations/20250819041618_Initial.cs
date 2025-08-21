@@ -31,9 +31,9 @@ namespace DAL.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LocalFilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
+                    LocalFilePath = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
+                    Extension = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     FileSizeInBytes = table.Column<long>(type: "bigint", nullable: false),
                     MediaType = table.Column<int>(type: "int", nullable: false),
                     DurationInSeconds = table.Column<int>(type: "int", nullable: true),

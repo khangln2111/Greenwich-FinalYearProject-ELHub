@@ -70,6 +70,10 @@ namespace DAL.Data.Migrations
                     b.Property<Guid?>("AvatarId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("Balance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Bio")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -270,6 +274,7 @@ namespace DAL.Data.Migrations
                         .HasColumnType("nvarchar(2000)");
 
                     b.Property<decimal>("DiscountedPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("DurationInSeconds")
@@ -311,6 +316,7 @@ namespace DAL.Data.Migrations
                         .HasColumnType("nvarchar(1500)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("PromoVideoId")
@@ -709,14 +715,16 @@ namespace DAL.Data.Migrations
 
                     b.Property<string>("Extension")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<long>("FileSizeInBytes")
                         .HasColumnType("bigint");
 
                     b.Property<string>("LocalFilePath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
                     b.Property<int>("MediaType")
                         .HasColumnType("int");
@@ -729,7 +737,8 @@ namespace DAL.Data.Migrations
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
                     b.HasKey("Id");
 
@@ -835,12 +844,14 @@ namespace DAL.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DiscountedPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
@@ -971,6 +982,40 @@ namespace DAL.Data.Migrations
                     b.HasIndex("CourseId", "Id");
 
                     b.ToTable("Sections");
+                });
+
+            modelBuilder.Entity("DAL.Data.Entities.WalletTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Type")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WalletTransaction");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1398,6 +1443,17 @@ namespace DAL.Data.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("DAL.Data.Entities.WalletTransaction", b =>
+                {
+                    b.HasOne("DAL.Data.Entities.ApplicationUser", "User")
+                        .WithMany("WalletTransactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("DAL.Data.Entities.ApplicationRole", null)
@@ -1475,6 +1531,8 @@ namespace DAL.Data.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("WalletTransactions");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.Cart", b =>

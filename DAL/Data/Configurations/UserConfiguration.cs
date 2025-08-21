@@ -34,5 +34,8 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 
         builder.Property(x => x.FavoriteQuoteCite)
             .HasMaxLength(AppConstants.User.FavoriteQuoteCiteMaxLength);
+
+        builder.ComputedProperty(x => x.Balance, x => x.WalletTransactions.Sum(w => w.Amount))
+            .HasPrecision(18, 2);
     }
 }

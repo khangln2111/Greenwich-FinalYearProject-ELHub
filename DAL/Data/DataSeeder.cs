@@ -2,6 +2,8 @@
 using DAL.Data.Entities.MediaEntities;
 using DAL.Data.Enums;
 using DAL.Utilities.MediaUtility.Abstract;
+using LLL.AutoCompute.EFCore;
+using LLL.AutoCompute.EFCore.Metadata.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,9 +20,26 @@ public class DataSeeder(
         await SeedCategories();
         // await SyncData();
         // await mediaManager.CleanOrphanMediaFiles(context);
+        await FixConsistencyAsync();
         await context.SaveChangesAsync();
     }
 
+
+    private async Task FixConsistencyAsync()
+    {
+        // Loops through all auto-computed members defined in EFCore
+        foreach (var computedMember in context.Model.GetAllComputedMembers())
+        {
+            // Query inconsistent entities in database, this is done by running your computed expression in the database, so it needs to be compatible with EFCore Linq to SQL translation, they usually are
+            var inconsistentEntities = await computedMember.QueryInconsistentEntities(context, DateTime.MinValue)
+                .OfType<object>()
+                .ToListAsync();
+
+            // Fix each inconsistent entity
+            foreach (var entity in inconsistentEntities) await computedMember.FixAsync(entity, context);
+            await context.SaveChangesAsync();
+        }
+    }
 
     private async Task SyncData()
     {
@@ -84,6 +103,8 @@ public class DataSeeder(
                 ? (int)((double)enrollment.LectureProgresses.Count(lp => lp.Completed) / totalLectures * 100)
                 : 0;
         }
+
+        await context.SaveChangesAsync();
     }
 
 

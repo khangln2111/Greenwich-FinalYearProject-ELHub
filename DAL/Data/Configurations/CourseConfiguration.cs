@@ -18,10 +18,10 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
             .HasMaxLength(AppConstants.Course.DescriptionMaxLength);
 
         builder.Property(c => c.Price)
-            .HasColumnType("decimal(18,2)"); // Decimal format for Price
+            .HasPrecision(18, 2);
 
         builder.Property(c => c.DiscountedPrice)
-            .HasColumnType("decimal(18,2)"); // Decimal format for Price
+            .HasPrecision(18, 2);
 
 
         builder.Property(c => c.Status)

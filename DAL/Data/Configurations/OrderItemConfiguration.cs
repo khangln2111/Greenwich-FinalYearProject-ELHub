@@ -13,11 +13,11 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
 
         builder.Property(oi => oi.Price)
             .IsRequired()
-            .HasColumnType("decimal(18,2)");
+            .HasPrecision(18, 2);
 
         builder.Property(oi => oi.DiscountedPrice)
             .IsRequired()
-            .HasColumnType("decimal(18,2)");
+            .HasPrecision(18, 2);
 
         builder.Property(oi => oi.OrderId)
             .IsRequired();

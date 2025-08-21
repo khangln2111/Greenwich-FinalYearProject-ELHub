@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250818112203_Initial")]
+    [Migration("20250819041618_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -712,14 +712,16 @@ namespace DAL.Data.Migrations
 
                     b.Property<string>("Extension")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<long>("FileSizeInBytes")
                         .HasColumnType("bigint");
 
                     b.Property<string>("LocalFilePath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
                     b.Property<int>("MediaType")
                         .HasColumnType("int");
@@ -732,7 +734,8 @@ namespace DAL.Data.Migrations
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
                     b.HasKey("Id");
 

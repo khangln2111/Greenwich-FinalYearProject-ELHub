@@ -23,6 +23,8 @@ public class ApplicationUser : IdentityUser<Guid>
     public string? FavoriteQuote { get; set; }
     public string? FavoriteQuoteCite { get; set; }
 
+    public decimal Balance { get; set; } = 0;
+
     public ICollection<Experience> Experiences { get; init; } = new List<Experience>();
 
     public bool IsActivated { get; set; } = true;
@@ -44,9 +46,7 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public ICollection<Enrollment> Enrollments { get; init; } = new List<Enrollment>();
 
-// public ICollection<RefreshToken> RefreshTokens { get; set; }
+    public ICollection<WalletTransaction> WalletTransactions { get; init; } = new List<WalletTransaction>();
 
     public ICollection<Notification> ReceivedNotifications { get; init; } = new List<Notification>();
-
-   
 }
