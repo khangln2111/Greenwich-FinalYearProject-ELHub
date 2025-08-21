@@ -38,6 +38,9 @@ export const useCreateReview = () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.enrollments._def,
       });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses._def,
+      });
       showSuccessToast("Review Created", "Your review has been successfully created");
     },
     onError: (error) =>
@@ -70,6 +73,9 @@ export const useUpdateReview = () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.enrollments._def,
       });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses._def,
+      });
       showSuccessToast("Review Updated", "Your review has been successfully updated");
     },
     onError: (error) =>
@@ -96,6 +102,9 @@ export const useDeleteReview = () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.enrollments._def,
       });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses._def,
+      });
       showSuccessToast("Review Deleted", "Your review has been successfully deleted");
     },
     onError: (error) =>
@@ -118,6 +127,9 @@ export const useReplyToReview = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.reviews._def,
+      });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses._def,
       });
       showSuccessToast("Reply Sent", "Your reply has been successfully sent");
     },
@@ -146,6 +158,9 @@ export const useUpdateReviewReply = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.reviews._def,
+      });
+      queryClient.invalidateQueries({
+        queryKey: keyFac.courses._def,
       });
       showSuccessToast("Reply Updated", "Your reply has been successfully updated");
     },

@@ -45,7 +45,7 @@ export const useCreateCategory = () => {
   return useMutation({
     mutationFn: (command: CreateCategoryCommand) => createCategory(command),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: keyFac.categories.list._def });
+      await queryClient.invalidateQueries({ queryKey: keyFac.categories._def });
       showSuccessToast("Category Created", "Category created successfully.");
     },
     onError: (error) =>
@@ -66,7 +66,7 @@ export const useUpdateCategory = () => {
   return useMutation({
     mutationFn: (command: UpdateCategoryCommand) => updateCategory(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.categories.list._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.categories._def });
       showSuccessToast("Category Updated", "The category was updated successfully.");
     },
     onError: (error) =>
@@ -87,7 +87,7 @@ export const useDeleteCategory = (id: string) => {
   return useMutation({
     mutationFn: () => deleteCategory(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.categories.list._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.categories._def });
       showSuccessToast("Category Deleted", "The category was deleted successfully.");
     },
     onError: (error) =>

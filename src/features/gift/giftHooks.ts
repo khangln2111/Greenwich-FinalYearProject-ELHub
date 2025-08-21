@@ -106,7 +106,7 @@ export const useRedeemGift = () => {
 export const useRevokeGift = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (giftId: string) => revokeGift(giftId), // Assuming revokeGift is similar to redeemGift
+    mutationFn: (giftId: string) => revokeGift(giftId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts._def });
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts._def });

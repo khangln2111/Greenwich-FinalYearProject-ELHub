@@ -14,7 +14,6 @@ export const useReorderSection = () => {
     onSuccess: async () => {
       showSuccessToast("Section Reordered", "The section was reordered successfully.");
     },
-
     onError: (error) =>
       handleApiError(error, {
         matchers: [

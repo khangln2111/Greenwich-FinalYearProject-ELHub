@@ -41,7 +41,6 @@ export const useUpdateCartItem = () => {
     mutationFn: (command: UpdateCartItemCommand) => updateCartItem(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.cart._def });
-      queryClient.invalidateQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
       showSuccessToast("Item Updated", "The item was updated successfully.");
     },
     onError: (error) =>

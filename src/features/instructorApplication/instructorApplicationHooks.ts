@@ -50,11 +50,9 @@ export const useCreateInstructorApplication = () => {
       createInstructorApplication(command),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.instructorApplications.getInstructorApplications().queryKey,
+        queryKey: keyFac.instructorApplications._def,
       });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.instructorApplications.getInstructorApplicationSelf.queryKey,
-      });
+
       showSuccessToast(
         "Application Submitted",
         "Your application has been submitted successfully!, please wait for the review.",
@@ -84,7 +82,7 @@ export const useReviewInstructorApplication = () => {
       reviewInstructorApplication(command),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.instructorApplications.getInstructorApplications._def,
+        queryKey: keyFac.instructorApplications._def,
       });
       showSuccessToast("Application Reviewed", "The application has been reviewed successfully!");
     },
@@ -127,11 +125,9 @@ export const useRetryInstructorApplication = () => {
     mutationFn: (command: RetryInstructorApplicationCommand) => retryInstructorApplication(command),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: keyFac.instructorApplications.getInstructorApplications().queryKey,
+        queryKey: keyFac.instructorApplications._def,
       });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.instructorApplications.getInstructorApplicationSelf.queryKey,
-      });
+
       showSuccessToast(
         "Application Retried",
         "Your application has been retried successfully!, please wait for the review.",
