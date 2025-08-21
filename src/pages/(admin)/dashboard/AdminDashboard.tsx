@@ -1,13 +1,9 @@
-import { Card, Group, SimpleGrid, Text, Title } from "@mantine/core";
-import {
-  IconUsers,
-  IconBook,
-  IconCash,
-  IconShoppingCart,
-  IconStar,
-  IconUserPlus,
-} from "@tabler/icons-react";
-import { LineChart, BarChart, DonutChart, PieChart, RadialBarChart } from "@mantine/charts";
+import { BarChart, DonutChart, LineChart, PieChart, RadialBarChart } from "@mantine/charts";
+import { Card, SimpleGrid, Text, Title } from "@mantine/core";
+import { BookOpen, DollarSign, Layers, ShoppingBag, UserCheck, Users } from "lucide-react";
+import CenterLoader from "../../../components/CenterLoader";
+import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboardHooks";
+import AdminStatCard from "./_c/AdminStatCard";
 
 // 🧪 MOCK DATA
 const mockAnalytics = {
@@ -107,47 +103,8 @@ const mockAnalytics = {
   ],
 };
 
-const icons = {
-  users: <IconUsers size={32} color="teal" />,
-  courses: <IconBook size={32} color="violet" />,
-  revenue: <IconCash size={32} color="green" />,
-  orders: <IconShoppingCart size={32} color="orange" />,
-  instructors: <IconUserPlus size={32} color="blue" />,
-  rating: <IconStar size={32} color="yellow" />,
-};
-
-const StatCard = ({
-  label,
-  value,
-  icon,
-}: {
-  label: string;
-  value: string | number;
-  icon: React.ReactNode;
-}) => (
-  <Card withBorder shadow="sm" radius="xl" p="md">
-    <Group align="center">
-      {icon}
-      <div>
-        <Text size="lg" fw={700}>
-          {value}
-        </Text>
-        <Text size="sm" c="dimmed">
-          {label}
-        </Text>
-      </div>
-    </Group>
-  </Card>
-);
-
 const AdminDashboard = () => {
   const {
-    totalUsers,
-    totalCourses,
-    totalRevenue,
-    totalOrders,
-    averageRating,
-    totalInstructors,
     revenueByMonth,
     userByMonth,
     ordersByMonth,
@@ -162,6 +119,13 @@ const AdminDashboard = () => {
     ageDistribution,
   } = mockAnalytics;
 
+  const { data, isPending, error } = useGetAdminDashboard();
+
+  if (isPending) return <CenterLoader />;
+
+  if (error) return <p>Error loading dashboard data</p>;
+
+  const { stats } = data;
   return (
     <div className="flex-1 p-6 xl:p-8 bg-gray-100 dark:bg-dark-5">
       <Title order={2} mb="md">
@@ -169,13 +133,59 @@ const AdminDashboard = () => {
       </Title>
 
       {/* STAT CARDS */}
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3, xl: 4 }} spacing="md" mb="xl">
-        <StatCard label="Total Users" value={totalUsers} icon={icons.users} />
-        <StatCard label="Total Courses" value={totalCourses} icon={icons.courses} />
-        <StatCard label="Total Revenue" value={`$${totalRevenue}`} icon={icons.revenue} />
-        <StatCard label="Total Orders" value={totalOrders} icon={icons.orders} />
-        <StatCard label="Instructors" value={totalInstructors} icon={icons.instructors} />
-        <StatCard label="Avg Rating" value={averageRating} icon={icons.rating} />
+      <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" mb="xl">
+        <AdminStatCard
+          title="Published Courses"
+          value={stats.totalPublishedCourses}
+          growth={stats.publishedCoursesGrowth}
+          icon={<BookOpen size={20} />}
+          iconBgColor="bg-blue-100 dark:bg-blue-900"
+          iconColor="text-blue-600 dark:text-blue-300"
+        />
+
+        <AdminStatCard
+          title="Pending Applications"
+          value={stats.pendingInstructorApplications}
+          growth={stats.pendingInstructorApplicationsGrowth}
+          icon={<UserCheck size={20} />}
+          iconBgColor="bg-yellow-100 dark:bg-yellow-900"
+          iconColor="text-yellow-600 dark:text-yellow-300"
+        />
+
+        <AdminStatCard
+          title="Categories"
+          value={stats.totalCategories}
+          icon={<Layers size={20} />}
+          iconBgColor="bg-purple-100 dark:bg-purple-900"
+          iconColor="text-purple-600 dark:text-purple-300"
+        />
+
+        <AdminStatCard
+          title="Total Users"
+          value={stats.totalUsers.toLocaleString()}
+          growth={stats.usersGrowth}
+          icon={<Users size={20} />}
+          iconBgColor="bg-green-100 dark:bg-green-900"
+          iconColor="text-green-600 dark:text-green-300"
+        />
+
+        <AdminStatCard
+          title="Courses Sold"
+          value={stats.totalCoursesSold.toLocaleString()}
+          growth={stats.coursesSoldGrowth}
+          icon={<ShoppingBag size={20} />}
+          iconBgColor="bg-pink-100 dark:bg-pink-900"
+          iconColor="text-pink-600 dark:text-pink-300"
+        />
+
+        <AdminStatCard
+          title="Revenue"
+          value={`$${stats.totalRevenue.toLocaleString()}`}
+          growth={stats.revenueGrowth}
+          icon={<DollarSign size={20} />}
+          iconBgColor="bg-emerald-100 dark:bg-emerald-900"
+          iconColor="text-emerald-600 dark:text-emerald-300"
+        />
       </SimpleGrid>
 
       {/* MAIN CHARTS */}
