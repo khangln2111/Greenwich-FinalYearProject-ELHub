@@ -21,9 +21,8 @@ public class InstructorService(
     ApplicationDbContext context,
     IMapper mapper,
     IGridifyMapper<Course> courseGridifyMapper,
-    IGridifyMapper<ApplicationUser> instructorGridifyMapper,
-    IValidationService validationService,
-    ICurrentUserUtility currentUserUtility) : IInstructorService
+    IGridifyMapper<ApplicationUser> instructorGridifyMapper
+) : IInstructorService
 {
     // get list of instructors
     public async Task<Paged<InstructorVm>> GetList(GridifyQuery query)

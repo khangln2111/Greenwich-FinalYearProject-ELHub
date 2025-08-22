@@ -21,7 +21,6 @@ namespace BLL.BusinessServices.Concrete;
 public class OrderService(
     ApplicationDbContext context,
     IMapper mapper,
-    IValidationService validationService,
     IGridifyMapper<Order> gridifyMapper,
     ICurrentUserUtility currentUserUtility,
     IStripePaymentUtility stripePaymentUtility)

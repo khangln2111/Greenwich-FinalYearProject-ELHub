@@ -35,9 +35,9 @@ public static class BusinessLogicLayerDependencyInjection
         services.AddScoped<IInstructorApplicationService, InstructorApplicationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IInstructorService, InstructorService>();
-        services.AddScoped<IDashboardAdminService, DashboardAdminService>();
-        services.AddScoped<IDashboardUserService, DashboardUserService>();
-        services.AddScoped<IDashboardInstructorService, DashboardInstructorService>();
+        services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+        services.AddScoped<IUserDashboardService, UserDashboardService>();
+        services.AddScoped<IInstructorDashboardService, InstructorDashboardService>();
     }
 
     private static void ConfigureGridify(this IServiceCollection services)

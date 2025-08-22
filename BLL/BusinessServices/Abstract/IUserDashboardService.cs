@@ -1,5 +1,5 @@
 ﻿namespace BLL.BusinessServices.Abstract;
 
-public interface IDashboardAdminService
+public class IUserDashboardService
 {
 }

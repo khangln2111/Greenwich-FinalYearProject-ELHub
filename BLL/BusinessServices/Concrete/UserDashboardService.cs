@@ -2,6 +2,6 @@
 
 namespace BLL.BusinessServices.Concrete;
 
-public class DashboardUserService : IDashboardUserService
+public class UserDashboardService : IUserDashboardService
 {
 }
