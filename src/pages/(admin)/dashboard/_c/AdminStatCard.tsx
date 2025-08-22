@@ -26,8 +26,8 @@ export default function AdminStatCard({
   return (
     <div
       className={cn(
-        `flex flex-col justify-between rounded-2xl bg-white dark:bg-gray-900 shadow-md border border-gray-200
-        dark:border-gray-700 p-5 transition hover:shadow-lg`,
+        `flex flex-col justify-between rounded-3xl bg-white dark:bg-gray-900 shadow-lg border border-gray-200
+        dark:border-gray-700 p-5 transition hover:shadow-xl`,
         className,
       )}
     >

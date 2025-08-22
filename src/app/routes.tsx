@@ -3,7 +3,7 @@ import AdminLayout from "../layout/admin/AdminLayout";
 import InstructorLayout from "../layout/instructor/InstructorLayout";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import UserLayout from "../layout/user/UserLayout";
-import AdminDashboard from "../pages/(admin)/dashboard/AdminDashboard";
+import AdminDashboardPage from "../pages/(admin)/dashboard/AdminDashboardPage";
 import AdminCategoriesPage from "../pages/(admin)/categories/AdminCategoriesPage";
 import AdminCourseDetailPage from "../pages/(admin)/course-detail/AdminCourseDetailPage";
 import AdminCoursesPage from "../pages/(admin)/courses/AdminCoursesPage";
@@ -131,7 +131,7 @@ const adminRoute: RouteObject = {
   children: [
     {
       path: "analytics",
-      element: <AdminDashboard />,
+      element: <AdminDashboardPage />,
     },
     {
       path: "categories",

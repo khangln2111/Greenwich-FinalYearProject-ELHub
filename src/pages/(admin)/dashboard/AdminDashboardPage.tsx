@@ -103,7 +103,7 @@ const mockAnalytics = {
   ],
 };
 
-const AdminDashboard = () => {
+const AdminDashboardPage = () => {
   const {
     revenueByMonth,
     userByMonth,
@@ -367,4 +367,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default AdminDashboardPage;
