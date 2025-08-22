@@ -1,6 +1,7 @@
 import { BarChart, DonutChart } from "@mantine/charts";
 import {
   Badge,
+  Button,
   Card,
   Group,
   ScrollArea,
@@ -10,13 +11,21 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { BookOpen, DollarSign, Layers, ShoppingBag, UserCheck, Users } from "lucide-react";
+import {
+  BookOpen,
+  DollarSign,
+  Layers,
+  RefreshCw,
+  ShoppingBag,
+  UserCheck,
+  Users,
+} from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboardHooks";
 import DashboardStatCard from "./_c/DashboardStatCard";
 
 const AdminDashboardPage = () => {
-  const { data, isPending, error } = useGetAdminDashboard();
+  const { data, isPending, isFetching, error, refetch } = useGetAdminDashboard();
 
   if (isPending) return <CenterLoader />;
   if (error) return <p>Error loading dashboard data</p>;
@@ -34,12 +43,35 @@ const AdminDashboardPage = () => {
 
   return (
     <div className="flex-1 p-6 xl:p-8 bg-gray-100 dark:bg-dark-5">
-      <Title order={2} mb="md">
-        Admin Dashboard
-      </Title>
+      {/* Page Header */}
+      <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <Title order={2} className="text-2xl md:text-3xl font-extrabold tracking-tight">
+              Admin Dashboard
+            </Title>
+            <span className="text-sm text-gray-500">Overview & insights</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-600 dark:text-gray-400">
+            Updated: {new Date().toLocaleString()}
+          </span>
+
+          <Button
+            leftSection={<RefreshCw className={`w-4 h-4 ${isPending ? "animate-spin" : ""}`} />}
+            onClick={() => refetch()}
+            loading={isFetching}
+            variant="default"
+          >
+            Refresh
+          </Button>
+        </div>
+      </header>
 
       {/* STAT CARDS */}
-      <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md">
+      <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" mt="lg">
         <DashboardStatCard
           title="Published Courses"
           value={stats.totalPublishedCourses}
@@ -50,7 +82,7 @@ const AdminDashboardPage = () => {
         />
 
         <DashboardStatCard
-          title="Pending Applications"
+          title="Pending Instructor Applications"
           value={stats.pendingInstructorApplications}
           growth={stats.pendingInstructorApplicationsGrowth}
           icon={<UserCheck size={20} />}

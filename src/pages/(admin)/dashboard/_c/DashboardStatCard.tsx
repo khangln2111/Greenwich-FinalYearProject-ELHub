@@ -12,7 +12,7 @@ interface DashboardStatCardProps {
   iconBgColor?: string; // background cho icon
   className?: string; // custom class name
   prefix?: string; // example $, đ
-  suffix?: string; // example %, người
+  suffix?: string; // example %, pax
   decimals?: number; // number of decimal places
   duration?: number; // duration of count up
 }
