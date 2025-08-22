@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { cn } from "../../../../utils/cn";
+import CountUp from "react-countup";
 
 interface StatCardProps {
   title: string;
@@ -10,6 +11,10 @@ interface StatCardProps {
   iconColor?: string; // text color cho icon
   iconBgColor?: string; // background cho icon
   className?: string; // custom class name
+  prefix?: string; // ví dụ $, đ
+  suffix?: string; // ví dụ %, người
+  decimals?: number; // số chữ số thập phân
+  duration?: number; // thời gian chạy count up
 }
 
 export default function AdminStatCard({
@@ -20,6 +25,10 @@ export default function AdminStatCard({
   iconBgColor,
   iconColor,
   className,
+  prefix,
+  suffix,
+  decimals = 0,
+  duration = 2.5,
 }: StatCardProps) {
   const isPositive = growth !== undefined && growth >= 0;
 
@@ -47,7 +56,20 @@ export default function AdminStatCard({
 
       {/* Value */}
       <div className="mt-3">
-        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
+        {typeof value === "number" ? (
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <CountUp
+              end={value}
+              duration={duration}
+              decimals={decimals}
+              prefix={prefix}
+              suffix={suffix}
+              separator=","
+            />
+          </p>
+        ) : (
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
+        )}
       </div>
 
       {/* Growth trend */}

@@ -3,6 +3,7 @@ import {
   Badge,
   Card,
   Group,
+  ScrollArea,
   SemiCircleProgress,
   SimpleGrid,
   Table,
@@ -67,7 +68,7 @@ const AdminDashboardPage = () => {
 
         <AdminStatCard
           title="Total Users"
-          value={stats.totalUsers.toLocaleString()}
+          value={stats.totalUsers}
           growth={stats.usersGrowth}
           icon={<Users size={20} />}
           iconBgColor="bg-green-100 dark:bg-green-900"
@@ -76,7 +77,7 @@ const AdminDashboardPage = () => {
 
         <AdminStatCard
           title="Courses Sold"
-          value={stats.totalCoursesSold.toLocaleString()}
+          value={stats.totalCoursesSold}
           growth={stats.coursesSoldGrowth}
           icon={<ShoppingBag size={20} />}
           iconBgColor="bg-pink-100 dark:bg-pink-900"
@@ -85,7 +86,8 @@ const AdminDashboardPage = () => {
 
         <AdminStatCard
           title="Revenue"
-          value={`$${stats.totalRevenue.toLocaleString()}`}
+          value={stats.totalRevenue}
+          prefix="$"
           growth={stats.revenueGrowth}
           icon={<DollarSign size={20} />}
           iconBgColor="bg-emerald-100 dark:bg-emerald-900"
@@ -113,6 +115,7 @@ const AdminDashboardPage = () => {
               barProps={{
                 radius: 20,
                 maxBarSize: 35,
+                isAnimationActive: true,
               }}
             />
           </div>
@@ -164,25 +167,30 @@ const AdminDashboardPage = () => {
         <Text size="lg" fw={600} mb="md">
           Revenue by Category
         </Text>
-        <BarChart
-          h={250}
-          withLegend
-          withBarValueLabel
-          tooltipAnimationDuration={200}
-          data={revenueByCategory
-            .sort((a, b) => b.revenue - a.revenue)
-            .slice(0, 8)
-            .map((c) => ({
-              category: c.categoryName,
-              revenue: c.revenue,
-            }))}
-          dataKey="category"
-          series={[{ name: "revenue", color: "pink.6" }]}
-          barProps={{
-            radius: 16,
-            maxBarSize: 40,
-          }}
-        />
+        <ScrollArea type="auto" offsetScrollbars>
+          <div style={{ minWidth: 1000 }}>
+            <BarChart
+              h={250}
+              withLegend
+              withBarValueLabel
+              tooltipAnimationDuration={200}
+              data={revenueByCategory
+                .sort((a, b) => b.revenue - a.revenue)
+                .slice(0, 8)
+                .map((c) => ({
+                  category: c.categoryName,
+                  revenue: c.revenue,
+                }))}
+              dataKey="category"
+              series={[{ name: "revenue", color: "pink.6" }]}
+              barProps={{
+                radius: 16,
+                maxBarSize: 40,
+                isAnimationActive: true,
+              }}
+            />
+          </div>
+        </ScrollArea>
       </Card>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-lg mt-xl">
@@ -199,6 +207,9 @@ const AdminDashboardPage = () => {
             labelsType="percent"
             size={200}
             className="self-center"
+            pieProps={{
+              isAnimationActive: true,
+            }}
             data={[
               { name: "Published", value: courseStatusDistribution.published, color: "green.6" },
               { name: "Pending", value: courseStatusDistribution.pending, color: "yellow.6" },
@@ -217,6 +228,7 @@ const AdminDashboardPage = () => {
             </Text>
             <div className="flex-1 self-center flex justify-center items-center">
               <SemiCircleProgress
+                transitionDuration={200}
                 thickness={20}
                 size={300}
                 value={instructorVerification.percentageApproved}
@@ -241,6 +253,7 @@ const AdminDashboardPage = () => {
             <div className="flex-1 self-center flex justify-center items-center">
               <SemiCircleProgress
                 filledSegmentColor="violet"
+                transitionDuration={200}
                 thickness={20}
                 size={300}
                 value={courseVerification.percentageApproved}
