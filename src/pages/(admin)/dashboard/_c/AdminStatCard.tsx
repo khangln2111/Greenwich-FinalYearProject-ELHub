@@ -46,7 +46,7 @@ export default function AdminStatCard({
       </div>
 
       {/* Growth trend */}
-      {growth !== undefined && (
+      {growth !== undefined ? (
         <div className="mt-2 flex items-center gap-1 text-sm font-medium">
           {isPositive ? (
             <ArrowUpRight size={16} className="text-emerald-500" />
@@ -58,6 +58,8 @@ export default function AdminStatCard({
           </span>
           <span className="ml-1 text-gray-500 dark:text-gray-400">vs last week</span>
         </div>
+      ) : (
+        <span className="text-gray-400 dark:text-gray-600">—</span>
       )}
     </div>
   );
