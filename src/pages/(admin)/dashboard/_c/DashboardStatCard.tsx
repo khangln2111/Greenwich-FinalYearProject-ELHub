@@ -85,7 +85,7 @@ export default function DashboardStatCard({
               end={growth}
               duration={duration}
               decimals={decimals}
-              prefix={isPositive ? "+" : "-"}
+              prefix={isPositive ? "+" : ""}
               suffix="%"
               separator=","
             />
@@ -93,7 +93,7 @@ export default function DashboardStatCard({
           <span className="ml-1 text-gray-500 dark:text-gray-400">vs last week</span>
         </div>
       ) : (
-        <span className="text-gray-400 dark:text-gray-600">—</span>
+        <span className="text-gray-400 dark:text-gray-600">-</span>
       )}
     </div>
   );

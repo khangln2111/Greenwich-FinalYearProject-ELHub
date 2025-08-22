@@ -14,7 +14,7 @@ import ForgotPasswordPage from "../pages/(auth)/forgot-password/ForgotPasswordPa
 import LoginPage from "../pages/(auth)/login/LoginPage";
 import RegisterPage from "../pages/(auth)/register/RegisterPage";
 import VerifyEmailPage from "../pages/(auth)/verify-email/VerifyEmailPage";
-import InstructorDashboard from "../pages/(instructor)/analytics/InstructorDashboard";
+import InstructorDashboardPage from "../pages/(instructor)/dashboard/InstructorDashboardPage";
 import InstructorCoursesPage from "../pages/(instructor)/courses/InstructorCoursesPage";
 import InstructorEditCoursePage from "../pages/(instructor)/edit-course/InstructorEditCoursePage";
 import InstructorProfilePage from "../pages/(instructor)/profile/InstructorProfilePage";
@@ -104,7 +104,7 @@ const instructorRoute: RouteObject = {
   element: <InstructorLayout />,
   path: "/instructor",
   children: [
-    { path: "dashboard", element: <InstructorDashboard /> },
+    { path: "dashboard", element: <InstructorDashboardPage /> },
     { path: "students", element: <p>Instructor Students Page</p> },
     {
       path: "courses",

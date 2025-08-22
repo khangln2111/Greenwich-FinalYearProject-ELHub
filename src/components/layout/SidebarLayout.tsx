@@ -32,7 +32,7 @@ const SidebarLayout = ({
 
   return (
     <div
-      className="min-h-dvh bg-body text-gray-800 dark:text-white"
+      className="min-h-dvh bg-body text-gray-800 dark:text-white flex flex-col"
       style={
         {
           "--sidebar-width": rem(sidebarWidth),
@@ -51,7 +51,10 @@ const SidebarLayout = ({
       </aside>
 
       {/* Main Content */}
-      <div className="h-full transition-all lg:duration-300 bg-body text-gray-900 dark:text-white lg:pl-(--sidebar-width)">
+      <div
+        className="h-full transition-all lg:duration-300 bg-body text-gray-900 dark:text-white lg:pl-(--sidebar-width)
+          flex-1 flex flex-col"
+      >
         {/* Drawer Sidebar (mobile) */}
         <Drawer
           opened={mobileSidebarOpened}
@@ -72,7 +75,7 @@ const SidebarLayout = ({
 
         {header}
 
-        <main>
+        <main className="flex-1 flex flex-col">
           <Outlet />
         </main>
       </div>
