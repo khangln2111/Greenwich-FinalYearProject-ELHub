@@ -11,10 +11,10 @@ interface StatCardProps {
   iconColor?: string; // text color cho icon
   iconBgColor?: string; // background cho icon
   className?: string; // custom class name
-  prefix?: string; // ví dụ $, đ
-  suffix?: string; // ví dụ %, người
-  decimals?: number; // số chữ số thập phân
-  duration?: number; // thời gian chạy count up
+  prefix?: string; // example $, đ
+  suffix?: string; // example %, người
+  decimals?: number; // number of decimal places
+  duration?: number; // duration of count up
 }
 
 export default function AdminStatCard({
@@ -81,7 +81,14 @@ export default function AdminStatCard({
             <ArrowDownRight size={16} className="text-rose-500" />
           )}
           <span className={isPositive ? "text-emerald-600" : "text-rose-600"}>
-            {isPositive ? `+${growth}%` : `${growth}%`}
+            <CountUp
+              end={growth}
+              duration={duration}
+              decimals={decimals}
+              prefix={isPositive ? "+" : "-"}
+              suffix="%"
+              separator=","
+            />
           </span>
           <span className="ml-1 text-gray-500 dark:text-gray-400">vs last week</span>
         </div>
