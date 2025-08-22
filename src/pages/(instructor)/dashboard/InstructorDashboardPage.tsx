@@ -1,37 +1,20 @@
 import { Button, SimpleGrid, Title } from "@mantine/core";
 import { BookOpen, DollarSign, RefreshCcw, ShoppingBag, Star, User } from "lucide-react";
-import { useState } from "react";
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader";
-import {
-  useInstructorDashboardOverview,
-  useInstructorSalesTrend,
-} from "../../../features/instructorDashboard/instructorDashboardHooks";
+import { useGetInstructorDashboardOverview } from "../../../features/instructorDashboard/instructorDashboardHooks";
 
 const InstructorDashboardPage = () => {
-  const [dateRange, setDateRange] = useState<{ startDate: string; endDate: string }>({
-    startDate: new Date(new Date().setDate(new Date().getDate() - 30)).toISOString(),
-    endDate: new Date().toISOString(),
-  });
-
   const {
     data: overviewData,
     isPending: isOverviewPending,
     isFetching: isOverviewFetching,
     error: overviewError,
     refetch: refetchOverview,
-  } = useInstructorDashboardOverview();
+  } = useGetInstructorDashboardOverview();
 
-  const {
-    data: salesTrendData,
-    isPending: isSalesTrendPending,
-    refetch: refetchSalesTrend,
-  } = useInstructorSalesTrend(dateRange.startDate, dateRange.endDate);
-
-  if (isOverviewPending || isSalesTrendPending) return <CenterLoader />;
+  if (isOverviewPending) return <CenterLoader />;
   if (overviewError) return <p>Error loading dashboard data</p>;
-  if (!overviewData) return null;
-  if (!salesTrendData) return <p>Error loading sales trend data</p>;
 
   const { stats } = overviewData;
 
@@ -56,7 +39,6 @@ const InstructorDashboardPage = () => {
           <Button
             onClick={() => {
               refetchOverview();
-              refetchSalesTrend();
             }}
             leftSection={<RefreshCcw size={16} />}
             loading={isOverviewFetching}
