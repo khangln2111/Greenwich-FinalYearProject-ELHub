@@ -1,5 +1,15 @@
 import { BarChart, DonutChart, LineChart, PieChart, RadialBarChart } from "@mantine/charts";
-import { Badge, Card, Group, SimpleGrid, Table, Text, Title } from "@mantine/core";
+import {
+  Badge,
+  Card,
+  Group,
+  RingProgress,
+  SemiCircleProgress,
+  SimpleGrid,
+  Table,
+  Text,
+  Title,
+} from "@mantine/core";
 import { BookOpen, DollarSign, Layers, ShoppingBag, UserCheck, Users } from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboardHooks";
@@ -18,10 +28,14 @@ const AdminDashboardPage = () => {
     topInstructors,
     courseStatusDistribution,
     revenueByCategory,
-    revenueByMonth,
     instructorVerification,
     courseVerification,
   } = data;
+
+  const totalOfCourseStatus =
+    courseStatusDistribution.published +
+    courseStatusDistribution.pending +
+    courseStatusDistribution.rejected;
 
   return (
     <div className="flex-1 p-6 xl:p-8 bg-gray-100 dark:bg-dark-5">
@@ -30,7 +44,7 @@ const AdminDashboardPage = () => {
       </Title>
 
       {/* STAT CARDS */}
-      <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" mb="xl">
+      <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md">
         <AdminStatCard
           title="Published Courses"
           value={stats.totalPublishedCourses}
@@ -86,7 +100,7 @@ const AdminDashboardPage = () => {
       </SimpleGrid>
 
       {/* TOP COURSES & INSTRUCTORS */}
-      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl">
         <Card withBorder radius="xl" p="lg" shadow="sm">
           <Text size="lg" fw={600} mb="md">
             Top Instructors
@@ -142,119 +156,104 @@ const AdminDashboardPage = () => {
         </Card>
       </SimpleGrid>
 
-      {/* REVENUE BY MONTH */}
-      <Card withBorder radius="xl" p="lg" shadow="sm" mt="xl">
+      {/* Revenue by Category */}
+      <Card withBorder radius="2xl" p="lg" shadow="sm" mt="xl">
         <Text size="lg" fw={600} mb="md">
-          Revenue by Month
+          Revenue by Category
         </Text>
-        <LineChart
-          h={300}
-          data={revenueByMonth.map((x) => ({
-            month: `${x.month}/${x.year}`,
-            revenue: x.revenue,
-          }))}
-          dataKey="month"
-          series={[{ name: "revenue", color: "blue.6" }]}
-          curveType="monotone"
-          gridAxis="xy"
+        <BarChart
+          h={250}
+          data={revenueByCategory
+            .sort((a, b) => b.revenue - a.revenue)
+            .slice(0, 8)
+            .map((c) => ({
+              category: c.categoryName,
+              revenue: c.revenue,
+            }))}
+          dataKey="category"
+          series={[{ name: "revenue", color: "pink.6" }]}
+          barProps={{
+            radius: 16,
+            maxBarSize: 40,
+          }}
         />
       </Card>
 
-      {/* COURSE STATUS DISTRIBUTION & REVENUE BY CATEGORY */}
-      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl">
-        <Card withBorder radius="xl" p="lg" shadow="sm">
-          <Text size="lg" fw={600} mb="md">
+      <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" mt="xl">
+        {/* Course Status Distribution */}
+        <Card
+          withBorder
+          radius="2xl"
+          p="lg"
+          shadow="sm"
+          className="h-[350px] flex flex-col justify-between items-center"
+        >
+          <Text size="lg" fw={600}>
             Course Status Distribution
           </Text>
           <DonutChart
-            data={[
-              {
-                name: "Published",
-                value: courseStatusDistribution.published,
-                color: "green.6",
-              },
-              {
-                name: "Pending",
-                value: courseStatusDistribution.pending,
-                color: "yellow.6",
-              },
-              {
-                name: "Rejected",
-                value: courseStatusDistribution.rejected,
-                color: "red.6",
-              },
-            ]}
+            withLabelsLine
             withLabels
+            size={200}
+            pieProps={{ radius: 80 }}
+            data={[
+              { name: "Published", value: courseStatusDistribution.published, color: "green.6" },
+              { name: "Pending", value: courseStatusDistribution.pending, color: "yellow.6" },
+              { name: "Rejected", value: courseStatusDistribution.rejected, color: "red.6" },
+            ]}
+            withTooltip
           />
         </Card>
 
-        <Card withBorder radius="xl" p="lg" shadow="sm">
-          <Text size="lg" fw={600} mb="md">
-            Revenue by Category
+        {/* Instructor Verification Progress */}
+        <Card
+          withBorder
+          radius="2xl"
+          p="lg"
+          shadow="sm"
+          className="h-[350px] flex flex-col justify-between items-center"
+        >
+          <Text size="lg" fw={600}>
+            Instructor Verification Progress
           </Text>
-          <PieChart
-            data={revenueByCategory.map((x, i) => ({
-              name: x.categoryName,
-              value: x.revenue,
-              color: ["blue.6", "violet.6", "teal.6", "orange.6", "pink.6"][i % 5],
-            }))}
-            withLabels
+
+          <SemiCircleProgress
+            value={instructorVerification.percentageApproved}
+            label={
+              <div className="text-center">
+                <Text size="sm" c="dimmed">
+                  ({instructorVerification.approved}/
+                  {instructorVerification.pending + instructorVerification.approved})
+                </Text>
+                <Text fw={600}>{instructorVerification.percentageApproved}% Approved</Text>
+              </div>
+            }
           />
         </Card>
-      </SimpleGrid>
 
-      {/* VERIFICATION PROGRESS */}
-      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl">
-        <Card withBorder radius="xl" p="lg" shadow="sm">
-          <Text size="lg" fw={600} mb="md">
-            Instructor Verification
+        {/* Course Verification Progress */}
+        <Card
+          withBorder
+          radius="2xl"
+          p="lg"
+          shadow="sm"
+          className="h-[350px] flex flex-col justify-between items-center"
+        >
+          <Text size="lg" fw={600}>
+            Course Verification Progress
           </Text>
-          <RadialBarChart
-            h={260}
-            data={[
-              {
-                name: "Approved",
-                value: instructorVerification.approved,
-                color: "emerald.6",
-              },
-              {
-                name: "Pending",
-                value: instructorVerification.pending,
-                color: "yellow.6",
-              },
-            ]}
-            dataKey="value"
-            withLabels
+          <SemiCircleProgress
+            value={courseVerification.percentageApproved}
+            label={
+              <div className="text-center">
+                <Text size="sm" c="dimmed">
+                  ({courseVerification.approved}/
+                  {courseVerification.pending + courseVerification.approved})
+                </Text>
+                <Text fw={600}>{courseVerification.percentageApproved}% Approved</Text>
+              </div>
+            }
           />
-          <Text mt="sm" size="sm" c="dimmed">
-            {instructorVerification.percentageApproved}% approved
-          </Text>
-        </Card>
-
-        <Card withBorder radius="xl" p="lg" shadow="sm">
-          <Text size="lg" fw={600} mb="md">
-            Course Verification
-          </Text>
-          <RadialBarChart
-            h={260}
-            data={[
-              {
-                name: "Approved",
-                value: courseVerification.approved,
-                color: "blue.6",
-              },
-              {
-                name: "Pending",
-                value: courseVerification.pending,
-                color: "orange.6",
-              },
-            ]}
-            dataKey="value"
-            withLabels
-          />
-          <Text mt="sm" size="sm" c="dimmed">
-            {courseVerification.percentageApproved}% approved
-          </Text>
         </Card>
       </SimpleGrid>
     </div>
