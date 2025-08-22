@@ -27,8 +27,8 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    href: "/admin/analytics",
-    label: "Analytics",
+    href: "/admin/dashboard",
+    label: "Dashboard",
     icon: ChartNoAxesCombinedIcon,
   },
   {
@@ -78,13 +78,19 @@ const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
         })}
       >
         <Link
-          to="/admin"
+          to="/admin/dashboard"
           className="no-underline select-none flex items-center text-black dark:text-white"
         >
           {collapsedToIcon ? (
             <MantineLogo color="primary" size={30} type="mark" />
           ) : (
-            <MantineLogo color="primary" size={30} />
+            <Link
+              to="/admin/dashboard"
+              className="no-underline select-none flex items-center text-black dark:text-white gap-2 font-semibold text-2xl"
+            >
+              <MantineLogo color="primary" size={30} type="mark" />
+              <span className="font-[Inter] tracking-wide font-bold">ELHub</span>
+            </Link>
           )}
         </Link>
       </div>

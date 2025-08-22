@@ -97,7 +97,7 @@ const AdminDashboardPage = () => {
 
       {/* TOP COURSES & INSTRUCTORS */}
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl">
-        <Card withBorder radius="xl" p="lg" shadow="sm">
+        <Card withBorder radius="xl" p="lg" shadow="lg">
           <Text size="lg" fw={600} mb="md">
             Top Instructors by revenue
           </Text>
@@ -121,7 +121,7 @@ const AdminDashboardPage = () => {
           </div>
         </Card>
 
-        <Card withBorder radius="2xl" p="lg" shadow="md" className="overflow-hidden">
+        <Card withBorder radius="2xl" p="lg" shadow="lg" className="overflow-hidden">
           <Group justify="apart" mb="md">
             <Text size="lg" fw={700}>
               Best-Seller Courses
@@ -163,7 +163,7 @@ const AdminDashboardPage = () => {
       </SimpleGrid>
 
       {/* Revenue by Category */}
-      <Card withBorder radius="2xl" p="lg" shadow="sm" mt="xl">
+      <Card withBorder radius="2xl" p="lg" shadow="lg" mt="xl">
         <Text size="lg" fw={600} mb="md">
           Revenue by Category
         </Text>
@@ -195,7 +195,7 @@ const AdminDashboardPage = () => {
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-lg mt-xl">
         {/* Course Status Distribution */}
-        <Card withBorder radius="2xl" p="lg" shadow="sm" className="mih-[300px]">
+        <Card withBorder radius="2xl" p="lg" shadow="lg" className="mih-[300px]">
           <Text size="lg" fw={600}>
             Course Status Distribution
           </Text>
@@ -222,7 +222,7 @@ const AdminDashboardPage = () => {
         {/* Group for 2 progress cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:col-span-2 gap-lg">
           {/* Instructor Verification Progress */}
-          <Card withBorder radius="2xl" p="lg" shadow="sm" className="mih-[300px]">
+          <Card withBorder radius="2xl" p="lg" shadow="lg" className="mih-[300px]">
             <Text size="lg" fw={600}>
               Instructor Verification Progress
             </Text>
@@ -246,7 +246,7 @@ const AdminDashboardPage = () => {
           </Card>
 
           {/* Course Verification Progress */}
-          <Card withBorder radius="2xl" p="lg" shadow="sm" className="mih-[300px]">
+          <Card withBorder radius="2xl" p="lg" shadow="lg" className="mih-[300px]">
             <Text size="lg" fw={600}>
               Course Verification Progress
             </Text>

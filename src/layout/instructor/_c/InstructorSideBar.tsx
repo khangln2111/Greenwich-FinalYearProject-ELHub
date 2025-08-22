@@ -25,7 +25,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { href: "/instructor/analytics", label: "Analytics", icon: ChartNoAxesCombinedIcon },
+  { href: "/instructor/dashboard", label: "Dashboard", icon: ChartNoAxesCombinedIcon },
   {
     href: "/instructor/courses",
     label: "Course management",
@@ -57,13 +57,19 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
         })}
       >
         <Link
-          to="/instructor/analytics"
+          to="/instructor/dashboard"
           className="no-underline select-none flex items-center text-black dark:text-white"
         >
           {collapsedToIcon ? (
             <MantineLogo color="primary" size={30} type="mark" />
           ) : (
-            <MantineLogo color="primary" size={30} />
+            <Link
+              to="/instructor/dashboard"
+              className="no-underline select-none flex items-center text-black dark:text-white gap-2 font-semibold text-2xl"
+            >
+              <MantineLogo color="primary" size={30} type="mark" />
+              <span className="font-[Inter] tracking-wide font-bold">ELHub</span>
+            </Link>
           )}
         </Link>
       </div>

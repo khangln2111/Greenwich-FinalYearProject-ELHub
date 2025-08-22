@@ -28,7 +28,7 @@ export default function AdminStatCard({
   prefix,
   suffix,
   decimals = 0,
-  duration = 2.5,
+  duration = 7,
 }: StatCardProps) {
   const isPositive = growth !== undefined && growth >= 0;
 

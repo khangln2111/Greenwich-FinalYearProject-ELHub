@@ -84,8 +84,8 @@ const userRoute: RouteObject = {
           element: <InventoryPage />,
         },
         {
-          path: "analytics",
-          element: <p>User Analytics Page</p>,
+          path: "dashboard",
+          element: <p>User Dashboard Page</p>,
         },
         {
           path: "order-history",
@@ -104,7 +104,7 @@ const instructorRoute: RouteObject = {
   element: <InstructorLayout />,
   path: "/instructor",
   children: [
-    { path: "analytics", element: <InstructorDashboard /> },
+    { path: "dashboard", element: <InstructorDashboard /> },
     { path: "students", element: <p>Instructor Students Page</p> },
     {
       path: "courses",
@@ -130,7 +130,7 @@ const adminRoute: RouteObject = {
   path: "/admin",
   children: [
     {
-      path: "analytics",
+      path: "dashboard",
       element: <AdminDashboardPage />,
     },
     {

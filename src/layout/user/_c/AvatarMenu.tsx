@@ -61,7 +61,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           My account
         </Menu.Item>
-        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Analytics</Menu.Item>
+        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Dashboard</Menu.Item>
         <Menu.Item
           component={Link}
           leftSection={<MonitorCheckIcon size={15} />}
@@ -116,7 +116,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         <Menu.Item
           className="cursor-pointer"
           component={Link}
-          to="/admin/analytics"
+          to="/admin/dashboard"
           leftSection={<IconUserCog size={15} />}
         >
           Admin sites
