@@ -19,6 +19,9 @@ const AdminLayout = () => {
       sidebarCollapsed={sidebarCollapsed}
       mobileSidebarOpened={mobileSidebarOpened}
       closeMobileSidebar={closeMobileSidebar}
+      classNames={{
+        sidebar: "dsf",
+      }}
     />
   );
 };

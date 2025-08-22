@@ -1,5 +1,6 @@
 import { Drawer, rem } from "@mantine/core";
 import { Outlet } from "react-router-dom";
+import { cn } from "../../utils/cn";
 
 const DASHBOARD_SIDEBAR_WIDTH = "256px";
 const DASHBOARD_SIDEBAR_WIDTH_COLLAPSED = "70px";
@@ -10,6 +11,11 @@ type SidebarLayoutProps = {
   sidebarCollapsed: boolean;
   mobileSidebarOpened: boolean;
   closeMobileSidebar: () => void;
+  classNames?: {
+    sidebar?: string;
+    header?: string;
+    main?: string;
+  };
 };
 
 const SidebarLayout = ({
@@ -18,6 +24,7 @@ const SidebarLayout = ({
   sidebarCollapsed,
   mobileSidebarOpened,
   closeMobileSidebar,
+  classNames,
 }: SidebarLayoutProps) => {
   const sidebarWidth = sidebarCollapsed
     ? DASHBOARD_SIDEBAR_WIDTH_COLLAPSED
@@ -34,8 +41,11 @@ const SidebarLayout = ({
     >
       {/* Fixed Sidebar (desktop) */}
       <aside
-        className="fixed top-0 left-0 h-full bg-neutral-50 dark:bg-neutral-800 transition-all duration-300 border-r
-          border-gray-200 dark:border-dark-5 w-(--sidebar-width) z-50 hidden lg:block"
+        className={cn(
+          `fixed top-0 left-0 h-full dark:bg-neutral-800 transition-all duration-300 border-r border-gray-200
+          dark:border-dark-5 w-(--sidebar-width) z-50 hidden lg:block`,
+          classNames?.sidebar,
+        )}
       >
         {sidebar}
       </aside>

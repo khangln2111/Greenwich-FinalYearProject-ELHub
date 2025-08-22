@@ -5,7 +5,6 @@ import {
   BellRingIcon,
   BookOpenCheckIcon,
   ChartNoAxesCombinedIcon,
-  FlagTriangleRightIcon,
   SettingsIcon,
   TagsIcon,
   Users2Icon,
@@ -55,11 +54,6 @@ const navItems: NavItem[] = [
     href: "/admin/users",
     label: "User management",
     icon: Users2Icon,
-  },
-  {
-    href: "/admin/reports",
-    label: "Reports",
-    icon: FlagTriangleRightIcon,
   },
   {
     href: "/admin/notifications",

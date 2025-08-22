@@ -9,6 +9,7 @@ interface StatCardProps {
   icon: ReactNode;
   iconColor?: string; // text color cho icon
   iconBgColor?: string; // background cho icon
+  className?: string; // custom class name
 }
 
 export default function AdminStatCard({
@@ -18,17 +19,21 @@ export default function AdminStatCard({
   icon,
   iconBgColor,
   iconColor,
+  className,
 }: StatCardProps) {
   const isPositive = growth !== undefined && growth >= 0;
 
   return (
     <div
-      className="flex flex-col justify-between rounded-2xl bg-white dark:bg-gray-900 shadow-sm border border-gray-200
-        dark:border-gray-700 p-5 transition hover:shadow-md"
+      className={cn(
+        `flex flex-col justify-between rounded-2xl bg-white dark:bg-gray-900 shadow-md border border-gray-200
+        dark:border-gray-700 p-5 transition hover:shadow-lg`,
+        className,
+      )}
     >
       {/* Top row with icon */}
       <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
+        <p className="text-md font-medium text-gray-500 dark:text-gray-400">{title}</p>
         <div
           className={cn(
             "p-3 rounded-xl flex items-center justify-center shadow-sm",
