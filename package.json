@@ -45,7 +45,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-player": "^2.16.0",
     "react-router-dom": "^6.26.2",
-    "recharts": "^3.1.2",
+    "recharts": "^2.15.4",
     "swiper": "^11.1.14",
     "tailwind-merge": "^3.2.0",
     "tailwind-preset-mantine": "^2.1.0",

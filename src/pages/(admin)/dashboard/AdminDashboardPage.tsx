@@ -13,7 +13,7 @@ import {
 import { BookOpen, DollarSign, Layers, ShoppingBag, UserCheck, Users } from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboardHooks";
-import AdminStatCard from "./_c/AdminStatCard";
+import DashboardStatCard from "./_c/DashboardStatCard";
 
 const AdminDashboardPage = () => {
   const { data, isPending, error } = useGetAdminDashboard();
@@ -40,7 +40,7 @@ const AdminDashboardPage = () => {
 
       {/* STAT CARDS */}
       <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md">
-        <AdminStatCard
+        <DashboardStatCard
           title="Published Courses"
           value={stats.totalPublishedCourses}
           growth={stats.publishedCoursesGrowth}
@@ -49,7 +49,7 @@ const AdminDashboardPage = () => {
           iconColor="text-blue-600 dark:text-blue-300"
         />
 
-        <AdminStatCard
+        <DashboardStatCard
           title="Pending Applications"
           value={stats.pendingInstructorApplications}
           growth={stats.pendingInstructorApplicationsGrowth}
@@ -58,7 +58,7 @@ const AdminDashboardPage = () => {
           iconColor="text-yellow-600 dark:text-yellow-300"
         />
 
-        <AdminStatCard
+        <DashboardStatCard
           title="Categories"
           value={stats.totalCategories}
           icon={<Layers size={20} />}
@@ -66,7 +66,7 @@ const AdminDashboardPage = () => {
           iconColor="text-purple-600 dark:text-purple-300"
         />
 
-        <AdminStatCard
+        <DashboardStatCard
           title="Total Users"
           value={stats.totalUsers}
           growth={stats.usersGrowth}
@@ -75,7 +75,7 @@ const AdminDashboardPage = () => {
           iconColor="text-green-600 dark:text-green-300"
         />
 
-        <AdminStatCard
+        <DashboardStatCard
           title="Courses Sold"
           value={stats.totalCoursesSold}
           growth={stats.coursesSoldGrowth}
@@ -84,7 +84,7 @@ const AdminDashboardPage = () => {
           iconColor="text-pink-600 dark:text-pink-300"
         />
 
-        <AdminStatCard
+        <DashboardStatCard
           title="Revenue"
           value={stats.totalRevenue}
           prefix="$"
@@ -108,7 +108,7 @@ const AdminDashboardPage = () => {
                 instructor: i.instructorName,
                 revenue: i.totalRevenue,
               }))}
-              tooltipAnimationDuration={200}
+              tooltipAnimationDuration={600}
               dataKey="instructor"
               orientation="vertical"
               series={[{ name: "revenue", color: "blue.6" }]}
@@ -116,6 +116,7 @@ const AdminDashboardPage = () => {
                 radius: 20,
                 maxBarSize: 35,
                 isAnimationActive: true,
+                animationDuration: 1000,
               }}
             />
           </div>
@@ -185,8 +186,8 @@ const AdminDashboardPage = () => {
               series={[{ name: "revenue", color: "pink.6" }]}
               barProps={{
                 radius: 16,
-                maxBarSize: 40,
                 isAnimationActive: true,
+                animationDuration: 1000,
               }}
             />
           </div>
@@ -209,6 +210,7 @@ const AdminDashboardPage = () => {
             className="self-center"
             pieProps={{
               isAnimationActive: true,
+              animationDuration: 1000,
             }}
             data={[
               { name: "Published", value: courseStatusDistribution.published, color: "green.6" },
@@ -253,7 +255,7 @@ const AdminDashboardPage = () => {
             <div className="flex-1 self-center flex justify-center items-center">
               <SemiCircleProgress
                 filledSegmentColor="violet"
-                transitionDuration={200}
+                transitionDuration={600}
                 thickness={20}
                 size={300}
                 value={courseVerification.percentageApproved}

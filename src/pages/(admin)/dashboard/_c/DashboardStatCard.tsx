@@ -1,9 +1,9 @@
+import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { ReactNode } from "react";
-import { ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { cn } from "../../../../utils/cn";
 import CountUp from "react-countup";
+import { cn } from "../../../../utils/cn";
 
-interface StatCardProps {
+interface DashboardStatCardProps {
   title: string;
   value: string | number;
   growth?: number; // % change vs last week
@@ -17,7 +17,7 @@ interface StatCardProps {
   duration?: number; // duration of count up
 }
 
-export default function AdminStatCard({
+export default function DashboardStatCard({
   title,
   value,
   growth,
@@ -29,7 +29,7 @@ export default function AdminStatCard({
   suffix,
   decimals = 0,
   duration = 7,
-}: StatCardProps) {
+}: DashboardStatCardProps) {
   const isPositive = growth !== undefined && growth >= 0;
 
   return (
@@ -76,9 +76,9 @@ export default function AdminStatCard({
       {growth !== undefined ? (
         <div className="mt-2 flex items-center gap-1 text-sm font-medium">
           {isPositive ? (
-            <ArrowUpRight size={16} className="text-emerald-500" />
+            <TrendingUpIcon size={16} className="text-emerald-500" />
           ) : (
-            <ArrowDownRight size={16} className="text-rose-500" />
+            <TrendingDownIcon size={16} className="text-rose-500" />
           )}
           <span className={isPositive ? "text-emerald-600" : "text-rose-600"}>
             <CountUp
