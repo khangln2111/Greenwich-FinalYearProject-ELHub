@@ -4,5 +4,5 @@ namespace BLL.BusinessServices.Abstract;
 
 public interface IAdminDashboardService
 {
-    Task<AdminDashboardVm> GetDashboardAsync();
+    Task<AdminDashboardVm> GetDashboard();
 }

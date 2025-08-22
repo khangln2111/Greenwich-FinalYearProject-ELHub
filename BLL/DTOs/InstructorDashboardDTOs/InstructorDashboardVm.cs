@@ -3,22 +3,22 @@
 // --- Stats ---
 public class InstructorDashboardStatsVm
 {
-    public int TotalPublishedCourses { get; set; }
-    public double PublishedCoursesGrowth { get; set; }
+    public required int TotalPublishedCourses { get; set; }
+    public required double PublishedCoursesGrowth { get; set; }
 
-    public decimal TotalRevenue { get; set; }
-    public double RevenueGrowth { get; set; }
+    public required decimal TotalRevenue { get; set; }
+    public required double RevenueGrowth { get; set; }
 
-    public int CoursesSold { get; set; }
-    public double CoursesSoldGrowth { get; set; }
+    public required int TotalCoursesSold { get; set; }
+    public required double CoursesSoldGrowth { get; set; }
 
-    public double AverageRating { get; set; }
-    public double AverageRatingGrowth { get; set; }
+    public required double AverageRating { get; set; }
+    public required double AverageRatingGrowth { get; set; }
 
-    public int TotalEnrollments { get; set; }
-    public double TotalEnrollmentsGrowth { get; set; }
+    public required int TotalEnrollments { get; set; }
+    public required double EnrollmentsGrowth { get; set; }
 
-    public decimal CurrentAccountBalance { get; set; }
+    public required decimal CurrentBalance { get; set; }
 }
 
 // --- Top Courses Table ---

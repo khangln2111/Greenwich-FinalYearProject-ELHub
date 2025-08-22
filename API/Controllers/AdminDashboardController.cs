@@ -13,7 +13,7 @@ public class AdminDashboardController(IAdminDashboardService adminDashboardServi
     [ProducesResponseType<AdminDashboardVm>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetDashboardData()
     {
-        var dashboardData = await adminDashboardService.GetDashboardAsync();
+        var dashboardData = await adminDashboardService.GetDashboard();
         return Ok(dashboardData);
     }
 }

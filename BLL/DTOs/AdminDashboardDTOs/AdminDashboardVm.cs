@@ -2,22 +2,22 @@
 
 public class AdminStatsVm
 {
-    public int TotalPublishedCourses { get; set; }
-    public double PublishedCoursesGrowth { get; set; } // Growth percentage compared to the previous week
+    public required int TotalPublishedCourses { get; set; }
+    public required double PublishedCoursesGrowth { get; set; } // Growth percentage compared to the previous week
 
-    public int PendingInstructorApplications { get; set; }
-    public double PendingInstructorApplicationsGrowth { get; set; }
+    public required int PendingInstructorApplications { get; set; }
+    public required double PendingInstructorApplicationsGrowth { get; set; }
 
-    public int TotalCategories { get; set; }
+    public required int TotalCategories { get; set; }
 
-    public int TotalUsers { get; set; }
-    public double UsersGrowth { get; set; }
+    public required int TotalUsers { get; set; }
+    public required double UsersGrowth { get; set; }
 
-    public int TotalCoursesSold { get; set; }
-    public double CoursesSoldGrowth { get; set; }
+    public required int TotalCoursesSold { get; set; }
+    public required double CoursesSoldGrowth { get; set; }
 
-    public decimal TotalRevenue { get; set; }
-    public double RevenueGrowth { get; set; }
+    public required decimal TotalRevenue { get; set; }
+    public required double RevenueGrowth { get; set; }
 }
 
 // --- CHARTS ---
