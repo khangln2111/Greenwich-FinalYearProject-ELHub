@@ -8,10 +8,13 @@ import { useGetCourses } from "../../../features/course/courseHooks";
 import CreateCourseModal from "./_c/CreateCourseModal";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
+import { useAppStore } from "../../../zustand/stores/appStore";
 
 export default function InstructorCoursesPage() {
   const [createCourseModalOpened, { open: openCreateCourseModal, close: closeCreateCourseModal }] =
     useDisclosure(false);
+
+  const currentUser = useAppStore((s) => s.currentUser);
 
   const [status, setStatus] = useQueryState(
     "status",
@@ -24,6 +27,7 @@ export default function InstructorCoursesPage() {
     page,
     pageSize,
     status: status === "All" ? undefined : status,
+    instructorId: currentUser?.id,
   });
 
   return (

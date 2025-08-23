@@ -8,13 +8,15 @@ interface DashboardStatCardProps {
   value: string | number;
   growth?: number; // % change vs last week
   icon: ReactNode;
-  iconColor?: string; // text color cho icon
-  iconBgColor?: string; // background cho icon
   className?: string; // custom class name
-  prefix?: string; // example $, đ
-  suffix?: string; // example %, pax
+  prefix?: string | React.ReactNode; // example $, đ
+  suffix?: string | React.ReactNode; // example %, pax
   decimals?: number; // number of decimal places
   duration?: number; // duration of count up
+  classNames?: {
+    value?: string;
+    icon?: string;
+  };
 }
 
 export default function DashboardStatCard({
@@ -22,11 +24,10 @@ export default function DashboardStatCard({
   value,
   growth,
   icon,
-  iconBgColor,
-  iconColor,
   className,
   prefix,
   suffix,
+  classNames,
   decimals = 0,
   duration = 7,
 }: DashboardStatCardProps) {
@@ -46,8 +47,7 @@ export default function DashboardStatCard({
         <div
           className={cn(
             "p-3 rounded-xl flex items-center justify-center shadow-sm",
-            iconBgColor,
-            iconColor,
+            classNames?.icon,
           )}
         >
           {icon}
@@ -57,18 +57,26 @@ export default function DashboardStatCard({
       {/* Value */}
       <div className="mt-3">
         {typeof value === "number" ? (
-          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <p
+            className={cn("text-2xl font-bold text-gray-900 dark:text-gray-100", classNames?.value)}
+          >
+            {typeof prefix === "string" && prefix}
             <CountUp
               end={value}
               duration={duration}
               decimals={decimals}
-              prefix={prefix}
-              suffix={suffix}
+              prefix={typeof prefix === "string" ? prefix : ""}
+              suffix={typeof suffix === "string" ? suffix : ""}
               separator=","
             />
+            {typeof suffix !== "string" && suffix}
           </p>
         ) : (
-          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
+          <p
+            className={cn("text-2xl font-bold text-gray-900 dark:text-gray-100", classNames?.value)}
+          >
+            {value}
+          </p>
         )}
       </div>
 

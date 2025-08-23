@@ -8,57 +8,63 @@ import {
   ScrollArea,
   SimpleGrid,
   Table,
-  Text,
   Title,
+  Text,
+  Badge,
 } from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates";
+import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 import CenterLoader from "../../../../components/CenterLoader";
 import { InstructorDashboardVm } from "../../../../features/instructorDashboard/instructorDashboard.types";
 import { useGetInstructorDashboardTrends } from "../../../../features/instructorDashboard/instructorDashboardHooks";
+import { showNotification } from "@mantine/notifications";
+import { XIcon } from "lucide-react";
 
 type Props = {
   overviewData: InstructorDashboardVm;
 };
 
-function toIsoDate(d: Date) {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
-
-function shortDate(s: string) {
-  const d = new Date(s);
-  return d.toLocaleDateString();
-}
-
-const STATUS_COLORS = ["#3b82f6", "#f59e0b", "#ef4444"];
+const toIsoDate = (d: Date) => d.toISOString().split("T")[0]; // YYYY-MM-DD
+const shortDate = (s: string) => new Date(s).toLocaleDateString();
 
 const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
-  const today = useMemo(() => new Date(), []);
+  const today = useMemo(() => toIsoDate(new Date()), []);
   const thirtyAgo = useMemo(() => {
     const d = new Date();
     d.setDate(d.getDate() - 30);
-    return d;
+    return toIsoDate(d);
   }, []);
 
-  const [startDate, setStartDate] = useState<string>(toIsoDate(thirtyAgo));
-  const [endDate, setEndDate] = useState<string>(toIsoDate(today));
+  // --------------- Date range picker ---------------
+  // State tạm dùng cho picker
+  const [pickerRange, setPickerRange] = useState<[string | null, string | null]>([
+    thirtyAgo,
+    today,
+  ]);
+  // State dùng để fetch
+  const [dateRange, setDateRange] = useState<[string | null, string | null]>([thirtyAgo, today]);
 
+  const [startDate, endDate] = dateRange;
+
+  // -------- Fetch trends ----------
   const {
     data: trendsData,
     isPending: isTrendsPending,
     isFetching: isTrendsFetching,
     error: trendsError,
     refetch: refetchTrends,
-  } = useGetInstructorDashboardTrends(startDate, endDate);
+  } = useGetInstructorDashboardTrends(startDate ?? "", endDate ?? "");
 
   const isLoadingAny = isTrendsPending;
   const isFetchingAny = isTrendsFetching;
 
+  // -------- Transform data for charts ----------
   const revenueLine = useMemo(
     () =>
       (trendsData?.revenueTrend ?? []).map((p) => ({
         date: shortDate(p.date),
-        value: Number(p.value),
+        value: p.value,
       })),
     [trendsData],
   );
@@ -67,7 +73,7 @@ const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
     () =>
       (trendsData?.enrollmentTrend ?? []).map((p) => ({
         date: shortDate(p.date),
-        value: Number(p.value),
+        value: p.value,
       })),
     [trendsData],
   );
@@ -76,7 +82,7 @@ const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
     () =>
       (trendsData?.ratingTrend ?? []).map((p) => ({
         date: shortDate(p.date),
-        value: Number(p.value),
+        value: p.value,
       })),
     [trendsData],
   );
@@ -90,60 +96,77 @@ const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
     [overviewData],
   );
 
-  const statusDonut = useMemo(
-    () => [
-      {
-        name: "Published",
-        value: overviewData.dashboardCourseStatusDistribution.published,
-        color: "green.6",
-      },
-      {
-        name: "Pending",
-        value: overviewData.dashboardCourseStatusDistribution.pending,
-        color: "yellow.6",
-      },
-      {
-        name: "Rejected",
-        value: overviewData.dashboardCourseStatusDistribution.rejected,
-        color: "red.6",
-      },
-    ],
-    [overviewData],
-  );
-
   const applyRange = () => {
-    refetchTrends();
+    const [start, end] = pickerRange;
+    if (!start || !end) {
+      showNotification({
+        title: "Invalid Date Range",
+        message: "Please select both start and end dates.",
+        color: "red",
+        icon: <XIcon />,
+      });
+      return;
+    }
+
+    setDateRange([start, end]);
   };
 
   if (isLoadingAny) return <CenterLoader />;
 
   return (
     <div className="mt-8">
-      {/* Header */}
+      {/* Header + Date filters */}
       <Group justify="space-between" wrap="wrap" className="mb-4 gap-3">
         <Title order={3} className="font-bold">
           Insights & Charts
         </Title>
+
         <Group wrap="wrap" gap="xs">
-          <Group gap="xs">
-            <Text size="sm">Start</Text>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="px-2 py-1 rounded-md border"
-            />
-          </Group>
-          <Group gap="xs">
-            <Text size="sm">End</Text>
-            <input
-              type="date"
-              value={endDate}
-              max={toIsoDate(new Date())}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="px-2 py-1 rounded-md border"
-            />
-          </Group>
+          <DatePickerInput
+            presets={[
+              {
+                value: [
+                  dayjs().subtract(2, "day").format("YYYY-MM-DD"),
+                  dayjs().format("YYYY-MM-DD"),
+                ],
+                label: "Last two days",
+              },
+              {
+                value: [
+                  dayjs().subtract(7, "day").format("YYYY-MM-DD"),
+                  dayjs().format("YYYY-MM-DD"),
+                ],
+                label: "Last 7 days",
+              },
+              {
+                value: [
+                  dayjs().startOf("month").format("YYYY-MM-DD"),
+                  dayjs().format("YYYY-MM-DD"),
+                ],
+                label: "This month",
+              },
+              {
+                value: [
+                  dayjs().subtract(1, "month").startOf("month").format("YYYY-MM-DD"),
+                  dayjs().subtract(1, "month").endOf("month").format("YYYY-MM-DD"),
+                ],
+                label: "Last month",
+              },
+              {
+                value: [
+                  dayjs().subtract(1, "year").startOf("year").format("YYYY-MM-DD"),
+                  dayjs().subtract(1, "year").endOf("year").format("YYYY-MM-DD"),
+                ],
+                label: "Last year",
+              },
+            ]}
+            type="range"
+            placeholder="Pick dates range"
+            value={pickerRange}
+            onChange={setPickerRange}
+            maxDate={new Date(today)}
+            clearable={false}
+          />
           <Button onClick={applyRange} loading={isFetchingAny} variant="default" size="xs">
             Apply
           </Button>
@@ -159,12 +182,14 @@ const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
             Revenue Trend
           </Title>
           <LineChart
-            curveType="bump"
-            h={220}
-            connectNulls
+            withLegend
+            withPointLabels
             data={revenueLine}
             dataKey="date"
             series={[{ name: "value", label: "Revenue ($)", color: "blue" }]}
+            h={220}
+            curveType="bump"
+            connectNulls
           />
         </Card>
 
@@ -173,12 +198,14 @@ const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
             Enrollments Trend
           </Title>
           <LineChart
-            curveType="bump"
-            connectNulls
-            h={220}
+            withLegend
+            withPointLabels
             data={enrollmentsLine}
             dataKey="date"
             series={[{ name: "value", label: "Enrollments", color: "green" }]}
+            h={220}
+            curveType="bump"
+            connectNulls
           />
         </Card>
 
@@ -187,13 +214,15 @@ const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
             Rating Trend
           </Title>
           <LineChart
-            curveType="bump"
-            h={220}
-            connectNulls
+            withLegend
+            withPointLabels
             data={ratingLine}
             dataKey="date"
             series={[{ name: "value", label: "Rating", color: "yellow" }]}
+            h={220}
             yAxisProps={{ min: 0, max: 5 }}
+            curveType="bump"
+            connectNulls
           />
         </Card>
       </SimpleGrid>
@@ -205,16 +234,20 @@ const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
             Rating Distribution
           </Title>
           <RadarChart
-            h={320}
             data={ratingRadar}
             dataKey="star"
+            series={[{ name: "count", label: "Ratings", color: "yellow", opacity: 0.2 }]}
+            h={320}
             withPolarGrid
             withPolarAngleAxis
             withPolarRadiusAxis
             withTooltip
             withDots
             withLegend
-            series={[{ name: "count", label: "Ratings", color: "indigo" }]}
+            radarProps={{
+              isAnimationActive: true,
+              animationDuration: 1000,
+            }}
           />
         </Card>
 
@@ -222,35 +255,89 @@ const InstructorDashboardCharts: React.FC<Props> = ({ overviewData }) => {
           <Title order={4} className="mb-3">
             Course Status Distribution
           </Title>
-          <DonutChart h={320} data={statusDonut} withTooltip />
+          <DonutChart
+            withLabelsLine
+            withLabels
+            withTooltip
+            chartLabel="Courses by status"
+            tooltipAnimationDuration={200}
+            labelsType="percent"
+            size={250}
+            className="self-center"
+            pieProps={{
+              isAnimationActive: true,
+              animationDuration: 1000,
+            }}
+            data={[
+              {
+                name: "Published",
+                value: overviewData.courseStatusDistribution.published,
+                color: "green.6",
+              },
+              {
+                name: "Pending",
+                value: overviewData.courseStatusDistribution.pending,
+                color: "yellow.6",
+              },
+              {
+                name: "Rejected",
+                value: overviewData.courseStatusDistribution.rejected,
+                color: "red.6",
+              },
+              {
+                name: "Draft",
+                value: overviewData.courseStatusDistribution.draft,
+                color: "gray.6",
+              },
+              {
+                name: "Archived",
+                value: overviewData.courseStatusDistribution.archived,
+                color: "dark.6",
+              },
+            ]}
+          />
         </Card>
       </SimpleGrid>
 
-      {/* Top Courses */}
-      <Card shadow="sm" radius="md" p="md">
-        <Title order={4} className="mb-3">
-          Top Courses
-        </Title>
-        <ScrollArea h={360}>
-          <Table highlightOnHover withTableBorder withColumnBorders>
+      {/* Top Courses Table */}
+      <Card withBorder radius="2xl" p="lg" shadow="lg" className="overflow-hidden">
+        <Group justify="apart" mb="md">
+          <Text size="lg" fw={700}>
+            Best-Seller Courses
+          </Text>
+          <Badge radius="xl" size="sm">
+            Last 30 days
+          </Badge>
+        </Group>
+
+        <Table.ScrollContainer minWidth={500}>
+          <Table withColumnBorders highlightOnHover verticalSpacing="sm" striped>
             <Table.Thead>
               <Table.Tr>
+                <Table.Th style={{ width: 60 }}>#</Table.Th>
                 <Table.Th>Course</Table.Th>
-                <Table.Th className="text-right">Sold</Table.Th>
-                <Table.Th className="text-right">Revenue ($)</Table.Th>
+                <Table.Th style={{ textAlign: "right" }}>Revenue</Table.Th>
+                <Table.Th style={{ textAlign: "right" }}>Sold</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {overviewData.topCourses.map((c) => (
-                <Table.Tr key={c.courseId}>
+              {overviewData.topCourses.slice(0, 5).map((c, idx: number) => (
+                <Table.Tr key={c.courseId || idx}>
+                  <Table.Td style={{ width: 60 }}>
+                    <Badge color={idx === 0 ? "yellow" : "gray"}>{idx + 1}</Badge>
+                  </Table.Td>
                   <Table.Td>{c.courseTitle}</Table.Td>
-                  <Table.Td className="text-right">{c.soldCount}</Table.Td>
-                  <Table.Td className="text-right">{c.revenue.toFixed(2)}</Table.Td>
+                  <Table.Td style={{ textAlign: "right" }}>
+                    ${Number(c.revenue).toLocaleString()}
+                  </Table.Td>
+                  <Table.Td style={{ textAlign: "right" }}>
+                    {Number(c.soldCount).toLocaleString()}
+                  </Table.Td>
                 </Table.Tr>
               ))}
             </Table.Tbody>
           </Table>
-        </ScrollArea>
+        </Table.ScrollContainer>
       </Card>
     </div>
   );

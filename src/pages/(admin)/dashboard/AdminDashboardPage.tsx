@@ -77,8 +77,9 @@ const AdminDashboardPage = () => {
           value={stats.totalPublishedCourses}
           growth={stats.publishedCoursesGrowth}
           icon={<BookOpen size={20} />}
-          iconBgColor="bg-blue-100 dark:bg-blue-900"
-          iconColor="text-blue-600 dark:text-blue-300"
+          classNames={{
+            icon: "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300",
+          }}
         />
 
         <DashboardStatCard
@@ -86,16 +87,18 @@ const AdminDashboardPage = () => {
           value={stats.pendingInstructorApplications}
           growth={stats.pendingInstructorApplicationsGrowth}
           icon={<UserCheck size={20} />}
-          iconBgColor="bg-yellow-100 dark:bg-yellow-900"
-          iconColor="text-yellow-600 dark:text-yellow-300"
+          classNames={{
+            icon: "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300",
+          }}
         />
 
         <DashboardStatCard
           title="Categories"
           value={stats.totalCategories}
           icon={<Layers size={20} />}
-          iconBgColor="bg-purple-100 dark:bg-purple-900"
-          iconColor="text-purple-600 dark:text-purple-300"
+          classNames={{
+            icon: "bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300",
+          }}
         />
 
         <DashboardStatCard
@@ -103,8 +106,9 @@ const AdminDashboardPage = () => {
           value={stats.totalUsers}
           growth={stats.usersGrowth}
           icon={<Users size={20} />}
-          iconBgColor="bg-green-100 dark:bg-green-900"
-          iconColor="text-green-600 dark:text-green-300"
+          classNames={{
+            icon: "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300",
+          }}
         />
 
         <DashboardStatCard
@@ -112,8 +116,9 @@ const AdminDashboardPage = () => {
           value={stats.totalCoursesSold}
           growth={stats.coursesSoldGrowth}
           icon={<ShoppingBag size={20} />}
-          iconBgColor="bg-pink-100 dark:bg-pink-900"
-          iconColor="text-pink-600 dark:text-pink-300"
+          classNames={{
+            icon: "bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300",
+          }}
         />
 
         <DashboardStatCard
@@ -122,14 +127,16 @@ const AdminDashboardPage = () => {
           prefix="$"
           growth={stats.revenueGrowth}
           icon={<DollarSign size={20} />}
-          iconBgColor="bg-emerald-100 dark:bg-emerald-900"
-          iconColor="text-emerald-600 dark:text-emerald-300"
+          classNames={{
+            icon: "bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-300",
+          }}
         />
       </SimpleGrid>
 
       {/* TOP COURSES & INSTRUCTORS */}
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl">
-        <Card withBorder radius="xl" p="lg" shadow="lg">
+        {/* Top Instructors */}
+        <Card withBorder radius="xl" p="lg" className="shadow-lg hover:shadow-xl transition">
           <Text size="lg" fw={600} mb="md">
             Top Instructors by revenue
           </Text>
@@ -154,7 +161,13 @@ const AdminDashboardPage = () => {
           </div>
         </Card>
 
-        <Card withBorder radius="2xl" p="lg" shadow="lg" className="overflow-hidden">
+        {/* Best-Seller Courses */}
+        <Card
+          withBorder
+          radius="2xl"
+          p="lg"
+          className="overflow-hidden shadow-lg hover:shadow-xl transition"
+        >
           <Group justify="apart" mb="md">
             <Text size="lg" fw={700}>
               Best-Seller Courses
@@ -196,7 +209,7 @@ const AdminDashboardPage = () => {
       </SimpleGrid>
 
       {/* Revenue by Category */}
-      <Card withBorder radius="2xl" p="lg" shadow="lg" mt="xl">
+      <Card withBorder radius="2xl" p="lg" mt="xl" className="shadow-lg hover:shadow-xl transition">
         <Text size="lg" fw={600} mb="md">
           Revenue by Category
         </Text>
@@ -228,7 +241,12 @@ const AdminDashboardPage = () => {
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-lg mt-xl">
         {/* Course Status Distribution */}
-        <Card withBorder radius="2xl" p="lg" shadow="lg" className="mih-[300px]">
+        <Card
+          withBorder
+          radius="2xl"
+          p="lg"
+          className="mih-[300px] shadow-lg hover:shadow-xl transition"
+        >
           <Text size="lg" fw={600}>
             Course Status Distribution
           </Text>
@@ -256,7 +274,12 @@ const AdminDashboardPage = () => {
         {/* Group for 2 progress cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:col-span-2 gap-lg">
           {/* Instructor Verification Progress */}
-          <Card withBorder radius="2xl" p="lg" shadow="lg" className="mih-[300px]">
+          <Card
+            withBorder
+            radius="2xl"
+            p="lg"
+            className="mih-[300px] shadow-lg hover:shadow-xl transition"
+          >
             <Text size="lg" fw={600}>
               Instructor Verification Progress
             </Text>
@@ -280,7 +303,12 @@ const AdminDashboardPage = () => {
           </Card>
 
           {/* Course Verification Progress */}
-          <Card withBorder radius="2xl" p="lg" shadow="lg" className="mih-[300px]">
+          <Card
+            withBorder
+            radius="2xl"
+            p="lg"
+            className="mih-[300px] shadow-lg hover:shadow-xl transition"
+          >
             <Text size="lg" fw={600}>
               Course Verification Progress
             </Text>

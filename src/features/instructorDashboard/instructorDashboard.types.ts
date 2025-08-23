@@ -20,8 +20,8 @@ export interface InstructorDashboardStatsVm {
 
 // --- Trend Point ---
 export interface InstructorDashboardTrendPointVm {
-  date: string; // ISO string (DateTime từ backend)
-  value: number;
+  date: string; // ISO string
+  value: number | null;
 }
 
 // --- Trends (Line Charts) ---
@@ -57,6 +57,8 @@ export interface InstructorDashboardCourseStatusDistributionVm {
   published: number;
   pending: number;
   rejected: number;
+  draft: number;
+  archived: number;
 }
 
 // --- Full Dashboard ViewModel ---
@@ -64,5 +66,5 @@ export interface InstructorDashboardVm {
   stats: InstructorDashboardStatsVm;
   topCourses: InstructorDashboardTopCourseVm[];
   ratingDistribution: InstructorDashboardRatingDistributionVm[];
-  dashboardCourseStatusDistribution: InstructorDashboardCourseStatusDistributionVm;
+  courseStatusDistribution: InstructorDashboardCourseStatusDistributionVm;
 }

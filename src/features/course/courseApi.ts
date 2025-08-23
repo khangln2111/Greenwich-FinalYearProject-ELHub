@@ -78,6 +78,9 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
     }
   }
 
+  if (query.instructorId?.trim())
+    conditions.push(() => qb.addCondition("instructorId", op.Equal, query.instructorId!));
+
   applyConditions(qb, conditions);
 
   if (query.orderBy) {
