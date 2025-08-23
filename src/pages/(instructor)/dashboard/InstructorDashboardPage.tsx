@@ -3,6 +3,7 @@ import { BookOpen, DollarSign, RefreshCcw, ShoppingBag, Star, User } from "lucid
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetInstructorDashboardOverview } from "../../../features/instructorDashboard/instructorDashboardHooks";
+import InstructorDashboardCharts from "./_c/InstructorDashboardCharts";
 
 const InstructorDashboardPage = () => {
   const {
@@ -106,6 +107,8 @@ const InstructorDashboardPage = () => {
           iconColor="text-gray-600 dark:text-gray-300"
         />
       </SimpleGrid>
+
+      <InstructorDashboardCharts overviewData={overviewData} />
     </div>
   );
 };

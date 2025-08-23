@@ -20,7 +20,7 @@ export const getInstructorDashboardTrends = async (startDate: string, endDate: s
 };
 
 export const getInstructorDashboardRevenueSales = async (startDate: string, endDate: string) => {
-  const response = await apiClient.get<InstructorDashboardRevenueSalesVm>(
+  const response = await apiClient.get<InstructorDashboardRevenueSalesVm[]>(
     `${BASE_URL}/RevenueSales`,
     {
       params: { startDate, endDate },
