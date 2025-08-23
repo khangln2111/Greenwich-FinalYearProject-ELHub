@@ -10,32 +10,13 @@ export interface InstructorDashboardStatsVm {
   coursesSoldGrowth: number;
 
   averageRating: number;
+  ratingCount: number;
   averageRatingGrowth: number;
 
   totalEnrollments: number;
   enrollmentsGrowth: number;
 
   currentBalance: number;
-}
-
-// --- Trend Point ---
-export interface InstructorDashboardTrendPointVm {
-  date: string; // ISO string
-  value: number | null;
-}
-
-// --- Trends (Line Charts) ---
-export interface InstructorDashboardTrendsVm {
-  revenueTrend: InstructorDashboardTrendPointVm[];
-  enrollmentTrend: InstructorDashboardTrendPointVm[];
-  ratingTrend: InstructorDashboardTrendPointVm[];
-}
-
-// --- Composite Trend (Revenue + CoursesSold) ---
-export interface InstructorDashboardRevenueSalesVm {
-  date: string; // ISO string
-  revenue: number;
-  coursesSold: number;
 }
 
 // --- Top Courses Table ---
@@ -53,7 +34,7 @@ export interface InstructorDashboardRatingDistributionVm {
 }
 
 // --- Course Status Distribution ---
-export interface InstructorDashboardCourseStatusDistributionVm {
+export interface InstructorDashboardCourseDistributionByStatusVm {
   published: number;
   pending: number;
   rejected: number;
@@ -73,6 +54,6 @@ export interface InstructorDashboardVm {
   stats: InstructorDashboardStatsVm;
   topCourses: InstructorDashboardTopCourseVm[];
   ratingDistribution: InstructorDashboardRatingDistributionVm[];
-  courseStatusDistribution: InstructorDashboardCourseStatusDistributionVm;
+  courseStatusDistribution: InstructorDashboardCourseDistributionByStatusVm;
   coursesInfoByCategory: InstructorDashboardCoursesInfoByCategoryVm[];
 }

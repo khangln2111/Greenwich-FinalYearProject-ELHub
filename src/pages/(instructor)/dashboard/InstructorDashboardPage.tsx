@@ -98,10 +98,13 @@ const InstructorDashboardPage = () => {
           title="Average Rating"
           value={stats.averageRating}
           growth={stats.averageRatingGrowth}
-          suffix={<span className="text-dimmed text-md font-normal"> (500)</span>}
+          suffix={
+            <span className="text-dimmed text-md font-normal ml-2"> ({stats.ratingCount})</span>
+          }
           icon={<Star size={20} />}
           classNames={{
             icon: "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300",
+            value: "items-center flex",
           }}
         />
 
@@ -270,11 +273,10 @@ const InstructorDashboardPage = () => {
         <ScrollArea type="auto" offsetScrollbars>
           <div className="overflow-auto min-w-2xl">
             <CompositeChart
-              data={coursesInfoByCategory}
+              data={coursesInfoByCategory.slice(0, 10)}
               dataKey="categoryName"
               h={350}
               withLegend
-              tickLine="xy"
               withTooltip
               maxBarWidth={50}
               strokeWidth={2}
@@ -291,7 +293,7 @@ const InstructorDashboardPage = () => {
                 yAxisId: "left",
               }}
               rightYAxisProps={{
-                yAxisId: "right", // trục phải
+                yAxisId: "right",
               }}
               barProps={{
                 radius: 50,
@@ -317,7 +319,7 @@ const InstructorDashboardPage = () => {
                 {
                   type: "line",
                   name: "coursesCount",
-                  label: "Courses Count",
+                  label: "Number of Courses",
                   color: "green.6",
                   yAxisId: "right",
                 },
