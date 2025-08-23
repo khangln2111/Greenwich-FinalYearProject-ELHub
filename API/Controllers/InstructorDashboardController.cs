@@ -1,5 +1,4 @@
 ﻿using BLL.BusinessServices.Abstract;
-using BLL.BusinessServices.Concrete;
 using BLL.DTOs.InstructorDashboardDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +16,21 @@ public class InstructorDashboardController(IInstructorDashboardService dashboard
         return Ok(dashboard);
     }
 
-    [HttpGet("sales-trend")]
-    public async Task<ActionResult<List<InstructorCourseSalesTrendVm>>> GetSalesTrend(
+    [HttpGet("trends")]
+    public async Task<ActionResult<InstructorDashboardTrendsVm>> GetInstructorDashboardTrends(
         [FromQuery] DateTime startDate,
         [FromQuery] DateTime endDate)
     {
-        var trend = await dashboardService.GetSalesTrendByDateRange(startDate, endDate);
-        return Ok(trend);
+        var trends = await dashboardService.GetInstructorDashboardTrends(startDate, endDate);
+        return Ok(trends);
+    }
+
+    [HttpGet("RevenueAndSales")]
+    public async Task<ActionResult<List<InstructorDashboardRevenueSalesVm>>> GetInstructorRevenueSales(
+        [FromQuery] DateTime startDate,
+        [FromQuery] DateTime endDate)
+    {
+        var trends = await dashboardService.GetInstructorRevenueSales(startDate, endDate);
+        return Ok(trends);
     }
 }

@@ -177,7 +177,7 @@ public class GiftService(
         await context.Enrollments.AddAsync(enrollment);
 
         // Mark gift as redeemed
-        gift.RedeemedAt = DateTime.UtcNow;
+        gift.RedeemedAt = DateTime.Now;
         gift.Status = GiftStatus.Redeemed;
 
         await context.SaveChangesAsync();
@@ -208,7 +208,7 @@ public class GiftService(
 
         // Mark gift as revoked
         gift.Status = GiftStatus.Revoked;
-        gift.RevokedAt = DateTime.UtcNow;
+        gift.RevokedAt = DateTime.Now;
 
         // Return item quantity
         inventoryItem.Quantity += 1;

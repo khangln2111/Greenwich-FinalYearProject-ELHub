@@ -21,8 +21,28 @@ public class InstructorDashboardStatsVm
     public required decimal CurrentBalance { get; set; }
 }
 
+public class InstructorDashboardTrendPointVm
+{
+    public DateTime Date { get; set; }
+    public decimal Value { get; set; }
+}
+
+public class InstructorDashboardTrendsVm
+{
+    public required List<InstructorDashboardTrendPointVm> RevenueTrend { get; set; }
+    public required List<InstructorDashboardTrendPointVm> EnrollmentTrend { get; set; }
+    public required List<InstructorDashboardTrendPointVm> RatingTrend { get; set; }
+}
+
+public class InstructorDashboardRevenueSalesVm
+{
+    public DateTime Date { get; set; }
+    public decimal Revenue { get; set; }
+    public int CoursesSold { get; set; }
+}
+
 // --- Top Courses Table ---
-public class InstructorTopCourseVm
+public class InstructorDashboardTopCourseVm
 {
     public Guid CourseId { get; set; }
     public required string CourseTitle { get; set; }
@@ -30,39 +50,14 @@ public class InstructorTopCourseVm
     public double Revenue { get; set; }
 }
 
-// --- Sales Trend (AreaChart) ---
-public class InstructorCourseSalesTrendVm
-{
-    public Guid CourseId { get; set; }
-    public required string CourseTitle { get; set; }
-    public DateTime Date { get; set; }
-    public int SoldCount { get; set; }
-}
-
-// --- Revenue By Month (LineChart) ---
-public class InstructorRevenueByMonthVm
-{
-    public int Year { get; set; }
-    public int Month { get; set; }
-    public decimal Revenue { get; set; }
-}
-
 // --- Rating Distribution (DonutChart) ---
-public class InstructorRatingDistributionVm
+public class InstructorDashboardRatingDistributionVm
 {
     public int Star { get; set; } // 1-5
     public int Count { get; set; }
 }
 
-// --- Revenue vs SoldCount comparison ---
-public class InstructorRevenueVsSoldVm
-{
-    public required string CourseTitle { get; set; }
-    public double Revenue { get; set; }
-    public int SoldCount { get; set; }
-}
-
-public class InstructorCourseStatusDistributionVm
+public class InstructorDashboardCourseStatusDistributionVm
 {
     public int Published { get; set; }
     public int Pending { get; set; }
@@ -73,8 +68,7 @@ public class InstructorCourseStatusDistributionVm
 public class InstructorDashboardVm
 {
     public required InstructorDashboardStatsVm Stats { get; set; }
-    public required List<InstructorTopCourseVm> TopCourses { get; set; }
-    public required List<InstructorRatingDistributionVm> RatingDistribution { get; set; }
-    public required List<InstructorRevenueVsSoldVm> RevenueVsSoldComparison { get; set; }
-    public required InstructorCourseStatusDistributionVm CourseStatusDistribution { get; set; }
+    public required List<InstructorDashboardTopCourseVm> TopCourses { get; set; }
+    public required List<InstructorDashboardRatingDistributionVm> RatingDistribution { get; set; }
+    public required InstructorDashboardCourseStatusDistributionVm DashboardCourseStatusDistribution { get; set; }
 }

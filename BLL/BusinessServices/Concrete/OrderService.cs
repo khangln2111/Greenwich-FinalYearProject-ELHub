@@ -210,10 +210,9 @@ public class OrderService(
                 {
                     Id = Guid.NewGuid(),
                     UserId = item.Course.InstructorId,
-                    Amount = item.DiscountedPrice * item.Quantity,
+                    Amount = item.DiscountedPrice * item.Quantity * 0.9m, // 10% platform fee
                     Type = WalletTransactionType.CourseSale,
-                    Description = $"Course sold: {item.Course.Title}",
-                    CreatedAt = DateTime.UtcNow
+                    Description = $"Course sold: {item.Course.Title} (90% revenue to instructor)"
                 });
         }
 

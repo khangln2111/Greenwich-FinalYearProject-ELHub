@@ -6,5 +6,9 @@ public interface IInstructorDashboardService
 {
     Task<InstructorDashboardVm> GetDashboard();
 
-    Task<List<InstructorCourseSalesTrendVm>> GetSalesTrendByDateRange(DateTime startDate, DateTime endDate);
+    Task<InstructorDashboardTrendsVm>
+        GetInstructorDashboardTrends(DateTime startDate, DateTime endDate);
+
+    Task<List<InstructorDashboardRevenueSalesVm>> GetInstructorRevenueSales(
+        DateTime startDate, DateTime endDate);
 }
