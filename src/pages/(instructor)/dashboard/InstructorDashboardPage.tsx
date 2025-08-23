@@ -142,27 +142,27 @@ const InstructorDashboardPage = () => {
             data={[
               {
                 name: "Published",
-                value: overviewData.courseStatusDistribution.published,
+                value: courseStatusDistribution.published,
                 color: "green.6",
               },
               {
                 name: "Pending",
-                value: overviewData.courseStatusDistribution.pending,
+                value: courseStatusDistribution.pending,
                 color: "yellow.6",
               },
               {
                 name: "Rejected",
-                value: overviewData.courseStatusDistribution.rejected,
+                value: courseStatusDistribution.rejected,
                 color: "red.6",
               },
               {
                 name: "Draft",
-                value: overviewData.courseStatusDistribution.draft,
+                value: courseStatusDistribution.draft,
                 color: "gray.6",
               },
               {
                 name: "Archived",
-                value: overviewData.courseStatusDistribution.archived,
+                value: courseStatusDistribution.archived,
                 color: "dark.6",
               },
             ]}

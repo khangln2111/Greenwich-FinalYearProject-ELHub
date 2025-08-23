@@ -1,25 +1,14 @@
 // components/InstructorDashboardCharts.tsx
 import { DonutChart, LineChart, RadarChart } from "@mantine/charts";
-import {
-  Button,
-  Card,
-  Divider,
-  Group,
-  ScrollArea,
-  SimpleGrid,
-  Table,
-  Title,
-  Text,
-  Badge,
-} from "@mantine/core";
+import { Badge, Button, Card, Divider, Group, SimpleGrid, Table, Text, Title } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
+import { showNotification } from "@mantine/notifications";
 import dayjs from "dayjs";
+import { XIcon } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import CenterLoader from "../../../../components/CenterLoader";
 import { InstructorDashboardVm } from "../../../../features/instructorDashboard/instructorDashboard.types";
 import { useGetInstructorDashboardTrends } from "../../../../features/instructorDashboard/instructorDashboardHooks";
-import { showNotification } from "@mantine/notifications";
-import { XIcon } from "lucide-react";
 
 type Props = {
   overviewData: InstructorDashboardVm;
