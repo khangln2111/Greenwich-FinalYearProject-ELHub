@@ -61,10 +61,18 @@ export interface InstructorDashboardCourseStatusDistributionVm {
   archived: number;
 }
 
+export interface InstructorDashboardCoursesInfoByCategoryVm {
+  categoryName: string;
+  coursesCount: number;
+  coursesSoldCount: number;
+  revenue: number;
+}
+
 // --- Full Dashboard ViewModel ---
 export interface InstructorDashboardVm {
   stats: InstructorDashboardStatsVm;
   topCourses: InstructorDashboardTopCourseVm[];
   ratingDistribution: InstructorDashboardRatingDistributionVm[];
   courseStatusDistribution: InstructorDashboardCourseStatusDistributionVm;
+  coursesInfoByCategory: InstructorDashboardCoursesInfoByCategoryVm[];
 }

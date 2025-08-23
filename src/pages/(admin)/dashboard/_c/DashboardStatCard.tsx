@@ -60,7 +60,7 @@ export default function DashboardStatCard({
           <p
             className={cn("text-2xl font-bold text-gray-900 dark:text-gray-100", classNames?.value)}
           >
-            {typeof prefix === "string" && prefix}
+            {typeof prefix !== "string" && prefix}
             <CountUp
               end={value}
               duration={duration}

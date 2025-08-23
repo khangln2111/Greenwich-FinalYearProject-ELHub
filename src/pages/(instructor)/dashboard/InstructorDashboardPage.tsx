@@ -1,5 +1,15 @@
-import { DonutChart, RadarChart } from "@mantine/charts";
-import { Badge, Button, Card, Group, SimpleGrid, Table, Text, Title } from "@mantine/core";
+import { CompositeChart, DonutChart, RadarChart } from "@mantine/charts";
+import {
+  Badge,
+  Button,
+  Card,
+  Group,
+  ScrollArea,
+  SimpleGrid,
+  Table,
+  Text,
+  Title,
+} from "@mantine/core";
 import { BookOpen, DollarSign, RefreshCcw, ShoppingBag, Star, User } from "lucide-react";
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader";
@@ -17,7 +27,8 @@ const InstructorDashboardPage = () => {
   if (isOverviewPending) return <CenterLoader />;
   if (overviewError) return <p>Error loading dashboard data</p>;
 
-  const { stats, courseStatusDistribution, topCourses, ratingDistribution } = overviewData;
+  const { stats, courseStatusDistribution, topCourses, ratingDistribution, coursesInfoByCategory } =
+    overviewData;
 
   return (
     <div className="flex-1 p-6 xl:p-8 bg-gray-100 dark:bg-dark-5">
@@ -214,7 +225,6 @@ const InstructorDashboardPage = () => {
             Last 30 days
           </Badge>
         </Group>
-
         <Table.ScrollContainer minWidth={500}>
           <Table withColumnBorders highlightOnHover verticalSpacing="sm" striped>
             <Table.Thead>
@@ -243,6 +253,85 @@ const InstructorDashboardPage = () => {
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
+      </Card>
+
+      {/* composite chart */}
+
+      <Card
+        withBorder
+        radius="2xl"
+        p="lg"
+        mt="xl"
+        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
+      >
+        <Title order={4} className="mb-3">
+          Rating Distribution
+        </Title>
+        <ScrollArea type="auto" offsetScrollbars>
+          <div className="overflow-auto min-w-2xl">
+            <CompositeChart
+              data={coursesInfoByCategory}
+              dataKey="categoryName"
+              h={350}
+              withLegend
+              tickLine="xy"
+              withTooltip
+              maxBarWidth={50}
+              strokeWidth={2}
+              curveType="natural"
+              withPointLabels
+              withBarValueLabel
+              withDots
+              withXAxis
+              withYAxis
+              yAxisLabel="Revenue ($)"
+              withRightYAxis
+              rightYAxisLabel="Courses Count"
+              yAxisProps={{
+                yAxisId: "left",
+              }}
+              rightYAxisProps={{
+                yAxisId: "right", // trục phải
+              }}
+              barProps={{
+                radius: 50,
+                isAnimationActive: true,
+                animationDuration: 1000,
+              }}
+              lineProps={{
+                isAnimationActive: true,
+                animationDuration: 1000,
+              }}
+              areaProps={{
+                isAnimationActive: true,
+                animationDuration: 1000,
+              }}
+              series={[
+                {
+                  type: "bar",
+                  name: "revenue",
+                  label: "Revenue ($)",
+                  color: "blue.6",
+                  yAxisId: "left",
+                },
+                {
+                  type: "line",
+                  name: "coursesCount",
+                  label: "Courses Count",
+                  color: "green.6",
+                  yAxisId: "right",
+                },
+                {
+                  type: "area",
+                  name: "coursesSoldCount",
+                  label: "Courses Sold",
+                  color: "orange.6",
+                  yAxisId: "right",
+                },
+              ]}
+            />
+          </div>
+        </ScrollArea>
       </Card>
     </div>
   );
