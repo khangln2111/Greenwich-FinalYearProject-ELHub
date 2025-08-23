@@ -13,32 +13,13 @@ public class InstructorDashboardStatsVm
     public required double CoursesSoldGrowth { get; set; }
 
     public required double AverageRating { get; set; }
+    public required int RatingCount { get; set; }
     public required double AverageRatingGrowth { get; set; }
 
     public required int TotalEnrollments { get; set; }
     public required double EnrollmentsGrowth { get; set; }
 
     public required decimal CurrentBalance { get; set; }
-}
-
-public class InstructorDashboardTrendPointVm
-{
-    public DateTime Date { get; set; }
-    public decimal Value { get; set; }
-}
-
-public class InstructorDashboardTrendsVm
-{
-    public required List<InstructorDashboardTrendPointVm> RevenueTrend { get; set; }
-    public required List<InstructorDashboardTrendPointVm> EnrollmentTrend { get; set; }
-    public required List<InstructorDashboardTrendPointVm> RatingTrend { get; set; }
-}
-
-public class InstructorDashboardRevenueSalesVm
-{
-    public DateTime Date { get; set; }
-    public decimal Revenue { get; set; }
-    public int CoursesSold { get; set; }
 }
 
 // --- Top Courses Table ---
@@ -57,18 +38,29 @@ public class InstructorDashboardRatingDistributionVm
     public int Count { get; set; }
 }
 
-public class InstructorDashboardCourseStatusDistributionVm
+public class InstructorDashboardCourseDistributionByStatusVm
 {
     public int Published { get; set; }
     public int Pending { get; set; }
     public int Rejected { get; set; }
+    public int Draft { get; set; }
+    public int Archived { get; set; }
 }
 
-// --- Full Dashboard ViewModel ---
+public class InstructorDashboardCoursesInfoByCategoryVm
+{
+    public required string CategoryName { get; set; }
+    public int CoursesCount { get; set; }
+    public int CoursesSoldCount { get; set; }
+    public decimal Revenue { get; set; }
+}
+
+// --- Full Dashboard ViewModel --- 
 public class InstructorDashboardVm
 {
     public required InstructorDashboardStatsVm Stats { get; set; }
     public required List<InstructorDashboardTopCourseVm> TopCourses { get; set; }
     public required List<InstructorDashboardRatingDistributionVm> RatingDistribution { get; set; }
-    public required InstructorDashboardCourseStatusDistributionVm DashboardCourseStatusDistribution { get; set; }
+    public required InstructorDashboardCourseDistributionByStatusVm CourseStatusDistribution { get; set; }
+    public required List<InstructorDashboardCoursesInfoByCategoryVm> CoursesInfoByCategory { get; set; }
 }

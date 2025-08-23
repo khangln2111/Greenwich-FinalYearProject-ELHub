@@ -16,21 +16,4 @@ public class InstructorDashboardController(IInstructorDashboardService dashboard
         return Ok(dashboard);
     }
 
-    [HttpGet("trends")]
-    public async Task<ActionResult<InstructorDashboardTrendsVm>> GetInstructorDashboardTrends(
-        [FromQuery] DateTime startDate,
-        [FromQuery] DateTime endDate)
-    {
-        var trends = await dashboardService.GetInstructorDashboardTrends(startDate, endDate);
-        return Ok(trends);
-    }
-
-    [HttpGet("RevenueAndSales")]
-    public async Task<ActionResult<List<InstructorDashboardRevenueSalesVm>>> GetInstructorRevenueSales(
-        [FromQuery] DateTime startDate,
-        [FromQuery] DateTime endDate)
-    {
-        var trends = await dashboardService.GetInstructorRevenueSales(startDate, endDate);
-        return Ok(trends);
-    }
 }

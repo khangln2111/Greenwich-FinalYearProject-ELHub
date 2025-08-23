@@ -25,105 +25,38 @@ public class InstructorDashboardService(
             Stats = await GetStats(currentUser.Id),
             TopCourses = await GetTopCourses(currentUser.Id),
             RatingDistribution = await GetRatingDistribution(currentUser.Id),
-            DashboardCourseStatusDistribution = await GetCourseStatusDistribution(currentUser.Id)
-        };
-    }
-
-    public async Task<InstructorDashboardTrendsVm> GetInstructorDashboardTrends(
-        DateTime startDate, DateTime endDate)
-    {
-        var currentUser = currentUserUtility.GetCurrentUser();
-        if (currentUser == null)
-            throw new UnauthorizedException("User is not authenticated.");
-
-        var instructorId = currentUser.Id;
-
-        // --------- Enrollment & Rating trends (1 query) ----------
-        var enrollments = await context.Enrollments
-            .Include(e => e.Review)
-            .Include(e => e.Course)
-            .Where(e => e.Course.InstructorId == instructorId
-                        && e.CreatedAt.Date >= startDate.Date && e.CreatedAt.Date <= endDate.Date)
-            .ToListAsync();
-
-        var enrollmentTrend = enrollments
-            .GroupBy(e => e.CreatedAt.Date)
-            .Select(g => new InstructorDashboardTrendPointVm
-            {
-                Date = g.Key,
-                Value = g.Count()
-            })
-            .OrderBy(x => x.Date)
-            .ToList();
-
-        var ratingTrend = enrollments
-            .Where(e => e.Review != null)
-            .GroupBy(e => e.CreatedAt.Date)
-            .Select(g => new InstructorDashboardTrendPointVm
-            {
-                Date = g.Key,
-                Value = (decimal)g.Average(e => e.Review!.Rating)
-            })
-            .OrderBy(x => x.Date)
-            .ToList();
-
-        // --------- Revenue & CoursesSold trends (from completed orders) ----------
-        var orderItems = await context.OrderItems
-            .Include(oi => oi.Order)
-            .Include(oi => oi.Course)
-            .Where(oi => oi.Course.InstructorId == instructorId
-                         && oi.Order.Status == OrderStatus.Completed
-                         && oi.Order.CreatedAt.Date >= startDate.Date
-                         && oi.Order.CreatedAt.Date <= endDate.Date)
-            .ToListAsync();
-
-        var revenueTrend = orderItems
-            .GroupBy(oi => oi.Order.CreatedAt.Date)
-            .Select(g => new InstructorDashboardTrendPointVm
-            {
-                Date = g.Key,
-                Value = g.Sum(oi => oi.DiscountedPrice * oi.Quantity)
-            })
-            .OrderBy(x => x.Date)
-            .ToList();
-
-
-        return new InstructorDashboardTrendsVm
-        {
-            RevenueTrend = revenueTrend,
-            EnrollmentTrend = enrollmentTrend,
-            RatingTrend = ratingTrend
+            CourseStatusDistribution = await GetCourseDistributionByStatus(currentUser.Id),
+            CoursesInfoByCategory = await GetCoursesInfoByCategory(currentUser.Id)
         };
     }
 
 
-    public async Task<List<InstructorDashboardRevenueSalesVm>> GetInstructorRevenueSales(
-        DateTime startDate, DateTime endDate)
+    private async Task<List<InstructorDashboardCoursesInfoByCategoryVm>> GetCoursesInfoByCategory(Guid instructorId)
     {
-        var currentUser = currentUserUtility.GetCurrentUser();
-
-        if (currentUser == null)
-            throw new UnauthorizedException("User is not authenticated.");
-
-        var trend = await context.OrderItems
-            .Include(oi => oi.Order)
-            .Include(oi => oi.Course)
-            .Where(oi => oi.Course.InstructorId == currentUser.Id
-                         && oi.Order.Status == OrderStatus.Completed
-                         && oi.Order.CreatedAt >= startDate && oi.Order.CreatedAt <= endDate)
-            .GroupBy(oi => oi.Order.CreatedAt.Date)
-            .Select(g => new InstructorDashboardRevenueSalesVm
-            {
-                Date = g.Key,
-                Revenue = g.Sum(x => x.DiscountedPrice),
-                CoursesSold = g.Count()
-            })
-            .OrderBy(x => x.Date)
+        var courses = await context.Courses
+            .Where(c => c.InstructorId == instructorId)
+            .Include(c => c.Category)
+            .Include(c => c.Enrollments)
+            .Include(c => c.OrderItems)
+            .ThenInclude(oi => oi.Order)
             .ToListAsync();
 
-        return trend;
-    }
+        var grouped = courses
+            .GroupBy(c => c.Category.Name)
+            .Select(g => new InstructorDashboardCoursesInfoByCategoryVm
+            {
+                CategoryName = g.Key,
+                CoursesCount = g.Count(),
+                CoursesSoldCount = g.Sum(c => c.OrderItems.Count),
+                Revenue = g.Sum(c => g.Sum(c => c.OrderItems
+                    .Where(oi => oi.Order.Status == OrderStatus.Completed)
+                    .Sum(oi => (decimal?)oi.DiscountedPrice * oi.Quantity) ?? 0))
+            })
+            .OrderByDescending(c => c.Revenue)
+            .ToList();
 
+        return grouped;
+    }
 
     private async Task<InstructorDashboardStatsVm> GetStats(Guid instructorId)
     {
@@ -207,6 +140,12 @@ public class InstructorDashboardService(
             .Select(e => (double?)e.Review!.Rating)
             .AverageAsync() ?? 0;
 
+        var ratingCount = await context.Reviews
+            .Include(r => r.Enrollment)
+            .ThenInclude(e => e.Course)
+            .Where(r => r.Enrollment.Course.InstructorId == instructorId)
+            .CountAsync();
+
         var thisWeekAvgRating = await context.Enrollments
             .Include(e => e.Course)
             .Where(e => e.Course.InstructorId == instructorId && e.Review != null &&
@@ -233,6 +172,7 @@ public class InstructorDashboardService(
             TotalCoursesSold = totalCoursesSold,
             TotalRevenue = totalRevenue,
             AverageRating = totalAverageRating,
+            RatingCount = ratingCount,
 
             PublishedCoursesGrowth = CalcGrowth(coursesLastWeek,
                 coursesThisWeek),
@@ -285,7 +225,7 @@ public class InstructorDashboardService(
         return distribution;
     }
 
-    private async Task<InstructorDashboardCourseStatusDistributionVm> GetCourseStatusDistribution(Guid instructorId)
+    private async Task<InstructorDashboardCourseDistributionByStatusVm> GetCourseDistributionByStatus(Guid instructorId)
     {
         var courseStatuses = await context.Courses
             .Where(c => c.InstructorId == instructorId)
@@ -297,11 +237,13 @@ public class InstructorDashboardService(
             })
             .ToListAsync();
 
-        return new InstructorDashboardCourseStatusDistributionVm
+        return new InstructorDashboardCourseDistributionByStatusVm
         {
             Published = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Published)?.Count ?? 0,
             Pending = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Pending)?.Count ?? 0,
-            Rejected = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Rejected)?.Count ?? 0
+            Rejected = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Rejected)?.Count ?? 0,
+            Draft = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Draft)?.Count ?? 0,
+            Archived = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Archived)?.Count ?? 0
         };
     }
 
