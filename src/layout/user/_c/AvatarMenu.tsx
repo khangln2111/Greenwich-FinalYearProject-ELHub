@@ -61,7 +61,13 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           My account
         </Menu.Item>
-        <Menu.Item leftSection={<ChartNoAxesCombinedIcon size={15} />}>Dashboard</Menu.Item>
+        <Menu.Item
+          component={Link}
+          to="/dashboard"
+          leftSection={<ChartNoAxesCombinedIcon size={15} />}
+        >
+          Dashboard
+        </Menu.Item>
         <Menu.Item
           component={Link}
           leftSection={<MonitorCheckIcon size={15} />}

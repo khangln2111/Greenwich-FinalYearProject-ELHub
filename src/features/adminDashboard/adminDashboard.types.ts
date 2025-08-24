@@ -2,16 +2,16 @@
 
 export interface AdminDashboardStatsVm {
   totalPublishedCourses: number;
-  publishedCoursesGrowth: number;
+  totalPublishedCoursesGrowth: number;
 
   pendingInstructorApplications: number;
   pendingInstructorApplicationsGrowth: number;
 
   totalInstructors: number;
-  instructorsGrowth: number;
+  totalInstructorsGrowth: number;
 
   totalPendingCourses: number;
-  pendingCoursesGrowth: number;
+  totalPendingCoursesGrowth: number;
 
   averageCourseRating: number;
   ratingCount: number;
@@ -20,13 +20,13 @@ export interface AdminDashboardStatsVm {
   totalCategories: number;
 
   totalUsers: number;
-  usersGrowth: number;
+  totalUsersGrowth: number;
 
   totalCoursesSold: number;
-  coursesSoldGrowth: number;
+  totalCoursesSoldGrowth: number;
 
   totalRevenue: number;
-  revenueGrowth: number;
+  totalRevenueGrowth: number;
 }
 
 // --- CHARTS ---

@@ -67,7 +67,7 @@ const InstructorDashboardPage = () => {
         <DashboardStatCard
           title="Published Courses"
           value={stats.totalPublishedCourses}
-          growth={stats.publishedCoursesGrowth}
+          growth={stats.totalPublishedCoursesGrowth}
           icon={<BookOpen size={20} />}
           classNames={{
             icon: "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300",
@@ -77,7 +77,7 @@ const InstructorDashboardPage = () => {
         <DashboardStatCard
           title="Courses Sold"
           value={stats.totalCoursesSold}
-          growth={stats.coursesSoldGrowth}
+          growth={stats.totalCoursesSoldGrowth}
           icon={<ShoppingBag size={20} />}
           classNames={{
             icon: "bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300",
@@ -88,7 +88,7 @@ const InstructorDashboardPage = () => {
           title="Revenue"
           value={stats.totalRevenue}
           prefix="$"
-          growth={stats.revenueGrowth}
+          growth={stats.totalRevenueGrowth}
           icon={<DollarSign size={20} />}
           classNames={{
             icon: "bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-300",
@@ -112,7 +112,7 @@ const InstructorDashboardPage = () => {
         <DashboardStatCard
           title="Total Enrollments"
           value={stats.totalEnrollments}
-          growth={stats.enrollmentsGrowth}
+          growth={stats.totalEnrollmentsGrowth}
           icon={<User size={20} />}
           classNames={{
             icon: "bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300",

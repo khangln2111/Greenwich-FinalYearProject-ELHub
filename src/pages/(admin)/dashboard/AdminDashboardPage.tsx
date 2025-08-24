@@ -17,6 +17,7 @@ import {
   Layers,
   RefreshCw,
   ShoppingBag,
+  StarIcon,
   UserCheck,
   Users,
 } from "lucide-react";
@@ -76,7 +77,7 @@ const AdminDashboardPage = () => {
         <DashboardStatCard
           title="Published Courses"
           value={stats.totalPublishedCourses}
-          growth={stats.publishedCoursesGrowth}
+          growth={stats.totalPublishedCoursesGrowth}
           icon={<BookOpen size={20} />}
           classNames={{
             icon: "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300",
@@ -105,7 +106,7 @@ const AdminDashboardPage = () => {
         <DashboardStatCard
           title="Total Users"
           value={stats.totalUsers}
-          growth={stats.usersGrowth}
+          growth={stats.totalUsersGrowth}
           icon={<Users size={20} />}
           classNames={{
             icon: "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300",
@@ -115,7 +116,7 @@ const AdminDashboardPage = () => {
         <DashboardStatCard
           title="Courses Sold"
           value={stats.totalCoursesSold}
-          growth={stats.coursesSoldGrowth}
+          growth={stats.totalCoursesSoldGrowth}
           icon={<ShoppingBag size={20} />}
           classNames={{
             icon: "bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300",
@@ -126,10 +127,44 @@ const AdminDashboardPage = () => {
           title="Revenue"
           value={stats.totalRevenue}
           prefix="$"
-          growth={stats.revenueGrowth}
+          growth={stats.totalRevenueGrowth}
           icon={<DollarSign size={20} />}
           classNames={{
             icon: "bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-300",
+          }}
+        />
+
+        <DashboardStatCard
+          title="Total Instructors"
+          value={stats.totalInstructors}
+          growth={stats.totalInstructorsGrowth}
+          icon={<UserCheck size={20} />}
+          classNames={{
+            icon: "bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300",
+          }}
+        />
+
+        <DashboardStatCard
+          title="Pending Courses"
+          value={stats.totalPendingCourses}
+          growth={stats.totalPendingCoursesGrowth}
+          icon={<BookOpen size={20} />}
+          classNames={{
+            icon: "bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300",
+          }}
+        />
+
+        <DashboardStatCard
+          title="Average Course Rating"
+          value={stats.averageCourseRating}
+          growth={stats.averageCourseRatingGrowth}
+          icon={<StarIcon size={20} />}
+          suffix={
+            <span className="text-dimmed text-md font-normal ml-2"> ({stats.ratingCount})</span>
+          }
+          classNames={{
+            icon: "bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300",
+            value: "flex items-center",
           }}
         />
       </SimpleGrid>

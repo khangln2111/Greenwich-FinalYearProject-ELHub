@@ -1,20 +1,20 @@
 // --- Stats ---
 export interface InstructorDashboardStatsVm {
   totalPublishedCourses: number;
-  publishedCoursesGrowth: number;
+  totalPublishedCoursesGrowth: number;
 
   totalRevenue: number;
-  revenueGrowth: number;
+  totalRevenueGrowth: number;
 
   totalCoursesSold: number;
-  coursesSoldGrowth: number;
+  totalCoursesSoldGrowth: number;
 
   averageRating: number;
   ratingCount: number;
   averageRatingGrowth: number;
 
   totalEnrollments: number;
-  enrollmentsGrowth: number;
+  totalEnrollmentsGrowth: number;
 
   currentBalance: number;
 }
