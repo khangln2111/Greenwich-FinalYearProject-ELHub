@@ -13,7 +13,7 @@ import {
 import { BookOpen, DollarSign, RefreshCcw, ShoppingBag, Star, User } from "lucide-react";
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader";
-import { useGetInstructorDashboardOverview } from "../../../features/instructorDashboard/instructorDashboardHooks";
+import { useGetInstructorDashboard } from "../../../features/instructorDashboard/instructorDashboardHooks";
 import { Legend } from "recharts";
 
 const InstructorDashboardPage = () => {
@@ -23,7 +23,7 @@ const InstructorDashboardPage = () => {
     isFetching: isOverviewFetching,
     error: overviewError,
     refetch: refetchOverview,
-  } = useGetInstructorDashboardOverview();
+  } = useGetInstructorDashboard();
 
   if (isOverviewPending) return <CenterLoader height={600} />;
   if (overviewError) return <p>Error loading dashboard data</p>;

@@ -13,6 +13,7 @@ import { userKeyFac } from "../user/userKeyFac";
 import { instructorKeyFac } from "../instructor/instructorKeyFac";
 import { adminDashboardKeyFac } from "../adminDashboard/adminDashboardKeyFac";
 import { instructorDashboardKeyFac } from "../instructorDashboard/instructorDashboardKeyFac";
+import { userDashboardKeyFac } from "../userDashboard/userDashboardKeyFac";
 
 export const keyFac = mergeQueryKeys(
   courseKeyFac,
@@ -29,4 +30,5 @@ export const keyFac = mergeQueryKeys(
   instructorKeyFac,
   adminDashboardKeyFac,
   instructorDashboardKeyFac,
+  userDashboardKeyFac,
 );

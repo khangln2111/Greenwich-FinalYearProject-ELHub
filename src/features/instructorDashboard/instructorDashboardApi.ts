@@ -3,7 +3,7 @@ import { InstructorDashboardVm } from "./instructorDashboard.types";
 
 const BASE_URL = "/InstructorDashboard";
 
-export const getInstructorDashboardOverview = async () => {
+export const getInstructorDashboard = async () => {
   const response = await apiClient.get<InstructorDashboardVm>(`${BASE_URL}/overview`);
   return response.data;
 };
