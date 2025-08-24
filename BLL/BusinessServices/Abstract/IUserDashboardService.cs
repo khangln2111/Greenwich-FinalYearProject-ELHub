@@ -1,5 +1,8 @@
-﻿namespace BLL.BusinessServices.Abstract;
+﻿using BLL.DTOs.UserDashboardDTOs;
 
-public class IUserDashboardService
+namespace BLL.BusinessServices.Abstract;
+
+public interface IUserDashboardService
 {
+    Task<UserDashboardVm> GetDashboard();
 }

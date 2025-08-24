@@ -8,7 +8,7 @@ namespace API.Controllers;
 [ApiController]
 public class AdminDashboardController(IAdminDashboardService adminDashboardService) : ControllerBase
 {
-    // GET: api/AdminDashboard
+    // GET: api/AdminDashboard/overview
     [HttpGet("overview")]
     [ProducesResponseType<AdminDashboardVm>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetDashboardData()

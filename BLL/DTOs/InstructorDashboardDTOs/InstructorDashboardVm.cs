@@ -4,20 +4,20 @@
 public class InstructorDashboardStatsVm
 {
     public required int TotalPublishedCourses { get; set; }
-    public required double PublishedCoursesGrowth { get; set; }
+    public required double TotalPublishedCoursesGrowth { get; set; }
 
     public required decimal TotalRevenue { get; set; }
-    public required double RevenueGrowth { get; set; }
+    public required double TotalRevenueGrowth { get; set; }
 
     public required int TotalCoursesSold { get; set; }
-    public required double CoursesSoldGrowth { get; set; }
+    public required double TotalCoursesSoldGrowth { get; set; }
 
     public required double AverageRating { get; set; }
     public required int RatingCount { get; set; }
     public required double AverageRatingGrowth { get; set; }
 
     public required int TotalEnrollments { get; set; }
-    public required double EnrollmentsGrowth { get; set; }
+    public required double TotalEnrollmentsGrowth { get; set; }
 
     public required decimal CurrentBalance { get; set; }
 }
