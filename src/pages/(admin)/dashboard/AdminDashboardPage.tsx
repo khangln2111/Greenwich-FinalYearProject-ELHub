@@ -368,7 +368,7 @@ const AdminDashboardPage = () => {
         {/* Course Status Distribution */}
         <Card withBorder radius="2xl" p="lg" className="shadow-lg hover:shadow-xl transition">
           <Text size="lg" fw={600}>
-            Course Status Distribution
+            Course Distribution by Status
           </Text>
           <DonutChart
             withLabelsLine

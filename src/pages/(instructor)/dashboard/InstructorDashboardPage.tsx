@@ -138,7 +138,7 @@ const InstructorDashboardPage = () => {
           className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
         >
           <Text size="lg" fw={600}>
-            Course Status Distribution
+            Course Distribution by Status
           </Text>
           <DonutChart
             withLabelsLine
