@@ -14,6 +14,7 @@ import { BookOpen, DollarSign, RefreshCcw, ShoppingBag, Star, User } from "lucid
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetInstructorDashboardOverview } from "../../../features/instructorDashboard/instructorDashboardHooks";
+import { Legend } from "recharts";
 
 const InstructorDashboardPage = () => {
   const {
@@ -144,11 +145,10 @@ const InstructorDashboardPage = () => {
             withLabelsLine
             withLabels
             withTooltip
-            chartLabel="Courses by status"
             tooltipAnimationDuration={400}
             labelsType="percent"
-            size={240}
-            className="self-center"
+            size={200}
+            className="self-center flex-1"
             pieProps={{
               isAnimationActive: true,
               animationDuration: 1000,
@@ -180,7 +180,9 @@ const InstructorDashboardPage = () => {
                 color: "dark.6",
               },
             ]}
-          />
+          >
+            <Legend verticalAlign="bottom" align="center" iconType="circle" />
+          </DonutChart>
         </Card>
 
         {/* Course Rating Distribution */}

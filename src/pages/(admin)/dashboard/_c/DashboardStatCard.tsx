@@ -73,7 +73,10 @@ export default function DashboardStatCard({
           </p>
         ) : (
           <p
-            className={cn("text-2xl font-bold text-gray-900 dark:text-gray-100", classNames?.value)}
+            className={cn(
+              "text-2xl font-bold text-gray-900 dark:text-gray-100 ",
+              classNames?.value,
+            )}
           >
             {value}
           </p>
@@ -101,7 +104,7 @@ export default function DashboardStatCard({
           <span className="ml-1 text-gray-500 dark:text-gray-400">vs last week</span>
         </div>
       ) : (
-        <span className="text-gray-400 dark:text-gray-600">-</span>
+        <span className="text-gray-400 dark:text-gray-600 invisible">-</span>
       )}
     </div>
   );

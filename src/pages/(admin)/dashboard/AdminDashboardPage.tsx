@@ -23,6 +23,7 @@ import {
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboardHooks";
 import DashboardStatCard from "./_c/DashboardStatCard";
+import { Legend } from "recharts";
 
 const AdminDashboardPage = () => {
   const { data, isPending, isFetching, error, refetch } = useGetAdminDashboard();
@@ -376,8 +377,8 @@ const AdminDashboardPage = () => {
             chartLabel="Courses by status"
             tooltipAnimationDuration={200}
             labelsType="percent"
+            className="flex-1 self-center"
             size={200}
-            className="self-center flex-1"
             pieProps={{
               isAnimationActive: true,
               animationDuration: 1000,
@@ -392,7 +393,14 @@ const AdminDashboardPage = () => {
               { name: "Rejected", value: courseDistributionByStatus.rejected, color: "red.6" },
             ]}
             withTooltip
-          />
+          >
+            <Legend
+              verticalAlign="bottom"
+              align="center"
+              iconType="circle"
+              formatter={(value) => <span style={{ fontSize: 14 }}>{value}</span>}
+            />
+          </DonutChart>
         </Card>
       </SimpleGrid>
     </div>
