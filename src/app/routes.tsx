@@ -34,6 +34,7 @@ import LearningPage from "../pages/(main)/learning/LearningPage";
 import MyAccountPage from "../pages/(main)/my-account/MyAccountPage";
 import OrderHistoryDetailPage from "../pages/(main)/order-detail/OrderHistoryDetailPage";
 import OrderHistoryPage from "../pages/(main)/order-history/OrderHistoryPage";
+import UserDashboardPage from "../pages/(main)/dashboard/UserDashboardPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -70,7 +71,7 @@ const userRoute: RouteObject = {
       path: "dashboard",
       element: <UserDashboardLayout />,
       children: [
-        { index: true, element: <p>User Dashboard Home Page</p> },
+        { index: true, element: <UserDashboardPage /> },
         {
           path: "my-account",
           element: <MyAccountPage />,

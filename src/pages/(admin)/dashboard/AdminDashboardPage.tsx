@@ -62,7 +62,7 @@ const AdminDashboardPage = () => {
           </span>
 
           <Button
-            leftSection={<RefreshCw className={`w-4 h-4 ${isPending ? "animate-spin" : ""}`} />}
+            leftSection={<RefreshCw className="size-4" />}
             onClick={() => refetch()}
             loading={isFetching}
             variant="default"
