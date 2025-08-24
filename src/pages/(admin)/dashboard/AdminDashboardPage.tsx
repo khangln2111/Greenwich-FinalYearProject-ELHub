@@ -1,4 +1,4 @@
-import { BarChart, DonutChart } from "@mantine/charts";
+import { BarChart, CompositeChart, DonutChart } from "@mantine/charts";
 import {
   Badge,
   Button,
@@ -27,18 +27,17 @@ import DashboardStatCard from "./_c/DashboardStatCard";
 const AdminDashboardPage = () => {
   const { data, isPending, isFetching, error, refetch } = useGetAdminDashboard();
 
-  if (isPending) return <CenterLoader />;
+  if (isPending) return <CenterLoader height={600} />;
   if (error) return <p>Error loading dashboard data</p>;
-  if (!data) return null;
 
   const {
     stats,
     topCourses,
     topInstructors,
-    courseStatusDistribution,
-    revenueByCategory,
+    courseDistributionByStatus,
     instructorVerification,
     courseVerification,
+    coursesInfoByCategory,
   } = data;
 
   return (
@@ -208,32 +207,78 @@ const AdminDashboardPage = () => {
         </Card>
       </SimpleGrid>
 
-      {/* Revenue by Category */}
-      <Card withBorder radius="2xl" p="lg" mt="xl" className="shadow-lg hover:shadow-xl transition">
-        <Text size="lg" fw={600} mb="md">
-          Revenue by Category
-        </Text>
+      {/* Course info by Category */}
+      <Card
+        withBorder
+        radius="2xl"
+        p="lg"
+        mt="xl"
+        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
+      >
+        <Title order={4} className="mb-3">
+          Course info by Category
+        </Title>
         <ScrollArea type="auto" offsetScrollbars>
-          <div style={{ minWidth: 1000 }}>
-            <BarChart
-              h={250}
+          <div className="overflow-auto min-w-2xl">
+            <CompositeChart
+              data={coursesInfoByCategory.slice(0, 10)}
+              dataKey="categoryName"
+              h={350}
               withLegend
+              withTooltip
+              maxBarWidth={50}
+              strokeWidth={2}
+              curveType="natural"
+              withPointLabels
               withBarValueLabel
-              tooltipAnimationDuration={200}
-              data={revenueByCategory
-                .sort((a, b) => b.revenue - a.revenue)
-                .slice(0, 8)
-                .map((c) => ({
-                  category: c.categoryName,
-                  revenue: c.revenue,
-                }))}
-              dataKey="category"
-              series={[{ name: "revenue", color: "pink.6" }]}
+              withDots
+              withXAxis
+              withYAxis
+              yAxisLabel="Revenue ($)"
+              withRightYAxis
+              yAxisProps={{
+                unit: "$",
+                yAxisId: "left",
+              }}
+              rightYAxisProps={{
+                yAxisId: "right",
+              }}
               barProps={{
-                radius: 16,
+                radius: 50,
                 isAnimationActive: true,
                 animationDuration: 1000,
               }}
+              lineProps={{
+                isAnimationActive: true,
+                animationDuration: 1000,
+              }}
+              areaProps={{
+                isAnimationActive: true,
+                animationDuration: 1000,
+              }}
+              series={[
+                {
+                  type: "bar",
+                  name: "revenue",
+                  label: "Revenue ($)",
+                  color: "blue.6",
+                  yAxisId: "left",
+                },
+                {
+                  type: "line",
+                  name: "coursesCount",
+                  label: "Number of Courses",
+                  color: "green.6",
+                  yAxisId: "right",
+                },
+                {
+                  type: "area",
+                  name: "coursesSoldCount",
+                  label: "Courses Sold",
+                  color: "orange.6",
+                  yAxisId: "right",
+                },
+              ]}
             />
           </div>
         </ScrollArea>
@@ -263,9 +308,13 @@ const AdminDashboardPage = () => {
               animationDuration: 1000,
             }}
             data={[
-              { name: "Published", value: courseStatusDistribution.published, color: "green.6" },
-              { name: "Pending", value: courseStatusDistribution.pending, color: "yellow.6" },
-              { name: "Rejected", value: courseStatusDistribution.rejected, color: "red.6" },
+              {
+                name: "Published",
+                value: courseDistributionByStatus.published,
+                color: "green.6",
+              },
+              { name: "Pending", value: courseDistributionByStatus.pending, color: "yellow.6" },
+              { name: "Rejected", value: courseDistributionByStatus.rejected, color: "red.6" },
             ]}
             withTooltip
           />

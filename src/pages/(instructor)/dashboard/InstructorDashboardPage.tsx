@@ -24,7 +24,7 @@ const InstructorDashboardPage = () => {
     refetch: refetchOverview,
   } = useGetInstructorDashboardOverview();
 
-  if (isOverviewPending) return <CenterLoader />;
+  if (isOverviewPending) return <CenterLoader height={600} />;
   if (overviewError) return <p>Error loading dashboard data</p>;
 
   const { stats, courseStatusDistribution, topCourses, ratingDistribution, coursesInfoByCategory } =
@@ -268,7 +268,7 @@ const InstructorDashboardPage = () => {
         className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
       >
         <Title order={4} className="mb-3">
-          Rating Distribution
+          Course info by Category
         </Title>
         <ScrollArea type="auto" offsetScrollbars>
           <div className="overflow-auto min-w-2xl">
@@ -288,8 +288,8 @@ const InstructorDashboardPage = () => {
               withYAxis
               yAxisLabel="Revenue ($)"
               withRightYAxis
-              rightYAxisLabel="Courses Count"
               yAxisProps={{
+                unit: "$",
                 yAxisId: "left",
               }}
               rightYAxisProps={{
