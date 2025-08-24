@@ -1,5 +1,6 @@
 ﻿using BLL.BusinessServices.Abstract;
 using BLL.DTOs.AdminDashboardDTOs;
+using DAL.Constants;
 using DAL.Data;
 using DAL.Data.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -16,16 +17,16 @@ public class AdminDashboardService(ApplicationDbContext context)
             Stats = await GetStats(),
             TopCourses = await GetTopCoursesByCourseSold(),
             TopInstructors = await GetTopInstructorByRevenue(),
-            CourseStatusDistribution = await GetCourseStatusDistribution(),
-            RevenueByCategory = await GetRevenueByCategory(),
-            RevenueByMonth = await GetRevenueByMonth(),
+            CourseDistributionByStatus = await GetCourseStatusDistribution(),
             InstructorVerification = await GetInstructorVerification(),
-            CourseVerification = await GetCourseVerification()
+            CourseVerification = await GetCourseVerification(),
+            CoursesInfoByCategory = await GetCoursesInfoByCategory(),
+            RatingDistribution = await GetRatingDistribution()
         };
     }
 
 
-    private async Task<AdminStatsVm> GetStats()
+    private async Task<AdminDashboardStatsVm> GetStats()
     {
         var now = DateTime.Now;
         var thisWeekStart = now.AddDays(-7);
@@ -89,7 +90,41 @@ public class AdminDashboardService(ApplicationDbContext context)
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .SumAsync(oi => (decimal?)(oi.DiscountedPrice * oi.Quantity)) ?? 0;
 
-        return new AdminStatsVm
+        var totalInstructors =
+            await context.Users.CountAsync(u =>
+                u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor));
+
+        var instructorsThisWeek = await context.Users.CountAsync(u =>
+            u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor)
+            && u.CreatedAt >= thisWeekStart);
+
+        var instructorsLastWeek = await context.Users.CountAsync(u =>
+            u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor)
+            && u.CreatedAt >= lastWeekStart && u.CreatedAt < lastWeekEnd);
+
+        var totalPendingCourses = await context.Courses.CountAsync(c => c.Status == CourseStatus.Pending);
+
+        var pendingCoursesThisWeek = await context.Courses.CountAsync(c =>
+            c.Status == CourseStatus.Pending && c.CreatedAt >= thisWeekStart);
+
+        var pendingCoursesLastWeek = await context.Courses.CountAsync(c =>
+            c.Status == CourseStatus.Pending && c.CreatedAt >= lastWeekStart && c.CreatedAt < lastWeekEnd);
+
+        var averageCourseRating = await context.Reviews.Select(r => (double?)r.Rating).AverageAsync() ?? 0;
+
+        var ratingCount = await context.Reviews.CountAsync();
+
+        var averageRatingThisWeek = await context.Reviews
+            .Where(r => r.CreatedAt >= thisWeekStart)
+            .Select(r => (double?)r.Rating)
+            .AverageAsync() ?? 0;
+
+        var averageRatingLastWeek = await context.Reviews
+            .Where(r => r.CreatedAt >= lastWeekStart && r.CreatedAt < lastWeekEnd)
+            .Select(r => (double?)r.Rating)
+            .AverageAsync() ?? 0;
+
+        return new AdminDashboardStatsVm
         {
             TotalPublishedCourses = totalPublishedCourses,
             PendingInstructorApplications = pendingInstructorApps,
@@ -108,18 +143,48 @@ public class AdminDashboardService(ApplicationDbContext context)
                 coursesSoldThisWeek),
             RevenueGrowth = CalcGrowth(revenueLastWeek,
                 revenueThisWeek),
-            TotalCategories = totalCategories
+            TotalCategories = totalCategories,
+            TotalInstructors = totalInstructors,
+            InstructorsGrowth = CalcGrowth(instructorsLastWeek,
+                instructorsThisWeek),
+            TotalPendingCourses = totalPendingCourses,
+            PendingCoursesGrowth = CalcGrowth(pendingCoursesLastWeek,
+                pendingCoursesThisWeek),
+            AverageCourseRating = averageCourseRating,
+            RatingCount = ratingCount,
+            AverageCourseRatingGrowth = CalcGrowth((decimal)averageRatingLastWeek,
+                (decimal)averageRatingThisWeek)
         };
     }
 
     // ================= CHARTS =================
 
-    private async Task<List<BestSellerCourseVm>> GetTopCoursesByCourseSold()
+    private async Task<List<AdminDashboardCoursesInfoByCategoryVm>> GetCoursesInfoByCategory()
+    {
+        var result = await context.Courses
+            .GroupBy(c => c.Category.Name)
+            .Select(g => new AdminDashboardCoursesInfoByCategoryVm
+            {
+                CategoryName = g.Key,
+                CoursesCount = g.Count(),
+                CoursesSoldCount = g.Sum(c => c.OrderItems.Count),
+                Revenue = g.Sum(c => c.OrderItems
+                    .Where(oi => oi.Order.Status == OrderStatus.Completed)
+                    .Sum(oi => (decimal?)oi.DiscountedPrice * oi.Quantity) ?? 0)
+            })
+            .OrderByDescending(c => c.Revenue)
+            .Take(6)
+            .ToListAsync();
+
+        return result;
+    }
+
+    private async Task<List<AdminDashboardBestSellerCourseVm>> GetTopCoursesByCourseSold()
     {
         return await context.OrderItems
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .GroupBy(oi => oi.Course)
-            .Select(g => new BestSellerCourseVm
+            .Select(g => new AdminDashboardBestSellerCourseVm
             {
                 CourseId = g.Key.Id,
                 Title = g.Key.Title,
@@ -132,12 +197,34 @@ public class AdminDashboardService(ApplicationDbContext context)
             .ToListAsync();
     }
 
-    private async Task<List<BestSellerInstructorVm>> GetTopInstructorByRevenue()
+    private async Task<List<AdminDashboardRatingDistributionVm>> GetRatingDistribution()
+    {
+        var query = await context.Reviews
+            .GroupBy(r => r.Rating)
+            .Select(g => new
+            {
+                Star = g.Key,
+                Count = g.Count()
+            })
+            .ToListAsync();
+
+        var distribution = Enumerable.Range(1, 5)
+            .Select(s => new AdminDashboardRatingDistributionVm
+            {
+                Star = s,
+                Count = query.FirstOrDefault(x => x.Star == s)?.Count ?? 0
+            })
+            .ToList();
+
+        return distribution;
+    }
+
+    private async Task<List<AdminDashboardBestSellerInstructorVm>> GetTopInstructorByRevenue()
     {
         return await context.OrderItems
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .GroupBy(oi => oi.Course.Instructor)
-            .Select(g => new BestSellerInstructorVm
+            .Select(g => new AdminDashboardBestSellerInstructorVm
             {
                 InstructorId = g.Key.Id,
                 InstructorName = g.Key.FirstName + " " + g.Key.LastName,
@@ -149,22 +236,28 @@ public class AdminDashboardService(ApplicationDbContext context)
             .ToListAsync();
     }
 
-    private async Task<CourseStatusDistributionVm> GetCourseStatusDistribution()
+    private async Task<AdminDashboardCourseDistributionByStatusVm> GetCourseStatusDistribution()
     {
-        return new CourseStatusDistributionVm
+        var dict = await context.Courses
+            .GroupBy(c => c.Status)
+            .Select(g => new { Status = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.Status, x => x.Count);
+
+        return new AdminDashboardCourseDistributionByStatusVm
         {
-            Published = await context.Courses.CountAsync(c => c.Status == CourseStatus.Published),
-            Pending = await context.Courses.CountAsync(c => c.Status == CourseStatus.Pending),
-            Rejected = await context.Courses.CountAsync(c => c.Status == CourseStatus.Rejected)
+            Published = dict.GetValueOrDefault(CourseStatus.Published),
+            Pending = dict.GetValueOrDefault(CourseStatus.Pending),
+            Rejected = dict.GetValueOrDefault(CourseStatus.Rejected)
         };
     }
 
-    private async Task<List<RevenueByCategoryVm>> GetRevenueByCategory()
+
+    private async Task<List<AdminDashboardRevenueByCategoryVm>> GetRevenueByCategory()
     {
         return await context.OrderItems
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .GroupBy(oi => oi.Course.Category.Name)
-            .Select(g => new RevenueByCategoryVm
+            .Select(g => new AdminDashboardRevenueByCategoryVm
             {
                 CategoryName = g.Key,
                 Revenue = g.Sum(x => x.DiscountedPrice * x.Quantity)
@@ -172,26 +265,12 @@ public class AdminDashboardService(ApplicationDbContext context)
             .ToListAsync();
     }
 
-    private async Task<List<RevenueByMonthVm>> GetRevenueByMonth()
-    {
-        return await context.OrderItems
-            .Where(oi => oi.Order.Status == OrderStatus.Completed)
-            .GroupBy(oi => new { oi.Order.CreatedAt.Year, oi.Order.CreatedAt.Month })
-            .Select(g => new RevenueByMonthVm
-            {
-                Year = g.Key.Year,
-                Month = g.Key.Month,
-                Revenue = g.Sum(x => x.DiscountedPrice * x.Quantity)
-            })
-            .OrderBy(r => r.Year).ThenBy(r => r.Month)
-            .ToListAsync();
-    }
 
     // ================= VERIFICATION =================
 
-    private async Task<VerificationProgressVm> GetInstructorVerification()
+    private async Task<AdminDashboardVerificationProgressVm> GetInstructorVerification()
     {
-        return new VerificationProgressVm
+        return new AdminDashboardVerificationProgressVm
         {
             Approved = await context.InstructorApplications.CountAsync(a =>
                 a.Status == InstructorApplicationStatus.Approved),
@@ -200,9 +279,9 @@ public class AdminDashboardService(ApplicationDbContext context)
         };
     }
 
-    private async Task<VerificationProgressVm> GetCourseVerification()
+    private async Task<AdminDashboardVerificationProgressVm> GetCourseVerification()
     {
-        return new VerificationProgressVm
+        return new AdminDashboardVerificationProgressVm
         {
             Approved = await context.Courses.CountAsync(c => c.Status == CourseStatus.Published),
             Pending = await context.Courses.CountAsync(c => c.Status == CourseStatus.Pending)

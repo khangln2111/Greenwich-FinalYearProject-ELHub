@@ -1,12 +1,22 @@
 ﻿namespace BLL.DTOs.AdminDashboardDTOs;
 
-public class AdminStatsVm
+public class AdminDashboardStatsVm
 {
     public required int TotalPublishedCourses { get; set; }
     public required double PublishedCoursesGrowth { get; set; } // Growth percentage compared to the previous week
 
     public required int PendingInstructorApplications { get; set; }
     public required double PendingInstructorApplicationsGrowth { get; set; }
+
+    public required int TotalInstructors { get; set; }
+    public required double InstructorsGrowth { get; set; }
+
+    public required int TotalPendingCourses { get; set; }
+    public required double PendingCoursesGrowth { get; set; }
+
+    public required double AverageCourseRating { get; set; }
+    public required int RatingCount { get; set; }
+    public required double AverageCourseRatingGrowth { get; set; }
 
     public required int TotalCategories { get; set; }
 
@@ -21,7 +31,16 @@ public class AdminStatsVm
 }
 
 // --- CHARTS ---
-public class BestSellerCourseVm
+
+public class AdminDashboardCoursesInfoByCategoryVm
+{
+    public required string CategoryName { get; set; }
+    public int CoursesCount { get; set; }
+    public int CoursesSoldCount { get; set; }
+    public decimal Revenue { get; set; }
+}
+
+public class AdminDashboardBestSellerCourseVm
 {
     public Guid CourseId { get; set; }
     public required string Title { get; set; }
@@ -30,7 +49,7 @@ public class BestSellerCourseVm
     public decimal Revenue { get; set; }
 }
 
-public class BestSellerInstructorVm
+public class AdminDashboardBestSellerInstructorVm
 {
     public Guid InstructorId { get; set; }
     public required string InstructorName { get; set; }
@@ -38,27 +57,26 @@ public class BestSellerInstructorVm
     public decimal TotalRevenue { get; set; }
 }
 
-public class CourseStatusDistributionVm
+public class AdminDashboardCourseDistributionByStatusVm
 {
     public int Published { get; set; }
     public int Pending { get; set; }
     public int Rejected { get; set; }
 }
 
-public class RevenueByCategoryVm
+public class AdminDashboardRatingDistributionVm
+{
+    public int Star { get; set; } // 1-5
+    public int Count { get; set; }
+}
+
+public class AdminDashboardRevenueByCategoryVm
 {
     public required string CategoryName { get; set; }
     public decimal Revenue { get; set; }
 }
 
-public class RevenueByMonthVm
-{
-    public int Year { get; set; }
-    public int Month { get; set; }
-    public decimal Revenue { get; set; }
-}
-
-public class VerificationProgressVm
+public class AdminDashboardVerificationProgressVm
 {
     public int Approved { get; set; }
     public int Pending { get; set; }
@@ -70,12 +88,12 @@ public class VerificationProgressVm
 // --- MAIN VIEW MODEL ---
 public class AdminDashboardVm
 {
-    public required AdminStatsVm Stats { get; set; }
-    public required List<BestSellerCourseVm> TopCourses { get; set; }
-    public required List<BestSellerInstructorVm> TopInstructors { get; set; }
-    public required CourseStatusDistributionVm CourseStatusDistribution { get; set; }
-    public required List<RevenueByCategoryVm> RevenueByCategory { get; set; }
-    public required List<RevenueByMonthVm> RevenueByMonth { get; set; }
-    public required VerificationProgressVm InstructorVerification { get; set; }
-    public required VerificationProgressVm CourseVerification { get; set; }
+    public required AdminDashboardStatsVm Stats { get; set; }
+    public required List<AdminDashboardBestSellerCourseVm> TopCourses { get; set; }
+    public required List<AdminDashboardBestSellerInstructorVm> TopInstructors { get; set; }
+    public required AdminDashboardCourseDistributionByStatusVm CourseDistributionByStatus { get; set; }
+    public required List<AdminDashboardRatingDistributionVm> RatingDistribution { get; set; }
+    public required List<AdminDashboardCoursesInfoByCategoryVm> CoursesInfoByCategory { get; set; }
+    public required AdminDashboardVerificationProgressVm InstructorVerification { get; set; }
+    public required AdminDashboardVerificationProgressVm CourseVerification { get; set; }
 }

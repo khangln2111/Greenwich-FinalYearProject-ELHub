@@ -33,29 +33,23 @@ public class InstructorDashboardService(
 
     private async Task<List<InstructorDashboardCoursesInfoByCategoryVm>> GetCoursesInfoByCategory(Guid instructorId)
     {
-        var courses = await context.Courses
+        var result = await context.Courses
             .Where(c => c.InstructorId == instructorId)
-            .Include(c => c.Category)
-            .Include(c => c.Enrollments)
-            .Include(c => c.OrderItems)
-            .ThenInclude(oi => oi.Order)
-            .ToListAsync();
-
-        var grouped = courses
             .GroupBy(c => c.Category.Name)
             .Select(g => new InstructorDashboardCoursesInfoByCategoryVm
             {
                 CategoryName = g.Key,
                 CoursesCount = g.Count(),
                 CoursesSoldCount = g.Sum(c => c.OrderItems.Count),
-                Revenue = g.Sum(c => g.Sum(c => c.OrderItems
+                Revenue = g.Sum(c => c.OrderItems
                     .Where(oi => oi.Order.Status == OrderStatus.Completed)
-                    .Sum(oi => (decimal?)oi.DiscountedPrice * oi.Quantity) ?? 0))
+                    .Sum(oi => (decimal?)oi.DiscountedPrice * oi.Quantity) ?? 0)
             })
             .OrderByDescending(c => c.Revenue)
-            .ToList();
+            .Take(6)
+            .ToListAsync();
 
-        return grouped;
+        return result;
     }
 
     private async Task<InstructorDashboardStatsVm> GetStats(Guid instructorId)
@@ -134,10 +128,12 @@ public class InstructorDashboardService(
                          oi.Order.CreatedAt >= lastWeekStart && oi.Order.CreatedAt < lastWeekEnd)
             .SumAsync(oi => (decimal?)oi.DiscountedPrice * oi.Quantity) ?? 0;
 
-        var totalAverageRating = await context.Enrollments
-            .Include(e => e.Course)
-            .Where(e => e.Course.InstructorId == instructorId && e.Review != null)
-            .Select(e => (double?)e.Review!.Rating)
+
+        var totalAverageRating = await context.Reviews
+            .Include(r => r.Enrollment)
+            .ThenInclude(e => e.Course)
+            .Where(r => r.Enrollment.Course.InstructorId == instructorId)
+            .Select(r => (double?)r.Rating)
             .AverageAsync() ?? 0;
 
         var ratingCount = await context.Reviews
@@ -146,18 +142,20 @@ public class InstructorDashboardService(
             .Where(r => r.Enrollment.Course.InstructorId == instructorId)
             .CountAsync();
 
-        var thisWeekAvgRating = await context.Enrollments
-            .Include(e => e.Course)
-            .Where(e => e.Course.InstructorId == instructorId && e.Review != null &&
-                        e.Review.CreatedAt >= thisWeekStart)
-            .Select(e => (double?)e.Review!.Rating)
+        var thisWeekAvgRating = await context.Reviews
+            .Include(r => r.Enrollment)
+            .ThenInclude(e => e.Course)
+            .Where(r => r.Enrollment.Course.InstructorId == instructorId &&
+                        r.CreatedAt >= thisWeekStart)
+            .Select(r => (double?)r.Rating)
             .AverageAsync() ?? 0;
 
-        var lastWeekAvgRating = await context.Enrollments
-            .Include(e => e.Course)
-            .Where(e => e.Course.InstructorId == instructorId && e.Review != null &&
-                        e.Review.CreatedAt >= lastWeekStart && e.Review.CreatedAt < lastWeekEnd)
-            .Select(e => (double?)e.Review!.Rating)
+        var lastWeekAvgRating = await context.Reviews
+            .Include(r => r.Enrollment)
+            .ThenInclude(e => e.Course)
+            .Where(r => r.Enrollment.Course.InstructorId == instructorId &&
+                        r.CreatedAt >= lastWeekStart && r.CreatedAt < lastWeekEnd)
+            .Select(r => (double?)r.Rating)
             .AverageAsync() ?? 0;
 
         var balance = await context.Users
@@ -205,20 +203,21 @@ public class InstructorDashboardService(
 
     private async Task<List<InstructorDashboardRatingDistributionVm>> GetRatingDistribution(Guid instructorId)
     {
-        var reviews = await context.Courses
-            .Where(c => c.InstructorId == instructorId)
-            .SelectMany(c => context.Reviews.Where(r => r.Enrollment.CourseId == c.Id))
+        var query = await context.Reviews
+            .Where(r => r.Enrollment.Course.InstructorId == instructorId)
+            .GroupBy(r => r.Rating)
+            .Select(g => new
+            {
+                Star = g.Key,
+                Count = g.Count()
+            })
             .ToListAsync();
 
-        // Generate distribution for 1 to 5 stars
-        var stars = Enumerable.Range(1, 5);
-
-        // Create distribution based on reviews
-        var distribution = stars
+        var distribution = Enumerable.Range(1, 5)
             .Select(s => new InstructorDashboardRatingDistributionVm
             {
                 Star = s,
-                Count = reviews.Count(r => r.Rating == s)
+                Count = query.FirstOrDefault(x => x.Star == s)?.Count ?? 0
             })
             .ToList();
 
@@ -227,26 +226,19 @@ public class InstructorDashboardService(
 
     private async Task<InstructorDashboardCourseDistributionByStatusVm> GetCourseDistributionByStatus(Guid instructorId)
     {
-        var courseStatuses = await context.Courses
+        return await context.Courses
             .Where(c => c.InstructorId == instructorId)
-            .GroupBy(c => c.Status)
-            .Select(g => new
+            .GroupBy(c => 1)
+            .Select(g => new InstructorDashboardCourseDistributionByStatusVm
             {
-                Status = g.Key,
-                Count = g.Count()
+                Published = g.Count(c => c.Status == CourseStatus.Published),
+                Pending = g.Count(c => c.Status == CourseStatus.Pending),
+                Rejected = g.Count(c => c.Status == CourseStatus.Rejected),
+                Draft = g.Count(c => c.Status == CourseStatus.Draft),
+                Archived = g.Count(c => c.Status == CourseStatus.Archived)
             })
-            .ToListAsync();
-
-        return new InstructorDashboardCourseDistributionByStatusVm
-        {
-            Published = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Published)?.Count ?? 0,
-            Pending = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Pending)?.Count ?? 0,
-            Rejected = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Rejected)?.Count ?? 0,
-            Draft = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Draft)?.Count ?? 0,
-            Archived = courseStatuses.FirstOrDefault(s => s.Status == CourseStatus.Archived)?.Count ?? 0
-        };
+            .FirstOrDefaultAsync() ?? new InstructorDashboardCourseDistributionByStatusVm();
     }
-
 
     private double CalcGrowth(int lastWeekValue, int currentValue)
     {
