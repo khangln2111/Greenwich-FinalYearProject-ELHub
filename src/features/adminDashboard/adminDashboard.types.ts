@@ -67,7 +67,12 @@ export interface AdminDashboardRevenueByCategoryVm {
 export interface AdminDashboardVerificationProgressVm {
   approved: number;
   pending: number;
-  percentageApproved: number; // bên C# là computed => ở TS nên trả sẵn từ API
+  percentageApproved: number;
+}
+
+export interface AdminDashboardRatingDistributionVm {
+  star: number;
+  count: number;
 }
 
 // --- MAIN VIEW MODEL ---
@@ -77,6 +82,7 @@ export interface AdminDashboardVm {
   topInstructors: AdminDashboardBestSellerInstructorVm[];
   courseDistributionByStatus: AdminDashboardCourseDistributionByStatusVm;
   revenueByCategory: AdminDashboardRevenueByCategoryVm[];
+  ratingDistribution: AdminDashboardRatingDistributionVm[];
   coursesInfoByCategory: AdminDashboardCoursesInfoByCategoryVm[];
   instructorVerification: AdminDashboardVerificationProgressVm;
   courseVerification: AdminDashboardVerificationProgressVm;

@@ -1,4 +1,4 @@
-import { BarChart, CompositeChart, DonutChart } from "@mantine/charts";
+import { BarChart, CompositeChart, DonutChart, RadarChart } from "@mantine/charts";
 import {
   Badge,
   Button,
@@ -38,6 +38,7 @@ const AdminDashboardPage = () => {
     instructorVerification,
     courseVerification,
     coursesInfoByCategory,
+    ratingDistribution,
   } = data;
 
   return (
@@ -284,14 +285,88 @@ const AdminDashboardPage = () => {
         </ScrollArea>
       </Card>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-lg mt-xl">
-        {/* Course Status Distribution */}
+      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl" className="min-h-[350px]">
+        {/* Instructor Verification Progress */}
+        <Card withBorder radius="2xl" p="lg" className="shadow-lg hover:shadow-xl transition">
+          <Text size="lg" fw={600}>
+            Instructor Verification Progress
+          </Text>
+          <div className="flex-1 self-center flex justify-center items-center">
+            <SemiCircleProgress
+              transitionDuration={200}
+              thickness={20}
+              size={300}
+              value={instructorVerification.percentageApproved}
+              label={
+                <div className="text-center">
+                  <Text size="sm" c="dimmed">
+                    ({instructorVerification.approved}/
+                    {instructorVerification.pending + instructorVerification.approved})
+                  </Text>
+                  <Text fw={600}>{instructorVerification.percentageApproved}% Approved</Text>
+                </div>
+              }
+            />
+          </div>
+        </Card>
+
+        {/* Course Verification Progress */}
+        <Card withBorder radius="2xl" p="lg" className="shadow-lg hover:shadow-xl transition">
+          <Text size="lg" fw={600}>
+            Course Verification Progress
+          </Text>
+          <div className="flex-1 self-center flex justify-center items-center">
+            <SemiCircleProgress
+              filledSegmentColor="violet"
+              transitionDuration={600}
+              thickness={20}
+              size={300}
+              value={courseVerification.percentageApproved}
+              label={
+                <div className="text-center">
+                  <Text size="sm" c="dimmed">
+                    ({courseVerification.approved}/
+                    {courseVerification.pending + courseVerification.approved})
+                  </Text>
+                  <Text fw={600}>{courseVerification.percentageApproved}% Approved</Text>
+                </div>
+              }
+            />
+          </div>
+        </Card>
+      </SimpleGrid>
+
+      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl">
+        {/* Course Rating Distribution */}
         <Card
           withBorder
           radius="2xl"
           p="lg"
-          className="mih-[300px] shadow-lg hover:shadow-xl transition"
+          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
         >
+          <Title order={4} className="mb-3">
+            Rating Distribution
+          </Title>
+          <RadarChart
+            data={ratingDistribution}
+            dataKey="star"
+            series={[{ name: "count", label: "Ratings", color: "yellow", opacity: 0.2 }]}
+            h={320}
+            withPolarGrid
+            withPolarAngleAxis
+            withPolarRadiusAxis
+            withTooltip
+            withDots
+            withLegend
+            radarProps={{
+              isAnimationActive: true,
+              animationDuration: 1000,
+            }}
+          />
+        </Card>
+
+        {/* Course Status Distribution */}
+        <Card withBorder radius="2xl" p="lg" className="shadow-lg hover:shadow-xl transition">
           <Text size="lg" fw={600}>
             Course Status Distribution
           </Text>
@@ -302,7 +377,7 @@ const AdminDashboardPage = () => {
             tooltipAnimationDuration={200}
             labelsType="percent"
             size={200}
-            className="self-center"
+            className="self-center flex-1"
             pieProps={{
               isAnimationActive: true,
               animationDuration: 1000,
@@ -319,69 +394,7 @@ const AdminDashboardPage = () => {
             withTooltip
           />
         </Card>
-
-        {/* Group for 2 progress cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:col-span-2 gap-lg">
-          {/* Instructor Verification Progress */}
-          <Card
-            withBorder
-            radius="2xl"
-            p="lg"
-            className="mih-[300px] shadow-lg hover:shadow-xl transition"
-          >
-            <Text size="lg" fw={600}>
-              Instructor Verification Progress
-            </Text>
-            <div className="flex-1 self-center flex justify-center items-center">
-              <SemiCircleProgress
-                transitionDuration={200}
-                thickness={20}
-                size={300}
-                value={instructorVerification.percentageApproved}
-                label={
-                  <div className="text-center">
-                    <Text size="sm" c="dimmed">
-                      ({instructorVerification.approved}/
-                      {instructorVerification.pending + instructorVerification.approved})
-                    </Text>
-                    <Text fw={600}>{instructorVerification.percentageApproved}% Approved</Text>
-                  </div>
-                }
-              />
-            </div>
-          </Card>
-
-          {/* Course Verification Progress */}
-          <Card
-            withBorder
-            radius="2xl"
-            p="lg"
-            className="mih-[300px] shadow-lg hover:shadow-xl transition"
-          >
-            <Text size="lg" fw={600}>
-              Course Verification Progress
-            </Text>
-            <div className="flex-1 self-center flex justify-center items-center">
-              <SemiCircleProgress
-                filledSegmentColor="violet"
-                transitionDuration={600}
-                thickness={20}
-                size={300}
-                value={courseVerification.percentageApproved}
-                label={
-                  <div className="text-center">
-                    <Text size="sm" c="dimmed">
-                      ({courseVerification.approved}/
-                      {courseVerification.pending + courseVerification.approved})
-                    </Text>
-                    <Text fw={600}>{courseVerification.percentageApproved}% Approved</Text>
-                  </div>
-                }
-              />
-            </div>
-          </Card>
-        </div>
-      </div>
+      </SimpleGrid>
     </div>
   );
 };

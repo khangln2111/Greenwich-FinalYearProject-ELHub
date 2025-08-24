@@ -258,8 +258,7 @@ const InstructorDashboardPage = () => {
         </Table.ScrollContainer>
       </Card>
 
-      {/* composite chart */}
-
+      {/* course info by category chart */}
       <Card
         withBorder
         radius="2xl"
