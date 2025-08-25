@@ -24,11 +24,11 @@ export const registerSchema = z
     email: z.string().min(1, "Please enter your email").email("Invalid email address").trim(),
     password: z
       .string()
-      .min(8, "Password must have at least 8 characters")
-      .regex(/[0-9]/, "Include at least one number in your password")
       .regex(/[a-z]/, "Add at least one lowercase letter")
       .regex(/[A-Z]/, "Add at least one uppercase letter")
-      .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Use at least one special symbol like !@#$"),
+      .regex(/[0-9]/, "Include at least one number in your password")
+      .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Use at least one special symbol like !@#$")
+      .min(8, "Enter at least 8 characters"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
   .refine((values) => values.password === values.confirmPassword, {

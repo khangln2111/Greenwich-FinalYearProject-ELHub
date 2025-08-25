@@ -48,6 +48,7 @@ const RegisterForm = () => {
       password: "",
       confirmPassword: "",
     },
+    mode: "uncontrolled",
     validate: zodResolver(registerSchema),
   });
 
@@ -117,10 +118,9 @@ const RegisterForm = () => {
           withAsterisk
           label="Your password"
           placeholder="Your password"
-          password={form.values.password}
+          {...form.getInputProps("password")}
           leftSection={<IconLock size={16} stroke={1.5} />}
           requirements={passwordRequirements}
-          onPasswordChange={(value) => form.setFieldValue("password", value)}
           radius="xl"
           mt="md"
           classNames={{

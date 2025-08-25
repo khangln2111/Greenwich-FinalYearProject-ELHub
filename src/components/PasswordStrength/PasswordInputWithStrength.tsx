@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PasswordInput, Progress, Popover, PasswordInputProps } from "@mantine/core";
 import { PasswordRequirement } from "./PasswordRequirement";
+import { useUncontrolled } from "@mantine/hooks";
 
 // Type for password requirements
 type Requirement = {
@@ -8,10 +9,12 @@ type Requirement = {
   validate: (value: string) => boolean;
 };
 
-interface PasswordInputWithStrengthProps extends PasswordInputProps {
+interface PasswordInputWithStrengthProps extends Omit<PasswordInputProps, "onChange" | "value"> {
   requirements: Requirement[];
-  password: string;
-  onPasswordChange: (value: string) => void;
+  value?: string;
+  defaultValue?: string;
+  onChange: (value: string) => void;
+  error?: string | null;
 }
 
 function getStrength(password: string, requirements: Requirement[]) {
@@ -28,12 +31,20 @@ function getStrength(password: string, requirements: Requirement[]) {
 
 const PasswordInputWithStrength = ({
   requirements,
-  password,
-  onPasswordChange,
+  value,
+  defaultValue,
+  onChange,
+  error,
   ...rest
 }: PasswordInputWithStrengthProps) => {
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const strength = getStrength(password, requirements);
+  const [_value, handleChange] = useUncontrolled({
+    value,
+    defaultValue,
+    finalValue: "",
+    onChange,
+  });
+  const strength = getStrength(_value, requirements);
   const color = strength === 100 ? "teal" : strength > 50 ? "yellow" : "red";
 
   return (
@@ -49,9 +60,9 @@ const PasswordInputWithStrength = ({
           onBlurCapture={() => setPopoverOpened(false)}
         >
           <PasswordInput
-            value={password}
-            onChange={(event) => onPasswordChange(event.currentTarget.value)}
-            error={strength < 100 && password.length > 0 ? "Password is too weak" : null}
+            value={value}
+            onChange={(event) => handleChange(event.currentTarget.value)}
+            error={error ?? (strength < 100 && _value.length > 0 ? "Password is too weak" : null)}
             {...rest}
           />
         </div>
@@ -63,7 +74,7 @@ const PasswordInputWithStrength = ({
             <PasswordRequirement
               key={index}
               label={requirement.label}
-              meets={requirement.validate(password)}
+              meets={requirement.validate(_value)}
             />
           ))}
         </div>
