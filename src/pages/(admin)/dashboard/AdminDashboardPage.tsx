@@ -347,13 +347,16 @@ const AdminDashboardPage = () => {
               size={300}
               value={instructorVerification.percentageApproved}
               label={
-                <div className="text-center">
-                  <Text size="sm" c="dimmed">
+                <span className="inline-block text-center leading-snug">
+                  <span className="text-sm text-gray-500">
                     ({instructorVerification.approved}/
                     {instructorVerification.pending + instructorVerification.approved})
-                  </Text>
-                  <Text fw={600}>{instructorVerification.percentageApproved}% Approved</Text>
-                </div>
+                  </span>
+                  <br />
+                  <span className="font-semibold">
+                    {instructorVerification.percentageApproved}% Approved
+                  </span>
+                </span>
               }
             />
           </div>
@@ -377,13 +380,16 @@ const AdminDashboardPage = () => {
               size={300}
               value={courseVerification.percentageApproved}
               label={
-                <div className="text-center">
-                  <Text size="sm" c="dimmed">
+                <span className="inline-block text-center leading-snug">
+                  <span className="text-sm text-gray-500">
                     ({courseVerification.approved}/
                     {courseVerification.pending + courseVerification.approved})
-                  </Text>
-                  <Text fw={600}>{courseVerification.percentageApproved}% Approved</Text>
-                </div>
+                  </span>
+                  <br />
+                  <span className="font-semibold">
+                    {courseVerification.percentageApproved}% Approved
+                  </span>
+                </span>
               }
             />
           </div>

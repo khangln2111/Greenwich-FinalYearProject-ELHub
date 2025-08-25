@@ -58,19 +58,12 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
       >
         <Link
           to="/instructor/dashboard"
-          className="no-underline select-none flex items-center text-black dark:text-white"
+          className={cn("no-underline select-none flex items-center text-black dark:text-white", {
+            "gap-2 font-semibold text-2xl": !collapsedToIcon,
+          })}
         >
-          {collapsedToIcon ? (
-            <MantineLogo color="primary" size={30} type="mark" />
-          ) : (
-            <Link
-              to="/instructor/dashboard"
-              className="no-underline select-none flex items-center text-black dark:text-white gap-2 font-semibold text-2xl"
-            >
-              <MantineLogo color="primary" size={30} type="mark" />
-              <span className="font-[Inter] tracking-wide font-bold">ELHub</span>
-            </Link>
-          )}
+          <MantineLogo color="primary" size={30} type="mark" />
+          {!collapsedToIcon && <span className="font-[Inter] tracking-wide font-bold">ELHub</span>}
         </Link>
       </div>
       {/* header: instructor sidebar */}

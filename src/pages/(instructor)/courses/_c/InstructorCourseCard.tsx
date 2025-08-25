@@ -57,7 +57,7 @@ export default function InstructorCourseCard({ course }: Props) {
       <img
         src={course.imageUrl || "haha"}
         alt={course.title}
-        className="rounded-xl object-cover mb-4 aspect-video"
+        className="rounded-xl object-cover mb-4 aspect-video border border-black/10 dark:border-white/10"
       />
       <div className="flex-1">
         <h2 className="text-lg font-bold mb-1 text-gray-900 dark:text-white line-clamp-2">

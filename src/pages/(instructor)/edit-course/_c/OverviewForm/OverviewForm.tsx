@@ -1,8 +1,8 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { Box, Button, Group, Select, Textarea, TextInput, Title } from "@mantine/core";
+import { Box, Button, Group, NumberInput, Select, Textarea, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { randomId } from "@mantine/hooks";
-import { ArrowUpNarrowWide } from "lucide-react";
+import { ArrowUpNarrowWide, DollarSign, TicketPercent } from "lucide-react";
 import FileUploadField from "../../../../../components/media/FileUploadField";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -44,6 +44,8 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
       image: courseDetail.imageUrl ?? "",
       promoVideo: courseDetail.promoVideoUrl ?? "",
       level: courseDetail.level ?? CourseLevel.Beginner,
+      discountedPrice: courseDetail.discountedPrice ?? 0,
+      price: courseDetail.price ?? 0,
     },
     validate: zodResolver(updateCourseOverviewSchema),
   });
@@ -85,6 +87,8 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
       image: values.image instanceof File ? values.image : undefined,
       promoVideo: values.promoVideo instanceof File ? values.promoVideo : undefined,
       level: values.level,
+      price: values.price,
+      discountedPrice: values.discountedPrice,
     };
     updateCourseOverviewMutation.mutate(payload, {
       onSuccess: () => {
@@ -117,6 +121,29 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
           minRows={4}
           mt="xs"
           {...form.getInputProps("description")}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+        <NumberInput
+          size="md"
+          min={0}
+          clampBehavior="strict"
+          label="Price"
+          placeholder="e.g: 199.99"
+          {...form.getInputProps("price")}
+          key={form.key("price")}
+          leftSection={<DollarSign className="size-4 text-gray-500" />}
+        />
+        <NumberInput
+          size="md"
+          min={0}
+          clampBehavior="strict"
+          label="Discounted Price"
+          placeholder="e.g: 99.99 (must be less than price)"
+          key={form.key("discountedPrice")}
+          {...form.getInputProps("discountedPrice")}
+          leftSection={<TicketPercent className="size-4 text-gray-500" />}
         />
       </div>
 

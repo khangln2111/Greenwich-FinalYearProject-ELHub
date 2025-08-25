@@ -1,7 +1,7 @@
-import { Button, Select } from "@mantine/core";
+import { ActionIcon, Button, Select, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { GraduationCap, Plus } from "lucide-react";
-import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
+import { GraduationCap, Plus, SearchIcon } from "lucide-react";
+import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import { CourseStatus } from "../../../features/course/course.types";
 import { useGetCourses } from "../../../features/course/courseHooks";
@@ -9,6 +9,7 @@ import CreateCourseModal from "./_c/CreateCourseModal";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
 import { useAppStore } from "../../../zustand/stores/appStore";
+import { useState } from "react";
 
 export default function InstructorCoursesPage() {
   const [createCourseModalOpened, { open: openCreateCourseModal, close: closeCreateCourseModal }] =
@@ -23,24 +24,37 @@ export default function InstructorCoursesPage() {
 
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(9));
+
+  const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
+  const [searchInput, setSearchInput] = useState(search);
   const { data, isPending: isCoursesPending } = useGetCourses({
     page,
     pageSize,
     status: status === "All" ? undefined : status,
     instructorId: currentUser?.id,
+    search: search,
   });
+
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
+    setSearch(searchInput);
+    setPage(1);
+  };
 
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+        {/* Title */}
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">My Courses</h1>
-        <div className="flex flex-wrap gap-4">
+
+        {/* Controls: Button + Select + Search */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
           <Button
             onClick={openCreateCourseModal}
             leftSection={<Plus className="size-4" />}
             size="sm"
-            className="flex-1 px-0"
+            className="w-full sm:w-auto"
           >
             New Course
           </Button>
@@ -58,7 +72,44 @@ export default function InstructorCoursesPage() {
             checkIconPosition="right"
             onChange={(val) => setStatus(val as CourseStatus | "All")}
             placeholder="Filter by status"
-            className="flex-1"
+            className="w-full sm:w-60"
+          />
+
+          <TextInput
+            placeholder="Search courses..."
+            className="w-full sm:w-60"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearchSubmit(e);
+            }}
+            rightSectionPointerEvents="all"
+            rightSection={
+              search ? (
+                <ActionIcon
+                  variant="subtle"
+                  size="lg"
+                  onClick={() => {
+                    setSearchInput("");
+                    setSearch("");
+                    setPage(1);
+                  }}
+                  aria-label="Clear search"
+                >
+                  ✕
+                </ActionIcon>
+              ) : (
+                <ActionIcon
+                  type="submit"
+                  variant="subtle"
+                  size="lg"
+                  onClick={handleSearchSubmit}
+                  aria-label="Search"
+                >
+                  <SearchIcon className="text-gray-500" size={16} />
+                </ActionIcon>
+              )
+            }
           />
         </div>
       </div>
