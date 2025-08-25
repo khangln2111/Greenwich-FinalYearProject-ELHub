@@ -33,93 +33,99 @@ public class AdminDashboardService(ApplicationDbContext context)
         var lastWeekStart = now.AddDays(-14);
         var lastWeekEnd = now.AddDays(-7);
 
-        var totalCategories = await context.Categories.CountAsync();
+        var totalCategories = await context.Categories
+            .AsNoTracking()
+            .CountAsync();
 
         var publishedCoursesThisWeek =
-            await context.Courses.CountAsync(c => c.Status == CourseStatus.Published && c.CreatedAt >= thisWeekStart);
+            await context.Courses.AsNoTracking()
+                .CountAsync(c => c.Status == CourseStatus.Published && c.CreatedAt >= thisWeekStart);
 
         var publishedCoursesLastWeek =
-            await context.Courses.CountAsync(c =>
+            await context.Courses.AsNoTracking().CountAsync(c =>
                 c.Status == CourseStatus.Published && c.CreatedAt >= lastWeekStart && c.CreatedAt < lastWeekEnd);
 
-        var totalPublishedCourses = await context.Courses.CountAsync(c => c.Status == CourseStatus.Published);
+        var totalPublishedCourses =
+            await context.Courses.AsNoTracking().CountAsync(c => c.Status == CourseStatus.Published);
 
         var pendingInstructorAppsThisWeek =
-            await context.InstructorApplications.CountAsync(a =>
+            await context.InstructorApplications.AsNoTracking().CountAsync(a =>
                 a.Status == InstructorApplicationStatus.Pending && a.CreatedAt >= thisWeekStart);
 
         var pendingInstructorAppsLastWeek =
-            await context.InstructorApplications.CountAsync(a =>
+            await context.InstructorApplications.AsNoTracking().CountAsync(a =>
                 a.Status == InstructorApplicationStatus.Pending &&
                 a.CreatedAt >= lastWeekStart && a.CreatedAt < lastWeekEnd);
 
-        var pendingInstructorApps = await context.InstructorApplications
+        var pendingInstructorApps = await context.InstructorApplications.AsNoTracking()
             .CountAsync(a => a.Status == InstructorApplicationStatus.Pending);
 
-        var usersThisWeek = await context.Users.CountAsync(u => u.CreatedAt >= thisWeekStart);
-        var usersLastWeek = await context.Users.CountAsync(u =>
+        var usersThisWeek = await context.Users.AsNoTracking().CountAsync(u => u.CreatedAt >= thisWeekStart);
+        var usersLastWeek = await context.Users.AsNoTracking().CountAsync(u =>
             u.CreatedAt >= lastWeekStart && u.CreatedAt < lastWeekEnd);
 
-        var totalUsers = await context.Users.CountAsync();
+        var totalUsers = await context.Users.AsNoTracking().CountAsync();
 
-        var coursesSoldThisWeek = await context.OrderItems
+        var coursesSoldThisWeek = await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed
                          && oi.Order.CreatedAt >= thisWeekStart && oi.Order.CreatedAt <= now)
             .SumAsync(oi => oi.Quantity);
 
-        var coursesSoldLastWeek = await context.OrderItems
+        var coursesSoldLastWeek = await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed
                          && oi.Order.CreatedAt >= lastWeekStart && oi.Order.CreatedAt < lastWeekEnd)
             .SumAsync(oi => oi.Quantity);
 
 
-        var totalCoursesSold = await context.OrderItems
+        var totalCoursesSold = await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .SumAsync(oi => oi.Quantity);
 
-        var revenueThisWeek = await context.OrderItems
+        var revenueThisWeek = await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed && oi.Order.CreatedAt >= thisWeekStart)
             .SumAsync(oi => (decimal?)(oi.DiscountedPrice * oi.Quantity)) ?? 0;
 
-        var revenueLastWeek = await context.OrderItems
+        var revenueLastWeek = await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed &&
                          oi.Order.CreatedAt >= lastWeekStart && oi.Order.CreatedAt < lastWeekEnd)
             .SumAsync(oi => (decimal?)(oi.DiscountedPrice * oi.Quantity)) ?? 0;
 
-        var totalRevenue = await context.OrderItems
+        var totalRevenue = await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .SumAsync(oi => (decimal?)(oi.DiscountedPrice * oi.Quantity)) ?? 0;
 
         var totalInstructors =
-            await context.Users.CountAsync(u =>
+            await context.Users.AsNoTracking().CountAsync(u =>
                 u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor));
 
-        var instructorsThisWeek = await context.Users.CountAsync(u =>
+        var instructorsThisWeek = await context.Users.AsNoTracking().CountAsync(u =>
             u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor)
             && u.CreatedAt >= thisWeekStart);
 
-        var instructorsLastWeek = await context.Users.CountAsync(u =>
+        var instructorsLastWeek = await context.Users.AsNoTracking().CountAsync(u =>
             u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor)
             && u.CreatedAt >= lastWeekStart && u.CreatedAt < lastWeekEnd);
 
-        var totalPendingCourses = await context.Courses.CountAsync(c => c.Status == CourseStatus.Pending);
+        var totalPendingCourses =
+            await context.Courses.AsNoTracking().CountAsync(c => c.Status == CourseStatus.Pending);
 
-        var pendingCoursesThisWeek = await context.Courses.CountAsync(c =>
+        var pendingCoursesThisWeek = await context.Courses.AsNoTracking().CountAsync(c =>
             c.Status == CourseStatus.Pending && c.CreatedAt >= thisWeekStart);
 
-        var pendingCoursesLastWeek = await context.Courses.CountAsync(c =>
+        var pendingCoursesLastWeek = await context.Courses.AsNoTracking().CountAsync(c =>
             c.Status == CourseStatus.Pending && c.CreatedAt >= lastWeekStart && c.CreatedAt < lastWeekEnd);
 
-        var averageCourseRating = await context.Reviews.Select(r => (double?)r.Rating).AverageAsync() ?? 0;
+        var averageCourseRating =
+            await context.Reviews.AsNoTracking().Select(r => (double?)r.Rating).AverageAsync() ?? 0;
 
-        var ratingCount = await context.Reviews.CountAsync();
+        var ratingCount = await context.Reviews.AsNoTracking().CountAsync();
 
-        var averageRatingThisWeek = await context.Reviews
+        var averageRatingThisWeek = await context.Reviews.AsNoTracking()
             .Where(r => r.CreatedAt >= thisWeekStart)
             .Select(r => (double?)r.Rating)
             .AverageAsync() ?? 0;
 
-        var averageRatingLastWeek = await context.Reviews
+        var averageRatingLastWeek = await context.Reviews.AsNoTracking()
             .Where(r => r.CreatedAt >= lastWeekStart && r.CreatedAt < lastWeekEnd)
             .Select(r => (double?)r.Rating)
             .AverageAsync() ?? 0;
@@ -161,7 +167,7 @@ public class AdminDashboardService(ApplicationDbContext context)
 
     private async Task<List<AdminDashboardCoursesInfoByCategoryVm>> GetCoursesInfoByCategory()
     {
-        var result = await context.Courses
+        var result = await context.Courses.AsNoTracking()
             .GroupBy(c => c.Category.Name)
             .Select(g => new AdminDashboardCoursesInfoByCategoryVm
             {
@@ -181,7 +187,7 @@ public class AdminDashboardService(ApplicationDbContext context)
 
     private async Task<List<AdminDashboardBestSellerCourseVm>> GetTopCoursesByCourseSold()
     {
-        return await context.OrderItems
+        return await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .GroupBy(oi => oi.Course)
             .Select(g => new AdminDashboardBestSellerCourseVm
@@ -199,7 +205,7 @@ public class AdminDashboardService(ApplicationDbContext context)
 
     private async Task<List<AdminDashboardRatingDistributionVm>> GetRatingDistribution()
     {
-        var query = await context.Reviews
+        var query = await context.Reviews.AsNoTracking()
             .GroupBy(r => r.Rating)
             .Select(g => new
             {
@@ -221,7 +227,7 @@ public class AdminDashboardService(ApplicationDbContext context)
 
     private async Task<List<AdminDashboardBestSellerInstructorVm>> GetTopInstructorByRevenue()
     {
-        return await context.OrderItems
+        return await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .GroupBy(oi => oi.Course.Instructor)
             .Select(g => new AdminDashboardBestSellerInstructorVm
@@ -238,7 +244,7 @@ public class AdminDashboardService(ApplicationDbContext context)
 
     private async Task<AdminDashboardCourseDistributionByStatusVm> GetCourseStatusDistribution()
     {
-        var dict = await context.Courses
+        var dict = await context.Courses.AsNoTracking()
             .GroupBy(c => c.Status)
             .Select(g => new { Status = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.Status, x => x.Count);
@@ -254,7 +260,7 @@ public class AdminDashboardService(ApplicationDbContext context)
 
     private async Task<List<AdminDashboardRevenueByCategoryVm>> GetRevenueByCategory()
     {
-        return await context.OrderItems
+        return await context.OrderItems.AsNoTracking()
             .Where(oi => oi.Order.Status == OrderStatus.Completed)
             .GroupBy(oi => oi.Course.Category.Name)
             .Select(g => new AdminDashboardRevenueByCategoryVm
@@ -272,9 +278,9 @@ public class AdminDashboardService(ApplicationDbContext context)
     {
         return new AdminDashboardVerificationProgressVm
         {
-            Approved = await context.InstructorApplications.CountAsync(a =>
+            Approved = await context.InstructorApplications.AsNoTracking().CountAsync(a =>
                 a.Status == InstructorApplicationStatus.Approved),
-            Pending = await context.InstructorApplications.CountAsync(a =>
+            Pending = await context.InstructorApplications.AsNoTracking().CountAsync(a =>
                 a.Status == InstructorApplicationStatus.Pending)
         };
     }
@@ -283,8 +289,8 @@ public class AdminDashboardService(ApplicationDbContext context)
     {
         return new AdminDashboardVerificationProgressVm
         {
-            Approved = await context.Courses.CountAsync(c => c.Status == CourseStatus.Published),
-            Pending = await context.Courses.CountAsync(c => c.Status == CourseStatus.Pending)
+            Approved = await context.Courses.AsNoTracking().CountAsync(c => c.Status == CourseStatus.Published),
+            Pending = await context.Courses.AsNoTracking().CountAsync(c => c.Status == CourseStatus.Pending)
         };
     }
 

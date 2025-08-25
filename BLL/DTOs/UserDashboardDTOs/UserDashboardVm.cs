@@ -1,4 +1,6 @@
-﻿namespace BLL.DTOs.UserDashboardDTOs;
+﻿using DAL.Data.Enums;
+
+namespace BLL.DTOs.UserDashboardDTOs;
 
 public class UserDashboardStatsVm
 {
@@ -36,27 +38,29 @@ public class UserDashboardRecentCourseProgressVm
 public class UserDashboardInfoByCategoryVm
 {
     public required string CategoryName { get; set; }
-    public int EnrolledCourses { get; set; }
-    public double AverageCompletionPercent { get; set; }
-    public decimal TotalSpent { get; set; }
+    public required int EnrolledCoursesCount { get; set; }
+    public required int CompletedCoursesCount { get; set; }
+    public required int PurchasedCoursesQuantityCount { get; set; }
+    public required decimal TotalSpent { get; set; }
 }
 
 public class UserDashboardCourseConversionVm
 {
-    public int PurchasedCourses { get; set; }
+    public int PurchasedCoursesQuantity { get; set; }
+    public int PurchasedCoursesUnique { get; set; }
     public int EnrolledCourses { get; set; }
     public int CompletedCourses { get; set; }
 }
 
 public class UserDashboardReviewDistributionVm
 {
-    public int Stars { get; set; }
+    public int Star { get; set; }
     public int Count { get; set; }
 }
 
 public class UserDashboardCoursesByLevelVm
 {
-    public required string Level { get; set; }
+    public required CourseLevel Level { get; set; }
     public int Count { get; set; }
 }
 

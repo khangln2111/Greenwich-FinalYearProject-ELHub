@@ -33,7 +33,7 @@ public class InstructorDashboardService(
 
     private async Task<List<InstructorDashboardCoursesInfoByCategoryVm>> GetCoursesInfoByCategory(Guid instructorId)
     {
-        var result = await context.Courses
+        var result = await context.Courses.AsNoTracking()
             .Where(c => c.InstructorId == instructorId)
             .GroupBy(c => c.Category.Name)
             .Select(g => new InstructorDashboardCoursesInfoByCategoryVm
@@ -59,37 +59,37 @@ public class InstructorDashboardService(
         var lastWeekStart = now.AddDays(-14);
         var lastWeekEnd = now.AddDays(-7);
 
-        var totalCourses = await context.Courses
+        var totalCourses = await context.Courses.AsNoTracking()
             .CountAsync(c => c.InstructorId == instructorId);
 
-        var coursesThisWeek = await context.Courses
+        var coursesThisWeek = await context.Courses.AsNoTracking()
             .CountAsync(c => c.InstructorId == instructorId && c.CreatedAt >= thisWeekStart);
 
-        var coursesLastWeek = await context.Courses
+        var coursesLastWeek = await context.Courses.AsNoTracking()
             .CountAsync(c => c.InstructorId == instructorId &&
                              c.CreatedAt >= lastWeekStart && c.CreatedAt < lastWeekEnd);
 
-        var totalEnrollments = await context.Enrollments
+        var totalEnrollments = await context.Enrollments.AsNoTracking()
             .Include(e => e.Course)
             .CountAsync(e => e.Course.InstructorId == instructorId);
 
-        var enrollmentsThisWeek = await context.Enrollments
+        var enrollmentsThisWeek = await context.Enrollments.AsNoTracking()
             .Include(e => e.Course)
             .CountAsync(e => e.Course.InstructorId == instructorId && e.CreatedAt >= thisWeekStart);
 
-        var enrollmentsLastWeek = await context.Enrollments
+        var enrollmentsLastWeek = await context.Enrollments.AsNoTracking()
             .Include(e => e.Course)
             .CountAsync(e => e.Course.InstructorId == instructorId &&
                              e.CreatedAt >= lastWeekStart && e.CreatedAt < lastWeekEnd);
 
-        var totalCoursesSold = await context.OrderItems
+        var totalCoursesSold = await context.OrderItems.AsNoTracking()
             .Include(oi => oi.Order)
             .Include(oi => oi.Course)
             .Where(oi => oi.Order.Status == OrderStatus.Completed &&
                          oi.Course.InstructorId == instructorId)
             .SumAsync(oi => (int?)oi.Quantity) ?? 0;
 
-        var coursesSoldThisWeek = await context.OrderItems
+        var coursesSoldThisWeek = await context.OrderItems.AsNoTracking()
             .Include(oi => oi.Order)
             .Include(oi => oi.Course)
             .Where(oi => oi.Order.Status == OrderStatus.Completed &&
@@ -97,7 +97,7 @@ public class InstructorDashboardService(
                          oi.Order.CreatedAt >= thisWeekStart)
             .SumAsync(oi => (int?)oi.Quantity) ?? 0;
 
-        var coursesSoldLastWeek = await context.OrderItems
+        var coursesSoldLastWeek = await context.OrderItems.AsNoTracking()
             .Include(oi => oi.Order)
             .Include(oi => oi.Course)
             .Where(oi => oi.Order.Status == OrderStatus.Completed &&
@@ -105,14 +105,14 @@ public class InstructorDashboardService(
                          oi.Order.CreatedAt >= lastWeekStart && oi.Order.CreatedAt < lastWeekEnd)
             .SumAsync(oi => (int?)oi.Quantity) ?? 0;
 
-        var totalRevenue = await context.OrderItems
+        var totalRevenue = await context.OrderItems.AsNoTracking()
             .Include(oi => oi.Order)
             .Include(oi => oi.Course)
             .Where(oi => oi.Order.Status == OrderStatus.Completed &&
                          oi.Course.InstructorId == instructorId)
             .SumAsync(oi => (decimal?)oi.DiscountedPrice * oi.Quantity) ?? 0;
 
-        var revenueThisWeek = await context.OrderItems
+        var revenueThisWeek = await context.OrderItems.AsNoTracking()
             .Include(oi => oi.Order)
             .Include(oi => oi.Course)
             .Where(oi => oi.Order.Status == OrderStatus.Completed &&
@@ -120,7 +120,7 @@ public class InstructorDashboardService(
                          oi.Order.CreatedAt >= thisWeekStart)
             .SumAsync(oi => (decimal?)oi.DiscountedPrice * oi.Quantity) ?? 0;
 
-        var revenueLastWeek = await context.OrderItems
+        var revenueLastWeek = await context.OrderItems.AsNoTracking()
             .Include(oi => oi.Order)
             .Include(oi => oi.Course)
             .Where(oi => oi.Order.Status == OrderStatus.Completed &&
@@ -129,20 +129,20 @@ public class InstructorDashboardService(
             .SumAsync(oi => (decimal?)oi.DiscountedPrice * oi.Quantity) ?? 0;
 
 
-        var totalAverageRating = await context.Reviews
+        var totalAverageRating = await context.Reviews.AsNoTracking()
             .Include(r => r.Enrollment)
             .ThenInclude(e => e.Course)
             .Where(r => r.Enrollment.Course.InstructorId == instructorId)
             .Select(r => (double?)r.Rating)
             .AverageAsync() ?? 0;
 
-        var ratingCount = await context.Reviews
+        var ratingCount = await context.Reviews.AsNoTracking()
             .Include(r => r.Enrollment)
             .ThenInclude(e => e.Course)
             .Where(r => r.Enrollment.Course.InstructorId == instructorId)
             .CountAsync();
 
-        var thisWeekAvgRating = await context.Reviews
+        var thisWeekAvgRating = await context.Reviews.AsNoTracking()
             .Include(r => r.Enrollment)
             .ThenInclude(e => e.Course)
             .Where(r => r.Enrollment.Course.InstructorId == instructorId &&
@@ -150,7 +150,7 @@ public class InstructorDashboardService(
             .Select(r => (double?)r.Rating)
             .AverageAsync() ?? 0;
 
-        var lastWeekAvgRating = await context.Reviews
+        var lastWeekAvgRating = await context.Reviews.AsNoTracking()
             .Include(r => r.Enrollment)
             .ThenInclude(e => e.Course)
             .Where(r => r.Enrollment.Course.InstructorId == instructorId &&
@@ -158,7 +158,7 @@ public class InstructorDashboardService(
             .Select(r => (double?)r.Rating)
             .AverageAsync() ?? 0;
 
-        var balance = await context.Users
+        var balance = await context.Users.AsNoTracking()
             .Where(u => u.Id == instructorId)
             .Select(u => (decimal?)u.Balance)
             .FirstOrDefaultAsync() ?? 0m;
@@ -188,7 +188,7 @@ public class InstructorDashboardService(
 
     private async Task<List<InstructorDashboardTopCourseVm>> GetTopCourses(Guid instructorId)
     {
-        return await context.Courses
+        return await context.Courses.AsNoTracking()
             .Where(c => c.InstructorId == instructorId)
             .OrderByDescending(c => c.EnrollmentCount)
             .Take(5)
@@ -203,7 +203,7 @@ public class InstructorDashboardService(
 
     private async Task<List<InstructorDashboardRatingDistributionVm>> GetRatingDistribution(Guid instructorId)
     {
-        var query = await context.Reviews
+        var query = await context.Reviews.AsNoTracking()
             .Where(r => r.Enrollment.Course.InstructorId == instructorId)
             .GroupBy(r => r.Rating)
             .Select(g => new
@@ -226,7 +226,7 @@ public class InstructorDashboardService(
 
     private async Task<InstructorDashboardCourseDistributionByStatusVm> GetCourseDistributionByStatus(Guid instructorId)
     {
-        return await context.Courses
+        return await context.Courses.AsNoTracking()
             .Where(c => c.InstructorId == instructorId)
             .GroupBy(c => 1)
             .Select(g => new InstructorDashboardCourseDistributionByStatusVm
