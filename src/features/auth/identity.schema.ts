@@ -29,7 +29,7 @@ export const registerSchema = z
       .regex(/[a-z]/, "Add at least one lowercase letter")
       .regex(/[A-Z]/, "Add at least one uppercase letter")
       .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Use at least one special symbol like !@#$"),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
   })
   .refine((values) => values.password === values.confirmPassword, {
     message: "Confirm passwords do not match",

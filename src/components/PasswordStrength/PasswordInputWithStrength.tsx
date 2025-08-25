@@ -15,18 +15,15 @@ interface PasswordInputWithStrengthProps extends PasswordInputProps {
 }
 
 function getStrength(password: string, requirements: Requirement[]) {
-  let failedCount = 0;
+  // Check for empty password (optional)
+  if (password.length === 0) return 0;
 
-  // Check requirements defined in the requirements array
-  requirements.forEach((requirement) => {
-    if (!requirement.validate(password)) {
-      failedCount += 1; // Count failed requirements
-    }
-  });
+  const passedCount = requirements.filter((r) => r.validate(password)).length;
 
-  // Calculate the strength percentage (success rate) & ensure a minimum value
-  // +1 to the denominator to avoid division by zero & ensure a minimum strength (100 - 3/3*100) = 0
-  return Math.max(100 - (failedCount / (requirements.length + 1)) * 100, 10);
+  let strength = (passedCount / requirements.length) * 100;
+
+  // Ensure a minimum strength of 10
+  return Math.max(Math.round(strength), 10);
 }
 
 const PasswordInputWithStrength = ({
