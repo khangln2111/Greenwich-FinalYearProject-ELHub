@@ -24,7 +24,9 @@ function getStrength(password: string, requirements: Requirement[]) {
     }
   });
 
-  return Math.max(100 - (100 / (requirements.length + 1)) * failedCount, 10);
+  // Calculate the strength percentage (success rate) & ensure a minimum value
+  // +1 to the denominator to avoid division by zero & ensure a minimum strength (100 - 3/3*100) = 0
+  return Math.max(100 - (failedCount / (requirements.length + 1)) * 100, 10);
 }
 
 const PasswordInputWithStrength = ({
