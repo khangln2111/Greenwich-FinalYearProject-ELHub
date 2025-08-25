@@ -21,14 +21,6 @@ export interface UserDashboardStatsVm {
   totalCompletedLecturesGrowth: number;
 }
 
-export interface UserDashboardRecentCourseProgressVm {
-  courseId: string; // Guid => string
-  courseTitle: string;
-  completionPercent: number;
-  completedLectures: number;
-  totalLectures: number;
-}
-
 export interface UserDashboardInfoByCategoryVm {
   categoryName: string;
   enrolledCoursesCount: number;
@@ -57,10 +49,8 @@ export interface UserDashboardCoursesByLevelVm {
 export interface UserDashboardVm {
   stats: UserDashboardStatsVm;
   overallCompletionPercent: number;
-  recentCoursesProgress: UserDashboardRecentCourseProgressVm[];
   infoByCategory: UserDashboardInfoByCategoryVm[];
   courseConversion: UserDashboardCourseConversionVm;
-  topCoursesByProgress: UserDashboardRecentCourseProgressVm[];
   reviewDistribution: UserDashboardReviewDistributionVm[];
   coursesByLevel: UserDashboardCoursesByLevelVm[];
 }
