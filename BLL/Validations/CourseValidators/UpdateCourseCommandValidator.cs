@@ -30,10 +30,6 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
             .LessThanOrEqualTo(x => x.Price).WithMessage("DiscountedPrice must be less than Price")
             .When(x => x.DiscountedPrice.HasValue);
 
-        RuleFor(x => x.DiscountedPrice)
-            .LessThanOrEqualTo(x => x.Price).WithMessage("DiscountedPrice must be less than Price")
-            .When(x => x.DiscountedPrice.HasValue && x.Price.HasValue);
-
         RuleFor(x => x.LearningOutcomes)
             .Must(x => x == null || x.All(y => !string.IsNullOrEmpty(y)))
             .WithMessage("Learning outcomes cannot be null or empty")

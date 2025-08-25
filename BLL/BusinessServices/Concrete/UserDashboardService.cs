@@ -24,12 +24,10 @@ public class UserDashboardService(
         {
             Stats = await GetStats(userId),
             OverallCompletionPercent = await GetOverallCompletionPercent(userId),
-            RecentCoursesProgress = await GetRecentCoursesProgress(userId),
             InfoByCategory = await GetInfoByCategory(userId),
             CourseConversion = await GetCourseConversion(userId),
             ReviewDistribution = await GetReviewDistribution(userId),
-            CoursesByLevel = await GetCoursesByLevel(userId),
-            TopCoursesByProgress = await GetTopCoursesByProgress(userId)
+            CoursesByLevel = await GetCoursesByLevel(userId)
         };
     }
 
@@ -169,43 +167,6 @@ public class UserDashboardService(
         return Math.Round(enrollments.Average(), 2);
     }
 
-    private async Task<List<UserDashboardRecentCourseProgressVm>> GetRecentCoursesProgress(Guid userId)
-    {
-        var courseProgresses = await context.Enrollments.AsNoTracking()
-            .Where(e => e.UserId == userId)
-            .OrderByDescending(e => e.CreatedAt)
-            .Take(5)
-            .Select(e => new UserDashboardRecentCourseProgressVm
-            {
-                CourseId = e.CourseId,
-                CourseTitle = e.Course.Title,
-                TotalLectures = e.Course.LectureCount,
-                CompletedLectures = e.LectureProgresses.Count(lp => lp.Completed),
-                CompletionPercent = e.ProgressPercentage
-            })
-            .ToListAsync();
-
-        return courseProgresses;
-    }
-
-    private async Task<List<UserDashboardRecentCourseProgressVm>> GetTopCoursesByProgress(Guid userId)
-    {
-        var courseProgresses = await context.Enrollments.AsNoTracking()
-            .Where(e => e.UserId == userId)
-            .OrderByDescending(e => e.ProgressPercentage)
-            .Take(5)
-            .Select(e => new UserDashboardRecentCourseProgressVm
-            {
-                CourseId = e.CourseId,
-                CourseTitle = e.Course.Title,
-                TotalLectures = e.Course.LectureCount,
-                CompletedLectures = e.LectureProgresses.Count(lp => lp.Completed),
-                CompletionPercent = e.ProgressPercentage
-            })
-            .ToListAsync();
-
-        return courseProgresses;
-    }
 
     private async Task<List<UserDashboardInfoByCategoryVm>> GetInfoByCategory(Guid userId)
     {

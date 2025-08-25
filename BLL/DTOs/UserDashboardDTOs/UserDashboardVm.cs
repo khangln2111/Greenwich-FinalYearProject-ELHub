@@ -26,14 +26,6 @@ public class UserDashboardStatsVm
     public double TotalCompletedLecturesGrowth { get; set; }
 }
 
-public class UserDashboardRecentCourseProgressVm
-{
-    public Guid CourseId { get; set; }
-    public required string CourseTitle { get; set; }
-    public double CompletionPercent { get; set; }
-    public int CompletedLectures { get; set; }
-    public int TotalLectures { get; set; }
-}
 
 public class UserDashboardInfoByCategoryVm
 {
@@ -68,10 +60,8 @@ public class UserDashboardVm
 {
     public required UserDashboardStatsVm Stats { get; set; }
     public required double OverallCompletionPercent { get; set; }
-    public required List<UserDashboardRecentCourseProgressVm> RecentCoursesProgress { get; set; }
     public required List<UserDashboardInfoByCategoryVm> InfoByCategory { get; set; }
     public required UserDashboardCourseConversionVm CourseConversion { get; set; }
-    public required List<UserDashboardRecentCourseProgressVm> TopCoursesByProgress { get; set; }
     public required List<UserDashboardReviewDistributionVm> ReviewDistribution { get; set; }
     public required List<UserDashboardCoursesByLevelVm> CoursesByLevel { get; set; }
 }
