@@ -8,7 +8,7 @@ type Requirement = {
   validate: (value: string) => boolean;
 };
 
-interface PasswordStrengthProps extends PasswordInputProps {
+interface PasswordInputWithStrengthProps extends PasswordInputProps {
   requirements: Requirement[];
   password: string;
   onPasswordChange: (value: string) => void;
@@ -27,12 +27,12 @@ function getStrength(password: string, requirements: Requirement[]) {
   return Math.max(100 - (100 / (requirements.length + 1)) * failedCount, 10);
 }
 
-const PasswordStrength = ({
+const PasswordInputWithStrength = ({
   requirements,
   password,
   onPasswordChange,
   ...rest
-}: PasswordStrengthProps) => {
+}: PasswordInputWithStrengthProps) => {
   const [popoverOpened, setPopoverOpened] = useState(false);
   const strength = getStrength(password, requirements);
   const color = strength === 100 ? "teal" : strength > 50 ? "yellow" : "red";
@@ -73,4 +73,4 @@ const PasswordStrength = ({
   );
 };
 
-export default PasswordStrength;
+export default PasswordInputWithStrength;

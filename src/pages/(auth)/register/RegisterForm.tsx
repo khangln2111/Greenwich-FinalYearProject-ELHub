@@ -2,7 +2,7 @@ import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from
 import { useForm } from "@mantine/form";
 import { IconAt, IconLock, IconRegistered } from "@tabler/icons-react";
 import { z } from "zod";
-import PasswordStrength from "../../../components/PasswordStrength/PasswordStrength";
+import PasswordInputWithStrength from "../../../components/PasswordStrength/PasswordInputWithStrength";
 import { RegisterCommand } from "../../../features/auth/identity.types";
 import { useRegister } from "../../../features/auth/identityHooks";
 import { zodResolver } from "mantine-form-zod-resolver";
@@ -113,7 +113,7 @@ const RegisterForm = () => {
             error: "font-bold dark:text-red-500",
           }}
         />
-        <PasswordStrength
+        <PasswordInputWithStrength
           withAsterisk
           label="Your password"
           placeholder="Your password"
