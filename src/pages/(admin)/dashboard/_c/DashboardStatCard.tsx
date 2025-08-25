@@ -1,6 +1,6 @@
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { ReactNode } from "react";
-import CountUp from "react-countup";
+import CountUp, { CountUpProps } from "react-countup";
 import { cn } from "../../../../utils/cn";
 
 interface DashboardStatCardProps {
@@ -17,6 +17,7 @@ interface DashboardStatCardProps {
     value?: string;
     icon?: string;
   };
+  countUpProps?: Omit<CountUpProps, "end" | "duration" | "suffix" | "prefix" | "duration">;
 }
 
 export default function DashboardStatCard({
@@ -30,6 +31,7 @@ export default function DashboardStatCard({
   classNames,
   decimals = 0,
   duration = 7,
+  countUpProps,
 }: DashboardStatCardProps) {
   const isPositive = growth !== undefined && growth >= 0;
 
@@ -60,16 +62,15 @@ export default function DashboardStatCard({
           <p
             className={cn("text-2xl font-bold text-gray-900 dark:text-gray-100", classNames?.value)}
           >
-            {typeof prefix !== "string" && prefix}
+            {prefix}
             <CountUp
               end={value}
               duration={duration}
               decimals={decimals}
-              prefix={typeof prefix === "string" ? prefix : ""}
-              suffix={typeof suffix === "string" ? suffix : ""}
               separator=","
+              {...countUpProps}
             />
-            {typeof suffix !== "string" && suffix}
+            {suffix}
           </p>
         ) : (
           <p
@@ -78,7 +79,9 @@ export default function DashboardStatCard({
               classNames?.value,
             )}
           >
+            {prefix}
             {value}
+            {suffix}
           </p>
         )}
       </div>

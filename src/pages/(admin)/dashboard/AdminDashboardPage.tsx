@@ -172,7 +172,12 @@ const AdminDashboardPage = () => {
       {/* TOP COURSES & INSTRUCTORS */}
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl">
         {/* Top Instructors */}
-        <Card withBorder radius="xl" p="lg" className="shadow-lg hover:shadow-xl transition">
+        <Card
+          withBorder
+          radius="xl"
+          p="lg"
+          className="shadow-lg hover:shadow-xl transition dark:bg-gray-900"
+        >
           <Text size="lg" fw={600} mb="md">
             Top Instructors by revenue
           </Text>
@@ -202,7 +207,7 @@ const AdminDashboardPage = () => {
           withBorder
           radius="2xl"
           p="lg"
-          className="overflow-hidden shadow-lg hover:shadow-xl transition"
+          className="overflow-hidden shadow-lg hover:shadow-xl transition dark:bg-gray-900"
         >
           <Group justify="apart" mb="md">
             <Text size="lg" fw={700}>
@@ -225,7 +230,10 @@ const AdminDashboardPage = () => {
               </Table.Thead>
               <Table.Tbody>
                 {topCourses.slice(0, 5).map((c, idx: number) => (
-                  <Table.Tr key={c.courseId || idx}>
+                  <Table.Tr
+                    key={c.courseId || idx}
+                    className="dark:not-hover:bg-gray-900 dark:hover:bg-gray-800"
+                  >
                     <Table.Td style={{ width: 60 }}>
                       <Badge color={idx === 0 ? "yellow" : "gray"}>{idx + 1}</Badge>
                     </Table.Td>
@@ -250,11 +258,11 @@ const AdminDashboardPage = () => {
         radius="2xl"
         p="lg"
         mt="xl"
-        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
+        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
       >
-        <Title order={4} className="mb-3">
+        <Text size="lg" fw={600} mb="md">
           Course info by Category
-        </Title>
+        </Text>
         <ScrollArea type="auto" offsetScrollbars>
           <div className="overflow-auto min-w-2xl">
             <CompositeChart
@@ -323,7 +331,12 @@ const AdminDashboardPage = () => {
 
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mt="xl" className="min-h-[350px]">
         {/* Instructor Verification Progress */}
-        <Card withBorder radius="2xl" p="lg" className="shadow-lg hover:shadow-xl transition">
+        <Card
+          withBorder
+          radius="2xl"
+          p="lg"
+          className="shadow-lg hover:shadow-xl transition dark:bg-gray-900"
+        >
           <Text size="lg" fw={600}>
             Instructor Verification Progress
           </Text>
@@ -347,7 +360,12 @@ const AdminDashboardPage = () => {
         </Card>
 
         {/* Course Verification Progress */}
-        <Card withBorder radius="2xl" p="lg" className="shadow-lg hover:shadow-xl transition">
+        <Card
+          withBorder
+          radius="2xl"
+          p="lg"
+          className="shadow-lg hover:shadow-xl transition dark:bg-gray-900"
+        >
           <Text size="lg" fw={600}>
             Course Verification Progress
           </Text>
@@ -378,11 +396,11 @@ const AdminDashboardPage = () => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
+          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
         >
-          <Title order={4} className="mb-3">
+          <Text size="lg" fw={600} mb="md">
             Rating Distribution
-          </Title>
+          </Text>
           <RadarChart
             data={ratingDistribution}
             dataKey="star"
@@ -402,7 +420,12 @@ const AdminDashboardPage = () => {
         </Card>
 
         {/* Course Status Distribution */}
-        <Card withBorder radius="2xl" p="lg" className="shadow-lg hover:shadow-xl transition">
+        <Card
+          withBorder
+          radius="2xl"
+          p="lg"
+          className="shadow-lg hover:shadow-xl transition dark:bg-gray-900"
+        >
           <Text size="lg" fw={600}>
             Course Distribution by Status
           </Text>

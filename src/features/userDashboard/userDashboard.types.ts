@@ -31,19 +31,21 @@ export interface UserDashboardRecentCourseProgressVm {
 
 export interface UserDashboardInfoByCategoryVm {
   categoryName: string;
-  enrolledCourses: number;
-  averageCompletionPercent: number;
+  enrolledCoursesCount: number;
+  completedCoursesCount: number;
+  purchasedCoursesQuantityCount: number;
   totalSpent: number;
 }
 
 export interface UserDashboardCourseConversionVm {
-  purchasedCourses: number;
+  purchasedCoursesQuantity: number;
+  purchasedCoursesUnique: number;
   enrolledCourses: number;
   completedCourses: number;
 }
 
 export interface UserDashboardReviewDistributionVm {
-  stars: number;
+  star: number;
   count: number;
 }
 

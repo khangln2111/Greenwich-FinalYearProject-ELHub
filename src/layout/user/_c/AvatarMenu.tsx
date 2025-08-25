@@ -115,7 +115,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
           leftSection={<IconBriefcase size={15} />}
           className="cursor-pointer"
           component={Link}
-          to="/instructor/courses"
+          to="/instructor/dashboard"
         >
           Instructor sites
         </Menu.Item>

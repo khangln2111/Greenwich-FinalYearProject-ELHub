@@ -11,10 +11,10 @@ import {
   Title,
 } from "@mantine/core";
 import { BookOpen, DollarSign, RefreshCcw, ShoppingBag, Star, User } from "lucide-react";
+import { Legend } from "recharts";
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader";
 import { useGetInstructorDashboard } from "../../../features/instructorDashboard/instructorDashboardHooks";
-import { Legend } from "recharts";
 
 const InstructorDashboardPage = () => {
   const {
@@ -136,7 +136,7 @@ const InstructorDashboardPage = () => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
+          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
         >
           <Text size="lg" fw={600}>
             Course Distribution by Status
@@ -190,11 +190,11 @@ const InstructorDashboardPage = () => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
+          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
         >
-          <Title order={4} className="mb-3">
+          <Text size="lg" fw={600} mb="md">
             Rating Distribution
-          </Title>
+          </Text>
           <RadarChart
             data={ratingDistribution}
             dataKey="star"
@@ -220,7 +220,7 @@ const InstructorDashboardPage = () => {
         radius="2xl"
         p="lg"
         mt="xl"
-        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
+        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
       >
         <Group justify="apart" mb="md">
           <Text size="lg" fw={700}>
@@ -242,7 +242,10 @@ const InstructorDashboardPage = () => {
             </Table.Thead>
             <Table.Tbody>
               {topCourses.slice(0, 5).map((c, idx: number) => (
-                <Table.Tr key={c.courseId || idx}>
+                <Table.Tr
+                  key={c.courseId || idx}
+                  className="dark:not-hover:bg-gray-900 dark:hover:bg-gray-800"
+                >
                   <Table.Td style={{ width: 60 }}>
                     <Badge color={idx === 0 ? "yellow" : "gray"}>{idx + 1}</Badge>
                   </Table.Td>
@@ -266,11 +269,11 @@ const InstructorDashboardPage = () => {
         radius="2xl"
         p="lg"
         mt="xl"
-        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition"
+        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
       >
-        <Title order={4} className="mb-3">
+        <Text size="lg" fw={600} mb="md">
           Course info by Category
-        </Title>
+        </Text>
         <ScrollArea type="auto" offsetScrollbars>
           <div className="overflow-auto min-w-2xl">
             <CompositeChart
