@@ -30,6 +30,9 @@ export const registerSchema = z
       .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Use at least one special symbol like !@#$")
       .min(8, "Enter at least 8 characters"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
+    agreeToTerms: z.boolean().refine((val) => val === true, {
+      message: "You must accept the terms and conditions",
+    }),
   })
   .refine((values) => values.password === values.confirmPassword, {
     message: "Confirm passwords do not match",

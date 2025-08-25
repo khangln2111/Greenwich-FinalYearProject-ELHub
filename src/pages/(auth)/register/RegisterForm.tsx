@@ -1,42 +1,13 @@
 import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconAt, IconLock, IconRegistered } from "@tabler/icons-react";
-import { z } from "zod";
+import { zodResolver } from "mantine-form-zod-resolver";
 import PasswordInputWithStrength from "../../../components/PasswordStrength/PasswordInputWithStrength";
+import { RegisterFormValues, registerSchema } from "../../../features/auth/identity.schema";
 import { RegisterCommand } from "../../../features/auth/identity.types";
 import { useRegister } from "../../../features/auth/identityHooks";
-import { zodResolver } from "mantine-form-zod-resolver";
 import { formSubmitWithFocus } from "../../../utils/form";
-import { RegisterFormValues, registerSchema } from "../../../features/auth/identity.schema";
-
-function getPasswordRequirements(
-  schema: z.ZodObject<any>,
-): { label: string; validate: (value: string) => boolean }[] {
-  const requirements: { label: string; validate: (value: string) => boolean }[] = [];
-
-  const passwordSchema = schema.shape.password;
-  if (passwordSchema instanceof z.ZodString) {
-    // Check for .min() validation
-    const minLength = passwordSchema._def.checks.find((check) => check.kind === "min");
-    if (minLength) {
-      requirements.push({
-        label: `${minLength.message} characters`,
-        validate: (value) => value.length >= minLength.value,
-      });
-    }
-
-    // Check for .regex() validations
-    passwordSchema._def.checks.forEach((check) => {
-      if (check.kind === "regex") {
-        requirements.push({
-          label: check.message || "Invalid password requirement",
-          validate: (value) => check.regex.test(value),
-        });
-      }
-    });
-  }
-  return requirements;
-}
+import { extractPasswordRequirements } from "../../../utils/zodHelper";
 
 const RegisterForm = () => {
   const registerMutation = useRegister();
@@ -47,12 +18,15 @@ const RegisterForm = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      agreeToTerms: false,
     },
     mode: "uncontrolled",
     validate: zodResolver(registerSchema),
   });
 
-  const passwordRequirements = getPasswordRequirements(registerSchema.innerType());
+  const passwordRequirements = extractPasswordRequirements(
+    registerSchema.innerType().shape.password,
+  );
 
   const handleSubmit = (values: RegisterFormValues) => {
     const payload: RegisterCommand = {
@@ -85,6 +59,7 @@ const RegisterForm = () => {
             label="First Name"
             placeholder="John"
             required
+            key={form.key("firstName")}
             {...form.getInputProps("firstName")}
             radius="xl"
             classNames={{
@@ -95,6 +70,7 @@ const RegisterForm = () => {
             label="Last Name"
             placeholder="Doe"
             required
+            key={form.key("lastName")}
             {...form.getInputProps("lastName")}
             radius="xl"
             classNames={{
@@ -107,6 +83,7 @@ const RegisterForm = () => {
           placeholder="Your email"
           label="Email"
           leftSection={<IconAt size={16} stroke={1.5} />}
+          key={form.key("email")}
           {...form.getInputProps("email")}
           radius="xl"
           className="mt-md"
@@ -118,6 +95,7 @@ const RegisterForm = () => {
           withAsterisk
           label="Your password"
           placeholder="Your password"
+          key={form.key("password")}
           {...form.getInputProps("password")}
           leftSection={<IconLock size={16} stroke={1.5} />}
           requirements={passwordRequirements}
@@ -133,6 +111,7 @@ const RegisterForm = () => {
           label="Confirm Password"
           placeholder="Confirm password"
           leftSection={<IconLock size={16} stroke={1.5} />}
+          key={form.key("confirmPassword")}
           {...form.getInputProps("confirmPassword")}
           radius="xl"
           classNames={{
@@ -141,6 +120,8 @@ const RegisterForm = () => {
         />
         <Group justify="space-between" mt="lg">
           <Checkbox
+            key={form.key("agreeToTerms")}
+            {...form.getInputProps("agreeToTerms", { type: "input" })}
             label={
               <>
                 I accept to the{" "}
@@ -153,7 +134,7 @@ const RegisterForm = () => {
         </Group>
         <Button
           fullWidth
-          mt="xl"
+          mt="lg"
           variant="gradient"
           type="submit"
           radius="2xl"
