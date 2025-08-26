@@ -1,4 +1,4 @@
-import { Text, ThemeIcon, Title } from "@mantine/core";
+import { Text, ThemeIcon, Title, Typography } from "@mantine/core";
 import { ArrowRight, AwardIcon } from "lucide-react";
 import { CourseDetailVm } from "../../../../features/course/course.types";
 
@@ -8,12 +8,10 @@ type OverviewTabProps = {
 
 const OverviewTab = ({ course }: OverviewTabProps) => {
   return (
-    <div>
-      <Title order={2}>About the course</Title>
-      <Text className="mt-2 text-lg leading-relaxed">{course.description}</Text>
+    <div className="space-y-10">
       {/* Learning Outcomes Section */}
       {course.learningOutcomes && course.learningOutcomes.length > 0 && (
-        <div className="mt-10">
+        <div>
           <Title order={3}>What you'll learn in this course</Title>
           <Text className="mt-2 text-lg">
             This course is designed to help you develop the following skills and knowledge:
@@ -38,7 +36,7 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
 
       {/* Prerequisites Section */}
       {course.prerequisites && course.prerequisites.length > 0 && (
-        <div className="mt-10">
+        <div>
           <Title order={3}>What you need before starting</Title>
           <Text className="mt-2 text-lg">
             To get the most out of this course, it helps to have some background knowledge or
@@ -64,6 +62,15 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
           </ul>
         </div>
       )}
+      {/* Course Description Section */}
+      <div>
+        <Title order={2}>About the course</Title>
+        <div className="mt-2">
+          <Typography className="text-lg">
+            <div dangerouslySetInnerHTML={{ __html: course.description }}></div>
+          </Typography>
+        </div>
+      </div>
     </div>
   );
 };

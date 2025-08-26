@@ -1,8 +1,10 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { Box, Button, Group, NumberInput, Select, Textarea, TextInput, Title } from "@mantine/core";
+import { Box, Button, Group, NumberInput, Select, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { randomId } from "@mantine/hooks";
 import { ArrowUpNarrowWide, DollarSign, TicketPercent } from "lucide-react";
+import { zodResolver } from "mantine-form-zod-resolver";
+import { EditorInput } from "../../../../../components/inputs/EditorInput";
 import FileUploadField from "../../../../../components/media/FileUploadField";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -11,8 +13,8 @@ import {
   MAX_VIDEO_SIZE_MB,
 } from "../../../../../constants/ValidationConstants";
 import {
-  updateCourseOverviewSchema,
   UpdateCourseOverviewFormValues,
+  updateCourseOverviewSchema,
 } from "../../../../../features/course/course.schema";
 import {
   CourseDetailVm,
@@ -23,7 +25,8 @@ import { useUpdateCourse } from "../../../../../features/course/courseHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import SortableInputList from "./SortableInputList";
 import TestSortList from "./TestSortList";
-import { zodResolver } from "mantine-form-zod-resolver";
+import { Editor } from "@tiptap/react";
+import { useRef } from "react";
 
 type CourseOverviewFormProps = {
   courseDetail: CourseDetailVm;
@@ -32,6 +35,7 @@ type CourseOverviewFormProps = {
 
 const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   const updateCourseOverviewMutation = useUpdateCourse();
+  const descriptionEditorRef = useRef<Editor | null>(null);
 
   const form = useForm<UpdateCourseOverviewFormValues>({
     mode: "uncontrolled",
@@ -81,7 +85,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
     const payload: UpdateCourseCommand = {
       id: courseId,
       title: values.title,
-      description: values.description,
+      description: descriptionEditorRef.current?.getHTML() || "",
       learningOutcomes: values.learningOutcomes.map((item) => item.value),
       prerequisites: values.prerequisites.map((item) => item.value),
       image: values.image instanceof File ? values.image : undefined,
@@ -106,22 +110,24 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
       <div>
         <Title order={3}>Course Title</Title>
         <TextInput
+          maxLength={100}
           size="md"
           placeholder="Enter course title"
           mt="xs"
+          key={form.key("title")}
           {...form.getInputProps("title")}
         />
       </div>
       <div>
         <Title order={3}>Course Description</Title>
-        <Textarea
-          placeholder="Write course overview..."
-          autosize
-          size="md"
-          minRows={4}
-          mt="xs"
-          {...form.getInputProps("description")}
-        />
+        <div className="mt-xs">
+          <EditorInput
+            key={form.key("description")}
+            {...form.getInputProps("description")}
+            placeholder="Write course overview..."
+            editorRef={descriptionEditorRef}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">

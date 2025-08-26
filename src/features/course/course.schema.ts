@@ -52,7 +52,7 @@ export type CreateCourseFormValues = z.infer<typeof createCourseSchema>;
 export const updateCourseOverviewSchema = z
   .object({
     title: z.string().min(1, "Course title is required"),
-    description: z.string().min(1, "Course description is required"),
+    description: z.string().min(10, "Enter a description of at least 10 characters"),
     price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
     discountedPrice: z
       .number({ message: "Discounted price is required" })
