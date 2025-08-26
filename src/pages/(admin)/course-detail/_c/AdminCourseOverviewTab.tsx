@@ -1,6 +1,7 @@
-import { Paper, Text, ThemeIcon, Title } from "@mantine/core";
+import { Paper, Text, ThemeIcon, Title, Typography } from "@mantine/core";
 import { ArrowRight, AwardIcon, InfoIcon } from "lucide-react";
 import { CourseDetailVm } from "../../../../features/course/course.types";
+import DOMPurify from "dompurify";
 
 type AdminCourseOverviewTabProps = {
   course: CourseDetailVm;
@@ -25,13 +26,17 @@ const EmptyState = ({ message }: { message: string }) => (
 const AdminCourseOverviewTab = ({ course }: AdminCourseOverviewTabProps) => {
   return (
     <div>
-      <Title order={2} className="mb-6">
-        About the course
-      </Title>
-
       {/* Description */}
       <div>
-        <Text className="text-lg leading-relaxed">{course.description}</Text>
+        <Title order={2} className="mb-6">
+          About the course
+        </Title>
+        <Typography>
+          <div
+            className="text-md lg:text-lg leading-relaxed mt-2"
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(course.description) }}
+          ></div>
+        </Typography>
       </div>
 
       {/* Learning Outcomes */}

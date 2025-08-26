@@ -5,9 +5,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader";
-import { useGetInventoryItemsSelf } from "../../../features/inventory/inventoryHooks";
 import GiftingModal from "./_c/GiftingModal";
 import InventoryItemCard from "./_c/InventoryItemCard";
+import { useGetInventoryItemsSelf } from "../../../features/inventory/inventoryHooks";
 
 export default function InventoryPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));

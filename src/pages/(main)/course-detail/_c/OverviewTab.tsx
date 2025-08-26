@@ -1,6 +1,7 @@
 import { Text, ThemeIcon, Title, Typography } from "@mantine/core";
 import { ArrowRight, AwardIcon } from "lucide-react";
 import { CourseDetailVm } from "../../../../features/course/course.types";
+import DOMPurify from "dompurify";
 
 type OverviewTabProps = {
   course: CourseDetailVm;
@@ -65,11 +66,9 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
       {/* Course Description Section */}
       <div>
         <Title order={2}>About the course</Title>
-        <div className="mt-2">
-          <Typography className="text-lg">
-            <div dangerouslySetInnerHTML={{ __html: course.description }}></div>
-          </Typography>
-        </div>
+        <Typography className="text-md lg:text-lg mt-2">
+          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(course.description) }}></div>
+        </Typography>
       </div>
     </div>
   );

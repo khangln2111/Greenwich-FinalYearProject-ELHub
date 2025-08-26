@@ -37,6 +37,7 @@
     "axios": "^1.8.4",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "dompurify": "^3.2.6",
     "framer-motion": "^12.6.3",
     "gridify-client": "^2.1.0",
     "lucide-react": "^0.511.0",

@@ -116,9 +116,11 @@ const CourseListItem = ({ course, className }: CourseListItemProps) => {
 
         {/* Description */}
         {course.description && (
-          <Text size="sm" c="dimmed" className="line-clamp-1 hidden md:block mt-1">
-            {course.description.trim()}
-          </Text>
+          <div>
+            <Text size="sm" c="dimmed" className="line-clamp-1 mt-1">
+              {course.description.trim()}
+            </Text>
+          </div>
         )}
 
         {/* Footer: Price and button */}
