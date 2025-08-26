@@ -86,7 +86,9 @@ export default function UserDashboardLayout() {
           className="mx-auto shadow-lg"
           src={currentUser?.avatarUrl || avatarPlaceholder}
         />
-        <p className="mt-2 font-medium">{currentUser?.firstName}</p>
+        <p className="mt-2 font-medium">
+          {currentUser?.firstName} {currentUser?.lastName}
+        </p>
         <p className="text-xs">{currentUser?.email}</p>
       </div>
 

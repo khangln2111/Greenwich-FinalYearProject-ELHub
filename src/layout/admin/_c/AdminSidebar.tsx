@@ -1,5 +1,4 @@
-import { Text } from "@mantine/core";
-import { MantineLogo } from "@mantinex/mantine-logo";
+import { Avatar, Text } from "@mantine/core";
 import { IconMessageUser } from "@tabler/icons-react";
 import {
   BellRingIcon,
@@ -13,6 +12,7 @@ import { Link } from "react-router-dom";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/stores/appStore";
+import LogoIcon from "../../../assets/brandIcon.svg";
 
 type AdminSidebarProps = {
   collapsedToIcon?: boolean;
@@ -69,8 +69,9 @@ const navItems: NavItem[] = [
 
 const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
   const closeMobileSidebar = useAppStore((s) => s.closeMobileAdminSidebar);
+  const currentUser = useAppStore((s) => s.currentUser);
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-screen">
       {/* Header */}
       <div
         className={cn("flex items-center justify-between p-4", {
@@ -83,8 +84,17 @@ const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
             "gap-2 font-semibold text-2xl": !collapsedToIcon,
           })}
         >
-          <MantineLogo color="primary" size={30} type="mark" />
-          {!collapsedToIcon && <span className="font-[Inter] tracking-wide font-bold">ELHub</span>}
+          {/* <MantineLogo color="primary" size={30} type="mark" /> */}
+          <img src={LogoIcon} alt="Logo" className="size-[35px]" />
+          {!collapsedToIcon && (
+            <span
+              className="font-extrabold text-2xl tracking-wide bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400
+                dark:from-blue-400 dark:via-sky-300 dark:to-cyan-200 bg-clip-text text-transparent
+                [text-shadow:0_0_2px_rgba(0,0,0,0.15)]"
+            >
+              ELHub
+            </span>
+          )}
         </Link>
       </div>
       <Text
@@ -115,6 +125,30 @@ const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
           />
         ))}
       </nav>
+
+      {/* Footer - Current User */}
+      {currentUser && (
+        <div
+          className={cn(
+            "border-t border-gray-200 dark:border-gray-800 p-3 flex items-center gap-3 mt-auto",
+          )}
+        >
+          <Avatar src={currentUser.avatarUrl} alt={currentUser.firstName} radius="xl" size={40}>
+            {currentUser.firstName?.[0] ?? currentUser.email[0]}
+          </Avatar>
+
+          {!collapsedToIcon && (
+            <div className="flex flex-col truncate">
+              <Text size="sm" fw={600} truncate>
+                {currentUser.firstName} {currentUser.lastName}
+              </Text>
+              <Text size="xs" c="dimmed" truncate>
+                {currentUser.email}
+              </Text>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

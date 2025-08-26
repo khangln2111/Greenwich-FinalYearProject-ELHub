@@ -59,22 +59,6 @@ export default function InstructorCoursesPage() {
             New Course
           </Button>
 
-          <Select
-            data={[
-              { label: "All", value: "All" },
-              { label: "Draft", value: CourseStatus.Draft },
-              { label: "Published", value: CourseStatus.Published },
-              { label: "Pending", value: CourseStatus.Pending },
-              { label: "Rejected", value: CourseStatus.Rejected },
-            ]}
-            value={status}
-            allowDeselect={false}
-            checkIconPosition="right"
-            onChange={(val) => setStatus(val as CourseStatus | "All")}
-            placeholder="Filter by status"
-            className="w-full sm:w-60"
-          />
-
           <TextInput
             placeholder="Search courses..."
             className="w-full sm:w-60"
@@ -110,6 +94,22 @@ export default function InstructorCoursesPage() {
                 </ActionIcon>
               )
             }
+          />
+
+          <Select
+            data={[
+              { label: "All", value: "All" },
+              { label: "Draft", value: CourseStatus.Draft },
+              { label: "Published", value: CourseStatus.Published },
+              { label: "Pending", value: CourseStatus.Pending },
+              { label: "Rejected", value: CourseStatus.Rejected },
+            ]}
+            value={status}
+            allowDeselect={false}
+            checkIconPosition="right"
+            onChange={(val) => setStatus(val as CourseStatus | "All")}
+            placeholder="Filter by status"
+            className="w-full sm:w-60"
           />
         </div>
       </div>
