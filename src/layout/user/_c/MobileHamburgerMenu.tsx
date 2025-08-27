@@ -1,24 +1,23 @@
-import { ActionIcon, Drawer, Group, NavLink, ScrollArea, Text, Button, Stack } from "@mantine/core";
+import { ActionIcon, Button, Drawer, Group, NavLink, ScrollArea, Stack, Text } from "@mantine/core";
 import {
   ChartNoAxesCombinedIcon,
   CircleUserIcon,
   GiftIcon,
+  GraduationCapIcon,
   HistoryIcon,
+  LogInIcon,
+  LogOutIcon,
   MonitorCheckIcon,
   PackageIcon,
-  ShoppingCart,
   ShieldCheckIcon,
-  GraduationCapIcon,
-  LogInIcon,
+  ShoppingCart,
   UserPlusIcon,
-  LogOutIcon,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import ThemeToggler from "../../../components/ThemeToggler";
-import { MantineLogo } from "@mantinex/mantine-logo";
-import { useAppStore } from "../../../zustand/stores/appStore";
-import { useLogout } from "../../../features/auth/identityHooks";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
+import ThemeToggler from "../../../components/ThemeToggler";
+import { useLogout } from "../../../features/auth/identityHooks";
+import { useAppStore } from "../../../zustand/stores/appStore";
 
 interface MobileHamburgerMenuProps {
   opened: boolean;

@@ -1,6 +1,6 @@
 import { ActionIcon, Container, Group, Text } from "@mantine/core";
-import { MantineLogo } from "@mantinex/mantine-logo";
-import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from "@tabler/icons-react";
+import { IconBrandInstagram, IconBrandX, IconBrandYoutube } from "@tabler/icons-react";
+import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 
 const data = [
   {
@@ -64,7 +64,7 @@ const Footer = () => {
       <Container className="flex flex-col items-center lg:flex-row lg:justify-between lg:items-normal">
         {/* Logo & Description */}
         <div className="max-w-[200px] flex flex-col items-center lg:block">
-          <MantineLogo size={30} />
+          <BrandLogo />
           <Text size="xs" c="dimmed" className="mt-[10px] text-center lg:mt-[5px] lg:text-left">
             Build fully functional accessible web applications faster than ever
           </Text>
@@ -83,7 +83,7 @@ const Footer = () => {
         </Text>
         <Group gap={0} className="mt-[10px] lg:mt-0" justify="flex-end" wrap="nowrap">
           <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandTwitter className="size-[18px]" stroke={1.5} />
+            <IconBrandX className="size-[18px]" stroke={1.5} />
           </ActionIcon>
           <ActionIcon size="lg" color="gray" variant="subtle">
             <IconBrandYoutube className="size-[18px]" stroke={1.5} />
