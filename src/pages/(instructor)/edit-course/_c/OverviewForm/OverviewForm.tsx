@@ -36,7 +36,6 @@ type CourseOverviewFormProps = {
 const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
   const updateCourseOverviewMutation = useUpdateCourse();
   const descriptionEditorRef = useRef<Editor | null>(null);
-
   const form = useForm<UpdateCourseOverviewFormValues>({
     mode: "uncontrolled",
     initialValues: {

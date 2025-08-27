@@ -40,7 +40,7 @@ export default function EnrolledCoursesPage() {
 
         <TextInput
           placeholder="Search courses..."
-          className="w-60"
+          className="max-w-60"
           value={searchInput}
           onChange={(e) => setSearchInput(e.currentTarget.value)}
           onKeyDown={(e) => {

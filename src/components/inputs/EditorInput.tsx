@@ -30,7 +30,7 @@ export function EditorInput({
   description,
   placeholder,
   editorRef,
-  sticky = false,
+  sticky = true,
   stickyOffset = 55,
   ...rest
 }: EditorInputProps) {
@@ -81,7 +81,7 @@ export function EditorInput({
           content: "max-h-lg overflow-y-auto",
           toolbar: "bg-gray-50 dark:bg-dark-8",
           controlsGroup: "bg-gray-50 dark:bg-dark-8",
-          control: "size-8 md:size-10 ",
+          control: "size-8 md:size-9 ",
           controlIcon: "md:size-[20px]",
         }}
       >

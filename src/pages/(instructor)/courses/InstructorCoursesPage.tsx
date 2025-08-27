@@ -44,24 +44,24 @@ export default function InstructorCoursesPage() {
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+      <div className="flex flex-col lg:flex-row items-center md:justify-between mb-6 gap-4">
         {/* Title */}
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">My Courses</h1>
 
         {/* Controls: Button + Select + Search */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
+        <div className="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto">
           <Button
             onClick={openCreateCourseModal}
             leftSection={<Plus className="size-4" />}
             size="sm"
-            className="w-full sm:w-auto"
+            className="w-full"
           >
             New Course
           </Button>
 
           <TextInput
             placeholder="Search courses..."
-            className="w-full sm:w-60"
+            className="w-full md:max-w-60"
             value={searchInput}
             onChange={(e) => setSearchInput(e.currentTarget.value)}
             onKeyDown={(e) => {
@@ -109,7 +109,7 @@ export default function InstructorCoursesPage() {
             checkIconPosition="right"
             onChange={(val) => setStatus(val as CourseStatus | "All")}
             placeholder="Filter by status"
-            className="w-full sm:w-60"
+            className="w-full md:max-w-60"
           />
         </div>
       </div>

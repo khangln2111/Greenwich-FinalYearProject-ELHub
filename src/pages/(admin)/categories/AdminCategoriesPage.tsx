@@ -39,11 +39,14 @@ export default function AdminCategoriesPage() {
     <div className="flex-1 p-6 xl:p-8">
       <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
         <Title order={2}>Categories</Title>
-        <div className="flex gap-3">
+        <div className="flex gap-3 justify-between w-full sm:w-auto">
+          <Button onClick={openCreate} leftSection={<Plus size={16} />} className="flex-1 max-w-60">
+            Add Category
+          </Button>
           <form onSubmit={handleSearchSubmit}>
             <TextInput
               placeholder="Search categories..."
-              className="w-60"
+              className="max-w-60 flex-1"
               value={searchInput}
               onChange={(e) => setSearchInput(e.currentTarget.value)}
               onKeyDown={(e) => {
@@ -72,10 +75,6 @@ export default function AdminCategoriesPage() {
               }
             />
           </form>
-
-          <Button onClick={openCreate} leftSection={<Plus size={16} />}>
-            Add Category
-          </Button>
         </div>
       </div>
 

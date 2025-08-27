@@ -66,7 +66,6 @@ export default function AdminCoursesPage() {
           <Title order={2} className="shrink-0">
             Courses management
           </Title>
-
           <TextInput
             placeholder="Search course..."
             leftSection={<Search size={16} />}
@@ -93,7 +92,6 @@ export default function AdminCoursesPage() {
             classNames={{ input: "h-[42px]" }}
           />
         </div>
-
         {/* Status Filter + Sort */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <Select
@@ -114,7 +112,6 @@ export default function AdminCoursesPage() {
             searchable
             classNames={{ input: "h-[42px]" }}
           />
-
           <Select
             data={COURSE_ORDER_OPTIONS.map((opt) => ({
               label: opt.label,

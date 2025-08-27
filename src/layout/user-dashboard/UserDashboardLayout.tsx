@@ -138,9 +138,13 @@ export default function UserDashboardLayout() {
           </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-7">
+        <div
+          className={cn("flex flex-col lg:flex-row gap-7", {
+            "gap-0": !sidebarOpen && !isDesktop,
+          })}
+        >
           {/* Sidebar */}
-          <div className="w-full lg:w-[250px] xl:w-[300px]">
+          <div className="w-full lg:max-w-[250px] xl:max-w-[300px] min-w-0">
             <Collapse in={!!(sidebarOpen || isDesktop)}>
               <div className="bg-body border border-gray-200 dark:border-gray-800 rounded-xl p-3">
                 <Sidebar />
@@ -148,9 +152,9 @@ export default function UserDashboardLayout() {
             </Collapse>
           </div>
           {/* Main content */}
-          <main className="flex-1">
+          <div className="flex-1 min-w-0">
             <Outlet />
-          </main>
+          </div>
         </div>
       </div>
     </div>

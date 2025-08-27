@@ -79,7 +79,7 @@ const Footer = () => {
           dark:border-dark-4 lg:flex-row"
       >
         <Text c="dimmed" size="sm">
-          © 2020 mantine.dev. All rights reserved.
+          © 2025 ELHub.education.com by Khang Le. All rights reserved.
         </Text>
         <Group gap={0} className="mt-[10px] lg:mt-0" justify="flex-end" wrap="nowrap">
           <ActionIcon size="lg" color="gray" variant="subtle">

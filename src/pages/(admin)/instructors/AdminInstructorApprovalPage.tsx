@@ -62,7 +62,7 @@ function StatusFilterBadges({
   onChange: (status: "All" | InstructorApplicationStatus) => void;
 }) {
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className="flex gap-2 flex-wrap mx-auto md:mx-[initial]">
       {statuses.map((status) => {
         const isActive = value === status;
         return (
@@ -201,11 +201,11 @@ export default function AdminInstructorApprovalPage() {
             )
           }
           leftSection={<IconSearch size={16} />}
-          w={260}
+          className="md:max-w-65 flex-1"
         />
       </div>
 
-      <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
+      <div className="flex flex-wrap-reverse md:flex-wrap gap-4 items-center justify-between mb-6 w-full">
         <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
         <Select
           data={ORDER_BY_OPTIONS.map((opt) => ({
@@ -214,10 +214,10 @@ export default function AdminInstructorApprovalPage() {
           }))}
           value={orderByParam}
           onChange={(val) => val && setOrderByParam(val)}
-          w={200}
           checkIconPosition="right"
           leftSection={<ArrowUpAzIcon size={16} />}
           placeholder="Sort by"
+          className="md:max-w-50 flex-1"
         />
       </div>
 
