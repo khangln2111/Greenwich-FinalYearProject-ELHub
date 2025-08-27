@@ -2,12 +2,11 @@
 
 public class CourseVm
 {
-    //properties
     public Guid Id { get; init; }
 
     public required string Title { get; init; }
 
-    public required string Description { get; init; }
+    public required string Summary { get; init; }
 
     public int SectionCount { get; init; }
 

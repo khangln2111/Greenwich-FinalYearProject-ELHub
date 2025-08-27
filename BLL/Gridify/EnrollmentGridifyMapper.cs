@@ -9,6 +9,7 @@ public class EnrollmentGridifyMapper : GridifyMapper<Enrollment>
     {
         AddMap("CourseTitle", e => e.Course.Title);
         AddMap("CourseDescription", e => e.Course.Description);
+        AddMap("CourseSummary", e => e.Course.Summary);
         AddMap("InstructorName", e => e.Course.Instructor.FirstName + " " + e.Course.Instructor.LastName);
         AddMap("CreatedAt", e => e.CreatedAt);
         AddMap("UpdatedAt", e => e.UpdatedAt);

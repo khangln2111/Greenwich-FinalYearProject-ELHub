@@ -12,10 +12,13 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
         builder.Property(c => c.Title)
             .IsRequired()
-            .HasMaxLength(AppConstants.Course.TitleMaxLength); // Limit the length of Title
+            .HasMaxLength(AppConstants.Course.TitleMaxLength);
 
         builder.Property(c => c.Description)
             .HasMaxLength(AppConstants.Course.DescriptionMaxLength);
+
+        builder.Property(c => c.Summary)
+            .HasMaxLength(AppConstants.Course.SummaryMaxLength);
 
         builder.Property(c => c.Price)
             .HasPrecision(18, 2);

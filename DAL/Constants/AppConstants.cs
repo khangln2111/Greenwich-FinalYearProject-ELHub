@@ -64,14 +64,12 @@ public static class AppConstants
     public static class Course
     {
         public const int TitleMaxLength = 150;
-        public const int SummaryMaxLength = 500;
-        public const int DescriptionMaxLength = 2000;
-        public const int LanguageMaxLength = 50;
+        public const int SummaryMaxLength = 200;
+        public const int DescriptionMaxLength = 10000;
         public const int LevelMaxLength = 50;
         public const int StatusMaxLength = 50;
         public const int PrerequisitesMaxLength = 1500;
         public const int LearningOutcomesMaxLength = 1500;
-        public const int TargetAudienceMaxLength = 500;
         public const int NoteMaxLength = 500;
 
         public const int VideoMaxSizeBytes = 500 * FileSize.Megabyte;

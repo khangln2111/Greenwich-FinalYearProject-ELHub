@@ -8,6 +8,8 @@ public class CourseDetailVm
 
     public required string Title { get; init; }
 
+    public required string Summary { get; init; }
+
     public required string Description { get; init; }
 
     public int SectionCount { get; init; }

@@ -36,7 +36,7 @@ public class InventoryService(
                     Id = i.Id,
                     CourseId = i.CourseId,
                     CourseTitle = i.Course.Title,
-                    CourseDescription = i.Course.Description,
+                    CourseSummary = i.Course.Summary,
                     CourseImageUrl = i.Course.Image != null ? i.Course.Image.Url : null,
                     Quantity = i.Quantity,
                     Enrolled = context.Enrollments.Any(e => e.UserId == currentUser.Id && e.CourseId == i.CourseId)

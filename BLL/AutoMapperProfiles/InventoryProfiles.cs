@@ -14,6 +14,6 @@ public class InventoryProfiles : Profile
             .ForMember(dest => dest.CourseTitle, opt => opt.MapFrom(src => src.Course.Title))
             .ForMember(dest => dest.CourseImageUrl,
                 opt => opt.MapFrom(src => src.Course.Image != null ? src.Course.Image.Url : null))
-            .ForMember(dest => dest.CourseDescription, opt => opt.MapFrom(src => src.Course.Description));
+            .ForMember(dest => dest.CourseSummary, opt => opt.MapFrom(src => src.Course.Summary));
     }
 }

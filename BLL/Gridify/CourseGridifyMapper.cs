@@ -11,6 +11,7 @@ public class CourseGridifyMapper : GridifyMapper<Course>
         AddMap("DiscountedPrice", c => c.DiscountedPrice);
         AddMap("DiscountPercentage", c => (1 - c.DiscountedPrice / c.Price) * 100);
         AddMap("Title", c => c.Title);
+        AddMap("Summary", c => c.Summary);
         AddMap("Description", c => c.Description);
         AddMap("CategoryName", c => c.Category.Name);
         AddMap("CategoryId", c => c.CategoryId);

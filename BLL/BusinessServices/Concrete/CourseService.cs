@@ -17,6 +17,7 @@ using DAL.Data.Entities;
 using DAL.Data.Entities.MediaEntities;
 using DAL.Data.Enums;
 using DAL.Utilities.CurrentUserUtility;
+using DAL.Utilities.HtmlSanitizerUtility;
 using DAL.Utilities.MediaUtility.Abstract;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,8 @@ public class CourseService(
     IGridifyMapper<Course> gridifyMapper,
     IValidationService validationService,
     IMediaManager mediaManager,
-    ICurrentUserUtility currentUserUtility)
+    ICurrentUserUtility currentUserUtility,
+    IHtmlSanitizerUtility htmlSanitizerUtility)
     : ICourseService
 {
     private const int MaxRetryCount = AppConstants.Course.MaxRetryCount;
@@ -108,6 +110,12 @@ public class CourseService(
             await mediaManager.UpdateFileAsync(course.PromoVideo, command.PromoVideo);
 
         mapper.Map(command, course);
+
+        // Sanitize the Description field to prevent XSS attacks
+        if (!string.IsNullOrWhiteSpace(course.Description))
+            course.Description = htmlSanitizerUtility.Sanitize(course.Description);
+
+
         await context.SaveChangesAsync();
         return new Success("Updated course successfully");
     }

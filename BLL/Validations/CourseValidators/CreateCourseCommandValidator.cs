@@ -21,7 +21,7 @@ public class CreateCourseCommandValidator : AbstractValidator<CreateCourseComman
             .MaximumLength(AppConstants.Course.TitleMaxLength);
 
 
-        RuleFor(x => x.Description)
+        RuleFor(x => x.Summary)
             .NotEmpty()
             .MaximumLength(AppConstants.Course.DescriptionMaxLength);
 

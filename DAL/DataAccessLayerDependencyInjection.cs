@@ -2,6 +2,7 @@ using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Utilities.CurrentUserUtility;
 using DAL.Utilities.EmailUtility;
+using DAL.Utilities.HtmlSanitizerUtility;
 using DAL.Utilities.MediaUtility.Abstract;
 using DAL.Utilities.MediaUtility.Concrete;
 using DAL.Utilities.PaymentUtility;
@@ -48,6 +49,7 @@ public static class DataAccessLayerDependencyInjection
         services.AddScoped<IEmailUtility, EmailUtility>();
         services.AddScoped<ICurrentUserUtility, CurrentUserUtility>();
         services.AddScoped<IStripePaymentUtility, StripePaymentUtility>();
+        services.AddScoped<IHtmlSanitizerUtility, HtmlSanitizerUtility>();
         services.AddScoped<DataSeeder>();
     }
 
