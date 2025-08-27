@@ -50,7 +50,7 @@ export default function CartItemCard({
                 size={20}
               />
             </div>
-            <p className="text-sm text-gray-500 line-clamp-1">{item.courseDescription}</p>
+            <p className="text-sm text-gray-500 line-clamp-1">{item.courseSummary}</p>
           </div>
         </div>
 

@@ -25,6 +25,8 @@ export const buildEnrollmentQuery = (query: EnrollmentQueryCriteria = {}) => {
         .startGroup()
         .addCondition("courseTitle", op.Contains, query.search!, false)
         .or()
+        .addCondition("courseSummary", op.Contains, query.search!, false)
+        .or()
         .addCondition("courseDescription", op.Contains, query.search!, false)
         .or()
         .addCondition("instructorName", op.Contains, query.search!, false)

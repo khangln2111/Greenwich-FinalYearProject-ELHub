@@ -1,5 +1,5 @@
 import { Draggable, Droppable } from "@hello-pangea/dnd";
-import { ActionIcon, Button, Center, DefaultMantineSize, TextInput, Title } from "@mantine/core";
+import { ActionIcon, Button, DefaultMantineSize, TextInput, ThemeIcon, Title } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { IconGripVertical, IconPlus, IconTrash } from "@tabler/icons-react";
 
@@ -52,10 +52,15 @@ const TestSortList = ({
                       inputContainer={(children) => (
                         <div className="flex items-center gap-2 flex-1 w-full">
                           {children}
-                          <Center className="cursor-grab" {...draggableProvided.dragHandleProps}>
+                          <ThemeIcon
+                            variant="light"
+                            className="cursor-grab"
+                            color="gray"
+                            {...draggableProvided.dragHandleProps}
+                          >
                             <IconGripVertical size={18} />
-                          </Center>
-                          <ActionIcon variant="subtle" color="red" onClick={() => onRemove(index)}>
+                          </ThemeIcon>
+                          <ActionIcon variant="light" color="red" onClick={() => onRemove(index)}>
                             <IconTrash size={18} />
                           </ActionIcon>
                         </div>

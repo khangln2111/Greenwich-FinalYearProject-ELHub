@@ -30,6 +30,8 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
         .startGroup()
         .addCondition("title", op.Contains, query.search!, false)
         .or()
+        .addCondition("summary", op.Contains, query.search!, false)
+        .or()
         .addCondition("description", op.Contains, query.search!, false)
         .or()
         .addCondition("instructorName", op.Contains, query.search!, false)
@@ -38,10 +40,12 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   }
 
   if (query.minPrice != null)
-    conditions.push(() => qb.addCondition("price", op.GreaterThanOrEqual, query.minPrice!));
+    conditions.push(() =>
+      qb.addCondition("discountedPrice", op.GreaterThanOrEqual, query.minPrice!),
+    );
 
   if (query.maxPrice != null)
-    conditions.push(() => qb.addCondition("price", op.LessThanOrEqual, query.maxPrice!));
+    conditions.push(() => qb.addCondition("discountedPrice", op.LessThanOrEqual, query.maxPrice!));
 
   if (query.categoryId?.trim())
     conditions.push(() => qb.addCondition("categoryId", op.Equal, query.categoryId!));

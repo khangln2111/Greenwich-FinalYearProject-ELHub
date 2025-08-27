@@ -41,6 +41,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
     mode: "uncontrolled",
     initialValues: {
       title: courseDetail.title,
+      summary: courseDetail.summary,
       description: courseDetail.description,
       learningOutcomes:
         courseDetail.learningOutcomes?.map((value) => ({ id: randomId(), value })) ?? [],
@@ -85,6 +86,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
     const payload: UpdateCourseCommand = {
       id: courseId,
       title: values.title,
+      summary: values.summary,
       description: descriptionEditorRef.current?.getHTML() || "",
       learningOutcomes: values.learningOutcomes.map((item) => item.value),
       prerequisites: values.prerequisites.map((item) => item.value),
@@ -110,64 +112,27 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
       <div>
         <Title order={3}>Course Title</Title>
         <TextInput
+          description="Your title should be a mix of attention-grabbing, informative, and optimized for search"
           maxLength={100}
           size="md"
           placeholder="Enter course title"
           mt="xs"
           key={form.key("title")}
           {...form.getInputProps("title")}
+          inputWrapperOrder={["label", "input", "description", "error"]}
         />
       </div>
       <div>
-        <Title order={3}>Course Description</Title>
-        <div className="mt-xs">
-          <EditorInput
-            key={form.key("description")}
-            {...form.getInputProps("description")}
-            placeholder="Write course overview..."
-            editorRef={descriptionEditorRef}
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
-        <NumberInput
+        <Title order={3}>Course Summary</Title>
+        <TextInput
+          description="Use 1 or 2 related keywords, and mention 3-4 of the most important areas that you've covered during your course."
+          maxLength={100}
           size="md"
-          min={0}
-          clampBehavior="strict"
-          label="Price"
-          placeholder="e.g: 199.99"
-          {...form.getInputProps("price")}
-          key={form.key("price")}
-          leftSection={<DollarSign className="size-4 text-gray-500" />}
-        />
-        <NumberInput
-          size="md"
-          min={0}
-          clampBehavior="strict"
-          label="Discounted Price"
-          placeholder="e.g: 99.99 (must be less than price)"
-          key={form.key("discountedPrice")}
-          {...form.getInputProps("discountedPrice")}
-          leftSection={<TicketPercent className="size-4 text-gray-500" />}
-        />
-      </div>
-
-      <div>
-        <Select
-          data={[
-            { label: "Beginner", value: CourseLevel.Beginner },
-            { label: "Intermediate", value: CourseLevel.Intermediate },
-            { label: "Advanced", value: CourseLevel.Advanced },
-            { label: "All Levels", value: CourseLevel.All },
-          ]}
-          size="md"
-          label="Course level"
-          placeholder="Select: Beginner, Intermediate, Advanced, All Levels"
-          leftSection={<ArrowUpNarrowWide className="size-4" />}
-          {...form.getInputProps("level")}
-          key={form.key("level")}
-          checkIconPosition="right"
+          placeholder="Enter course summary"
+          mt="xs"
+          key={form.key("summary")}
+          {...form.getInputProps("summary")}
+          inputWrapperOrder={["label", "input", "description", "error"]}
         />
       </div>
 
@@ -194,6 +159,64 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
           type="prerequisites"
         />
       </DragDropContext>
+
+      <div>
+        <Title order={3}>Course Pricing</Title>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 mt-xs">
+          <NumberInput
+            size="md"
+            min={0}
+            clampBehavior="strict"
+            label="Price"
+            placeholder="e.g: 199.99"
+            {...form.getInputProps("price")}
+            key={form.key("price")}
+            leftSection={<DollarSign className="size-4 text-gray-500" />}
+          />
+          <NumberInput
+            size="md"
+            min={0}
+            clampBehavior="strict"
+            label="Discounted Price"
+            placeholder="e.g: 99.99 (must be less than price)"
+            key={form.key("discountedPrice")}
+            {...form.getInputProps("discountedPrice")}
+            leftSection={<TicketPercent className="size-4 text-gray-500" />}
+          />
+        </div>
+      </div>
+
+      <div>
+        <Title order={3}>Course Level</Title>
+        <Select
+          key={form.key("level")}
+          {...form.getInputProps("level")}
+          data={[
+            { label: "Beginner", value: CourseLevel.Beginner },
+            { label: "Intermediate", value: CourseLevel.Intermediate },
+            { label: "Advanced", value: CourseLevel.Advanced },
+            { label: "All Levels", value: CourseLevel.All },
+          ]}
+          size="md"
+          placeholder="Select: Beginner, Intermediate, Advanced, All Levels"
+          leftSection={<ArrowUpNarrowWide className="size-4" />}
+          checkIconPosition="right"
+          className="max-w-lg mt-xs"
+        />
+      </div>
+
+      <div>
+        <Title order={3}>Course Description</Title>
+        <div className="mt-xs">
+          <EditorInput
+            key={form.key("description")}
+            {...form.getInputProps("description")}
+            placeholder="Write course overview..."
+            editorRef={descriptionEditorRef}
+          />
+        </div>
+      </div>
+
       <div>
         <Title order={3}>Course Image</Title>
         <FileUploadField

@@ -5,7 +5,7 @@ export interface EnrollmentSelfVm {
   id: string;
   courseId: string;
   courseTitle: string;
-  courseDescription: string;
+  courseSummary: string;
   courseImageUrl?: string;
   instructorName: string;
   progressPercentage: number;

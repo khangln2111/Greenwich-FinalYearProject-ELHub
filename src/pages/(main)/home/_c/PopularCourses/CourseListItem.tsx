@@ -115,10 +115,10 @@ const CourseListItem = ({ course, className }: CourseListItemProps) => {
         </div>
 
         {/* Description */}
-        {course.description && (
+        {course.summary && (
           <div>
             <Text size="sm" c="dimmed" className="line-clamp-1 mt-1">
-              {course.description.trim()}
+              {course.summary.trim()}
             </Text>
           </div>
         )}

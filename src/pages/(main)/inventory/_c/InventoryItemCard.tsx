@@ -66,8 +66,8 @@ const InventoryItemCard = ({ item, onGift }: InventoryItemCardProps) => {
           </span>
         </div>
 
-        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-          {item.courseDescription}
+        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">
+          {item.courseSummary}
         </p>
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">

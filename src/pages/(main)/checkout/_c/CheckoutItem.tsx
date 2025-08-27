@@ -11,14 +11,14 @@ export default function CheckoutItem({ item, className }: CheckoutItemProps) {
     <div className={cn("flex items-start py-4 gap-4", className)}>
       <img
         src={item.courseImageUrl}
-        alt={item.courseDescription}
+        alt={item.courseSummary}
         className="size-20 object-cover rounded-md border"
       />
       <div className="flex-1 flex flex-col justify-between gap-2 lg:flex-row lg:gap-4 lg:self-stretch lg:items-center">
         <div className="flex lg:block items-center">
           <div className="flex-1 flex flex-col">
             <p className="font-medium leading-tight">{item.courseTitle}</p>
-            <p className="text-sm text-gray-500 line-clamp-1">{item.courseDescription}</p>
+            <p className="text-sm text-gray-500 line-clamp-1">{item.courseSummary}</p>
           </div>
         </div>
         <div className="flex gap-2 items-center lg:gap-6 lg:self-center justify-between">

@@ -1,7 +1,7 @@
-import { Paper, Text, ThemeIcon, Title, Typography } from "@mantine/core";
+import { Paper, Text, ThemeIcon, Title } from "@mantine/core";
+import DOMPurify from "dompurify";
 import { ArrowRight, AwardIcon, InfoIcon } from "lucide-react";
 import { CourseDetailVm } from "../../../../features/course/course.types";
-import DOMPurify from "dompurify";
 
 type AdminCourseOverviewTabProps = {
   course: CourseDetailVm;
@@ -25,22 +25,9 @@ const EmptyState = ({ message }: { message: string }) => (
 
 const AdminCourseOverviewTab = ({ course }: AdminCourseOverviewTabProps) => {
   return (
-    <div>
-      {/* Description */}
-      <div>
-        <Title order={2} className="mb-6">
-          About the course
-        </Title>
-        <Typography>
-          <div
-            className="text-md lg:text-lg leading-relaxed mt-2"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(course.description) }}
-          ></div>
-        </Typography>
-      </div>
-
+    <div className="space-y-10">
       {/* Learning Outcomes */}
-      <div className="mt-10">
+      <div>
         <Title order={3}>What you'll learn in this course</Title>
         {course.learningOutcomes && course.learningOutcomes.length > 0 ? (
           <>
@@ -69,7 +56,7 @@ const AdminCourseOverviewTab = ({ course }: AdminCourseOverviewTabProps) => {
       </div>
 
       {/* Prerequisites */}
-      <div className="mt-10">
+      <div>
         <Title order={3}>What you need before starting</Title>
         {course.prerequisites && course.prerequisites.length > 0 ? (
           <>
@@ -96,6 +83,18 @@ const AdminCourseOverviewTab = ({ course }: AdminCourseOverviewTabProps) => {
             <EmptyState message="No prerequisites have been added for this course." />
           </div>
         )}
+      </div>
+
+      {/* Description */}
+      <div>
+        <Title order={2} className="mb-6">
+          About the course
+        </Title>
+        {/* html description from backend */}
+        <div
+          className="prose prose-sm md:prose-base lg:prose-lg prose-zinc max-w-none dark:prose-invert mt-2"
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(course.description) }}
+        />
       </div>
     </div>
   );

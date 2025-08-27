@@ -22,7 +22,6 @@ export interface CourseVm {
   title: string;
   status: CourseStatus;
   summary: string;
-  description: string;
   imageUrl: string | null;
   promoVideoUrl: string | null;
   price: number;
@@ -58,6 +57,7 @@ export interface CourseDetailVm {
 
   title: string;
   description: string;
+  summary: string;
 
   sectionCount: number;
   lectureCount: number;
@@ -157,7 +157,7 @@ export interface CourseApprovalHistoryVm {
 export interface CreateCourseCommand {
   categoryId: string;
   title: string;
-  description: string;
+  summary: string;
   image: File; // Tương ứng với IFormFile trong frontend là File
   promoVideo: File; // Tương ứng với IFormFile
   price: number;

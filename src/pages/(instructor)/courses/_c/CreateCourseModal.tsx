@@ -44,7 +44,7 @@ export default function CreateCourseModal({ opened, onClose }: CreateCourseModal
   const handleSubmit = async (values: typeof form.values) => {
     const payload: CreateCourseCommand = {
       title: values.title,
-      description: values.description,
+      summary: values.summary,
       price: values.price,
       discountedPrice: values.discountedPrice,
       level: values.level,
@@ -75,7 +75,7 @@ export default function CreateCourseModal({ opened, onClose }: CreateCourseModal
               const random = mockCourses[Math.floor(Math.random() * mockCourses.length)];
               form.setValues({
                 title: random.title,
-                description: random.description,
+                summary: random.summary,
                 price: random.price,
                 discountedPrice: random.discountedPrice,
                 level: random.level,
@@ -109,12 +109,12 @@ export default function CreateCourseModal({ opened, onClose }: CreateCourseModal
 
         <Textarea
           size="md"
-          label="Description"
+          label="Summary"
           placeholder="e.g: A complete guide to TypeScript from scratch with real-world projects"
           autosize
           leftSection={<ScrollText className="size-4 text-gray-500" />}
-          {...form.getInputProps("description")}
-          key={form.key("description")}
+          {...form.getInputProps("summary")}
+          key={form.key("summary")}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">

@@ -11,7 +11,7 @@ export type CartItemVm = {
   id: string;
   courseId: string;
   courseTitle: string;
-  courseDescription: string;
+  courseSummary: string;
   courseImageUrl: string;
   quantity: number;
   price: number;
