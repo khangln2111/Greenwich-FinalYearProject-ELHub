@@ -18,6 +18,7 @@ import ThemeToggler from "../../../components/ThemeToggler";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import { useLogout } from "../../../features/auth/identityHooks";
+import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 
 interface MobileHamburgerMenuProps {
   opened: boolean;
@@ -50,13 +51,11 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
         header: "border-b",
       }}
       title={
-        <Link
-          to="/"
-          className="no-underline select-none flex items-center text-black dark:text-white gap-2 font-semibold text-2xl"
-        >
-          <MantineLogo color="primary" size={30} type="mark" />
-          <span className="font-[Inter] tracking-wide font-bold">ELHub</span>
-        </Link>
+        <>
+          <Link to="/">
+            <BrandLogo />
+          </Link>
+        </>
       }
     >
       <ScrollArea mx="-md">

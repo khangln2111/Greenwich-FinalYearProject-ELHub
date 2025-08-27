@@ -1,5 +1,4 @@
 import { Text } from "@mantine/core";
-import { MantineLogo } from "@mantinex/mantine-logo";
 import { IconBellRinging } from "@tabler/icons-react";
 import {
   ChartNoAxesCombinedIcon,
@@ -9,6 +8,7 @@ import {
   User2Icon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/stores/appStore";
@@ -56,14 +56,8 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
           "justify-center": collapsedToIcon,
         })}
       >
-        <Link
-          to="/instructor/dashboard"
-          className={cn("no-underline select-none flex items-center text-black dark:text-white", {
-            "gap-2 font-semibold text-2xl": !collapsedToIcon,
-          })}
-        >
-          <MantineLogo color="primary" size={30} type="mark" />
-          {!collapsedToIcon && <span className="font-[Inter] tracking-wide font-bold">ELHub</span>}
+        <Link to="/instructor/dashboard">
+          <BrandLogo variant={collapsedToIcon ? "mark" : "full"} />
         </Link>
       </div>
       {/* header: instructor sidebar */}

@@ -9,10 +9,10 @@ import {
   Users2Icon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/stores/appStore";
-import LogoIcon from "../../../assets/brandIcon.svg";
 
 type AdminSidebarProps = {
   collapsedToIcon?: boolean;
@@ -78,25 +78,11 @@ const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
           "justify-center": collapsedToIcon,
         })}
       >
-        <Link
-          to="/admin/dashboard"
-          className={cn("no-underline select-none flex items-center text-black dark:text-white", {
-            "gap-2 font-semibold text-2xl": !collapsedToIcon,
-          })}
-        >
-          {/* <MantineLogo color="primary" size={30} type="mark" /> */}
-          <img src={LogoIcon} alt="Logo" className="size-[35px]" />
-          {!collapsedToIcon && (
-            <span
-              className="font-extrabold text-2xl tracking-wide bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400
-                dark:from-blue-400 dark:via-sky-300 dark:to-cyan-200 bg-clip-text text-transparent
-                [text-shadow:0_0_2px_rgba(0,0,0,0.15)]"
-            >
-              ELHub
-            </span>
-          )}
+        <Link to="/admin/dashboard">
+          <BrandLogo variant={collapsedToIcon ? "mark" : "full"} />
         </Link>
       </div>
+
       <Text
         size="xl"
         fw={900}

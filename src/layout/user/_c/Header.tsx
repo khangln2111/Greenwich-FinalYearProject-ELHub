@@ -1,10 +1,10 @@
 import { ActionIcon, Box, Button, Group, Indicator } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { MantineLogo } from "@mantinex/mantine-logo";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { ArrowLeftIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler";
 import { useGetCart } from "../../../features/cart/cartHooks";
 import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
@@ -83,12 +83,12 @@ const Header = () => {
           {/* Logo + drawer toggle */}
           <div className="flex items-center gap-3 sm:gap-4">
             <PanelRightCloseIcon onClick={toggleDrawer} className="hidden-from-lg block" />
-            <Link
-              to="/"
-              className="no-underline select-none flex items-center text-black dark:text-white gap-2 font-semibold text-2xl"
-            >
-              <MantineLogo color="primary" size={30} type="mark" />
-              <span className="hidden md:block font-[Inter] tracking-wide font-bold">ELHub</span>
+            <Link to="/">
+              <BrandLogo
+                classNames={{
+                  text: "hidden md:block tracking-wide font-bold",
+                }}
+              />
             </Link>
           </div>
 
