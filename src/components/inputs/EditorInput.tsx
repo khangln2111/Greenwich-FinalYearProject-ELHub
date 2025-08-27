@@ -30,7 +30,7 @@ export function EditorInput({
   description,
   placeholder,
   editorRef,
-  sticky = true,
+  sticky = false,
   stickyOffset = 55,
   ...rest
 }: EditorInputProps) {
@@ -78,17 +78,21 @@ export function EditorInput({
         classNames={{
           root: `group-data-error:border group-data-error:border-error group-data-error:caret-error prose prose-sm
           md:prose-base prose-zinc max-w-none dark:prose-invert `,
-          content: "max-h-md overflow-y-auto",
+          content: "max-h-lg overflow-y-auto",
+          toolbar: "bg-gray-50 dark:bg-dark-8",
+          controlsGroup: "bg-gray-50 dark:bg-dark-8",
+          control: "size-8 md:size-10 ",
+          controlIcon: "md:size-[20px]",
         }}
       >
         <RichTextEditor.Toolbar sticky={sticky} stickyOffset={stickyOffset}>
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Bold />
             <RichTextEditor.Italic />
-            <RichTextEditor.OrderedList />
             <RichTextEditor.BulletList />
-            <RichTextEditor.ClearFormatting />
+            <RichTextEditor.OrderedList />
             <RichTextEditor.Blockquote />
+            <RichTextEditor.ClearFormatting />
           </RichTextEditor.ControlsGroup>
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.AlignLeft />
@@ -99,6 +103,9 @@ export function EditorInput({
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Undo />
             <RichTextEditor.Redo />
+          </RichTextEditor.ControlsGroup>
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.SourceCode />
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
         <RichTextEditor.Content />

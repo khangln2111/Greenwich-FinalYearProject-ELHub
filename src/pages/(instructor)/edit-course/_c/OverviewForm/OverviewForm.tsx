@@ -107,7 +107,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
     <Box
       component="form"
       onSubmit={formSubmitWithFocus(form, handleSubmit)}
-      className="flex-1 flex flex-col gap-8"
+      className="flex-1 flex flex-col gap-12"
     >
       <div>
         <Title order={3}>Course Title</Title>
@@ -161,8 +161,8 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
       </DragDropContext>
 
       <div>
-        <Title order={3}>Course Pricing</Title>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 mt-xs">
+        <Title order={3}>Pricing</Title>
+        <div className="flex flex-col md:flex-row gap-x-4 gap-y-6 mt-xs">
           <NumberInput
             size="md"
             min={0}
@@ -172,6 +172,8 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
             {...form.getInputProps("price")}
             key={form.key("price")}
             leftSection={<DollarSign className="size-4 text-gray-500" />}
+            className="max-w-sm"
+            inputWrapperOrder={["label", "input", "description", "error"]}
           />
           <NumberInput
             size="md"
@@ -182,6 +184,8 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
             key={form.key("discountedPrice")}
             {...form.getInputProps("discountedPrice")}
             leftSection={<TicketPercent className="size-4 text-gray-500" />}
+            className="max-w-sm"
+            inputWrapperOrder={["label", "input", "description", "error"]}
           />
         </div>
       </div>

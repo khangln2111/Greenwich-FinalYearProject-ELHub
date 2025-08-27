@@ -66,7 +66,7 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
       {/* Course Description Section */}
       <div>
         <Title order={2}>About the course</Title>
-        <div className="prose prose-sm md:prose-base lg:prose-lg prose-zinc max-w-none dark:prose-invert">
+        <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert">
           <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(course.description) }}></div>
         </div>
       </div>
