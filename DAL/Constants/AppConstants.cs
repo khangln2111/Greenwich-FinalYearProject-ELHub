@@ -26,6 +26,13 @@ public static class AppConstants
         public const int DescriptionMaxLength = 500;
     }
 
+    public static class Notification
+    {
+        public const int TitleMaxLength = 100;
+        public const int ContentMaxLength = 500;
+        public const int UrlMaxLength = 3000;
+    }
+
     public static class Order
     {
         public const int PaymentIntentIdMaxLength = 1000;
