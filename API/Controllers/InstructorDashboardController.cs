@@ -1,5 +1,5 @@
-﻿using BLL.BusinessServices.Abstract;
-using BLL.DTOs.InstructorDashboardDTOs;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.DTOs.InstructorDashboardDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,5 +15,4 @@ public class InstructorDashboardController(IInstructorDashboardService dashboard
         var dashboard = await dashboardService.GetDashboard();
         return Ok(dashboard);
     }
-
 }

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
-using BLL.Exceptions;
-using DAL.Data.Enums;
+using Application.Exceptions;
+using Domain.Enums;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace API.Middlewares;

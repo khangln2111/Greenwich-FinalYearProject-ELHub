@@ -1,7 +1,7 @@
-﻿using BLL.BusinessServices.Abstract;
-using BLL.DTOs.CourseDTOs;
-using BLL.DTOs.InstructorDTO;
-using BLL.Gridify.CustomModels;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.DTOs.CourseDTOs;
+using Application.DTOs.InstructorDTO;
+using Application.Gridify.CustomModels;
 using Gridify;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,5 +1,5 @@
-﻿using BLL.BusinessServices.Abstract;
-using BLL.DTOs.LectureDTOs;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.DTOs.LectureDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

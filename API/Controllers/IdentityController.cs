@@ -1,5 +1,5 @@
-﻿using BLL.BusinessServices.Abstract;
-using BLL.DTOs.IdentityDTOs;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.DTOs.IdentityDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

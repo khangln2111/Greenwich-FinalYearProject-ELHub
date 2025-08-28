@@ -1,5 +1,5 @@
-﻿using BLL.BusinessServices.Abstract;
-using BLL.DTOs.EnrollmentDTOs;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.DTOs.EnrollmentDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Mvc;
 

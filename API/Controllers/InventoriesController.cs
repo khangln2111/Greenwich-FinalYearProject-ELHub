@@ -1,4 +1,4 @@
-﻿using BLL.BusinessServices.Abstract;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

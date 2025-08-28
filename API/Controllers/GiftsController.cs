@@ -1,6 +1,6 @@
-﻿using BLL.BusinessServices.Abstract;
-using BLL.DTOs.GiftDTOs;
-using BLL.Gridify.CustomModels;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.DTOs.GiftDTOs;
+using Application.Gridify.CustomModels;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

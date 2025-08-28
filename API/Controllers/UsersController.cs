@@ -1,7 +1,7 @@
-﻿using BLL.BusinessServices.Abstract;
-using BLL.DTOs.UserDTOs;
-using BLL.Gridify.CustomModels;
-using BLL.Models;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.Common.Models;
+using Application.DTOs.UserDTOs;
+using Application.Gridify.CustomModels;
 using Gridify;
 using Microsoft.AspNetCore.Mvc;
 

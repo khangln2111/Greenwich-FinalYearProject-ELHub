@@ -1,0 +1,20 @@
+﻿using Domain.Constants;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Infrastructure.Data.Configurations;
+
+public class GiftConfiguration : IEntityTypeConfiguration<Gift>
+{
+    public void Configure(EntityTypeBuilder<Gift> builder)
+    {
+        builder.Property(g => g.ReceiverEmail)
+            .HasMaxLength(AppConstants.Gift.ReceiverEmailMaxLength);
+
+        builder.HasOne(g => g.InventoryItem)
+            .WithMany()
+            .HasForeignKey(g => g.InventoryItemId)
+            .OnDelete(DeleteBehavior.NoAction);
+    }
+}

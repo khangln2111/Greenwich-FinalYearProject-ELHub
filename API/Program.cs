@@ -1,7 +1,7 @@
 using API;
-using BLL;
-using DAL;
-using DAL.Data;
+using Application;
+using Infrastructure;
+using Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

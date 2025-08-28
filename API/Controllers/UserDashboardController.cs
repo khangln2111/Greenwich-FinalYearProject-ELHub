@@ -1,5 +1,5 @@
-﻿using BLL.BusinessServices.Abstract;
-using BLL.DTOs.UserDashboardDTOs;
+﻿using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.DTOs.UserDashboardDTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;

@@ -1,5 +1,5 @@
-using BLL.BusinessServices.Abstract;
-using BLL.DTOs.CategoryDTOs;
+using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.DTOs.CategoryDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Mvc;
 
