@@ -62,7 +62,6 @@ const Header = () => {
           </ActionIcon>
 
           <SearchBox
-            autoFocus
             value={searchInput}
             onChange={setSearchInput}
             onSearch={handleSearch}

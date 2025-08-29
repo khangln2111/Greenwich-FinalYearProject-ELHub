@@ -68,7 +68,7 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
         {/* Content */}
         <div className="flex flex-col flex-1 gap-y-2">
           {/* Title */}
-          <Tooltip label={course.title} withArrow position="bottom">
+          <Tooltip label={course.title} withArrow position="bottom" withinPortal={false}>
             <Text
               className="text-[21px] font-semibold leading-snug line-clamp-2 hover:text-primary-600
                 dark:hover:text-primary-400 transition"

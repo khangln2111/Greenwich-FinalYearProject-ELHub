@@ -49,7 +49,6 @@ const InstructorHeader = () => {
         xOffset={5}
       >
         <SearchBox
-          autoFocus
           value={searchValue}
           onChange={setSearchValue}
           onSearch={() => {
