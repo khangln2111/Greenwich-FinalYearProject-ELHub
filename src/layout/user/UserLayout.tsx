@@ -1,6 +1,7 @@
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import Footer from "./_c/Footer";
 import Header from "./_c/Header";
+import BottomNav from "./_c/BottomNav";
 
 const UserLayout = () => {
   return (
@@ -11,7 +12,7 @@ const UserLayout = () => {
         <Outlet />
       </main>
       <Footer /> {/* using margin-top: auto */}
-      {/* <BottomNav /> */}
+      <BottomNav />
     </div>
   );
 };

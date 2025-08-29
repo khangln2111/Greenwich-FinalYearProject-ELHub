@@ -129,7 +129,7 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
         md: "drawer",
       }}
     >
-      <div className="mx-auto">
+      <>
         <Stack className="py-md px-sm lg:px-md xl:px-lg">
           <CourseSorter value={tempSorter} onChange={setTempSorter} />
         </Stack>
@@ -332,7 +332,7 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-      </div>
+      </>
     </ResponsiveDialog>
   );
 };

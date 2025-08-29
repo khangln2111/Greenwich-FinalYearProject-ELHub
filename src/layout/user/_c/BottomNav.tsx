@@ -10,13 +10,13 @@ const tabs = [
   { to: "/profile", label: "Profile", icon: User },
 ];
 
-// Các route chính mà BottomNav được phép hiển thị
+//  Main routes to show BottomNav
 const mainRoutes = ["/", "/courses", "/cart", "/profile"];
 
 const BottomNav = () => {
   const location = useLocation();
 
-  // Chỉ render nếu pathname nằm trong mainRoutes
+  // only show if pathname is in mainRoutes
   const shouldShow = mainRoutes.includes(location.pathname);
   if (!shouldShow) return null;
 
