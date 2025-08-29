@@ -43,7 +43,7 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
       to={`/courses/${course.id}`}
       className={cn(
         `flex flex-col bg-white dark:bg-dark-6 rounded-xl shadow-md overflow-hidden hover:shadow-xl
-        transition-all duration-400 outline-2 outline-transparent hover:outline-blue-500`,
+        transition-all duration-400 outline-2 outline-transparent hover:outline-primary-5`,
         className,
       )}
     >

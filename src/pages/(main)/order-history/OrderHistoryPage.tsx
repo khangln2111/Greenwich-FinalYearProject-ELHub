@@ -72,7 +72,7 @@ export default function OrderHistoryPage() {
         <CenterLoader />
       ) : data.items.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-          <IconReceipt className="w-16 h-16 text-blue-500" />
+          <IconReceipt className="w-16 h-16 text-primary-5" />
 
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">No orders found</h2>
           <p className="text-gray-600 dark:text-gray-400">
@@ -80,7 +80,7 @@ export default function OrderHistoryPage() {
           </p>
           <Link
             to="/courses"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium
+            className="inline-block bg-primary-6 hover:bg-primary-7 text-white px-5 py-2 rounded-lg text-sm font-medium
               transition"
           >
             Browse Courses

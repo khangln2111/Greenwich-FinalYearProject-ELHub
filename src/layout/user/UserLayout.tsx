@@ -11,6 +11,7 @@ const UserLayout = () => {
         <Outlet />
       </main>
       <Footer /> {/* using margin-top: auto */}
+      {/* <BottomNav /> */}
     </div>
   );
 };

@@ -13,6 +13,7 @@ import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/stores/appStore";
+import { useMediaQuery } from "@mantine/hooks";
 
 type AdminSidebarProps = {
   collapsedToIcon?: boolean;
@@ -70,6 +71,7 @@ const navItems: NavItem[] = [
 const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
   const closeMobileSidebar = useAppStore((s) => s.closeMobileAdminSidebar);
   const currentUser = useAppStore((s) => s.currentUser);
+  const isMobile = useMediaQuery("max-width: 1023px");
   return (
     <div className="flex flex-col h-full min-h-screen">
       {/* Header */}
@@ -105,7 +107,7 @@ const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
             href={item.href}
             label={item.label}
             icon={item.icon}
-            collapsedToIcon={collapsedToIcon}
+            collapsedToIcon={collapsedToIcon && !isMobile}
             subLinks={item.subLinks}
             onClick={closeMobileSidebar}
           />

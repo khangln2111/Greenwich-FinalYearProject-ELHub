@@ -63,7 +63,6 @@ const SearchBox = ({
           <ActionIcon
             size={rightIconSize}
             radius="3xl"
-            color="primary"
             variant="filled"
             onClick={handleSearch}
             aria-label="Search"

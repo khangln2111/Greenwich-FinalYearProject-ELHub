@@ -8,7 +8,7 @@ const EmptyCartPlaceholder = () => {
         <div className="flex items-center justify-center w-24 h-24 mx-auto mb-6 bg-blue-100 dark:bg-blue-900/20 rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="size-full text-blue-600 dark:text-blue-400"
+            className="size-full text-primary-6 dark:text-primary-4"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -28,7 +28,7 @@ const EmptyCartPlaceholder = () => {
         <Anchor
           component={Link}
           to="/courses"
-          className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full
+          className="inline-block bg-primary-6 hover:bg-primary-7 text-white font-semibold py-2 px-6 rounded-full
             transition"
         >
           Browse Courses

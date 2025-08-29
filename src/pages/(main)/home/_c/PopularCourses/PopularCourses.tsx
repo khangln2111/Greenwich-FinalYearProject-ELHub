@@ -27,7 +27,6 @@ const PopularCourses = () => {
       <Group justify="space-between">
         <Title order={1}>Popular Courses</Title>
         <Anchor
-          c="blue"
           fz="lg"
           underline="hover"
           fw={600}

@@ -75,7 +75,7 @@ export default function UserDashboardLayout() {
   const Sidebar = () => (
     <div className="space-y-4">
       <div
-        className="bg-blue text-white rounded-xl p-4 text-center"
+        className="bg-primary text-white rounded-xl p-4 text-center"
         style={{
           backgroundImage: `url(${background})`,
         }}

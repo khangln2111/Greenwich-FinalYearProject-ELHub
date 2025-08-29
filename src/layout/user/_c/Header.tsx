@@ -147,7 +147,6 @@ const Header = () => {
               <Indicator
                 label={cart?.cartItems?.reduce((sum, item) => sum + item.quantity, 0) ?? 0}
                 size={20}
-                color="indigo"
                 offset={2}
                 position="top-end"
               >

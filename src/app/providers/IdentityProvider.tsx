@@ -7,13 +7,11 @@ const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
   const accessToken = useAppStore((s) => s.accessToken);
   const setUser = useAppStore((s) => s.setUser);
 
-  const { data, isPending } = useCurrentUser();
-
-  if (data) {
-    setUser(data);
-  }
+  const { data, isPending, error } = useCurrentUser();
 
   if (!accessToken) return <>{children}</>;
+
+  if (error) return <Center>Error loading user data</Center>;
 
   if (isPending)
     return (
@@ -21,10 +19,14 @@ const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
         <Stack align="center">
           {/* <MantineLogo color="primary" size={50} /> */}
           <BrandLogo iconSize={50} textSize={35} className="gap-4" />
-          <Loader size="lg" color="blue" />
+          <Loader size="lg" />
         </Stack>
       </Center>
     );
+
+  if (data) {
+    setUser(data);
+  }
 
   return <>{children}</>;
 };

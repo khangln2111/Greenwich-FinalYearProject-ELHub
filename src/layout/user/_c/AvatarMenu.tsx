@@ -34,6 +34,10 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
       withArrow
       position="bottom-end"
       trigger="click"
+      loop={false}
+      withinPortal={false}
+      trapFocus={false}
+      menuItemTabIndex={0}
     >
       <Menu.Target>
         <div className="px-2 hover:bg-blue-light-hover py-1 rounded-md">

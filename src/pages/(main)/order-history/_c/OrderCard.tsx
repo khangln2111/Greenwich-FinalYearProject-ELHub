@@ -53,7 +53,7 @@ export function OrderCard({ order }: Props) {
         <Box
           component={Link}
           to={`/dashboard/order-history/${order.id}`}
-          className="text-md text-blue-600 dark:text-blue-400 font-medium mt-1 inline-flex items-center cursor-pointer
+          className="text-md text-primary-6 dark:text-primary-4 font-medium mt-1 inline-flex items-center cursor-pointer
             hover:underline"
         >
           View details
