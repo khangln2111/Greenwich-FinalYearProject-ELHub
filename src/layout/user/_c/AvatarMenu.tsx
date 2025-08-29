@@ -56,7 +56,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         </div>
       </Menu.Target>
 
-      <Menu.Dropdown className="shadow-xl max-h-[90dvh] overflow-y-auto">
+      <Menu.Dropdown className="shadow-xl max-h-[75dvh] overflow-y-auto">
         <Menu.Label>Personal</Menu.Label>
         <Menu.Item
           component={Link}

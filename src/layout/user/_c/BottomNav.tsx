@@ -1,50 +1,45 @@
-import { ActionIcon } from "@mantine/core";
-import { Home, BookOpen, ShoppingCart, User } from "lucide-react";
+import { BookOpen, Home, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import clsx from "clsx";
+import { cn } from "../../../utils/cn";
 
 const tabs = [
   { to: "/", label: "Home", icon: Home },
-  { to: "/courses", label: "Courses", icon: BookOpen },
-  { to: "/cart", label: "Cart", icon: ShoppingCart },
-  { to: "/profile", label: "Profile", icon: User },
+  { to: "/dashboard/enrolled-courses", label: "Learning", icon: BookOpen },
+  { to: "/dashboard/my-account", label: "Profile", icon: User },
 ];
 
-//  Main routes to show BottomNav
-const mainRoutes = ["/", "/courses", "/cart", "/profile"];
+const mainRoutes = ["/courses"];
 
 const BottomNav = () => {
   const location = useLocation();
-
-  // only show if pathname is in mainRoutes
-  const shouldShow = mainRoutes.includes(location.pathname);
-  if (!shouldShow) return null;
+  const shouldHide = mainRoutes.includes(location.pathname);
+  if (shouldHide) return null;
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-[calc(var(--mantine-z-index-app)+2)] bg-white dark:bg-dark-7 flex
-        justify-around py-2 rounded-t-2xl shadow-2xl md:hidden transition-all duration-300"
+      className="fixed bottom-0 left-0 right-0 z-[calc(var(--mantine-z-index-app)+2)] bg-white dark:bg-dark-7
+        border-t border-gray-200 dark:border-dark-5 grid md:hidden px-8 rounded-t-2xl
+        shadow-[0_-2px_8px_rgba(0,0,0,0.08)]"
+      style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}
     >
       {tabs.map(({ to, label, icon: Icon }) => {
         const isActive = location.pathname === to;
 
         return (
-          <Link key={to} to={to} className="flex flex-col items-center flex-1">
-            <ActionIcon
-              size="lg"
-              radius="xl"
-              variant={isActive ? "filled" : "subtle"}
-              color={isActive ? "primary" : "gray"}
-            >
-              <Icon size="60%" strokeWidth={1.8} />
-            </ActionIcon>
+          <Link key={to} to={to} className="flex flex-col items-center justify-center py-2">
+            <Icon
+              size={23}
+              strokeWidth={2}
+              className={cn("transition-all duration-300", {
+                "text-primary-6 dark:text-primary-4": isActive,
+                "text-gray-400 dark:text-gray-400": !isActive,
+              })}
+            />
             <span
-              className={clsx(
-                "text-xs mt-1 font-medium",
-                isActive
-                  ? "text-primary-6 dark:text-primary-4"
-                  : "text-gray-500 dark:text-gray-400",
-              )}
+              className={cn("text-[11px] font-medium mt-0.5 transition-all duration-300", {
+                "text-primary-6 dark:text-primary-4": isActive,
+                "text-gray-400 dark:text-gray-400": !isActive,
+              })}
             >
               {label}
             </span>

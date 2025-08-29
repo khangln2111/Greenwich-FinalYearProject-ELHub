@@ -1,5 +1,5 @@
 import { rem } from "@mantine/core";
-import LogoIcon from "../../assets/brandIcon.svg";
+import LogoIcon from "../../assets/brandIcon/BrandIcon5.svg";
 import { cn } from "../../utils/cn";
 
 interface BrandLogoProps {
