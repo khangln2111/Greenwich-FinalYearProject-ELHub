@@ -10,9 +10,9 @@ import {
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
+import { OrderBy } from "../../../../../api-client/api.types";
 import { AppSegmentedControl } from "../../../../../components/AppSegmentedControl";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
-import { OrderBy } from "../../../../../api-client/api.types";
 
 export interface CourseSorterProps {
   value: OrderBy<CourseOrderableFields>;
