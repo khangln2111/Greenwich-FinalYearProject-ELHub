@@ -38,6 +38,7 @@ public static class ApplicationLayerDependencyInjection
         services.AddScoped<IAdminDashboardService, AdminDashboardService>();
         services.AddScoped<IUserDashboardService, UserDashboardService>();
         services.AddScoped<IInstructorDashboardService, InstructorDashboardService>();
+        services.AddScoped<INotificationService, NotificationService>();
     }
 
     private static void ConfigureGridify(this IServiceCollection services)

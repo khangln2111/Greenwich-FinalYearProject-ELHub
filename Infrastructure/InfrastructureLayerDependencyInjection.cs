@@ -17,8 +17,6 @@ public static class InfrastructureLayerDependencyInjection
 {
     public static void AddDataAccessLayer(this IServiceCollection services)
     {
-        //Add db context
-        services.AddHttpContextAccessor();
         services.AddPersistence();
         services.AddIdentity();
         services.AddUtilities();
@@ -36,11 +34,16 @@ public static class InfrastructureLayerDependencyInjection
             opts.EnableDetailedErrors();
             // opts.EnableSensitiveDataLogging();
         });
+
+        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
     }
 
 
     private static void AddUtilities(this IServiceCollection services)
     {
+        services.AddHttpContextAccessor();
+        services.AddHttpClient();
+        services.AddSignalR();
         services.AddScoped<IMediaManager, MediaManager>();
         services.AddScoped<IMediaProcessor, MediaProcessor>();
         services.AddScoped<IEmailUtility, EmailUtility>();
@@ -48,8 +51,7 @@ public static class InfrastructureLayerDependencyInjection
         services.AddScoped<IStripePaymentUtility, StripePaymentUtility>();
         services.AddScoped<IHtmlSanitizerUtility, HtmlSanitizerUtility>();
         services.AddScoped<IExternalAuthUtility, ExternalAuthUtility>();
-        services.AddHttpClient();
-        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+        services.AddScoped<INotificationUtility, NotificationUtility>();
         services.AddScoped<DataSeeder>();
     }
 
@@ -86,6 +88,22 @@ public static class InfrastructureLayerDependencyInjection
             {
                 options.BearerTokenExpiration = TimeSpan.FromDays(1);
                 options.RefreshTokenExpiration = TimeSpan.FromDays(30);
+                options.Events = new BearerTokenEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        // Get the access token from the query string of
+                        var accessToken = context.Request.Query["access_token"];
+
+                        // if request is for our hub...
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            path.StartsWithSegments("/hubs/notifications"))
+                            context.Token = accessToken;
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         services.Configure<BearerTokenOptions>(opts =>

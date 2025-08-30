@@ -22,8 +22,7 @@ public class UserService(
     IMapper mapper,
     IGridifyMapper<ApplicationUser> gridifyMapper,
     IValidationService validationService,
-    IMediaManager mediaManager,
-    ICurrentUserUtility currentUserUtility) : IUserService
+    IMediaManager mediaManager) : IUserService
 {
     public async Task<Paged<UserVm>> GetList(GridifyQuery query)
     {
@@ -87,13 +86,13 @@ public class UserService(
 
         if (command.Avatar != null && user.Avatar == null)
         {
-            var avatar = await mediaManager.SaveFileAsync(command.Avatar, MediaType.Image);
+            var avatar = await mediaManager.SaveFile(command.Avatar, MediaType.Image);
             await context.Media.AddAsync(avatar);
             user.Avatar = avatar;
         }
 
         if (command.Avatar != null && user.Avatar != null)
-            await mediaManager.UpdateFileAsync(user.Avatar, command.Avatar);
+            await mediaManager.UpdateFile(user.Avatar, command.Avatar);
         mapper.Map(command, user);
         await userManager.UpdateAsync(user);
         await context.SaveChangesAsync();

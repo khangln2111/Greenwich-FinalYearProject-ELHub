@@ -2,6 +2,7 @@ using API;
 using Application;
 using Infrastructure;
 using Infrastructure.Data;
+using Infrastructure.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +57,7 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/hubs/notifications");
 
 
 app.Run();

@@ -1,6 +1,8 @@
-﻿namespace Application.BusinessServices;
+﻿using Domain.Enums;
 
-public class INotificationService
+namespace Application.BusinessServices;
+
+public interface INotificationService
 {
-    
+    Task CreateAndSendAsync(Guid userId, string title, string content, NotificationType type, string? url = null);
 }

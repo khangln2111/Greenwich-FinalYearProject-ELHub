@@ -7,7 +7,7 @@ namespace Infrastructure.Utilities;
 
 public class ExternalAuthUtility(HttpClient httpClient) : IExternalAuthUtility
 {
-    public async Task<GoogleUserInfo?> GetGoogleInfoAsync(string accessToken)
+    public async Task<GoogleUserInfo?> GetGoogleInfo(string accessToken)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "https://www.googleapis.com/oauth2/v2/userinfo");
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

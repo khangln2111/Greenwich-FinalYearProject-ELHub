@@ -4,5 +4,5 @@ namespace Application.Common.Interfaces.InfrastructureInterfaces;
 
 public interface IExternalAuthUtility
 {
-    Task<GoogleUserInfo?> GetGoogleInfoAsync(string accessToken);
+    Task<GoogleUserInfo?> GetGoogleInfo(string accessToken);
 }

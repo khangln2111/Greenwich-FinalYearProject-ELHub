@@ -41,7 +41,7 @@ public class CategoryService(
     {
         await validationService.ValidateAsync(command);
         var category = mapper.Map<Category>(command);
-        var image = await mediaManager.SaveFileAsync(command.Image, MediaType.Image);
+        var image = await mediaManager.SaveFile(command.Image, MediaType.Image);
         await context.Media.AddAsync(image);
         category.Image = image;
         await context.Categories.AddAsync(category);
@@ -57,10 +57,10 @@ public class CategoryService(
             .FirstOrDefaultAsync(c => c.Id == command.Id);
         if (category == null) throw new NotFoundException(nameof(Category), command.Id);
         if (command.Image != null && category.Image != null)
-            await mediaManager.UpdateFileAsync(category.Image, command.Image);
+            await mediaManager.UpdateFile(category.Image, command.Image);
         if (command.Image != null && category.Image == null)
         {
-            var image = await mediaManager.SaveFileAsync(command.Image, MediaType.Image);
+            var image = await mediaManager.SaveFile(command.Image, MediaType.Image);
             await context.Media.AddAsync(image);
             category.Image = image;
         }

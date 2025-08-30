@@ -22,7 +22,7 @@ public class EmailUtility : IEmailUtility
         };
     }
 
-    public async Task SendEmailAsync(string to, string subject, string body)
+    public async Task SendEmail(string to, string subject, string body)
     {
         var message = new MailMessage(_smtpUsername, to, subject, body)
         {
@@ -31,8 +31,10 @@ public class EmailUtility : IEmailUtility
 
         await _client.SendMailAsync(message);
     }
+    
+    
 
-    public Task SendGiftEmailAsync(string receiverEmail, string giftCode, string giverEmail,
+    public Task SendGiftEmail(string receiverEmail, string giftCode, string giverEmail,
         string? giverName = null, string? courseTitle = null)
     {
         var subject = "🎁 You've Received a Gift!";
@@ -78,12 +80,12 @@ public class EmailUtility : IEmailUtility
         </p>
     </div>";
 
-        BackgroundJob.Enqueue(() => SendEmailAsync(receiverEmail, subject, body));
+        BackgroundJob.Enqueue(() => SendEmail(receiverEmail, subject, body));
         return Task.CompletedTask;
     }
 
     //SendConfirmationEmailAsync with 6 digits code
-    public Task SendConfirmationEmailAsync(string to, string code)
+    public Task SendConfirmationEmail(string to, string code)
     {
         var subject = "Confirm your email from ELearningHub";
 
@@ -92,13 +94,13 @@ public class EmailUtility : IEmailUtility
         body += "<p>Enter the code in the login form to confirm your email</p>";
 
         //Send email using hangfire background job
-        BackgroundJob.Enqueue(() => SendEmailAsync(to, subject, body));
+        BackgroundJob.Enqueue(() => SendEmail(to, subject, body));
         return Task.CompletedTask;
     }
 
 
     //SendPasswordResetEmailAsync with 6 digits code
-    public Task SendForgotPasswordEmailAsync(string to, string code)
+    public Task SendForgotPasswordEmail(string to, string code)
     {
         var subject = "Reset your password from ELearningHub";
 
@@ -108,7 +110,7 @@ public class EmailUtility : IEmailUtility
         body += "<p>If you didn't request a password reset, you can ignore this email</p>";
 
         //Send email using hangfire background job
-        BackgroundJob.Enqueue(() => SendEmailAsync(to, subject, body));
+        BackgroundJob.Enqueue(() => SendEmail(to, subject, body));
         return Task.CompletedTask;
     }
 }

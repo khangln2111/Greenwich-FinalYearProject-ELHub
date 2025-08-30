@@ -77,7 +77,7 @@ public class GiftService(
         var giverFullName = $"{inventoryItem.Inventory.User.FirstName} {inventoryItem.Inventory.User.LastName}";
         var courseTitle = inventoryItem.Course.Title;
 
-        await emailUtility.SendGiftEmailAsync(
+        await emailUtility.SendGiftEmail(
             gift.ReceiverEmail,
             giftCode,
             currentUser.Email,
@@ -125,7 +125,7 @@ public class GiftService(
             $"{gift.InventoryItem.Inventory.User.FirstName} {gift.InventoryItem.Inventory.User.LastName}";
         var courseTitle = gift.InventoryItem.Course.Title;
 
-        await emailUtility.SendGiftEmailAsync(
+        await emailUtility.SendGiftEmail(
             gift.ReceiverEmail,
             giftCode,
             currentUser.Email,

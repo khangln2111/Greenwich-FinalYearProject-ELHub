@@ -9,13 +9,13 @@ public class MediaProcessor : IMediaProcessor
     private readonly FFProbe _ffProbe = new();
 
 
-    public async Task<TimeSpan> GetDurationAsync(string filePath)
+    public async Task<TimeSpan> GetDuration(string filePath)
     {
         var mediaInfo = await Task.Run(() => _ffProbe.GetMediaInfo(filePath));
         return mediaInfo.Duration;
     }
 
-    public async Task<TimeSpan> GetDurationAsync(IFormFile file)
+    public async Task<TimeSpan> GetDuration(IFormFile file)
     {
         var tempFilePath = Path.GetTempFileName();
         await using var stream = new FileStream(tempFilePath, FileMode.Create);

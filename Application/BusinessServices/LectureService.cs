@@ -93,7 +93,7 @@ public class LectureService(
         await EnsureRelatedSectionExistsAsync(command.SectionId);
         var lecture = mapper.Map<Lecture>(command);
         //File upload 
-        var video = await mediaManager.SaveFileAsync(command.Video, MediaType.Video);
+        var video = await mediaManager.SaveFile(command.Video, MediaType.Video);
         await context.Media.AddAsync(video);
         lecture.Video = video as DurationMedia;
 
@@ -118,7 +118,7 @@ public class LectureService(
         if (lecture == null) throw new NotFoundException(nameof(Lecture), command.Id);
         mapper.Map(command, lecture);
         if (command.Video != null && lecture.Video != null)
-            await mediaManager.UpdateFileAsync(lecture.Video, command.Video);
+            await mediaManager.UpdateFile(lecture.Video, command.Video);
         await context.SaveChangesAsync();
         return new Success("Updated the lecture successfully");
     }

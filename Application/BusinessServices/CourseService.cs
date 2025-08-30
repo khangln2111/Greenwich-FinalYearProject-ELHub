@@ -15,6 +15,7 @@ using Domain.Entities;
 using Domain.Entities.MediaEntities;
 using Domain.Enums;
 using Gridify;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.BusinessServices;
@@ -26,7 +27,9 @@ public class CourseService(
     IValidationService validationService,
     IMediaManager mediaManager,
     ICurrentUserUtility currentUserUtility,
-    IHtmlSanitizerUtility htmlSanitizerUtility)
+    IHtmlSanitizerUtility htmlSanitizerUtility,
+    UserManager<ApplicationUser> userManager,
+    INotificationService notificationService)
     : ICourseService
 {
     private const int MaxRetryCount = AppConstants.Course.MaxRetryCount;
@@ -73,8 +76,8 @@ public class CourseService(
         await EnsuredRelatedCategoryExistsAsync(command.CategoryId);
         var course = mapper.Map<Course>(command);
         // Saving new related Image and PromoVideo
-        var image = await mediaManager.SaveFileAsync(command.Image, MediaType.Image);
-        var promoVideo = await mediaManager.SaveFileAsync(command.PromoVideo, MediaType.Video);
+        var image = await mediaManager.SaveFile(command.Image, MediaType.Image);
+        var promoVideo = await mediaManager.SaveFile(command.PromoVideo, MediaType.Video);
         // Add Image and PromoVideo to the context
         await context.Media.AddRangeAsync(image, promoVideo);
         // Set the relationship
@@ -84,6 +87,8 @@ public class CourseService(
         // Add the course to the context and save the changes
         await context.Courses.AddAsync(course);
         await context.SaveChangesAsync();
+
+
         return new Success("Created course successfully", new { id = course.Id });
     }
 
@@ -99,10 +104,10 @@ public class CourseService(
         if (command.CategoryId.HasValue) await EnsuredRelatedCategoryExistsAsync(command.CategoryId.Value);
         // Updating related Image and PromoVideo
         if (command.Image != null && course.Image != null)
-            await mediaManager.UpdateFileAsync(course.Image, command.Image);
+            await mediaManager.UpdateFile(course.Image, command.Image);
 
         if (command.PromoVideo != null && course.PromoVideo != null)
-            await mediaManager.UpdateFileAsync(course.PromoVideo, command.PromoVideo);
+            await mediaManager.UpdateFile(course.PromoVideo, command.PromoVideo);
 
         mapper.Map(command, course);
 
@@ -197,6 +202,28 @@ public class CourseService(
 
         await context.SaveChangesAsync();
 
+        var instructor = await userManager.FindByIdAsync(course.InstructorId.ToString());
+
+        if (instructor is not null)
+        {
+            if (command.IsApproved)
+                await notificationService.CreateAndSendAsync(
+                    instructor.Id,
+                    "Course approved",
+                    $"Your course \"{course.Title}\" has been approved and published.",
+                    NotificationType.CourseApproved,
+                    $"/courses/{course.Id}"
+                );
+            else
+                await notificationService.CreateAndSendAsync(
+                    instructor.Id,
+                    "Course rejected",
+                    $"Your course \"{course.Title}\" has been rejected. Please check feedback.",
+                    NotificationType.CourseRejected,
+                    $"/instructor/courses/{course.Id}"
+                );
+        }
+
         return new Success("Reviewed course successfully", new { id = course.Id });
     }
 
@@ -219,6 +246,17 @@ public class CourseService(
         course.Status = CourseStatus.Pending;
         course.SubmittedAt = DateTime.Now;
         await context.SaveChangesAsync();
+
+        var admins = await userManager.GetUsersInRoleAsync(AppConstants.RoleNames.Instructor);
+
+        foreach (var admin in admins)
+            await notificationService.CreateAndSendAsync(
+                admin.Id,
+                "New course submitted",
+                $"Course \"{course.Title}\" has been submitted for review.",
+                NotificationType.CourseSubmitted,
+                $"/admin/courses/{course.Id}"
+            );
 
         return new Success("Submitted course for review successfully", new { id = course.Id });
     }
@@ -254,6 +292,7 @@ public class CourseService(
 
         course.Status = CourseStatus.Pending;
         await context.SaveChangesAsync();
+
 
         return new Success("Retried course submission successfully", new { id = course.Id });
     }

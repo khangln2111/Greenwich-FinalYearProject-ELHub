@@ -6,9 +6,9 @@ namespace Application.Common.Interfaces.InfrastructureInterfaces;
 
 public interface IMediaManager
 {
-    Task<Media> SaveFileAsync(IFormFile file, MediaType mediaType);
+    Task<Media> SaveFile(IFormFile file, MediaType mediaType);
     void DeleteFile(Media media);
-    Task UpdateFileAsync(Media existingMedia, IFormFile newFile);
+    Task UpdateFile(Media existingMedia, IFormFile newFile);
 
     bool FileHasValidExtension(IFormFile file, string[] allowedExtensions);
 

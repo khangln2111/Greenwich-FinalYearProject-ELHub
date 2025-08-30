@@ -16,7 +16,6 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
         builder.Property(x => x.LastName)
             .HasMaxLength(AppConstants.User.LastNameMaxLength);
 
-
         builder.Property(x => x.Address)
             .HasMaxLength(AppConstants.User.AddressMaxLength);
 

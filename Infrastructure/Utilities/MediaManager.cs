@@ -14,7 +14,7 @@ public class MediaManager(
     IMediaProcessor mediaProcessor)
     : IMediaManager
 {
-    public async Task<Media> SaveFileAsync(IFormFile file, MediaType mediaType)
+    public async Task<Media> SaveFile(IFormFile file, MediaType mediaType)
     {
         var fileId = Guid.NewGuid();
         var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
@@ -27,7 +27,7 @@ public class MediaManager(
         Media media;
         if (mediaType is MediaType.Video or MediaType.Audio)
         {
-            var duration = await mediaProcessor.GetDurationAsync(localFilePath); // Get duration if applicable
+            var duration = await mediaProcessor.GetDuration(localFilePath); // Get duration if applicable
             media = new DurationMedia
             {
                 Id = fileId,
@@ -63,7 +63,7 @@ public class MediaManager(
     }
 
 
-    public async Task UpdateFileAsync(Media existingMedia, IFormFile newFile)
+    public async Task UpdateFile(Media existingMedia, IFormFile newFile)
     {
         // Delete the existing file if it exists
         DeleteFile(existingMedia);
@@ -86,7 +86,7 @@ public class MediaManager(
         if (existingMedia is DurationMedia durationMedia &&
             (existingMedia.Type == MediaType.Video || existingMedia.Type == MediaType.Audio))
         {
-            var duration = await mediaProcessor.GetDurationAsync(localFilePath);
+            var duration = await mediaProcessor.GetDuration(localFilePath);
             durationMedia.DurationInSeconds = (int)Math.Round(duration.TotalSeconds);
         }
     }

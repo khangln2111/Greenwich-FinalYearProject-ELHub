@@ -57,7 +57,7 @@ public class IdentityService(
         if (!result.Succeeded) throw new BadRequestException(result.Errors);
 
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-        await emailUtility.SendConfirmationEmailAsync(user.Email, token);
+        await emailUtility.SendConfirmationEmail(user.Email, token);
 
         return new Success("Registered successfully, please check your email to confirm your account");
     }
@@ -74,7 +74,7 @@ public class IdentityService(
         if (!user.EmailConfirmed)
         {
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            if (user.Email != null) await emailUtility.SendConfirmationEmailAsync(user.Email, token);
+            if (user.Email != null) await emailUtility.SendConfirmationEmail(user.Email, token);
             throw new HttpException(StatusCodes.Status403Forbidden, "Email is not confirmed",
                 ErrorCode.EmailNotConfirmed);
         }
@@ -89,7 +89,7 @@ public class IdentityService(
     {
         await validationService.ValidateAsync(command);
 
-        var payload = await externalAuthUtility.GetGoogleInfoAsync(command.IdToken);
+        var payload = await externalAuthUtility.GetGoogleInfo(command.IdToken);
         if (payload == null || string.IsNullOrEmpty(payload.Email))
             throw new HttpException(StatusCodes.Status400BadRequest, "Invalid Google token",
                 ErrorCode.InvalidToken);
@@ -132,7 +132,7 @@ public class IdentityService(
             throw new HttpException(StatusCodes.Status400BadRequest, "Email is already confirmed",
                 ErrorCode.EmailAlreadyConfirmed);
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-        await emailUtility.SendConfirmationEmailAsync(command.Email, token);
+        await emailUtility.SendConfirmationEmail(command.Email, token);
         return new Success("Confirmation email has been sent, please check your email");
     }
 
@@ -162,7 +162,7 @@ public class IdentityService(
         if (user == null) throw new NotFoundException("Email not found");
 
         var token = await userManager.GeneratePasswordResetTokenAsync(user);
-        await emailUtility.SendForgotPasswordEmailAsync(command.Email, token);
+        await emailUtility.SendForgotPasswordEmail(command.Email, token);
 
         return new Success("Reset password email has been sent, please check your email");
     }
@@ -302,13 +302,13 @@ public class IdentityService(
         // if the user does not have an avatar, create a new one
         if (selfCommand.Avatar != null && user.Avatar == null)
         {
-            var avatar = await mediaManager.SaveFileAsync(selfCommand.Avatar, MediaType.Image);
+            var avatar = await mediaManager.SaveFile(selfCommand.Avatar, MediaType.Image);
             await context.Media.AddAsync(avatar);
             user.Avatar = avatar;
         }
 
         if (selfCommand.Avatar != null && user.Avatar != null)
-            await mediaManager.UpdateFileAsync(user.Avatar, selfCommand.Avatar);
+            await mediaManager.UpdateFile(user.Avatar, selfCommand.Avatar);
 
         mapper.Map(selfCommand, user);
         await context.SaveChangesAsync();
@@ -326,13 +326,13 @@ public class IdentityService(
         // if the user does not have an avatar, create a new one
         if (selfCommand.Avatar != null && user.Avatar == null)
         {
-            var avatar = await mediaManager.SaveFileAsync(selfCommand.Avatar, MediaType.Image);
+            var avatar = await mediaManager.SaveFile(selfCommand.Avatar, MediaType.Image);
             await context.Media.AddAsync(avatar);
             user.Avatar = avatar;
         }
 
         if (selfCommand.Avatar != null && user.Avatar != null)
-            await mediaManager.UpdateFileAsync(user.Avatar, selfCommand.Avatar);
+            await mediaManager.UpdateFile(user.Avatar, selfCommand.Avatar);
 
         mapper.Map(selfCommand, user);
         await context.SaveChangesAsync();

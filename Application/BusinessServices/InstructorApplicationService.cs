@@ -55,7 +55,7 @@ public class InstructorApplicationService(
 
         await validationService.ValidateAsync(command);
 
-        var media = await mediaManager.SaveFileAsync(command.Avatar, MediaType.Image);
+        var media = await mediaManager.SaveFile(command.Avatar, MediaType.Image);
         await context.Media.AddAsync(media);
 
         var application = mapper.Map<InstructorApplication>(command);
@@ -99,7 +99,7 @@ public class InstructorApplicationService(
         await validationService.ValidateAsync(command);
 
         if (command.Avatar != null && application.Avatar != null)
-            await mediaManager.UpdateFileAsync(application.Avatar, command.Avatar);
+            await mediaManager.UpdateFile(application.Avatar, command.Avatar);
 
         mapper.Map(command, application);
         application.Status = InstructorApplicationStatus.Pending;
