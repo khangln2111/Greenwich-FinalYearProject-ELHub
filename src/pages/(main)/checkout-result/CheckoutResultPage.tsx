@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
-import { useConfirmOrder } from "../../../features/order/orderHooks";
+import { useProcessOrder } from "../../../features/order/orderHooks";
 import { OrderStatus } from "../../../features/order/order.types";
 
 export default function CheckoutResultPage() {
@@ -14,7 +14,7 @@ export default function CheckoutResultPage() {
   const validId = orderId || paymentIntentId;
   const queryClient = useQueryClient();
 
-  const { data, isPending, isError, isSuccess } = useConfirmOrder(validId || "");
+  const { data, isPending, isError, isSuccess } = useProcessOrder(validId || "");
 
   const isCompleted = data?.data?.status === OrderStatus.Completed;
 

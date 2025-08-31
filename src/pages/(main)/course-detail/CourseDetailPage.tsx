@@ -10,19 +10,19 @@ import {
   ShoppingCart,
   StarIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { parseAsStringEnum, useQueryState } from "nuqs";
 import { Link, Navigate, useParams } from "react-router-dom";
 import image from "../../../assets/placeholder/courseDetail.jpg";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 import { useAddCartItem } from "../../../features/cart/cartHooks";
 import { useGetCourseDetail } from "../../../features/course/courseHooks";
+import { cn } from "../../../utils/cn";
 import { formatDate, formatDuration } from "../../../utils/format";
 import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
+import CurriculumTab from "./_c/CurriculumTab/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
-import CurriculumTab from "./_c/CurriculumTab/CurriculumTab";
-import { cn } from "../../../utils/cn";
 
 const items = [
   { title: "Home", href: "/" },
@@ -75,7 +75,10 @@ const CourseDetailPage = () => {
 
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
 
-  const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
+  const [activeTab, setActiveTab] = useQueryState<CourseDetailTab>(
+    "activeTab",
+    parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
+  );
 
   const addCartItemMutation = useAddCartItem();
 

@@ -19,13 +19,13 @@ export const createOrder = async (command: CreateOrderCommand) => {
   return response.data;
 };
 
-export const confirmOrder = async (id: string) => {
+export const processOrder = async (id: string) => {
   const response = await apiClient.get<
     ApiSuccessResponse<{
       orderId: string;
       status: string;
     }>
-  >(`${BASE_URL}/${id}/Confirm`);
+  >(`${BASE_URL}/${id}/Process`);
   return response.data;
 };
 

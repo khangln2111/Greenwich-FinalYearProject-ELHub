@@ -2,7 +2,7 @@ import { Badge, Button, Group, SegmentedControl, Tabs, Text, Tooltip } from "@ma
 import { modals } from "@mantine/modals";
 import { IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { parseAsStringEnum, useQueryState } from "nuqs";
 import { Link, Navigate, useParams } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader";
 import { CourseStatus } from "../../../features/course/course.types";
@@ -26,7 +26,11 @@ enum CourseDetailTab {
 export default function InstructorEditCoursePage() {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
-  const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
+
+  const [activeTab, setActiveTab] = useQueryState<CourseDetailTab>(
+    "activeTab",
+    parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
+  );
 
   const submitMutation = useSubmitCourse();
   const retrySubmitMutation = useRetrySubmitCourse();

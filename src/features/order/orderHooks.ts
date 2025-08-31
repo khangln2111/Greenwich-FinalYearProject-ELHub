@@ -3,7 +3,7 @@ import { showErrorToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CreateOrderCommand, OrderQueryCriteria } from "./order.types";
-import { confirmOrder, createOrder, getOrderDetailSelf, getOrdersSelf } from "./orderApi";
+import { processOrder, createOrder, getOrderDetailSelf, getOrdersSelf } from "./orderApi";
 
 export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
   return useQuery({
@@ -43,10 +43,10 @@ export const useCreateOrder = () => {
   });
 };
 
-export const useConfirmOrder = (id: string) => {
+export const useProcessOrder = (id: string) => {
   return useQuery({
-    queryKey: keyFac.orders.confirmOrder(id).queryKey,
-    queryFn: () => confirmOrder(id),
+    queryKey: keyFac.orders.processOrder(id).queryKey,
+    queryFn: () => processOrder(id),
     enabled: !!id,
     retry: false,
   });

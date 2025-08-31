@@ -121,7 +121,7 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
         trapFocus: true,
         classNames: {
           footer: "border-t-0 shadow-[0_-4px_6px_rgba(0,0,0,0.1)]",
-          header: "border-b",
+          header: "border-b border-gray-200 dark:border-gray-800",
         },
       }}
       matches={{
