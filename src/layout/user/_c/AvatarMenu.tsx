@@ -99,7 +99,13 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
 
         <Menu.Divider />
         <Menu.Label>Communication</Menu.Label>
-        <Menu.Item leftSection={<IconBell size={15} />}>Notifications</Menu.Item>
+        <Menu.Item
+          leftSection={<IconBell size={15} />}
+          component={Link}
+          to="/dashboard/notifications"
+        >
+          Notifications
+        </Menu.Item>
         <Menu.Item leftSection={<IconMessageCircle size={15} />}>Messages</Menu.Item>
 
         <Menu.Divider />

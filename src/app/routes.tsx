@@ -35,6 +35,7 @@ import MyAccountPage from "../pages/(main)/my-account/MyAccountPage";
 import OrderHistoryDetailPage from "../pages/(main)/order-detail/OrderHistoryDetailPage";
 import OrderHistoryPage from "../pages/(main)/order-history/OrderHistoryPage";
 import UserDashboardPage from "../pages/(main)/dashboard/UserDashboardPage";
+import NotificationsPage from "../pages/(main)/notifications/NotificationsPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -95,6 +96,10 @@ const userRoute: RouteObject = {
         {
           path: "gifts",
           element: <GiftsPage />,
+        },
+        {
+          path: "notifications",
+          element: <NotificationsPage />,
         },
       ],
     },

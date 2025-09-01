@@ -29,7 +29,7 @@ export const buildNotificationQuery = (query: NotificationQueryCriteria = {}) =>
   return qb.build();
 };
 
-export const useGetNotifications = async (query?: NotificationQueryCriteria) => {
+export const getNotifications = async (query?: NotificationQueryCriteria) => {
   const response = await apiClient.get<ListData<NotificationVm>>(BASE_URL, {
     params: {
       query: buildNotificationQuery(query),
@@ -38,17 +38,17 @@ export const useGetNotifications = async (query?: NotificationQueryCriteria) => 
   return response.data;
 };
 
-export const useMarkAllNotificationsAsRead = async () => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/mark-all-as-read`);
+export const markAllNotificationsAsRead = async () => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/mark-all-as-read`);
   return response.data;
 };
 
-export const useMarkNotificationAsRead = async (id: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/mark-as-read`);
+export const markNotificationAsRead = async (id: string) => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/${id}/mark-as-read`);
   return response.data;
 };
 
-export const useGetUnreadNotificationsCount = async () => {
+export const getUnreadNotificationsCount = async () => {
   const response = await apiClient.get<number>(`${BASE_URL}/unread-count`);
   return response.data;
 };
