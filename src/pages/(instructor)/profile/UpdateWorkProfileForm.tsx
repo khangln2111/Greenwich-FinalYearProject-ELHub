@@ -9,7 +9,7 @@ import {
   updateWorkProfileSchema,
 } from "../../../features/auth/identity.schema";
 import { UpdateWorkProfileSelfCommand, WorkProfileVm } from "../../../features/auth/identity.types";
-import { useUpdateWorkProfileSelf } from "../../../features/auth/identityHooks";
+import { useUpdateWorkProfileSelf } from "../../../features/auth/identity.hooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 type UpdateWorkProfileFormProps = {

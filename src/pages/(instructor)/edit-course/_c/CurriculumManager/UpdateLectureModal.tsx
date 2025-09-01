@@ -12,7 +12,7 @@ import {
   UpdateLectureSchema,
 } from "../../../../../features/lecture/lecture.schema";
 import { LectureVm, UpdateLectureCommand } from "../../../../../features/lecture/lecture.types";
-import { useUpdateLecture } from "../../../../../features/lecture/lectureHooks";
+import { useUpdateLecture } from "../../../../../features/lecture/lecture.hooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import CusModal from "../../../../../components/CusModal/CusModal";
 

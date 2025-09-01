@@ -7,7 +7,7 @@ import {
   getSentGifts,
   redeemGift,
   revokeGift,
-} from "./giftApi";
+} from "./gift.api";
 import { ChangeGiftReceiverCommand, CreateGiftCommand, GiftQueryCriteria } from "./gift.types";
 import { handleApiError } from "../common-service/handleApiError";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";

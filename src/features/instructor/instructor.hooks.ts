@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { InstructorQueryCriteria } from "./instructor.types";
-import { getCoursesByInstructorId, getInstructorById, getInstructors } from "./instructorApi";
+import { getCoursesByInstructorId, getInstructorById, getInstructors } from "./instructor.api";
 import { CourseQueryCriteria } from "../course/course.types";
 
 export const useGetInstructors = (query?: InstructorQueryCriteria) => {

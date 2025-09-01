@@ -7,7 +7,7 @@ import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import GiftingModal from "./_c/GiftingModal";
 import InventoryItemCard from "./_c/InventoryItemCard";
-import { useGetInventoryItemsSelf } from "../../../features/inventory/inventoryHooks";
+import { useGetInventoryItemsSelf } from "../../../features/inventory/inventory.hooks";
 
 export default function InventoryPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));

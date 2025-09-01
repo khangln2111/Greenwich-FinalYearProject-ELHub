@@ -3,7 +3,7 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CreateSectionCommand, ReorderSectionCommand, UpdateSectionCommand } from "./section.types";
-import { createSection, deleteSection, reorderSection, updateSection } from "./sectionApi";
+import { createSection, deleteSection, reorderSection, updateSection } from "./section.api";
 
 export const useReorderSection = () => {
   const queryClient = useQueryClient();

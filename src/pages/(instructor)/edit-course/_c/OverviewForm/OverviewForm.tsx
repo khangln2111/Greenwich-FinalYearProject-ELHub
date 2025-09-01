@@ -21,7 +21,7 @@ import {
   CourseLevel,
   UpdateCourseCommand,
 } from "../../../../../features/course/course.types";
-import { useUpdateCourse } from "../../../../../features/course/courseHooks";
+import { useUpdateCourse } from "../../../../../features/course/course.hooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import SortableInputList from "./SortableInputList";
 import TestSortList from "./TestSortList";

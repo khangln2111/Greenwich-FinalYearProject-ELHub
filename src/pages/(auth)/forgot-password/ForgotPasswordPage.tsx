@@ -18,7 +18,7 @@ import {
   useSendResetPasswordOtp,
   useResetPassword,
   useValidateResetPasswordOtp,
-} from "../../../features/auth/identityHooks";
+} from "../../../features/auth/identity.hooks";
 import { useMediaQuery } from "@mantine/hooks";
 import { ErrorCode } from "../../../api-client/api.types";
 import { ArrowLeftIcon } from "lucide-react";

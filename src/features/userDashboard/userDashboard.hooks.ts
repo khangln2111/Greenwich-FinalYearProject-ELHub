@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { getUserDashboard } from "./userDashboardApi";
+import { getUserDashboard } from "./userDashboard.api";
 
 export const useGetUserDashboard = () => {
   return useQuery({

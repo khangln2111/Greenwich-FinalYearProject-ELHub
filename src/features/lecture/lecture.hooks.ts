@@ -11,7 +11,7 @@ import {
   deleteLecture,
   reorderLecture,
   updateLecture,
-} from "./lectureApi";
+} from "./lecture.api";
 
 export const useReorderLecture = () => {
   const queryClient = useQueryClient();

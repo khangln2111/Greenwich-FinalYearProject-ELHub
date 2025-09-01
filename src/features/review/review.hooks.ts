@@ -6,7 +6,7 @@ import {
   replyToReview,
   updateReview,
   updateReviewReply,
-} from "./reviewApi";
+} from "./review.api";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
   CreateReviewCommand,

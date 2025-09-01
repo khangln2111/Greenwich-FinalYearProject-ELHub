@@ -4,7 +4,7 @@ import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { EllipsisVerticalIcon, EyeIcon, Video } from "lucide-react";
 import { LectureVm } from "../../../../../features/lecture/lecture.types";
-import { useDeleteLecture } from "../../../../../features/lecture/lectureHooks";
+import { useDeleteLecture } from "../../../../../features/lecture/lecture.hooks";
 import { cn } from "../../../../../utils/cn";
 import { formatDuration } from "../../../../../utils/format";
 

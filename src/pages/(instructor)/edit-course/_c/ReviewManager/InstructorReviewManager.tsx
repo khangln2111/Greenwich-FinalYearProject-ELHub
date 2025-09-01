@@ -13,7 +13,7 @@ import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 
 import CenterLoader from "../../../../../components/CenterLoader/CenterLoader";
-import { useGetReviewsByCourseId } from "../../../../../features/review/reviewHooks";
+import { useGetReviewsByCourseId } from "../../../../../features/review/review.hooks";
 import InstructorReviewManagerCard from "./_c/InstructorReviewManagerCard";
 import { OrderBy } from "../../../../../api-client/api.types";
 import { ReviewOrderableFields } from "../../../../../features/review/review.types";

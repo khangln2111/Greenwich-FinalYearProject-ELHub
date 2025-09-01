@@ -6,7 +6,7 @@ import { zodResolver } from "mantine-form-zod-resolver";
 import { ALLOWED_IMAGE_TYPES } from "../../../../constants/ValidationConstants";
 import { EditUserFormValues, editUserSchema } from "../../../../features/user/user.schema";
 import { UpdateUserCommand, UserVm } from "../../../../features/user/user.types";
-import { useUpdateUser } from "../../../../features/user/userHooks";
+import { useUpdateUser } from "../../../../features/user/user.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import CusModal from "../../../../components/CusModal/CusModal";
 

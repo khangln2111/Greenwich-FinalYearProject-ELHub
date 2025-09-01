@@ -4,7 +4,7 @@ import { applyConditions } from "../../utils/gridifyHelper";
 import apiClient from "../../api-client/apiClient";
 import { ListData } from "../../api-client/api.types";
 import { CourseQueryCriteria, CourseVm } from "../course/course.types";
-import { buildCourseQuery } from "../course/courseApi";
+import { buildCourseQuery } from "../course/course.api";
 
 const BASE_URL = "/instructors";
 

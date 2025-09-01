@@ -8,7 +8,7 @@ import {
   UpdateUserCommand,
   UserQueryCriteria,
 } from "./user.types";
-import { assignRolesToUser, getUsers, setUserActivation, updateUser } from "./userApi";
+import { assignRolesToUser, getUsers, setUserActivation, updateUser } from "./user.api";
 
 export const useGetUsers = (query?: UserQueryCriteria) => {
   return useQuery({

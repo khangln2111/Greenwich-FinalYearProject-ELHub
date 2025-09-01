@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { CheckCircle, KeyIcon, GiftIcon } from "lucide-react";
-import { useEnrollFromInventory } from "../../../../features/enrollment/enrollmentHooks";
+import { useEnrollFromInventory } from "../../../../features/enrollment/enrollment.hooks";
 import { InventoryItemVm } from "../../../../features/inventory/inventory.types";
 import { cn } from "../../../../utils/cn";
 import { Link, useNavigate } from "react-router-dom";

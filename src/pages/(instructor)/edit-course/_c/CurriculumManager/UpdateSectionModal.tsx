@@ -8,7 +8,7 @@ import {
   editSectionFormSchema,
 } from "../../../../../features/section/section.schema";
 import { SectionVm, UpdateSectionCommand } from "../../../../../features/section/section.types";
-import { useUpdateSection } from "../../../../../features/section/sectionHooks";
+import { useUpdateSection } from "../../../../../features/section/section.hooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import CusModal from "../../../../../components/CusModal/CusModal";
 

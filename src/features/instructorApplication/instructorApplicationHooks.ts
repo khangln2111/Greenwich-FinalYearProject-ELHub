@@ -12,7 +12,7 @@ import {
   getInstructorApplicationSelf,
   retryInstructorApplication,
   reviewInstructorApplication,
-} from "./instructorApplicationApi";
+} from "./instructorApplication.api";
 import { handleApiError } from "../common-service/handleApiError";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { ErrorCode } from "../../api-client/api.types";

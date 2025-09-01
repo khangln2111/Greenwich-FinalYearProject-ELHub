@@ -15,7 +15,7 @@ import {
   Gender,
   UpdateUserProfileSelfCommand,
 } from "../../../../features/auth/identity.types";
-import { useUpdateUserProfileSelf } from "../../../../features/auth/identityHooks";
+import { useUpdateUserProfileSelf } from "../../../../features/auth/identity.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 
 type UpdateUserProfileFormProps = {

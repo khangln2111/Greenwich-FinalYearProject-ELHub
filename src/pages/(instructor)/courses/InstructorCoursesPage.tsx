@@ -4,7 +4,7 @@ import { GraduationCap, Plus, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import { CourseStatus } from "../../../features/course/course.types";
-import { useGetCourses } from "../../../features/course/courseHooks";
+import { useGetCourses } from "../../../features/course/course.hooks";
 import CreateCourseModal from "./_c/CreateCourseModal";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";

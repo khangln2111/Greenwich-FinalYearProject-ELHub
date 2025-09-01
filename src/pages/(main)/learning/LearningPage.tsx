@@ -3,14 +3,14 @@ import { ResponsiveDialog } from "mantine-vaul";
 import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
-import { useCompleteLecture } from "../../../features/lecture/lectureHooks";
+import { useCompleteLecture } from "../../../features/lecture/lecture.hooks";
 import { cn } from "../../../utils/cn";
 import LearningFooter from "./_c/LearningFooter";
 import LearningHeader from "./_c/LearningHeader";
 import LearningSidebar from "./_c/LearningSidebar";
 import { Hourglass } from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { useGetEnrollmentDetailSelf } from "../../../features/enrollment/enrollmentHooks";
+import { useGetEnrollmentDetailSelf } from "../../../features/enrollment/enrollment.hooks";
 
 export default function LearningCoursePage() {
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);

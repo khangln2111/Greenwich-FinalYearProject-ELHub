@@ -2,7 +2,7 @@ import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { RedeemGiftFormValues, redeemGiftSchema } from "../../../../features/gift/gift.schema";
-import { useRedeemGift } from "../../../../features/gift/giftHooks";
+import { useRedeemGift } from "../../../../features/gift/gift.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import CusModal from "../../../../components/CusModal/CusModal";
 

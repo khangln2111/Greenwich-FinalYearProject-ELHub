@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, XCircle } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
-import { useProcessOrder } from "../../../features/order/orderHooks";
+import { useProcessOrder } from "../../../features/order/order.hooks";
 import { OrderStatus } from "../../../features/order/order.types";
 
 export default function CheckoutResultPage() {

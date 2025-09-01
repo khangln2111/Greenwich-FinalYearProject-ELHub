@@ -4,7 +4,7 @@ import { modals } from "@mantine/modals";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CourseStatus, CourseVm } from "../../../../features/course/course.types";
-import { useDeleteCourse } from "../../../../features/course/courseHooks";
+import { useDeleteCourse } from "../../../../features/course/course.hooks";
 import { formatCurrency, formatDuration } from "../../../../utils/format";
 
 const statusBadgeMap: Record<CourseStatus, string> = {

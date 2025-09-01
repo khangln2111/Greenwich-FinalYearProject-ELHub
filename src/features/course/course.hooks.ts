@@ -19,7 +19,7 @@ import {
   retrySubmitCourse,
   submitCourse,
   updateCourse,
-} from "./courseApi";
+} from "./course.api";
 
 export const useGetCourses = (query?: CourseQueryCriteria) => {
   return useQuery({

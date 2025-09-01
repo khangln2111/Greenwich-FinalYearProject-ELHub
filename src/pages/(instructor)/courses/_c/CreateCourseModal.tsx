@@ -22,7 +22,7 @@ import {
   createCourseSchema,
 } from "../../../../features/course/course.schema";
 import { CourseLevel, CreateCourseCommand } from "../../../../features/course/course.types";
-import { useCreateCourse } from "../../../../features/course/courseHooks";
+import { useCreateCourse } from "../../../../features/course/course.hooks";
 import { mockCourses } from "../../../../features/mockData";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import CusModal from "../../../../components/CusModal/CusModal";

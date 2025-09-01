@@ -14,7 +14,7 @@ import { BookOpen, DollarSign, RefreshCcw, ShoppingBag, Star, User } from "lucid
 import { Legend } from "recharts";
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { useGetInstructorDashboard } from "../../../features/instructorDashboard/instructorDashboardHooks";
+import { useGetInstructorDashboard } from "../../../features/instructorDashboard/instructorDashboard.hooks";
 
 const InstructorDashboardPage = () => {
   const {

@@ -1,6 +1,6 @@
 import UpdateWorkProfileForm from "./UpdateWorkProfileForm";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { useGetWorkProfileSelf } from "../../../features/auth/identityHooks";
+import { useGetWorkProfileSelf } from "../../../features/auth/identity.hooks";
 
 export default function InstructorProfilePage() {
   const { data, isLoading, isError } = useGetWorkProfileSelf();

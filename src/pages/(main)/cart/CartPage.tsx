@@ -4,7 +4,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
 import { UpdateCartItemCommand } from "../../../features/cart/cart.types";
-import { useDeleteCartItem, useGetCart, useUpdateCartItem } from "../../../features/cart/cartHooks";
+import {
+  useDeleteCartItem,
+  useGetCart,
+  useUpdateCartItem,
+} from "../../../features/cart/cart.hooks";
 import CartItemCard from "./_c/CartItemCard";
 import CartSummary from "./_c/CartSummary";
 import EmptyCartPlaceholder from "./_c/EmptyCartPlaceholder";

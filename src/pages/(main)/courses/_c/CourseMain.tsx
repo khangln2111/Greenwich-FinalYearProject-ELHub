@@ -4,13 +4,13 @@ import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import AppPagination from "../../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 import { CourseVm } from "../../../../features/course/course.types";
-import { useGetCourses } from "../../../../features/course/courseHooks";
+import { useGetCourses } from "../../../../features/course/course.hooks";
 import { useCourseQueryState } from "../../../../hooks/useCoursesQueryState";
 import { useCoursesPageStore } from "../../../../zustand/stores/coursesPageStore";
 import CourseGrid from "./CourseGrid";
 import CourseList from "./CourseList";
 import { keyFac } from "../../../../features/common-service/queryKeyFactory";
-import { getCourses } from "../../../../features/course/courseApi";
+import { getCourses } from "../../../../features/course/course.api";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 

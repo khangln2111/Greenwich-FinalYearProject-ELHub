@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
-import { useGetCart } from "../../../features/cart/cartHooks";
+import { useGetCart } from "../../../features/cart/cart.hooks";
 import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "./AvatarMenu";

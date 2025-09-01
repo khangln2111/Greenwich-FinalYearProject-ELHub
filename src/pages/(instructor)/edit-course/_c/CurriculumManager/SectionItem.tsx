@@ -7,7 +7,7 @@ import { EllipsisVerticalIcon, Move, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { LectureVm } from "../../../../../features/lecture/lecture.types";
 import { SectionVm as lectureVm } from "../../../../../features/section/section.types";
-import { useDeleteSection } from "../../../../../features/section/sectionHooks";
+import { useDeleteSection } from "../../../../../features/section/section.hooks";
 import { cn } from "../../../../../utils/cn";
 import { CreateLectureModal } from "./CreateLectureModal";
 import { LectureItem } from "./LectureItem";

@@ -7,7 +7,7 @@ import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-clie
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { OrderOrderableFields, OrderStatus } from "../../../features/order/order.types";
-import { useGetOrdersSelf } from "../../../features/order/orderHooks";
+import { useGetOrdersSelf } from "../../../features/order/order.hooks";
 import { OrderCard } from "./_c/OrderCard";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
 

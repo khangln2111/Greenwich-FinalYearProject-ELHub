@@ -11,7 +11,7 @@ import {
   useGetReceivedGifts,
   useGetSentGifts,
   useRevokeGift,
-} from "../../../features/gift/giftHooks";
+} from "../../../features/gift/gift.hooks";
 import { ChangeGiftReceiverModal } from "./_c/ChangeGiftReceiverModal";
 import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";

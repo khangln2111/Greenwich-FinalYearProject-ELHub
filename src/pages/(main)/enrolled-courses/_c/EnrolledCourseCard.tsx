@@ -14,7 +14,7 @@ import {
   useCreateReview,
   useDeleteReview,
   useUpdateReview,
-} from "../../../../features/review/reviewHooks";
+} from "../../../../features/review/review.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import CusModal from "../../../../components/CusModal/CusModal";
 

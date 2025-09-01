@@ -5,7 +5,7 @@ import { zodResolver } from "mantine-form-zod-resolver";
 import PasswordInputWithStrength from "../../../components/PasswordStrength/PasswordInputWithStrength";
 import { RegisterFormValues, registerSchema } from "../../../features/auth/identity.schema";
 import { RegisterCommand } from "../../../features/auth/identity.types";
-import { useRegister } from "../../../features/auth/identityHooks";
+import { useRegister } from "../../../features/auth/identity.hooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 import { extractPasswordRequirements } from "../../../utils/zodHelper";
 

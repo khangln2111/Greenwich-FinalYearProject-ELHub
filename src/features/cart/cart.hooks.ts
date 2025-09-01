@@ -4,7 +4,7 @@ import { useAppStore } from "../../zustand/stores/appStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { AddCartItemCommand, UpdateCartItemCommand } from "./cart.types";
-import { addCartItem, deleteCartItem, getCartSelf, updateCartItem } from "./cartApi";
+import { addCartItem, deleteCartItem, getCartSelf, updateCartItem } from "./cart.api";
 
 export const useGetCart = () => {
   const currentUser = useAppStore((s) => s.currentUser);

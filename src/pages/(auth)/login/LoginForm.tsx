@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import GoogleIcon from "../../../components/svg-icons/GoogleIcon";
 import { LoginFormValues, loginSchema } from "../../../features/auth/identity.schema";
 import { LoginCommand } from "../../../features/auth/identity.types";
-import { useLogin, useLoginWithGoogle } from "../../../features/auth/identityHooks";
+import { useLogin, useLoginWithGoogle } from "../../../features/auth/identity.hooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 
 const LoginForm = () => {

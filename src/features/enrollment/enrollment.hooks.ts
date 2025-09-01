@@ -4,7 +4,7 @@ import { useAppStore } from "../../zustand/stores/appStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { EnrollFromInventoryCommand, EnrollmentQueryCriteria } from "./enrollment.types";
-import { enrollFromInventory, getEnrollmentDetailSelf, getEnrollmentsSelf } from "./enrollmentApi";
+import { enrollFromInventory, getEnrollmentDetailSelf, getEnrollmentsSelf } from "./enrollment.api";
 import { ErrorCode } from "../../api-client/api.types";
 
 export const useGetEnrollmentsSelf = (query?: EnrollmentQueryCriteria) => {

@@ -16,7 +16,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
-import { useLogout } from "../../../features/auth/identityHooks";
+import { useLogout } from "../../../features/auth/identity.hooks";
 import { useAppStore } from "../../../zustand/stores/appStore";
 
 interface MobileHamburgerMenuProps {

@@ -3,7 +3,7 @@ import { Button, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FileType, ScrollText } from "lucide-react";
 import { CreateSectionCommand } from "../../../../../features/section/section.types";
-import { useCreateSection } from "../../../../../features/section/sectionHooks";
+import { useCreateSection } from "../../../../../features/section/section.hooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import {

@@ -6,7 +6,7 @@ import { ReviewVm } from "../../../../../../features/review/review.types";
 import {
   useReplyToReview,
   useUpdateReviewReply,
-} from "../../../../../../features/review/reviewHooks";
+} from "../../../../../../features/review/review.hooks";
 import { cn } from "../../../../../../utils/cn";
 
 interface InstructorReviewManagerCardProps {

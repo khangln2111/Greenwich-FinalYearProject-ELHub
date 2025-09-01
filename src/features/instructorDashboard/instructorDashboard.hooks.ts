@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getInstructorDashboard } from "./instructorDashboardApi";
-import { instructorDashboardKeyFac } from "./instructorDashboardKeyFac";
+import { getInstructorDashboard } from "./instructorDashboard.api";
+import { instructorDashboardKeyFac } from "./instructorDashboard.keyFac";
 
 export const useGetInstructorDashboard = () => {
   return useQuery({

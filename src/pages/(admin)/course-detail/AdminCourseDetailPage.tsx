@@ -25,7 +25,7 @@ import {
   courseApprovalSchema,
 } from "../../../features/course/course.schema";
 import { CourseStatus } from "../../../features/course/course.types";
-import { useGetCourseDetail, useModerateCourse } from "../../../features/course/courseHooks";
+import { useGetCourseDetail, useModerateCourse } from "../../../features/course/course.hooks";
 import { formatDuration } from "../../../utils/format";
 import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";

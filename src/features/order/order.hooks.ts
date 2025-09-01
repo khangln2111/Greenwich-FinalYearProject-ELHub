@@ -3,7 +3,7 @@ import { showErrorToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CreateOrderCommand, OrderQueryCriteria } from "./order.types";
-import { processOrder, createOrder, getOrderDetailSelf, getOrdersSelf } from "./orderApi";
+import { processOrder, createOrder, getOrderDetailSelf, getOrdersSelf } from "./order.api";
 
 export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
   return useQuery({

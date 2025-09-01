@@ -6,7 +6,7 @@ import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-clie
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
-import { useGetCourses } from "../../../features/course/courseHooks";
+import { useGetCourses } from "../../../features/course/course.hooks";
 import AdminCourseCard from "./_c/AdminCourseCard";
 
 const COURSE_ORDER_OPTIONS: {

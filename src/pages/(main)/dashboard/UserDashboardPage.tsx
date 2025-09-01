@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { useGetUserDashboard } from "../../../features/userDashboard/userDashboardHooks";
+import { useGetUserDashboard } from "../../../features/userDashboard/userDashboard.hooks";
 import { CompositeChart, FunnelChart, RadarChart } from "@mantine/charts";
 import { Legend } from "recharts";
 

@@ -22,7 +22,7 @@ import {
   Users,
 } from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboardHooks";
+import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboard.hooks";
 import DashboardStatCard from "./_c/DashboardStatCard";
 import { Legend } from "recharts";
 

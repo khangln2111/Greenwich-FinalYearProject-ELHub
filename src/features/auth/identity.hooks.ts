@@ -33,7 +33,7 @@ import {
   validateResetPasswordOtp,
   updateWorkProfileSelf,
   getWorkProfileSelf,
-} from "./identityApi";
+} from "./identity.api";
 
 export const useCurrentUser = () => {
   const accessToken = useAppStore((s) => s.accessToken);

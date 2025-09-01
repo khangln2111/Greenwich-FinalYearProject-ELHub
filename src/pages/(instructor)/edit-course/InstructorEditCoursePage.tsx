@@ -10,7 +10,7 @@ import {
   useGetCourseDetail,
   useRetrySubmitCourse,
   useSubmitCourse,
-} from "../../../features/course/courseHooks";
+} from "../../../features/course/course.hooks";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmission";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
