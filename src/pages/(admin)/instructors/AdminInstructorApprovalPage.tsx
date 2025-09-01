@@ -22,8 +22,7 @@ import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } fr
 import { useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader";
-import CusModal from "../../../components/CusModal";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { ReviewCourseFormValues, reviewCourseSchema } from "../../../features/course/course.schema";
 import {
   InstructorApplicationOrderableFields,
@@ -37,6 +36,7 @@ import {
 } from "../../../features/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
 import { formSubmitWithFocus } from "../../../utils/form";
+import CusModal from "../../../components/CusModal/CusModal";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {

@@ -4,7 +4,7 @@ import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
 import { useGetCourses } from "../../../features/course/courseHooks";
 import AdminCourseCard from "./_c/AdminCourseCard";

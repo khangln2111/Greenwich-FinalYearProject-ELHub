@@ -1,5 +1,5 @@
 import UpdateWorkProfileForm from "./UpdateWorkProfileForm";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetWorkProfileSelf } from "../../../features/auth/identityHooks";
 
 export default function InstructorProfilePage() {

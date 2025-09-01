@@ -3,7 +3,7 @@ import { LayoutGrid, LayoutList, ListFilter, Search } from "lucide-react";
 
 import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import AppPagination from "../../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../../components/CenterLoader";
+import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 import { CourseVm } from "../../../../features/course/course.types";
 import { useGetCourses } from "../../../../features/course/courseHooks";
 import { useCourseQueryState } from "../../../../hooks/useCoursesQueryState";

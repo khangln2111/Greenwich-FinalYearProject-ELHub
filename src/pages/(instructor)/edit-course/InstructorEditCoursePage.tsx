@@ -4,7 +4,7 @@ import { IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import { Link, Navigate, useParams } from "react-router-dom";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { CourseStatus } from "../../../features/course/course.types";
 import {
   useGetCourseDetail,

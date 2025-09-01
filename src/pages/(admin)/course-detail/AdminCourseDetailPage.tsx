@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { useState } from "react";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 import {
   CourseApprovalFormValues,
@@ -31,6 +31,7 @@ import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab/AdminCourseC
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
 import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";
+import { parseAsStringEnum, useQueryState } from "nuqs";
 
 const getStatusBadge = (status: CourseStatus) => {
   switch (status) {
@@ -59,7 +60,10 @@ const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
   const reviewCourseMutation = useModerateCourse();
-  const [activeTab, setActiveTab] = useState<CourseDetailTab>(CourseDetailTab.Overview);
+  const [activeTab, setActiveTab] = useQueryState<CourseDetailTab>(
+    "activeTab",
+    parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
+  );
 
   const location = useLocation();
   const from = location.state?.from || "/admin/courses";

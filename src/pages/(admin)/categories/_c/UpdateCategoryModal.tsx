@@ -1,7 +1,6 @@
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
 import {
@@ -11,6 +10,7 @@ import {
 import { CategoryVm, UpdateCategoryCommand } from "../../../../features/category/category.types";
 import { useUpdateCategory } from "../../../../features/category/categoryHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 interface Props {
   opened: boolean;

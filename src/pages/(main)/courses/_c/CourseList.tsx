@@ -1,5 +1,5 @@
 import { CourseVm } from "../../../../features/course/course.types";
-import CourseListItem from "../../home/_c/PopularCourses/CourseListItem";
+import CourseListItem from "../../../../components/course-cards/CourseListItem";
 
 interface CourseListProps {
   courses: CourseVm[];

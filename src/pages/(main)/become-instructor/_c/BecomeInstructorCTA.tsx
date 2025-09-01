@@ -6,10 +6,10 @@ import RetryInstructorApplicationForm from "./RetryInstructorApplicationForm";
 import { Loader } from "@mantine/core";
 import dayjs from "dayjs";
 import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplicationHooks";
-import CusModal from "../../../../components/CusModal";
 import ApplicationStatusModal from "./ApplicationStatusModal";
 import { useState } from "react";
 import { InstructorApplicationStatus } from "../../../../features/instructorApplication/instructorApplication.types";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 const MAX_RETRY = 2;
 const RETRY_DELAY_DAYS = 7;

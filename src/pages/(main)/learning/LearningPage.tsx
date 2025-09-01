@@ -9,7 +9,7 @@ import LearningFooter from "./_c/LearningFooter";
 import LearningHeader from "./_c/LearningHeader";
 import LearningSidebar from "./_c/LearningSidebar";
 import { Hourglass } from "lucide-react";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetEnrollmentDetailSelf } from "../../../features/enrollment/enrollmentHooks";
 
 export default function LearningCoursePage() {

@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 import { CheckCircle, Clock, XCircle } from "lucide-react";
-import CusModal from "../../../../components/CusModal";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 type Props = {
   opened: boolean;

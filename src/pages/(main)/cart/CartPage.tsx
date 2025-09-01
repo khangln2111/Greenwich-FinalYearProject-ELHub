@@ -2,7 +2,7 @@ import { Anchor, Box, Checkbox, Divider, Loader } from "@mantine/core";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import SummaryDecorator from "../../../components/SummaryDecorator";
+import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
 import { UpdateCartItemCommand } from "../../../features/cart/cart.types";
 import { useDeleteCartItem, useGetCart, useUpdateCartItem } from "../../../features/cart/cartHooks";
 import CartItemCard from "./_c/CartItemCard";

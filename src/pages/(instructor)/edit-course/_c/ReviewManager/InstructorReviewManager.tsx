@@ -12,7 +12,7 @@ import { IconCheck, IconStarFilled } from "@tabler/icons-react";
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 
-import CenterLoader from "../../../../../components/CenterLoader";
+import CenterLoader from "../../../../../components/CenterLoader/CenterLoader";
 import { useGetReviewsByCourseId } from "../../../../../features/review/reviewHooks";
 import InstructorReviewManagerCard from "./_c/InstructorReviewManagerCard";
 import { OrderBy } from "../../../../../api-client/api.types";

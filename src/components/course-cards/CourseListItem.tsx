@@ -1,9 +1,9 @@
 import { Avatar, Badge, Button, Group, Rating, Text, Tooltip } from "@mantine/core";
 import { Clock, Layers, LibraryBig, Tag, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { CourseVm } from "../../../../../features/course/course.types";
-import { cn } from "../../../../../utils/cn";
-import { formatDuration } from "../../../../../utils/format";
+import { CourseVm } from "../../features/course/course.types";
+import { cn } from "../../utils/cn";
+import { formatDuration } from "../../utils/format";
 
 type CourseListItemProps = {
   course: CourseVm;

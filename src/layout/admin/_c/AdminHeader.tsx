@@ -5,7 +5,7 @@ import { IconBell, IconSearch } from "@tabler/icons-react";
 import { PanelLeftCloseIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import ThemeToggler from "../../../components/ThemeToggler";
+import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "../../user/_c/AvatarMenu";
 import SearchBox from "../../user/_c/SearchBox";

@@ -5,7 +5,7 @@ import { ArrowLeftIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
-import ThemeToggler from "../../../components/ThemeToggler";
+import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useGetCart } from "../../../features/cart/cartHooks";
 import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
 import { useAppStore } from "../../../zustand/stores/appStore";

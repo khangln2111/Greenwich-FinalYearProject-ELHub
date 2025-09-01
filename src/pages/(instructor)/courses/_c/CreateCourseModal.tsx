@@ -9,7 +9,6 @@ import {
   TicketPercent,
 } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
-import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -26,6 +25,7 @@ import { CourseLevel, CreateCourseCommand } from "../../../../features/course/co
 import { useCreateCourse } from "../../../../features/course/courseHooks";
 import { mockCourses } from "../../../../features/mockData";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 type CreateCourseModalProps = {
   opened: boolean;

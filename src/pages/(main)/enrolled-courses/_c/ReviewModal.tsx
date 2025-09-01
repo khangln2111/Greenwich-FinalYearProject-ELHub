@@ -2,7 +2,7 @@ import { Button, Textarea } from "@mantine/core";
 import clsx from "clsx";
 import { Star } from "lucide-react";
 import { useState } from "react";
-import CusModal from "../../../../components/CusModal";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 type Review = {
   rating: number;

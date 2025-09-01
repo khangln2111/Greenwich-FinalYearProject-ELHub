@@ -1,10 +1,10 @@
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-import CusModal from "../../../../components/CusModal";
 import { RedeemGiftFormValues, redeemGiftSchema } from "../../../../features/gift/gift.schema";
 import { useRedeemGift } from "../../../../features/gift/giftHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 type RedeemGiftModalProps = {
   open: boolean;

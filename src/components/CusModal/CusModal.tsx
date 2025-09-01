@@ -2,7 +2,7 @@ import { Portal, rem, ScrollArea, Transition } from "@mantine/core";
 import { X } from "lucide-react";
 import { createContext, useContext, useEffect } from "react";
 import { RemoveScroll } from "react-remove-scroll";
-import { cn } from "../utils/cn";
+import { cn } from "../../utils/cn";
 
 interface CustomModalProps {
   opened: boolean;

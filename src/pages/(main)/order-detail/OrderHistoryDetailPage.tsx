@@ -1,8 +1,8 @@
 import { Anchor } from "@mantine/core";
 import { ArrowLeft } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import CenterLoader from "../../../components/CenterLoader";
-import SummaryDecorator from "../../../components/SummaryDecorator";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
+import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
 import { useGetOrderDetailSelf } from "../../../features/order/orderHooks";
 import OrderDetailHeader from "./_c/OrderDetailHeader";
 import OrderItemList from "./_c/OrderItemList";

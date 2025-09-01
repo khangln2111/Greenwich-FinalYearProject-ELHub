@@ -3,7 +3,6 @@ import { Button, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FileType, ScrollText } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
-import CusModal from "../../../../../components/CusModal";
 import {
   UpdateSectionFormValues,
   editSectionFormSchema,
@@ -11,6 +10,7 @@ import {
 import { SectionVm, UpdateSectionCommand } from "../../../../../features/section/section.types";
 import { useUpdateSection } from "../../../../../features/section/sectionHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
+import CusModal from "../../../../../components/CusModal/CusModal";
 
 interface EditSectionalModalProps {
   opened: boolean;

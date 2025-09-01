@@ -3,12 +3,12 @@ import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { CalendarIcon, CameraIcon } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
-import CusModal from "../../../../components/CusModal";
 import { ALLOWED_IMAGE_TYPES } from "../../../../constants/ValidationConstants";
 import { EditUserFormValues, editUserSchema } from "../../../../features/user/user.schema";
 import { UpdateUserCommand, UserVm } from "../../../../features/user/user.types";
 import { useUpdateUser } from "../../../../features/user/userHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 type Props = {
   opened: boolean;

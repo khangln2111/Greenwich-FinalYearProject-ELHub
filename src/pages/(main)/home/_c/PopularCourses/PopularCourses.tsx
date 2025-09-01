@@ -14,7 +14,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { mockCourses } from "../../../../../features/mockData";
-import CourseCard from "./CourseCard";
+import CourseCard from "../../../../../components/course-cards/CourseCard";
 
 const PopularCourses = () => {
   const [opened, { open, close }] = useDisclosure(false);

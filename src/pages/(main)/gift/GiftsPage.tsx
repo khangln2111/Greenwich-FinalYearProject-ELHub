@@ -5,7 +5,7 @@ import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import {
   useChangeGiftReceiver,
   useGetReceivedGifts,

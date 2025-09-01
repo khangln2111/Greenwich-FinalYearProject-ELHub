@@ -1,6 +1,5 @@
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import CusModal from "../../../../components/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
 import { useCreateCategory } from "../../../../features/category/categoryHooks";
@@ -10,6 +9,7 @@ import {
   CreateCategoryFormValues,
   createCategorySchema,
 } from "../../../../features/category/category.schema";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 interface Props {
   opened: boolean;

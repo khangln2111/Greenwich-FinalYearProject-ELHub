@@ -1,4 +1,4 @@
-import CourseCard from "../../home/_c/PopularCourses/CourseCard";
+import CourseCard from "../../../../components/course-cards/CourseCard";
 
 type CourseGridProps = {
   courses: any[];

@@ -21,7 +21,7 @@ import {
   UserCheck,
   Users,
 } from "lucide-react";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboardHooks";
 import DashboardStatCard from "./_c/DashboardStatCard";
 import { Legend } from "recharts";

@@ -5,7 +5,7 @@ import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } fr
 import { Link } from "react-router-dom";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { OrderOrderableFields, OrderStatus } from "../../../features/order/order.types";
 import { useGetOrdersSelf } from "../../../features/order/orderHooks";
 import { OrderCard } from "./_c/OrderCard";

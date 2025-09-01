@@ -20,7 +20,7 @@ import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { UserVm } from "../../../features/user/user.types";
 import { useGetUsers, useSetUserActivation } from "../../../features/user/userHooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";

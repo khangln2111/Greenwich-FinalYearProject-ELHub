@@ -24,7 +24,7 @@ import {
   useGetCoursesByInstructorId,
   useGetInstructorById,
 } from "../../../features/instructor/instructorHooks";
-import CourseCard from "../home/_c/PopularCourses/CourseCard";
+import CourseCard from "../../../components/course-cards/CourseCard";
 import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
 
 export default function InstructorDetailPage() {

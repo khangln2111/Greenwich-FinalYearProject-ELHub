@@ -1,12 +1,12 @@
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-import CusModal from "../../../../components/CusModal";
 import {
   ChangeGiftReceiverFormValues,
   changeGiftReceiverSchema,
 } from "../../../../features/gift/gift.schema";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 type ChangeGiftReceiverModalProps = {
   opened: boolean;

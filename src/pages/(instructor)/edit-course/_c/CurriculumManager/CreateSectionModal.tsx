@@ -2,7 +2,6 @@
 import { Button, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FileType, ScrollText } from "lucide-react";
-import CusModal from "../../../../../components/CusModal";
 import { CreateSectionCommand } from "../../../../../features/section/section.types";
 import { useCreateSection } from "../../../../../features/section/sectionHooks";
 import { formSubmitWithFocus } from "../../../../../utils/form";
@@ -11,6 +10,7 @@ import {
   CreateSectionFormValues,
   createSectionFormSchema,
 } from "../../../../../features/section/section.schema";
+import CusModal from "../../../../../components/CusModal/CusModal";
 
 interface CreateSectionModalProps {
   opened: boolean;

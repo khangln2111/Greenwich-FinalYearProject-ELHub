@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
-import ThemeToggler from "../../../components/ThemeToggler";
+import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useLogout } from "../../../features/auth/identityHooks";
 import { useAppStore } from "../../../zustand/stores/appStore";
 

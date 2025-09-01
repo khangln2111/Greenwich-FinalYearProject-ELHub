@@ -4,7 +4,7 @@ import { Pencil, Plus, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { CategoryVm } from "../../../features/category/category.types";
 import { useGetCategories } from "../../../features/category/categoryHooks";
 import CreateCategoryModal from "./_c/CreateCategoryModal";

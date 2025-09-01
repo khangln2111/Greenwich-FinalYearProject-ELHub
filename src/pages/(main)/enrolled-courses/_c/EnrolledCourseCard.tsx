@@ -4,7 +4,6 @@ import { Play, Star } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CusModal from "../../../../components/CusModal";
 import { EnrollmentSelfVm } from "../../../../features/enrollment/enrollment.types";
 import {
   CreateReviewFormSchema,
@@ -17,6 +16,7 @@ import {
   useUpdateReview,
 } from "../../../../features/review/reviewHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
+import CusModal from "../../../../components/CusModal/CusModal";
 
 interface EnrolledCourseCardProps {
   enrollment: EnrollmentSelfVm;
