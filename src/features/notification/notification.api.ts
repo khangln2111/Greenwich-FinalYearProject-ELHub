@@ -2,6 +2,7 @@ import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 import { NotificationQueryCriteria, NotificationType, NotificationVm } from "./notification.types";
 import apiClient from "../../api-client/apiClient";
 import { ApiSuccessResponse, ListData } from "../../api-client/api.types";
+import { applyConditions } from "../../utils/gridifyHelper";
 
 const BASE_URL = "/notifications";
 
@@ -26,14 +27,16 @@ export const buildNotificationQuery = (query: NotificationQueryCriteria = {}) =>
     });
   }
 
+  applyConditions(qb, conditions);
+
+  qb.addOrderBy("createdAt", true); // true = desc
+
   return qb.build();
 };
 
 export const getNotifications = async (query?: NotificationQueryCriteria) => {
   const response = await apiClient.get<ListData<NotificationVm>>(BASE_URL, {
-    params: {
-      query: buildNotificationQuery(query),
-    },
+    params: buildNotificationQuery(query),
   });
   return response.data;
 };

@@ -1,23 +1,23 @@
-import { useState } from "react";
+import { Badge, Button, Divider, Group, Loader, Menu, Stack } from "@mantine/core";
 import { Bell, Check, Filter } from "lucide-react";
-import { Button, Group, Stack, Badge, Divider, ScrollArea, Loader, Menu } from "@mantine/core";
+import { useState } from "react";
 
-import {
-  NotificationType,
-  NotificationVm,
-} from "../../../features/notification/notification.types";
 import {
   useGetNotifications,
   useGetUnreadNotificationsCount,
   useMarkAllNotificationsAsRead,
 } from "../../../features/notification/notification.hooks";
+import {
+  NotificationType,
+  NotificationVm,
+} from "../../../features/notification/notification.types";
 import NotificationCard from "./_c/NotificationCard";
 
 export default function NotificationsPage() {
   const [filterUnread, setFilterUnread] = useState(false);
   const [filterType, setFilterType] = useState<NotificationType | null>(null);
 
-  const { data, isLoading } = useGetNotifications({
+  const { data, isPending } = useGetNotifications({
     isRead: filterUnread ? false : null,
     types: filterType ? [filterType] : null,
     pageSize: 20,
@@ -88,21 +88,19 @@ export default function NotificationsPage() {
       <Divider mb="md" />
 
       {/* List */}
-      <ScrollArea h="70vh">
-        {isLoading ? (
-          <div className="flex justify-center items-center h-40">
-            <Loader size="lg" />
-          </div>
-        ) : (
-          <Stack>
-            {data?.items?.length ? (
-              data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
-            ) : (
-              <div className="text-center text-gray-500 py-10">No notifications</div>
-            )}
-          </Stack>
-        )}
-      </ScrollArea>
+      {isPending ? (
+        <div className="flex justify-center items-center h-40">
+          <Loader size="lg" />
+        </div>
+      ) : (
+        <Stack>
+          {data?.items?.length ? (
+            data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
+          ) : (
+            <div className="text-center text-gray-500 py-10">No notifications</div>
+          )}
+        </Stack>
+      )}
     </div>
   );
 }
