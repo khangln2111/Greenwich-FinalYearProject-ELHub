@@ -16,11 +16,11 @@ export const buildNotificationQuery = (query: NotificationQueryCriteria = {}) =>
   if (query.isRead != null)
     conditions.push(() => qb.addCondition("isRead", op.Equal, query.isRead!));
 
-  if (query.type?.length && query.type.length < Object.values(NotificationType).length) {
+  if (query.types?.length && query.types.length < Object.values(NotificationType).length) {
     conditions.push(() => {
-      qb.startGroup().addCondition("type", op.Equal, query.type![0]);
-      for (let i = 1; i < query.type!.length; i++) {
-        qb.or().addCondition("type", op.Equal, query.type![i]);
+      qb.startGroup().addCondition("type", op.Equal, query.types![0]);
+      for (let i = 1; i < query.types!.length; i++) {
+        qb.or().addCondition("type", op.Equal, query.types![i]);
       }
       qb.endGroup();
     });
@@ -38,17 +38,17 @@ export const useGetNotifications = async (query?: NotificationQueryCriteria) => 
   return response.data;
 };
 
-export const useMarkNotificationAsRead = async (id: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/MarkAsRead`);
+export const useMarkAllNotificationsAsRead = async () => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/mark-all-as-read`);
   return response.data;
 };
 
-export const useMarkAllNotificationsAsRead = async () => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/MarkAllAsRead`);
+export const useMarkNotificationAsRead = async (id: string) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/mark-as-read`);
   return response.data;
 };
 
 export const useGetUnreadNotificationsCount = async () => {
-  const response = await apiClient.get<number>(`${BASE_URL}/UnreadCount`);
+  const response = await apiClient.get<number>(`${BASE_URL}/unread-count`);
   return response.data;
 };

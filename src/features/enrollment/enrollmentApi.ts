@@ -58,7 +58,7 @@ export const getEnrollmentDetailSelf = async (id: string) => {
 
 export const enrollFromInventory = async (command: EnrollFromInventoryCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(
-    `${BASE_URL}/EnrollFromInventory`,
+    `${BASE_URL}/enroll-from-inventory`,
     command,
   );
 

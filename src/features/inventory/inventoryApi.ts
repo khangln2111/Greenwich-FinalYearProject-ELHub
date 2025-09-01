@@ -41,7 +41,7 @@ export const buildInventoryItemQuery = (query: InventoryItemQueryCriteria = {}) 
 
 export const getInventoryItemsSelf = async (query?: InventoryItemQueryCriteria) => {
   const response = await apiClient.get<ListData<InventoryItemVm>>(
-    `${BASE_URL}/InventoryItems/self`,
+    `${BASE_URL}/inventory-items/self`,
     {
       params: buildInventoryItemQuery(query),
     },

@@ -10,12 +10,12 @@ export const getCartSelf = async () => {
 };
 
 export const addCartItem = async (command: AddCartItemCommand) => {
-  const response = await apiClient.post<CartVm>(`${BASE_URL}/AddCartItem`, command);
+  const response = await apiClient.post<CartVm>(`${BASE_URL}/add-cart-item`, command);
   return response.data;
 };
 
 export const updateCartItem = async (command: UpdateCartItemCommand) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/UpdateCartItem`, command);
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/update-cart-item`, command);
   return response.data;
 };
 

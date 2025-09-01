@@ -36,29 +36,29 @@ export const createGift = async (command: CreateGiftCommand) => {
 };
 
 export const changeGiftReceiver = async (command: ChangeGiftReceiverCommand) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/ChangeReceiver`, command);
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/change-receiver`, command);
   return response.data;
 };
 
 export const redeemGift = async (giftId: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${giftId}/Redeem`);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${giftId}/redeem`);
   return response.data;
 };
 
 export const revokeGift = async (giftId: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${giftId}/Revoke`);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${giftId}/revoke`);
   return response.data;
 };
 
 export const getSentGifts = async (query?: GiftQueryCriteria) => {
-  const response = await apiClient.get<ListData<SentGiftVm>>(`${BASE_URL}/Sent`, {
+  const response = await apiClient.get<ListData<SentGiftVm>>(`${BASE_URL}/sent`, {
     params: buildGiftQuery(query),
   });
   return response.data;
 };
 
 export const getReceivedGifts = async (query?: GiftQueryCriteria) => {
-  const response = await apiClient.get<ListData<ReceivedGiftVm>>(`${BASE_URL}/Received`, {
+  const response = await apiClient.get<ListData<ReceivedGiftVm>>(`${BASE_URL}/received`, {
     params: buildGiftQuery(query),
   });
   return response.data;

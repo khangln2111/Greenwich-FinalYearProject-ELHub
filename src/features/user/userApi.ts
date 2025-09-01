@@ -59,12 +59,12 @@ export const getUsers = async (query?: UserQueryCriteria) => {
 };
 
 export const assignRolesToUser = async (command: AssignRoleToUserCommand) => {
-  const response = await apiClient.post(`${BASE_URL}/AssignRoles`, command);
+  const response = await apiClient.post(`${BASE_URL}/assign-roles`, command);
   return response.data;
 };
 
 export const setUserActivation = async (command: SetUserActivationCommand) => {
-  const response = await apiClient.put(`${BASE_URL}/SetActivation`, command);
+  const response = await apiClient.put(`${BASE_URL}/set-activation`, command);
   return response.data;
 };
 

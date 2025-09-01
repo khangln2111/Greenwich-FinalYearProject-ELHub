@@ -5,7 +5,7 @@ import { CreateLectureCommand, ReorderLectureCommand, UpdateLectureCommand } fro
 const BASE_URL = "/lectures";
 
 export const reorderLecture = async (command: ReorderLectureCommand) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/ReorderLecture`, command);
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/reorder-lecture`, command);
   return response.data;
 };
 
@@ -28,7 +28,7 @@ export const updateLecture = async (command: UpdateLectureCommand) => {
 };
 
 export const completeLecture = async (id: string) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/CompleteLecture/${id}`);
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/complete-lecture/${id}`);
   return response.data;
 };
 

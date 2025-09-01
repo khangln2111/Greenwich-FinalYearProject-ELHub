@@ -63,18 +63,18 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   if (query.status != null)
     conditions.push(() => qb.addCondition("status", op.Equal, query.status!));
 
-  if (query.level?.length && query.level.length < Object.values(CourseLevel).length) {
+  if (query.levels?.length && query.levels.length < Object.values(CourseLevel).length) {
     conditions.push(() => {
-      qb.startGroup().addCondition("level", op.Equal, query.level![0]);
-      for (let i = 1; i < query.level!.length; i++) {
-        qb.or().addCondition("level", op.Equal, query.level![i]);
+      qb.startGroup().addCondition("level", op.Equal, query.levels![0]);
+      for (let i = 1; i < query.levels!.length; i++) {
+        qb.or().addCondition("level", op.Equal, query.levels![i]);
       }
       qb.endGroup();
     });
   }
 
-  if (query.priceMode?.length && query.priceMode.length < Object.values(CoursePriceMode).length) {
-    const mode = query.priceMode[0];
+  if (query.priceModes?.length && query.priceModes.length < Object.values(CoursePriceMode).length) {
+    const mode = query.priceModes[0];
     if (mode === CoursePriceMode.Free) {
       conditions.push(() => qb.addCondition("discountedPrice", op.Equal, 0));
     } else if (mode === CoursePriceMode.Paid) {
@@ -137,16 +137,16 @@ export const getInstructorByCourseId = async (id: string) => {
 };
 
 export const moderateCourse = async (command: ReviewCourseCommand) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/Moderate`, command);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/moderate`, command);
   return response.data;
 };
 
 export const submitCourse = async (id: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/Submit`);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/submit`);
   return response.data;
 };
 
 export const retrySubmitCourse = async (id: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/RetrySubmit`);
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/retry-submit`);
   return response.data;
 };

@@ -1,6 +1,5 @@
 import { ActionIcon, Button } from "@mantine/core";
 import { LayoutGrid, LayoutList, ListFilter, Search } from "lucide-react";
-
 import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import AppPagination from "../../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
@@ -45,14 +44,14 @@ const CourseMain = ({}: CourseMainProps) => {
 
   const { data, isPending, isError } = useGetCourses({
     categoryId: categoryId,
-    level: levels,
+    levels,
     orderBy,
     search,
     minDurationInSeconds,
     maxDurationInSeconds,
     minPrice,
     maxPrice,
-    priceMode: priceModes,
+    priceModes,
     page,
     pageSize,
   });

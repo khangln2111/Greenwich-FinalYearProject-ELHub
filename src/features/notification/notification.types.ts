@@ -13,7 +13,7 @@ export interface NotificationVm {
 export type NotificationOrderableFields = "createdAt" | "title" | "body";
 
 export interface NotificationQueryCriteria extends BaseQueryCriteria<NotificationOrderableFields> {
-  type?: NotificationType[] | null;
+  types?: NotificationType[] | null;
   isRead?: boolean | null;
 }
 

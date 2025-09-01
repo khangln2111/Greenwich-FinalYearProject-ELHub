@@ -4,7 +4,7 @@ import { CreateSectionCommand, ReorderSectionCommand, UpdateSectionCommand } fro
 const BASE_URL = "/sections";
 
 export const reorderSection = async (command: ReorderSectionCommand) => {
-  const response = await apiClient.put(`${BASE_URL}/ReorderSection`, command);
+  const response = await apiClient.put(`${BASE_URL}/reorder-section`, command);
   return response.data;
 };
 

@@ -10,7 +10,7 @@ import {
 } from "./instructorApplication.types";
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 
-const BASE_URL = "/InstructorApplications";
+const BASE_URL = "/instructor-applications";
 
 export const buildInstructorApplicationQuery = (query: InstructorApplicationQueryCriteria = {}) => {
   const qb = new GridifyQueryBuilder();
