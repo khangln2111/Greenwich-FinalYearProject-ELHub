@@ -55,11 +55,6 @@ const menuItems: MenuItem[] = [
     icon: <IconBell className="size-5" />,
     href: "/dashboard/notifications",
   },
-  {
-    label: "Messages",
-    icon: <IconMessageCircle className="size-5" />,
-    href: "/dashboard/messages",
-  },
   { label: "Settings", icon: <IconSettings className="size-5" />, href: "/settings" },
 ];
 
