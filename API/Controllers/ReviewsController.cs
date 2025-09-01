@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.ReviewDTOs;
 using Application.Gridify.CustomModels;
 using Gridify;
@@ -11,7 +11,7 @@ namespace API.Controllers;
 [ApiController]
 public class ReviewsController(IReviewService reviewService) : ControllerBase
 {
-    // GET: /api/Reviews/course/{courseId}
+    // GET: /api/reviews/course/{courseId}
     [HttpGet("course/{courseId:guid}")]
     [ProducesResponseType<Paged<ReviewVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetReviewsByCourseId(Guid courseId, [FromQuery] GridifyQuery query)
@@ -20,7 +20,7 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
         return Ok(reviews);
     }
 
-    //GET: /api/Reviews/{id:guid}
+    // GET: /api/reviews/{id:guid}
     [HttpGet("{id:guid}")]
     [ProducesResponseType<ReviewVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -30,7 +30,7 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
         return Ok(review);
     }
 
-    //POST: /api/Reviews
+    // POST: /api/reviews
     [HttpPost]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -41,7 +41,7 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
-    //PUT: /api/Reviews
+    // PUT: /api/reviews
     [HttpPut]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -52,7 +52,7 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
         return Ok(result);
     }
 
-    //DELETE: /api/Reviews/{id:guid}
+    // DELETE: /api/reviews/{id:guid}
     [HttpDelete("{id:guid}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -63,7 +63,7 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
         return Ok(result);
     }
 
-    //POST: /api/Reviews/reply
+    // POST: /api/reviews/reply
     [HttpPost("reply")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,7 +74,7 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
         return Ok(result);
     }
 
-    //PUT: /api/Reviews/reply
+    // PUT: /api/reviews/reply
     [HttpPut("reply")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]

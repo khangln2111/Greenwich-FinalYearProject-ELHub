@@ -25,6 +25,8 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public decimal Balance { get; set; } = 0;
 
+    public int UnreadNotificationCount { get; set; } = 0;
+
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public ICollection<Experience> Experiences { get; init; } = new List<Experience>();

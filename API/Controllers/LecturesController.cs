@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.LectureDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +10,7 @@ namespace API.Controllers;
 [ApiController]
 public class LecturesController(ILectureService lectureService) : ControllerBase
 {
-    // GET: api/Sections
+    // GET: api/lectures
     [HttpGet]
     [ProducesResponseType<Paging<LectureVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
@@ -19,7 +19,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return Ok(courses);
     }
 
-    // GET: api/Lectures/id
+    // GET: api/lectures/{id}
     [HttpGet("{id:guid}")]
     [ProducesResponseType<LectureVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +29,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return Ok(course);
     }
 
-    // POST: api/Lectures
+    // POST: api/lectures
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,8 +39,8 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
-    // PUT: /api/Lectures/CompleteLecture/{id:guid}
-    [HttpPut("CompleteLecture/{id:guid}")]
+    // PUT: api/lectures/complete-lecture/{id}
+    [HttpPut("complete-lecture/{id:guid}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -50,7 +50,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return Ok(result);
     }
 
-    // PUT: api/Lectures
+    // PUT: api/lectures
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -61,7 +61,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return Ok(result);
     }
 
-    // DELETE: api/Sections/id  
+    // DELETE: api/lectures/{id}
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -71,8 +71,8 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
         return Ok(result);
     }
 
-    // PUT: api/Lectures/ReorderLecture
-    [HttpPut("ReorderLecture")]
+    // PUT: api/lectures/reorder-lecture
+    [HttpPut("reorder-lecture")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

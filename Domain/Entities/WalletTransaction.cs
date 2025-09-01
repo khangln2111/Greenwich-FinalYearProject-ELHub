@@ -1,8 +1,9 @@
-﻿using Domain.Enums;
+﻿using Domain.Common;
+using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class WalletTransaction : BaseEntity
+public class WalletTransaction : BaseAuditableEntity
 {
     public Guid UserId { get; set; }
     public ApplicationUser User { get; set; } = null!;

@@ -1,6 +1,8 @@
+using Domain.Common;
+
 namespace Domain.Entities;
 
-public class Section : BaseEntity
+public class Section : BaseAuditableEntity
 {
     public required string Title { get; set; }
 

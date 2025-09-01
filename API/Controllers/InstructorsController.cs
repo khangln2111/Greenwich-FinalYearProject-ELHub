@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.CourseDTOs;
 using Application.DTOs.InstructorDTO;
 using Application.Gridify.CustomModels;
@@ -11,7 +11,7 @@ namespace API.Controllers;
 [ApiController]
 public class InstructorsController(IInstructorService instructorService) : ControllerBase
 {
-    // GET: api/Instructors
+    // GET: api/instructors
     [HttpGet]
     [ProducesResponseType<Paged<InstructorVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
@@ -20,7 +20,7 @@ public class InstructorsController(IInstructorService instructorService) : Contr
         return Ok(instructors);
     }
 
-    // GET: api/Instructors/id
+    // GET: api/instructors/{id}
     [HttpGet("{id:guid}")]
     [ProducesResponseType<InstructorVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -30,8 +30,8 @@ public class InstructorsController(IInstructorService instructorService) : Contr
         return Ok(instructor);
     }
 
-    // GET: api/Instructors/{instructorId}/Courses
-    [HttpGet("{instructorId:guid}/Courses")]
+    // GET: api/instructors/{instructorId}/courses
+    [HttpGet("{instructorId:guid}/courses")]
     [ProducesResponseType<Paged<CourseVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCoursesByInstructorId(Guid instructorId, [FromQuery] GridifyQuery query)
     {

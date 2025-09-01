@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.OrderDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
@@ -59,12 +59,12 @@ public class OrdersController(IOrderService orderService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id:guid}/Confirm")]
+    [HttpGet("{id:guid}/Process")]
     [Authorize]
-    public async Task<IActionResult> ConfirmOrder(Guid id)
+    public async Task<IActionResult> ProcessOrder(Guid id)
     {
         if (id == Guid.Empty) return BadRequest("Invalid order ID.");
-        var result = await orderService.ConfirmOrder(id);
+        var result = await orderService.ProcessOrder(id);
         return Ok(result);
     }
 }

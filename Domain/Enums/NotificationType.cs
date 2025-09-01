@@ -5,5 +5,10 @@ public enum NotificationType
     CourseSubmitted,
     CourseApproved,
     CourseRejected,
-    CourseResubmitted
+    CourseResubmitted,
+    ReceivedGift,
+    GiftRedeemed,
+    ReviewCreated,
+    ReviewReplied,
+    OrderConfirmed
 }

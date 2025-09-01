@@ -1,8 +1,9 @@
+using Domain.Common;
 using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class Order : BaseEntity
+public class Order : BaseAuditableEntity
 {
     public OrderStatus Status { get; set; } = OrderStatus.Incomplete;
 

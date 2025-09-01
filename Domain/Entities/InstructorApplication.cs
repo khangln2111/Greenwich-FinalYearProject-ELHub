@@ -1,9 +1,10 @@
-﻿using Domain.Entities.MediaEntities;
+﻿using Domain.Common;
+using Domain.Entities.MediaEntities;
 using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class InstructorApplication : BaseEntity
+public class InstructorApplication : BaseAuditableEntity
 {
     public Guid UserId { get; set; }
 

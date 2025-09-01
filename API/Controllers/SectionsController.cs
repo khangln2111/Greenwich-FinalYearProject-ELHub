@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.SectionDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ namespace API.Controllers;
 [ApiController]
 public class SectionsController(ISectionService sectionService) : ControllerBase
 {
-    // GET: api/Sections
+    // GET: api/sections
     [HttpGet]
     [ProducesResponseType<Paging<SectionVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
@@ -18,7 +18,7 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
         return Ok(sections);
     }
 
-    // GET: api/Sections/id
+    // GET: api/sections/{id}
     [HttpGet("{id:guid}")]
     [ProducesResponseType<SectionVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -28,7 +28,7 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
         return Ok(section);
     }
 
-    // POST: api/Sections
+    // POST: api/sections
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,7 +38,7 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
-    // PUT: api/Sections
+    // PUT: api/sections
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -49,7 +49,7 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
         return Ok(result);
     }
 
-    // DELETE: api/Sections/id
+    // DELETE: api/sections/{id}
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -59,8 +59,8 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
         return Ok(result);
     }
 
-    // PUT: api/Sections/ReorderSection
-    [HttpPut("ReorderSection")]
+    // PUT: api/sections/reorder-section
+    [HttpPut("reorder-section")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

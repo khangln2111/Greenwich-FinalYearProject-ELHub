@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class ReviewReply : BaseEntity
+namespace Domain.Entities;
+
+public class ReviewReply : BaseAuditableEntity
 {
     public Guid ReviewId { get; set; }
     public Review Review { get; set; } = null!;

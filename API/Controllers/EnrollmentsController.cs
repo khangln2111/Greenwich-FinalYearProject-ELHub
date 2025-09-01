@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.EnrollmentDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +9,15 @@ namespace API.Controllers;
 [ApiController]
 public class EnrollmentsController(IEnrollmentService enrollmentService) : ControllerBase
 {
-    [HttpPost("EnrollFromInventory")]
+    // POST: api/enrollments/enroll-from-inventory
+    [HttpPost("enroll-from-inventory")]
     public async Task<IActionResult> EnrollFromInventory([FromBody] EnrollFromInventoryCommand command)
     {
         var result = await enrollmentService.EnrollFromInventory(command);
         return Ok(result);
     }
 
+    // GET: api/enrollments/self
     [HttpGet("self")]
     public async Task<IActionResult> GetListSelf([FromQuery] GridifyQuery query)
     {
@@ -23,6 +25,7 @@ public class EnrollmentsController(IEnrollmentService enrollmentService) : Contr
         return Ok(result);
     }
 
+    // GET: api/enrollments/self/{id}
     [HttpGet("self/{id:guid}")]
     public async Task<IActionResult> GetByIdSelf(Guid id)
     {

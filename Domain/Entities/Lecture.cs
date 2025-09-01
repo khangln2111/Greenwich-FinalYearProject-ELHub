@@ -1,8 +1,9 @@
+using Domain.Common;
 using Domain.Entities.MediaEntities;
 
 namespace Domain.Entities;
 
-public class Lecture : BaseEntity
+public class Lecture : BaseAuditableEntity
 {
     public required string Title { get; set; }
 

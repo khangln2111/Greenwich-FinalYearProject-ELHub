@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.GiftDTOs;
 using Application.Gridify.CustomModels;
 using Gridify;
@@ -11,6 +11,7 @@ namespace API.Controllers;
 [ApiController]
 public class GiftsController(IGiftService giftService) : ControllerBase
 {
+    // POST: api/gifts
     [HttpPost]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -21,7 +22,8 @@ public class GiftsController(IGiftService giftService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{giftId:guid}/Redeem")]
+    // POST: api/gifts/{giftId}/redeem
+    [HttpPost("{giftId:guid}/redeem")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -32,7 +34,8 @@ public class GiftsController(IGiftService giftService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("{giftId:guid}/Revoke")]
+    // POST: api/gifts/{giftId}/revoke
+    [HttpPost("{giftId:guid}/revoke")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -43,7 +46,8 @@ public class GiftsController(IGiftService giftService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("ChangeReceiver")]
+    // PUT: api/gifts/change-receiver
+    [HttpPut("change-receiver")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,6 +58,7 @@ public class GiftsController(IGiftService giftService) : ControllerBase
         return Ok(result);
     }
 
+    // GET: api/gifts/sent
     [HttpGet("sent")]
     [Authorize]
     [ProducesResponseType<Paged<GiftVm>>(StatusCodes.Status200OK)]
@@ -63,6 +68,7 @@ public class GiftsController(IGiftService giftService) : ControllerBase
         return Ok(gifts);
     }
 
+    // GET: api/gifts/received
     [HttpGet("received")]
     [Authorize]
     [ProducesResponseType<Paged<GiftVm>>(StatusCodes.Status200OK)]

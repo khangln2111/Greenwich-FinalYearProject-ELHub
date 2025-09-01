@@ -22,7 +22,7 @@ namespace Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.ApplicationRole", b =>
+            modelBuilder.Entity("Domain.Entities.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,6 +153,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UnreadNotificationCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -172,7 +175,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Cart", b =>
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -195,7 +198,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.CartItem", b =>
+            modelBuilder.Entity("Domain.Entities.CartItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -227,7 +230,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("CartItems");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Category", b =>
+            modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -254,7 +257,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Course", b =>
+            modelBuilder.Entity("Domain.Entities.Course", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -370,7 +373,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.CourseApprovalHistory", b =>
+            modelBuilder.Entity("Domain.Entities.CourseApprovalHistory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -400,7 +403,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("CourseApprovalHistories");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Enrollment", b =>
+            modelBuilder.Entity("Domain.Entities.Enrollment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -437,7 +440,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Experience", b =>
+            modelBuilder.Entity("Domain.Entities.Experience", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -475,7 +478,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Experience");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Gift", b =>
+            modelBuilder.Entity("Domain.Entities.Gift", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -521,7 +524,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Gifts");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.InstructorApplication", b =>
+            modelBuilder.Entity("Domain.Entities.InstructorApplication", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -584,7 +587,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("InstructorApplications");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Inventory", b =>
+            modelBuilder.Entity("Domain.Entities.Inventory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -607,7 +610,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Inventories");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.InventoryItem", b =>
+            modelBuilder.Entity("Domain.Entities.InventoryItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -637,7 +640,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("InventoryItems");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Lecture", b =>
+            modelBuilder.Entity("Domain.Entities.Lecture", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -681,7 +684,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Lectures");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.LectureProgress", b =>
+            modelBuilder.Entity("Domain.Entities.LectureProgress", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -711,7 +714,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("LectureProgresses");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.MediaEntities.Media", b =>
+            modelBuilder.Entity("Domain.Entities.MediaEntities.Media", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -758,7 +761,7 @@ namespace Infrastructure.Data.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Notification", b =>
+            modelBuilder.Entity("Domain.Entities.Notification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -780,8 +783,15 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -793,7 +803,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Order", b =>
+            modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -838,7 +848,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.OrderItem", b =>
+            modelBuilder.Entity("Domain.Entities.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -876,7 +886,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Review", b =>
+            modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -914,7 +924,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.ReviewReply", b =>
+            modelBuilder.Entity("Domain.Entities.ReviewReply", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -947,7 +957,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("ReviewReplies");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Section", b =>
+            modelBuilder.Entity("Domain.Entities.Section", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -991,7 +1001,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.WalletTransaction", b =>
+            modelBuilder.Entity("Domain.Entities.WalletTransaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1128,9 +1138,9 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.MediaEntities.DurationMedia", b =>
+            modelBuilder.Entity("Domain.Entities.MediaEntities.DurationMedia", b =>
                 {
-                    b.HasBaseType("Infrastructure.Data.Entities.MediaEntities.Media");
+                    b.HasBaseType("Domain.Entities.MediaEntities.Media");
 
                     b.Property<int>("DurationInSeconds")
                         .HasColumnType("int");
@@ -1138,35 +1148,35 @@ namespace Infrastructure.Data.Migrations
                     b.HasDiscriminator().HasValue(2);
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.MediaEntities.Media", "Avatar")
+                    b.HasOne("Domain.Entities.MediaEntities.Media", "Avatar")
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
                     b.Navigation("Avatar");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Cart", b =>
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
                         .WithOne("Cart")
-                        .HasForeignKey("Infrastructure.Data.Entities.Cart", "UserId")
+                        .HasForeignKey("Domain.Entities.Cart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.CartItem", b =>
+            modelBuilder.Entity("Domain.Entities.CartItem", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Cart", "Cart")
+                    b.HasOne("Domain.Entities.Cart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.Course", "Course")
+                    b.HasOne("Domain.Entities.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1177,34 +1187,34 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Category", b =>
+            modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.MediaEntities.Media", "Image")
+                    b.HasOne("Domain.Entities.MediaEntities.Media", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
 
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Course", b =>
+            modelBuilder.Entity("Domain.Entities.Course", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Category", "Category")
+                    b.HasOne("Domain.Entities.Category", "Category")
                         .WithMany("Courses")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.MediaEntities.Media", "Image")
+                    b.HasOne("Domain.Entities.MediaEntities.Media", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
 
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "Instructor")
+                    b.HasOne("Domain.Entities.ApplicationUser", "Instructor")
                         .WithMany("Courses")
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.MediaEntities.DurationMedia", "PromoVideo")
+                    b.HasOne("Domain.Entities.MediaEntities.DurationMedia", "PromoVideo")
                         .WithMany()
                         .HasForeignKey("PromoVideoId");
 
@@ -1217,9 +1227,9 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("PromoVideo");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.CourseApprovalHistory", b =>
+            modelBuilder.Entity("Domain.Entities.CourseApprovalHistory", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Course", "Course")
+                    b.HasOne("Domain.Entities.Course", "Course")
                         .WithMany("ApprovalHistories")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1228,15 +1238,15 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Enrollment", b =>
+            modelBuilder.Entity("Domain.Entities.Enrollment", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Course", "Course")
+                    b.HasOne("Domain.Entities.Course", "Course")
                         .WithMany("Enrollments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
                         .WithMany("Enrollments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1247,9 +1257,9 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Experience", b =>
+            modelBuilder.Entity("Domain.Entities.Experience", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
                         .WithMany("Experiences")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1258,19 +1268,19 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Gift", b =>
+            modelBuilder.Entity("Domain.Entities.Gift", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Course", null)
+                    b.HasOne("Domain.Entities.Course", null)
                         .WithMany("Gifts")
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "Giver")
+                    b.HasOne("Domain.Entities.ApplicationUser", "Giver")
                         .WithMany()
                         .HasForeignKey("GiverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.InventoryItem", "InventoryItem")
+                    b.HasOne("Domain.Entities.InventoryItem", "InventoryItem")
                         .WithMany()
                         .HasForeignKey("InventoryItemId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1281,13 +1291,13 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("InventoryItem");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.InstructorApplication", b =>
+            modelBuilder.Entity("Domain.Entities.InstructorApplication", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.MediaEntities.Media", "Avatar")
+                    b.HasOne("Domain.Entities.MediaEntities.Media", "Avatar")
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1298,26 +1308,26 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Inventory", b =>
+            modelBuilder.Entity("Domain.Entities.Inventory", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
                         .WithOne("Inventory")
-                        .HasForeignKey("Infrastructure.Data.Entities.Inventory", "UserId")
+                        .HasForeignKey("Domain.Entities.Inventory", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.InventoryItem", b =>
+            modelBuilder.Entity("Domain.Entities.InventoryItem", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Course", "Course")
+                    b.HasOne("Domain.Entities.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.Inventory", "Inventory")
+                    b.HasOne("Domain.Entities.Inventory", "Inventory")
                         .WithMany("InventoryItems")
                         .HasForeignKey("InventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1328,32 +1338,32 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Inventory");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Lecture", b =>
+            modelBuilder.Entity("Domain.Entities.Lecture", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Section", "Section")
+                    b.HasOne("Domain.Entities.Section", "Section")
                         .WithMany("Lectures")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.MediaEntities.DurationMedia", "Video")
+                    b.HasOne("Domain.Entities.MediaEntities.DurationMedia", "Video")
                         .WithOne("Lecture")
-                        .HasForeignKey("Infrastructure.Data.Entities.Lecture", "VideoId");
+                        .HasForeignKey("Domain.Entities.Lecture", "VideoId");
 
                     b.Navigation("Section");
 
                     b.Navigation("Video");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.LectureProgress", b =>
+            modelBuilder.Entity("Domain.Entities.LectureProgress", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Enrollment", "Enrollment")
+                    b.HasOne("Domain.Entities.Enrollment", "Enrollment")
                         .WithMany("LectureProgresses")
                         .HasForeignKey("EnrollmentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.Lecture", "Lecture")
+                    b.HasOne("Domain.Entities.Lecture", "Lecture")
                         .WithMany("LectureProgresses")
                         .HasForeignKey("LectureId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1364,9 +1374,9 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Lecture");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Notification", b =>
+            modelBuilder.Entity("Domain.Entities.Notification", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
                         .WithMany("ReceivedNotifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1375,9 +1385,9 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Order", b =>
+            modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1386,15 +1396,15 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.OrderItem", b =>
+            modelBuilder.Entity("Domain.Entities.OrderItem", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Course", "Course")
+                    b.HasOne("Domain.Entities.Course", "Course")
                         .WithMany("OrderItems")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.Order", "Order")
+                    b.HasOne("Domain.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1405,32 +1415,32 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Review", b =>
+            modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany("Reviews")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("Infrastructure.Data.Entities.Enrollment", "Enrollment")
+                    b.HasOne("Domain.Entities.Enrollment", "Enrollment")
                         .WithOne("Review")
-                        .HasForeignKey("Infrastructure.Data.Entities.Review", "EnrollmentId")
+                        .HasForeignKey("Domain.Entities.Review", "EnrollmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Enrollment");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.ReviewReply", b =>
+            modelBuilder.Entity("Domain.Entities.ReviewReply", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "Creator")
+                    b.HasOne("Domain.Entities.ApplicationUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.Review", "Review")
+                    b.HasOne("Domain.Entities.Review", "Review")
                         .WithOne("Reply")
-                        .HasForeignKey("Infrastructure.Data.Entities.ReviewReply", "ReviewId")
+                        .HasForeignKey("Domain.Entities.ReviewReply", "ReviewId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -1439,9 +1449,9 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Review");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Section", b =>
+            modelBuilder.Entity("Domain.Entities.Section", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.Course", "Course")
+                    b.HasOne("Domain.Entities.Course", "Course")
                         .WithMany("Sections")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1450,9 +1460,9 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.WalletTransaction", b =>
+            modelBuilder.Entity("Domain.Entities.WalletTransaction", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.ApplicationUser", "User")
                         .WithMany("WalletTransactions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1463,7 +1473,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationRole", null)
+                    b.HasOne("Domain.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1472,7 +1482,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1481,7 +1491,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1490,13 +1500,13 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationRole", null)
+                    b.HasOne("Domain.Entities.ApplicationRole", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1505,19 +1515,19 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Infrastructure.Data.Entities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.ApplicationRole", b =>
+            modelBuilder.Entity("Domain.Entities.ApplicationRole", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Cart")
                         .IsRequired();
@@ -1542,17 +1552,17 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("WalletTransactions");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Cart", b =>
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
                 {
                     b.Navigation("CartItems");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Category", b =>
+            modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.Navigation("Courses");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Course", b =>
+            modelBuilder.Entity("Domain.Entities.Course", b =>
                 {
                     b.Navigation("ApprovalHistories");
 
@@ -1565,39 +1575,39 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Sections");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Enrollment", b =>
+            modelBuilder.Entity("Domain.Entities.Enrollment", b =>
                 {
                     b.Navigation("LectureProgresses");
 
                     b.Navigation("Review");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Inventory", b =>
+            modelBuilder.Entity("Domain.Entities.Inventory", b =>
                 {
                     b.Navigation("InventoryItems");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Lecture", b =>
+            modelBuilder.Entity("Domain.Entities.Lecture", b =>
                 {
                     b.Navigation("LectureProgresses");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Order", b =>
+            modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Review", b =>
+            modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
                     b.Navigation("Reply");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.Section", b =>
+            modelBuilder.Entity("Domain.Entities.Section", b =>
                 {
                     b.Navigation("Lectures");
                 });
 
-            modelBuilder.Entity("Infrastructure.Data.Entities.MediaEntities.DurationMedia", b =>
+            modelBuilder.Entity("Domain.Entities.MediaEntities.DurationMedia", b =>
                 {
                     b.Navigation("Lecture");
                 });

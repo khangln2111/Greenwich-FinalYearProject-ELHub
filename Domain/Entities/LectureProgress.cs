@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class LectureProgress : BaseEntity
+namespace Domain.Entities;
+
+public class LectureProgress : BaseAuditableEntity
 {
     public Guid EnrollmentId { get; set; }
     public Enrollment Enrollment { get; set; } = null!;

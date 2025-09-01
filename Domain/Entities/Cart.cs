@@ -1,6 +1,8 @@
+using Domain.Common;
+
 namespace Domain.Entities;
 
-public class Cart : BaseEntity
+public class Cart : BaseAuditableEntity
 {
     public Guid UserId { get; init; }
 

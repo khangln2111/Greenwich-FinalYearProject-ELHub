@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.CartDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +9,7 @@ namespace API.Controllers;
 [ApiController]
 public class CartController(ICartService cartService) : ControllerBase
 {
+    // GET: api/cart/self
     [HttpGet("self")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -20,7 +21,8 @@ public class CartController(ICartService cartService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("AddCartItem")]
+    // POST: api/cart/add-cart-item
+    [HttpPost("add-cart-item")]
     [Authorize]
     public async Task<ActionResult<string>> AddCartItem(AddCartItemCommand command)
     {
@@ -28,7 +30,9 @@ public class CartController(ICartService cartService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("UpdateCartItem")]
+
+    // PUT: api/cart/update-cart-item
+    [HttpPut("update-cart-item")]
     [Authorize]
     public async Task<ActionResult<string>> UpdateCartItem(UpdateCartItemCommand command)
     {
@@ -36,7 +40,8 @@ public class CartController(ICartService cartService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("{CartItemId:guid}")]
+    // DELETE: api/cart/{cart-item-id}
+    [HttpDelete("{cartItemId:guid}")]
     [Authorize]
     public async Task<ActionResult<string>> DeleteCartItem(Guid cartItemId)
     {

@@ -3,11 +3,13 @@ using Application.Common.Interfaces.InfrastructureInterfaces;
 using Domain.Entities;
 using Hangfire;
 using Infrastructure.Data;
+using Infrastructure.Data.Interceptors;
 using Infrastructure.Utilities;
 using LLL.AutoCompute.EFCore;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,10 +27,12 @@ public static class InfrastructureLayerDependencyInjection
 
     private static void AddPersistence(this IServiceCollection services)
     {
+        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
         services.AddDbContext<ApplicationDbContext>((sp, opts) =>
         {
             var configuration = sp.GetRequiredService<IConfiguration>();
             var sqlServerConnectionString = configuration.GetConnectionString("SQLServerConnection");
+            opts.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
             opts.UseSqlServer(sqlServerConnectionString);
             opts.UseAutoCompute();
             opts.EnableDetailedErrors();

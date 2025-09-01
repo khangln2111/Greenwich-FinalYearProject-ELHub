@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,8 @@ namespace API.Controllers;
 [ApiController]
 public class InventoriesController(IInventoryService inventoryService) : ControllerBase
 {
-    [HttpGet("InventoryItems/self")]
+    // GET: api/inventories/inventory-items/self
+    [HttpGet("inventory-items/self")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

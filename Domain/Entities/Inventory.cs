@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class Inventory : BaseEntity
+namespace Domain.Entities;
+
+public class Inventory : BaseAuditableEntity
 {
     public Guid UserId { get; init; }
 

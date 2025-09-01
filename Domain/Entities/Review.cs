@@ -1,6 +1,8 @@
+using Domain.Common;
+
 namespace Domain.Entities;
 
-public class Review : BaseEntity
+public class Review : BaseAuditableEntity
 {
     public int Rating { get; set; }
     public required string Content { get; set; }

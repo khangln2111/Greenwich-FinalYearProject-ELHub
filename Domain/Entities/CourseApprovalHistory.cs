@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class CourseApprovalHistory : BaseEntity
+namespace Domain.Entities;
+
+public class CourseApprovalHistory : BaseAuditableEntity
 {
     public Guid CourseId { get; set; }
     public Course Course { get; set; } = null!;

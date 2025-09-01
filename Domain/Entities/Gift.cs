@@ -1,8 +1,9 @@
-﻿using Domain.Enums;
+﻿using Domain.Common;
+using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class Gift : BaseEntity
+public class Gift : BaseAuditableEntity
 {
     public Guid GiverId { get; set; }
 

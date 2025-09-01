@@ -1,9 +1,10 @@
+using Domain.Common;
 using Domain.Entities.MediaEntities;
 using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class Course : BaseEntity
+public class Course : BaseAuditableEntity
 {
     public required string Title { get; set; }
 

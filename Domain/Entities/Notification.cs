@@ -1,8 +1,9 @@
+using Domain.Common;
 using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class Notification : BaseEntity
+public class Notification : BaseAuditableEntity
 {
     public required string Title { get; set; }
     public required string Content { get; set; }

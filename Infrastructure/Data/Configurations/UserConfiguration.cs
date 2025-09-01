@@ -36,5 +36,7 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 
         builder.ComputedProperty(x => x.Balance, x => x.WalletTransactions.Sum(w => w.Amount))
             .HasPrecision(18, 2);
+
+        builder.ComputedProperty(x => x.UnreadNotificationCount, x => x.ReceivedNotifications.Count(n => !n.IsRead));
     }
 }

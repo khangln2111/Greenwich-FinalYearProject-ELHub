@@ -1,4 +1,4 @@
-using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.CourseDTOs;
 using Application.DTOs.EnrollmentDTOs;
 using Application.DTOs.InstructorDTO;
@@ -22,7 +22,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return Ok(courses);
     }
 
-    // GET: api/Courses/id
+    // GET: api/courses/{id}
     [HttpGet("{id:guid}")]
     [ProducesResponseType<CourseVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -55,7 +55,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return Ok(result);
     }
 
-    // DELETE: api/Courses/id
+    // DELETE: api/courses/{id}
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -65,8 +65,8 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return Ok(result);
     }
 
-    // POST: api/Courses/{id:guid}/Submit
-    [HttpPost("{id:guid}/Submit")]
+    // POST: api/courses/{id}/submit
+    [HttpPost("{id:guid}/submit")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SubmitCourse(Guid id)
@@ -75,8 +75,8 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return Ok(result);
     }
 
-    // POST: api/Courses/Moderate
-    [HttpPost("Moderate")]
+    // POST: api/courses/moderate
+    [HttpPost("moderate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -86,8 +86,8 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return Ok(result);
     }
 
-    // POST: api/Courses/{id:guid}/RetrySubmit
-    [HttpPost("{id:guid}/RetrySubmit")]
+    // POST: api/courses/{id}/retry-submit
+    [HttpPost("{id:guid}/retry-submit")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> RetrySubmitCourse(Guid id)
@@ -97,8 +97,8 @@ public class CoursesController(ICourseService courseService) : ControllerBase
     }
 
 
-    // GET: api/Courses/{courseId}/Instructor
-    [HttpGet("{courseId:guid}/Instructor")]
+    // GET: api/courses/{courseId}/instructor
+    [HttpGet("{courseId:guid}/instructor")]
     [ProducesResponseType<InstructorVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetInstructorByCourseId(Guid courseId)

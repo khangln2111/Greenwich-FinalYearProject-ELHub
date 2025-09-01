@@ -1,8 +1,8 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Application.BusinessServices;
-using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.AppServices;
+using Application.Common.Interfaces.AppInterfaces;
 using Application.Validations;
 using Gridify;
 
@@ -14,6 +14,7 @@ public static class ApplicationLayerDependencyInjection
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()); });
         services.ConfigureGridify();
         services.AddServices();
     }

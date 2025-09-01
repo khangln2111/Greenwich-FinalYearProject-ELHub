@@ -1,4 +1,4 @@
-using Application.Common.Interfaces.ApplicationInterfaces;
+using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.CategoryDTOs;
 using Gridify;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return Ok(categories);
     }
 
-    // GET: api/Categories/id
+    // GET: api/Categories/{id}
     [HttpGet("{id}")]
     [ProducesResponseType<CategoryVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -38,7 +38,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
-    // PUT: api/Categories/id
+    // PUT: api/categories/{id}
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -49,8 +49,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return Ok(result);
     }
 
-
-    // DELETE: api/Categories/id
+    // DELETE: api/categories/{id}
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

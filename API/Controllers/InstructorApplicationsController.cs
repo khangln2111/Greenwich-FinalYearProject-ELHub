@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.InstructorApplicationDTOs;
 using Application.Gridify.CustomModels;
 using Gridify;
@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/instructor-applications")]
 [ApiController]
 public class InstructorApplicationsController(IInstructorApplicationService service) : ControllerBase
 {
-    // GET: api/InstructorApplications
+    // GET: api/instructor-applications
     [HttpGet]
     [ProducesResponseType<Paged<InstructorApplicationVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
@@ -21,7 +21,7 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
     }
 
 
-    // POST: api/InstructorApplications
+    // POST: api/instructor-applications
     [HttpPost]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -32,7 +32,7 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
-    // PUT: api/InstructorApplications
+    // PUT: api/instructor-applications/retry
     [HttpPut("retry")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -44,7 +44,7 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
         return Ok(result);
     }
 
-    // GET: api/InstructorApplications/self
+    // GET: api/instructor-applications/self
     [HttpGet("self")]
     [Authorize]
     [ProducesResponseType<InstructorApplicationVm>(StatusCodes.Status200OK)]
@@ -55,7 +55,7 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
         return Ok(application);
     }
 
-    // endpoint to get can retry? 
+    // GET: api/instructor-applications/self/can-retry
     [HttpGet("self/can-retry")]
     [Authorize]
     [ProducesResponseType<bool>(StatusCodes.Status200OK)]
@@ -66,7 +66,7 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
         return Ok(canRetry);
     }
 
-    // endpoint for reviewing instructor application
+    // POST: api/instructor-applications/review
     [HttpPost("review")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

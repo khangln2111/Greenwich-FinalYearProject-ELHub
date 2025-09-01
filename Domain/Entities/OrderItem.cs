@@ -1,6 +1,8 @@
+using Domain.Common;
+
 namespace Domain.Entities;
 
-public class OrderItem : BaseEntity
+public class OrderItem : BaseAuditableEntity
 {
     public int Quantity { get; set; }
 

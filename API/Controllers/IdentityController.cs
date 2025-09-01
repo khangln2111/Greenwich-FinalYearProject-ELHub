@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.IdentityDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +9,8 @@ namespace API.Controllers;
 [ApiController]
 public class IdentityController(IIdentityService identityService) : ControllerBase
 {
-    // POST: api/Identity/Register
-    [HttpPost("Register")]
+    // POST: api/identity/register
+    [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterCommand command)
@@ -19,8 +19,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
-    // POST: api/Identity/Login
-    [HttpPost("Login")]
+    // POST: api/identity/login
+    [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -30,7 +30,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Empty;
     }
 
-    [HttpPost("LoginCustom")]
+    // POST: api/identity/login-custom
+    [HttpPost("login-custom")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -41,8 +42,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     }
 
     //Login with Google
-    // POST: api/Identity/GoogleLogin
-    [HttpPost("LoginWithGoogle")]
+    // POST: api/identity/login-with-google
+    [HttpPost("login-with-google")]
     public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginCommand command)
     {
         await identityService.LoginWithGoogle(command);
@@ -50,8 +51,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     }
 
 
-    // POST: api/Identity/SendEmailConfirmationOtp
-    [HttpPost("SendEmailConfirmationOtp")]
+    // POST: api/identity/send-email-confirmation-otp
+    [HttpPost("send-email-confirmation-otp")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -62,9 +63,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Ok(result);
     }
 
-
-    // POST: api/Identity/ConfirmEmail
-    [HttpPost("ConfirmEmail")]
+    // POST: api/identity/confirm-email
+    [HttpPost("confirm-email")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -75,8 +75,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     }
 
 
-    // POST: api/Identity/SendResetPasswordToken
-    [HttpPost("SendResetPasswordOtp")]
+    // POST: api/identity/send-reset-password-otp
+    [HttpPost("send-reset-password-otp")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> SendResetPasswordOtp([FromBody] SendResetPasswordOtpCommand command)
@@ -87,16 +87,16 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Ok(result);
     }
 
-    //POST: api/Identity/ValidateResetPasswordOtp
-    [HttpPost("ValidateResetPasswordOtp")]
+    // POST: api/identity/validate-reset-password-otp
+    [HttpPost("validate-reset-password-otp")]
     public async Task<IActionResult> ValidateResetPasswordOtp([FromBody] ValidateResetPasswordOtpCommand command)
     {
         var result = await identityService.ValidateResetPasswordOtp(command);
         return Ok(result);
     }
 
-    // POST: api/Identity/ResetPassword
-    [HttpPost("ResetPassword")]
+    // POST: api/identity/reset-password
+    [HttpPost("reset-password")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
@@ -105,8 +105,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Ok(result);
     }
 
-    // POST: api/Identity/RefreshToken
-    [HttpPost("RefreshToken")]
+    // POST: api/identity/refresh-token
+    [HttpPost("refresh-token")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
@@ -115,6 +115,7 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Empty;
     }
 
+    // GET: api/identity/self
     [HttpGet("self")]
     [Authorize]
     [ProducesResponseType<InfoMeVm>(StatusCodes.Status200OK)]
@@ -125,7 +126,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Ok(result);
     }
 
-    [HttpGet("WorkProfileSelf")]
+    // GET: api/identity/work-profile-self
+    [HttpGet("work-profile-self")]
     [Authorize]
     [ProducesResponseType<WorkProfileVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -135,7 +137,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Ok(result);
     }
 
-    [HttpPut("UpdateUserProfileSelf")]
+    // PUT: api/identity/update-user-profile-self
+    [HttpPut("update-user-profile-self")]
     [Authorize]
     [ProducesResponseType<InfoMeVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -146,7 +149,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
         return Ok(result);
     }
 
-    [HttpPut("UpdateWorkProfileSelf")]
+    // PUT: api/identity/update-work-profile-self
+    [HttpPut("update-work-profile-self")]
     [Authorize]
     [ProducesResponseType<InfoMeVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

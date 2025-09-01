@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.Common.Models;
 using Application.DTOs.UserDTOs;
 using Application.Gridify.CustomModels;
@@ -11,7 +11,7 @@ namespace API.Controllers;
 [ApiController]
 public class UsersController(IUserService userService) : ControllerBase
 {
-    // GET: api/Users
+    // GET: api/users
     [HttpGet]
     [ProducesResponseType<Paged<UserVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
@@ -20,7 +20,7 @@ public class UsersController(IUserService userService) : ControllerBase
         return Ok(users);
     }
 
-    // GET: api/Users/id
+    // GET: api/users/{id}
     [HttpGet("{id:guid}")]
     [ProducesResponseType<UserDetailVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -30,8 +30,8 @@ public class UsersController(IUserService userService) : ControllerBase
         return Ok(user);
     }
 
-    // POST: api/Users/AssignRoles
-    [HttpPost("AssignRoles")]
+    // POST: api/users/assign-roles
+    [HttpPost("assign-roles")]
     [ProducesResponseType<Success>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AssignRolesToUser([FromBody] AssignRolesToUserCommand command)
@@ -40,8 +40,8 @@ public class UsersController(IUserService userService) : ControllerBase
         return Ok(result);
     }
 
-    // PUT: api/Users/SetActivation
-    [HttpPut("SetActivation")]
+    // PUT: api/users/set-activation
+    [HttpPut("set-activation")]
     [ProducesResponseType<Success>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -51,7 +51,7 @@ public class UsersController(IUserService userService) : ControllerBase
         return Ok(result);
     }
 
-    // PUT: api/Users
+    // PUT: api/users
     [HttpPut]
     [ProducesResponseType<Success>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

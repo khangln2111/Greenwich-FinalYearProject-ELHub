@@ -12,4 +12,5 @@ public class InfoMeVm
     public DateTime? DateOfBirth { get; set; }
     public string[] Roles { get; set; } = [];
     public string? AvatarUrl { get; set; }
+    public int UnreadNotificationCount { get; set; }
 }

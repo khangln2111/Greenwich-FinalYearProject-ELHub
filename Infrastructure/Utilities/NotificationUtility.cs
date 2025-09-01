@@ -8,14 +8,14 @@ namespace Infrastructure.Utilities;
 
 public class NotificationUtility(IHubContext<NotificationHub> hubContext) : INotificationUtility
 {
-    public async Task SendNotification(Guid userId, NotificationDto dto)
+    public async Task SendNotification(Guid userId, NotificationVm vm)
     {
-        await hubContext.Clients.User(userId.ToString()).SendAsync("ReceiveNotification", dto);
+        await hubContext.Clients.User(userId.ToString()).SendAsync("ReceiveNotification", vm);
     }
 
-    public Task SendNotificationInBackground(Guid userId, NotificationDto dto)
+    public Task SendNotificationInBackground(Guid userId, NotificationVm vm)
     {
-        BackgroundJob.Enqueue(() => SendNotification(userId, dto));
+        BackgroundJob.Enqueue(() => SendNotification(userId, vm));
         return Task.CompletedTask;
     }
 }

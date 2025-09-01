@@ -1,8 +1,9 @@
+using Domain.Common;
 using Domain.Enums;
 
 namespace Domain.Entities.MediaEntities;
 
-public class Media : BaseEntity
+public class Media : BaseAuditableEntity
 {
     public MediaType Type { get; set; }
 

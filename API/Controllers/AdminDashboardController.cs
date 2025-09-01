@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.ApplicationInterfaces;
+﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.AdminDashboardDTOs;
 using Microsoft.AspNetCore.Mvc;
 

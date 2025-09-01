@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Common;
 
-public class Experience : BaseEntity
+namespace Domain.Entities;
+
+public class Experience : BaseAuditableEntity
 {
     public Guid UserId { get; set; }
     public ApplicationUser User { get; set; } = null!;

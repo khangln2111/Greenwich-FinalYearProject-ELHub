@@ -1,6 +1,8 @@
+using Domain.Common;
+
 namespace Domain.Entities;
 
-public class CartItem : BaseEntity
+public class CartItem : BaseAuditableEntity
 {
     public int Quantity { get; set; }
 
