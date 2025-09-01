@@ -9,6 +9,10 @@ import { useCourseQueryState } from "../../../../hooks/useCoursesQueryState";
 import { useCoursesPageStore } from "../../../../zustand/stores/coursesPageStore";
 import CourseGrid from "./CourseGrid";
 import CourseList from "./CourseList";
+import { keyFac } from "../../../../features/common-service/queryKeyFactory";
+import { getCourses } from "../../../../features/course/courseApi";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 type CourseMainProps = {};
 
@@ -17,44 +21,45 @@ const CourseMain = ({}: CourseMainProps) => {
   const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
   const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
   const openMobileFilter = useCoursesPageStore((s) => s.openMobileFilter);
+
   const [layout, setLayout] = useQueryState(
     "layout",
     parseAsStringLiteral(["grid", "list"]).withDefault("grid"),
   );
 
-  const [
-    {
-      categoryId,
-      levels,
-      orderBy,
-      minDurationInSeconds,
-      maxDurationInSeconds,
-      minPrice,
-      maxPrice,
-      priceModes,
-      search,
-      page,
-    },
-    setCourseQuery,
-  ] = useCourseQueryState();
+  const queryClient = useQueryClient();
+
+  // reusable courseQuery state
+  const [courseQuery, setCourseQuery] = useCourseQueryState();
+
   const [pageSize] = useQueryState(
     "pageSize",
     parseAsInteger.withDefault(layout === "grid" ? 6 : 4),
   );
 
   const { data, isPending, isError } = useGetCourses({
-    categoryId: categoryId,
-    levels,
-    orderBy,
-    search,
-    minDurationInSeconds,
-    maxDurationInSeconds,
-    minPrice,
-    maxPrice,
-    priceModes,
-    page,
+    ...courseQuery,
     pageSize,
   });
+
+  useEffect(() => {
+    if (!courseQuery?.page) return;
+
+    // prefetch next page
+    queryClient.prefetchQuery({
+      queryKey: keyFac.courses.getCourses({
+        ...courseQuery,
+        page: courseQuery.page + 1,
+        pageSize,
+      }).queryKey,
+      queryFn: () =>
+        getCourses({
+          ...courseQuery,
+          page: courseQuery.page + 1,
+          pageSize,
+        }),
+    });
+  }, [courseQuery, pageSize, queryClient]);
 
   const courses: CourseVm[] = data?.items ?? [];
 
@@ -68,8 +73,8 @@ const CourseMain = ({}: CourseMainProps) => {
             <>
               {(() => {
                 const total = data.count ?? 0;
-                const firstItem = (page - 1) * pageSize + 1;
-                const lastItem = Math.min(page * pageSize, total);
+                const firstItem = (courseQuery.page - 1) * pageSize + 1;
+                const lastItem = Math.min(courseQuery.page * pageSize, total);
 
                 return (
                   <>
@@ -171,7 +176,7 @@ const CourseMain = ({}: CourseMainProps) => {
 
         {/* Pagination */}
         <AppPagination
-          page={page}
+          page={courseQuery.page}
           pageSize={pageSize}
           itemsCount={data?.count ?? 0}
           onPageChange={(newPage) => setCourseQuery({ page: newPage })}
