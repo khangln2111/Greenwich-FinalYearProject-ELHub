@@ -32,9 +32,11 @@ export default function NotificationsPage() {
       <Group justify="space-between" mb="md">
         <Group>
           <Bell className="w-6 h-6 text-indigo-600" />
-          <h1 className="text-2xl font-bold">Notifications</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white">
+            Notifications
+          </h1>
           {unreadCount && unreadCount > 0 && (
-            <Badge color="red" radius="sm" className="ml-2">
+            <Badge radius="full" className="ml-2">
               {unreadCount}
             </Badge>
           )}

@@ -3,7 +3,7 @@ import { BaseQueryCriteria } from "../../api-client/api.types";
 export interface NotificationVm {
   id: string;
   title: string;
-  body: string;
+  content: string;
   isRead: boolean;
   type: NotificationType;
   url: string | null;

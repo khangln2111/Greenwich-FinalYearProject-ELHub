@@ -19,47 +19,47 @@ import {
 const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNode; bg: string }> = {
   CourseSubmitted: {
     label: "Course Submitted",
-    icon: <FileText size={18} />,
+    icon: <FileText size={20} />,
     bg: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-300",
   },
   CourseApproved: {
     label: "Course Approved",
-    icon: <CheckCircle2 size={18} />,
+    icon: <CheckCircle2 size={20} />,
     bg: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-300",
   },
   CourseRejected: {
     label: "Course Rejected",
-    icon: <XCircle size={18} />,
+    icon: <XCircle size={20} />,
     bg: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300",
   },
   CourseResubmitted: {
     label: "Course Resubmitted",
-    icon: <FileText size={18} />,
+    icon: <FileText size={20} />,
     bg: "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-300",
   },
   ReceivedGift: {
     label: "Received Gift",
-    icon: <Gift size={18} />,
+    icon: <Gift size={20} />,
     bg: "bg-violet-100 text-violet-600 dark:bg-violet-500/20 dark:text-violet-300",
   },
   GiftRedeemed: {
     label: "Gift Redeemed",
-    icon: <GiftIcon size={18} />,
+    icon: <GiftIcon size={20} />,
     bg: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300",
   },
   ReviewCreated: {
     label: "Review Created",
-    icon: <Star size={18} />,
+    icon: <Star size={20} />,
     bg: "bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-300",
   },
   ReviewReplied: {
     label: "Review Replied",
-    icon: <MessageSquare size={18} />,
+    icon: <MessageSquare size={20} />,
     bg: "bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-300",
   },
   OrderConfirmed: {
     label: "Order Confirmed",
-    icon: <ShoppingCart size={18} />,
+    icon: <ShoppingCart size={20} />,
     bg: "bg-cyan-100 text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-300",
   },
 };
@@ -72,51 +72,60 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
     <Card
       withBorder
       radius="lg"
-      className={`transition shadow-sm hover:shadow-md ${
-        n.isRead ? "bg-white dark:bg-dark-6" : "bg-indigo-50 dark:bg-dark-5" }`}
+      className={`transition shadow-sm hover:shadow-md p-4 ${
+        n.isRead ? "bg-white dark:bg-dark-6" : "border-l-4 border-primary" }`}
     >
-      <Group align="flex-start" justify="space-between" wrap="nowrap">
+      <Group align="flex-start" wrap="nowrap" gap="md">
         {/* Icon */}
         <div
-          className={`flex items-center justify-center w-10 h-10 rounded-full shrink-0 ${cfg.bg}`}
+          className={`flex items-center justify-center w-12 h-12 rounded-full shrink-0 ${cfg.bg}`}
         >
           {cfg.icon}
         </div>
 
         {/* Nội dung */}
-        <div className="flex-1 min-w-0 ml-2">
-          <Group gap="xs" mb={4}>
+        <div className="flex-1 min-w-0">
+          <Group gap="xs" mb={6}>
             <Badge variant="light" color="gray" size="sm">
               {cfg.label}
             </Badge>
             {!n.isRead && (
-              <Badge color="red" size="sm" radius="sm">
+              <Badge variant="light" autoContrast size="sm" radius="sm">
                 New
               </Badge>
             )}
           </Group>
-          <Text fw={600} size="sm" className="line-clamp-1">
+
+          {/* Title */}
+          <Text fw={600} size="sm" className="truncate">
             {n.title}
           </Text>
-          <Text size="sm" c="dimmed" className="line-clamp-2">
-            {n.body}
-          </Text>
-          <Text size="xs" c="gray" mt={4}>
-            {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
-          </Text>
-        </div>
 
-        {/* Action */}
-        {!n.isRead && (
-          <Button
-            size="xs"
-            variant="subtle"
-            onClick={() => markMutation.mutate()}
-            loading={markMutation.isPending}
-          >
-            Mark
-          </Button>
-        )}
+          {/* Content */}
+          {n.content && (
+            <Text size="sm" c="dimmed" mt={2} className="line-clamp-2">
+              {n.content}
+            </Text>
+          )}
+
+          {/* Footer: time + action */}
+          <Group justify="space-between" mt={8}>
+            <Text size="xs" c="gray">
+              {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
+            </Text>
+
+            {!n.isRead && (
+              <Button
+                size="xs"
+                variant="subtle"
+                onClick={() => markMutation.mutate()}
+                loading={markMutation.isPending}
+              >
+                Mark as read
+              </Button>
+            )}
+          </Group>
+        </div>
       </Group>
     </Card>
   );
