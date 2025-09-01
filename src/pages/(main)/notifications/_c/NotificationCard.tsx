@@ -83,10 +83,10 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
           {cfg.icon}
         </div>
 
-        {/* Nội dung */}
+        {/* Content */}
         <div className="flex-1 min-w-0">
           <Group gap="xs" mb={6}>
-            <Badge variant="light" color="gray" size="sm">
+            <Badge variant="default" color="gray" size="sm">
               {cfg.label}
             </Badge>
             {!n.isRead && (
@@ -97,26 +97,26 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
           </Group>
 
           {/* Title */}
-          <Text fw={600} size="sm" className="truncate">
+          <Text fw={600} className="truncate dark:text-white text-md md:text-lg">
             {n.title}
           </Text>
 
           {/* Content */}
           {n.content && (
-            <Text size="sm" c="dimmed" mt={2} className="line-clamp-2">
+            <Text c="dimmed" mt={2} className="line-clamp-2 text-sm md:text-md">
               {n.content}
             </Text>
           )}
 
           {/* Footer: time + action */}
           <Group justify="space-between" mt={8}>
-            <Text size="xs" c="gray">
+            <Text className="text-xs md:text-sm" c="gray">
               {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
             </Text>
 
             {!n.isRead && (
               <Button
-                size="xs"
+                size="sm"
                 variant="subtle"
                 onClick={() => markMutation.mutate()}
                 loading={markMutation.isPending}
