@@ -1,7 +1,8 @@
-import { Badge, Button, Divider, Group, Loader, Menu, Stack } from "@mantine/core";
+import { Badge, Button, Divider, Group, Menu, Stack } from "@mantine/core";
 import { Bell, Check, Filter } from "lucide-react";
 import { useState } from "react";
 
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import {
   useGetNotifications,
   useGetUnreadNotificationsCount,
@@ -89,11 +90,9 @@ export default function NotificationsPage() {
 
       {/* List */}
       {isPending ? (
-        <div className="flex justify-center items-center h-40">
-          <Loader size="lg" />
-        </div>
+        <CenterLoader height={500} />
       ) : (
-        <Stack>
+        <Stack className="max-w-3xl mx-auto" align="center">
           {data?.items?.length ? (
             data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
           ) : (

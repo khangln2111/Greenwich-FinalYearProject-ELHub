@@ -1,11 +1,6 @@
 import { Avatar, Collapse } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import {
-  IconBell,
-  IconLayoutDashboardFilled,
-  IconMessageCircle,
-  IconSettings,
-} from "@tabler/icons-react";
+import { IconBell, IconLayoutDashboardFilled, IconSettings } from "@tabler/icons-react";
 import {
   ChartNoAxesCombinedIcon,
   ChevronDown,

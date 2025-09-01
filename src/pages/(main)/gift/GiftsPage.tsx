@@ -189,7 +189,9 @@ export default function GiftsPage() {
         </Button>
       </div>
 
-      {activeTab === "sent" ? renderSent() : renderReceived()}
+      <div className="mx-auto max-w-4xl">
+        {activeTab === "sent" ? renderSent() : renderReceived()}
+      </div>
 
       <AppPagination
         page={page}
