@@ -1,15 +1,16 @@
-import { Card, Group, Badge, Button, Text } from "@mantine/core";
+import { Badge, Card, Checkbox, Group, Text } from "@mantine/core";
+import dayjs from "dayjs";
 import {
   CheckCircle2,
-  XCircle,
   FileText,
   Gift,
   GiftIcon,
-  Star,
   MessageSquare,
   ShoppingCart,
+  Star,
+  XCircle,
 } from "lucide-react";
-import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 import { useMarkNotificationAsRead } from "../../../../features/notification/notification.hooks";
 import {
   NotificationType,
@@ -71,6 +72,8 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
   return (
     <Card
       withBorder
+      component={Link}
+      to={n.url ?? "#"}
       radius="lg"
       className={`transition shadow-sm hover:shadow-md p-4 ${
         n.isRead ? "bg-white dark:bg-dark-6" : "border-l-4 border-primary" }`}
@@ -78,7 +81,7 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
       <Group align="flex-start" wrap="nowrap" gap="md">
         {/* Icon */}
         <div
-          className={`flex items-center justify-center w-12 h-12 rounded-full shrink-0 ${cfg.bg}`}
+          className={`flex items-center justify-center w-12 h-12 rounded-full shrink-0 ${cfg.bg} *:stroke-[1.5]`}
         >
           {cfg.icon}
         </div>
@@ -86,14 +89,9 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
         {/* Content */}
         <div className="flex-1 min-w-0">
           <Group gap="xs" mb={6}>
-            <Badge variant="default" color="gray" size="sm">
+            <Badge variant={n.isRead ? "default" : "dot"} color="blue" size="sm">
               {cfg.label}
             </Badge>
-            {!n.isRead && (
-              <Badge variant="light" autoContrast size="sm" radius="sm">
-                New
-              </Badge>
-            )}
           </Group>
 
           {/* Title */}
@@ -114,16 +112,16 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
               {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
             </Text>
 
-            {!n.isRead && (
-              <Button
-                size="sm"
-                variant="subtle"
-                onClick={() => markMutation.mutate()}
-                loading={markMutation.isPending}
-              >
-                Mark as read
-              </Button>
-            )}
+            <Checkbox
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                markMutation.mutate();
+              }}
+              radius="full"
+              label="Mark as read"
+              checked={n.isRead}
+            />
           </Group>
         </div>
       </Group>
