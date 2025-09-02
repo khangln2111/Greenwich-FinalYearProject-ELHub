@@ -1,4 +1,4 @@
-import { Badge, Card, Checkbox, Group, Text } from "@mantine/core";
+import { Badge, Button, Card, Group, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import {
   CheckCircle2,
@@ -88,10 +88,15 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <Group gap="xs" mb={6}>
-            <Badge variant={n.isRead ? "default" : "dot"} color="blue" size="sm">
+          <Group gap="xs" mb={6} justify="space-between">
+            <Badge variant="default" color="blue" size="sm">
               {cfg.label}
             </Badge>
+            {!n.isRead && (
+              <Badge variant="light" color="red">
+                New
+              </Badge>
+            )}
           </Group>
 
           {/* Title */}
@@ -112,16 +117,17 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
               {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
             </Text>
 
-            <Checkbox
-              size="sm"
+            <Button
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 markMutation.mutate();
               }}
               radius="full"
-              label="Mark as read"
-              checked={n.isRead}
-            />
+              variant="subtle"
+            >
+              {n.isRead ? "Mark as unread" : "Mark as read"}
+            </Button>
           </Group>
         </div>
       </Group>
