@@ -1,5 +1,5 @@
 import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
+import { IconBell, IconCheck, IconX } from "@tabler/icons-react";
 import ms from "ms";
 import { ReactNode } from "react";
 
@@ -36,5 +36,16 @@ export const showLoadingToast = (title?: string, message?: string | ReactNode) =
     autoClose: false,
   });
 
-  return id; // Có thể dùng để update hoặc dismiss sau
+  return id; // Used to update or dismiss later
+};
+
+export const showNotificationToast = (title: string, message?: string | ReactNode) => {
+  notifications.show({
+    title,
+    message: message || "You have a new notification.",
+    icon: <IconBell size={20} />,
+    color: "orange",
+    withBorder: true,
+    position: "bottom-right",
+  });
 };

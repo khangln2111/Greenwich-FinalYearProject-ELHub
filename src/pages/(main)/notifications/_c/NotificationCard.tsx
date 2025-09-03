@@ -10,7 +10,7 @@ import {
   Star,
   XCircle,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMarkNotificationAsRead } from "../../../../features/notification/notification.hooks";
 import {
   NotificationType,
@@ -70,13 +70,17 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
   const markMutation = useMarkNotificationAsRead(n.id);
   const cfg = typeConfig[n.type];
 
+  const navigate = useNavigate();
+
   return (
     <Card
       withBorder
-      component={Link}
-      to={n.url ?? "#"}
+      onClick={() => {
+        if (!n.isRead) markMutation.mutate();
+        navigate(n.url ?? "#");
+      }}
       radius="lg"
-      className={cn("relative transition shadow-md hover:shadow-lg p-4", {
+      className={cn("relative cursor-pointer transition shadow-md hover:shadow-lg p-4", {
         "border-l-4 border-primary": !n.isRead,
       })}
     >
