@@ -1,4 +1,4 @@
-import { Badge, Button, Divider, Group, SegmentedControl, Stack } from "@mantine/core";
+import { Badge, Button, Divider, SegmentedControl, Stack } from "@mantine/core";
 import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -31,20 +31,22 @@ export default function NotificationsPage() {
   return (
     <div className="mx-auto">
       {/* Header */}
-      <Group justify="space-between" mb="md">
-        <Group>
-          <BellIcon className="size-8 text-primary stroke-2" />
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+      <div className="flex flex-col gap-y-5 gap-x-3 lg:flex-row items-center lg:justify-between mb-4">
+        {/* Left: Title */}
+        <div className="flex items-center gap-2">
+          <BellIcon className="size-7 sm:size-8 text-primary stroke-2" />
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
             Notifications
           </h1>
           {unreadCount && unreadCount > 0 && (
-            <Badge radius="full" className="ml-2">
+            <Badge radius="full" className="ml-1 sm:ml-2">
               {unreadCount}
             </Badge>
           )}
-        </Group>
+        </div>
 
-        <Group>
+        {/* Right: Filters */}
+        <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-end w-full lg:w-auto">
           {/* Segmented control for All / Unread */}
           <SegmentedControl
             value={filterUnread}
@@ -53,39 +55,21 @@ export default function NotificationsPage() {
               { label: "All", value: "all" },
               { label: "Unread", value: "unread" },
             ]}
-            size="sm"
-            radius="lg"
+            radius="full"
             withItemsBorders
             color="primary"
-            className="bg-body"
+            className="bg-body flex-1 sm:flex-none"
           />
 
-          {/* Filter by type */}
-
           {/* MultiSelect filter by type */}
-          <div className="min-w-[200px] max-w-[300px]">
+          <div className="flex-1 min-w-[160px] sm:min-w-[200px] sm:max-w-[300px]">
             <MultiSelectWithMaxDisplayedItems
               data={[
-                {
-                  label: "Gift Redeemed",
-                  value: NotificationType.GiftRedeemed,
-                },
-                {
-                  label: "Received Gift",
-                  value: NotificationType.ReceivedGift,
-                },
-                {
-                  label: "Review Replied",
-                  value: NotificationType.ReviewReplied,
-                },
-                {
-                  label: "Order Processed",
-                  value: NotificationType.OrderProcessed,
-                },
-                {
-                  label: "Course Updated",
-                  value: NotificationType.CourseUpdated,
-                },
+                { label: "Gift Redeemed", value: NotificationType.GiftRedeemed },
+                { label: "Received Gift", value: NotificationType.ReceivedGift },
+                { label: "Review Replied", value: NotificationType.ReviewReplied },
+                { label: "Order Processed", value: NotificationType.OrderProcessed },
+                { label: "Course Updated", value: NotificationType.CourseUpdated },
               ]}
               placeholder="Select types"
               onChange={(vals) => setFilterTypes(vals as NotificationType[])}
@@ -100,11 +84,12 @@ export default function NotificationsPage() {
             variant="outline"
             loading={markAllMutation.isPending}
             onClick={() => markAllMutation.mutate()}
+            className="w-full sm:w-auto"
           >
             Mark all as read
           </Button>
-        </Group>
-      </Group>
+        </div>
+      </div>
 
       <Divider mb="md" />
 

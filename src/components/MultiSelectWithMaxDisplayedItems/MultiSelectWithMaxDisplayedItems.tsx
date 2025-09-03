@@ -14,24 +14,24 @@ export interface MultiSelectWithMaxDisplayedItemsProps {
   value: string[];
   onChange: (value: string[]) => void;
   data: { label: string; value: string }[];
-  maxDisplayedValues?: number;
   placeholder?: string;
   hidePickedItems?: boolean;
   size?: MantineSize;
   classNames?: {
     wrapper?: string;
   };
+  showMoreAfter?: number;
 }
 
 export function MultiSelectWithMaxDisplayedItems({
   value,
   onChange,
   data,
-  maxDisplayedValues = 2,
   placeholder = "Pick one or more values",
   hidePickedItems = false,
   size = "sm",
   classNames,
+  showMoreAfter = 2,
 }: MultiSelectWithMaxDisplayedItemsProps) {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -43,11 +43,12 @@ export function MultiSelectWithMaxDisplayedItems({
 
   const handleValueRemove = (val: string) => onChange(value.filter((v) => v !== val));
 
-  const displayedValues = value.slice(0, maxDisplayedValues - 1).map((item) => (
+  const displayedValues = value.slice(0, showMoreAfter - 1).map((item) => (
     <Pill key={item} size={size} withRemoveButton onRemove={() => handleValueRemove(item)}>
       {data.find((d) => d.value === item)?.label ?? item}
     </Pill>
   ));
+
   const options = data
     .filter((item) => !hidePickedItems || !value.includes(item.value))
     .map((item) => (
@@ -68,13 +69,18 @@ export function MultiSelectWithMaxDisplayedItems({
         size={size}
       >
         <Combobox.DropdownTarget>
-          <PillsInput pointer onClick={() => combobox.toggleDropdown()} size={size}>
+          <PillsInput
+            pointer
+            onClick={() => combobox.toggleDropdown()}
+            size={size}
+            className="h-full"
+          >
             <Pill.Group size={size}>
               {value.length > 0 ? (
                 <>
                   {displayedValues}
-                  {value.length > maxDisplayedValues - 1 && (
-                    <Pill size={size}>+{value.length - (maxDisplayedValues - 1)} more</Pill>
+                  {value.length > showMoreAfter - 1 && (
+                    <Pill size={size}>+{value.length - (showMoreAfter - 1)} more</Pill>
                   )}
                 </>
               ) : (
