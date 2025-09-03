@@ -34,7 +34,7 @@ apiClient.interceptors.response.use(
     const errorCode = data?.errorCode;
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-    // ✅ Refresh token nếu gặp lỗi 401 và có tokens trong localStorage
+    // ✅ Call Refresh token endpoint if 401 and has tokens in localStorage
     if (
       status === 401 &&
       !originalRequest._retry &&
@@ -64,7 +64,7 @@ apiClient.interceptors.response.use(
       }
     }
 
-    // ✅ Chỉ show toast với các lỗi đặc biệt, còn lại trả ra để hook xử lý
+    // ✅ Only show toast for specific errors, others are passed to hooks
     if (status === 401 && (errorCode === undefined || errorCode === ErrorCode.Unauthorized)) {
       showErrorToast("Unauthorized", "You must login to perform this action.");
       return;
@@ -75,7 +75,7 @@ apiClient.interceptors.response.use(
       return;
     }
 
-    // ❌ Không xử lý gì thêm — để react-query tự quản
+    // ❌ No further handling — let react-query manage it
     return Promise.reject(error);
   },
 );

@@ -125,6 +125,7 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
               }}
               radius="full"
               variant="subtle"
+              loading={markMutation.isPending}
             >
               {n.isRead ? "Mark as unread" : "Mark as read"}
             </Button>
