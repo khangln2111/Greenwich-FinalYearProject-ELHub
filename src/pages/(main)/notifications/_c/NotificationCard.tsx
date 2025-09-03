@@ -1,7 +1,9 @@
 import { Badge, Button, Card, Group, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import {
+  CheckCheckIcon,
   CheckCircle2,
+  EyeClosedIcon,
   FileText,
   Gift,
   GiftIcon,
@@ -134,6 +136,7 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
                 e.stopPropagation();
                 markMutation.mutate();
               }}
+              leftSection={n.isRead ? <EyeClosedIcon size={16} /> : <CheckCheckIcon size={16} />}
               radius="full"
               variant="subtle"
               loading={markMutation.isPending}

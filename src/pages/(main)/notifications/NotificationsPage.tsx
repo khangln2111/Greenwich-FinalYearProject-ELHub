@@ -1,5 +1,5 @@
-import { Badge, Button, Divider, Group, Menu, Stack } from "@mantine/core";
-import { Bell, Check, Filter } from "lucide-react";
+import { Badge, Button, Divider, Group, Menu, SegmentedControl, Stack } from "@mantine/core";
+import { BellIcon, CheckCheckIcon, Filter } from "lucide-react";
 import { useState } from "react";
 
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
@@ -15,11 +15,11 @@ import {
 import NotificationCard from "./_c/NotificationCard";
 
 export default function NotificationsPage() {
-  const [filterUnread, setFilterUnread] = useState(false);
+  const [filterUnread, setFilterUnread] = useState<"all" | "unread">("all");
   const [filterType, setFilterType] = useState<NotificationType | null>(null);
 
   const { data, isPending } = useGetNotifications({
-    isRead: filterUnread ? false : null,
+    isRead: filterUnread === "unread" ? false : null,
     types: filterType ? [filterType] : null,
     pageSize: 20,
   });
@@ -32,8 +32,8 @@ export default function NotificationsPage() {
       {/* Header */}
       <Group justify="space-between" mb="md">
         <Group>
-          <Bell className="w-6 h-6 text-indigo-600" />
-          <h1 className="text-2xl sm:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white">
+          <BellIcon className="size-6 text-indigo-600" />
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
             Notifications
           </h1>
           {unreadCount && unreadCount > 0 && (
@@ -44,13 +44,19 @@ export default function NotificationsPage() {
         </Group>
 
         <Group>
-          <Button
+          {/* Segmented control for All / Unread */}
+          <SegmentedControl
+            value={filterUnread}
+            onChange={(val: string) => setFilterUnread(val as "all" | "unread")}
+            data={[
+              { label: "All", value: "all" },
+              { label: "Unread", value: "unread" },
+            ]}
             size="sm"
-            variant={filterUnread ? "filled" : "light"}
-            onClick={() => setFilterUnread((prev) => !prev)}
-          >
-            {filterUnread ? "Show All" : "Show Unread"}
-          </Button>
+            radius="md"
+            withItemsBorders
+            color="primary"
+          />
 
           {/* Filter by type */}
           <Menu shadow="md" width={200}>
@@ -76,7 +82,7 @@ export default function NotificationsPage() {
           {/* Mark all */}
           <Button
             size="sm"
-            leftSection={<Check size={16} />}
+            leftSection={<CheckCheckIcon size={16} />}
             variant="outline"
             loading={markAllMutation.isPending}
             onClick={() => markAllMutation.mutate()}
