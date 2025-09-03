@@ -1,8 +1,9 @@
-import { Badge, Button, Divider, Group, MultiSelect, SegmentedControl, Stack } from "@mantine/core";
+import { Badge, Button, Divider, Group, SegmentedControl, Stack } from "@mantine/core";
 import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { useState } from "react";
 
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
+import { MultiSelectWithMaxDisplayedItems } from "../../../components/MultiSelectWithMaxDisplayedItems/MultiSelectWithMaxDisplayedItems";
 import {
   useGetNotifications,
   useGetUnreadNotificationsCount,
@@ -62,38 +63,35 @@ export default function NotificationsPage() {
           {/* Filter by type */}
 
           {/* MultiSelect filter by type */}
-          <MultiSelect
-            data={[
-              {
-                label: "Gift Redeemed",
-                value: NotificationType.GiftRedeemed,
-              },
-              {
-                label: "Received Gift",
-                value: NotificationType.ReceivedGift,
-              },
-              {
-                label: "Review Replied",
-                value: NotificationType.ReviewReplied,
-              },
-              {
-                label: "Order Processed",
-                value: NotificationType.OrderProcessed,
-              },
-              {
-                label: "Course Updated",
-                value: NotificationType.CourseUpdated,
-              },
-            ]}
-            placeholder="Select types"
-            value={filterTypes}
-            onChange={(vals) => setFilterTypes(vals as NotificationType[])}
-            size="sm"
-            maxDropdownHeight={200}
-            searchable
-            clearable
-            hidePickedOptions
-          />
+          <div className="min-w-[200px] max-w-[300px]">
+            <MultiSelectWithMaxDisplayedItems
+              data={[
+                {
+                  label: "Gift Redeemed",
+                  value: NotificationType.GiftRedeemed,
+                },
+                {
+                  label: "Received Gift",
+                  value: NotificationType.ReceivedGift,
+                },
+                {
+                  label: "Review Replied",
+                  value: NotificationType.ReviewReplied,
+                },
+                {
+                  label: "Order Processed",
+                  value: NotificationType.OrderProcessed,
+                },
+                {
+                  label: "Course Updated",
+                  value: NotificationType.CourseUpdated,
+                },
+              ]}
+              placeholder="Select types"
+              onChange={(vals) => setFilterTypes(vals as NotificationType[])}
+              value={filterTypes}
+            />
+          </div>
 
           {/* Mark all */}
           <Button
