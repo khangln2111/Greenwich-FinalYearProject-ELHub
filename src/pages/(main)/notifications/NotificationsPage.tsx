@@ -1,5 +1,5 @@
-import { Badge, Button, Divider, Group, Menu, SegmentedControl, Stack } from "@mantine/core";
-import { BellIcon, CheckCheckIcon, Filter } from "lucide-react";
+import { Badge, Button, Divider, Group, MultiSelect, SegmentedControl, Stack } from "@mantine/core";
+import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { useState } from "react";
 
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
@@ -16,11 +16,11 @@ import NotificationCard from "./_c/NotificationCard";
 
 export default function NotificationsPage() {
   const [filterUnread, setFilterUnread] = useState<"all" | "unread">("all");
-  const [filterType, setFilterType] = useState<NotificationType | null>(null);
+  const [filterTypes, setFilterTypes] = useState<NotificationType[]>([]);
 
   const { data, isPending } = useGetNotifications({
     isRead: filterUnread === "unread" ? false : null,
-    types: filterType ? [filterType] : null,
+    types: filterTypes.length ? filterTypes : null,
     pageSize: 20,
   });
 
@@ -53,31 +53,47 @@ export default function NotificationsPage() {
               { label: "Unread", value: "unread" },
             ]}
             size="sm"
-            radius="md"
+            radius="lg"
             withItemsBorders
             color="primary"
+            className="bg-body"
           />
 
           {/* Filter by type */}
-          <Menu shadow="md" width={200}>
-            <Menu.Target>
-              <Button
-                size="sm"
-                variant={filterType ? "filled" : "light"}
-                leftSection={<Filter size={16} />}
-              >
-                {filterType ?? "All Types"}
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item onClick={() => setFilterType(null)}>All Types</Menu.Item>
-              {Object.values(NotificationType).map((t) => (
-                <Menu.Item key={t} onClick={() => setFilterType(t)}>
-                  {t}
-                </Menu.Item>
-              ))}
-            </Menu.Dropdown>
-          </Menu>
+
+          {/* MultiSelect filter by type */}
+          <MultiSelect
+            data={[
+              {
+                label: "Gift Redeemed",
+                value: NotificationType.GiftRedeemed,
+              },
+              {
+                label: "Received Gift",
+                value: NotificationType.ReceivedGift,
+              },
+              {
+                label: "Review Replied",
+                value: NotificationType.ReviewReplied,
+              },
+              {
+                label: "Order Processed",
+                value: NotificationType.OrderProcessed,
+              },
+              {
+                label: "Course Updated",
+                value: NotificationType.CourseUpdated,
+              },
+            ]}
+            placeholder="Select types"
+            value={filterTypes}
+            onChange={(vals) => setFilterTypes(vals as NotificationType[])}
+            size="sm"
+            maxDropdownHeight={200}
+            searchable
+            clearable
+            hidePickedOptions
+          />
 
           {/* Mark all */}
           <Button

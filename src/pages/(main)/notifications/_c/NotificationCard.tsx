@@ -2,15 +2,16 @@ import { Badge, Button, Card, Group, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import {
   CheckCheckIcon,
-  CheckCircle2,
+  CheckCircle2Icon,
   EyeClosedIcon,
-  FileText,
-  Gift,
   GiftIcon,
-  MessageSquare,
-  ShoppingCart,
-  Star,
-  XCircle,
+  PencilLineIcon,
+  RefreshCwIcon,
+  SendHorizonalIcon,
+  ShoppingCartIcon,
+  StarIcon,
+  UploadIcon,
+  XCircleIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useMarkNotificationAsRead } from "../../../../features/notification/notification.hooks";
@@ -21,50 +22,55 @@ import {
 import { cn } from "../../../../utils/cn";
 
 const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNode; bg: string }> = {
-  CourseSubmitted: {
+  [NotificationType.CourseSubmitted]: {
     label: "Course Submitted",
-    icon: <FileText size={20} />,
+    icon: <UploadIcon size={20} />,
     bg: "bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-300",
   },
-  CourseApproved: {
+  [NotificationType.CourseApproved]: {
     label: "Course Approved",
-    icon: <CheckCircle2 size={20} />,
+    icon: <CheckCircle2Icon size={20} />,
     bg: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-300",
   },
-  CourseRejected: {
+  [NotificationType.CourseRejected]: {
     label: "Course Rejected",
-    icon: <XCircle size={20} />,
+    icon: <XCircleIcon size={20} />,
     bg: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300",
   },
-  CourseResubmitted: {
+  [NotificationType.CourseResubmitted]: {
     label: "Course Resubmitted",
-    icon: <FileText size={20} />,
+    icon: <RefreshCwIcon size={20} />,
     bg: "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-300",
   },
-  ReceivedGift: {
+  [NotificationType.ReceivedGift]: {
     label: "Received Gift",
-    icon: <Gift size={25} />,
+    icon: <GiftIcon size={25} />,
     bg: "bg-violet-100 text-violet-600 dark:bg-violet-500/20 dark:text-violet-300",
   },
-  GiftRedeemed: {
+  [NotificationType.GiftRedeemed]: {
     label: "Gift Redeemed",
     icon: <GiftIcon size={20} />,
     bg: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300",
   },
-  ReviewCreated: {
+  [NotificationType.ReviewCreated]: {
     label: "Review Created",
-    icon: <Star size={20} />,
+    icon: <StarIcon size={20} />,
     bg: "bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-300",
   },
-  ReviewReplied: {
+  [NotificationType.ReviewReplied]: {
     label: "Review Replied",
-    icon: <MessageSquare size={20} />,
+    icon: <SendHorizonalIcon size={20} />,
     bg: "bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-300",
   },
-  OrderConfirmed: {
-    label: "Order Confirmed",
-    icon: <ShoppingCart size={20} />,
+  [NotificationType.OrderProcessed]: {
+    label: "Order Processed",
+    icon: <ShoppingCartIcon size={20} />,
     bg: "bg-cyan-100 text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-300",
+  },
+  [NotificationType.CourseUpdated]: {
+    label: "Course Updated",
+    icon: <PencilLineIcon size={20} />,
+    bg: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-300",
   },
 };
 

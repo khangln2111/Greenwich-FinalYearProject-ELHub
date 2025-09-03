@@ -26,5 +26,6 @@ export enum NotificationType {
   GiftRedeemed = "GiftRedeemed",
   ReviewCreated = "ReviewCreated",
   ReviewReplied = "ReviewReplied",
-  OrderConfirmed = "OrderConfirmed",
+  OrderProcessed = "OrderProcessed",
+  CourseUpdated = "CourseUpdated",
 }
