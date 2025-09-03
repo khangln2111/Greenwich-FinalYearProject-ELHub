@@ -75,9 +75,19 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
       component={Link}
       to={n.url ?? "#"}
       radius="lg"
-      className={`transition shadow-md hover:shadow-lg p-4 ${
+      className={`relative transition shadow-md hover:shadow-lg p-4 ${
         n.isRead ? "bg-white dark:bg-dark-6" : "border-l-4 border-primary" }`}
     >
+      {/* Dot indicator */}
+      {!n.isRead && (
+        <span className="absolute top-4 right-3 flex size-2 justify-center items-center">
+          <span
+            className="absolute size-full inline-flex rounded-full bg-primary opacity-75 animate-ping
+              [animation-duration:1.5s]"
+          />
+          <span className="relative size-full inline-flex rounded-full bg-primary"></span>
+        </span>
+      )}
       <Group align="flex-start" wrap="nowrap" gap="md">
         {/* Icon */}
         <div
@@ -92,27 +102,17 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
             <Badge variant="default" color="blue" size="sm">
               {cfg.label}
             </Badge>
-
-            {/* Dot indicator */}
-            {!n.isRead && (
-              <span className="relative flex size-2 lg:size-3 justify-center items-center">
-                <span
-                  className="absolute size-full inline-flex rounded-full bg-primary opacity-75 animate-ping
-                    [animation-duration:1.5s]"
-                />
-                <span className="relative size-full inline-flex rounded-full bg-primary"></span>
-              </span>
-            )}
           </Group>
 
           {/* Title */}
-          <Text fw={600} className="truncate dark:text-white text-md md:text-lg">
-            {n.title}
-          </Text>
+          <Text className="truncate font-medium dark:text-white text-md md:text-lg">{n.title}</Text>
 
           {/* Content */}
           {n.content && (
-            <Text c="dimmed" mt={2} className="line-clamp-2 text-sm md:text-md">
+            <Text
+              mt={2}
+              className="line-clamp-2 text-sm md:text-md text-gray-600 dark:text-gray-300"
+            >
               {n.content}
             </Text>
           )}
