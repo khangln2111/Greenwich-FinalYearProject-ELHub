@@ -16,6 +16,7 @@ import {
   NotificationType,
   NotificationVm,
 } from "../../../../features/notification/notification.types";
+import { cn } from "../../../../utils/cn";
 
 const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNode; bg: string }> = {
   CourseSubmitted: {
@@ -75,25 +76,24 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
       component={Link}
       to={n.url ?? "#"}
       radius="lg"
-      className={`relative transition shadow-md hover:shadow-lg p-4 ${
-        n.isRead ? "bg-white dark:bg-dark-6" : "border-l-4 border-primary" }`}
+      className={cn("relative transition shadow-md hover:shadow-lg p-4", {
+        "border-l-4 border-primary": !n.isRead,
+      })}
     >
-      {/* Dot indicator */}
-      {!n.isRead && (
-        <span className="absolute top-4 right-3 flex size-2 justify-center items-center">
-          <span
-            className="absolute size-full inline-flex rounded-full bg-primary opacity-75 animate-ping
-              [animation-duration:1.5s]"
-          />
-          <span className="relative size-full inline-flex rounded-full bg-primary"></span>
-        </span>
-      )}
       <Group align="flex-start" wrap="nowrap" gap="md">
-        {/* Icon */}
-        <div
-          className={`flex items-center justify-center w-12 h-12 rounded-full shrink-0 ${cfg.bg} *:stroke-[1.5]`}
-        >
-          {cfg.icon}
+        {/* Icon + Dot indicator */}
+        <div className="relative shrink-0">
+          <div
+            className={`flex items-center justify-center w-12 h-12 rounded-full ${cfg.bg} *:stroke-[1.5]`}
+          >
+            {cfg.icon}
+          </div>
+
+          {!n.isRead && (
+            <span className="absolute top-0 right-0 flex size-3 items-center justify-center">
+              <span className="relative inline-flex size-2 rounded-full bg-red" />
+            </span>
+          )}
         </div>
 
         {/* Content */}
