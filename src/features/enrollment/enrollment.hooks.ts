@@ -11,9 +11,9 @@ export const useGetEnrollmentsSelf = (query?: EnrollmentQueryCriteria) => {
   const currentUser = useAppStore((s) => s.currentUser);
 
   return useQuery({
+    enabled: !!currentUser,
     queryKey: keyFac.enrollments.getEnrollmentsSelf(query).queryKey,
     queryFn: () => getEnrollmentsSelf(query),
-    enabled: !!currentUser,
   });
 };
 

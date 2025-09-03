@@ -35,7 +35,7 @@ export const buildNotificationQuery = (query: NotificationQueryCriteria = {}) =>
 };
 
 export const getNotifications = async (query?: NotificationQueryCriteria) => {
-  const response = await apiClient.get<ListData<NotificationVm>>(BASE_URL, {
+  const response = await apiClient.get<ListData<NotificationVm>>(`${BASE_URL}/self`, {
     params: buildNotificationQuery(query),
   });
   return response.data;

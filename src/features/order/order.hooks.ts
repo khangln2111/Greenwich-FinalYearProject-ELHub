@@ -4,9 +4,12 @@ import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { CreateOrderCommand, OrderQueryCriteria } from "./order.types";
 import { processOrder, createOrder, getOrderDetailSelf, getOrdersSelf } from "./order.api";
+import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
+  const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
+    enabled: !!currentUser,
     queryKey: keyFac.orders.getOrdersSelf(query).queryKey,
     queryFn: () => getOrdersSelf(query),
   });

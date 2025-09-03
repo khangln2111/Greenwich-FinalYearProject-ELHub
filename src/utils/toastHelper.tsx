@@ -1,5 +1,6 @@
 import { notifications } from "@mantine/notifications";
-import { IconBell, IconCheck, IconX } from "@tabler/icons-react";
+import { IconCheck, IconX } from "@tabler/icons-react";
+import { BellRingIcon } from "lucide-react";
 import ms from "ms";
 import { ReactNode } from "react";
 
@@ -46,7 +47,7 @@ export const showNotificationToast = (
   notifications.show({
     title,
     message: message || "You have a new notification.",
-    icon: <IconBell size={20} />,
+    icon: <BellRingIcon size={20} />,
     color: "orange",
     withBorder: true,
     position: "bottom-right",

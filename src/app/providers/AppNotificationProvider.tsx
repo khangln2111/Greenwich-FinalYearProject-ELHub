@@ -32,7 +32,6 @@ export function AppNotificationProvider({ children }: { children: ReactNode }) {
     const hubConnection = new HubConnectionBuilder()
       .withUrl(`${import.meta.env.VITE_BACK_END_BASE_URL}/hubs/notifications`, {
         accessTokenFactory: () => accessToken ?? "",
-        skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
       })
       .withAutomaticReconnect()

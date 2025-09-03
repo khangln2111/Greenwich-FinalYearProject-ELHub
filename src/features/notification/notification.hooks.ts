@@ -8,16 +8,22 @@ import {
 import { NotificationQueryCriteria } from "./notification.types";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { showSuccessToast } from "../../utils/toastHelper";
+import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetNotifications = (query?: NotificationQueryCriteria) => {
+  const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
+    enabled: !!currentUser,
     queryKey: keyFac.notifications.getNotifications(query).queryKey,
     queryFn: () => getNotifications(query),
   });
 };
 
 export const useGetUnreadNotificationsCount = () => {
+  const currentUser = useAppStore((s) => s.currentUser);
+
   return useQuery({
+    enabled: !!currentUser,
     queryKey: keyFac.notifications.getUnreadNotificationsCount.queryKey,
     queryFn: () => getUnreadNotificationsCount(),
   });

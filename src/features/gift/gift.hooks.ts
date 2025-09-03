@@ -17,18 +17,18 @@ import { useAppStore } from "../../zustand/stores/appStore";
 export const useGetSentGifts = (query?: GiftQueryCriteria) => {
   const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
+    enabled: !!currentUser,
     queryKey: keyFac.gifts.getSentGifts(query).queryKey,
     queryFn: () => getSentGifts(query),
-    enabled: !!currentUser,
   });
 };
 
 export const useGetReceivedGifts = (query?: GiftQueryCriteria) => {
   const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
+    enabled: !!currentUser,
     queryKey: keyFac.gifts.getReceivedGifts(query).queryKey,
     queryFn: () => getReceivedGifts(query),
-    enabled: !!currentUser,
   });
 };
 
