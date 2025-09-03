@@ -24,7 +24,7 @@ const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNod
   CourseSubmitted: {
     label: "Course Submitted",
     icon: <FileText size={20} />,
-    bg: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-300",
+    bg: "bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-300",
   },
   CourseApproved: {
     label: "Course Approved",
@@ -91,7 +91,7 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
         <div className="relative shrink-0">
           <div
             className={cn(
-              "flex items-center justify-center w-12 h-12 rounded-full *:stroke-[2]",
+              "flex items-center justify-center size-12 rounded-full *:stroke-[2]",
               cfg.bg,
             )}
           >

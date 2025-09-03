@@ -98,7 +98,7 @@ export default function NotificationsPage() {
       {isPending ? (
         <CenterLoader height={500} />
       ) : (
-        <Stack className="max-w-4xl mx-auto">
+        <Stack className="max-w-4xl mx-auto gap-6">
           {data?.items?.length ? (
             data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
           ) : (
