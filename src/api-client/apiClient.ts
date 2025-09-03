@@ -3,7 +3,9 @@ import { showErrorToast } from "../utils/toastHelper";
 import { ApiErrorResponse, ErrorCode } from "./api.types";
 import { authStorageHelper, loginSessionStorageHelper } from "../utils/storageHelper";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://localhost:7014/api"; //Fallback url
+const API_BASE_URL = import.meta.env.VITE_BACK_END_BASE_URL
+  ? `${import.meta.env.VITE_BACK_END_BASE_URL}/api`
+  : "https://localhost:7014/api"; //Fallback url
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {

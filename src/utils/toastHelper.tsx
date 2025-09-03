@@ -39,7 +39,10 @@ export const showLoadingToast = (title?: string, message?: string | ReactNode) =
   return id; // Used to update or dismiss later
 };
 
-export const showNotificationToast = (title: string, message?: string | ReactNode) => {
+export const showNotificationToast = (
+  title: string = "New Notification!",
+  message?: string | ReactNode,
+) => {
   notifications.show({
     title,
     message: message || "You have a new notification.",

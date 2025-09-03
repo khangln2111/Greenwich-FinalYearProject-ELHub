@@ -1,13 +1,13 @@
 import { Center, Loader, Stack } from "@mantine/core";
 import React from "react";
 import BrandLogo from "../../components/BrandLogo/BrandLogo";
-import { useCurrentUser } from "../../features/auth/identity.hooks";
+import { useGetCurrentUserInfo } from "../../features/auth/identity.hooks";
 import { useAppStore } from "../../zustand/stores/appStore";
 const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
   const accessToken = useAppStore((s) => s.accessToken);
   const setUser = useAppStore((s) => s.setUser);
 
-  const { data, isPending, error } = useCurrentUser();
+  const { data, isPending, error } = useGetCurrentUserInfo();
 
   if (!accessToken) return <>{children}</>;
 

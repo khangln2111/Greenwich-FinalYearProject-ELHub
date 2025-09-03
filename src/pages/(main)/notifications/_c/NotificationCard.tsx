@@ -95,6 +95,7 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
 
           {!n.isRead && (
             <span className="absolute top-0 right-0 flex size-3 items-center justify-center">
+              <span className="absolute inline-flex size-2 rounded-full bg-red opacity-75 animate-ping [animation-duration:2s]" />
               <span className="relative inline-flex size-2 rounded-full bg-red" />
             </span>
           )}

@@ -73,7 +73,7 @@ export const refreshToken = async (data: RefreshTokenCommand) => {
   return response.data;
 };
 
-export const getCurrentUser = async () => {
+export const getCurrentUserInfo = async () => {
   const response = await apiClient.get<CurrentUser>(`${BASE_URL}/self`);
   return response.data;
 };

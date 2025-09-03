@@ -1,9 +1,9 @@
 import { Loader } from "@mantine/core";
-import { useCurrentUser } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
 import UpdateUserProfileForm from "./_c/UpdateUserProfileForm";
 
 export default function MyAccountPage() {
-  const { data: user, isPending, isError } = useCurrentUser();
+  const { data: user, isPending, isError } = useGetCurrentUserInfo();
 
   if (isPending) return <Loader />;
 

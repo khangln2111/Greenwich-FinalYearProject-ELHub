@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
-import { Notifications } from "@mantine/notifications";
+import { Notifications as Toasts } from "@mantine/notifications";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -14,6 +14,7 @@ import "../styles/globals.css";
 import theme from "../styles/theme";
 import IdentityProvider from "./providers/IdentityProvider";
 import router from "./routes";
+import { AppNotificationProvider } from "./providers/AppNotificationProvider";
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -33,14 +34,16 @@ const App = () => {
     <MantineProvider theme={theme} defaultColorScheme="light">
       <QueryClientProvider client={queryClient}>
         {/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}
-        <Notifications />
+        <Toasts />
         <IdentityProvider>
           <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">
-            <ModalsProvider>
-              <NuqsAdapter>
-                <RouterProvider router={router} />
-              </NuqsAdapter>
-            </ModalsProvider>
+            <AppNotificationProvider>
+              <ModalsProvider>
+                <NuqsAdapter>
+                  <RouterProvider router={router} />
+                </NuqsAdapter>
+              </ModalsProvider>
+            </AppNotificationProvider>
           </GoogleOAuthProvider>
         </IdentityProvider>
       </QueryClientProvider>

@@ -21,7 +21,7 @@ import {
 } from "./identity.types";
 import {
   confirmEmail,
-  getCurrentUser,
+  getCurrentUserInfo,
   login,
   loginWithGoogle,
   refreshToken,
@@ -35,11 +35,11 @@ import {
   getWorkProfileSelf,
 } from "./identity.api";
 
-export const useCurrentUser = () => {
+export const useGetCurrentUserInfo = () => {
   const accessToken = useAppStore((s) => s.accessToken);
   return useQuery({
     queryKey: keyFac.identity.getCurrentUser.queryKey,
-    queryFn: getCurrentUser,
+    queryFn: getCurrentUserInfo,
     enabled: !!accessToken,
     refetchOnWindowFocus: false,
   });

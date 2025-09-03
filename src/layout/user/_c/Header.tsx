@@ -12,6 +12,7 @@ import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "./AvatarMenu";
 import MobileHamburgerMenu from "./MobileHamburgerMenu";
 import SearchBox from "./SearchBox";
+import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
 
 const Header = () => {
   const currentUser = useAppStore((s) => s.currentUser);
@@ -24,6 +25,7 @@ const Header = () => {
   const [searchInput, setSearchInput] = useState<string>(search);
   const navigate = useNavigate();
   const { data: cart } = useGetCart();
+  const { data: unreadNotificationCount } = useGetUnreadNotificationsCount();
 
   const handleSearch = () => {
     const trimmed = searchInput.trim();
@@ -132,14 +134,18 @@ const Header = () => {
             </ActionIcon>
 
             {/* Notification (desktop only) */}
-            <ActionIcon
-              variant="default"
-              size="lg"
-              aria-label="Notification trigger"
-              visibleFrom="lg"
-            >
-              <IconBell size={19} strokeWidth={1.5} />
-            </ActionIcon>
+            <Indicator label={unreadNotificationCount ?? 0} size={20} offset={2} position="top-end">
+              <ActionIcon
+                variant="default"
+                size="lg"
+                aria-label="Notification trigger"
+                visibleFrom="lg"
+                component={Link}
+                to="/dashboard/notifications"
+              >
+                <IconBell size={19} strokeWidth={1.5} />
+              </ActionIcon>
+            </Indicator>
 
             {/* Cart */}
             {currentUser && (
