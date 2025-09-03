@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Group, Text, Indicator } from "@mantine/core";
+import { Badge, Button, Card, Group, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import {
   CheckCircle2,
