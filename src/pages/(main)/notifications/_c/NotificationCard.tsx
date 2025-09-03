@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Group, Text } from "@mantine/core";
+import { Badge, Button, Card, Group, Text, Indicator } from "@mantine/core";
 import dayjs from "dayjs";
 import {
   CheckCircle2,
@@ -75,7 +75,7 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
       component={Link}
       to={n.url ?? "#"}
       radius="lg"
-      className={`transition shadow-sm hover:shadow-md p-4 ${
+      className={`transition shadow-md hover:shadow-lg p-4 ${
         n.isRead ? "bg-white dark:bg-dark-6" : "border-l-4 border-primary" }`}
     >
       <Group align="flex-start" wrap="nowrap" gap="md">
@@ -92,10 +92,16 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
             <Badge variant="default" color="blue" size="sm">
               {cfg.label}
             </Badge>
+
+            {/* Dot indicator */}
             {!n.isRead && (
-              <Badge variant="light" color="red">
-                New
-              </Badge>
+              <span className="relative flex size-2 lg:size-3 justify-center items-center">
+                <span
+                  className="absolute size-full inline-flex rounded-full bg-primary opacity-75 animate-ping
+                    [animation-duration:1.5s]"
+                />
+                <span className="relative size-full inline-flex rounded-full bg-primary"></span>
+              </span>
             )}
           </Group>
 
