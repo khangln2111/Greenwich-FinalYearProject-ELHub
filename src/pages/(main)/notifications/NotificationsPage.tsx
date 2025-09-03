@@ -32,7 +32,7 @@ export default function NotificationsPage() {
       {/* Header */}
       <Group justify="space-between" mb="md">
         <Group>
-          <BellIcon className="size-6 text-indigo-600" />
+          <BellIcon className="size-8 text-primary stroke-2" />
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
             Notifications
           </h1>

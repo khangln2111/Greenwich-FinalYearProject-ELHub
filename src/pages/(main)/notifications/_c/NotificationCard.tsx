@@ -43,7 +43,7 @@ const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNod
   },
   ReceivedGift: {
     label: "Received Gift",
-    icon: <Gift size={20} />,
+    icon: <Gift size={25} />,
     bg: "bg-violet-100 text-violet-600 dark:bg-violet-500/20 dark:text-violet-300",
   },
   GiftRedeemed: {
@@ -90,7 +90,10 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
         {/* Icon + Dot indicator */}
         <div className="relative shrink-0">
           <div
-            className={`flex items-center justify-center w-12 h-12 rounded-full ${cfg.bg} *:stroke-[1.5]`}
+            className={cn(
+              "flex items-center justify-center w-12 h-12 rounded-full *:stroke-[2]",
+              cfg.bg,
+            )}
           >
             {cfg.icon}
           </div>
@@ -125,7 +128,7 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
           )}
 
           {/* Footer: time + action */}
-          <Group justify="space-between" mt={8}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mt-2 mx-auto">
             <Text className="text-xs md:text-sm" c="gray">
               {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
             </Text>
@@ -139,11 +142,12 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
               leftSection={n.isRead ? <EyeClosedIcon size={16} /> : <CheckCheckIcon size={16} />}
               radius="full"
               variant="subtle"
+              className="self-end"
               loading={markMutation.isPending}
             >
               {n.isRead ? "Mark as unread" : "Mark as read"}
             </Button>
-          </Group>
+          </div>
         </div>
       </Group>
     </Card>
