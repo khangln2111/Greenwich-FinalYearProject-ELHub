@@ -135,12 +135,17 @@ const Header = () => {
             </ActionIcon>
 
             {/* Notification (desktop only) */}
-            <Indicator label={unreadNotificationCount ?? 0} size={20} offset={2} position="top-end">
+            <Indicator
+              label={unreadNotificationCount ?? 0}
+              size={20}
+              offset={2}
+              position="top-end"
+              visibleFrom="lg"
+            >
               <ActionIcon
                 variant="default"
                 size="lg"
                 aria-label="Notification trigger"
-                visibleFrom="lg"
                 component={Link}
                 to="/dashboard/notifications"
               >

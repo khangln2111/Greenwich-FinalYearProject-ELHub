@@ -43,12 +43,12 @@ export default function NotificationsPage() {
         <div className="flex flex-col gap-3 sm:flex-row items-center sm:justify-between">
           {/* Left: Title */}
           <div className="flex items-center gap-2">
-            <BellIcon className="size-7 sm:size-8 text-primary stroke-2" />
+            <BellIcon className="size-7 sm:size-8 text-yellow fill-amber-500 stroke-2" />
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
               Notifications
             </h1>
             {unreadCount !== undefined && unreadCount > 0 && (
-              <Badge radius="full" className="ml-1 sm:ml-2">
+              <Badge radius="full" color="red" className="ml-1 sm:ml-2">
                 {unreadCount}
               </Badge>
             )}
