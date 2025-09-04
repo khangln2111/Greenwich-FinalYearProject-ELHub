@@ -40,37 +40,37 @@ export default function InstructorNotificationsPage() {
   return (
     <div className="flex-1 p-6 xl:p-8">
       {/* Header */}
-      <div className="flex flex-col gap-6 mb-8">
-        {/* Row 1: Title + Mark all as read */}
-        <div className="flex flex-col gap-3 sm:flex-row items-center sm:justify-between">
-          {/* Left: Title + unread badge */}
-          <div className="flex items-center gap-2">
-            <BellIcon className="size-7 sm:size-8 text-yellow fill-amber-500 stroke-2" />
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-              Notifications
-            </h1>
+      <div className="flex flex-col gap-6 mb-6">
+        {/* Row 1: Title + Mark all */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div className="flex items-center gap-2 mx-auto">
+              <BellIcon className="w-7 h-7 sm:w-8 sm:h-8 text-yellow fill-amber-500 stroke-2" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+                Notifications
+              </h1>
+            </div>
             {unreadCount !== undefined && unreadCount > 0 && (
-              <Badge radius="full" color="red" className="ml-1 sm:ml-2">
+              <Badge radius="full" color="red" className="mt-2 sm:mt-0 sm:ml-2">
                 {unreadCount}
               </Badge>
             )}
           </div>
 
-          {/* Right: Mark all as read */}
           <Button
             size="sm"
             leftSection={<CheckCheckIcon size={16} />}
             variant="filled"
             loading={markAllMutation.isPending}
-            onClick={() => markAllMutation.mutate(RoleName.INSTRUCTOR)}
-            className="w-full sm:w-auto"
+            onClick={() => markAllMutation.mutate(RoleName.ADMIN)}
+            className="w-full sm:w-auto mt-2 sm:mt-0"
           >
             Mark all as read
           </Button>
         </div>
 
-        {/* Row 2: Segmented control + type filter */}
-        <div className="flex flex-col sm:flex-row gap-2 items-center sm:justify-between">
+        {/* Row 2: Filters */}
+        <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center sm:justify-between">
           <SegmentedControl
             value={filterUnread}
             onChange={(val: string) => setFilterUnread(val as "all" | "unread")}
@@ -81,9 +81,9 @@ export default function InstructorNotificationsPage() {
             radius="full"
             withItemsBorders
             size="md"
-            color="primary"
+            className="w-full sm:w-auto"
           />
-          <div className="flex-1 min-w-[160px] sm:min-w-[220px] sm:max-w-[300px]">
+          <div className="flex-1 min-w-[160px] sm:min-w-[220px] sm:max-w-[300px] mt-2 sm:mt-0">
             <MultiSelectWithMaxDisplayedItems
               data={[
                 { label: "Review Created", value: NotificationType.ReviewCreated },
