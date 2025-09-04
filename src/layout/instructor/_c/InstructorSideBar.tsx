@@ -1,18 +1,12 @@
 import { Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconBellRinging } from "@tabler/icons-react";
-import {
-  ChartNoAxesCombinedIcon,
-  ScreenShareIcon,
-  SettingsIcon,
-  TicketPercentIcon,
-  User2Icon,
-} from "lucide-react";
+import { ChartNoAxesCombinedIcon, ScreenShareIcon, SettingsIcon, User2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/stores/appStore";
-import { useMediaQuery } from "@mantine/hooks";
 
 type InstructorSidebarProps = {
   collapsedToIcon?: boolean;
@@ -36,11 +30,6 @@ const navItems: NavItem[] = [
     href: "/instructor/profile",
     label: "Instructor profile",
     icon: User2Icon,
-  },
-  {
-    href: "/instructor/coupons",
-    label: "Coupons",
-    icon: TicketPercentIcon,
   },
   { href: "/instructor/notifications", label: "Notifications", icon: IconBellRinging },
   { href: "/instructor/settings", label: "Settings", icon: SettingsIcon },

@@ -100,7 +100,7 @@ export default function InstructorNotificationsPage() {
 
       {/* Notification list */}
       {isPending ? (
-        <CenterLoader height={500} />
+        <CenterLoader height={300} />
       ) : (
         <Stack className="mx-auto gap-6">
           {data?.items?.length ? (

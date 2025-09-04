@@ -9,6 +9,7 @@ import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "../../user/_c/AvatarMenu";
 import SearchBox from "../../user/_c/SearchBox";
+import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 
 const InstructorHeader = () => {
   const currentUser = useAppStore((s) => s.currentUser);
@@ -74,14 +75,14 @@ const InstructorHeader = () => {
             <PanelLeftCloseIcon size={20} />
           )}
         </Button>
-        {/* mobile sidebar toggler */}
-        <Button
-          onClick={openMobileInstructorSidebar}
-          className="p-2 bg-white dark:bg-dark-6 text-bright rounded hover:bg-gray-100 dark:hover:bg-dark-5 transition
-            justify-center items-center hidden-from-lg"
-        >
-          <PanelRightCloseIcon size={20} />
-        </Button>
+
+        <div className="flex items-center gap-3 sm:gap-4 lg:hidden">
+          {/* mobile sidebar toggler */}
+          <PanelRightCloseIcon onClick={openMobileInstructorSidebar} />
+          <Link to="/">
+            <BrandLogo variant="mark" />
+          </Link>
+        </div>
 
         {/* Nav links (desktop) */}
         <div className="flex flex-1 items-center visible-from-md">
