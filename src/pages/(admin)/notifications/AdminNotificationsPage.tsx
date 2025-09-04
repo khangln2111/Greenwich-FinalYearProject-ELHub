@@ -40,7 +40,7 @@ export default function AdminNotificationsPage() {
   return (
     <div className="flex-1 p-4 sm:p-6 xl:p-8">
       {/* Header */}
-      <div className="flex flex-col gap-6 mb-6">
+      <div className="flex flex-col gap-x-6 gap-y-5 mb-6">
         {/* Row 1: Title + Mark all */}
         <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
@@ -60,7 +60,7 @@ export default function AdminNotificationsPage() {
           <Button
             size="sm"
             leftSection={<CheckCheckIcon size={16} />}
-            variant="filled"
+            variant="subtle"
             loading={markAllMutation.isPending}
             onClick={() => markAllMutation.mutate(RoleName.ADMIN)}
             className="w-full sm:w-auto mt-2 sm:mt-0"
@@ -70,7 +70,7 @@ export default function AdminNotificationsPage() {
         </div>
 
         {/* Row 2: Filters */}
-        <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center sm:justify-between">
+        <div className="flex flex-col sm:flex-row gap-x-2 gap-y-3 items-stretch sm:items-center sm:justify-between">
           <SegmentedControl
             value={filterUnread}
             onChange={(val: string) => setFilterUnread(val as "all" | "unread")}
@@ -83,7 +83,7 @@ export default function AdminNotificationsPage() {
             size="md"
             className="w-full sm:w-auto"
           />
-          <div className="flex-1 min-w-[160px] sm:min-w-[220px] sm:max-w-[300px] mt-2 sm:mt-0">
+          <div className="flex-1 min-w-[160px] sm:min-w-[220px] sm:max-w-[300px] sm:mt-0">
             <MultiSelectWithMaxDisplayedItems
               data={[
                 { label: "Course Submitted", value: NotificationType.CourseSubmitted },
@@ -129,11 +129,11 @@ export default function AdminNotificationsPage() {
             variant="light"
             radius="lg"
             component={Link}
-            to="/admin/users"
+            to="/admin/courses/pending"
             leftSection={<BellIcon size={16} />}
             className="w-full sm:w-auto"
           >
-            View Users
+            Browse Courses
           </Button>
         </div>
       )}
