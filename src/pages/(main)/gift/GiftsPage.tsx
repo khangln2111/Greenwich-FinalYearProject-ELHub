@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { GemIcon, GiftIcon } from "lucide-react";
 import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
@@ -153,7 +153,9 @@ export default function GiftsPage() {
 
   return (
     <div className="mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">🎁 My Gifts</h1>
+      <Title order={1} className="text-3xl font-bold mb-6 text-center">
+        🎁 My Gifts
+      </Title>
 
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-y-5">
         <div className="flex gap-x-4">

@@ -49,7 +49,10 @@ const AdminDashboardPage = () => {
       <header className="flex flex-col md:flex-row items-center md:justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
-            <Title order={2} className="text-2xl md:text-3xl font-extrabold tracking-tight">
+            <Title
+              order={1}
+              className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white"
+            >
               Admin Dashboard
             </Title>
           </div>

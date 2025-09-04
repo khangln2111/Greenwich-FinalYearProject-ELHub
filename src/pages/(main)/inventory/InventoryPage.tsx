@@ -1,4 +1,4 @@
-import { ActionIcon, TextInput } from "@mantine/core";
+import { ActionIcon, TextInput, Title } from "@mantine/core";
 import { PackageOpenIcon, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
@@ -37,9 +37,12 @@ export default function InventoryPage() {
     <div className="mx-auto">
       {/* Header: Title + Search Input */}
       <div className="flex items-center justify-between gap-4 mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white">
+        <Title
+          order={1}
+          className="text-2xl sm:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white"
+        >
           My Inventory
-        </h1>
+        </Title>
 
         <TextInput
           placeholder="Search inventory items..."

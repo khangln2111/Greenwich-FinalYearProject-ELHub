@@ -38,7 +38,9 @@ export default function AdminCategoriesPage() {
   return (
     <div className="flex-1 p-6 xl:p-8">
       <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
-        <Title order={2}>Categories</Title>
+        <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+          Categories
+        </Title>
         <div className="flex gap-3 justify-between w-full sm:w-auto">
           <Button onClick={openCreate} leftSection={<Plus size={16} />} className="flex-1 max-w-60">
             Add Category

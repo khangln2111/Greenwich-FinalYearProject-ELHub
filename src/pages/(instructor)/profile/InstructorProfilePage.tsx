@@ -23,7 +23,9 @@ export default function InstructorProfilePage() {
   return (
     <div className="px-4 py-8 flex-1">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-semibold mb-6 text-center">Instructor Profile</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+          Instructor Profile
+        </h1>
         <UpdateWorkProfileForm profile={data} />
       </div>
     </div>

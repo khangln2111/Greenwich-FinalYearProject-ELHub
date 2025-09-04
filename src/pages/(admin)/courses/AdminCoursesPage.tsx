@@ -63,7 +63,10 @@ export default function AdminCoursesPage() {
       <div className="mx-auto space-y-6">
         {/* Title + Search */}
         <div className="flex flex-col @md:flex-row @md:items-center @md:justify-between gap-3">
-          <Title order={2} className="shrink-0">
+          <Title
+            order={1}
+            className="shrink-0 text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
+          >
             Courses management
           </Title>
           <TextInput

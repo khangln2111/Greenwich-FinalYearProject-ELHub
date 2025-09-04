@@ -8,7 +8,7 @@ import AdminCategoriesPage from "../pages/(admin)/categories/AdminCategoriesPage
 import AdminCourseDetailPage from "../pages/(admin)/course-detail/AdminCourseDetailPage";
 import AdminCoursesPage from "../pages/(admin)/courses/AdminCoursesPage";
 import AdminPendingCoursesPage from "../pages/(admin)/courses/AdminPendingCoursesPage";
-import AdminInstructorModerationPage from "../pages/(admin)/instructors/AdminInstructorApprovalPage";
+import AdminInstructorModerationPage from "../pages/(admin)/instructors/AdminInstructorModerationPage";
 import AdminUsersPage from "../pages/(admin)/users/AdminUsersPage";
 import ForgotPasswordPage from "../pages/(auth)/forgot-password/ForgotPasswordPage";
 import LoginPage from "../pages/(auth)/login/LoginPage";
@@ -36,6 +36,8 @@ import OrderHistoryDetailPage from "../pages/(main)/order-detail/OrderHistoryDet
 import OrderHistoryPage from "../pages/(main)/order-history/OrderHistoryPage";
 import UserDashboardPage from "../pages/(main)/dashboard/UserDashboardPage";
 import NotificationsPage from "../pages/(main)/notifications/NotificationsPage";
+import InstructorNotificationsPage from "../pages/(instructor)/notifications/InstructorNotificationsPage";
+import AdminNotificationsPage from "../pages/(admin)/notifications/AdminNotificationsPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -125,6 +127,10 @@ const instructorRoute: RouteObject = {
       element: <InstructorProfilePage />,
     },
     {
+      path: "notifications",
+      element: <InstructorNotificationsPage />,
+    },
+    {
       path: "coupons",
       element: <p>Instructor Coupons Page</p>,
     },
@@ -158,6 +164,10 @@ const adminRoute: RouteObject = {
     {
       path: "courses/pending",
       element: <AdminPendingCoursesPage />,
+    },
+    {
+      path: "notifications",
+      element: <AdminNotificationsPage />,
     },
     {
       path: "users",

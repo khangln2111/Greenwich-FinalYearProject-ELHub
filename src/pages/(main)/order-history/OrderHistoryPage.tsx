@@ -1,4 +1,4 @@
-import { Select } from "@mantine/core";
+import { Select, Title } from "@mantine/core";
 import { IconReceipt } from "@tabler/icons-react";
 import { ArrowUpDownIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
@@ -50,7 +50,9 @@ export default function OrderHistoryPage() {
   return (
     <div>
       <div className="flex items-baseline-last md:items-center gap-10 justify-between mb-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">My Orders</h1>
+        <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+          My Orders
+        </Title>
 
         <Select
           data={ORDER_SORT_OPTIONS.map((opt) => ({

@@ -72,7 +72,7 @@ function StatusFilterBadges({
             className={cn(
               "px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150",
               isActive
-                ? "bg-blue-600 text-white dark:bg-blue-700"
+                ? "bg-primary text-white "
                 : "bg-gray-200 text-black hover:bg-gray-300 dark:bg-gray-400 dark:hover:bg-gray-500",
             )}
           >
@@ -175,8 +175,10 @@ export default function AdminInstructorModerationPage() {
 
   return (
     <div className="flex-1 p-6 xl:p-8">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-        <Title order={2}>Instructor Applications Review</Title>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+          Instructor Applications Review
+        </Title>
         <TextInput
           placeholder="Search by name or email"
           value={searchInput}
@@ -205,7 +207,7 @@ export default function AdminInstructorModerationPage() {
         />
       </div>
 
-      <div className="flex flex-wrap-reverse md:flex-wrap gap-4 items-center justify-between mb-6 w-full">
+      <div className="flex flex-wrap-reverse md:flex-wrap gap-4 items-center justify-between mb-8 w-full">
         <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
         <Select
           data={ORDER_BY_OPTIONS.map((opt) => ({

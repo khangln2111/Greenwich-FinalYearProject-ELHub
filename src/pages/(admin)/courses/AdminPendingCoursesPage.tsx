@@ -57,7 +57,9 @@ export default function AdminPendingCoursesPage() {
       <div className="mx-auto space-y-6">
         {/* Header and controls */}
         <div className="flex flex-col md:flex-row md:items-baseline-last md:justify-between gap-4">
-          <Title order={2}>Pending Courses</Title>
+          <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            Pending Courses
+          </Title>
 
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <TextInput

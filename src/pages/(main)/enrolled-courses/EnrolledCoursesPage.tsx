@@ -1,4 +1,4 @@
-import { ActionIcon, TextInput } from "@mantine/core";
+import { ActionIcon, TextInput, Title } from "@mantine/core";
 import { GraduationCapIcon, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
@@ -34,9 +34,12 @@ export default function EnrolledCoursesPage() {
     <div>
       {/* Header: Title + Search Input */}
       <div className="flex items-center justify-between gap-4 mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white">
+        <Title
+          order={1}
+          className="text-2xl md:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white"
+        >
           Enrolled courses
-        </h2>
+        </Title>
 
         <TextInput
           placeholder="Search courses..."

@@ -2,7 +2,7 @@
 import { ActionIcon, Box, Button, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBell, IconSearch } from "@tabler/icons-react";
-import { PanelLeftCloseIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
+import { PanelLeftCloseIcon, PanelRightCloseIcon } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
@@ -32,8 +32,8 @@ const InstructorHeader = () => {
   return (
     <Box
       component="header"
-      className="min-h-[60px] px-md border-b border-gray-200 dark:border-dark-5 bg-white dark:bg-dark-7 sticky top-0
-        z-[calc(var(--mantine-z-index-app)+1)] content-center"
+      className="min-h-[60px] px-md bg-white dark:bg-dark-7 sticky top-0 z-[calc(var(--mantine-z-index-app)+1)]
+        content-center shadow-md"
     >
       {/* mobile search box */}
       <Modal
@@ -123,15 +123,7 @@ const InstructorHeader = () => {
           <ActionIcon variant="default" size="lg" aria-label="Notification trigger">
             <IconBell size={19} strokeWidth={1.5} />
           </ActionIcon>
-          <ActionIcon
-            variant="default"
-            size="lg"
-            aria-label="Shopping cart trigger"
-            component={Link}
-            to="/cart"
-          >
-            <ShoppingCart size={19} strokeWidth={1.5} />
-          </ActionIcon>
+
           <ThemeToggler />
           {currentUser && <AvatarMenu />}
         </Group>

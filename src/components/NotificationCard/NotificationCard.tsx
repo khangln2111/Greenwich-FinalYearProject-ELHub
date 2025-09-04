@@ -14,12 +14,9 @@ import {
   XCircleIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useToggleNotificationRead } from "../../../../features/notification/notification.hooks";
-import {
-  NotificationType,
-  NotificationVm,
-} from "../../../../features/notification/notification.types";
-import { cn } from "../../../../utils/cn";
+import { useToggleNotificationRead } from "../../features/notification/notification.hooks";
+import { NotificationType, NotificationVm } from "../../features/notification/notification.types";
+import { cn } from "../../utils/cn";
 
 const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNode; bg: string }> = {
   [NotificationType.CourseSubmitted]: {

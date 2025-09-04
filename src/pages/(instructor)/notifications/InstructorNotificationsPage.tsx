@@ -1,5 +1,5 @@
-import { Badge, Button, SegmentedControl, Stack, Title, Text } from "@mantine/core";
-import { BellIcon, CheckCheckIcon, Inbox, Link } from "lucide-react";
+import { Badge, Button, SegmentedControl, Stack, Text } from "@mantine/core";
+import { BellIcon, CheckCheckIcon, Inbox } from "lucide-react";
 import { parseAsArrayOf, parseAsStringEnum, parseAsStringLiteral, useQueryState } from "nuqs";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { MultiSelectWithMaxDisplayedItems } from "../../../components/MultiSelectWithMaxDisplayedItems/MultiSelectWithMaxDisplayedItems";
@@ -14,8 +14,9 @@ import {
   NotificationVm,
 } from "../../../features/notification/notification.types";
 import NotificationCard from "../../../components/NotificationCard/NotificationCard";
+import { Link } from "react-router-dom";
 
-export default function NotificationsPage() {
+export default function InstructorNotificationsPage() {
   const [filterUnread, setFilterUnread] = useQueryState(
     "isRead",
     parseAsStringLiteral(["all", "unread"]).withDefault("all"),
@@ -26,31 +27,28 @@ export default function NotificationsPage() {
     parseAsArrayOf(parseAsStringEnum(Object.values(NotificationType))).withDefault([]),
   );
 
-  const { data, isPending } = useGetNotifications(RoleName.LEARNER, {
+  const { data, isPending } = useGetNotifications(RoleName.INSTRUCTOR, {
     isRead: filterUnread === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
     pageSize: 10,
   });
 
-  const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.LEARNER);
+  const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.INSTRUCTOR);
+
   const markAllMutation = useMarkAllNotificationsAsRead();
 
   return (
-    <div className="mx-auto w-full px-3 sm:px-4 lg:px-6">
+    <div className="flex-1 p-6 xl:p-8">
       {/* Header */}
-      <div className="flex flex-col gap-4 mb-8">
-        {/* Row 1: Title + Filter by type */}
+      <div className="flex flex-col gap-6 mb-8">
+        {/* Row 1: Title + Mark all as read */}
         <div className="flex flex-col gap-3 sm:flex-row items-center sm:justify-between">
-          {/* Left: Title */}
+          {/* Left: Title + unread badge */}
           <div className="flex items-center gap-2">
             <BellIcon className="size-7 sm:size-8 text-yellow fill-amber-500 stroke-2" />
-            <Title
-              order={1}
-              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
-            >
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
               Notifications
-            </Title>
-
+            </h1>
             {unreadCount !== undefined && unreadCount > 0 && (
               <Badge radius="full" color="red" className="ml-1 sm:ml-2">
                 {unreadCount}
@@ -58,21 +56,21 @@ export default function NotificationsPage() {
             )}
           </div>
 
-          {/* Right: Mark all as read button */}
+          {/* Right: Mark all as read */}
           <Button
             size="sm"
             leftSection={<CheckCheckIcon size={16} />}
             variant="filled"
             loading={markAllMutation.isPending}
-            onClick={() => markAllMutation.mutate(RoleName.LEARNER)}
+            onClick={() => markAllMutation.mutate(RoleName.INSTRUCTOR)}
             className="w-full sm:w-auto"
           >
             Mark all as read
           </Button>
         </div>
 
-        {/* Row 2: Segmented control + Mark all */}
-        <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
+        {/* Row 2: Segmented control + type filter */}
+        <div className="flex flex-col sm:flex-row gap-2 items-center sm:justify-between">
           <SegmentedControl
             value={filterUnread}
             onChange={(val: string) => setFilterUnread(val as "all" | "unread")}
@@ -82,18 +80,15 @@ export default function NotificationsPage() {
             ]}
             radius="full"
             withItemsBorders
+            size="md"
             color="primary"
-            className="bg-body w-full sm:w-auto"
           />
-
           <div className="flex-1 min-w-[160px] sm:min-w-[220px] sm:max-w-[300px]">
             <MultiSelectWithMaxDisplayedItems
               data={[
-                { label: "Gift Redeemed", value: NotificationType.GiftRedeemed },
-                { label: "Received Gift", value: NotificationType.ReceivedGift },
-                { label: "Review Replied", value: NotificationType.ReviewReplied },
-                { label: "Order Processed", value: NotificationType.OrderProcessed },
-                { label: "Course Updated", value: NotificationType.CourseUpdated },
+                { label: "Review Created", value: NotificationType.ReviewCreated },
+                { label: "Course Approved", value: NotificationType.CourseApproved },
+                { label: "Course Rejected", value: NotificationType.CourseRejected },
               ]}
               placeholder="Select types"
               onChange={(vals) => setFilterTypes(vals as NotificationType[])}
@@ -103,7 +98,7 @@ export default function NotificationsPage() {
         </div>
       </div>
 
-      {/* List */}
+      {/* Notification list */}
       {isPending ? (
         <CenterLoader height={500} />
       ) : (
@@ -125,7 +120,7 @@ export default function NotificationsPage() {
                 variant="light"
                 radius="lg"
                 component={Link}
-                to="/courses"
+                to="/instructor/courses"
                 leftSection={<BellIcon size={16} />}
               >
                 Browse Courses

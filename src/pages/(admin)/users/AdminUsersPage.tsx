@@ -68,7 +68,9 @@ export default function AdminUsersPage() {
 
   return (
     <div className="flex-1 p-4 sm:p-6 xl:p-8 space-y-6">
-      <Title order={2}>User Management</Title>
+      <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+        User Management
+      </Title>
 
       <Card shadow="sm" radius="md" withBorder>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">

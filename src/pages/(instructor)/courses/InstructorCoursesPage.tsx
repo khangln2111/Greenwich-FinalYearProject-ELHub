@@ -46,7 +46,7 @@ export default function InstructorCoursesPage() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-center md:justify-between mb-6 gap-4">
         {/* Title */}
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">My Courses</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">My Courses</h1>
 
         {/* Controls: Button + Select + Search */}
         <div className="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto">
