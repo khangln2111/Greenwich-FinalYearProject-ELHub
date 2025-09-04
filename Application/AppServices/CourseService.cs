@@ -235,7 +235,7 @@ public class CourseService(
         return new Success("Submitted course for review successfully", new { id = course.Id });
     }
 
-    public async Task<Success> RetrySubmitCourse(Guid id)
+    public async Task<Success> ResubmitCourse(Guid id)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
 
@@ -247,7 +247,7 @@ public class CourseService(
         if (course == null) throw new NotFoundException(nameof(Course), id);
 
         if (course.Status != CourseStatus.Rejected)
-            throw new BadRequestException("Course must be in Rejected status to retry submission",
+            throw new BadRequestException("Course must be in Rejected status to resubmit for review",
                 ErrorCode.InvalidOperation);
 
         if (course.RetryCount >= MaxRetryCount)
@@ -270,7 +270,7 @@ public class CourseService(
         await mediator.Publish(new CourseSubmittedEvent(course));
 
 
-        return new Success("Retried course submission successfully", new { id = course.Id });
+        return new Success("Resubmitted course successfully", new { id = course.Id });
     }
 
     public async Task<InstructorVm> GetInstructorByCourseId(Guid courseId)

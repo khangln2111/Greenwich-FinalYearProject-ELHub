@@ -10,7 +10,9 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Events.OrderEvents;
 using Gridify;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.AppServices;
@@ -20,7 +22,8 @@ public class OrderService(
     IMapper mapper,
     IGridifyMapper<Order> gridifyMapper,
     ICurrentUserUtility currentUserUtility,
-    IStripePaymentUtility stripePaymentUtility)
+    IStripePaymentUtility stripePaymentUtility,
+    IMediator mediator)
     : IOrderService
 {
     //payment by selected cart items
@@ -205,6 +208,8 @@ public class OrderService(
         }
 
         await context.SaveChangesAsync();
+
+        await mediator.Publish(new OrderProcessedEvent(order));
 
         return new Success("Payment succeeded", new
         {

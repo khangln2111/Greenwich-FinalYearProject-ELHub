@@ -12,15 +12,16 @@ public class CourseModeratedEventHandler(INotificationService notificationServic
     {
         var instructorId = notification.Course.InstructorId;
 
-        var message = notification.IsApproved
+        var content = notification.IsApproved
             ? $"Your course \"{notification.Course.Title}\" has been approved and published."
             : $"Your course \"{notification.Course.Title}\" has been rejected. Please check feedback.";
 
         await notificationService.CreateAndSendAsync(
             instructorId,
             notification.IsApproved ? "Course approved" : "Course rejected",
-            message,
+            content,
             notification.IsApproved ? NotificationType.CourseApproved : NotificationType.CourseRejected,
+            RoleName.INSTRUCTOR,
             $"/instructor/courses/{notification.Course.Id}"
         );
     }

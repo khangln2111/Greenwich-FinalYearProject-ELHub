@@ -31,6 +31,6 @@ public class SectionCreatedEventHandler(
                            .Select(e => e.UserId)
                            .AsAsyncEnumerable()
                            .WithCancellation(cancellationToken))
-            await notificationService.CreateAndSendAsync(userId, title, content, type, url);
+            await notificationService.CreateAndSendAsync(userId, title, content, type, RoleName.LEARNER, url);
     }
 }

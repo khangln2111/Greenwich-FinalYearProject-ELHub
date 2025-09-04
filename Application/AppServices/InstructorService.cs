@@ -9,6 +9,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Constants;
 using Domain.Entities;
+using Domain.Enums;
 using Gridify;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +28,7 @@ public class InstructorService(
         return await context.Users
             .Include(u => u.Roles)
             .Include(u => u.Avatar)
-            .Where(u => u.Roles.Any(r => r.Name == AppConstants.RoleNames.Instructor))
+            .Where(u => u.Roles.Any(r => r.Name == nameof(RoleName.INSTRUCTOR)))
             .GridifyToAsync<ApplicationUser,
                 InstructorVm>(query, mapper, instructorGridifyMapper);
     }

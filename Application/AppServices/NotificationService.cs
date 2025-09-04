@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Interfaces.AppInterfaces;
 using Application.Common.Interfaces.InfrastructureInterfaces;
+using Application.Common.Models;
 using Application.DTOs.NotificationDTOs;
 using Application.Exceptions;
 using Application.Gridify;
@@ -26,7 +27,9 @@ public class NotificationService(
         string title,
         string content,
         NotificationType type,
-        string? url = null)
+        RoleName targetRole,
+        string? url = null
+    )
     {
         var entity = new Notification
         {
@@ -36,7 +39,8 @@ public class NotificationService(
             Content = content,
             Type = type,
             Url = url,
-            IsRead = false
+            IsRead = false,
+            TargetRole = targetRole
         };
 
         await context.Notifications.AddAsync(entity);
@@ -56,6 +60,7 @@ public class NotificationService(
         await notificationUtility.SendNotificationInBackground(userId, dto);
     }
 
+
     public async Task<Paged<NotificationVm>> GetListSelf(GridifyQuery query)
     {
         var user = currentUserUtility.GetCurrentUser();
@@ -67,19 +72,20 @@ public class NotificationService(
             .GridifyToAsync<Notification, NotificationVm>(query, mapper, gridifyMapper);
     }
 
-    public async Task ToggleRead(Guid id)
+
+    public async Task<Paged<NotificationVm>> GetListSelf(GridifyQuery query, RoleName roleName)
     {
         var user = currentUserUtility.GetCurrentUser();
-        if (user == null)
+        if (user is null)
             throw new UnauthorizedException("User is not authenticated");
-        var entity = await context.Notifications
-            .FirstOrDefaultAsync(n => n.Id == id && n.UserId == user.Id);
 
-        if (entity == null) throw new KeyNotFoundException("Notification not found");
+        if (!RoleNotificationMap.TryGetValue(roleName, out var allowedTypes))
+            return new Paged<NotificationVm>(0, new List<NotificationVm>());
 
-        entity.ToggleRead();
-
-        await context.SaveChangesAsync();
+        return await context.Notifications
+            .AsNoTracking()
+            .Where(n => n.UserId == user.Id && allowedTypes.Contains(n.Type))
+            .GridifyToAsync<Notification, NotificationVm>(query, mapper, gridifyMapper);
     }
 
     public async Task MarkAllAsRead()
@@ -97,6 +103,42 @@ public class NotificationService(
         await context.SaveChangesAsync();
     }
 
+    public async Task<Success> MarkAllAsRead(RoleName roleName)
+    {
+        var user = currentUserUtility.GetCurrentUser();
+        if (user is null)
+            throw new UnauthorizedException("User is not authenticated");
+
+        if (!RoleNotificationMap.TryGetValue(roleName, out var allowedTypes))
+            return new Success("No notifications to mark as read");
+
+        await context.Notifications
+            .Where(n => n.UserId == user.Id && !n.IsRead && allowedTypes.Contains(n.Type))
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(n => n.IsRead, true)
+            );
+
+        await context.SaveChangesAsync();
+
+        return new Success("All notifications marked as read successfully");
+    }
+
+    public async Task<Success> ToggleRead(Guid id)
+    {
+        var user = currentUserUtility.GetCurrentUser();
+        if (user == null)
+            throw new UnauthorizedException("User is not authenticated");
+
+        await context.Notifications
+            .Where(n => n.Id == id && n.UserId == user.Id)
+            .ExecuteUpdateAsync(s => s.SetProperty(
+                n => n.IsRead,
+                n => !n.IsRead
+            ));
+
+        return new Success("Notification read status toggled successfully");
+    }
+
     public async Task<int> GetUnreadCount()
     {
         var user = currentUserUtility.GetCurrentUser();
@@ -107,4 +149,52 @@ public class NotificationService(
             .AsNoTracking()
             .CountAsync(n => n.UserId == user.Id && !n.IsRead);
     }
+
+    public async Task<int> GetUnreadCount(RoleName roleName)
+    {
+        var user = currentUserUtility.GetCurrentUser();
+        if (user == null)
+            throw new UnauthorizedException("User is not authenticated");
+
+        if (!RoleNotificationMap.TryGetValue(roleName, out var allowedTypes))
+            return 0;
+
+        return await context.Notifications
+            .AsNoTracking()
+            .CountAsync(n =>
+                n.UserId == user.Id &&
+                !n.IsRead &&
+                allowedTypes.Contains(n.Type));
+    }
+
+    private static readonly Dictionary<RoleName, NotificationType[]> RoleNotificationMap = new()
+    {
+        {
+            RoleName.LEARNER, [
+                NotificationType.CourseUpdated,
+                NotificationType.GiftRedeemed,
+                NotificationType.ReceivedGift,
+                NotificationType.ReviewCreated,
+                NotificationType.ReviewReplied,
+                NotificationType.OrderProcessed,
+                NotificationType.InstructorApplicationApproved,
+                NotificationType.InstructorApplicationRejected
+            ]
+        },
+        {
+            RoleName.ADMIN, [
+                NotificationType.CourseSubmitted,
+                NotificationType.CourseResubmitted,
+                NotificationType.InstructorApplicationSubmitted,
+                NotificationType.InstructorApplicationResubmitted
+            ]
+        },
+        {
+            RoleName.INSTRUCTOR, [
+                NotificationType.ReviewCreated,
+                NotificationType.CourseApproved,
+                NotificationType.CourseRejected
+            ]
+        }
+    };
 }

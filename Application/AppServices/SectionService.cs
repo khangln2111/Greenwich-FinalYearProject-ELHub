@@ -10,7 +10,9 @@ using Application.Validations;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
+using Domain.Events.SectionEvents;
 using Gridify;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.AppServices;
@@ -20,7 +22,8 @@ public class SectionService(
     IValidationService validationService,
     IMapper mapper,
     IGridifyMapper<Section> gridifyMapper,
-    IMediaManager mediaManager
+    IMediaManager mediaManager,
+    IMediator mediator
 ) : ISectionService
 {
     public async Task<SectionVm> GetById(Guid id)
@@ -59,6 +62,7 @@ public class SectionService(
 
         await context.Sections.AddAsync(sectionEntity);
         await context.SaveChangesAsync();
+        await mediator.Publish(new SectionCreatedEvent(sectionEntity));
         return sectionEntity.Id;
     }
 
@@ -69,6 +73,8 @@ public class SectionService(
         if (section == null) throw new NotFoundException(nameof(Section), command.Id);
         mapper.Map(command, section);
         await context.SaveChangesAsync();
+
+        await mediator.Publish(new SectionUpdatedEvent(section));
         return new Success("Updated section successfully");
     }
 

@@ -12,7 +12,9 @@ using AutoMapper.QueryableExtensions;
 using Domain.Constants;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Events.InstructorApplicationEvents;
 using Gridify;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +27,8 @@ public class InstructorApplicationService(
     IValidationService validationService,
     IMediaManager mediaManager,
     ICurrentUserUtility currentUserUtility,
-    UserManager<ApplicationUser> userManager) : IInstructorApplicationService
+    UserManager<ApplicationUser> userManager,
+    IMediator mediator) : IInstructorApplicationService
 {
     private const int MaxRetryCount = AppConstants.InstructorApplication.MaxRetryCount;
     private const int RetryCooldownDays = AppConstants.InstructorApplication.RetryCooldownDays;
@@ -65,10 +68,12 @@ public class InstructorApplicationService(
         await context.InstructorApplications.AddAsync(application);
         await context.SaveChangesAsync();
 
+        await mediator.Publish(new InstructorApplicationCreatedEvent(application));
+
         return new Success("Instructor application created successfully.");
     }
 
-    public async Task<Success> Retry(RetryInstructorApplicationCommand command)
+    public async Task<Success> Resubmit(ResubmitInstructorApplicationCommand command)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
@@ -105,10 +110,11 @@ public class InstructorApplicationService(
         application.Status = InstructorApplicationStatus.Pending;
         application.RetryCount += 1;
         await context.SaveChangesAsync();
+        await mediator.Publish(new InstructorApplicationCreatedEvent(application));
         return new Success("Instructor application retried successfully.");
     }
 
-    public async Task<bool> CanRetrySelf()
+    public async Task<bool> CanResubmitSelf()
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
@@ -131,7 +137,7 @@ public class InstructorApplicationService(
         return true;
     }
 
-    public async Task<Success> Review(ReviewInstructorApplicationCommand command)
+    public async Task<Success> Moderate(ModerateInstructorApplicationCommand command)
     {
         await validationService.ValidateAsync(command);
 
@@ -160,9 +166,9 @@ public class InstructorApplicationService(
             user.About = application.About;
             user.Avatar = application.Avatar;
 
-            if (!await userManager.IsInRoleAsync(user, AppConstants.RoleNames.Instructor))
+            if (!await userManager.IsInRoleAsync(user, nameof(RoleName.INSTRUCTOR)))
             {
-                var result = await userManager.AddToRoleAsync(user, AppConstants.RoleNames.Instructor);
+                var result = await userManager.AddToRoleAsync(user, nameof(RoleName.INSTRUCTOR));
                 if (!result.Succeeded)
                     throw new BadRequestException("Failed to assign instructor role.", ErrorCode.CannotAssignRole);
             }
@@ -174,6 +180,7 @@ public class InstructorApplicationService(
         }
 
         await context.SaveChangesAsync();
+        await mediator.Publish(new InstructorApplicationModeratedEvent(application, command.IsApproved));
         return new Success("Instructor application reviewed successfully.");
     }
 

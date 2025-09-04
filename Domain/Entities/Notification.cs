@@ -12,6 +12,7 @@ public class Notification : BaseAuditableEntity
     public string? Url { get; set; }
     public Guid UserId { get; set; }
     public ApplicationUser User { get; set; } = null!;
+    public required RoleName TargetRole { get; set; }
 
     public void ToggleRead()
     {

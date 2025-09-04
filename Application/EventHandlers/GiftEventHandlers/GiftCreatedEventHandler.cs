@@ -54,6 +54,7 @@ public class GiftCreatedEventHandler(
             "You’ve received a gift!",
             $"{giverFullName} sent you a gift. Please check your email ({receiverEmail}) for details.",
             NotificationType.ReceivedGift,
+            RoleName.LEARNER,
             "/dashboard/gifts?type=received"
         );
     }

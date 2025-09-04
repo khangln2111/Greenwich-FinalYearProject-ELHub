@@ -96,14 +96,14 @@ public class AdminDashboardService(IApplicationDbContext context)
 
         var totalInstructors =
             await context.Users.AsNoTracking().CountAsync(u =>
-                u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor));
+                u.Roles.Select(r => r.Name).Contains(nameof(RoleName.INSTRUCTOR)));
 
         var instructorsThisWeek = await context.Users.AsNoTracking().CountAsync(u =>
-            u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor)
+            u.Roles.Select(r => r.Name).Contains(nameof(RoleName.INSTRUCTOR))
             && u.CreatedAt >= thisWeekStart);
 
         var instructorsLastWeek = await context.Users.AsNoTracking().CountAsync(u =>
-            u.Roles.Select(r => r.Name).Contains(AppConstants.RoleNames.Instructor)
+            u.Roles.Select(r => r.Name).Contains(nameof(RoleName.INSTRUCTOR))
             && u.CreatedAt >= lastWeekStart && u.CreatedAt < lastWeekEnd);
 
         var totalPendingCourses =

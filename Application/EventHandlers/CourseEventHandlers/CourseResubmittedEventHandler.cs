@@ -17,14 +17,15 @@ public class CourseResubmittedEventHandler(
     {
         var course = notification.Course;
 
-        var admins = await userManager.GetUsersInRoleAsync(AppConstants.RoleNames.Admin);
+        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.ADMIN));
 
         foreach (var admin in admins)
             await notificationService.CreateAndSendAsync(
                 admin.Id,
                 "Course resubmitted",
-                $"Course \"{course.Title}\" has been resubmitted for review.",
+                $"Course \"{course.Title}\" has been resubmitted for moderation.",
                 NotificationType.CourseResubmitted,
+                RoleName.ADMIN,
                 $"/admin/courses/{course.Id}"
             );
     }

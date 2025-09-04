@@ -47,11 +47,6 @@ public static class AppConstants
         public const int ImageMaxSizeBytes = 50 * FileSize.Megabyte;
     }
 
-    public static class RoleNames
-    {
-        public const string Admin = "ADMIN";
-        public const string Instructor = "INSTRUCTOR";
-    }
 
     public static class InstructorApplication
     {

@@ -2,7 +2,7 @@
 
 namespace Application.DTOs.InstructorApplicationDTOs;
 
-public class RetryInstructorApplicationCommand
+public class ResubmitInstructorApplicationCommand
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

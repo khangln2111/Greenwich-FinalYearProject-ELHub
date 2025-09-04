@@ -12,7 +12,7 @@ public class InstructorApplicationProfiles : Profile
         CreateMap<CreateInstructorApplicationCommand, InstructorApplication>()
             .ForMember(dest => dest.Avatar, opt => opt.Ignore());
 
-        CreateMap<RetryInstructorApplicationCommand, InstructorApplication>()
+        CreateMap<ResubmitInstructorApplicationCommand, InstructorApplication>()
             .ForMember(dest => dest.Avatar, opt => opt.Ignore())
             .ForAllMembers(opts =>
             {

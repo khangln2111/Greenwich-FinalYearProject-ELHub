@@ -8,9 +8,9 @@ namespace Application.Common.Interfaces.AppInterfaces;
 public interface IInstructorApplicationService
 {
     Task<Success> Create(CreateInstructorApplicationCommand command);
-    Task<Success> Retry(RetryInstructorApplicationCommand command);
-    Task<bool> CanRetrySelf();
-    Task<Success> Review(ReviewInstructorApplicationCommand command);
+    Task<Success> Resubmit(ResubmitInstructorApplicationCommand command);
+    Task<bool> CanResubmitSelf();
+    Task<Success> Moderate(ModerateInstructorApplicationCommand command);
     Task<Paged<InstructorApplicationVm>> GetList(GridifyQuery query);
     Task<InstructorApplicationVm> GetSelf();
 }

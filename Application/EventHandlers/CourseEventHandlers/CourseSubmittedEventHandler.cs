@@ -14,15 +14,16 @@ public class CourseSubmittedEventHandler(
 {
     public async Task Handle(CourseSubmittedEvent notification, CancellationToken cancellationToken)
     {
-        var admins = await userManager.GetUsersInRoleAsync(AppConstants.RoleNames.Instructor);
+        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.INSTRUCTOR));
         var course = notification.Course;
 
         foreach (var admin in admins)
             await notificationService.CreateAndSendAsync(
                 admin.Id,
                 "New course submitted",
-                $"Course \"{course.Title}\" has been submitted for review.",
+                $"Course \"{course.Title}\" has been submitted for moderation.",
                 NotificationType.CourseSubmitted,
+                RoleName.ADMIN,
                 $"/admin/courses/{course.Id}"
             );
     }

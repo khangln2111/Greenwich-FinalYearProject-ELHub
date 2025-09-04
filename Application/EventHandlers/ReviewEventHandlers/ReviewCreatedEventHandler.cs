@@ -31,6 +31,7 @@ public class ReviewCreatedEventHandler(
             "New course review",
             $"{review.Enrollment.User.UserName} rated your course \"{course.Title}\" {review.Rating} stars: \"{review.Content}\"",
             NotificationType.ReviewCreated,
+            RoleName.LEARNER,
             $"/instructor/courses/{course.Id}/edit?activeTab=Reviews"
         );
     }

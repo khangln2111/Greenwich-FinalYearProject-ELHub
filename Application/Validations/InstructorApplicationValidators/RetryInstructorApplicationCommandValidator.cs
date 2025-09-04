@@ -6,7 +6,7 @@ using Humanizer;
 
 namespace Application.Validations.InstructorApplicationValidators;
 
-public class RetryInstructorApplicationCommandValidator : AbstractValidator<RetryInstructorApplicationCommand>
+public class RetryInstructorApplicationCommandValidator : AbstractValidator<ResubmitInstructorApplicationCommand>
 {
     public RetryInstructorApplicationCommandValidator(IMediaManager mediaManager)
     {

@@ -20,7 +20,7 @@ public class DataSeeder(
         await SeedCategories();
         // await SyncData();
         // await mediaManager.CleanOrphanMediaFiles(context);
-        await FixConsistencyAsync();
+        // await FixConsistencyAsync();
         await context.SaveChangesAsync();
     }
 
@@ -243,13 +243,12 @@ public class DataSeeder(
 
     private async Task SeedRoles()
     {
-        string[] roleNames = ["Admin", "Instructor"];
+        foreach (RoleName role in Enum.GetValues(typeof(RoleName)))
+        {
+            var roleValue = role.ToString();
 
-        foreach (var roleName in roleNames)
-            if (!await roleManager.RoleExistsAsync(roleName))
-            {
-                var role = new ApplicationRole { Name = roleName };
-                await roleManager.CreateAsync(role);
-            }
+            if (!await roleManager.RoleExistsAsync(roleValue))
+                await roleManager.CreateAsync(new ApplicationRole { Name = roleValue });
+        }
     }
 }

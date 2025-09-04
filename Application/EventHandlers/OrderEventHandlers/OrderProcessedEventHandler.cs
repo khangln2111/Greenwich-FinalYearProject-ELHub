@@ -18,6 +18,7 @@ public class OrderProcessedEventHandler(
             "Order Processed",
             $"Your order with ID {order.Id} has been processed",
             NotificationType.OrderProcessed,
+            RoleName.LEARNER,
             $"/account/orders/{order.Id}"
         );
     }

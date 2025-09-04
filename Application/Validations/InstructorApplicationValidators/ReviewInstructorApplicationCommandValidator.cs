@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Application.Validations.InstructorApplicationValidators;
 
-public class ReviewInstructorApplicationCommandValidator : AbstractValidator<ReviewInstructorApplicationCommand>
+public class ReviewInstructorApplicationCommandValidator : AbstractValidator<ModerateInstructorApplicationCommand>
 {
     public ReviewInstructorApplicationCommandValidator()
     {

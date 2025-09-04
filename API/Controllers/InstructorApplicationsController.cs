@@ -32,15 +32,15 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
-    // PUT: api/instructor-applications/retry
-    [HttpPut("retry")]
+    // PUT: api/instructor-applications/resubmit
+    [HttpPut("resubmit")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Retry([FromForm] RetryInstructorApplicationCommand command)
+    public async Task<IActionResult> Resubmit([FromForm] ResubmitInstructorApplicationCommand command)
     {
-        var result = await service.Retry(command);
+        var result = await service.Resubmit(command);
         return Ok(result);
     }
 
@@ -55,25 +55,25 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
         return Ok(application);
     }
 
-    // GET: api/instructor-applications/self/can-retry
-    [HttpGet("self/can-retry")]
+    // GET: api/instructor-applications/self/can-resubmit
+    [HttpGet("self/can-resubmit")]
     [Authorize]
     [ProducesResponseType<bool>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CanRetrySelf()
     {
-        var canRetry = await service.CanRetrySelf();
+        var canRetry = await service.CanResubmitSelf();
         return Ok(canRetry);
     }
 
-    // POST: api/instructor-applications/review
-    [HttpPost("review")]
+    // POST: api/instructor-applications/moderate
+    [HttpPost("moderate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Review([FromBody] ReviewInstructorApplicationCommand command)
+    public async Task<IActionResult> Moderate([FromBody] ModerateInstructorApplicationCommand command)
     {
-        var result = await service.Review(command);
+        var result = await service.Moderate(command);
         return Ok(result);
     }
 }

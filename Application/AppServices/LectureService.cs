@@ -12,7 +12,9 @@ using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using Domain.Entities.MediaEntities;
 using Domain.Enums;
+using Domain.Events.LectureEvents;
 using Gridify;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.AppServices;
@@ -23,7 +25,8 @@ public class LectureService(
     IMapper mapper,
     IValidationService validationService,
     IMediaManager mediaManager,
-    ICurrentUserUtility currentUserUtility)
+    ICurrentUserUtility currentUserUtility,
+    IMediator mediator)
     : ILectureService
 {
     public async Task<LectureVm> GetById(Guid id)
@@ -105,6 +108,8 @@ public class LectureService(
 
         await context.Lectures.AddAsync(lecture);
         await context.SaveChangesAsync();
+
+        await mediator.Publish(new LectureCreatedEvent(lecture));
         return lecture.Id;
     }
 
@@ -120,6 +125,8 @@ public class LectureService(
         if (command.Video != null && lecture.Video != null)
             await mediaManager.UpdateFile(lecture.Video, command.Video);
         await context.SaveChangesAsync();
+
+        await mediator.Publish(new LectureUpdatedEvent(lecture));
         return new Success("Updated the lecture successfully");
     }
 

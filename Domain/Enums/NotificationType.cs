@@ -11,5 +11,9 @@ public enum NotificationType
     ReviewCreated,
     ReviewReplied,
     OrderProcessed,
-    CourseUpdated
+    CourseUpdated,
+    InstructorApplicationSubmitted,
+    InstructorApplicationResubmitted,
+    InstructorApplicationApproved,
+    InstructorApplicationRejected
 }
