@@ -56,19 +56,29 @@ public class NotificationService(
         await notificationUtility.SendNotificationInBackground(userId, dto);
     }
 
-    public async Task<Paged<NotificationVm>> GetList(GridifyQuery query)
+    public async Task<Paged<NotificationVm>> GetListSelf(GridifyQuery query)
     {
+        var user = currentUserUtility.GetCurrentUser();
+        if (user == null)
+            throw new UnauthorizedException("User is not authenticated");
         return await context.Notifications
             .AsNoTracking()
+            .Where(n => n.UserId == user.Id)
             .GridifyToAsync<Notification, NotificationVm>(query, mapper, gridifyMapper);
     }
 
-    public async Task MarkAsRead(Guid id)
+    public async Task ToggleRead(Guid id)
     {
-        var entity = await context.Notifications.FindAsync(id);
+        var user = currentUserUtility.GetCurrentUser();
+        if (user == null)
+            throw new UnauthorizedException("User is not authenticated");
+        var entity = await context.Notifications
+            .FirstOrDefaultAsync(n => n.Id == id && n.UserId == user.Id);
+
         if (entity == null) throw new KeyNotFoundException("Notification not found");
 
-        entity.IsRead = true;
+        entity.ToggleRead();
+
         await context.SaveChangesAsync();
     }
 

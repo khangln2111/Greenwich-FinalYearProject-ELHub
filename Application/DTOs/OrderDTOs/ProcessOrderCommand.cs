@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.OrderDTOs;
 
-public class ConfirmOrderCommand
+public class ProcessOrderCommand
 {
     public required string OrderId { get; init; }
 }

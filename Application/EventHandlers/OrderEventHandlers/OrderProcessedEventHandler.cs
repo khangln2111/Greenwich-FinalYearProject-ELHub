@@ -17,7 +17,7 @@ public class OrderProcessedEventHandler(
             order.UserId,
             "Order Processed",
             $"Your order with ID {order.Id} has been processed",
-            NotificationType.OrderConfirmed,
+            NotificationType.OrderProcessed,
             $"/account/orders/{order.Id}"
         );
     }

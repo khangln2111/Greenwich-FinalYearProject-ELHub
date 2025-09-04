@@ -30,8 +30,6 @@ public class CourseService(
     IMediaManager mediaManager,
     ICurrentUserUtility currentUserUtility,
     IHtmlSanitizerUtility htmlSanitizerUtility,
-    UserManager<ApplicationUser> userManager,
-    INotificationService notificationService,
     IMediator mediator)
     : ICourseService
 {
@@ -119,6 +117,8 @@ public class CourseService(
             course.Description = htmlSanitizerUtility.Sanitize(course.Description);
 
         await context.SaveChangesAsync();
+
+        await mediator.Publish(new CourseUpdatedEvent(course));
         return new Success("Updated course successfully");
     }
 

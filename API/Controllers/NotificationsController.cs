@@ -10,12 +10,12 @@ namespace API.Controllers;
 [ApiController]
 public class NotificationsController(INotificationService notificationService) : ControllerBase
 {
-    // GET: api/notifications
-    [HttpGet]
+    // GET: api/notifications/self
+    [HttpGet("self")]
     [ProducesResponseType<Paged<NotificationVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetNotifications([FromQuery] GridifyQuery query)
     {
-        var notifications = await notificationService.GetList(query);
+        var notifications = await notificationService.GetListSelf(query);
         return Ok(notifications);
     }
 
@@ -35,7 +35,7 @@ public class NotificationsController(INotificationService notificationService) :
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> MarkAsRead(Guid id)
     {
-        await notificationService.MarkAsRead(id);
+        await notificationService.ToggleRead(id);
         return Ok();
     }
 

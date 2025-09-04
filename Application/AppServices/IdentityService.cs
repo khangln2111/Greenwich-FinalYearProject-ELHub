@@ -215,9 +215,6 @@ public class IdentityService(
 
         signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
         await signInManager.SignInAsync(user, false);
-        // var newPrincipal = await signInManager.CreateUserPrincipalAsync(user);
-        // await signInManager.SignInWithClaimsAsync(user, newPrincipal.Claims);
-        // await signInManager.RefreshSignInAsync(user);
     }
 
     public async Task<Success> LoginCustom(LoginCommand command)

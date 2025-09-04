@@ -23,7 +23,7 @@ public class ReviewRepliedEventHandler(
 
         await notificationService.CreateAndSendAsync(
             review.Enrollment.UserId,
-            " Instructor replied to your review",
+            "Instructor replied to your review",
             $"Your review for \"{review.Enrollment.Course.Title}\" has a new reply: \"{review.Reply.Content}\"",
             NotificationType.ReviewReplied,
             $"/account/reviews/{review.Id}"

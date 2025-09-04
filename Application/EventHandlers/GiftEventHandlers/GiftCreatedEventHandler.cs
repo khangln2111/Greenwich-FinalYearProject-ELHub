@@ -52,7 +52,7 @@ public class GiftCreatedEventHandler(
         await notificationService.CreateAndSendAsync(
             receiver.Id,
             "You’ve received a gift!",
-            $"Good news! {giverFullName} sent you a gift. Please check your email ({receiverEmail}) for details.",
+            $"{giverFullName} sent you a gift. Please check your email ({receiverEmail}) for details.",
             NotificationType.ReceivedGift,
             "/dashboard/gifts?type=received"
         );

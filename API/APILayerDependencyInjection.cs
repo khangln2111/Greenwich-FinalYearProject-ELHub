@@ -10,7 +10,7 @@ using Microsoft.OpenApi.Models;
 
 namespace API;
 
-public static class APILayerDependencyInjection
+public static class ApiLayerDependencyInjection
 {
     public static IServiceCollection AddPresentationLayer(this IServiceCollection services)
     {

@@ -91,7 +91,7 @@ public static class InfrastructureLayerDependencyInjection
             .AddBearerToken(IdentityConstants.BearerScheme, options =>
             {
                 options.BearerTokenExpiration = TimeSpan.FromDays(1);
-                options.RefreshTokenExpiration = TimeSpan.FromDays(30);
+                options.RefreshTokenExpiration = TimeSpan.FromDays(14);
                 options.Events = new BearerTokenEvents
                 {
                     OnMessageReceived = context =>
@@ -113,7 +113,7 @@ public static class InfrastructureLayerDependencyInjection
         services.Configure<BearerTokenOptions>(opts =>
         {
             opts.BearerTokenExpiration = TimeSpan.FromDays(1);
-            opts.RefreshTokenExpiration = TimeSpan.FromDays(30);
+            opts.RefreshTokenExpiration = TimeSpan.FromDays(14);
         });
 
 

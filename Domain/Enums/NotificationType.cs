@@ -10,5 +10,6 @@ public enum NotificationType
     GiftRedeemed,
     ReviewCreated,
     ReviewReplied,
-    OrderConfirmed
+    OrderProcessed,
+    CourseUpdated
 }

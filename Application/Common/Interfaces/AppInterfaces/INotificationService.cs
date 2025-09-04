@@ -9,11 +9,11 @@ public interface INotificationService
 {
     Task CreateAndSendAsync(Guid userId, string title, string content, NotificationType type, string? url = null);
 
-    Task<Paged<NotificationVm>> GetList(GridifyQuery query);
+    Task<Paged<NotificationVm>> GetListSelf(GridifyQuery query);
 
     Task MarkAllAsRead();
 
-    Task MarkAsRead(Guid id);
+    Task ToggleRead(Guid id);
 
     Task<int> GetUnreadCount();
 }
