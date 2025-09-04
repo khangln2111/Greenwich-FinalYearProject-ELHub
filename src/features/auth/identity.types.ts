@@ -71,6 +71,12 @@ export interface CurrentUser {
   roles: string[]; // ["Admin", "User"]
 }
 
+export enum RoleName {
+  ADMIN = "ADMIN",
+  INSTRUCTOR = "INSTRUCTOR",
+  LEARNER = "LEARNER",
+}
+
 export interface WorkProfileVm {
   id: string;
   firstName: string;

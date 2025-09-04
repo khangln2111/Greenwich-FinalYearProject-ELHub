@@ -1,11 +1,12 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import { NotificationQueryCriteria } from "./notification.types";
+import { RoleName } from "../auth/identity.types";
 
 export const notificationKeyFac = createQueryKeys("notifications", {
-  getNotifications: (query?: NotificationQueryCriteria) => ({
-    queryKey: [query],
+  getNotifications: (roleName: RoleName, query?: NotificationQueryCriteria) => ({
+    queryKey: [roleName, query],
   }),
-  getUnreadNotificationsCount: {
-    queryKey: null,
-  },
+  getUnreadNotificationsCount: (roleName: RoleName) => ({
+    queryKey: [roleName],
+  }),
 });

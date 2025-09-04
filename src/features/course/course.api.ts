@@ -10,7 +10,7 @@ import {
   CourseQueryCriteria,
   CourseVm,
   CreateCourseCommand,
-  ReviewCourseCommand,
+  ModerateCourseCommand,
   UpdateCourseCommand,
 } from "./course.types";
 
@@ -136,7 +136,7 @@ export const getInstructorByCourseId = async (id: string) => {
   return response.data;
 };
 
-export const moderateCourse = async (command: ReviewCourseCommand) => {
+export const moderateCourse = async (command: ModerateCourseCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/moderate`, command);
   return response.data;
 };
@@ -146,7 +146,7 @@ export const submitCourse = async (id: string) => {
   return response.data;
 };
 
-export const retrySubmitCourse = async (id: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/retry-submit`);
+export const resubmitCourse = async (id: string) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/resubmit`);
   return response.data;
 };

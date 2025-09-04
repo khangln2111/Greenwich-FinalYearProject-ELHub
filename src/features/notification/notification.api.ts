@@ -3,6 +3,7 @@ import { NotificationQueryCriteria, NotificationType, NotificationVm } from "./n
 import apiClient from "../../api-client/apiClient";
 import { ApiSuccessResponse, ListData } from "../../api-client/api.types";
 import { applyConditions } from "../../utils/gridifyHelper";
+import { RoleName } from "../auth/identity.types";
 
 const BASE_URL = "/notifications";
 
@@ -34,24 +35,34 @@ export const buildNotificationQuery = (query: NotificationQueryCriteria = {}) =>
   return qb.build();
 };
 
-export const getNotifications = async (query?: NotificationQueryCriteria) => {
+export const getNotifications = async (roleName: RoleName, query?: NotificationQueryCriteria) => {
   const response = await apiClient.get<ListData<NotificationVm>>(`${BASE_URL}/self`, {
-    params: buildNotificationQuery(query),
+    params: {
+      ...buildNotificationQuery(query),
+      roleName,
+    },
   });
   return response.data;
 };
 
-export const markAllNotificationsAsRead = async () => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/mark-all-as-read`);
+export const markAllNotificationsAsRead = async (roleName: RoleName) => {
+  const response = await apiClient.put<ApiSuccessResponse>(
+    `${BASE_URL}/mark-all-as-read`,
+    roleName,
+  );
   return response.data;
 };
 
-export const markNotificationAsRead = async (id: string) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/${id}/mark-as-read`);
+export const toggleNotificationRead = async (id: string) => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/${id}/toggle-read`);
   return response.data;
 };
 
-export const getUnreadNotificationsCount = async () => {
-  const response = await apiClient.get<number>(`${BASE_URL}/unread-count`);
+export const getUnreadNotificationsCount = async (roleName: RoleName) => {
+  const response = await apiClient.get<number>(`${BASE_URL}/unread-count`, {
+    params: {
+      roleName,
+    },
+  });
   return response.data;
 };

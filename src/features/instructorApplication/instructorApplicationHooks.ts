@@ -3,15 +3,15 @@ import { keyFac } from "../common-service/queryKeyFactory";
 import {
   CreateInstructorApplicationCommand,
   InstructorApplicationQueryCriteria,
-  RetryInstructorApplicationCommand,
-  ReviewInstructorApplicationCommand,
+  ResubmitInstructorApplicationCommand,
+  ModerateInstructorApplicationCommand,
 } from "./instructorApplication.types";
 import {
   createInstructorApplication,
   getInstructorApplications,
   getInstructorApplicationSelf,
-  retryInstructorApplication,
-  reviewInstructorApplication,
+  resubmitInstructorApplication,
+  moderateInstructorApplication,
 } from "./instructorApplication.api";
 import { handleApiError } from "../common-service/handleApiError";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
@@ -55,7 +55,7 @@ export const useCreateInstructorApplication = () => {
 
       showSuccessToast(
         "Application Submitted",
-        "Your application has been submitted successfully!, please wait for the review.",
+        "Your application has been submitted successfully!, please wait for the moderation.",
       );
     },
     onError: (error) =>
@@ -75,16 +75,16 @@ export const useCreateInstructorApplication = () => {
   });
 };
 
-export const useReviewInstructorApplication = () => {
+export const useModerateInstructorApplication = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (command: ReviewInstructorApplicationCommand) =>
-      reviewInstructorApplication(command),
+    mutationFn: (command: ModerateInstructorApplicationCommand) =>
+      moderateInstructorApplication(command),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.instructorApplications._def,
       });
-      showSuccessToast("Application Reviewed", "The application has been reviewed successfully!");
+      showSuccessToast("Application moderated", "The application has been moderated successfully!");
     },
     onError: (error) =>
       handleApiError(error, {
@@ -119,18 +119,19 @@ export const useReviewInstructorApplication = () => {
   });
 };
 
-export const useRetryInstructorApplication = () => {
+export const useResubmitInstructorApplication = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (command: RetryInstructorApplicationCommand) => retryInstructorApplication(command),
+    mutationFn: (command: ResubmitInstructorApplicationCommand) =>
+      resubmitInstructorApplication(command),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.instructorApplications._def,
       });
 
       showSuccessToast(
-        "Application Retried",
-        "Your application has been retried successfully!, please wait for the review.",
+        "Application resubmitted",
+        "Your application has been resubmitted successfully!, please wait for the moderation.",
       );
     },
     onError: (error) =>

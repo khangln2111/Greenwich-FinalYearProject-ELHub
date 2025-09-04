@@ -13,6 +13,7 @@ import AvatarMenu from "./AvatarMenu";
 import MobileHamburgerMenu from "./MobileHamburgerMenu";
 import SearchBox from "./SearchBox";
 import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
+import { RoleName } from "../../../features/auth/identity.types";
 
 const Header = () => {
   const currentUser = useAppStore((s) => s.currentUser);
@@ -25,7 +26,7 @@ const Header = () => {
   const [searchInput, setSearchInput] = useState<string>(search);
   const navigate = useNavigate();
   const { data: cart } = useGetCart();
-  const { data: unreadNotificationCount } = useGetUnreadNotificationsCount();
+  const { data: unreadNotificationCount } = useGetUnreadNotificationsCount(RoleName.LEARNER);
 
   const handleSearch = () => {
     const trimmed = searchInput.trim();

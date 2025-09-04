@@ -3,36 +3,37 @@ import {
   getNotifications,
   getUnreadNotificationsCount,
   markAllNotificationsAsRead,
-  markNotificationAsRead,
+  toggleNotificationRead,
 } from "./notification.api";
 import { NotificationQueryCriteria } from "./notification.types";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { showSuccessToast } from "../../utils/toastHelper";
 import { useAppStore } from "../../zustand/stores/appStore";
+import { RoleName } from "../auth/identity.types";
 
-export const useGetNotifications = (query?: NotificationQueryCriteria) => {
+export const useGetNotifications = (roleName: RoleName, query?: NotificationQueryCriteria) => {
   const currentUser = useAppStore((s) => s.currentUser);
   return useQuery({
     enabled: !!currentUser,
-    queryKey: keyFac.notifications.getNotifications(query).queryKey,
-    queryFn: () => getNotifications(query),
+    queryKey: keyFac.notifications.getNotifications(roleName, query).queryKey,
+    queryFn: () => getNotifications(roleName, query),
   });
 };
 
-export const useGetUnreadNotificationsCount = () => {
+export const useGetUnreadNotificationsCount = (roleName: RoleName) => {
   const currentUser = useAppStore((s) => s.currentUser);
 
   return useQuery({
     enabled: !!currentUser,
-    queryKey: keyFac.notifications.getUnreadNotificationsCount.queryKey,
-    queryFn: () => getUnreadNotificationsCount(),
+    queryKey: keyFac.notifications.getUnreadNotificationsCount(roleName).queryKey,
+    queryFn: () => getUnreadNotificationsCount(roleName),
   });
 };
 
-export const useMarkNotificationAsRead = (id: string) => {
+export const useToggleNotificationRead = (id: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => markNotificationAsRead(id),
+    mutationFn: () => toggleNotificationRead(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.notifications._def });
       showSuccessToast("Done!", "The notification has been marked as read.");
@@ -43,7 +44,7 @@ export const useMarkNotificationAsRead = (id: string) => {
 export const useMarkAllNotificationsAsRead = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => markAllNotificationsAsRead(),
+    mutationFn: (roleName: RoleName) => markAllNotificationsAsRead(roleName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.notifications._def });
       showSuccessToast("Done!", "All notification have been marked as read.");

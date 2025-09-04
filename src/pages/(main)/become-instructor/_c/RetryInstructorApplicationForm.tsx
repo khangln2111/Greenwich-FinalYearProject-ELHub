@@ -9,9 +9,9 @@ import {
 } from "../../../../features/instructorApplication/instructorApplication.schema";
 import {
   InstructorApplicationVm,
-  RetryInstructorApplicationCommand,
+  ResubmitInstructorApplicationCommand,
 } from "../../../../features/instructorApplication/instructorApplication.types";
-import { useRetryInstructorApplication } from "../../../../features/instructorApplication/instructorApplicationHooks";
+import { useResubmitInstructorApplication } from "../../../../features/instructorApplication/instructorApplicationHooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 
 type RetryInstructorApplicationFormProps = {
@@ -34,10 +34,10 @@ const RetryInstructorApplicationForm = ({
     validate: zodResolver(retryInstructorApplicationSchema),
   });
 
-  const { mutate: retryApplication, isPending } = useRetryInstructorApplication();
+  const { mutate: retryApplication, isPending } = useResubmitInstructorApplication();
 
   const handleSubmit = (values: RetryInstructorApplicationFormValues) => {
-    const payload: RetryInstructorApplicationCommand = {
+    const payload: ResubmitInstructorApplicationCommand = {
       firstName: values.firstName || application.firstName,
       lastName: values.lastName || application.lastName,
       professionalTitle: values.professionalTitle || application.professionalTitle,

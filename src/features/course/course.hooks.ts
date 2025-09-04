@@ -6,7 +6,7 @@ import { keyFac } from "../common-service/queryKeyFactory";
 import {
   CourseQueryCriteria,
   CreateCourseCommand,
-  ReviewCourseCommand,
+  ModerateCourseCommand,
   UpdateCourseCommand,
 } from "./course.types";
 import {
@@ -16,7 +16,7 @@ import {
   getCourses,
   getInstructorByCourseId,
   moderateCourse,
-  retrySubmitCourse,
+  resubmitCourse,
   submitCourse,
   updateCourse,
 } from "./course.api";
@@ -47,10 +47,10 @@ export const useGetCourseDetail = (id: string) => {
 export const useModerateCourse = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (command: ReviewCourseCommand) => moderateCourse(command),
+    mutationFn: (command: ModerateCourseCommand) => moderateCourse(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
-      showSuccessToast("Course Reviewed", "The course review was successful.");
+      showSuccessToast("Course moderated", "The course moderation was successful.");
     },
     onError: (error) =>
       handleApiError(error, {
@@ -58,7 +58,7 @@ export const useModerateCourse = () => {
           {
             status: 404,
             handler: () =>
-              showErrorToast("Not Found", "The course you are trying to review does not exist."),
+              showErrorToast("Not Found", "The course you are trying to moderate does not exist."),
           },
           {
             status: 400,
@@ -66,7 +66,7 @@ export const useModerateCourse = () => {
             handler: () =>
               showErrorToast(
                 "Invalid Operation",
-                "You cannot review a course that is not in pending status.",
+                "You cannot moderate a course that is not in pending status.",
               ),
           },
         ],
@@ -80,7 +80,7 @@ export const useSubmitCourse = () => {
     mutationFn: (id: string) => submitCourse(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
-      showSuccessToast("Course Submitted", "The course was submitted for review successfully.");
+      showSuccessToast("Course Submitted", "The course was submitted for moderation successfully.");
     },
     onError: (error) =>
       handleApiError(error, {
@@ -104,15 +104,15 @@ export const useSubmitCourse = () => {
   });
 };
 
-export const useRetrySubmitCourse = () => {
+export const useResubmitCourse = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => retrySubmitCourse(id),
+    mutationFn: (id: string) => resubmitCourse(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast(
-        "Course Submission Retried",
-        "The course submission was retried successfully.",
+        "Course Resubmitted",
+        "The course was resubmitted for moderation successfully.",
       );
     },
     onError: (error) =>
@@ -121,7 +121,7 @@ export const useRetrySubmitCourse = () => {
           {
             status: 404,
             handler: () =>
-              showErrorToast("Not Found", "The course you are trying to retry does not exist."),
+              showErrorToast("Not Found", "The course you are trying to resubmit does not exist."),
           },
           {
             status: 400,
@@ -129,7 +129,7 @@ export const useRetrySubmitCourse = () => {
             handler: () =>
               showErrorToast(
                 "Invalid Operation",
-                "You cannot retry a course that is not in rejected status",
+                "You cannot resubmit a course that is not in rejected status",
               ),
           },
           {
@@ -137,7 +137,7 @@ export const useRetrySubmitCourse = () => {
             errorCode: ErrorCode.RetryLimitExceeded,
             handler: (err) => {
               const msg = err.response?.data?.message ?? "";
-              showErrorToast("Retry Limit Exceeded", msg); // e.g. "Please retry after ..."
+              showErrorToast("Retry Limit Exceeded", msg); // e.g. "You have exceeded the maximum number of retries"
             },
           },
           {

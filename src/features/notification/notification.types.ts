@@ -28,4 +28,8 @@ export enum NotificationType {
   ReviewReplied = "ReviewReplied",
   OrderProcessed = "OrderProcessed",
   CourseUpdated = "CourseUpdated",
+  InstructorApplicationSubmitted = "InstructorApplicationSubmitted",
+  InstructorApplicationResubmitted = "InstructorApplicationResubmitted",
+  InstructorApplicationApproved = "InstructorApplicationApproved",
+  InstructorApplicationRejected = "InstructorApplicationRejected",
 }

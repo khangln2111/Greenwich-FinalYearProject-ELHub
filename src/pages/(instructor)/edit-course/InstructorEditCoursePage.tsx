@@ -8,7 +8,7 @@ import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { CourseStatus } from "../../../features/course/course.types";
 import {
   useGetCourseDetail,
-  useRetrySubmitCourse,
+  useResubmitCourse,
   useSubmitCourse,
 } from "../../../features/course/course.hooks";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
@@ -33,7 +33,7 @@ export default function InstructorEditCoursePage() {
   );
 
   const submitMutation = useSubmitCourse();
-  const retrySubmitMutation = useRetrySubmitCourse();
+  const retrySubmitMutation = useResubmitCourse();
 
   if (isPending) return <CenterLoader />;
   if (error || !courseId || !courseDetail) return <Navigate to="/404" replace />;

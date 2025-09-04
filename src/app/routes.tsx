@@ -8,7 +8,7 @@ import AdminCategoriesPage from "../pages/(admin)/categories/AdminCategoriesPage
 import AdminCourseDetailPage from "../pages/(admin)/course-detail/AdminCourseDetailPage";
 import AdminCoursesPage from "../pages/(admin)/courses/AdminCoursesPage";
 import AdminPendingCoursesPage from "../pages/(admin)/courses/AdminPendingCoursesPage";
-import AdminInstructorApprovalPage from "../pages/(admin)/instructors/AdminInstructorApprovalPage";
+import AdminInstructorModerationPage from "../pages/(admin)/instructors/AdminInstructorApprovalPage";
 import AdminUsersPage from "../pages/(admin)/users/AdminUsersPage";
 import ForgotPasswordPage from "../pages/(auth)/forgot-password/ForgotPasswordPage";
 import LoginPage from "../pages/(auth)/login/LoginPage";
@@ -145,7 +145,7 @@ const adminRoute: RouteObject = {
     },
     {
       path: "instructor-applications",
-      element: <AdminInstructorApprovalPage />,
+      element: <AdminInstructorModerationPage />,
     },
     {
       path: "courses",

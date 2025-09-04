@@ -14,7 +14,7 @@ import {
   XCircleIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useMarkNotificationAsRead } from "../../../../features/notification/notification.hooks";
+import { useToggleNotificationRead } from "../../../../features/notification/notification.hooks";
 import {
   NotificationType,
   NotificationVm,
@@ -72,10 +72,30 @@ const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNod
     icon: <PencilLineIcon size={20} />,
     bg: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-300",
   },
+  [NotificationType.InstructorApplicationSubmitted]: {
+    label: "Instructor Application Submitted",
+    icon: <UploadIcon size={20} />,
+    bg: "bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-300",
+  },
+  [NotificationType.InstructorApplicationResubmitted]: {
+    label: "Instructor Application Resubmitted",
+    icon: <RefreshCwIcon size={20} />,
+    bg: "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-300",
+  },
+  [NotificationType.InstructorApplicationApproved]: {
+    label: "Instructor Application Approved",
+    icon: <CheckCircle2Icon size={20} />,
+    bg: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-300",
+  },
+  [NotificationType.InstructorApplicationRejected]: {
+    label: "Instructor Application Rejected",
+    icon: <XCircleIcon size={20} />,
+    bg: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300",
+  },
 };
 
 export default function NotificationCard({ n }: { n: NotificationVm }) {
-  const markMutation = useMarkNotificationAsRead(n.id);
+  const markMutation = useToggleNotificationRead(n.id);
   const cfg = typeConfig[n.type];
 
   const navigate = useNavigate();

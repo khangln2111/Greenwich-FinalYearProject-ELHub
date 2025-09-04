@@ -139,7 +139,7 @@ export interface EnrollmentDetailSelfVm {
   progressPercentage: number;
 }
 
-export interface ReviewCourseCommand {
+export interface ModerateCourseCommand {
   id: string;
   isApproved: boolean;
   note: string;
@@ -158,8 +158,8 @@ export interface CreateCourseCommand {
   categoryId: string;
   title: string;
   summary: string;
-  image: File; // Tương ứng với IFormFile trong frontend là File
-  promoVideo: File; // Tương ứng với IFormFile
+  image: File;
+  promoVideo: File;
   price: number;
   discountedPrice: number;
   level: CourseLevel;

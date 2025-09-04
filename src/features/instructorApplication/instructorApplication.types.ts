@@ -8,7 +8,7 @@ export interface CreateInstructorApplicationCommand {
   avatar: File;
 }
 
-export interface RetryInstructorApplicationCommand {
+export interface ResubmitInstructorApplicationCommand {
   firstName?: string;
   lastName?: string;
   professionalTitle?: string;
@@ -16,7 +16,7 @@ export interface RetryInstructorApplicationCommand {
   avatar?: File;
 }
 
-export interface ReviewInstructorApplicationCommand {
+export interface ModerateInstructorApplicationCommand {
   id: string;
   isApproved: boolean;
   note: string;

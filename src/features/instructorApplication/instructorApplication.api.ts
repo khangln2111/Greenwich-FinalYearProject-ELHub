@@ -5,8 +5,8 @@ import {
   CreateInstructorApplicationCommand,
   InstructorApplicationQueryCriteria,
   InstructorApplicationVm,
-  RetryInstructorApplicationCommand,
-  ReviewInstructorApplicationCommand,
+  ResubmitInstructorApplicationCommand,
+  ModerateInstructorApplicationCommand,
 } from "./instructorApplication.types";
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 
@@ -62,8 +62,10 @@ export const createInstructorApplication = async (command: CreateInstructorAppli
   return response.data;
 };
 
-export const retryInstructorApplication = async (command: RetryInstructorApplicationCommand) => {
-  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/retry`, command, {
+export const resubmitInstructorApplication = async (
+  command: ResubmitInstructorApplicationCommand,
+) => {
+  const response = await apiClient.put<ApiSuccessResponse>(`${BASE_URL}/resubmit`, command, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -71,8 +73,10 @@ export const retryInstructorApplication = async (command: RetryInstructorApplica
   return response.data;
 };
 
-export const reviewInstructorApplication = async (command: ReviewInstructorApplicationCommand) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/review`, command);
+export const moderateInstructorApplication = async (
+  command: ModerateInstructorApplicationCommand,
+) => {
+  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/moderate`, command);
   return response.data;
 };
 
@@ -82,6 +86,6 @@ export const getInstructorApplicationSelf = async () => {
 };
 
 export const getCanRetrySelf = async () => {
-  const response = await apiClient.get<boolean>(`${BASE_URL}/self/can-retry`);
+  const response = await apiClient.get<boolean>(`${BASE_URL}/self/can-resubmit`);
   return response.data;
 };

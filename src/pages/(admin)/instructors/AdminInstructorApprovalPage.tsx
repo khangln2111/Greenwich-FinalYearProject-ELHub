@@ -28,11 +28,11 @@ import {
   InstructorApplicationOrderableFields,
   InstructorApplicationStatus,
   InstructorApplicationVm,
-  ReviewInstructorApplicationCommand,
+  ModerateInstructorApplicationCommand,
 } from "../../../features/instructorApplication/instructorApplication.types";
 import {
   useGetInstructorApplications,
-  useReviewInstructorApplication,
+  useModerateInstructorApplication,
 } from "../../../features/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
 import { formSubmitWithFocus } from "../../../utils/form";
@@ -94,7 +94,7 @@ const ORDER_BY_OPTIONS: {
   { label: "Reviewed (Oldest)", value: { field: "reviewedAt", direction: "asc" } },
 ];
 
-export default function AdminInstructorApprovalPage() {
+export default function AdminInstructorModerationPage() {
   const modalStack = useModalsStack(["view", "review"]);
 
   const [viewApp, setViewApp] = useState<InstructorApplicationVm | null>(null);
@@ -128,7 +128,7 @@ export default function AdminInstructorApprovalPage() {
     validate: zodResolver(reviewCourseSchema),
   });
 
-  const { mutate, isPending } = useReviewInstructorApplication();
+  const { mutate, isPending } = useModerateInstructorApplication();
 
   const handleSearchSubmit = () => {
     setSearch(searchInput);
@@ -145,7 +145,7 @@ export default function AdminInstructorApprovalPage() {
     if (!reviewApp) return;
     const result = form.validate();
     if (!result.hasErrors) {
-      const payload: ReviewInstructorApplicationCommand = {
+      const payload: ModerateInstructorApplicationCommand = {
         id: reviewApp.id,
         isApproved: approveMode,
         note: form.values.note.trim(),
