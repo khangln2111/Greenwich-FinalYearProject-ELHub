@@ -134,7 +134,7 @@ export default function UserDashboardLayout() {
           })}
         >
           {/* Sidebar */}
-          <div className="w-full lg:max-w-[250px] xl:max-w-[300px] min-w-0">
+          <div className="w-full lg:max-w-[250px] xl:max-w-[300px] min-w-0 hidden lg:block">
             <Collapse in={!!(sidebarOpen || isDesktop)}>
               <div className="bg-body border border-gray-200 dark:border-gray-800 rounded-xl p-3">
                 <Sidebar />

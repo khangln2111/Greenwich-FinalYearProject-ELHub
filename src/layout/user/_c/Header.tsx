@@ -135,23 +135,25 @@ const Header = () => {
             </ActionIcon>
 
             {/* Notification (desktop only) */}
-            <Indicator
-              label={unreadNotificationCount ?? 0}
-              size={20}
-              offset={2}
-              position="top-end"
-              visibleFrom="lg"
-            >
-              <ActionIcon
-                variant="default"
-                size="lg"
-                aria-label="Notification trigger"
-                component={Link}
-                to="/dashboard/notifications"
+            {currentUser && (
+              <Indicator
+                label={unreadNotificationCount ?? 0}
+                size={20}
+                offset={2}
+                position="top-end"
+                visibleFrom="lg"
               >
-                <IconBell size={19} strokeWidth={1.5} />
-              </ActionIcon>
-            </Indicator>
+                <ActionIcon
+                  variant="default"
+                  size="lg"
+                  aria-label="Notification trigger"
+                  component={Link}
+                  to="/dashboard/notifications"
+                >
+                  <IconBell size={19} strokeWidth={1.5} />
+                </ActionIcon>
+              </Indicator>
+            )}
 
             {/* Cart */}
             {currentUser && (
