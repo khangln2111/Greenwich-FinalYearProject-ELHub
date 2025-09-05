@@ -1,8 +1,9 @@
-import { Badge, Button, SegmentedControl, Stack, Title, Text } from "@mantine/core";
-import { BellIcon, CheckCheckIcon, Inbox, Link } from "lucide-react";
+import { Badge, Button, SegmentedControl, Stack, Title } from "@mantine/core";
+import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { parseAsArrayOf, parseAsStringEnum, parseAsStringLiteral, useQueryState } from "nuqs";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { MultiSelectWithMaxDisplayedItems } from "../../../components/MultiSelectWithMaxDisplayedItems/MultiSelectWithMaxDisplayedItems";
+import NotificationCard from "../../../components/NotificationCard/NotificationCard";
 import { RoleName } from "../../../features/auth/identity.types";
 import {
   useGetNotifications,
@@ -13,7 +14,7 @@ import {
   NotificationType,
   NotificationVm,
 } from "../../../features/notification/notification.types";
-import NotificationCard from "../../../components/NotificationCard/NotificationCard";
+import NotificationsPageEmptyState from "./_c/NotificationsPageEmptyState";
 
 export default function NotificationsPage() {
   const [filterUnread, setFilterUnread] = useQueryState(
@@ -111,26 +112,7 @@ export default function NotificationsPage() {
           {data?.items?.length ? (
             data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
           ) : (
-            <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
-              <Inbox size={64} className="text-gray-300 mb-4" />
-              <Text size="xl" fw={600} className="mb-2">
-                No notifications yet
-              </Text>
-              <Text size="sm" className="mb-6 max-w-xs">
-                You're all caught up! Notifications about your courses, sales, and messages will
-                appear here.
-              </Text>
-              <Button
-                size="md"
-                variant="light"
-                radius="lg"
-                component={Link}
-                to="/courses"
-                leftSection={<BellIcon size={16} />}
-              >
-                Browse Courses
-              </Button>
-            </div>
+            <NotificationsPageEmptyState />
           )}
         </Stack>
       )}

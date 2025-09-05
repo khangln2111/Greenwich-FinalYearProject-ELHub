@@ -1,13 +1,13 @@
 import { ActionIcon, TextInput, Title } from "@mantine/core";
-import { PackageOpenIcon, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import GiftingModal from "./_c/GiftingModal";
-import InventoryItemCard from "./_c/InventoryItemCard";
 import { useGetInventoryItemsSelf } from "../../../features/inventory/inventory.hooks";
+import GiftingModal from "./_c/GiftingModal";
+import InventoryPageEmptyState from "./_c/InventoryPageEmptyState";
+import InventoryItemCard from "./_c/InventoryItemCard";
 
 export default function InventoryPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -28,8 +28,6 @@ export default function InventoryPage() {
     setSearch(searchInput);
     setPage(1);
   };
-
-  if (isPending) return <CenterLoader />;
 
   if (error) return <div>Error loading inventory items: {error.message}</div>;
 
@@ -85,25 +83,10 @@ export default function InventoryPage() {
       </div>
 
       <div className="space-y-5">
-        {data.items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-            <PackageOpenIcon className="w-16 h-16 text-blue-500" />
-
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-              Your inventory is empty
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Looks like you haven't purchased any courses yet. Start exploring now and boost your
-              learning journey!
-            </p>
-            <Link
-              to="/courses"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium
-                transition"
-            >
-              Browse Courses
-            </Link>
-          </div>
+        {isPending ? (
+          <CenterLoader />
+        ) : data.items.length === 0 ? (
+          <InventoryPageEmptyState />
         ) : (
           data.items.map((item) => (
             <InventoryItemCard key={item.id} item={item} onGift={(id) => setSelectedItemId(id)} />

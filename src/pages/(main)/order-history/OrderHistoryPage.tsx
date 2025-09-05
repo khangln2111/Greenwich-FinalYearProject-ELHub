@@ -1,14 +1,13 @@
 import { Select, Title } from "@mantine/core";
-import { IconReceipt } from "@tabler/icons-react";
 import { ArrowUpDownIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
-import { Link } from "react-router-dom";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { OrderOrderableFields, OrderStatus } from "../../../features/order/order.types";
 import { useGetOrdersSelf } from "../../../features/order/order.hooks";
+import { OrderOrderableFields, OrderStatus } from "../../../features/order/order.types";
 import { OrderCard } from "./_c/OrderCard";
+import OrderHistoryPageEmptyState from "./_c/OrderHistoryPageEmptyState";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
 
 const ORDER_SORT_OPTIONS: {
@@ -73,21 +72,7 @@ export default function OrderHistoryPage() {
       {isPending ? (
         <CenterLoader />
       ) : data.items.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-          <IconReceipt className="w-16 h-16 text-primary-5" />
-
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">No orders found</h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            You haven't purchased anything yet. Discover top-rated courses and start learning today!
-          </p>
-          <Link
-            to="/courses"
-            className="inline-block bg-primary-6 hover:bg-primary-7 text-white px-5 py-2 rounded-lg text-sm font-medium
-              transition"
-          >
-            Browse Courses
-          </Link>
-        </div>
+        <OrderHistoryPageEmptyState />
       ) : (
         <div className="mx-auto mt-4">
           {data.items.map((order) => (
@@ -95,6 +80,7 @@ export default function OrderHistoryPage() {
           ))}
         </div>
       )}
+
       <AppPagination
         page={page}
         pageSize={pageSize}

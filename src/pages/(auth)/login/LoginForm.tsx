@@ -24,7 +24,7 @@ const LoginForm = () => {
   const { isPending: isLoginWithGooglePending, mutate: loginWithGoogleMutate } =
     useLoginWithGoogle();
 
-  const login = useGoogleLogin({
+  const loginWithGoogle = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       if (tokenResponse) {
         loginWithGoogleMutate({ idToken: tokenResponse.access_token });
@@ -109,7 +109,7 @@ const LoginForm = () => {
         variant="default"
         className="mt-5"
         leftSection={<GoogleIcon />}
-        onClick={() => login()}
+        onClick={() => loginWithGoogle()}
         loading={isLoginWithGooglePending}
         radius="2xl"
       >

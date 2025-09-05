@@ -1,13 +1,14 @@
 import { ActionIcon, Select, TextInput, Title } from "@mantine/core";
-import { ArrowUpAzIcon, InboxIcon, SearchIcon } from "lucide-react";
+import { ArrowUpAzIcon, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
 import { useGetCourses } from "../../../features/course/course.hooks";
+import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
 import AdminCourseCard from "./_c/AdminCourseCard";
+import AdminPendingCoursesPageEmptyState from "./_c/AdminPendingCoursesPageEmptyState";
 
 const COURSE_ORDER_OPTIONS: {
   label: string;
@@ -109,13 +110,7 @@ export default function AdminPendingCoursesPage() {
         {isPending ? (
           <CenterLoader />
         ) : data.items?.length === 0 ? (
-          <div className="py-24 text-center text-gray-500 dark:text-gray-400 flex flex-col items-center justify-center">
-            <InboxIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mb-4" />
-            <p className="text-lg font-semibold">No pending courses</p>
-            <p className="text-sm mt-1 max-w-[600px] mx-auto">
-              There are currently no courses waiting for approval.
-            </p>
-          </div>
+          <AdminPendingCoursesPageEmptyState />
         ) : (
           <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-6">
             {data.items?.map((course) => <AdminCourseCard key={course.id} course={course} />)}

@@ -16,6 +16,7 @@ import { ChangeGiftReceiverModal } from "./_c/ChangeGiftReceiverModal";
 import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
 import { SentGiftItemCard } from "./_c/SentGiftItemCard";
+import GiftsPageEmptyState from "./_c/GiftsPageEmptyState";
 
 const GIFT_PAGE_TABS = ["sent", "received"];
 type GiftPageTab = (typeof GIFT_PAGE_TABS)[number];
@@ -127,17 +128,7 @@ export default function GiftsPage() {
     if (pendingReceived) return <CenterLoader />;
 
     if (!receivedGifts || receivedGifts.items.length === 0) {
-      return (
-        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-          <GiftIcon className="w-14 h-14 text-green-500" />
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-            No gifts received yet
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            When someone sends you a gift, it will appear here. Stay tuned!
-          </p>
-        </div>
-      );
+      return <GiftsPageEmptyState />;
     }
 
     return (

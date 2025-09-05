@@ -113,14 +113,17 @@ const Header = () => {
           {/* Action icons */}
           <Group className="h-full">
             {currentUser === null && (
-              <Button
-                to="/login"
-                component={Link}
-                variant="gradient"
-                gradient={{ from: "blue", to: "cyan" }}
-              >
-                Log in
-              </Button>
+              <>
+                <ThemeToggler />
+                <Button
+                  to="/login"
+                  component={Link}
+                  variant="gradient"
+                  gradient={{ from: "blue", to: "cyan" }}
+                >
+                  Log in
+                </Button>
+              </>
             )}
 
             {/* Search icon (mobile only) */}
@@ -175,8 +178,12 @@ const Header = () => {
               </Indicator>
             )}
 
-            <ThemeToggler />
-            {currentUser && <AvatarMenu />}
+            {currentUser && (
+              <>
+                <ThemeToggler />
+                <AvatarMenu />
+              </>
+            )}
           </Group>
         </div>
       )}

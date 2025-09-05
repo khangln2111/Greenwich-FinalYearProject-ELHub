@@ -16,13 +16,14 @@ import {
 import { useForm } from "@mantine/form";
 import { IconSearch } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { ArrowUpAzIcon, FileQuestion } from "lucide-react";
+import { ArrowUpAzIcon } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
+import CusModal from "../../../components/CusModal/CusModal";
 import { ReviewCourseFormValues, reviewCourseSchema } from "../../../features/course/course.schema";
 import {
   InstructorApplicationOrderableFields,
@@ -36,7 +37,7 @@ import {
 } from "../../../features/instructorApplication/instructorApplicationHooks";
 import { cn } from "../../../utils/cn";
 import { formSubmitWithFocus } from "../../../utils/form";
-import CusModal from "../../../components/CusModal/CusModal";
+import AdminInstructorModerationPageEmptyState from "./_c/AdminInstructorModerationPageEmptyState";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -226,14 +227,7 @@ export default function AdminInstructorModerationPage() {
       {isGetPending ? (
         <CenterLoader />
       ) : apps.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
-          <FileQuestion className="w-16 h-16 mb-4" />
-          <p className="text-lg font-semibold">No instructor applications found</p>
-          <p className="text-sm mt-1 max-w-md">
-            We couldn’t find any applications to display. This could be due to filters, search
-            terms, or simply because no one has applied yet.
-          </p>
-        </div>
+        <AdminInstructorModerationPageEmptyState />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {apps.map((app) => (
