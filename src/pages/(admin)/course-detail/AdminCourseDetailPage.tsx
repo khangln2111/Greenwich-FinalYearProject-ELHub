@@ -60,7 +60,7 @@ const AdminCourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
   const reviewCourseMutation = useModerateCourse();
-  const [activeTab, setActiveTab] = useQueryState<CourseDetailTab>(
+  const [activeTab, setActiveTab] = useQueryState(
     "activeTab",
     parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
   );

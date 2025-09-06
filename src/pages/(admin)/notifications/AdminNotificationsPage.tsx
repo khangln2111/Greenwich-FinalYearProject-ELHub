@@ -61,7 +61,7 @@ export default function AdminNotificationsPage() {
               </h1>
             </div>
             {unreadCount !== undefined && unreadCount > 0 && (
-              <Badge radius="full" color="red" className="mt-2 sm:mt-0 sm:ml-2">
+              <Badge radius="full" color="orange" className="mt-2 sm:mt-0 sm:ml-2">
                 {unreadCount}
               </Badge>
             )}
@@ -122,7 +122,7 @@ export default function AdminNotificationsPage() {
       {isPending ? (
         <CenterLoader height={300} />
       ) : data?.items?.length ? (
-        <Stack className="mx-auto gap-4 w-full max-w-4xl">
+        <Stack className="mx-auto gap-4 w-full">
           {data.items.map((n: NotificationVm) => (
             <NotificationCard key={n.id} n={n} />
           ))}

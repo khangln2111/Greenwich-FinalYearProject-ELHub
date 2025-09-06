@@ -27,7 +27,7 @@ export default function InstructorEditCoursePage() {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
 
-  const [activeTab, setActiveTab] = useQueryState<CourseDetailTab>(
+  const [activeTab, setActiveTab] = useQueryState(
     "activeTab",
     parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
   );

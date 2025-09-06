@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Avatar, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconBellRinging } from "@tabler/icons-react";
 import { ChartNoAxesCombinedIcon, ScreenShareIcon, SettingsIcon, User2Icon } from "lucide-react";
@@ -37,9 +37,11 @@ const navItems: NavItem[] = [
 
 const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
   const closeMobileSidebar = useAppStore((s) => s.closeMobileInstructorSidebar);
+  const currentUser = useAppStore((s) => s.currentUser);
+
   const isMobile = useMediaQuery("max-width: 1023px");
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-screen">
       {/* Sidebar Header */}
       <div
         className={cn("flex items-center justify-between p-4", {
@@ -79,6 +81,29 @@ const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
           />
         ))}
       </nav>
+
+      {currentUser && (
+        <div
+          className={cn(
+            "border-t border-gray-200 dark:border-gray-800 p-3 flex items-center gap-3 mt-auto",
+          )}
+        >
+          <Avatar src={currentUser.avatarUrl} alt={currentUser.firstName} radius="xl" size={40}>
+            {currentUser.firstName?.[0] ?? currentUser.email[0]}
+          </Avatar>
+
+          {!collapsedToIcon && (
+            <div className="flex flex-col truncate">
+              <Text size="sm" fw={600} truncate>
+                {currentUser.firstName} {currentUser.lastName}
+              </Text>
+              <Text size="xs" c="dimmed" truncate>
+                {currentUser.email}
+              </Text>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

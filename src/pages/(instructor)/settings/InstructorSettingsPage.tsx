@@ -26,11 +26,23 @@ import { useNavigate } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetWorkProfileSelf } from "../../../features/auth/identity.hooks";
 import UpdateWorkProfileForm from "../profile/UpdateWorkProfileForm";
+import { parseAsStringEnum, useQueryState } from "nuqs";
+
+enum Tabs {
+  Profile = "Profile",
+  Notifications = "Notifications",
+  Preferences = "Preferences",
+  Payments = "Payments",
+  Security = "Security",
+}
 
 export default function InstructorSettingsPage() {
   const { data, isPending, error } = useGetWorkProfileSelf();
 
-  const [section, setSection] = useState("profile");
+  const [tab, setTab] = useQueryState(
+    "tab",
+    parseAsStringEnum(Object.values(Tabs)).withDefault(Tabs.Profile),
+  );
   const [theme, setTheme] = useState("system");
   const [language, setLanguage] = useState("en");
   const navigate = useNavigate();
@@ -47,27 +59,21 @@ export default function InstructorSettingsPage() {
         <Text c="dimmed">Manage your account settings and preferences</Text>
       </div>
 
-      <div className="overflow-x-auto mx-auto mb-10 shadow-md rounded-xl">
+      <div className="overflow-x-auto mx-auto mb-10 shadow-sm rounded-xl">
         <SegmentedControl
           fullWidth
           radius="xl"
           size="md"
-          className="min-w-max"
-          value={section}
-          onChange={setSection}
+          className="min-w-max p-2 bg-body border"
+          value={tab}
+          onChange={(val) => setTab(val as Tabs)}
           color="primary"
-          data={[
-            { label: "Profile", value: "profile" },
-            { label: "Payments", value: "payments" },
-            { label: "Notifications", value: "notifications" },
-            { label: "Preferences", value: "preferences" },
-            { label: "Security", value: "security" },
-          ]}
+          data={Object.values(Tabs)}
         />
       </div>
 
       {/* Profile */}
-      {section === "profile" && (
+      {tab === Tabs.Profile && (
         <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
           {isPending ? (
             <CenterLoader />
@@ -80,7 +86,7 @@ export default function InstructorSettingsPage() {
       )}
 
       {/* Payments */}
-      {section === "payments" && (
+      {tab === Tabs.Payments && (
         <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
           <Stack gap="lg">
             <Text fw={500} className="flex items-center gap-2 text-lg">
@@ -110,8 +116,7 @@ export default function InstructorSettingsPage() {
       )}
 
       {/* Notifications */}
-      {/* Notifications */}
-      {section === "notifications" && (
+      {tab === Tabs.Notifications && (
         <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
           <Stack gap="xl">
             {/* Sales */}
@@ -177,7 +182,7 @@ export default function InstructorSettingsPage() {
       )}
 
       {/* Preferences */}
-      {section === "preferences" && (
+      {tab === Tabs.Preferences && (
         <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
           <Stack gap="lg">
             {/* Theme */}
@@ -243,7 +248,7 @@ export default function InstructorSettingsPage() {
       )}
 
       {/* Security */}
-      {section === "security" && (
+      {tab === Tabs.Security && (
         <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
           <Stack gap="lg">
             <Text fw={500} className="flex items-center gap-2 text-lg">

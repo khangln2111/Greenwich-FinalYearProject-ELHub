@@ -27,11 +27,21 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
 import UpdateUserProfileForm from "../my-account/_c/UpdateUserProfileForm";
+import { parseAsStringEnum, useQueryState } from "nuqs";
 
-type Section = "profile" | "notifications" | "security" | "preferences" | "danger";
+enum Tabs {
+  Profile = "Profile",
+  Notifications = "Notifications",
+  Security = "Security",
+  Preferences = "Preferences",
+  Danger = "Danger",
+}
 
 export default function UserSettingsPage() {
-  const [section, setSection] = useState<Section>("notifications");
+  const [tab, setTab] = useQueryState(
+    "tab",
+    parseAsStringEnum(Object.values(Tabs)).withDefault(Tabs.Profile),
+  );
   const { data: user, isPending, error } = useGetCurrentUserInfo();
 
   // Preferences states
@@ -59,8 +69,8 @@ export default function UserSettingsPage() {
           fullWidth
           size="md"
           radius="xl"
-          value={section}
-          onChange={(val) => setSection(val as Section)}
+          value={tab}
+          onChange={(val) => setTab(val as Tabs)}
           color="primary"
           classNames={{
             root: "bg-body min-w-max",
@@ -68,7 +78,7 @@ export default function UserSettingsPage() {
           }}
           data={[
             {
-              value: "profile",
+              value: Tabs.Profile,
               label: (
                 <div className="flex items-center justify-center gap-2">
                   <User2 size={16} /> Profile
@@ -76,7 +86,7 @@ export default function UserSettingsPage() {
               ),
             },
             {
-              value: "notifications",
+              value: Tabs.Notifications,
               label: (
                 <div className="flex items-center justify-center gap-2">
                   <Bell size={16} /> Notifications
@@ -84,7 +94,7 @@ export default function UserSettingsPage() {
               ),
             },
             {
-              value: "security",
+              value: Tabs.Security,
               label: (
                 <div className="flex items-center justify-center gap-2">
                   <Shield size={16} /> Security
@@ -92,7 +102,7 @@ export default function UserSettingsPage() {
               ),
             },
             {
-              value: "preferences",
+              value: Tabs.Preferences,
               label: (
                 <div className="flex items-center justify-center gap-2">
                   <SlidersHorizontal size={16} /> Preferences
@@ -100,7 +110,7 @@ export default function UserSettingsPage() {
               ),
             },
             {
-              value: "danger",
+              value: Tabs.Danger,
               label: (
                 <div className="flex items-center justify-center gap-2 text-red-600 group-data-active:text-white">
                   <Trash2 size={16} /> Danger
@@ -113,7 +123,7 @@ export default function UserSettingsPage() {
 
       {/* Panels */}
       <div>
-        {section === "profile" && (
+        {tab === Tabs.Profile && (
           <Card shadow="sm" radius="xl" className="p-6 items-center max-w-3xl mx-auto">
             {isPending ? (
               <div>Loading...</div>
@@ -125,7 +135,7 @@ export default function UserSettingsPage() {
           </Card>
         )}
 
-        {section === "notifications" && (
+        {tab === Tabs.Notifications && (
           <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
             <Stack gap="xl">
               {/* Email notifications */}
@@ -214,7 +224,7 @@ export default function UserSettingsPage() {
           </Card>
         )}
 
-        {section === "security" && (
+        {tab === Tabs.Security && (
           <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
             <Stack gap="lg">
               <Text fw={500} className="flex items-center gap-2 text-lg">
@@ -245,7 +255,7 @@ export default function UserSettingsPage() {
           </Card>
         )}
 
-        {section === "preferences" && (
+        {tab === Tabs.Preferences && (
           <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
             <Stack gap="lg">
               {/* Theme */}
@@ -310,7 +320,7 @@ export default function UserSettingsPage() {
           </Card>
         )}
 
-        {section === "danger" && (
+        {tab === Tabs.Danger && (
           <Card
             shadow="sm"
             radius="xl"
