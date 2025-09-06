@@ -12,7 +12,6 @@ import {
   Title,
 } from "@mantine/core";
 import {
-  Bell,
   Globe,
   LockIcon,
   Monitor,
@@ -37,7 +36,7 @@ export default function InstructorSettingsPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex-1 p-6 xl:p-8 bg-gray-200 dark:bg-dark-5">
+    <div className="flex-1 p-6 xl:p-8">
       <div className="space-y-2 mb-6">
         <Title
           order={1}
@@ -53,7 +52,7 @@ export default function InstructorSettingsPage() {
           fullWidth
           radius="xl"
           size="md"
-          className="min-w-max bg-body"
+          className="min-w-max"
           value={section}
           onChange={setSection}
           color="primary"
@@ -89,6 +88,8 @@ export default function InstructorSettingsPage() {
             </Text>
             <Select
               label="Preferred Payout Method"
+              checkIconPosition="right"
+              defaultValue="stripe"
               data={[
                 { value: "bank", label: "Bank Transfer" },
                 { value: "paypal", label: "PayPal" },
@@ -109,17 +110,67 @@ export default function InstructorSettingsPage() {
       )}
 
       {/* Notifications */}
+      {/* Notifications */}
       {section === "notifications" && (
         <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
-          <Stack gap="lg">
-            <Text fw={500} className="flex items-center gap-2 text-lg">
-              <Bell size={18} /> Notifications
-            </Text>
-            <Switch label="Course sales" radius="lg" />
-            <Switch label="New student questions" radius="lg" />
-            <Switch label="Payout status updates" radius="lg" />
-            <Group justify="flex-end">
-              <Button radius="lg">Save Preferences</Button>
+          <Stack gap="xl">
+            {/* Sales */}
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Text fw={500}>Course Sales</Text>
+                <Text size="sm" c="dimmed">
+                  Get notified when a student purchases your course
+                </Text>
+              </div>
+              <Switch defaultChecked />
+            </Group>
+            <Divider />
+
+            {/* Student questions */}
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Text fw={500}>Student Questions</Text>
+                <Text size="sm" c="dimmed">
+                  Receive alerts when students ask questions in your courses
+                </Text>
+              </div>
+              <Switch defaultChecked />
+            </Group>
+            <Divider />
+
+            {/* Payout updates */}
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Text fw={500}>Payout Status Updates</Text>
+                <Text size="sm" c="dimmed">
+                  Notifications when your payouts are processed or delayed
+                </Text>
+              </div>
+              <Switch defaultChecked />
+            </Group>
+            <Divider />
+
+            {/* System alerts */}
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Text fw={500}>System Alerts</Text>
+                <Text size="sm" c="dimmed">
+                  Important platform-wide announcements and incidents
+                </Text>
+              </div>
+              <Switch defaultChecked />
+            </Group>
+            <Divider />
+
+            {/* Weekly digest */}
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Text fw={500}>Weekly Digest</Text>
+                <Text size="sm" c="dimmed">
+                  A summary of your teaching performance every week
+                </Text>
+              </div>
+              <Switch defaultChecked={false} />
             </Group>
           </Stack>
         </Card>
@@ -204,10 +255,16 @@ export default function InstructorSettingsPage() {
                 radius="lg"
                 leftSection={<LockIcon size={16} />}
                 onClick={() => navigate("/forgot-password")}
+                className="w-full sm:w-auto"
               >
                 Reset Password
               </Button>
-              <Button variant="outline" radius="lg" leftSection={<Shield size={16} />}>
+              <Button
+                variant="outline"
+                radius="lg"
+                leftSection={<Shield size={16} />}
+                className="w-full sm:w-auto"
+              >
                 Enable Two-Factor Auth
               </Button>
             </Group>

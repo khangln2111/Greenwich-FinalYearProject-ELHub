@@ -34,14 +34,6 @@ export default function UserSettingsPage() {
   const [section, setSection] = useState<Section>("notifications");
   const { data: user, isPending, error } = useGetCurrentUserInfo();
 
-  // Notification states
-  const [emailNotif, setEmailNotif] = useState(true);
-  const [pushNotif, setPushNotif] = useState(false);
-  const [marketingNotif, setMarketingNotif] = useState(false);
-  const [courseUpdates, setCourseUpdates] = useState(true);
-  const [systemAlerts, setSystemAlerts] = useState(true);
-  const [weeklyDigest, setWeeklyDigest] = useState(true);
-
   // Preferences states
   const [theme, setTheme] = useState("system");
   const [language, setLanguage] = useState("en");
@@ -144,10 +136,7 @@ export default function UserSettingsPage() {
                     Get important updates by email
                   </Text>
                 </div>
-                <Switch
-                  checked={emailNotif}
-                  onChange={(e) => setEmailNotif(e.currentTarget.checked)}
-                />
+                <Switch defaultChecked />
               </Group>
               <Divider />
 
@@ -159,10 +148,7 @@ export default function UserSettingsPage() {
                     Receive alerts on your device
                   </Text>
                 </div>
-                <Switch
-                  checked={pushNotif}
-                  onChange={(e) => setPushNotif(e.currentTarget.checked)}
-                />
+                <Switch defaultChecked={false} />
               </Group>
               <Divider />
 
@@ -174,10 +160,19 @@ export default function UserSettingsPage() {
                     Receive promotions, special offers and news
                   </Text>
                 </div>
-                <Switch
-                  checked={marketingNotif}
-                  onChange={(e) => setMarketingNotif(e.currentTarget.checked)}
-                />
+                <Switch defaultChecked />
+              </Group>
+              <Divider />
+
+              {/* Marketing */}
+              <Group justify="space-between">
+                <div>
+                  <Text fw={500}>Marketing Emails</Text>
+                  <Text size="sm" c="dimmed">
+                    Receive promotions, special offers and news
+                  </Text>
+                </div>
+                <Switch defaultChecked={false} />
               </Group>
               <Divider />
 
@@ -189,10 +184,7 @@ export default function UserSettingsPage() {
                     Get notified when new lessons are added to your enrolled courses
                   </Text>
                 </div>
-                <Switch
-                  checked={courseUpdates}
-                  onChange={(e) => setCourseUpdates(e.currentTarget.checked)}
-                />
+                <Switch defaultChecked />
               </Group>
               <Divider />
 
@@ -204,10 +196,7 @@ export default function UserSettingsPage() {
                     Important system-wide announcements
                   </Text>
                 </div>
-                <Switch
-                  checked={systemAlerts}
-                  onChange={(e) => setSystemAlerts(e.currentTarget.checked)}
-                />
+                <Switch defaultChecked />
               </Group>
               <Divider />
 
@@ -219,10 +208,7 @@ export default function UserSettingsPage() {
                     A summary of your activity every week
                   </Text>
                 </div>
-                <Switch
-                  checked={weeklyDigest}
-                  onChange={(e) => setWeeklyDigest(e.currentTarget.checked)}
-                />
+                <Switch defaultChecked />
               </Group>
             </Stack>
           </Card>
@@ -242,10 +228,16 @@ export default function UserSettingsPage() {
                   radius="lg"
                   leftSection={<LockIcon size={16} />}
                   onClick={() => navigate("/forgot-password")}
+                  className="w-full sm:w-auto"
                 >
                   Reset Password
                 </Button>
-                <Button variant="outline" radius="lg" leftSection={<Shield size={16} />}>
+                <Button
+                  variant="outline"
+                  radius="lg"
+                  leftSection={<Shield size={16} />}
+                  className="w-full sm:w-auto"
+                >
                   Enable Two-Factor Auth
                 </Button>
               </Group>
