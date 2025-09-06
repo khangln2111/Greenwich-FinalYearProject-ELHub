@@ -3,9 +3,9 @@ import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetWorkProfileSelf } from "../../../features/auth/identity.hooks";
 
 export default function InstructorProfilePage() {
-  const { data, isLoading, isError } = useGetWorkProfileSelf();
+  const { data, isPending, isError } = useGetWorkProfileSelf();
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="flex justify-center items-center h-[300px]">
         <CenterLoader />

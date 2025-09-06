@@ -52,68 +52,72 @@ export default function UserSettingsPage() {
     <div className="mx-auto space-y-6">
       {/* Header */}
       <div className="space-y-2">
-        <Title order={2} className="text-3xl font-bold tracking-tight">
+        <Title
+          order={1}
+          className="text-2xl sm:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white"
+        >
           Settings
         </Title>
         <Text c="dimmed">Manage your account settings and preferences</Text>
       </div>
 
       {/* Segmented Control */}
-      <SegmentedControl
-        fullWidth
-        size="md"
-        radius="xl"
-        className="mx-auto"
-        value={section}
-        onChange={(val) => setSection(val as Section)}
-        color="primary"
-        classNames={{
-          root: "bg-body overflow-x-auto",
-          label: "group",
-        }}
-        data={[
-          {
-            value: "profile",
-            label: (
-              <div className="flex items-center justify-center gap-2">
-                <User2 size={16} /> Profile
-              </div>
-            ),
-          },
-          {
-            value: "notifications",
-            label: (
-              <div className="flex items-center justify-center gap-2">
-                <Bell size={16} /> Notifications
-              </div>
-            ),
-          },
-          {
-            value: "security",
-            label: (
-              <div className="flex items-center justify-center gap-2">
-                <Shield size={16} /> Security
-              </div>
-            ),
-          },
-          {
-            value: "preferences",
-            label: (
-              <div className="flex items-center justify-center gap-2">
-                <SlidersHorizontal size={16} /> Preferences
-              </div>
-            ),
-          },
-          {
-            value: "danger",
-            label: (
-              <div className="flex items-center justify-center gap-2 text-red-600 group-data-active:text-white">
-                <Trash2 size={16} /> Danger
-              </div>
-            ),
-          },
-        ]}
-      />
+      <div className="overflow-x-auto mx-auto shadow-md rounded-xl">
+        <SegmentedControl
+          fullWidth
+          size="md"
+          radius="xl"
+          value={section}
+          onChange={(val) => setSection(val as Section)}
+          color="primary"
+          classNames={{
+            root: "bg-body min-w-max",
+            label: "group",
+          }}
+          data={[
+            {
+              value: "profile",
+              label: (
+                <div className="flex items-center justify-center gap-2">
+                  <User2 size={16} /> Profile
+                </div>
+              ),
+            },
+            {
+              value: "notifications",
+              label: (
+                <div className="flex items-center justify-center gap-2">
+                  <Bell size={16} /> Notifications
+                </div>
+              ),
+            },
+            {
+              value: "security",
+              label: (
+                <div className="flex items-center justify-center gap-2">
+                  <Shield size={16} /> Security
+                </div>
+              ),
+            },
+            {
+              value: "preferences",
+              label: (
+                <div className="flex items-center justify-center gap-2">
+                  <SlidersHorizontal size={16} /> Preferences
+                </div>
+              ),
+            },
+            {
+              value: "danger",
+              label: (
+                <div className="flex items-center justify-center gap-2 text-red-600 group-data-active:text-white">
+                  <Trash2 size={16} /> Danger
+                </div>
+              ),
+            },
+          ]}
+        />
+      </div>
 
       {/* Panels */}
       <div>
@@ -233,7 +237,7 @@ export default function UserSettingsPage() {
               <Text className="text-md" c="dimmed">
                 For security reasons, you can reset your password from the forgot-password page.
               </Text>
-              <Group gap="md" className="justify-end">
+              <Group gap="md" className="justify-start">
                 <Button
                   radius="lg"
                   leftSection={<LockIcon size={16} />}
