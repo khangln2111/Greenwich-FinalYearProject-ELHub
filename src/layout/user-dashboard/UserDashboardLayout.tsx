@@ -50,7 +50,7 @@ const menuItems: MenuItem[] = [
     icon: <IconBell className="size-5" />,
     href: "/dashboard/notifications",
   },
-  { label: "Settings", icon: <IconSettings className="size-5" />, href: "/settings" },
+  { label: "Settings", icon: <IconSettings className="size-5" />, href: "dashboard/settings" },
 ];
 
 export default function UserDashboardLayout() {

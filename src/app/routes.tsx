@@ -38,6 +38,9 @@ import NotificationsPage from "../pages/(main)/notifications/NotificationsPage";
 import InstructorNotificationsPage from "../pages/(instructor)/notifications/InstructorNotificationsPage";
 import AdminNotificationsPage from "../pages/(admin)/notifications/AdminNotificationsPage";
 import AdminInstructorApplicationsPage from "../pages/(admin)/instructor-applications/AdminInstructorApplicationsPage";
+import InstructorSettingsPage from "../pages/(instructor)/settings/InstructorSettingsPage";
+import AdminSettingsPage from "../pages/(admin)/settings/AdminSettingsPage";
+import SettingsPage from "../pages/(main)/settings/SettingsPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -103,6 +106,10 @@ const userRoute: RouteObject = {
           path: "notifications",
           element: <NotificationsPage />,
         },
+        {
+          path: "settings",
+          element: <SettingsPage />,
+        },
       ],
     },
   ],
@@ -133,6 +140,10 @@ const instructorRoute: RouteObject = {
     {
       path: "coupons",
       element: <p>Instructor Coupons Page</p>,
+    },
+    {
+      path: "settings",
+      element: <InstructorSettingsPage />,
     },
   ],
 };
@@ -166,12 +177,16 @@ const adminRoute: RouteObject = {
       element: <AdminPendingCoursesPage />,
     },
     {
+      path: "users",
+      element: <AdminUsersPage />,
+    },
+    {
       path: "notifications",
       element: <AdminNotificationsPage />,
     },
     {
-      path: "users",
-      element: <AdminUsersPage />,
+      path: "settings",
+      element: <AdminSettingsPage />,
     },
   ],
 };

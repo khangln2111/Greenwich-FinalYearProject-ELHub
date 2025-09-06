@@ -61,7 +61,7 @@ export default function InstructorNotificationsPage() {
               </h1>
             </div>
             {unreadCount !== undefined && unreadCount > 0 && (
-              <Badge radius="full" color="red" className="mt-2 sm:mt-0 sm:ml-2">
+              <Badge radius="full" color="orange" className="mt-2 sm:mt-0 sm:ml-2">
                 {unreadCount}
               </Badge>
             )}
