@@ -27,7 +27,7 @@ type MenuItem = {
 
 const menuItems: MenuItem[] = [
   { label: "Dashboard", icon: <ChartNoAxesCombinedIcon className="size-5" />, href: "/dashboard" },
-  { label: "My account", icon: <User className="size-5" />, href: "/dashboard/my-account" },
+  { label: "My Profile", icon: <User className="size-5" />, href: "/dashboard/my-profile" },
   {
     label: "Enrolled courses",
     icon: <MonitorCheckIcon className="size-5" />,

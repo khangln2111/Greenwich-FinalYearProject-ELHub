@@ -30,7 +30,7 @@ import HomePage from "../pages/(main)/home/HomePage";
 import InstructorDetailPage from "../pages/(main)/instructor-detail/InstructorDetailPage";
 import InventoryPage from "../pages/(main)/inventory/InventoryPage";
 import LearningPage from "../pages/(main)/learning/LearningPage";
-import MyAccountPage from "../pages/(main)/my-account/MyAccountPage";
+import MyProfilePage from "../pages/(main)/my-account/MyAccountPage";
 import OrderHistoryDetailPage from "../pages/(main)/order-detail/OrderHistoryDetailPage";
 import OrderHistoryPage from "../pages/(main)/order-history/OrderHistoryPage";
 import UserDashboardPage from "../pages/(main)/dashboard/UserDashboardPage";
@@ -79,8 +79,8 @@ const userRoute: RouteObject = {
       children: [
         { index: true, element: <UserDashboardPage /> },
         {
-          path: "my-account",
-          element: <MyAccountPage />,
+          path: "my-profile",
+          element: <MyProfilePage />,
         },
         {
           path: "enrolled-courses",

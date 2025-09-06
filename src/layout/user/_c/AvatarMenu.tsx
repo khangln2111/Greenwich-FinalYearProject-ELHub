@@ -60,10 +60,10 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         <Menu.Label>Personal</Menu.Label>
         <Menu.Item
           component={Link}
-          to="/dashboard/my-account"
+          to="/dashboard/my-profile"
           leftSection={<CircleUserIcon size={15} />}
         >
-          My account
+          My profile
         </Menu.Item>
         <Menu.Item
           component={Link}
@@ -139,7 +139,13 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         </Menu.Item>
 
         <Menu.Divider />
-        <Menu.Item leftSection={<IconSettings size={15} />}>Settings</Menu.Item>
+        <Menu.Item
+          leftSection={<IconSettings size={15} />}
+          component={Link}
+          to="/dashboard/settings"
+        >
+          Settings
+        </Menu.Item>
         <Menu.Item
           color="red"
           leftSection={<IconTrash size={15} />}

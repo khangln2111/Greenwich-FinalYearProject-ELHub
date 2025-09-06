@@ -4,12 +4,25 @@ import {
   Divider,
   Group,
   SegmentedControl,
+  Select,
   Stack,
   Switch,
   Text,
   Title,
 } from "@mantine/core";
-import { Bell, Lock, Shield, SlidersHorizontal, Trash2, User2 } from "lucide-react";
+import {
+  Bell,
+  Globe,
+  LockIcon,
+  MonitorIcon,
+  MoonIcon,
+  PaletteIcon,
+  Shield,
+  SlidersHorizontal,
+  SunIcon,
+  Trash2,
+  User2,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
@@ -18,14 +31,25 @@ import UpdateUserProfileForm from "../my-account/_c/UpdateUserProfileForm";
 type Section = "profile" | "notifications" | "security" | "preferences" | "danger";
 
 export default function UserSettingsPage() {
-  const [section, setSection] = useState<Section>("profile");
+  const [section, setSection] = useState<Section>("notifications");
   const { data: user, isPending, error } = useGetCurrentUserInfo();
+
+  // Notification states
   const [emailNotif, setEmailNotif] = useState(true);
   const [pushNotif, setPushNotif] = useState(false);
+  const [marketingNotif, setMarketingNotif] = useState(false);
+  const [courseUpdates, setCourseUpdates] = useState(true);
+  const [systemAlerts, setSystemAlerts] = useState(true);
+  const [weeklyDigest, setWeeklyDigest] = useState(true);
+
+  // Preferences states
+  const [theme, setTheme] = useState("system");
+  const [language, setLanguage] = useState("en");
+
   const navigate = useNavigate();
 
   return (
-    <div className="mx-auto space-y-8">
+    <div className="mx-auto space-y-6">
       {/* Header */}
       <div className="space-y-2">
         <Title order={2} className="text-3xl font-bold tracking-tight">
@@ -44,7 +68,7 @@ export default function UserSettingsPage() {
         onChange={(val) => setSection(val as Section)}
         color="primary"
         classNames={{
-          root: "bg-body",
+          root: "bg-body overflow-x-auto",
           label: "group",
         }}
         data={[
@@ -108,6 +132,7 @@ export default function UserSettingsPage() {
         {section === "notifications" && (
           <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
             <Stack gap="xl">
+              {/* Email notifications */}
               <Group justify="space-between">
                 <div>
                   <Text fw={500}>Email Notifications</Text>
@@ -121,6 +146,8 @@ export default function UserSettingsPage() {
                 />
               </Group>
               <Divider />
+
+              {/* Push notifications */}
               <Group justify="space-between">
                 <div>
                   <Text fw={500}>Push Notifications</Text>
@@ -133,35 +160,156 @@ export default function UserSettingsPage() {
                   onChange={(e) => setPushNotif(e.currentTarget.checked)}
                 />
               </Group>
+              <Divider />
+
+              {/* Marketing */}
+              <Group justify="space-between">
+                <div>
+                  <Text fw={500}>Marketing Emails</Text>
+                  <Text size="sm" c="dimmed">
+                    Receive promotions, special offers and news
+                  </Text>
+                </div>
+                <Switch
+                  checked={marketingNotif}
+                  onChange={(e) => setMarketingNotif(e.currentTarget.checked)}
+                />
+              </Group>
+              <Divider />
+
+              {/* Course updates */}
+              <Group justify="space-between">
+                <div>
+                  <Text fw={500}>Course Updates</Text>
+                  <Text size="sm" c="dimmed">
+                    Get notified when new lessons are added to your enrolled courses
+                  </Text>
+                </div>
+                <Switch
+                  checked={courseUpdates}
+                  onChange={(e) => setCourseUpdates(e.currentTarget.checked)}
+                />
+              </Group>
+              <Divider />
+
+              {/* System alerts */}
+              <Group justify="space-between">
+                <div>
+                  <Text fw={500}>System Alerts</Text>
+                  <Text size="sm" c="dimmed">
+                    Important system-wide announcements
+                  </Text>
+                </div>
+                <Switch
+                  checked={systemAlerts}
+                  onChange={(e) => setSystemAlerts(e.currentTarget.checked)}
+                />
+              </Group>
+              <Divider />
+
+              {/* Weekly digest */}
+              <Group justify="space-between">
+                <div>
+                  <Text fw={500}>Weekly Digest</Text>
+                  <Text size="sm" c="dimmed">
+                    A summary of your activity every week
+                  </Text>
+                </div>
+                <Switch
+                  checked={weeklyDigest}
+                  onChange={(e) => setWeeklyDigest(e.currentTarget.checked)}
+                />
+              </Group>
             </Stack>
           </Card>
         )}
 
         {section === "security" && (
           <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
-            <Stack gap="md">
-              <Text fw={500} className="flex items-center gap-2">
-                <Lock size={18} /> Password
+            <Stack gap="lg">
+              <Text fw={500} className="flex items-center gap-2 text-lg">
+                <LockIcon size={18} /> Password
               </Text>
-              <Text size="sm" c="dimmed">
+              <Text className="text-md" c="dimmed">
                 For security reasons, you can reset your password from the forgot-password page.
               </Text>
-              <Button radius="lg" onClick={() => navigate("/forgot-password")}>
-                Reset Password
-              </Button>
-              <Divider />
-              <Button variant="outline" radius="lg">
-                Enable Two-Factor Authentication
-              </Button>
+              <Group gap="md" className="justify-end">
+                <Button
+                  radius="lg"
+                  leftSection={<LockIcon size={16} />}
+                  onClick={() => navigate("/forgot-password")}
+                >
+                  Reset Password
+                </Button>
+                <Button variant="outline" radius="lg" leftSection={<Shield size={16} />}>
+                  Enable Two-Factor Auth
+                </Button>
+              </Group>
             </Stack>
           </Card>
         )}
 
         {section === "preferences" && (
-          <Card shadow="sm" radius="xl" className="p-6">
-            <Stack gap="md">
-              <Text c="dimmed">Theme settings (coming soon…)</Text>
-              <Text c="dimmed">Language settings (coming soon…)</Text>
+          <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
+            <Stack gap="lg">
+              {/* Theme */}
+              <div>
+                <Text fw={500} className="mb-2 flex items-center gap-2">
+                  <PaletteIcon size={16} /> Theme
+                </Text>
+                <SegmentedControl
+                  value={theme}
+                  onChange={setTheme}
+                  radius="lg"
+                  data={[
+                    {
+                      value: "light",
+                      label: (
+                        <div className="flex items-center gap-2">
+                          <SunIcon size={16} /> Light
+                        </div>
+                      ),
+                    },
+                    {
+                      value: "dark",
+                      label: (
+                        <div className="flex items-center gap-2">
+                          <MoonIcon size={16} /> Dark
+                        </div>
+                      ),
+                    },
+                    {
+                      value: "system",
+                      label: (
+                        <div className="flex items-center gap-2">
+                          <MonitorIcon size={16} /> System
+                        </div>
+                      ),
+                    },
+                  ]}
+                />
+              </div>
+
+              <Divider />
+
+              {/* Language */}
+              <div>
+                <Text fw={500} className="mb-2 flex items-center gap-2">
+                  <Globe size={16} /> Language
+                </Text>
+                <Select
+                  value={language}
+                  onChange={(val) => setLanguage(val || "en")}
+                  data={[
+                    { value: "en", label: "English" },
+                    { value: "vi", label: "Tiếng Việt" },
+                    { value: "es", label: "Español" },
+                    { value: "fr", label: "Français" },
+                  ]}
+                  className="max-w-xs"
+                  radius="lg"
+                />
+              </div>
             </Stack>
           </Card>
         )}

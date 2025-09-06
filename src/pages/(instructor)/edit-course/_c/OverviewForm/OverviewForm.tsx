@@ -135,30 +135,6 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
         />
       </div>
 
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <TestSortList
-          size="md"
-          form={form}
-          field="learningOutcomes"
-          label="What will students learn in your course?"
-          placeholderPrefix="Learning Outcome"
-          onAdd={addLearning}
-          onRemove={removeLearning}
-          type="learningOutcomes"
-        />
-
-        <SortableInputList
-          size="md"
-          form={form}
-          field="prerequisites"
-          label="Course Prerequisites"
-          placeholderPrefix="Prerequisite"
-          onAdd={addPrerequisite}
-          onRemove={removePrerequisite}
-          type="prerequisites"
-        />
-      </DragDropContext>
-
       <div>
         <Title order={3}>Pricing</Title>
         <div className="flex flex-col md:flex-row gap-x-4 gap-y-6 mt-xs">
@@ -207,6 +183,30 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
           className="max-w-lg mt-xs"
         />
       </div>
+
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <TestSortList
+          size="md"
+          form={form}
+          field="learningOutcomes"
+          label="What will students learn in your course?"
+          placeholderPrefix="Learning Outcome"
+          onAdd={addLearning}
+          onRemove={removeLearning}
+          type="learningOutcomes"
+        />
+
+        <SortableInputList
+          size="md"
+          form={form}
+          field="prerequisites"
+          label="Course Prerequisites"
+          placeholderPrefix="Prerequisite"
+          onAdd={addPrerequisite}
+          onRemove={removePrerequisite}
+          type="prerequisites"
+        />
+      </DragDropContext>
 
       <div>
         <Title order={3}>Course Description</Title>
