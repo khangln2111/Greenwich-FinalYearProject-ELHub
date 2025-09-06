@@ -1,6 +1,6 @@
 import { Badge, Box, Card, Container, Image, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useGetCategories } from "../../../../features/category/categoryHooks";
+import { useGetCategories } from "../../../../features/category/category.hooks";
 import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 import { Link } from "react-router-dom";
 

@@ -8,7 +8,6 @@ import AdminCategoriesPage from "../pages/(admin)/categories/AdminCategoriesPage
 import AdminCourseDetailPage from "../pages/(admin)/course-detail/AdminCourseDetailPage";
 import AdminCoursesPage from "../pages/(admin)/courses/AdminCoursesPage";
 import AdminPendingCoursesPage from "../pages/(admin)/courses/AdminPendingCoursesPage";
-import AdminInstructorModerationPage from "../pages/(admin)/instructors/AdminInstructorModerationPage";
 import AdminUsersPage from "../pages/(admin)/users/AdminUsersPage";
 import ForgotPasswordPage from "../pages/(auth)/forgot-password/ForgotPasswordPage";
 import LoginPage from "../pages/(auth)/login/LoginPage";
@@ -38,6 +37,7 @@ import UserDashboardPage from "../pages/(main)/dashboard/UserDashboardPage";
 import NotificationsPage from "../pages/(main)/notifications/NotificationsPage";
 import InstructorNotificationsPage from "../pages/(instructor)/notifications/InstructorNotificationsPage";
 import AdminNotificationsPage from "../pages/(admin)/notifications/AdminNotificationsPage";
+import AdminInstructorApplicationsPage from "../pages/(admin)/instructor-applications/AdminInstructorApplicationsPage";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -151,7 +151,7 @@ const adminRoute: RouteObject = {
     },
     {
       path: "instructor-applications",
-      element: <AdminInstructorModerationPage />,
+      element: <AdminInstructorApplicationsPage />,
     },
     {
       path: "courses",

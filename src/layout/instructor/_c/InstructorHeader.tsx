@@ -1,5 +1,5 @@
 // components/instructor/InstructorHeader.tsx
-import { ActionIcon, Box, Button, Group, Modal } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, Indicator, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { PanelLeftCloseIcon, PanelRightCloseIcon } from "lucide-react";
@@ -10,12 +10,16 @@ import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "../../user/_c/AvatarMenu";
 import SearchBox from "../../user/_c/SearchBox";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
+import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
+import { RoleName } from "../../../features/auth/identity.types";
 
 const InstructorHeader = () => {
   const currentUser = useAppStore((s) => s.currentUser);
   const desktopInstructorSidebarCollapsed = useAppStore((s) => s.desktopInstructorSidebarCollapsed);
   const toggleDesktopInstructorSidebar = useAppStore((s) => s.toggleDesktopInstructorSidebar);
   const openMobileInstructorSidebar = useAppStore((s) => s.openMobileInstructorSidebar);
+
+  const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.ADMIN);
 
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
@@ -121,9 +125,17 @@ const InstructorHeader = () => {
           >
             <IconSearch size={20} />
           </ActionIcon>
-          <ActionIcon variant="default" size="lg" aria-label="Notification trigger">
-            <IconBell size={19} strokeWidth={1.5} />
-          </ActionIcon>
+          <Indicator label={unreadNotificationsCount ?? 0} size={20} offset={2} position="top-end">
+            <ActionIcon
+              variant="default"
+              size="lg"
+              aria-label="Notification trigger"
+              component={Link}
+              to="/instructor/notifications"
+            >
+              <IconBell size={19} strokeWidth={1.5} />
+            </ActionIcon>
+          </Indicator>
 
           <ThemeToggler />
           {currentUser && <AvatarMenu />}

@@ -11,7 +11,7 @@ import {
   InstructorApplicationVm,
   ResubmitInstructorApplicationCommand,
 } from "../../../../features/instructorApplication/instructorApplication.types";
-import { useResubmitInstructorApplication } from "../../../../features/instructorApplication/instructorApplicationHooks";
+import { useResubmitInstructorApplication } from "../../../../features/instructorApplication/instructorApplication.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 
 type RetryInstructorApplicationFormProps = {

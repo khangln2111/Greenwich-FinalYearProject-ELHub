@@ -26,7 +26,7 @@ const Header = () => {
   const [searchInput, setSearchInput] = useState<string>(search);
   const navigate = useNavigate();
   const { data: cart } = useGetCart();
-  const { data: unreadNotificationCount } = useGetUnreadNotificationsCount(RoleName.LEARNER);
+  const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.LEARNER);
 
   const handleSearch = () => {
     const trimmed = searchInput.trim();
@@ -140,7 +140,7 @@ const Header = () => {
             {/* Notification (desktop only) */}
             {currentUser && (
               <Indicator
-                label={unreadNotificationCount ?? 0}
+                label={unreadNotificationsCount ?? 0}
                 size={20}
                 offset={2}
                 position="top-end"

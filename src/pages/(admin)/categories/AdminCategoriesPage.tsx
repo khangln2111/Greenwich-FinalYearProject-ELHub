@@ -6,7 +6,7 @@ import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { CategoryVm } from "../../../features/category/category.types";
-import { useGetCategories } from "../../../features/category/categoryHooks";
+import { useGetCategories } from "../../../features/category/category.hooks";
 import CreateCategoryModal from "./_c/CreateCategoryModal";
 import UpdateCategoryModal from "./_c/UpdateCategoryModal";
 

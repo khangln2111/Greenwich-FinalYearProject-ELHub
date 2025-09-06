@@ -12,6 +12,7 @@ import {
   getInstructorApplicationSelf,
   resubmitInstructorApplication,
   moderateInstructorApplication,
+  getInstructorApplicationById,
 } from "./instructorApplication.api";
 import { handleApiError } from "../common-service/handleApiError";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
@@ -22,6 +23,13 @@ export const useGetInstructorApplications = (query?: InstructorApplicationQueryC
   return useQuery({
     queryKey: keyFac.instructorApplications.getInstructorApplications(query).queryKey,
     queryFn: () => getInstructorApplications(query),
+  });
+};
+
+export const useGetInstructorApplicationById = (id: string) => {
+  return useQuery({
+    queryKey: keyFac.instructorApplications.getInstructorApplicationById(id).queryKey,
+    queryFn: () => getInstructorApplicationById(id),
   });
 };
 

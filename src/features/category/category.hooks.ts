@@ -14,7 +14,7 @@ import {
   getCategories,
   getCategoryDetail,
   updateCategory,
-} from "./categoryApi";
+} from "./category.api";
 
 export const useGetCategories = (query: CategoryQueryCriteria = {}) => {
   return useQuery({

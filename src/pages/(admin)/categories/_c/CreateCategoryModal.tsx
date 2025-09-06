@@ -2,7 +2,7 @@ import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from "../../../../constants/ValidationConstants";
-import { useCreateCategory } from "../../../../features/category/categoryHooks";
+import { useCreateCategory } from "../../../../features/category/category.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import {

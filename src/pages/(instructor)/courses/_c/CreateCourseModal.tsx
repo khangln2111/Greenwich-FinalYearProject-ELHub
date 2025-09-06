@@ -16,7 +16,7 @@ import {
   MAX_IMAGE_SIZE_MB,
   MAX_VIDEO_SIZE_MB,
 } from "../../../../constants/ValidationConstants";
-import { useGetCategories } from "../../../../features/category/categoryHooks";
+import { useGetCategories } from "../../../../features/category/category.hooks";
 import {
   CreateCourseFormValues,
   createCourseSchema,

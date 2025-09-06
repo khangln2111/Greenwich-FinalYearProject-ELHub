@@ -8,4 +8,7 @@ export const instructorApplicationKeyFac = createQueryKeys("instructorApplicatio
   getInstructorApplicationSelf: {
     queryKey: null,
   },
+  getInstructorApplicationById: (id: string) => ({
+    queryKey: [id],
+  }),
 });

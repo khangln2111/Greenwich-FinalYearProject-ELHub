@@ -53,6 +53,11 @@ export const getInstructorApplications = async (query?: InstructorApplicationQue
   return response.data;
 };
 
+export const getInstructorApplicationById = async (id: string) => {
+  const response = await apiClient.get<InstructorApplicationVm>(`${BASE_URL}/${id}`);
+  return response.data;
+};
+
 export const createInstructorApplication = async (command: CreateInstructorApplicationCommand) => {
   const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}`, command, {
     headers: {

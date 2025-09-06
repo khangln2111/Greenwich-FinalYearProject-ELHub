@@ -18,7 +18,7 @@ import {
 import { IconFilterCog } from "@tabler/icons-react";
 import { DollarSignIcon, RotateCcw } from "lucide-react";
 import { encodeOrderOption } from "../../../../../api-client/api.types";
-import { useGetCategories } from "../../../../../features/category/categoryHooks";
+import { useGetCategories } from "../../../../../features/category/category.hooks";
 import { CourseLevel, CoursePriceMode } from "../../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 import { CourseSorter } from "./CourseSorter";

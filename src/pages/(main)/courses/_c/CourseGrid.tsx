@@ -9,7 +9,7 @@ const CourseGrid = ({ courses }: CourseGridProps) => {
     <div className="@container">
       <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-md">
         {courses.map((course) => (
-          <CourseCard key={course.id} course={course} />
+          <CourseCard key={course.id} course={course} className="dark:bg-dark-7" />
         ))}
       </div>
     </div>

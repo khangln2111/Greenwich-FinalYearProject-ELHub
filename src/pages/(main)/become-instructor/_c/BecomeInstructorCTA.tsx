@@ -5,7 +5,7 @@ import CreateInstructorApplicationForm from "./CreateInstructorApplicationForm";
 import RetryInstructorApplicationForm from "./RetryInstructorApplicationForm";
 import { Loader } from "@mantine/core";
 import dayjs from "dayjs";
-import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplicationHooks";
+import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplication.hooks";
 import ApplicationStatusModal from "./ApplicationStatusModal";
 import { useState } from "react";
 import { InstructorApplicationStatus } from "../../../../features/instructorApplication/instructorApplication.types";

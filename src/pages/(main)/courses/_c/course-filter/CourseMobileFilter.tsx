@@ -19,7 +19,7 @@ import { DollarSignIcon } from "lucide-react";
 import { ResponsiveDialog } from "mantine-vaul";
 import { useEffect, useState, useTransition } from "react";
 import { encodeOrderOption } from "../../../../../api-client/api.types";
-import { useGetCategories } from "../../../../../features/category/categoryHooks";
+import { useGetCategories } from "../../../../../features/category/category.hooks";
 import { CourseLevel, CoursePriceMode } from "../../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../../hooks/useCoursesQueryState";
 import { useCoursesPageStore } from "../../../../../zustand/stores/coursesPageStore";

@@ -1,6 +1,6 @@
 import { FileQuestionIcon } from "lucide-react";
 
-const AdminInstructorModerationPageEmptyState = () => {
+const AdminInstructorApplicationsPageEmptyState = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
       <FileQuestionIcon className="w-16 h-16 mb-4" />
@@ -12,4 +12,4 @@ const AdminInstructorModerationPageEmptyState = () => {
     </div>
   );
 };
-export default AdminInstructorModerationPageEmptyState;
+export default AdminInstructorApplicationsPageEmptyState;

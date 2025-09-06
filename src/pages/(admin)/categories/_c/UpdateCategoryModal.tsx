@@ -8,7 +8,7 @@ import {
   updateCategorySchema,
 } from "../../../../features/category/category.schema";
 import { CategoryVm, UpdateCategoryCommand } from "../../../../features/category/category.types";
-import { useUpdateCategory } from "../../../../features/category/categoryHooks";
+import { useUpdateCategory } from "../../../../features/category/category.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import CusModal from "../../../../components/CusModal/CusModal";
 

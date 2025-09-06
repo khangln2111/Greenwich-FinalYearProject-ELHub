@@ -7,7 +7,7 @@ import { cn } from "../../utils/cn";
 
 type CourseCardProps = {
   course: CourseVm;
-  className?: string; // Optional className prop for additional styling
+  className?: string;
 };
 
 const CourseCard = ({ course, className }: CourseCardProps) => {

@@ -8,7 +8,7 @@ import {
   createInstructorApplicationSchema,
 } from "../../../../features/instructorApplication/instructorApplication.schema";
 import { CreateInstructorApplicationCommand } from "../../../../features/instructorApplication/instructorApplication.types";
-import { useCreateInstructorApplication } from "../../../../features/instructorApplication/instructorApplicationHooks";
+import { useCreateInstructorApplication } from "../../../../features/instructorApplication/instructorApplication.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 
 type CreateInstructorApplicationFormProps = {
