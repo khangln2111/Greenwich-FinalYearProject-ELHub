@@ -1,7 +1,8 @@
-import { BellIcon, InboxIcon } from "lucide-react";
 import { Button, Text } from "@mantine/core";
+import { BellIcon, InboxIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-const NotificationsPageEmptyState = () => {
+
+const AdminNotificationsPageEmptyState = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
       <InboxIcon size={64} className="text-gray-300 mb-4" />
@@ -9,20 +10,21 @@ const NotificationsPageEmptyState = () => {
         No notifications yet
       </Text>
       <Text size="sm" className="mb-6 max-w-xs">
-        You're all caught up! Notifications about your courses, gifts, and accounts will appear
-        here.
+        You're all caught up! Notifications about platform events, new users, and course submissions
+        will appear here.
       </Text>
       <Button
         size="md"
         variant="light"
         radius="lg"
         component={Link}
-        to="/courses"
+        to="/admin/courses/pending"
         leftSection={<BellIcon size={16} />}
+        className="w-full sm:w-auto"
       >
         Browse Courses
       </Button>
     </div>
   );
 };
-export default NotificationsPageEmptyState;
+export default AdminNotificationsPageEmptyState;

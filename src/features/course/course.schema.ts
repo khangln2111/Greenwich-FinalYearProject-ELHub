@@ -107,9 +107,9 @@ export const courseApprovalSchema = z.object({
 
 export type CourseApprovalFormValues = z.infer<typeof courseApprovalSchema>;
 
-// schema for course review
-export const reviewCourseSchema = z.object({
+// schema for course moderation
+export const moderateCourseSchema = z.object({
   note: z.string().min(1, { message: "Note is required" }),
 });
 
-export type ReviewCourseFormValues = z.infer<typeof reviewCourseSchema>;
+export type ModerateCourseFormValues = z.infer<typeof moderateCourseSchema>;

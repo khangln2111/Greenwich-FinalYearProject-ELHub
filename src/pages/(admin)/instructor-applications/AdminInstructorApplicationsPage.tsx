@@ -4,25 +4,27 @@ import { IconSearch } from "@tabler/icons-react";
 import { ArrowUpAzIcon } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { ReviewCourseFormValues, reviewCourseSchema } from "../../../features/course/course.schema";
 import {
-  InstructorApplicationOrderableFields,
-  InstructorApplicationStatus,
-  InstructorApplicationVm,
-  ModerateInstructorApplicationCommand,
-} from "../../../features/instructorApplication/instructorApplication.types";
+  ModerateCourseFormValues,
+  moderateCourseSchema,
+} from "../../../features/course/course.schema";
 import {
   useGetInstructorApplications,
   useModerateInstructorApplication,
 } from "../../../features/instructorApplication/instructorApplication.hooks";
+import {
+  InstructorApplicationOrderableFields,
+  InstructorApplicationStatus,
+  ModerateInstructorApplicationCommand,
+} from "../../../features/instructorApplication/instructorApplication.types";
 import { cn } from "../../../utils/cn";
 import AdminInstructorApplicationsPageEmptyState from "./_c/AdminInstructorApplicationsPageEmptyState";
 import InstructorApplicationCard from "./_c/InstructorApplicationCard";
-import InstructorApplicationReviewModal from "./_c/InstructorApplicationReviewModal";
+import InstructorApplicationModerationModal from "./_c/InstructorApplicationModerationModal";
 import InstructorApplicationViewModal from "./_c/InstructorApplicationViewModal";
 
 const statuses: ("All" | InstructorApplicationStatus)[] = [
@@ -71,13 +73,14 @@ const ORDER_BY_OPTIONS: {
 ];
 
 export default function AdminInstructorApplicationsPage() {
-  const modalStack = useModalsStack(["view", "review"]);
+  const modalStack = useModalsStack(["view", "moderation"]);
 
-  const [viewApp, setViewApp] = useState<InstructorApplicationVm | null>(null);
-  const [reviewApp, setReviewApp] = useState<InstructorApplicationVm | null>(null);
+  const [viewAppId, setViewAppId] = useQueryState("viewAppId", parseAsString);
+  const [moderationAppId, setModerationAppId] = useQueryState("moderationAppId", parseAsString);
   const [approveMode, setApproveMode] = useState(true);
+
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(9));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
 
@@ -99,9 +102,9 @@ export default function AdminInstructorApplicationsPage() {
     "desc",
   );
 
-  const form = useForm<ReviewCourseFormValues>({
+  const form = useForm<ModerateCourseFormValues>({
     initialValues: { note: "" },
-    validate: zodResolver(reviewCourseSchema),
+    validate: zodResolver(moderateCourseSchema),
   });
 
   const { mutate, isPending } = useModerateInstructorApplication();
@@ -110,30 +113,29 @@ export default function AdminInstructorApplicationsPage() {
     setSearch(searchInput);
   };
 
-  const handleReview = (app: InstructorApplicationVm, isApprove: boolean) => {
-    setReviewApp(app);
+  const handleModeration = (id: string, isApprove: boolean) => {
+    setModerationAppId(id);
     setApproveMode(isApprove);
     form.reset();
-    modalStack.open("review");
+    modalStack.open("moderation");
   };
 
-  const handleSubmitReview = () => {
-    if (!reviewApp) return;
-    const result = form.validate();
-    if (!result.hasErrors) {
-      const payload: ModerateInstructorApplicationCommand = {
-        id: reviewApp.id,
-        isApproved: approveMode,
-        note: form.values.note.trim(),
-      };
-      mutate(payload, {
-        onSuccess: () => {
-          modalStack.close("review");
-          modalStack.close("view");
-        },
-      });
-    }
+  const handleSubmitModeration = (payload: ModerateInstructorApplicationCommand) => {
+    mutate(payload, {
+      onSuccess: () => {
+        modalStack.close("moderation");
+        modalStack.close("view");
+      },
+    });
   };
+
+  useEffect(() => {
+    if (viewAppId) {
+      modalStack.open("view");
+    } else {
+      modalStack.close("view");
+    }
+  }, [viewAppId]);
 
   const {
     data,
@@ -210,7 +212,7 @@ export default function AdminInstructorApplicationsPage() {
               key={app.id}
               app={app}
               onView={() => {
-                setViewApp(app);
+                setViewAppId(app.id);
                 modalStack.open("view");
               }}
             />
@@ -227,19 +229,23 @@ export default function AdminInstructorApplicationsPage() {
         className="flex justify-center items-center mt-10"
       />
 
-      <InstructorApplicationViewModal
-        app={viewApp}
-        {...modalStack.register("view")}
-        handleReview={handleReview}
-      />
+      {viewAppId && (
+        <InstructorApplicationViewModal
+          id={viewAppId}
+          {...modalStack.register("view")}
+          handleModeration={handleModeration}
+        />
+      )}
 
-      <InstructorApplicationReviewModal
-        {...modalStack.register("review")}
-        approveMode={approveMode}
-        app={reviewApp}
-        onSubmit={handleSubmitReview}
-        isSubmitting={isPending}
-      />
+      {moderationAppId && (
+        <InstructorApplicationModerationModal
+          id={moderationAppId}
+          {...modalStack.register("moderation")}
+          approveMode={approveMode}
+          onSubmit={handleSubmitModeration}
+          isSubmitting={isPending}
+        />
+      )}
     </div>
   );
 }

@@ -1,8 +1,16 @@
-import { Badge, Button, SegmentedControl, Stack, Text } from "@mantine/core";
-import { BellIcon, CheckCheckIcon, Inbox } from "lucide-react";
-import { parseAsArrayOf, parseAsStringEnum, parseAsStringLiteral, useQueryState } from "nuqs";
+import { Badge, Button, SegmentedControl, Stack } from "@mantine/core";
+import { BellIcon, CheckCheckIcon, TagsIcon } from "lucide-react";
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsStringEnum,
+  parseAsStringLiteral,
+  useQueryState,
+} from "nuqs";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { MultiSelectWithMaxDisplayedItems } from "../../../components/MultiSelectWithMaxDisplayedItems/MultiSelectWithMaxDisplayedItems";
+import NotificationCard from "../../../components/NotificationCard/NotificationCard";
 import { RoleName } from "../../../features/auth/identity.types";
 import {
   useGetNotifications,
@@ -13,8 +21,7 @@ import {
   NotificationType,
   NotificationVm,
 } from "../../../features/notification/notification.types";
-import NotificationCard from "../../../components/NotificationCard/NotificationCard";
-import { Link } from "react-router-dom";
+import AdminNotificationsPageEmptyState from "./AdminNotificationsPageEmptyState";
 
 export default function AdminNotificationsPage() {
   const [filterUnread, setFilterUnread] = useQueryState(
@@ -27,10 +34,13 @@ export default function AdminNotificationsPage() {
     parseAsArrayOf(parseAsStringEnum(Object.values(NotificationType))).withDefault([]),
   );
 
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
+
   const { data, isPending } = useGetNotifications(RoleName.ADMIN, {
     isRead: filterUnread === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
-    pageSize: 10,
+    pageSize: pageSize,
   });
 
   const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.ADMIN);
@@ -97,6 +107,9 @@ export default function AdminNotificationsPage() {
                   value: NotificationType.InstructorApplicationResubmitted,
                 },
               ]}
+              inputProps={{
+                leftSection: <TagsIcon size={18} />,
+              }}
               placeholder="Select types"
               onChange={(vals) => setFilterTypes(vals as NotificationType[])}
               value={filterTypes}
@@ -115,28 +128,17 @@ export default function AdminNotificationsPage() {
           ))}
         </Stack>
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
-          <Inbox size={64} className="text-gray-300 mb-4" />
-          <Text size="xl" fw={600} className="mb-2">
-            No notifications yet
-          </Text>
-          <Text size="sm" className="mb-6 max-w-xs">
-            You're all caught up! Notifications about platform events, new users, and course
-            submissions will appear here.
-          </Text>
-          <Button
-            size="md"
-            variant="light"
-            radius="lg"
-            component={Link}
-            to="/admin/courses/pending"
-            leftSection={<BellIcon size={16} />}
-            className="w-full sm:w-auto"
-          >
-            Browse Courses
-          </Button>
-        </div>
+        <AdminNotificationsPageEmptyState />
       )}
+
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={data?.count ?? 0}
+        onPageChange={setPage}
+        withEdges
+        className="flex items-center justify-center mt-10"
+      />
     </div>
   );
 }

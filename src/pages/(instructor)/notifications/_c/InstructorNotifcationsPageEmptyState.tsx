@@ -9,8 +9,7 @@ const InstructorNotifcationsPageEmptyState = () => {
         No notifications yet
       </Text>
       <Text size="sm" className="mb-6 max-w-xs">
-        You're all caught up! Notifications about your courses, sales, and messages will appear
-        here.
+        You're all caught up! Notifications about your courses, and sales will appear here.
       </Text>
       <Button
         size="md"

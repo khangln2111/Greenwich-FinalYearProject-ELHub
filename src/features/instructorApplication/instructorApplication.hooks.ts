@@ -28,6 +28,7 @@ export const useGetInstructorApplications = (query?: InstructorApplicationQueryC
 
 export const useGetInstructorApplicationById = (id: string) => {
   return useQuery({
+    enabled: !!id,
     queryKey: keyFac.instructorApplications.getInstructorApplicationById(id).queryKey,
     queryFn: () => getInstructorApplicationById(id),
   });

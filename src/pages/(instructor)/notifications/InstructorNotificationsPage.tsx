@@ -1,6 +1,12 @@
 import { Badge, Button, SegmentedControl, Stack } from "@mantine/core";
-import { BellIcon, CheckCheckIcon } from "lucide-react";
-import { parseAsArrayOf, parseAsStringEnum, parseAsStringLiteral, useQueryState } from "nuqs";
+import { BellIcon, CheckCheckIcon, TagsIcon } from "lucide-react";
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsStringEnum,
+  parseAsStringLiteral,
+  useQueryState,
+} from "nuqs";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { MultiSelectWithMaxDisplayedItems } from "../../../components/MultiSelectWithMaxDisplayedItems/MultiSelectWithMaxDisplayedItems";
 import NotificationCard from "../../../components/NotificationCard/NotificationCard";
@@ -15,6 +21,7 @@ import {
   NotificationVm,
 } from "../../../features/notification/notification.types";
 import InstructorNotifcationsPageEmptyState from "./_c/InstructorNotifcationsPageEmptyState";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 
 export default function InstructorNotificationsPage() {
   const [filterUnread, setFilterUnread] = useQueryState(
@@ -27,10 +34,13 @@ export default function InstructorNotificationsPage() {
     parseAsArrayOf(parseAsStringEnum(Object.values(NotificationType))).withDefault([]),
   );
 
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
+
   const { data, isPending } = useGetNotifications(RoleName.INSTRUCTOR, {
     isRead: filterUnread === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
-    pageSize: 10,
+    pageSize: pageSize,
   });
 
   const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.INSTRUCTOR);
@@ -90,6 +100,9 @@ export default function InstructorNotificationsPage() {
                 { label: "Course Approved", value: NotificationType.CourseApproved },
                 { label: "Course Rejected", value: NotificationType.CourseRejected },
               ]}
+              inputProps={{
+                leftSection: <TagsIcon size={18} />,
+              }}
               placeholder="Select types"
               onChange={(vals) => setFilterTypes(vals as NotificationType[])}
               value={filterTypes}
@@ -110,6 +123,15 @@ export default function InstructorNotificationsPage() {
           )}
         </Stack>
       )}
+
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={data?.count ?? 0}
+        onPageChange={setPage}
+        withEdges
+        className="flex items-center justify-center mt-10"
+      />
     </div>
   );
 }

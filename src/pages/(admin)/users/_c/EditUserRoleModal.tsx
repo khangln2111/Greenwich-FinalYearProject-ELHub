@@ -9,7 +9,7 @@ interface Props {
   onClose: () => void;
 }
 
-const allRoles = ["Student", "Instructor", "Admin"];
+const allRoles = ["Learner", "Instructor", "Admin"];
 
 export default function EditUserRoleModal({ user, opened, onClose }: Props) {
   const { mutate: assignRoles, isPending } = useAssignRolesToUser();

@@ -197,7 +197,7 @@ export default function AdminUsersPage() {
                             color="gray"
                             className="text-[13px] px-2 text-center w-fit"
                           >
-                            User
+                            Learner
                           </Badge>
                           {user.roles.length > 0 &&
                             user.roles.map((role: string) => (

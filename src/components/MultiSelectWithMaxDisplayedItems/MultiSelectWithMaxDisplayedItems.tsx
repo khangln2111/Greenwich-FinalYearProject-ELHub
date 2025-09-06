@@ -6,6 +6,7 @@ import {
   MantineSize,
   Pill,
   PillsInput,
+  PillsInputProps,
   useCombobox,
 } from "@mantine/core";
 import { cn } from "../../utils/cn";
@@ -21,6 +22,7 @@ export interface MultiSelectWithMaxDisplayedItemsProps {
     wrapper?: string;
   };
   showMoreAfter?: number;
+  inputProps?: Omit<PillsInputProps, "children" | "size" | "onClick" | "className">;
 }
 
 export function MultiSelectWithMaxDisplayedItems({
@@ -32,6 +34,7 @@ export function MultiSelectWithMaxDisplayedItems({
   size = "sm",
   classNames,
   showMoreAfter = 2,
+  inputProps,
 }: MultiSelectWithMaxDisplayedItemsProps) {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -74,6 +77,7 @@ export function MultiSelectWithMaxDisplayedItems({
             onClick={() => combobox.toggleDropdown()}
             size={size}
             className="h-full"
+            {...inputProps}
           >
             <Pill.Group size={size}>
               {value.length > 0 ? (

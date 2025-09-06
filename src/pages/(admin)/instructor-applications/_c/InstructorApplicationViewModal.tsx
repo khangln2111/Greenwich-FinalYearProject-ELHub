@@ -1,10 +1,9 @@
 import { Avatar, Badge, Button, Group, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import CusModal from "../../../../components/CusModal/CusModal";
-import {
-  InstructorApplicationStatus,
-  InstructorApplicationVm,
-} from "../../../../features/instructorApplication/instructorApplication.types";
+import { InstructorApplicationStatus } from "../../../../features/instructorApplication/instructorApplication.types";
+import { useGetInstructorApplicationById } from "../../../../features/instructorApplication/instructorApplication.hooks";
+import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 
 const getStatusColor = (status: InstructorApplicationStatus) => {
   switch (status) {
@@ -18,21 +17,21 @@ const getStatusColor = (status: InstructorApplicationStatus) => {
 };
 
 interface Props {
-  app: InstructorApplicationVm | null;
+  id: string;
   opened: boolean;
   onClose: () => void;
   stackId?: string;
-  handleReview: (app: InstructorApplicationVm, approve: boolean) => void;
+  handleModeration: (id: string, approve: boolean) => void;
 }
 
 export default function InstructorApplicationViewModal({
-  app,
+  id,
   opened,
   onClose,
   stackId,
-  handleReview,
+  handleModeration,
 }: Props) {
-  if (!app) return null;
+  const { data: app, isPending } = useGetInstructorApplicationById(id);
 
   return (
     <CusModal
@@ -44,24 +43,24 @@ export default function InstructorApplicationViewModal({
       footer={
         app?.status === InstructorApplicationStatus.Pending ? (
           <Group justify="flex-end">
-            <Button color="red" variant="light" onClick={() => handleReview(app, false)}>
+            <Button color="red" variant="light" onClick={() => id && handleModeration(id, false)}>
               Reject
             </Button>
-            <Button onClick={() => handleReview(app, true)}>Approve</Button>
+            <Button onClick={() => id && handleModeration(id, true)}>Approve</Button>
           </Group>
         ) : undefined
       }
     >
-      {app && (
+      {isPending ? (
+        <CenterLoader />
+      ) : app ? (
         <Stack align="center" gap="md">
           <Stack align="center" gap={8}>
             <Avatar src={app.avatarUrl} size={100} radius="xl" />
-
             <Group gap="xs">
               <Badge color={getStatusColor(app.status)} size="md">
                 {app.status}
               </Badge>
-
               {app.retryCount > 0 && (
                 <Badge color="orange" variant="light" size="sm">
                   Retry #{app.retryCount}
@@ -77,21 +76,18 @@ export default function InstructorApplicationViewModal({
               </Text>
               <Text fw={500}>{`${app.firstName} ${app.lastName}`}</Text>
             </Group>
-
             <Group justify="space-between">
               <Text c="dimmed" size="sm">
                 Email
               </Text>
               <Text fw={500}>{app.email}</Text>
             </Group>
-
             <Group justify="space-between">
               <Text c="dimmed" size="sm">
                 Title
               </Text>
               <Text fw={500}>{app.professionalTitle}</Text>
             </Group>
-
             <Stack gap={4}>
               <Text c="dimmed" size="sm">
                 About
@@ -100,14 +96,12 @@ export default function InstructorApplicationViewModal({
                 {app.about}
               </Text>
             </Stack>
-
             <Group justify="space-between">
               <Text c="dimmed" size="sm">
                 Submitted
               </Text>
               <Text size="sm">{dayjs(app.createdAt).format("DD/MM/YYYY HH:mm")}</Text>
             </Group>
-
             {app.reviewedAt && (
               <Group justify="space-between">
                 <Text c="dimmed" size="sm">
@@ -118,7 +112,7 @@ export default function InstructorApplicationViewModal({
             )}
           </Stack>
         </Stack>
-      )}
+      ) : null}
     </CusModal>
   );
 }
