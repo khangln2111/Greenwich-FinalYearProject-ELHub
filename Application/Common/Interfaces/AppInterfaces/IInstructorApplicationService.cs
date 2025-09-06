@@ -12,5 +12,6 @@ public interface IInstructorApplicationService
     Task<bool> CanResubmitSelf();
     Task<Success> Moderate(ModerateInstructorApplicationCommand command);
     Task<Paged<InstructorApplicationVm>> GetList(GridifyQuery query);
+    Task<InstructorApplicationVm> GetById(Guid id);
     Task<InstructorApplicationVm> GetSelf();
 }

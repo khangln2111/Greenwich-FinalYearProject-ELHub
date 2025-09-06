@@ -20,6 +20,16 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
         return Ok(applications);
     }
 
+    // GET: api/instructor-applications/{id}
+    [HttpGet("{id}")]
+    [ProducesResponseType<InstructorApplicationVm>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var application = await service.GetById(id);
+        return Ok(application);
+    }
+
 
     // POST: api/instructor-applications
     [HttpPost]

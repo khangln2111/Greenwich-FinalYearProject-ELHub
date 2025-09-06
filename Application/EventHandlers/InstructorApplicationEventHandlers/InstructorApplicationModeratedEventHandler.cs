@@ -27,10 +27,11 @@ public class InstructorApplicationModeratedEventHandler(
         var (title, message, type) = notification.IsApproved
             ? ("Instructor Application Approved",
                 "Congratulations! Your instructor application has been approved. You can now start creating courses.",
-                NotificationType.CourseApproved)
+                NotificationType.InstructorApplicationApproved)
             : ("Instructor Application Rejected",
                 "Your instructor application has been rejected. Please check the feedback for details.",
-                NotificationType.CourseRejected);
+                NotificationType.InstructorApplicationRejected);
+
 
         await notificationService.CreateAndSendAsync(
             app.UserId,
@@ -38,7 +39,7 @@ public class InstructorApplicationModeratedEventHandler(
             message,
             type,
             RoleName.INSTRUCTOR,
-            "/instructor/courses"
+            "/become-instructor"
         );
     }
 }

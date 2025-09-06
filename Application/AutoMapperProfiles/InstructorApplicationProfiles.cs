@@ -24,5 +24,10 @@ public class InstructorApplicationProfiles : Profile
             .ForMember(dest => dest.AvatarUrl,
                 opt => opt.MapFrom(src => src.Avatar != null ? src.Avatar.Url : null))
             .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
+
+        CreateMap<InstructorApplication, InstructorApplicationDetailVm>()
+            .ForMember(dest => dest.AvatarUrl,
+                opt => opt.MapFrom(src => src.Avatar != null ? src.Avatar.Url : null))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
     }
 }

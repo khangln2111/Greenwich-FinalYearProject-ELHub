@@ -261,8 +261,7 @@ public class IdentityService(
             throw new UnauthorizedAccessException("User not authenticated");
 
         var user = await context.Users
-            .Include(u => u.Avatar)
-            .Include(u => u.UserRoles)
+            .AsNoTracking()
             .ProjectTo<InfoMeVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(u => u.Id == currentUser.Id);
 

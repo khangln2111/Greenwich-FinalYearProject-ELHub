@@ -40,7 +40,7 @@ public class InstructorApplicationCreatedEventHandler(
                 $"A new instructor application has been submitted by {application.FirstName} {application.LastName}.",
                 NotificationType.CourseSubmitted,
                 RoleName.ADMIN,
-                "/admin/instructor-applications"
+                $"/admin/instructor-applications?viewAppId={application.Id}"
             );
     }
 }

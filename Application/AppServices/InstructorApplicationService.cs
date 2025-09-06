@@ -193,6 +193,20 @@ public class InstructorApplicationService(
             .GridifyToAsync<InstructorApplication, InstructorApplicationVm>(query, mapper, gridifyMapper);
     }
 
+    public async Task<InstructorApplicationVm> GetById(Guid id)
+    {
+        var application = await context.InstructorApplications
+            .AsNoTracking()
+            .Where(a => a.Id == id)
+            .ProjectTo<InstructorApplicationVm>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+
+        if (application == null)
+            throw new NotFoundException("Instructor application not found.");
+
+        return application;
+    }
+
     public async Task<InstructorApplicationVm> GetSelf()
     {
         var currentUser = currentUserUtility.GetCurrentUser();
