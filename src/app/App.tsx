@@ -16,7 +16,6 @@ import IdentityProvider from "./providers/IdentityProvider";
 import router from "./routes";
 import { AppNotificationProvider } from "./providers/AppNotificationProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { HelmetProvider } from "react-helmet-async";
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -42,9 +41,7 @@ const App = () => {
             <AppNotificationProvider>
               <ModalsProvider>
                 <NuqsAdapter>
-                  <HelmetProvider>
-                    <RouterProvider router={router} />
-                  </HelmetProvider>
+                  <RouterProvider router={router} />
                 </NuqsAdapter>
               </ModalsProvider>
             </AppNotificationProvider>

@@ -1,5 +1,5 @@
 import { BaseQueryCriteria } from "../../api-client/api.types";
-import { EnrollmentSectionVm as EnrollmentSectionVm, SectionVm } from "../section/section.types";
+import { SectionVm } from "../section/section.types";
 
 // course.type.ts
 export enum CourseStatus {
@@ -104,39 +104,6 @@ export interface CourseDetailVm {
   updatedAt: string;
   submittedAt: string | null;
   lastRejectedAt: string | null;
-}
-
-export interface EnrollmentDetailSelfVm {
-  id: string;
-
-  title: string;
-  description: string;
-
-  sectionCount: number;
-  lectureCount: number;
-
-  sections: EnrollmentSectionVm[] | null;
-
-  imageUrl: string;
-  promoVideoUrl: string;
-
-  durationInSeconds: number;
-
-  status: string;
-
-  level: CourseLevel;
-
-  learningOutcomes: string[];
-  prerequisites: string[];
-
-  categoryName: string;
-  instructorName: string;
-  instructorId: string;
-
-  createdAt: string;
-  updatedAt: string;
-
-  progressPercentage: number;
 }
 
 export interface ModerateCourseCommand {

@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
 import UpdateUserProfileForm from "../my-account/_c/UpdateUserProfileForm";
 import { parseAsStringEnum, useQueryState } from "nuqs";
-import { PageSEO } from "../../../components/PageSEO/PageSEO";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 enum Tabs {
   Profile = "Profile",
@@ -39,6 +39,8 @@ enum Tabs {
 }
 
 export default function UserSettingsPage() {
+  usePageSEO({ title: "Settings" });
+
   const [tab, setTab] = useQueryState(
     "tab",
     parseAsStringEnum(Object.values(Tabs)).withDefault(Tabs.Profile),
@@ -53,11 +55,6 @@ export default function UserSettingsPage() {
 
   return (
     <div className="mx-auto space-y-6">
-      <PageSEO
-        title="Settings"
-        description="Manage your ELHub account settings including profile, notifications, security options, preferences, and account management. Customize your learning experience easily."
-      />
-
       {/* Header */}
       <div className="space-y-2">
         <Title

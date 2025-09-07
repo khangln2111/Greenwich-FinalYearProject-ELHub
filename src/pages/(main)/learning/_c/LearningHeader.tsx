@@ -1,8 +1,7 @@
-// components/learning/CourseHeader.tsx
 import { Box, ActionIcon, Menu, RingProgress, Text } from "@mantine/core";
-import { MantineLogo } from "@mantinex/mantine-logo";
 import { ChevronLeftIcon, EllipsisVerticalIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import BrandLogo from "../../../../components/BrandLogo/BrandLogo";
 
 interface LearningHeaderProps {
   title: string;
@@ -22,8 +21,8 @@ export default function LearningHeader({ title, progressPercent }: LearningHeade
           <ChevronLeftIcon className="size-6 md:size-7" strokeWidth={2} />
         </Box>
 
-        {/* Logo - ẩn ở mobile */}
-        <MantineLogo color="primary" size={28} type="mark" className="hidden md:block shrink-0" />
+        {/* Logo - hidden on mobile */}
+        <BrandLogo iconSize={28} variant="mark" className="hidden md:block shrink-0" />
 
         <h1 className="text-sm md:text-md font-bold text-white truncate pr-2">{title}</h1>
       </div>

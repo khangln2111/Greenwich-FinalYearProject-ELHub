@@ -3,11 +3,11 @@ import { ApiSuccessResponse, ListData } from "../../api-client/api.types";
 import apiClient from "../../api-client/apiClient";
 import {
   EnrollFromInventoryCommand,
+  EnrollmentDetailSelfVm,
   EnrollmentQueryCriteria,
   EnrollmentSelfVm,
 } from "./enrollment.types";
 import { applyConditions } from "../../utils/gridifyHelper";
-import { EnrollmentDetailSelfVm } from "../course/course.types";
 
 const BASE_URL = "/enrollments";
 

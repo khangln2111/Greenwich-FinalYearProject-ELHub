@@ -8,16 +8,18 @@ import { useGetInventoryItemsSelf } from "../../../features/inventory/inventory.
 import GiftingModal from "./_c/GiftingModal";
 import InventoryPageEmptyState from "./_c/InventoryPageEmptyState";
 import InventoryItemCard from "./_c/InventoryItemCard";
-import { PageSEO } from "../../../components/PageSEO/PageSEO";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function InventoryPage() {
+  usePageSEO({ title: "My Inventory" });
+
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [searchInput, setSearchInput] = useState(search);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-  // Gọi API với page + pageSize + search
+  // Call API to fetch inventory items
   const { data, isPending, error } = useGetInventoryItemsSelf({
     page,
     pageSize,
@@ -34,10 +36,6 @@ export default function InventoryPage() {
 
   return (
     <div className="mx-auto">
-      <PageSEO
-        title="My Inventory"
-        description="View and manage your purchased courses in your ELHub inventory. You can enroll or gift items to others."
-      />
       {/* Header: Title + Search Input */}
       <div className="flex items-center justify-between gap-4 mb-6">
         <Title

@@ -37,7 +37,7 @@ const InstructorHeader = () => {
   return (
     <Box
       component="header"
-      className="min-h-[60px] px-md shadow-md bg-white dark:bg-dark-7 sticky top-0
+      className="min-h-[60px] px-4 shadow-md bg-white dark:bg-dark-7 sticky top-0
         z-[calc(var(--mantine-z-index-app)+1)] content-center"
     >
       {/* mobile search box */}

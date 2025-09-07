@@ -16,12 +16,15 @@ import GiftsPageEmptyState from "./_c/GiftsPageEmptyState";
 import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
 import { SentGiftItemCard } from "./_c/SentGiftItemCard";
-import { PageSEO } from "../../../components/PageSEO/PageSEO";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 const GIFT_PAGE_TABS = ["sent", "received"];
+
 type GiftPageTab = (typeof GIFT_PAGE_TABS)[number];
 
 export default function GiftsPage() {
+  usePageSEO({ title: "Gifts" });
+
   const [activeTab, setActiveTab] = useQueryState(
     "type",
     parseAsStringLiteral(GIFT_PAGE_TABS).withDefault("sent"),
@@ -123,73 +126,67 @@ export default function GiftsPage() {
   const selectedGift = sentGifts?.items.find((g) => g.id === selectedGiftId) ?? null;
 
   return (
-    <>
-      <PageSEO
-        title="Gifts"
-        description="View and manage your ELHub gifts. See the courses you have sent to others or received from friends. You can redeem gift codes, change receivers, or revoke sent gifts easily."
-      />
-      <div className="mx-auto">
-        <Title order={1} className="text-3xl font-bold mb-6 text-center">
-          🎁 My Gifts
-        </Title>
+    <div className="mx-auto">
+      <Title order={1} className="text-3xl font-bold mb-6 text-center">
+        🎁 My Gifts
+      </Title>
 
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-y-5">
-          <div className="flex gap-x-4">
-            <button
-              onClick={() => handleTabChange("sent")}
-              className={`px-4 py-2 text-sm font-medium rounded-full transition ${
-                activeTab === "sent"
-                  ? "bg-primary text-white"
-                  : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
-                  }`}
-            >
-              Sent
-            </button>
-            <button
-              onClick={() => handleTabChange("received")}
-              className={`px-4 py-2 text-sm font-medium rounded-full transition ${
-                activeTab === "received"
-                  ? "bg-primary text-white"
-                  : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
-              }`}
-            >
-              Received
-            </button>
-          </div>
-
-          <Button
-            onClick={() => setRedeemModalOpen(true)}
-            color="violet"
-            className="text-sm px-4 py-2 rounded transition"
-            leftSection={<GemIcon size={14} />}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-y-5">
+        <div className="flex gap-x-4">
+          <button
+            onClick={() => handleTabChange("sent")}
+            className={`px-4 py-2 text-sm font-medium rounded-full transition ${
+              activeTab === "sent"
+                ? "bg-primary text-white"
+                : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
+                }`}
           >
-            Redeem by Gift Code
-          </Button>
+            Sent
+          </button>
+          <button
+            onClick={() => handleTabChange("received")}
+            className={`px-4 py-2 text-sm font-medium rounded-full transition ${
+              activeTab === "received"
+                ? "bg-primary text-white"
+                : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
+            }`}
+          >
+            Received
+          </button>
         </div>
 
-        <div className="mx-auto max-w-4xl">
-          {activeTab === "sent" ? renderSent() : renderReceived()}
-        </div>
-
-        <AppPagination
-          page={page}
-          pageSize={pageSize}
-          itemsCount={activeTab === "sent" ? (sentGifts?.count ?? 0) : (receivedGifts?.count ?? 0)}
-          onPageChange={setPage}
-          withEdges
-          className="flex justify-center items-center mt-10"
-        />
-
-        <RedeemGiftModal open={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
-        <ChangeGiftReceiverModal
-          key={selectedGift?.id}
-          opened={changeModalOpen}
-          onClose={() => setChangeModalOpen(false)}
-          onSubmit={handleChangeGiftReceiver}
-          submitting={changeReceiverMutation.isPending}
-          defaultEmail={selectedGift?.receiverEmail ?? ""}
-        />
+        <Button
+          onClick={() => setRedeemModalOpen(true)}
+          color="violet"
+          className="text-sm px-4 py-2 rounded transition"
+          leftSection={<GemIcon size={14} />}
+        >
+          Redeem by Gift Code
+        </Button>
       </div>
-    </>
+
+      <div className="mx-auto max-w-4xl">
+        {activeTab === "sent" ? renderSent() : renderReceived()}
+      </div>
+
+      <AppPagination
+        page={page}
+        pageSize={pageSize}
+        itemsCount={activeTab === "sent" ? (sentGifts?.count ?? 0) : (receivedGifts?.count ?? 0)}
+        onPageChange={setPage}
+        withEdges
+        className="flex justify-center items-center mt-10"
+      />
+
+      <RedeemGiftModal open={redeemModalOpen} onClose={() => setRedeemModalOpen(false)} />
+      <ChangeGiftReceiverModal
+        key={selectedGift?.id}
+        opened={changeModalOpen}
+        onClose={() => setChangeModalOpen(false)}
+        onSubmit={handleChangeGiftReceiver}
+        submitting={changeReceiverMutation.isPending}
+        defaultEmail={selectedGift?.receiverEmail ?? ""}
+      />
+    </div>
   );
 }

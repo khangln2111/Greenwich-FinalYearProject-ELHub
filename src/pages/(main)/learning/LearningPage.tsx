@@ -11,6 +11,7 @@ import LearningSidebar from "./_c/LearningSidebar";
 import { Hourglass } from "lucide-react";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetEnrollmentDetailSelf } from "../../../features/enrollment/enrollment.hooks";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function LearningCoursePage() {
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
@@ -24,6 +25,8 @@ export default function LearningCoursePage() {
   const { data, isPending, error } = useGetEnrollmentDetailSelf(enrollmentId!);
 
   const completeLectureMutation = useCompleteLecture();
+
+  usePageSEO({ title: data?.courseTitle ? `Learning - ${data.courseTitle}` : "Learning Course" });
 
   if (isPending) return <CenterLoader height="800px" />;
 
@@ -77,7 +80,7 @@ export default function LearningCoursePage() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <LearningHeader title={data.title} progressPercent={data.progressPercentage} />
+      <LearningHeader title={data.courseTitle} progressPercent={data.progressPercentage} />
 
       {/* Main content */}
       <div className="flex-1 flex overflow-hidden transition-all duration-300">

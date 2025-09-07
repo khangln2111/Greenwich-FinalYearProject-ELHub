@@ -27,6 +27,7 @@ import CurriculumTab from "./_c/CurriculumTab/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 const items = [
   { title: "Home", href: "/" },
@@ -78,6 +79,8 @@ const CourseDetailPage = () => {
   const { courseId } = useParams<{ courseId: string }>();
 
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
+
+  usePageSEO({ title: course ? course.title : "Course Detail" });
 
   const [activeTab, setActiveTab] = useQueryState<CourseDetailTab>(
     "activeTab",
@@ -278,11 +281,26 @@ const CourseDetailPage = () => {
                 </ul>
               </div>
 
+              <Button
+                radius="full"
+                size="lg"
+                className="group w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600
+                  font-semibold mt-6 h-13 shadow-md"
+                variant="gradient"
+                loading={addCartItemMutation.isPending}
+                onClick={() => addCartItemMutation.mutate({ courseId: courseId, quantity: 1 })}
+                leftSection={
+                  <ShoppingCart className="size-5 group-hover:scale-110 transition-transform" />
+                }
+              >
+                Add to Cart
+              </Button>
+
               {enrollmentStatus?.isEnrolled && (
                 <Button
                   radius="full"
                   size="lg"
-                  className="group w-full bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600
+                  className="group w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600
                     font-semibold mt-3 h-13 shadow-md"
                   component={Link}
                   to={`/learning/${enrollmentStatus.enrollmentId}`}
@@ -293,20 +311,6 @@ const CourseDetailPage = () => {
                   Start Learning
                 </Button>
               )}
-              <Button
-                rightSection={
-                  <ShoppingCart className="size-5 group-hover:translate-x-1 transition-transform" />
-                }
-                radius="full"
-                size="lg"
-                className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600
-                  font-semibold mt-6 h-13 px-1"
-                variant="gradient"
-                loading={addCartItemMutation.isPending}
-                onClick={() => addCartItemMutation.mutate({ courseId: courseId, quantity: 1 })}
-              >
-                Add to Cart
-              </Button>
             </div>
           </div>
         </div>

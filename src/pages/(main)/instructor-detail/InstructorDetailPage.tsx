@@ -26,6 +26,7 @@ import {
 } from "../../../features/instructor/instructor.hooks";
 import CourseCard from "../../../components/course-cards/CourseCard";
 import avatarPlaceholder from "../../../assets/placeholder/profile-avatar-placeholder.svg";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function InstructorDetailPage() {
   const { instructorId } = useParams<{ instructorId: string }>();
@@ -34,6 +35,10 @@ export default function InstructorDetailPage() {
     isLoading: isInstructorLoading,
     isError: isInstructorError,
   } = useGetInstructorById(instructorId!);
+
+  usePageSEO({
+    title: instructor ? `${instructor.name}, ${instructor.professionalTitle}` : "Instructor",
+  });
   const { data: courses, isLoading: isCoursesLoading } = useGetCoursesByInstructorId(instructorId!);
 
   if (isInstructorLoading || !instructor) return <Container py="xl">Loading...</Container>;

@@ -43,7 +43,7 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className="min-h-[55px] px-md dark:border-b dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
+      className="min-h-[55px] px-4 lg:px-7 dark:border-b dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
         z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-md"
     >
       {/* Search mode (mobile full width) */}
@@ -88,7 +88,7 @@ const Header = () => {
             <Link to="/">
               <BrandLogo
                 classNames={{
-                  text: "hidden md:block tracking-wide font-bold",
+                  text: "hidden lg:block tracking-wide",
                 }}
               />
             </Link>

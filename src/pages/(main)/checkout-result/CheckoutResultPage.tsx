@@ -5,9 +5,10 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { useProcessOrder } from "../../../features/order/order.hooks";
 import { OrderStatus } from "../../../features/order/order.types";
-import { PageSEO } from "../../../components/PageSEO/PageSEO";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function CheckoutResultPage() {
+  usePageSEO({ title: "Checkout Result" });
   const [searchParams] = useSearchParams();
   const paymentIntentId = searchParams.get("payment_intent");
   const orderId = searchParams.get("orderId");
@@ -30,16 +31,13 @@ export default function CheckoutResultPage() {
   }, [isSuccess, queryClient]);
 
   return (
-    <>
-      <PageSEO title="Checkout Result" />
-      <div className="min-h-[70vh] flex items-center justify-center px-4 bg-gray-2 dark:bg-dark-7">
-        <div className="bg-white dark:bg-dark-9 rounded-2xl shadow-xl p-8 w-full text-center max-w-xl">
-          {isPending && <PaymentProcessing />}
-          {isSuccess && isCompleted && <PaymentSuccess />}
-          {(isError || (isSuccess && !isCompleted)) && <PaymentFailed />}
-        </div>
+    <div className="min-h-[70vh] flex items-center justify-center px-4 bg-gray-2 dark:bg-dark-7">
+      <div className="bg-white dark:bg-dark-9 rounded-2xl shadow-xl p-8 w-full text-center max-w-xl">
+        {isPending && <PaymentProcessing />}
+        {isSuccess && isCompleted && <PaymentSuccess />}
+        {(isError || (isSuccess && !isCompleted)) && <PaymentFailed />}
       </div>
-    </>
+    </div>
   );
 }
 

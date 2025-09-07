@@ -1,21 +1,20 @@
-import { Loader, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
 import UpdateUserProfileForm from "./_c/UpdateUserProfileForm";
-import { PageSEO } from "../../../components/PageSEO/PageSEO";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function MyProfilePage() {
+  usePageSEO({ title: "My Profile" });
+
   const { data: user, isPending, isError } = useGetCurrentUserInfo();
 
-  if (isPending) return <Loader />;
+  if (isPending) return <CenterLoader />;
 
   if (isError || !user) return <div>Error loading user data</div>;
 
   return (
     <div>
-      <PageSEO
-        title="My Profile"
-        description="Update your personal information and profile settings on ELHub"
-      />
       <Title
         order={1}
         className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 flex-1"
