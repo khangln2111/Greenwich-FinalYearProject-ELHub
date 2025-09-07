@@ -18,6 +18,8 @@ public class EnrollmentProfiles : Profile
 
 
         CreateMap<Enrollment, EnrollmentDetailSelfVm>()
+            .ForMember(dest => dest.CourseTitle, opt => opt.MapFrom(src => src.Course.Title))
+            .ForMember(dest => dest.CourseSummary, opt => opt.MapFrom(src => src.Course.Summary))
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Course.Category.Name))
             .ForMember(dest => dest.ImageUrl,
                 opt => opt.MapFrom(src => src.Course.Image == null ? null : src.Course.Image.Url))

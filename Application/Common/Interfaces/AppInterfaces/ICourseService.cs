@@ -25,4 +25,6 @@ public interface ICourseService
     Task<Success> ModerateCourse(ModerateCourseCommand command);
 
     Task<Success> ResubmitCourse(Guid id);
+
+    Task<CourseEnrollmentStatusVm> GetCurrentUserEnrollmentStatus(Guid courseId);
 }

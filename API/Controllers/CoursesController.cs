@@ -106,4 +106,15 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         var instructor = await courseService.GetInstructorByCourseId(courseId);
         return Ok(instructor);
     }
+
+    // GET: api/courses/{courseId}/current-user-enrollment-status
+    [HttpGet("{courseId:guid}/current-user-enrollment-status")]
+    [Authorize]
+    [ProducesResponseType<CourseEnrollmentStatusVm>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCurrentUserEnrollmentStatus(Guid courseId)
+    {
+        var status = await courseService.GetCurrentUserEnrollmentStatus(courseId);
+        return Ok(status);
+    }
 }

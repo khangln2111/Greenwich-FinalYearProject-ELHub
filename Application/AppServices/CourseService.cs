@@ -293,6 +293,22 @@ public class CourseService(
         return instructor;
     }
 
+    public async Task<CourseEnrollmentStatusVm> GetCurrentUserEnrollmentStatus(Guid courseId)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
+
+        var enrollment = await context.Enrollments
+            .AsNoTracking()
+            .Where(e => e.CourseId == courseId && e.UserId == currentUser.Id)
+            .Select(e => new { e.Id })
+            .FirstOrDefaultAsync();
+
+        return enrollment == null
+            ? new CourseEnrollmentStatusVm { IsEnrolled = false }
+            : new CourseEnrollmentStatusVm { IsEnrolled = true, EnrollmentId = enrollment.Id };
+    }
+
     //Check if the related Category with the Course exists
     private async Task EnsuredRelatedCategoryExistsAsync(Guid categoryId)
     {

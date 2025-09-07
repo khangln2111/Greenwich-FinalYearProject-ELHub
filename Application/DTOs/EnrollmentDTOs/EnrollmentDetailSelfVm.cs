@@ -6,9 +6,9 @@ public class EnrollmentDetailSelfVm
 {
     public Guid Id { get; init; }
 
-    public required string Title { get; init; }
+    public required string CourseTitle { get; init; }
 
-    public required string Summary { get; init; }
+    public required string CourseSummary { get; init; }
 
     public int SectionCount { get; init; }
 
@@ -25,10 +25,6 @@ public class EnrollmentDetailSelfVm
     public required string Status { get; init; }
 
     public required string Level { get; init; }
-
-    public string[] LearningOutcomes { get; init; } = [];
-
-    public string[] Prerequisites { get; init; } = [];
 
     public required string CategoryName { get; init; }
 
