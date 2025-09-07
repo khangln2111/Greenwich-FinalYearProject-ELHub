@@ -59,12 +59,12 @@ export default function InstructorSettingsPage() {
         <Text c="dimmed">Manage your account settings and preferences</Text>
       </div>
 
-      <div className="overflow-x-auto mx-auto mb-10 shadow-sm rounded-xl">
+      <div className="overflow-x-auto mx-auto mb-10 shadow-sm rounded-full">
         <SegmentedControl
           fullWidth
-          radius="xl"
+          radius="full"
           size="md"
-          className="min-w-max p-2 bg-body border"
+          className="min-w-max bg-body border"
           value={tab}
           onChange={(val) => setTab(val as Tabs)}
           color="primary"

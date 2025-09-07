@@ -62,10 +62,10 @@ export default function AdminSettingsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="overflow-x-auto mx-auto mb-10 shadow-sm rounded-xl">
+      <div className="overflow-x-auto mx-auto mb-10 shadow-sm rounded-full">
         <SegmentedControl
           fullWidth
-          radius="xl"
+          radius="full"
           size="md"
           className="min-w-max p-2 bg-body border"
           value={tab}

@@ -23,14 +23,14 @@ import CheckoutResultPage from "../pages/(main)/checkout-result/CheckoutResultPa
 import CheckoutPage from "../pages/(main)/checkout/CheckoutPage";
 import CourseDetailPage from "../pages/(main)/course-detail/CourseDetailPage";
 import CoursesPage from "../pages/(main)/courses/CoursesPage";
-import EnrolledCoursesPage from "../pages/(main)/enrolled-courses/EnrolledCoursesPage";
+import MyLearningPage from "../pages/(main)/enrolled-courses/MyLearningPage";
 import ErrorPage from "../pages/(main)/error/ErrorPage";
 import GiftsPage from "../pages/(main)/gift/GiftsPage";
 import HomePage from "../pages/(main)/home/HomePage";
 import InstructorDetailPage from "../pages/(main)/instructor-detail/InstructorDetailPage";
 import InventoryPage from "../pages/(main)/inventory/InventoryPage";
 import LearningPage from "../pages/(main)/learning/LearningPage";
-import MyProfilePage from "../pages/(main)/my-account/MyAccountPage";
+import MyProfilePage from "../pages/(main)/my-account/MyProfilePage";
 import OrderHistoryDetailPage from "../pages/(main)/order-detail/OrderHistoryDetailPage";
 import OrderHistoryPage from "../pages/(main)/order-history/OrderHistoryPage";
 import UserDashboardPage from "../pages/(main)/dashboard/UserDashboardPage";
@@ -83,8 +83,8 @@ const userRoute: RouteObject = {
           element: <MyProfilePage />,
         },
         {
-          path: "enrolled-courses",
-          element: <EnrolledCoursesPage />,
+          path: "my-learning",
+          element: <MyLearningPage />,
         },
         {
           path: "inventory",

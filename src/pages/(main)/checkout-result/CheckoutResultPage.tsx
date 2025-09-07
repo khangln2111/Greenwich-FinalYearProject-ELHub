@@ -5,6 +5,7 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { useProcessOrder } from "../../../features/order/order.hooks";
 import { OrderStatus } from "../../../features/order/order.types";
+import { PageSEO } from "../../../components/PageSEO/PageSEO";
 
 export default function CheckoutResultPage() {
   const [searchParams] = useSearchParams();
@@ -29,13 +30,16 @@ export default function CheckoutResultPage() {
   }, [isSuccess, queryClient]);
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 bg-gray-2 dark:bg-dark-7">
-      <div className="bg-white dark:bg-dark-9 rounded-2xl shadow-xl p-8 w-full text-center max-w-xl">
-        {isPending && <PaymentProcessing />}
-        {isSuccess && isCompleted && <PaymentSuccess />}
-        {(isError || (isSuccess && !isCompleted)) && <PaymentFailed />}
+    <>
+      <PageSEO title="Checkout Result" />
+      <div className="min-h-[70vh] flex items-center justify-center px-4 bg-gray-2 dark:bg-dark-7">
+        <div className="bg-white dark:bg-dark-9 rounded-2xl shadow-xl p-8 w-full text-center max-w-xl">
+          {isPending && <PaymentProcessing />}
+          {isSuccess && isCompleted && <PaymentSuccess />}
+          {(isError || (isSuccess && !isCompleted)) && <PaymentFailed />}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

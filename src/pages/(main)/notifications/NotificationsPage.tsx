@@ -22,6 +22,7 @@ import {
 } from "../../../features/notification/notification.types";
 import NotificationsPageEmptyState from "./_c/NotificationsPageEmptyState";
 import AppPagination from "../../../components/AppPagination/AppPagination";
+import { PageSEO } from "../../../components/PageSEO/PageSEO";
 
 export default function NotificationsPage() {
   const [filterUnread, setFilterUnread] = useQueryState(
@@ -48,6 +49,10 @@ export default function NotificationsPage() {
 
   return (
     <div className="mx-auto w-full px-3 sm:px-4 lg:px-6">
+      <PageSEO
+        title="Notifications"
+        description="Stay updated with your ELHub notifications. View unread alerts, course updates, order statuses, review replies, and gift activities. Easily filter and mark notifications as read."
+      />
       {/* Header */}
       <div className="flex flex-col gap-4 mb-8">
         {/* Row 1: Title + Filter by type */}

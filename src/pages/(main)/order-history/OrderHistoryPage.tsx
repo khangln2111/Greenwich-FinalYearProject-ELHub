@@ -9,6 +9,7 @@ import { OrderOrderableFields, OrderStatus } from "../../../features/order/order
 import { OrderCard } from "./_c/OrderCard";
 import OrderHistoryPageEmptyState from "./_c/OrderHistoryPageEmptyState";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
+import { PageSEO } from "../../../components/PageSEO/PageSEO";
 
 const ORDER_SORT_OPTIONS: {
   label: string;
@@ -48,6 +49,8 @@ export default function OrderHistoryPage() {
 
   return (
     <div>
+      <PageSEO title="Order History" description="View and manage all your orders on ELHub" />
+
       <div className="flex items-baseline-last md:items-center gap-10 justify-between mb-4">
         <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
           My Orders

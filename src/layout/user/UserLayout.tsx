@@ -1,9 +1,9 @@
 import { Outlet, ScrollRestoration } from "react-router-dom";
+import BottomNav from "./_c/BottomNav";
 import Footer from "./_c/Footer";
 import Header from "./_c/Header";
-import BottomNav from "./_c/BottomNav";
 
-const UserLayout = () => {
+export default function UserLayout() {
   return (
     <div className="flex flex-col min-h-dvh">
       <Header />
@@ -15,5 +15,4 @@ const UserLayout = () => {
       <BottomNav />
     </div>
   );
-};
-export default UserLayout;
+}

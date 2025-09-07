@@ -27,11 +27,11 @@ type MenuItem = {
 
 const menuItems: MenuItem[] = [
   { label: "Dashboard", icon: <ChartNoAxesCombinedIcon className="size-5" />, href: "/dashboard" },
-  { label: "My Profile", icon: <User className="size-5" />, href: "/dashboard/my-profile" },
+  { label: "My profile", icon: <User className="size-5" />, href: "/dashboard/my-profile" },
   {
-    label: "Enrolled courses",
+    label: "My learning",
     icon: <MonitorCheckIcon className="size-5" />,
-    href: "/dashboard/enrolled-courses",
+    href: "/dashboard/my-learning",
   },
   {
     label: "Order history",

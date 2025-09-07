@@ -8,6 +8,7 @@ import { useGetInventoryItemsSelf } from "../../../features/inventory/inventory.
 import GiftingModal from "./_c/GiftingModal";
 import InventoryPageEmptyState from "./_c/InventoryPageEmptyState";
 import InventoryItemCard from "./_c/InventoryItemCard";
+import { PageSEO } from "../../../components/PageSEO/PageSEO";
 
 export default function InventoryPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -33,6 +34,10 @@ export default function InventoryPage() {
 
   return (
     <div className="mx-auto">
+      <PageSEO
+        title="My Inventory"
+        description="View and manage your purchased courses in your ELHub inventory. You can enroll or gift items to others."
+      />
       {/* Header: Title + Search Input */}
       <div className="flex items-center justify-between gap-4 mb-6">
         <Title

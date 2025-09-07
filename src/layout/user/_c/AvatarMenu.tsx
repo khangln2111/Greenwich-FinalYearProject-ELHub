@@ -75,9 +75,9 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         <Menu.Item
           component={Link}
           leftSection={<MonitorCheckIcon size={15} />}
-          to="/dashboard/enrolled-courses"
+          to="/dashboard/my-learning"
         >
-          Enrolled courses
+          My learning
         </Menu.Item>
         <Menu.Item
           component={Link}
