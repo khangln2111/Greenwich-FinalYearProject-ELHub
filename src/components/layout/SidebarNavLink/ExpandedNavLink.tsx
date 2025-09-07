@@ -43,7 +43,7 @@ export const ExpandedNavLink = ({
     <div
       onClick={handleClick}
       className={cn(
-        `flex items-center gap-4 text-sm font-medium rounded-md px-4 py-[10px] transition-all duration-600
+        `flex items-center gap-4 text-sm font-medium rounded-lg px-4 py-[10px] transition-all duration-600
         ease-in-out starting:opacity-0 starting:-translate-x-full group justify-start text-gray-7
         dark:text-dark-1 hover:bg-primary-light-hover hover:text-primary-light-color
         data-active:bg-primary-light data-active:text-primary-light-color data-active:font-semibold
