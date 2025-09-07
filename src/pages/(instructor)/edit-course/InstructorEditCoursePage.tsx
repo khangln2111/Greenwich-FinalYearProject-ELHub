@@ -15,6 +15,7 @@ import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
 import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmission";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
 import InstructorReviewManager from "./_c/ReviewManager/InstructorReviewManager";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 enum CourseDetailTab {
   Overview = "Overview",
@@ -26,6 +27,8 @@ enum CourseDetailTab {
 export default function InstructorEditCoursePage() {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
+
+  usePageSEO({ title: courseDetail ? `Edit - ${courseDetail.title}` : "Edit Course" });
 
   const [activeTab, setActiveTab] = useQueryState(
     "activeTab",

@@ -9,6 +9,7 @@ import { useGetCourses } from "../../../features/course/course.hooks";
 import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
 import AdminCourseCard from "./_c/AdminCourseCard";
 import AdminPendingCoursesPageEmptyState from "./_c/AdminPendingCoursesPageEmptyState";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 const COURSE_ORDER_OPTIONS: {
   label: string;
@@ -25,6 +26,8 @@ export default function AdminPendingCoursesPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
+
+  usePageSEO({ title: "Pending Courses for moderation" });
   const [searchInput, setSearchInput] = useState(search);
   const [orderByParam, setOrderByParam] = useQueryState(
     "orderBy",

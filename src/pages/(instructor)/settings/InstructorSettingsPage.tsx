@@ -27,6 +27,7 @@ import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetWorkProfileSelf } from "../../../features/auth/identity.hooks";
 import UpdateWorkProfileForm from "../profile/UpdateWorkProfileForm";
 import { parseAsStringEnum, useQueryState } from "nuqs";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 enum Tabs {
   Profile = "Profile",
@@ -37,6 +38,8 @@ enum Tabs {
 }
 
 export default function InstructorSettingsPage() {
+  usePageSEO({ title: "Settings" });
+
   const { data, isPending, error } = useGetWorkProfileSelf();
 
   const [tab, setTab] = useQueryState(

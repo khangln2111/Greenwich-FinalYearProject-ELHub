@@ -25,8 +25,11 @@ import { UserVm } from "../../../features/user/user.types";
 import { useGetUsers, useSetUserActivation } from "../../../features/user/user.hooks";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function AdminUsersPage() {
+  usePageSEO({ title: "User Management" });
+
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
   const [roleFilter, setRoleFilter] = useQueryState("role");

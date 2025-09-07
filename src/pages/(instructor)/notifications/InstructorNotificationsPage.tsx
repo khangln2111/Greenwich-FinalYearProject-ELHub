@@ -22,8 +22,11 @@ import {
 } from "../../../features/notification/notification.types";
 import InstructorNotifcationsPageEmptyState from "./_c/InstructorNotifcationsPageEmptyState";
 import AppPagination from "../../../components/AppPagination/AppPagination";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function InstructorNotificationsPage() {
+  usePageSEO({ title: "Notifications" });
+
   const [filterUnread, setFilterUnread] = useQueryState(
     "isRead",
     parseAsStringLiteral(["all", "unread"]).withDefault("all"),

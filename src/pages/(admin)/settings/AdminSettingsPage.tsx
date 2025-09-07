@@ -27,6 +27,7 @@ import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import UpdateUserProfileForm from "../../(main)/my-account/_c/UpdateUserProfileForm";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 enum Tabs {
   Profile = "Profile",
@@ -37,6 +38,8 @@ enum Tabs {
 }
 
 export default function AdminSettingsPage() {
+  usePageSEO({ title: "Admin Settings" });
+
   const { data: user, isPending, error } = useGetCurrentUserInfo();
 
   const [tab, setTab] = useQueryState(

@@ -26,6 +26,7 @@ import AdminInstructorApplicationsPageEmptyState from "./_c/AdminInstructorAppli
 import InstructorApplicationCard from "./_c/InstructorApplicationCard";
 import InstructorApplicationModerationModal from "./_c/InstructorApplicationModerationModal";
 import InstructorApplicationViewModal from "./_c/InstructorApplicationViewModal";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 const statuses: ("All" | InstructorApplicationStatus)[] = [
   "All",
@@ -73,6 +74,8 @@ const ORDER_BY_OPTIONS: {
 ];
 
 export default function AdminInstructorApplicationsPage() {
+  usePageSEO({ title: "Instructor Applications Moderation" });
+
   const modalStack = useModalsStack(["view", "moderation"]);
 
   const [viewAppId, setViewAppId] = useQueryState("viewAppId", parseAsString);

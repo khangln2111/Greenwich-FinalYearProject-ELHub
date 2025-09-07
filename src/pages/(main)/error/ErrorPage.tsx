@@ -2,7 +2,7 @@ import { Button, Container, Image, SimpleGrid, Text, Title } from "@mantine/core
 import { Link } from "react-router-dom";
 import image from "../../../assets/NotFoundImage.svg";
 
-const ErrorPage = () => {
+export default function ErrorPage() {
   return (
     <Container className="py-[80px] lg:py-[140px]">
       <SimpleGrid spacing={{ base: 40, md: 80 }} cols={{ base: 1, md: 2 }}>
@@ -33,5 +33,4 @@ const ErrorPage = () => {
       </SimpleGrid>
     </Container>
   );
-};
-export default ErrorPage;
+}

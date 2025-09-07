@@ -21,9 +21,12 @@ import {
   NotificationType,
   NotificationVm,
 } from "../../../features/notification/notification.types";
-import AdminNotificationsPageEmptyState from "./AdminNotificationsPageEmptyState";
+import AdminNotificationsPageEmptyState from "./_c/AdminNotificationsPageEmptyState";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function AdminNotificationsPage() {
+  usePageSEO({ title: "Admin Notifications" });
+
   const [filterUnread, setFilterUnread] = useQueryState(
     "isRead",
     parseAsStringLiteral(["all", "unread"]).withDefault("all"),

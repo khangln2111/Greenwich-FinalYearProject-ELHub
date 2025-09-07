@@ -1,8 +1,11 @@
 import { Anchor, Box, Container, Text, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
-const RegisterPage = () => {
+export default function RegisterPage() {
+  usePageSEO({ title: "Register" });
+
   return (
     <Box
       className="flex items-center justify-center min-h-dvh bgi-auth-light dark:bgi-auth-dark bg-cover bg-center
@@ -22,6 +25,4 @@ const RegisterPage = () => {
       </Container>
     </Box>
   );
-};
-
-export default RegisterPage;
+}

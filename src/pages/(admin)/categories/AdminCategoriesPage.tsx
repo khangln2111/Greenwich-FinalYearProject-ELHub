@@ -9,8 +9,11 @@ import { CategoryVm } from "../../../features/category/category.types";
 import { useGetCategories } from "../../../features/category/category.hooks";
 import CreateCategoryModal from "./_c/CreateCategoryModal";
 import UpdateCategoryModal from "./_c/UpdateCategoryModal";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function AdminCategoriesPage() {
+  usePageSEO({ title: "Categories management" });
+
   const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure(false);
   const [createOpened, { open: openCreate, close: closeCreate }] = useDisclosure(false);
   const [editingCategory, setEditingCategory] = useState<CategoryVm | null>(null);

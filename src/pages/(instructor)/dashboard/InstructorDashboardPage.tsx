@@ -15,8 +15,11 @@ import { Legend } from "recharts";
 import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetInstructorDashboard } from "../../../features/instructorDashboard/instructorDashboard.hooks";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
-const InstructorDashboardPage = () => {
+export default function InstructorDashboardPage() {
+  usePageSEO({ title: "Instructor Dashboard" });
+
   const {
     data: overviewData,
     isPending: isOverviewPending,
@@ -343,6 +346,4 @@ const InstructorDashboardPage = () => {
       </Card>
     </div>
   );
-};
-
-export default InstructorDashboardPage;
+}

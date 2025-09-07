@@ -25,8 +25,11 @@ import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboard.hooks";
 import DashboardStatCard from "./_c/DashboardStatCard";
 import { Legend } from "recharts";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
-const AdminDashboardPage = () => {
+export default function AdminDashboardPage() {
+  usePageSEO({ title: "Admin Dashboard" });
+
   const { data, isPending, isFetching, error, refetch } = useGetAdminDashboard();
 
   if (isPending) return <CenterLoader height={600} />;
@@ -471,6 +474,4 @@ const AdminDashboardPage = () => {
       </SimpleGrid>
     </div>
   );
-};
-
-export default AdminDashboardPage;
+}

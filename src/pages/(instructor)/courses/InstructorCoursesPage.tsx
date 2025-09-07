@@ -10,8 +10,10 @@ import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import { useState } from "react";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function InstructorCoursesPage() {
+  usePageSEO({ title: "My Owned Courses" });
   const [createCourseModalOpened, { open: openCreateCourseModal, close: closeCreateCourseModal }] =
     useDisclosure(false);
 

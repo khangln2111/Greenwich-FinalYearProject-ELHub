@@ -2,7 +2,7 @@ import { Button, Text } from "@mantine/core";
 import { BellIcon, InboxIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const AdminNotificationsPageEmptyState = () => {
+export default function AdminNotificationsPageEmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
       <InboxIcon size={64} className="text-gray-300 mb-4" />
@@ -26,5 +26,4 @@ const AdminNotificationsPageEmptyState = () => {
       </Button>
     </div>
   );
-};
-export default AdminNotificationsPageEmptyState;
+}

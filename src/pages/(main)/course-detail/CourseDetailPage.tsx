@@ -75,7 +75,7 @@ enum CourseDetailTab {
   Instructor = "Instructor",
 }
 
-const CourseDetailPage = () => {
+export default function CourseDetailPage() {
   const { courseId } = useParams<{ courseId: string }>();
 
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
@@ -317,5 +317,4 @@ const CourseDetailPage = () => {
       </Box>
     </div>
   );
-};
-export default CourseDetailPage;
+}

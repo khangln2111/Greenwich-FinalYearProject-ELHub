@@ -16,8 +16,11 @@ import {
   useConfirmEmail,
   useSendEmailConfirmationOtp,
 } from "../../../features/auth/identity.hooks";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
-const VerifyEmailPage = () => {
+export default function VerifyEmailPage() {
+  usePageSEO({ title: "Verify Email" });
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const email = searchParams.get("email") ?? "";
@@ -99,6 +102,4 @@ const VerifyEmailPage = () => {
       </Container>
     </Box>
   );
-};
-
-export default VerifyEmailPage;
+}

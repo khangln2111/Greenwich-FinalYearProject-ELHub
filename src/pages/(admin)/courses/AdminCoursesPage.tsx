@@ -9,6 +9,7 @@ import { useGetCourses } from "../../../features/course/course.hooks";
 import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
 import AdminCourseCard from "./_c/AdminCourseCard";
 import AdminCoursesPageEmptyState from "./_c/AdminCoursesPageEmptyState";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 const COURSE_ORDER_OPTIONS: {
   label: string;
@@ -25,6 +26,8 @@ export default function AdminCoursesPage() {
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
 
   const [searchInput, setSearchInput] = useState(search);
+
+  usePageSEO({ title: search ? `Course Management Search "${search}"` : "Courses management" });
 
   const [statusFilter, setStatusFilter] = useQueryState(
     "status",

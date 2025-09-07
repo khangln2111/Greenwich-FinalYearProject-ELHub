@@ -5,8 +5,10 @@ import { loginSessionStorageHelper } from "../../../utils/storageHelper";
 import { showErrorToast } from "../../../utils/toastHelper";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import LoginForm from "./LoginForm";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
-const LoginPage = () => {
+export default function LoginPage() {
+  usePageSEO({ title: "Login" });
   const currentUser = useAppStore((s) => s.currentUser);
 
   useEffect(() => {
@@ -37,6 +39,4 @@ const LoginPage = () => {
       </Container>
     </Box>
   );
-};
-
-export default LoginPage;
+}

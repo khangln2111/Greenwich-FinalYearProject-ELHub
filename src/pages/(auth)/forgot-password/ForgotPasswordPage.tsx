@@ -11,19 +11,22 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useForm, hasLength, isEmail, matchesField } from "@mantine/form";
+import { hasLength, isEmail, matchesField, useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
+import { ArrowLeftIcon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ErrorCode } from "../../../api-client/api.types";
 import {
-  useSendResetPasswordOtp,
   useResetPassword,
+  useSendResetPasswordOtp,
   useValidateResetPasswordOtp,
 } from "../../../features/auth/identity.hooks";
-import { useMediaQuery } from "@mantine/hooks";
-import { ErrorCode } from "../../../api-client/api.types";
-import { ArrowLeftIcon } from "lucide-react";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
-const ForgotPasswordPage = () => {
+export default function ForgotPasswordPage() {
+  usePageSEO({ title: "Forgot Password" });
+
   const navigate = useNavigate();
   const isTabletOrLarger = useMediaQuery("(min-width: 768px)");
 
@@ -233,6 +236,4 @@ const ForgotPasswordPage = () => {
       </Container>
     </Box>
   );
-};
-
-export default ForgotPasswordPage;
+}

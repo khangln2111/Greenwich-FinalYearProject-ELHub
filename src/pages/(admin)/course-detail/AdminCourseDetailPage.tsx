@@ -32,6 +32,7 @@ import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
 import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";
 import { parseAsStringEnum, useQueryState } from "nuqs";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 const getStatusBadge = (status: CourseStatus) => {
   switch (status) {
@@ -56,9 +57,12 @@ enum CourseDetailTab {
   Submissions = "Submissions",
 }
 
-const AdminCourseDetailPage = () => {
+export default function AdminCourseDetailPage() {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
+
+  usePageSEO({ title: course?.title ? `Admin - ${course.title}` : "Admin Course Detail" });
+
   const reviewCourseMutation = useModerateCourse();
   const [activeTab, setActiveTab] = useQueryState(
     "activeTab",
@@ -358,9 +362,7 @@ const AdminCourseDetailPage = () => {
       </Modal>
     </div>
   );
-};
-
-export default AdminCourseDetailPage;
+}
 
 // Reusable Stat Component
 const Stat = ({ label, value }: { label: string; value: string | number }) => (

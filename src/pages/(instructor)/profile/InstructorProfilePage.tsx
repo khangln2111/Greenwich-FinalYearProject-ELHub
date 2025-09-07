@@ -1,8 +1,11 @@
 import UpdateWorkProfileForm from "./UpdateWorkProfileForm";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetWorkProfileSelf } from "../../../features/auth/identity.hooks";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function InstructorProfilePage() {
+  usePageSEO({ title: "Instructor Profile" });
+
   const { data, isPending, isError } = useGetWorkProfileSelf();
 
   if (isPending) {
