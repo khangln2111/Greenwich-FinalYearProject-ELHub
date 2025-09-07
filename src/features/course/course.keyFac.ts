@@ -11,4 +11,7 @@ export const courseKeyFac = createQueryKeys("courses", {
   getInstructorByCourseId: (courseId: string) => ({
     queryKey: [courseId],
   }),
+  getCurrentUserCourseEnrollmentStatus: (courseId: string) => ({
+    queryKey: [courseId],
+  }),
 });

@@ -7,6 +7,7 @@ import {
   GraduationCap,
   InfinityIcon,
   LanguagesIcon,
+  PlayCircleIcon,
   ShoppingCart,
   StarIcon,
 } from "lucide-react";
@@ -15,7 +16,10 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import image from "../../../assets/placeholder/courseDetail.jpg";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 import { useAddCartItem } from "../../../features/cart/cart.hooks";
-import { useGetCourseDetail } from "../../../features/course/course.hooks";
+import {
+  useGetCourseDetail,
+  useGetCurrentUserEnrollmentStatus,
+} from "../../../features/course/course.hooks";
 import { cn } from "../../../utils/cn";
 import { formatDate, formatDuration } from "../../../utils/format";
 import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
@@ -79,6 +83,8 @@ const CourseDetailPage = () => {
     "activeTab",
     parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
   );
+
+  const { data: enrollmentStatus } = useGetCurrentUserEnrollmentStatus(courseId!);
 
   const addCartItemMutation = useAddCartItem();
 
@@ -271,6 +277,22 @@ const CourseDetailPage = () => {
                   <CourseStat icon={LanguagesIcon} label="Language" value="English" />
                 </ul>
               </div>
+
+              {enrollmentStatus?.isEnrolled && (
+                <Button
+                  radius="full"
+                  size="lg"
+                  className="group w-full bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600
+                    font-semibold mt-3 h-13 shadow-md"
+                  component={Link}
+                  to={`/learning/${enrollmentStatus.enrollmentId}`}
+                  leftSection={
+                    <PlayCircleIcon className="size-5 group-hover:scale-110 transition-transform" />
+                  }
+                >
+                  Start Learning
+                </Button>
+              )}
               <Button
                 rightSection={
                   <ShoppingCart className="size-5 group-hover:translate-x-1 transition-transform" />

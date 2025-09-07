@@ -5,6 +5,7 @@ import { applyConditions } from "../../utils/gridifyHelper";
 import { InstructorVm } from "../instructor/instructor.types";
 import {
   CourseDetailVm,
+  CourseEnrollmentStatusVm,
   CourseLevel,
   CoursePriceMode,
   CourseQueryCriteria,
@@ -148,5 +149,12 @@ export const submitCourse = async (id: string) => {
 
 export const resubmitCourse = async (id: string) => {
   const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/${id}/resubmit`);
+  return response.data;
+};
+
+export const getCurrentUserCourseEnrollmentStatus = async (courseId: string) => {
+  const response = await apiClient.get<CourseEnrollmentStatusVm>(
+    `${BASE_URL}/${courseId}/current-user-enrollment-status`,
+  );
   return response.data;
 };

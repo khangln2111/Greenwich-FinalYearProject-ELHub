@@ -15,16 +15,27 @@ import {
   getCourseDetail,
   getCourses,
   getInstructorByCourseId,
+  getCurrentUserCourseEnrollmentStatus,
   moderateCourse,
   resubmitCourse,
   submitCourse,
   updateCourse,
 } from "./course.api";
+import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.courses.getCourses(query).queryKey,
     queryFn: () => getCourses(query),
+  });
+};
+
+export const useGetCurrentUserEnrollmentStatus = (courseId: string) => {
+  const currentUser = useAppStore((s) => s.currentUser);
+  return useQuery({
+    queryKey: keyFac.courses.getCurrentUserCourseEnrollmentStatus(courseId).queryKey,
+    queryFn: () => getCurrentUserCourseEnrollmentStatus(courseId),
+    enabled: !!courseId && !!currentUser,
   });
 };
 

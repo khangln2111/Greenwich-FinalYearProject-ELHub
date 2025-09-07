@@ -228,3 +228,8 @@ export interface Experience {
   startDate: string;
   endDate?: string; // Optional if currently employed
 }
+
+export interface CourseEnrollmentStatusVm {
+  isEnrolled: boolean;
+  enrollmentId: string | null;
+}
