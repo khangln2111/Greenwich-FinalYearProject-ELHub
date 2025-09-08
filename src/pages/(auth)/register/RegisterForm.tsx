@@ -24,6 +24,7 @@ const RegisterForm = () => {
     validate: zodResolver(registerSchema),
   });
 
+  // Extract list of password requirements from the schema
   const passwordRequirements = extractPasswordRequirements(
     registerSchema.innerType().shape.password,
   );

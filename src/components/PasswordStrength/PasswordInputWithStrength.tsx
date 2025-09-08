@@ -18,9 +18,10 @@ interface PasswordInputWithStrengthProps extends Omit<PasswordInputProps, "onCha
 }
 
 function getStrength(password: string, requirements: Requirement[]) {
-  // Check for empty password (optional)
+  // Check for empty password (optional), if so, return 0 strength
   if (password.length === 0) return 0;
 
+  // Count how many requirements are met
   const passedCount = requirements.filter((r) => r.validate(password)).length;
 
   let strength = (passedCount / requirements.length) * 100;
