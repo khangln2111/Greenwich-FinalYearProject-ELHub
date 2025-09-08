@@ -1,27 +1,39 @@
-import { Anchor, Box, Checkbox, Divider, Loader } from "@mantine/core";
+import { Anchor, Box, Checkbox, Divider } from "@mantine/core";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
-import { UpdateCartItemCommand } from "../../../features/cart/cart.types";
 import {
   useDeleteCartItem,
   useGetCart,
   useUpdateCartItem,
 } from "../../../features/cart/cart.hooks";
+import { UpdateCartItemCommand } from "../../../features/cart/cart.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 import CartItemCard from "./_c/CartItemCard";
 import CartSummary from "./_c/CartSummary";
 import EmptyCartPlaceholder from "./_c/EmptyCartPlaceholder";
-import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function CartPage() {
   usePageSEO({ title: "Cart" });
 
-  const { data, isLoading } = useGetCart();
+  const { data, isPending, error } = useGetCart();
   const updateCartItem = useUpdateCartItem();
   const deleteCartItem = useDeleteCartItem();
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  if (error) return <div>Error loading cart. Please try again later.</div>;
+
+  if (isPending) return <CenterLoader height={500} />;
+
+  const cartItems = data.cartItems;
+  const selectedItems = cartItems.filter((item) => selectedIds.includes(item.id));
+
+  if (cartItems.length === 0) {
+    return <EmptyCartPlaceholder />;
+  }
 
   const handleQuantityChange = (id: string, delta: number, currentQuantity: number) => {
     const newQuantity = Math.max(1, currentQuantity + delta);
@@ -45,22 +57,6 @@ export default function CartPage() {
     if (selectedIds.length === allIds.length) setSelectedIds([]);
     else setSelectedIds(allIds);
   };
-
-  if (isLoading)
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader />
-      </div>
-    );
-
-  if (!data) return <div>No data</div>;
-
-  const cartItems = data?.cartItems ?? [];
-  const selectedItems = cartItems.filter((item) => selectedIds.includes(item.id));
-
-  if ((data?.cartItems ?? []).length === 0) {
-    return <EmptyCartPlaceholder />;
-  }
 
   return (
     <div className="flex-1 bg-[#EDF0F3] dark:bg-dark-5">
