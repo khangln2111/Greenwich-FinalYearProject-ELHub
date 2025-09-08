@@ -64,7 +64,7 @@ export default function AdminSettingsPage() {
         <Text c="dimmed">Manage system-wide settings and admin preferences</Text>
       </div>
 
-      {/* Tabs */}
+      {/* Tabs navigator */}
       <div className="overflow-x-auto mx-auto mb-10 shadow-sm rounded-full">
         <SegmentedControl
           fullWidth

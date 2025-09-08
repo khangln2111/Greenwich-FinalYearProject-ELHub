@@ -1,32 +1,4 @@
 import { DEFAULT_THEME, createTheme, mergeMantineTheme } from "@mantine/core";
-// import { DEFAULT_THEME } from "@mantine/core";
-
-// const primary: MantineColorsTuple = [
-//   "#e6ffee",
-//   "#d3f9e0",
-//   "#a8f2c0",
-//   "#7aea9f",
-//   "#54e382",
-//   "#3bdf70",
-//   "#2bdd66",
-//   "#1bc455",
-//   "#0bae4a",
-//   "#00973c",
-// ];
-
-// const primary: MantineColorsTuple = [
-//   "#f3f1ff",
-//   "#ebe5ff",
-//   "#d9ceff",
-//   "#bea6ff",
-//   "#9f75ff",
-//   "#843dff",
-//   "#7916ff",
-//   "#6b04fd",
-//   "#5a03d5",
-//   "#4b05ad",
-//   "#2c0076",
-// ];
 
 export const themeOverride = createTheme({
   colors: {
@@ -114,3 +86,30 @@ export const themeOverride = createTheme({
 const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);
 // const theme = themeOverride;
 export default theme;
+
+// const primary: MantineColorsTuple = [
+//   "#e6ffee",
+//   "#d3f9e0",
+//   "#a8f2c0",
+//   "#7aea9f",
+//   "#54e382",
+//   "#3bdf70",
+//   "#2bdd66",
+//   "#1bc455",
+//   "#0bae4a",
+//   "#00973c",
+// ];
+
+// const primary: MantineColorsTuple = [
+//   "#f3f1ff",
+//   "#ebe5ff",
+//   "#d9ceff",
+//   "#bea6ff",
+//   "#9f75ff",
+//   "#843dff",
+//   "#7916ff",
+//   "#6b04fd",
+//   "#5a03d5",
+//   "#4b05ad",
+//   "#2c0076",
+// ];

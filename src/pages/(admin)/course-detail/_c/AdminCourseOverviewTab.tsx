@@ -1,27 +1,12 @@
-import { Paper, Text, ThemeIcon, Title } from "@mantine/core";
+import { Text, ThemeIcon, Title } from "@mantine/core";
 import DOMPurify from "dompurify";
-import { ArrowRight, AwardIcon, InfoIcon } from "lucide-react";
+import { ArrowRight, AwardIcon } from "lucide-react";
+import EmptyInformation from "../../../../components/EmptyInformation/EmptyInfomartion";
 import { CourseDetailVm } from "../../../../features/course/course.types";
 
 type AdminCourseOverviewTabProps = {
   course: CourseDetailVm;
 };
-
-const EmptyState = ({ message }: { message: string }) => (
-  <Paper
-    p="md"
-    radius="md"
-    className="flex items-center gap-3 bg-gray-50 dark:bg-dark-6 border border-dashed border-gray-300
-      dark:border-gray-700"
-  >
-    <ThemeIcon variant="light" color="gray" radius="xl">
-      <InfoIcon size={18} />
-    </ThemeIcon>
-    <Text size="sm" c="dimmed">
-      {message}
-    </Text>
-  </Paper>
-);
 
 const AdminCourseOverviewTab = ({ course }: AdminCourseOverviewTabProps) => {
   return (
@@ -50,7 +35,7 @@ const AdminCourseOverviewTab = ({ course }: AdminCourseOverviewTabProps) => {
           </>
         ) : (
           <div className="mt-4">
-            <EmptyState message="This course has no learning outcomes yet." />
+            <EmptyInformation message="This course has no learning outcomes yet." />
           </div>
         )}
       </div>
@@ -80,7 +65,7 @@ const AdminCourseOverviewTab = ({ course }: AdminCourseOverviewTabProps) => {
           </>
         ) : (
           <div className="mt-4">
-            <EmptyState message="No prerequisites have been added for this course." />
+            <EmptyInformation message="No prerequisites have been added for this course." />
           </div>
         )}
       </div>

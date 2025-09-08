@@ -2,6 +2,7 @@ import { Text, ThemeIcon, Title } from "@mantine/core";
 import DOMPurify from "dompurify";
 import { ArrowRight, AwardIcon } from "lucide-react";
 import { CourseDetailVm } from "../../../../features/course/course.types";
+import EmptyInformation from "../../../../components/EmptyInformation/EmptyInfomartion";
 
 type OverviewTabProps = {
   course: CourseDetailVm;
@@ -66,9 +67,22 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
       {/* Course Description Section */}
       <div>
         <Title order={2}>About the course</Title>
-        <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert">
-          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(course.description) }}></div>
-        </div>
+        {course.description && course.description.trim() ? (
+          <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(course.description),
+              }}
+            />
+          </div>
+        ) : (
+          <EmptyInformation
+            classNames={{
+              root: "mt-2",
+            }}
+            message="No description has been added for this course yet."
+          />
+        )}
       </div>
     </div>
   );
