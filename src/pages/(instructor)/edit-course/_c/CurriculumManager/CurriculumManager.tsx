@@ -76,9 +76,9 @@ const CurriculumManager = ({
 
     // --- Reorder Lectures ---
     if (type === "lecture") {
-      if (source.droppableId === destination.droppableId && source.index === destination.index) {
+      // Early return if the lecture is being moved within the same section && to the same position
+      if (source.droppableId === destination.droppableId && source.index === destination.index)
         return;
-      }
 
       const sourceSection = sections.find((s) => s.id === source.droppableId);
       const destinationSection = sections.find((s) => s.id === destination.droppableId);
@@ -95,6 +95,7 @@ const CurriculumManager = ({
         (s) => s.id === destinationSection.id,
       );
 
+      // Early return if source or destination section not found
       if (sourceSectionIndex !== -1 && destinationSectionIndex !== -1) {
         // Remove lecture from source section
         updatedSections[sourceSectionIndex].lectures?.splice(source.index, 1);
