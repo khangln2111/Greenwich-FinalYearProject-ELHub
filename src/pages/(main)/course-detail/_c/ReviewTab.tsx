@@ -15,6 +15,7 @@ import { useState } from "react";
 import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 import { useGetReviewsByCourseId } from "../../../../features/review/review.hooks";
 import ReviewCard from "./ReviewCard";
+import { cn } from "../../../../utils/cn";
 
 const renderStarOptionIconOnly: SelectProps["renderOption"] = ({ option, checked }) => {
   const stars = parseInt(option.value);
@@ -35,9 +36,10 @@ interface ReviewTabProps {
   totalReviews: number;
   stars: { stars: number; percentage: number }[];
   courseId: string;
+  className?: string;
 }
 
-const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) => {
+const ReviewTab = ({ rating, totalReviews, stars, courseId, className }: ReviewTabProps) => {
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
@@ -61,11 +63,11 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
   };
 
   return (
-    <div>
+    <div className={cn("space-y-10", className)}>
       <Title order={2}>What our students are saying</Title>
 
       {/* review summary */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg">
         {/* Left section */}
         <div
           className="flex flex-col items-center justify-center md:col-span-4 xl:col-span-3 gap-3 p-sm md:border-r
@@ -102,7 +104,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId }: ReviewTabProps) =>
       </div>
 
       {/* bottom section wrapper */}
-      <div className="mt-10 flex flex-col gap-7">
+      <div className="flex flex-col gap-7">
         {/* Search + Filter */}
         <div className="flex items-center gap-5">
           <TextInput

@@ -4,12 +4,14 @@ import { useState } from "react";
 import CurriculumLecturePreviewModal from "../../../../(main)/course-detail/_c/CurriculumTab/CurriculumLecturePreviewModal";
 import { SectionVm } from "../../../../../features/section/section.types";
 import { AdminCourseCurriculumSection } from "./AdminCourseCurriculumSection";
+import { cn } from "../../../../../utils/cn";
 
 type AdminCourseCurriculumTabProps = {
   sections: SectionVm[];
+  className?: string;
 };
 
-const AdminCourseCurriculumTab = ({ sections }: AdminCourseCurriculumTabProps) => {
+const AdminCourseCurriculumTab = ({ sections, className }: AdminCourseCurriculumTabProps) => {
   const [openedPreviewModal, setOpenedPreviewModal] = useState(false);
   const [previewVideoUrl, setPreviewVideoUrl] = useState("");
 
@@ -19,7 +21,7 @@ const AdminCourseCurriculumTab = ({ sections }: AdminCourseCurriculumTabProps) =
   };
 
   return (
-    <>
+    <div className={cn("space-y-5", className)}>
       <CurriculumLecturePreviewModal
         opened={openedPreviewModal}
         onClose={() => setOpenedPreviewModal(false)}
@@ -38,7 +40,6 @@ const AdminCourseCurriculumTab = ({ sections }: AdminCourseCurriculumTabProps) =
       {sections.length > 0 ? (
         <Accordion
           multiple
-          className="mt-5"
           chevronPosition="left"
           transitionDuration={400}
           chevronSize={26}
@@ -61,8 +62,8 @@ const AdminCourseCurriculumTab = ({ sections }: AdminCourseCurriculumTabProps) =
         </Accordion>
       ) : (
         <div
-          className="mt-10 flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed
-            border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-dark-6 p-10 text-center shadow-sm"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-gray-300
+            dark:border-gray-700 bg-gray-50 dark:bg-dark-6 p-10 text-center shadow-sm"
         >
           <LayoutListIcon className="size-10 text-gray-400 dark:text-gray-600" />
           <Title order={4} className="text-gray-700 dark:text-gray-300">
@@ -73,7 +74,7 @@ const AdminCourseCurriculumTab = ({ sections }: AdminCourseCurriculumTabProps) =
           </Text>
         </div>
       )}
-    </>
+    </div>
   );
 };
 export default AdminCourseCurriculumTab;

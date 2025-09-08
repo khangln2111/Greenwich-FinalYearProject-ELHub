@@ -3,18 +3,20 @@ import DOMPurify from "dompurify";
 import { ArrowRight, AwardIcon } from "lucide-react";
 import { CourseDetailVm } from "../../../../features/course/course.types";
 import EmptyInformation from "../../../../components/EmptyInformation/EmptyInfomartion";
+import { cn } from "../../../../utils/cn";
 
 type OverviewTabProps = {
   course: CourseDetailVm;
+  className?: string;
 };
 
-const OverviewTab = ({ course }: OverviewTabProps) => {
+const OverviewTab = ({ course, className }: OverviewTabProps) => {
   return (
-    <div className="space-y-10">
+    <div className={cn("space-y-10", className)}>
       {/* Learning Outcomes Section */}
       {course.learningOutcomes && course.learningOutcomes.length > 0 && (
         <div>
-          <Title order={3}>What you'll learn in this course</Title>
+          <Title order={2}>What you'll learn in this course</Title>
           <Text className="mt-2 text-lg">
             This course is designed to help you develop the following skills and knowledge:
           </Text>
@@ -39,7 +41,7 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
       {/* Prerequisites Section */}
       {course.prerequisites && course.prerequisites.length > 0 && (
         <div>
-          <Title order={3}>What you need before starting</Title>
+          <Title order={2}>What you need before starting</Title>
           <Text className="mt-2 text-lg">
             To get the most out of this course, it helps to have some background knowledge or
             skills:
@@ -66,7 +68,9 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
       )}
       {/* Course Description Section */}
       <div>
-        <Title order={2}>About the course</Title>
+        <Title order={2} className="mb-5">
+          About the course
+        </Title>
         {course.description && course.description.trim() ? (
           <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert">
             <div
@@ -76,12 +80,7 @@ const OverviewTab = ({ course }: OverviewTabProps) => {
             />
           </div>
         ) : (
-          <EmptyInformation
-            classNames={{
-              root: "mt-2",
-            }}
-            message="No description has been added for this course yet."
-          />
+          <EmptyInformation message="No description has been added for this course yet." />
         )}
       </div>
     </div>

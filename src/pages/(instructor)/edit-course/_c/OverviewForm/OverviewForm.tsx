@@ -27,13 +27,15 @@ import SortableInputList from "./SortableInputList";
 import TestSortList from "./TestSortList";
 import { Editor } from "@tiptap/react";
 import { useRef } from "react";
+import { cn } from "../../../../../utils/cn";
 
 type CourseOverviewFormProps = {
   courseDetail: CourseDetailVm;
   courseId: string;
+  className?: string;
 };
 
-const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
+const OverviewForm = ({ courseDetail, courseId, className }: CourseOverviewFormProps) => {
   const updateCourseOverviewMutation = useUpdateCourse();
   const descriptionEditorRef = useRef<Editor | null>(null);
   const form = useForm<UpdateCourseOverviewFormValues>({
@@ -106,7 +108,7 @@ const OverviewForm = ({ courseDetail, courseId }: CourseOverviewFormProps) => {
     <Box
       component="form"
       onSubmit={formSubmitWithFocus(form, handleSubmit)}
-      className="flex-1 flex flex-col gap-12"
+      className={cn("flex-1 flex flex-col gap-12", className)}
     >
       <div>
         <Title order={3}>Course Title</Title>

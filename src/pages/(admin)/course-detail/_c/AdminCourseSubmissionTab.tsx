@@ -2,16 +2,18 @@ import { Badge, Paper, Stack, Text, Timeline, Title, Group } from "@mantine/core
 import { IconCheck, IconX } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { CourseApprovalHistoryVm } from "../../../../features/course/course.types";
+import { cn } from "../../../../utils/cn";
 
 interface Props {
   history: CourseApprovalHistoryVm[];
+  className?: string;
 }
 
-const AdminCourseSubmissionTab = ({ history }: Props) => {
+const AdminCourseSubmissionTab = ({ history, className }: Props) => {
   const sortedHistory = [...history].sort((a, b) => dayjs(a.createdAt).diff(dayjs(b.createdAt)));
 
   return (
-    <Stack>
+    <div className={cn("space-y-5", className)}>
       <Title order={2}>Approval History</Title>
 
       <Paper withBorder p="lg" radius="md">
@@ -61,7 +63,7 @@ const AdminCourseSubmissionTab = ({ history }: Props) => {
           </Timeline>
         )}
       </Paper>
-    </Stack>
+    </div>
   );
 };
 

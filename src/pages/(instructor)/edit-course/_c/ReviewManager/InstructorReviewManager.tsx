@@ -17,6 +17,7 @@ import { useGetReviewsByCourseId } from "../../../../../features/review/review.h
 import InstructorReviewManagerCard from "./_c/InstructorReviewManagerCard";
 import { OrderBy } from "../../../../../api-client/api.types";
 import { ReviewOrderableFields } from "../../../../../features/review/review.types";
+import { cn } from "../../../../../utils/cn";
 
 // ----- TYPESAFE SORT OPTIONS -----
 const REVIEW_SORT_OPTIONS: {
@@ -50,6 +51,7 @@ interface InstructorReviewManagerProps {
   totalReviews: number;
   stars: { stars: number; percentage: number }[];
   courseId: string;
+  className?: string;
 }
 
 const InstructorReviewManager = ({
@@ -57,6 +59,7 @@ const InstructorReviewManager = ({
   totalReviews,
   stars,
   courseId,
+  className,
 }: InstructorReviewManagerProps) => {
   const [selectedRating, setSelectedRating] = useState<string | null>(null);
   const [selectedReplyStatus, setSelectedReplyStatus] = useState<string | null>("all");
@@ -92,11 +95,11 @@ const InstructorReviewManager = ({
   }
 
   return (
-    <div>
+    <div className={cn("space-y-10", className)}>
       <Title order={2}>What our students are saying</Title>
 
       {/* review summary */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg">
         {/* Left section */}
         <div
           className="flex flex-col items-center justify-center md:col-span-4 xl:col-span-3 gap-3 p-sm md:border-r
@@ -133,7 +136,7 @@ const InstructorReviewManager = ({
       </div>
 
       {/* bottom section wrapper */}
-      <div className="mt-10 flex flex-col gap-7">
+      <div className="flex flex-col gap-7">
         {/* Search + Filters */}
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-5">
           <TextInput

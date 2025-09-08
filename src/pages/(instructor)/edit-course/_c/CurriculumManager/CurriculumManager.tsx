@@ -9,13 +9,19 @@ import { useReorderSection } from "../../../../../features/section/section.hooks
 import { CreateSectionModal } from "./CreateSectionModal";
 import { SectionItem } from "./SectionItem";
 import { UpdateSectionModal } from "./UpdateSectionModal";
+import { cn } from "../../../../../utils/cn";
 
 type CurriculumManagerProps = {
   courseId: string;
   sections: SectionVm[];
+  className?: string;
 };
 
-const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumManagerProps) => {
+const CurriculumManager = ({
+  courseId,
+  sections: initialSections,
+  className,
+}: CurriculumManagerProps) => {
   const [
     createSectionModalOpened,
     { open: openCreateSectionModal, close: closeCreateSectionModal },
@@ -113,7 +119,7 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
   };
 
   return (
-    <>
+    <div className={cn("space-y-5", className)}>
       <CreateSectionModal
         opened={createSectionModalOpened}
         onClose={closeCreateSectionModal}
@@ -149,7 +155,6 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 <Accordion
                   multiple
-                  className="mt-5"
                   chevronPosition="left"
                   transitionDuration={400}
                   chevronSize={26}
@@ -178,8 +183,8 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
         </DragDropContext>
       ) : (
         <div
-          className="mt-10 flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed
-            border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-dark-5 p-10 text-center shadow-sm"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-gray-300
+            dark:border-gray-700 bg-gray-50 dark:bg-dark-5 p-10 text-center shadow-sm"
         >
           <LayoutListIcon className="size-10 text-gray-400 dark:text-gray-600" />
           <Title order={4} className="text-gray-700 dark:text-gray-300">
@@ -194,7 +199,7 @@ const CurriculumManager = ({ courseId, sections: initialSections }: CurriculumMa
           </Button>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

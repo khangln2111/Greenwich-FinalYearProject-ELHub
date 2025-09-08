@@ -3,17 +3,19 @@ import { MessageSquare, PlayCircle, Star, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import image from "../../../../assets/placeholder/avatar-placeholder.jpg";
 import { CourseDetailVm } from "../../../../features/course/course.types";
+import { cn } from "../../../../utils/cn";
 
 type InstructorTabProps = {
   courseDetail: CourseDetailVm;
+  className?: string;
 };
 
-const InstructorTab = ({ courseDetail }: InstructorTabProps) => {
+const InstructorTab = ({ courseDetail, className }: InstructorTabProps) => {
   return (
-    <div>
+    <div className={cn("space-y-5", className)}>
       <Title order={2}>Meet your instructor</Title>
       <div
-        className="mx-auto p-6 shadow-lg rounded-lg mt-5 border border-gray-200 dark:border-zinc-700 bg-white
+        className="mx-auto p-6 shadow-lg rounded-lg border border-gray-200 dark:border-zinc-700 bg-white
           dark:bg-zinc-800"
       >
         <div className="flex flex-col md:flex-row gap-6">

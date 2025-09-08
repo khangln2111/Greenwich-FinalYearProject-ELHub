@@ -12,10 +12,10 @@ import {
   useSubmitCourse,
 } from "../../../features/course/course.hooks";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
-import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmission";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
 import InstructorReviewManager from "./_c/ReviewManager/InstructorReviewManager";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmissionTab";
 
 enum CourseDetailTab {
   Overview = "Overview",
@@ -38,7 +38,7 @@ export default function InstructorEditCoursePage() {
   const submitMutation = useSubmitCourse();
   const retrySubmitMutation = useResubmitCourse();
 
-  if (isPending) return <CenterLoader />;
+  if (isPending) return <CenterLoader height={600} />;
   if (error || !courseId || !courseDetail) return <Navigate to="/404" replace />;
 
   const canSubmit = courseDetail.status === CourseStatus.Draft;
@@ -160,11 +160,11 @@ export default function InstructorEditCoursePage() {
         value={activeTab}
         data={Object.values(CourseDetailTab)}
         onChange={(val) => setActiveTab(val as CourseDetailTab)}
-        size="sm"
+        size="md"
         transitionDuration={300}
         className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
         classNames={{
-          root: "bg-white dark:bg-dark-6 shadow-sm border p-[10px]",
+          root: "bg-white dark:bg-dark-6 shadow-md border border-gray-1 dark:border-dark-4 p-[10px]",
           indicator: "bg-linear-to-r bg-blue-5",
           control: "before:hidden",
           label: "data-active:text-white hover:data-active:text-white",

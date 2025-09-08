@@ -1,18 +1,19 @@
 import { Spoiler, Title } from "@mantine/core";
 import { MessageSquare, PlayCircle, Star, Users } from "lucide-react";
 import image from "../../../../assets/placeholder/avatar-placeholder.jpg";
-
 import { CourseDetailVm } from "../../../../features/course/course.types";
+import { cn } from "../../../../utils/cn";
 
 type AdminCourseInstructorTabProps = {
   courseDetail: CourseDetailVm;
+  className?: string;
 };
-const AdminCourseInstructorTab = ({ courseDetail }: AdminCourseInstructorTabProps) => {
+const AdminCourseInstructorTab = ({ courseDetail, className }: AdminCourseInstructorTabProps) => {
   return (
-    <div>
+    <div className={cn("space-y-5", className)}>
       <Title order={2}>About the instructor</Title>
       <div
-        className="mx-auto p-6 shadow-lg rounded-lg mt-5 border border-gray-200 dark:border-zinc-700 bg-white
+        className="mx-auto p-6 shadow-lg rounded-lg border border-gray-200 dark:border-zinc-700 bg-white
           dark:bg-zinc-800"
       >
         <div className="flex flex-col md:flex-row gap-6">

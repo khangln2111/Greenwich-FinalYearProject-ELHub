@@ -5,12 +5,14 @@ import { useState } from "react";
 import { SectionVm } from "../../../../../features/section/section.types";
 import CurriculumLecturePreviewModal from "./CurriculumLecturePreviewModal";
 import { CurriculumSection } from "./CurriculumSection";
+import { cn } from "../../../../../utils/cn";
 
 type CurriculumTabProps = {
   sections: SectionVm[];
+  className?: string;
 };
 
-const CurriculumTab = ({ sections }: CurriculumTabProps) => {
+const CurriculumTab = ({ sections, className }: CurriculumTabProps) => {
   const [openedPreviewModal, setOpenedPreviewModal] = useState(false);
   const [previewVideoUrl, setPreviewVideoUrl] = useState("");
 
@@ -20,7 +22,7 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
   };
 
   return (
-    <>
+    <div className={cn("space-y-5", className)}>
       <CurriculumLecturePreviewModal
         opened={openedPreviewModal}
         onClose={() => setOpenedPreviewModal(false)}
@@ -39,7 +41,6 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
       {sections.length > 0 ? (
         <Accordion
           multiple
-          className="mt-5"
           chevronPosition="left"
           transitionDuration={400}
           chevronSize={26}
@@ -62,8 +63,8 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
         </Accordion>
       ) : (
         <div
-          className="mt-10 flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed
-            border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-dark-6 p-10 text-center shadow-sm"
+          className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-gray-300
+            dark:border-gray-700 bg-gray-50 dark:bg-dark-6 p-10 text-center shadow-sm"
         >
           <LayoutListIcon className="size-10 text-gray-400 dark:text-gray-600" />
           <Title order={4} className="text-gray-700 dark:text-gray-300">
@@ -75,7 +76,7 @@ const CurriculumTab = ({ sections }: CurriculumTabProps) => {
           </Text>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
