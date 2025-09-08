@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common;
+using Application.Common.Interfaces;
 using Application.Common.Interfaces.AppInterfaces;
 using Domain.Enums;
 using Domain.Events.SectionEvents;
@@ -8,13 +9,15 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.EventHandlers.SectionEventHandlers;
 
 public class SectionCreatedEventHandler(
-    IApplicationDbContext context,
+    IApplicationDbContextFactory contextFactory,
     INotificationService notificationService
 ) : INotificationHandler<SectionCreatedEvent>
 {
     public async Task Handle(SectionCreatedEvent notification, CancellationToken cancellationToken)
     {
+        await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var course = await context.Courses
+            .AsNoTracking()
             .Where(c => c.Id == notification.Section.CourseId)
             .Select(c => new { c.Id, c.Title })
             .FirstOrDefaultAsync(cancellationToken);
@@ -31,6 +34,6 @@ public class SectionCreatedEventHandler(
                            .Select(e => e.UserId)
                            .AsAsyncEnumerable()
                            .WithCancellation(cancellationToken))
-            await notificationService.CreateAndSendAsync(userId, title, content, type, RoleName.LEARNER, url);
+            await notificationService.CreateAndSend(userId, title, content, type, RoleName.LEARNER, url);
     }
 }

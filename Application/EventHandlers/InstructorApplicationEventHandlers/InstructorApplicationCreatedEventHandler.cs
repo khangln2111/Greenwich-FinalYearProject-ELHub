@@ -34,7 +34,7 @@ public class InstructorApplicationCreatedEventHandler(
         var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.ADMIN));
 
         foreach (var admin in admins)
-            await notificationService.CreateAndSendAsync(
+            await notificationService.CreateAndSend(
                 admin.Id,
                 "New Instructor Application",
                 $"A new instructor application has been submitted by {application.FirstName} {application.LastName}.",

@@ -1,3 +1,4 @@
+using Application.Common;
 using Application.Common.Interfaces;
 using Application.Common.Interfaces.InfrastructureInterfaces;
 using Domain.Entities;
@@ -17,29 +18,40 @@ namespace Infrastructure;
 
 public static class InfrastructureLayerDependencyInjection
 {
-    public static void AddDataAccessLayer(this IServiceCollection services)
+    public static void AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddPersistence();
+        services.AddPersistence(configuration);
         services.AddIdentity();
         services.AddUtilities();
         services.AddBackgroundServices();
     }
 
-    private static void AddPersistence(this IServiceCollection services)
+    private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
-        services.AddDbContext<ApplicationDbContext>((sp, opts) =>
+
+        var sqlServerConnectionString = configuration.GetConnectionString("SQLServerConnection");
+
+
+        services.AddDbContextFactory<ApplicationDbContext>(opts =>
         {
-            var configuration = sp.GetRequiredService<IConfiguration>();
-            var sqlServerConnectionString = configuration.GetConnectionString("SQLServerConnection");
-            opts.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
             opts.UseSqlServer(sqlServerConnectionString);
             opts.UseAutoCompute();
             opts.EnableDetailedErrors();
             // opts.EnableSensitiveDataLogging();
         });
 
+        // services.AddDbContext<ApplicationDbContext>((sp, opts) =>
+        // {
+        //     opts.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+        //     opts.UseSqlServer(sqlServerConnectionString);
+        //     opts.UseAutoCompute();
+        //     opts.EnableDetailedErrors();
+        //     // opts.EnableSensitiveDataLogging();
+        // });
+
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddSingleton<IApplicationDbContextFactory, ApplicationDbContextFactory>();
     }
 
 

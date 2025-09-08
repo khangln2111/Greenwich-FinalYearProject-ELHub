@@ -27,11 +27,20 @@ public class SectionUpdatedEventHandler(
         const NotificationType type = NotificationType.CourseUpdated;
         var url = $"/courses/{course.Id}";
 
-        await foreach (var userId in context.Enrollments
-                           .Where(e => e.CourseId == course.Id)
-                           .Select(e => e.UserId)
-                           .AsAsyncEnumerable()
-                           .WithCancellation(cancellationToken))
-            await notificationService.CreateAndSendAsync(userId, title, content, type, RoleName.LEARNER, url);
+        var userIds = await context.Enrollments
+            .Where(e => e.CourseId == course.Id)
+            .Select(e => e.UserId)
+            .ToListAsync(cancellationToken);
+
+        if (userIds.Count == 0) return;
+
+        await notificationService.CreateAndSendBatch(
+            userIds,
+            title,
+            content,
+            type,
+            RoleName.LEARNER,
+            url,
+            cancellationToken);
     }
 }

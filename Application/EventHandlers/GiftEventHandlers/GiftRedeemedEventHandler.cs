@@ -14,7 +14,7 @@ public class GiftRedeemedEventHandler(
         var gift = notification.Gift;
 
         // Notify the giver that their gift has been redeemed
-        await notificationService.CreateAndSendAsync(
+        await notificationService.CreateAndSend(
             gift.GiverId,
             "Your gift was redeemed",
             $"Your gift has just been redeemed by {gift.ReceiverEmail}. Thanks for sharing the joy!",

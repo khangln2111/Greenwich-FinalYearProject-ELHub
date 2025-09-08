@@ -34,7 +34,7 @@ public class InstructorApplicationResubmittedEventHandler(
         var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.ADMIN));
 
         foreach (var admin in admins)
-            await notificationService.CreateAndSendAsync(
+            await notificationService.CreateAndSend(
                 admin.Id,
                 "Instructor Application Resubmitted",
                 $"Instructor {application.FirstName} {application.LastName} has resubmitted their application.",

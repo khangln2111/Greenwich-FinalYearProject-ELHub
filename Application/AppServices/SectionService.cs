@@ -54,11 +54,11 @@ public class SectionService(
 
         var sectionEntity = mapper.Map<Section>(command);
 
-        // Calculate the order, 0-based index
-        var count = await context.Sections
+        var maxOrder = await context.Sections
             .Where(s => s.CourseId == command.CourseId)
-            .CountAsync();
-        sectionEntity.Order = count;
+            .MaxAsync(s => (int?)s.Order) ?? -1;
+
+        sectionEntity.Order = maxOrder + 1;
 
         await context.Sections.AddAsync(sectionEntity);
         await context.SaveChangesAsync();

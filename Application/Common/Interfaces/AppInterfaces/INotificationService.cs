@@ -8,13 +8,23 @@ namespace Application.Common.Interfaces.AppInterfaces;
 
 public interface INotificationService
 {
-    Task CreateAndSendAsync(
+    Task CreateAndSend(
         Guid userId,
         string title,
         string content,
         NotificationType type,
         RoleName targetRole,
         string? url = null
+    );
+
+    Task CreateAndSendBatch(
+        IEnumerable<Guid> userIds,
+        string title,
+        string content,
+        NotificationType type,
+        RoleName targetRole,
+        string? url = null,
+        CancellationToken cancellationToken = default
     );
 
     Task<Paged<NotificationVm>> GetListSelf(GridifyQuery query);

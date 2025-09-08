@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces;
 
-public interface IApplicationDbContext
+public interface IApplicationDbContext : IAsyncDisposable
 {
     public DbSet<Category> Categories { get; set; }
 

@@ -18,7 +18,7 @@ public class CourseSubmittedEventHandler(
         var course = notification.Course;
 
         foreach (var admin in admins)
-            await notificationService.CreateAndSendAsync(
+            await notificationService.CreateAndSend(
                 admin.Id,
                 "New course submitted",
                 $"Course \"{course.Title}\" has been submitted for moderation.",

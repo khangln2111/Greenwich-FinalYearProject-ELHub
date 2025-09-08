@@ -16,7 +16,7 @@ public class CourseModeratedEventHandler(INotificationService notificationServic
             ? $"Your course \"{notification.Course.Title}\" has been approved and published."
             : $"Your course \"{notification.Course.Title}\" has been rejected. Please check feedback.";
 
-        await notificationService.CreateAndSendAsync(
+        await notificationService.CreateAndSend(
             instructorId,
             notification.IsApproved ? "Course approved" : "Course rejected",
             content,

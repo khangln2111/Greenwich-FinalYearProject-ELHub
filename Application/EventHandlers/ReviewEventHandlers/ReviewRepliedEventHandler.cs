@@ -21,7 +21,7 @@ public class ReviewRepliedEventHandler(
 
         if (review?.Reply is null) return;
 
-        await notificationService.CreateAndSendAsync(
+        await notificationService.CreateAndSend(
             review.Enrollment.UserId,
             "Instructor replied to your review",
             $"Your review for \"{review.Enrollment.Course.Title}\" has a new reply: \"{review.Reply.Content}\"",

@@ -5,6 +5,7 @@ using Application.AppServices;
 using Application.Common.Interfaces.AppInterfaces;
 using Application.Validations;
 using Gridify;
+using MediatR.NotificationPublishers;
 
 namespace Application;
 
@@ -14,7 +15,11 @@ public static class ApplicationLayerDependencyInjection
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()); });
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            cfg.NotificationPublisher = new ForeachAwaitPublisher();
+        });
         services.ConfigureGridify();
         services.AddServices();
     }

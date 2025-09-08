@@ -33,7 +33,7 @@ public class InstructorApplicationModeratedEventHandler(
                 NotificationType.InstructorApplicationRejected);
 
 
-        await notificationService.CreateAndSendAsync(
+        await notificationService.CreateAndSend(
             app.UserId,
             title,
             message,

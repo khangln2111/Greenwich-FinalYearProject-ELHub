@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 //Add layers
-builder.Services.AddDataAccessLayer();
+builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddBusinessLogicLayer();
 builder.Services.AddPresentationLayer();
 builder.Services.AddCors(options =>

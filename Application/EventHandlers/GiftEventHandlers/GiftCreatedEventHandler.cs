@@ -49,7 +49,7 @@ public class GiftCreatedEventHandler(
         if (receiver == null) return;
 
         // Send in-app notification to receiver
-        await notificationService.CreateAndSendAsync(
+        await notificationService.CreateAndSend(
             receiver.Id,
             "You’ve received a gift!",
             $"{giverFullName} sent you a gift. Please check your email ({receiverEmail}) for details.",

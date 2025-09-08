@@ -28,7 +28,7 @@ public class CourseUpdatedEventHandler(
         var content = $"The course \"{course.Title}\" has been updated. Check out the latest changes!";
         var type = NotificationType.CourseUpdated;
         foreach (var userId in enrolledUsers)
-            await notificationService.CreateAndSendAsync(userId, title, content, type, RoleName.LEARNER,
+            await notificationService.CreateAndSend(userId, title, content, type, RoleName.LEARNER,
                 $"/courses/{course.Id}");
     }
 }

@@ -20,7 +20,7 @@ public class CourseResubmittedEventHandler(
         var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.ADMIN));
 
         foreach (var admin in admins)
-            await notificationService.CreateAndSendAsync(
+            await notificationService.CreateAndSend(
                 admin.Id,
                 "Course resubmitted",
                 $"Course \"{course.Title}\" has been resubmitted for moderation.",

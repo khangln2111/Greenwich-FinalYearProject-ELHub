@@ -26,7 +26,7 @@ public class ReviewCreatedEventHandler(
         var instructorId = course.InstructorId;
 
         // Notify instructor
-        await notificationService.CreateAndSendAsync(
+        await notificationService.CreateAndSend(
             instructorId,
             "New course review",
             $"{review.Enrollment.User.UserName} rated your course \"{course.Title}\" {review.Rating} stars: \"{review.Content}\"",

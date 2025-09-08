@@ -13,7 +13,7 @@ public class OrderProcessedEventHandler(
     {
         var order = notification.Order;
 
-        await notificationService.CreateAndSendAsync(
+        await notificationService.CreateAndSend(
             order.UserId,
             "Order Processed",
             $"Your order with ID {order.Id} has been processed",

@@ -22,7 +22,7 @@ public class NotificationService(
     ICurrentUserUtility currentUserUtility)
     : INotificationService
 {
-    public async Task CreateAndSendAsync(
+    public async Task CreateAndSend(
         Guid userId,
         string title,
         string content,
@@ -58,6 +58,48 @@ public class NotificationService(
         };
 
         await notificationUtility.SendNotificationInBackground(userId, dto);
+    }
+
+    public async Task CreateAndSendBatch(
+        IEnumerable<Guid> userIds,
+        string title,
+        string content,
+        NotificationType type,
+        RoleName targetRole,
+        string? url = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var notifications = userIds.Select(userId => new Notification
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Title = title,
+            Content = content,
+            Type = type,
+            Url = url,
+            IsRead = false,
+            TargetRole = targetRole
+        }).ToList();
+
+        await context.Notifications.AddRangeAsync(notifications, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
+
+        var dtos = notifications.Select(entity => new NotificationVm
+        {
+            Id = entity.Id,
+            Title = entity.Title,
+            Content = entity.Content,
+            Type = entity.Type,
+            Url = entity.Url,
+            IsRead = entity.IsRead,
+            CreatedAt = entity.CreatedAt
+        }).ToList();
+
+        var sendTasks = notifications.Zip(dtos, (entity, dto) =>
+            notificationUtility.SendNotificationInBackground(entity.UserId, dto));
+
+        await Task.WhenAll(sendTasks);
     }
 
 
