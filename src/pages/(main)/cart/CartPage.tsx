@@ -28,7 +28,7 @@ export default function CartPage() {
 
   if (isPending) return <CenterLoader height={500} />;
 
-  const cartItems = data.cartItems;
+  const cartItems = data.cartItems || [];
   const selectedItems = cartItems.filter((item) => selectedIds.includes(item.id));
 
   if (cartItems.length === 0) {
