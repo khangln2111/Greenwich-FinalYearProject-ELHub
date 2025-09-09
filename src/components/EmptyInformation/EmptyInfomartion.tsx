@@ -2,7 +2,7 @@ import { Paper, ThemeIcon, Text } from "@mantine/core";
 import { InfoIcon } from "lucide-react";
 import { cn } from "../../utils/cn";
 
-type EmptyStateProps = {
+type EmptyInformationProps = {
   message: string;
   icon?: React.ReactNode;
   classNames?: {
@@ -16,7 +16,7 @@ const EmptyInformation = ({
   message,
   icon = <InfoIcon size={18} />,
   classNames,
-}: EmptyStateProps) => (
+}: EmptyInformationProps) => (
   <Paper
     p="md"
     radius="md"

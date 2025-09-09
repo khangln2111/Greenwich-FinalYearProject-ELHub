@@ -46,7 +46,7 @@ export const CourseFilter = () => {
 
   const { data: categories, isPending, isError } = useGetCategories({ pageSize: 100 });
 
-  // --- TEMP STATE giữ nguyên giá trị UI ---
+  // --- TEMP STATE keep UI unchanged ---
   const [tempFilters, setTempFilters] = useState({
     categoryId,
     levels,

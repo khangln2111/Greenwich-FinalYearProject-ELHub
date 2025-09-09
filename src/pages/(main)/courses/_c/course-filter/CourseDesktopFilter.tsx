@@ -151,6 +151,9 @@ const CourseDesktopFilter = () => {
                   value={minPriceInput ?? undefined}
                   onChange={(val) => setMinPriceInput(Number(val))}
                   disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
+                  classNames={{
+                    input: "border-2",
+                  }}
                 />
                 <span>-</span>
                 {/* Max Price */}
@@ -165,6 +168,9 @@ const CourseDesktopFilter = () => {
                   value={maxPriceInput ?? undefined}
                   onChange={(val) => setMaxPriceInput(Number(val))}
                   disabled={priceModes.length === 1 && priceModes.includes(CoursePriceMode.Free)}
+                  classNames={{
+                    input: "border-2",
+                  }}
                 />
               </div>
 
@@ -241,7 +247,15 @@ const CourseDesktopFilter = () => {
             >
               <Stack gap="md">
                 {[...Object.values(CourseLevel)].map((lv) => (
-                  <Checkbox key={lv} label={lv} value={lv} />
+                  <Checkbox
+                    key={lv}
+                    label={lv}
+                    value={lv}
+                    classNames={{
+                      root: "group",
+                      input: "not-group-data-checked:border-2",
+                    }}
+                  />
                 ))}
               </Stack>
             </Checkbox.Group>
@@ -276,12 +290,26 @@ const CourseDesktopFilter = () => {
                 multiple
               >
                 <Tooltip label="Getting all free course" refProp="rootRef">
-                  <Chip key={CoursePriceMode.Free} variant="outline" value={CoursePriceMode.Free}>
+                  <Chip
+                    key={CoursePriceMode.Free}
+                    variant="outline"
+                    value={CoursePriceMode.Free}
+                    classNames={{
+                      label: "border-2",
+                    }}
+                  >
                     Free
                   </Chip>
                 </Tooltip>
                 <Tooltip label="Getting all paid course" refProp="rootRef">
-                  <Chip key={CoursePriceMode.Paid} variant="outline" value={CoursePriceMode.Paid}>
+                  <Chip
+                    key={CoursePriceMode.Paid}
+                    variant="outline"
+                    value={CoursePriceMode.Paid}
+                    classNames={{
+                      label: "border-2",
+                    }}
+                  >
                     Paid
                   </Chip>
                 </Tooltip>

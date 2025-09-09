@@ -66,20 +66,21 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
   });
 
   const handleReset = () => {
+    closeMobileFilter();
+
     startTransition(() => {
       resetCourseQuery();
     });
-    closeMobileFilter();
   };
 
   const handleApply = () => {
+    closeMobileFilter();
     startTransition(() => {
       setCourseQuery({
         ...tempFilters,
         orderBy: encodeOrderOption(tempSorter),
       });
     });
-    closeMobileFilter();
   };
 
   useEffect(() => {
@@ -283,7 +284,15 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
               >
                 <Stack gap="md">
                   {[...Object.values(CourseLevel)].map((lv) => (
-                    <Checkbox key={lv} label={lv} value={lv} />
+                    <Checkbox
+                      key={lv}
+                      label={lv}
+                      value={lv}
+                      classNames={{
+                        root: "group",
+                        input: "not-group-data-checked:border-2",
+                      }}
+                    />
                   ))}
                 </Stack>
               </Checkbox.Group>
@@ -318,12 +327,26 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
                   multiple
                 >
                   <Tooltip label="Getting all free course" refProp="rootRef" withinPortal={false}>
-                    <Chip key={CoursePriceMode.Free} variant="outline" value={CoursePriceMode.Free}>
+                    <Chip
+                      key={CoursePriceMode.Free}
+                      variant="outline"
+                      value={CoursePriceMode.Free}
+                      classNames={{
+                        label: "border-2",
+                      }}
+                    >
                       Free
                     </Chip>
                   </Tooltip>
                   <Tooltip label="Getting all paid course" refProp="rootRef" withinPortal={false}>
-                    <Chip key={CoursePriceMode.Paid} variant="outline" value={CoursePriceMode.Paid}>
+                    <Chip
+                      key={CoursePriceMode.Paid}
+                      variant="outline"
+                      value={CoursePriceMode.Paid}
+                      classNames={{
+                        label: "border-2",
+                      }}
+                    >
                       Paid
                     </Chip>
                   </Tooltip>

@@ -1,5 +1,8 @@
+import { CurrentUser } from "../features/auth/identity.types";
+
 const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
+const CURRENT_USER_KEY = "current-user";
 
 export const authStorageHelper = {
   getAccessToken(): string | null {
@@ -8,6 +11,15 @@ export const authStorageHelper = {
 
   setAccessToken(token: string): void {
     localStorage.setItem(ACCESS_TOKEN_KEY, token);
+  },
+
+  getCurrentUser(): CurrentUser | null {
+    const user = localStorage.getItem(CURRENT_USER_KEY);
+    return user ? JSON.parse(user) : null;
+  },
+
+  setCurrentUser(user: CurrentUser): void {
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
   },
 
   removeAccessToken(): void {
@@ -34,6 +46,13 @@ export const authStorageHelper = {
   clearTokens(): void {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
+    localStorage.removeItem(CURRENT_USER_KEY);
+  },
+
+  clearAll(): void {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    localStorage.removeItem(CURRENT_USER_KEY);
   },
 };
 
