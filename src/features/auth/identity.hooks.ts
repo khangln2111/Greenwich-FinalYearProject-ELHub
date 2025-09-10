@@ -34,6 +34,7 @@ import {
   UpdateWorkProfileSelfCommand,
   ValidateResetPasswordOtpCommand,
 } from "./identity.types";
+import { authStorageHelper } from "../../utils/storageHelper";
 
 export const useGetCurrentUserInfo = () => {
   const accessToken = useAuthStore((s) => s.accessToken);
@@ -63,6 +64,7 @@ export const useLogout = () => {
     logout();
     queryClient.clear();
     navigate("/", { replace: true });
+    authStorageHelper.setLogoutAt();
   };
 
   return handleLogout;
@@ -107,6 +109,7 @@ export const useLogin = () => {
       setRefreshToken(refreshToken);
       await queryClient.invalidateQueries();
       navigate("/");
+      authStorageHelper.setLoginAt();
     },
     onError: (error, variables) =>
       handleApiError(error, {
@@ -146,6 +149,7 @@ export const useLoginWithGoogle = () => {
       setRefreshToken(refreshToken);
       await queryClient.invalidateQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
       navigate("/");
+      authStorageHelper.setLoginAt();
     },
     onError: (error) =>
       handleApiError(error, {

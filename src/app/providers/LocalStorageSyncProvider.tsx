@@ -5,7 +5,6 @@ import { useAuthStore } from "../../zustand/stores/authStore";
 import router from "../routes";
 
 export const LocalStorageSyncProvider = ({ children }: { children: ReactNode }) => {
-  const setCurrentUser = useAuthStore((s) => s.setCurrentUser);
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
   const logout = useAuthStore((s) => s.logout);
@@ -14,35 +13,18 @@ export const LocalStorageSyncProvider = ({ children }: { children: ReactNode }) 
     const handleStorage = (event: StorageEvent) => {
       if (!event.key) return;
       switch (event.key) {
-        case authStorageHelper.getAccessTokenKey():
-          if (event.newValue) {
-            setAccessToken(event.newValue);
-            queryClient.invalidateQueries();
-          } else {
-            logout();
-            queryClient.clear();
-            router.navigate("/", { replace: true });
-          }
+        // When another tab logs in, update tokens in this tab as well
+        case authStorageHelper.getLoginAtKey():
+          const accessToken = authStorageHelper.getAccessToken();
+          if (accessToken) setAccessToken(accessToken);
+          const refreshToken = authStorageHelper.getRefreshToken();
+          if (refreshToken) setRefreshToken(refreshToken);
           break;
-        case authStorageHelper.getRefreshTokenKey():
-          if (event.newValue) {
-            setRefreshToken(event.newValue);
-            queryClient.invalidateQueries();
-          } else {
-            logout();
-            queryClient.clear();
-            router.navigate("/", { replace: true });
-          }
-          break;
-        case authStorageHelper.getCurrentUserKey():
-          if (event.newValue) {
-            setCurrentUser(JSON.parse(event.newValue));
-            queryClient.clear();
-          } else {
-            logout();
-            queryClient.clear();
-            router.navigate("/", { replace: true });
-          }
+        // When another tab logs out, log out in this tab as well
+        case authStorageHelper.getLogoutAtKey():
+          logout();
+          queryClient.clear();
+          router.navigate("/", { replace: true });
           break;
       }
     };
