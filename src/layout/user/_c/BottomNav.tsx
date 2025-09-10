@@ -4,8 +4,8 @@ import { cn } from "../../../utils/cn";
 
 const tabs = [
   { to: "/", label: "Home", icon: Home },
-  { to: "/dashboard/enrolled-courses", label: "Learning", icon: BookOpen },
-  { to: "/dashboard/my-account", label: "Profile", icon: User },
+  { to: "/dashboard/my-learning", label: "Learning", icon: BookOpen },
+  { to: "/dashboard/my-profile", label: "Profile", icon: User },
 ];
 
 const mainRoutes = ["/courses"];

@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useNavigate } from "react-router-dom";
 import { ErrorCode } from "../../api-client/api.types";
+import { authStorage } from "../../utils/storageHelper";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
@@ -34,12 +34,11 @@ import {
   UpdateWorkProfileSelfCommand,
   ValidateResetPasswordOtpCommand,
 } from "./identity.types";
-import { authStorageHelper } from "../../utils/storageHelper";
 
 export const useGetCurrentUserInfo = () => {
-  const accessToken = useAuthStore((s) => s.accessToken);
-  const setCurrentUser = useAuthStore((s) => s.setCurrentUser);
-  const currentUser = useAuthStore((s) => s.currentUser);
+  const accessToken = authStorage.getAccessToken();
+  const setCurrentUser = authStorage.setCurrentUser;
+  const currentUser = authStorage.getCurrentUser();
 
   return useQuery({
     queryKey: keyFac.identity.getCurrentUser.queryKey,
@@ -58,13 +57,13 @@ export const useGetCurrentUserInfo = () => {
 export const useLogout = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const logout = useAuthStore((s) => s.logout);
+  const logout = authStorage.clearAll;
 
   const handleLogout = () => {
     logout();
     queryClient.clear();
     navigate("/", { replace: true });
-    authStorageHelper.setLogoutAt();
+    authStorage.setLogoutAt();
   };
 
   return handleLogout;
@@ -98,8 +97,8 @@ export const useRegister = () => {
 export const useLogin = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const setAccessToken = useAuthStore((s) => s.setAccessToken);
-  const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
+  const setAccessToken = authStorage.setAccessToken;
+  const setRefreshToken = authStorage.setRefreshToken;
   return useMutation({
     mutationFn: (data: LoginCommand) => login(data),
     onSuccess: async (data) => {
@@ -109,7 +108,7 @@ export const useLogin = () => {
       setRefreshToken(refreshToken);
       await queryClient.invalidateQueries();
       navigate("/");
-      authStorageHelper.setLoginAt();
+      authStorage.setLoginAt();
     },
     onError: (error, variables) =>
       handleApiError(error, {
@@ -136,8 +135,8 @@ export const useLogin = () => {
 };
 
 export const useLoginWithGoogle = () => {
-  const setAccessToken = useAuthStore((s) => s.setAccessToken);
-  const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
+  const setAccessToken = authStorage.setAccessToken;
+  const setRefreshToken = authStorage.setRefreshToken;
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
@@ -147,9 +146,9 @@ export const useLoginWithGoogle = () => {
       const { accessToken, refreshToken } = data;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      await queryClient.invalidateQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
+      await queryClient.invalidateQueries();
       navigate("/");
-      authStorageHelper.setLoginAt();
+      authStorage.setLoginAt();
     },
     onError: (error) =>
       handleApiError(error, {
@@ -343,7 +342,7 @@ export const useUpdateUserProfileSelf = () => {
 };
 
 export const useGetWorkProfileSelf = () => {
-  const accessToken = useAuthStore((s) => s.accessToken);
+  const accessToken = authStorage.getAccessToken();
   return useQuery({
     queryKey: keyFac.identity.getWorkProfileSelf.queryKey,
     queryFn: getWorkProfileSelf,

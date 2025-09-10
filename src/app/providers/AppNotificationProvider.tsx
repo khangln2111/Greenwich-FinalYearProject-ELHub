@@ -8,8 +8,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useGetCurrentUserInfo } from "../../features/auth/identity.hooks";
 import { keyFac } from "../../features/common-service/queryKeyFactory";
+import { authStorage } from "../../utils/storageHelper";
 import { showNotificationToast } from "../../utils/toastHelper";
-import { useAuthStore } from "../../zustand/stores/authStore";
 
 interface NotificationContextValue {
   connection: HubConnection | null;
@@ -22,7 +22,7 @@ const NotificationContext = createContext<NotificationContextValue>({
 export const useNotificationHub = () => useContext(NotificationContext);
 
 export function AppNotificationProvider({ children }: { children: ReactNode }) {
-  const accessToken = useAuthStore((s) => s.accessToken);
+  const accessToken = authStorage.getAccessToken();
 
   const { data: currentUser } = useGetCurrentUserInfo();
 

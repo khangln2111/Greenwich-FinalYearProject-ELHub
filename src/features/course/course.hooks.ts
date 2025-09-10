@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorCode } from "../../api-client/api.types";
+import { authStorage } from "../../utils/storageHelper";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
@@ -31,7 +31,7 @@ export const useGetCourses = (query?: CourseQueryCriteria) => {
 };
 
 export const useGetCurrentUserEnrollmentStatus = (courseId: string) => {
-  const accessToken = useAuthStore((s) => s.accessToken);
+  const accessToken = authStorage.getAccessToken();
 
   return useQuery({
     queryKey: keyFac.courses.getCurrentUserCourseEnrollmentStatus(courseId).queryKey,

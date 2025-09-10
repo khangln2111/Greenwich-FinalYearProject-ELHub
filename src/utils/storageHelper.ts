@@ -6,7 +6,7 @@ const CURRENT_USER_KEY = "current-user";
 const LOGIN_AT_KEY = "login-at";
 const LOGOUT_AT_KEY = "logout-at";
 
-export const authStorageHelper = {
+export const authStorage = {
   getAccessToken(): string | null {
     return localStorage.getItem(ACCESS_TOKEN_KEY);
   },

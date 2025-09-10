@@ -15,7 +15,7 @@ export default function LearningHeader({ title, progressPercent }: LearningHeade
       <div className="flex items-center gap-2 md:gap-4 min-w-0">
         <Box
           component={Link}
-          to="/dashboard/enrolled-courses"
+          to="/dashboard/my-learning"
           className="text-slate-300 hover:text-white transition-colors"
         >
           <ChevronLeftIcon className="size-6 md:size-7" strokeWidth={2} />

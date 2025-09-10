@@ -1,5 +1,5 @@
 import { CurrentUser } from "../../features/auth/identity.types";
-import { authStorageHelper } from "../../utils/storageHelper";
+import { authStorage } from "../../utils/storageHelper";
 import { create } from "zustand";
 
 interface AuthStore {
@@ -13,23 +13,23 @@ interface AuthStore {
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  accessToken: authStorageHelper.getAccessToken(),
-  refreshToken: authStorageHelper.getRefreshToken(),
-  currentUser: authStorageHelper.getCurrentUser(),
+  accessToken: authStorage.getAccessToken(),
+  refreshToken: authStorage.getRefreshToken(),
+  currentUser: authStorage.getCurrentUser(),
   logout: () => {
-    authStorageHelper.clearAll();
+    authStorage.clearAll();
     set({ accessToken: null, refreshToken: null, currentUser: null });
   },
   setCurrentUser: (user) => {
-    authStorageHelper.setCurrentUser(user);
+    authStorage.setCurrentUser(user);
     set({ currentUser: user });
   },
   setAccessToken: (token) => {
-    authStorageHelper.setAccessToken(token);
+    authStorage.setAccessToken(token);
     set({ accessToken: token });
   },
   setRefreshToken: (token) => {
-    authStorageHelper.setRefreshToken(token);
+    authStorage.setRefreshToken(token);
     set({ refreshToken: token });
   },
 }));

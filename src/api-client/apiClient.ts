@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 import { showErrorToast } from "../utils/toastHelper";
 import { ApiErrorResponse, ErrorCode } from "./api.types";
-import { authStorageHelper, loginSessionStorageHelper } from "../utils/storageHelper";
+import { authStorage, loginSessionStorageHelper } from "../utils/storageHelper";
 
 const API_BASE_URL = import.meta.env.VITE_BACK_END_BASE_URL
   ? `${import.meta.env.VITE_BACK_END_BASE_URL}/api`
@@ -16,7 +16,7 @@ const apiClient = axios.create({
 // Interceptor cho request: chèn token vào header nếu có
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = authStorageHelper.getAccessToken();
+    const token = authStorage.getAccessToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -40,12 +40,12 @@ apiClient.interceptors.response.use(
     if (
       status === 401 &&
       !originalRequest._retry &&
-      authStorageHelper.getAccessToken() &&
-      authStorageHelper.getRefreshToken()
+      authStorage.getAccessToken() &&
+      authStorage.getRefreshToken()
     ) {
       originalRequest._retry = true;
       try {
-        const refreshToken = authStorageHelper.getRefreshToken();
+        const refreshToken = authStorage.getRefreshToken();
         const { data } = await axios.post<{ accessToken: string }>(
           `${API_BASE_URL}/identity/refresh-token`,
           {
@@ -53,13 +53,14 @@ apiClient.interceptors.response.use(
           },
         );
 
-        authStorageHelper.setAccessToken(data.accessToken);
+        authStorage.setAccessToken(data.accessToken);
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         }
         return apiClient(originalRequest);
       } catch (refreshError) {
-        authStorageHelper.clearAll();
+        authStorage.clearAll();
+        authStorage.setLogoutAt();
         window.location.href = "/login";
         loginSessionStorageHelper.setSessionExpiredToastFlag();
         return Promise.reject(refreshError);

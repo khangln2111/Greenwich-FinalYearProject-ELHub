@@ -23,7 +23,7 @@ import {
 } from "../../../../features/course/course.schema";
 import { CourseLevel, CreateCourseCommand } from "../../../../features/course/course.types";
 import { useCreateCourse } from "../../../../features/course/course.hooks";
-import { mockCourses } from "../../../../features/mockData";
+// import { mockCourses } from "../../../../features/mockData";
 import { formSubmitWithFocus } from "../../../../utils/form";
 import CusModal from "../../../../components/CusModal/CusModal";
 
@@ -71,16 +71,16 @@ export default function CreateCourseModal({ opened, onClose }: CreateCourseModal
           <Button
             variant="light"
             size="xs"
-            onClick={() => {
-              const random = mockCourses[Math.floor(Math.random() * mockCourses.length)];
-              form.setValues({
-                title: random.title,
-                summary: random.summary,
-                price: random.price,
-                discountedPrice: random.discountedPrice,
-                level: random.level,
-              });
-            }}
+            // onClick={() => {
+            //   const random = mockCourses[Math.floor(Math.random() * mockCourses.length)];
+            //   form.setValues({
+            //     title: random.title,
+            //     summary: random.summary,
+            //     price: random.price,
+            //     discountedPrice: random.discountedPrice,
+            //     level: random.level,
+            //   });
+            // }}
           >
             🎲 Fill with random data
           </Button>

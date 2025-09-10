@@ -88,9 +88,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
             <NavLink
               component={Link}
               label="My account"
-              to="/dashboard/my-account"
+              to="/dashboard/my-profile"
               leftSection={<CircleUserIcon size={16} />}
-              active={location.pathname === "/dashboard/my-account"}
+              active={location.pathname === "/dashboard/my-profile"}
               onClick={onClose}
             />
             <NavLink
@@ -104,9 +104,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
             <NavLink
               component={Link}
               label="Enrolled courses"
-              to="/dashboard/enrolled-courses"
+              to="/dashboard/my-learning"
               leftSection={<MonitorCheckIcon size={16} />}
-              active={location.pathname === "/dashboard/enrolled-courses"}
+              active={location.pathname === "/dashboard/my-learning"}
               onClick={onClose}
             />
             <NavLink

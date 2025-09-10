@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { authStorage } from "../../utils/storageHelper";
 import { showSuccessToast } from "../../utils/toastHelper";
-import { useAuthStore } from "../../zustand/stores/authStore";
 import { RoleName } from "../auth/identity.types";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
@@ -12,7 +12,7 @@ import {
 import { NotificationQueryCriteria } from "./notification.types";
 
 export const useGetNotifications = (roleName: RoleName, query?: NotificationQueryCriteria) => {
-  const accessToken = useAuthStore((s) => s.accessToken);
+  const accessToken = authStorage.getAccessToken();
 
   return useQuery({
     enabled: !!accessToken,
@@ -22,7 +22,7 @@ export const useGetNotifications = (roleName: RoleName, query?: NotificationQuer
 };
 
 export const useGetUnreadNotificationsCount = (roleName: RoleName) => {
-  const accessToken = useAuthStore((s) => s.accessToken);
+  const accessToken = authStorage.getAccessToken();
 
   return useQuery({
     enabled: !!accessToken,
