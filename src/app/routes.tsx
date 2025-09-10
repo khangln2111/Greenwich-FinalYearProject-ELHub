@@ -41,6 +41,7 @@ import AdminInstructorApplicationsPage from "../pages/(admin)/instructor-applica
 import InstructorSettingsPage from "../pages/(instructor)/settings/InstructorSettingsPage";
 import AdminSettingsPage from "../pages/(admin)/settings/AdminSettingsPage";
 import SettingsPage from "../pages/(main)/settings/SettingsPage";
+import ProtectedRoute from "./providers/ProtectedRoute";
 
 const userRoute: RouteObject = {
   element: <UserLayout />,
@@ -50,7 +51,14 @@ const userRoute: RouteObject = {
     { index: true, element: <HomePage /> },
     { path: "courses", element: <CoursesPage /> },
     { path: "courses/:courseId", element: <CourseDetailPage /> },
-    { path: "cart", element: <CartPage /> },
+    {
+      path: "cart",
+      element: (
+        <ProtectedRoute>
+          <CartPage />
+        </ProtectedRoute>
+      ),
+    },
     { path: "checkout", element: <CheckoutPage /> },
     { path: "checkout/result", element: <CheckoutResultPage /> },
     {
@@ -75,7 +83,11 @@ const userRoute: RouteObject = {
     },
     {
       path: "dashboard",
-      element: <UserDashboardLayout />,
+      element: (
+        <ProtectedRoute>
+          <UserDashboardLayout />
+        </ProtectedRoute>
+      ),
       children: [
         { index: true, element: <UserDashboardPage /> },
         {

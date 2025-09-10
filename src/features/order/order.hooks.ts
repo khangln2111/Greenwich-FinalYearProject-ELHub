@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { showErrorToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { createOrder, getOrderDetailSelf, getOrdersSelf, processOrder } from "./order.api";
 import { CreateOrderCommand, OrderQueryCriteria } from "./order.types";
-import { authStorage } from "../../utils/storageHelper";
 
 export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
-  const accessToken = authStorage.getAccessToken();
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   return useQuery({
     enabled: !!accessToken,

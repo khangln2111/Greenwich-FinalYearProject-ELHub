@@ -16,7 +16,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
-import { useGetCurrentUserInfo, useLogout } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUser, useLogout } from "../../../features/auth/identity.hooks";
 
 interface MobileHamburgerMenuProps {
   opened: boolean;
@@ -35,7 +35,7 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 
 const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
   const location = useLocation();
-  const { data: currentUser } = useGetCurrentUserInfo();
+  const { data: currentUser } = useGetCurrentUser();
   const handleLogout = useLogout();
 
   return (

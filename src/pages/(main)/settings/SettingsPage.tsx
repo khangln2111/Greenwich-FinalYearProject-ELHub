@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 import UpdateUserProfileForm from "../my-account/_c/UpdateUserProfileForm";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import { usePageSEO } from "../../../hooks/usePageSEO";
@@ -45,7 +45,7 @@ export default function UserSettingsPage() {
     "tab",
     parseAsStringEnum(Object.values(Tabs)).withDefault(Tabs.Profile),
   );
-  const { data: user, isPending, error } = useGetCurrentUserInfo();
+  const { data: user, isPending, error } = useGetCurrentUser();
 
   // Preferences states
   const [theme, setTheme] = useState("system");

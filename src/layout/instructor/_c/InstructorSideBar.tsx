@@ -5,7 +5,7 @@ import { ChartNoAxesCombinedIcon, ScreenShareIcon, SettingsIcon, User2Icon } fro
 import { Link } from "react-router-dom";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
-import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/stores/appStore";
 
@@ -38,7 +38,7 @@ const navItems: NavItem[] = [
 
 const InstructorSidebar = ({ collapsedToIcon }: InstructorSidebarProps) => {
   const closeMobileSidebar = useAppStore((s) => s.closeMobileInstructorSidebar);
-  const { data: currentUser } = useGetCurrentUserInfo();
+  const { data: currentUser } = useGetCurrentUser();
 
   const isMobile = useMediaQuery("max-width: 1023px");
   return (

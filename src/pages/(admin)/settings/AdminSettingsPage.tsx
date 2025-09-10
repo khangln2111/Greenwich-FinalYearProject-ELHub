@@ -24,7 +24,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import UpdateUserProfileForm from "../../(main)/my-account/_c/UpdateUserProfileForm";
 import { usePageSEO } from "../../../hooks/usePageSEO";
@@ -40,7 +40,7 @@ enum Tabs {
 export default function AdminSettingsPage() {
   usePageSEO({ title: "Admin Settings" });
 
-  const { data: user, isPending, error } = useGetCurrentUserInfo();
+  const { data: user, isPending, error } = useGetCurrentUser();
 
   const [tab, setTab] = useQueryState(
     "tab",

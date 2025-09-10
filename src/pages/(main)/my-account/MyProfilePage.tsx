@@ -1,13 +1,13 @@
 import { Title } from "@mantine/core";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 import UpdateUserProfileForm from "./_c/UpdateUserProfileForm";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function MyProfilePage() {
   usePageSEO({ title: "My Profile" });
 
-  const { data: user, isPending, isError } = useGetCurrentUserInfo();
+  const { data: user, isPending, isError } = useGetCurrentUser();
 
   if (isPending) return <CenterLoader />;
 

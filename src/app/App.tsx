@@ -36,17 +36,17 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <Toasts />
-        <LocalStorageSyncProvider>
-          <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">
-            <AppNotificationProvider>
-              <ModalsProvider>
+        <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">
+          <ModalsProvider>
+            <LocalStorageSyncProvider>
+              <AppNotificationProvider>
                 <NuqsAdapter>
                   <RouterProvider router={router} />
                 </NuqsAdapter>
-              </ModalsProvider>
-            </AppNotificationProvider>
-          </GoogleOAuthProvider>
-        </LocalStorageSyncProvider>
+              </AppNotificationProvider>
+            </LocalStorageSyncProvider>
+          </ModalsProvider>
+        </GoogleOAuthProvider>
       </QueryClientProvider>
     </MantineProvider>
   );

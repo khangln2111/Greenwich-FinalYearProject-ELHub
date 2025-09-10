@@ -13,8 +13,8 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-// import { mockCourses } from "../../../../../features/mockData";
-// import CourseCard from "../../../../../components/course-cards/CourseCard";
+import { mockCourses } from "../../../../../features/mockData";
+import CourseCard from "../../../../../components/course-cards/CourseCard";
 
 const PopularCourses = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -49,9 +49,9 @@ const PopularCourses = () => {
       {/* Auto column grid */}
 
       <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
-        {/* {mockCourses.map((course) => (
+        {mockCourses.map((course) => (
           <CourseCard key={course.id} course={course} className="border" />
-        ))} */}
+        ))}
       </SimpleGrid>
 
       {/* beautiful button to view all courses */}

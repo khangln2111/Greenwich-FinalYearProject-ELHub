@@ -29,7 +29,7 @@
     "src/main.tsx": false,
     "src/vite-env.d.ts": true,
     "tailwind.config.ts": true,
-    "vite.config.ts": true,
+    "vite.config.ts": false,
     "public": true,
     "localhost-key.pem": true,
     "localhost.pem": true

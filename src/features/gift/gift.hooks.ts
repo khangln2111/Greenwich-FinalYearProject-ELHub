@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorCode } from "../../api-client/api.types";
-import { authStorage } from "../../utils/storageHelper";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
@@ -15,7 +15,7 @@ import {
 import { ChangeGiftReceiverCommand, CreateGiftCommand, GiftQueryCriteria } from "./gift.types";
 
 export const useGetSentGifts = (query?: GiftQueryCriteria) => {
-  const accessToken = authStorage.getAccessToken();
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   return useQuery({
     enabled: !!accessToken,
@@ -25,7 +25,7 @@ export const useGetSentGifts = (query?: GiftQueryCriteria) => {
 };
 
 export const useGetReceivedGifts = (query?: GiftQueryCriteria) => {
-  const accessToken = authStorage.getAccessToken();
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   return useQuery({
     enabled: !!accessToken,

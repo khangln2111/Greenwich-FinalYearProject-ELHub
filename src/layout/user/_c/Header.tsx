@@ -13,10 +13,10 @@ import MobileHamburgerMenu from "./MobileHamburgerMenu";
 import SearchBox from "./SearchBox";
 import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
 import { RoleName } from "../../../features/auth/identity.types";
-import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 
 const Header = () => {
-  const { data: currentUser, isLoading: isUserLoading } = useGetCurrentUserInfo();
+  const { data: currentUser, isLoading: isUserLoading } = useGetCurrentUser();
   const [isSearching, setIsSearching] = useState(false);
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [{ search }, setCoursesQuery] = useCourseQueryState();

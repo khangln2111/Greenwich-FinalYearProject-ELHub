@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CusModal from "../../../../components/CusModal/CusModal";
-import { useGetCurrentUserInfo } from "../../../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../../../features/auth/identity.hooks";
 import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplication.hooks";
 import { InstructorApplicationStatus } from "../../../../features/instructorApplication/instructorApplication.types";
 import ApplicationStatusModal from "./ApplicationStatusModal";
@@ -16,7 +16,7 @@ const RETRY_DELAY_DAYS = 7;
 
 const BecomeInstructorCTA = () => {
   const navigate = useNavigate();
-  const { data: currentUser } = useGetCurrentUserInfo();
+  const { data: currentUser } = useGetCurrentUser();
   const [opened, { open, close }] = useDisclosure(false);
   const [statusModal, { open: openStatusModal, close: closeStatusModal }] = useDisclosure(false);
   const [statusType, setStatusType] = useState<"pending" | "rejected-wait" | "approved" | null>(

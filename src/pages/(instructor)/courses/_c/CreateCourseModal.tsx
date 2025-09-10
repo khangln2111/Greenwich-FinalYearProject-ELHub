@@ -9,6 +9,7 @@ import {
   TicketPercent,
 } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
+import CusModal from "../../../../components/CusModal/CusModal";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -17,15 +18,14 @@ import {
   MAX_VIDEO_SIZE_MB,
 } from "../../../../constants/ValidationConstants";
 import { useGetCategories } from "../../../../features/category/category.hooks";
+import { useCreateCourse } from "../../../../features/course/course.hooks";
 import {
   CreateCourseFormValues,
   createCourseSchema,
 } from "../../../../features/course/course.schema";
 import { CourseLevel, CreateCourseCommand } from "../../../../features/course/course.types";
-import { useCreateCourse } from "../../../../features/course/course.hooks";
-// import { mockCourses } from "../../../../features/mockData";
+import { mockCourses } from "../../../../features/mockData";
 import { formSubmitWithFocus } from "../../../../utils/form";
-import CusModal from "../../../../components/CusModal/CusModal";
 
 type CreateCourseModalProps = {
   opened: boolean;
@@ -71,16 +71,16 @@ export default function CreateCourseModal({ opened, onClose }: CreateCourseModal
           <Button
             variant="light"
             size="xs"
-            // onClick={() => {
-            //   const random = mockCourses[Math.floor(Math.random() * mockCourses.length)];
-            //   form.setValues({
-            //     title: random.title,
-            //     summary: random.summary,
-            //     price: random.price,
-            //     discountedPrice: random.discountedPrice,
-            //     level: random.level,
-            //   });
-            // }}
+            onClick={() => {
+              const random = mockCourses[Math.floor(Math.random() * mockCourses.length)];
+              form.setValues({
+                title: random.title,
+                summary: random.summary,
+                price: random.price,
+                discountedPrice: random.discountedPrice,
+                level: random.level,
+              });
+            }}
           >
             🎲 Fill with random data
           </Button>

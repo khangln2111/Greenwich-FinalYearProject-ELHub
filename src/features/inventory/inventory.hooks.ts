@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { authStorage } from "../../utils/storageHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { getInventoryItemsSelf } from "./inventory.api";
 import { InventoryItemQueryCriteria } from "./inventory.types";
 
 export const useGetInventoryItemsSelf = (query?: InventoryItemQueryCriteria) => {
-  const accessToken = authStorage.getAccessToken();
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   return useQuery({
     queryKey: keyFac.inventories.getInventoryItemsSelf(query).queryKey,

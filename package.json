@@ -29,7 +29,7 @@
     "@stripe/react-stripe-js": "^3.6.0",
     "@stripe/stripe-js": "^7.1.0",
     "@tabler/icons-react": "^3.17.0",
-    "@tanstack/react-query": "^5.71.0",
+    "@tanstack/react-query": "^5.72.2",
     "@tanstack/react-query-devtools": "^5.72.2",
     "@tiptap/extension-link": "^2.9.1",
     "@tiptap/extension-placeholder": "^2.9.1",
@@ -71,8 +71,8 @@
     "@types/node": "^22.15.21",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.5.0",
-    "@vitejs/plugin-react-swc": "^3.8.1",
+    "@vitejs/plugin-react": "^5.0.2",
+    "@vitejs/plugin-react-swc": "^4.0.1",
     "eslint": "^9.11.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.12",
@@ -89,6 +89,6 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.8.0",
     "typescript-plugin-css-modules": "^5.1.0",
-    "vite": "^6.2.3"
+    "vite": "^7.1.5"
   }
 }

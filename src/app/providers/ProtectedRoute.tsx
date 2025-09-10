@@ -1,25 +1,40 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useGetCurrentUserInfo } from "../../features/auth/identity.hooks";
+import { Navigate, useLocation } from "react-router-dom";
+import CenterLoader from "../../components/CenterLoader/CenterLoader";
+import { useGetCurrentUser } from "../../features/auth/identity.hooks";
+import { useAuthStore } from "../../zustand/stores/authStore";
 
-// options: roles are array of roles that are allowed to access the route
 interface ProtectedRouteProps {
   requiredRoles?: string[];
   redirectPath?: string;
+  children?: React.ReactNode;
 }
 
-const ProtectedRoute = ({ requiredRoles, redirectPath = "/login" }: ProtectedRouteProps) => {
-  const { data: user } = useGetCurrentUserInfo();
+const ProtectedRoute = ({
+  requiredRoles,
+  redirectPath = "/login",
+  children,
+}: ProtectedRouteProps) => {
+  const location = useLocation();
+  const accessToken = useAuthStore((s) => s.accessToken);
 
-  // If not logged in, redirect to login page
-  if (!user) return <Navigate to={redirectPath} replace />;
+  const { data: user, isFetching } = useGetCurrentUser();
 
-  // If there are requiredRoles, check role
-  if (requiredRoles && !requiredRoles.some((r) => user.roles.includes(r))) {
-    return <Navigate to="/unauthorized" replace />;
+  if (isFetching) return <CenterLoader height={500} />;
+
+  if (!accessToken || !user) {
+    // Pass state current location
+    return (
+      <Navigate to={redirectPath} replace state={{ from: location.pathname + location.search }} />
+    );
   }
 
-  // If pass all checks, render Outlet (child routes)
-  return <Outlet />;
+  if (requiredRoles && !requiredRoles.some((r) => user.roles.includes(r))) {
+    return (
+      <Navigate to="/unauthorized" replace state={{ from: location.pathname + location.search }} />
+    );
+  }
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

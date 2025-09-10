@@ -10,6 +10,8 @@ interface AuthStore {
   setCurrentUser: (user: CurrentUser) => void;
   setAccessToken: (token: string) => void;
   setRefreshToken: (token: string) => void;
+  setLoginAt: () => void;
+  setLogoutAt: () => void;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -31,5 +33,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
   setRefreshToken: (token) => {
     authStorage.setRefreshToken(token);
     set({ refreshToken: token });
+  },
+  setLoginAt: () => {
+    authStorage.setLoginAt();
+  },
+  setLogoutAt: () => {
+    authStorage.setLogoutAt();
   },
 }));

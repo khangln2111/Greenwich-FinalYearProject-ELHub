@@ -16,7 +16,7 @@ import { ReactNode, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import avatarPlaceholder from "../../assets/placeholder/profile-avatar-placeholder.svg";
 import background from "../../assets/userDashboard/background-info.png";
-import { useGetCurrentUserInfo } from "../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../features/auth/identity.hooks";
 import { cn } from "../../utils/cn";
 
 type MenuItem = {
@@ -57,7 +57,7 @@ export default function UserDashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const { data: currentUser } = useGetCurrentUserInfo();
+  const { data: currentUser } = useGetCurrentUser();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const isActive = (href: string) => location.pathname === href;

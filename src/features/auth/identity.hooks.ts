@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ErrorCode } from "../../api-client/api.types";
-import { authStorage } from "../../utils/storageHelper";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
@@ -35,10 +35,10 @@ import {
   ValidateResetPasswordOtpCommand,
 } from "./identity.types";
 
-export const useGetCurrentUserInfo = () => {
-  const accessToken = authStorage.getAccessToken();
-  const setCurrentUser = authStorage.setCurrentUser;
-  const currentUser = authStorage.getCurrentUser();
+export const useGetCurrentUser = () => {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const setCurrentUser = useAuthStore((s) => s.setCurrentUser);
+  const currentUser = useAuthStore((s) => s.currentUser);
 
   return useQuery({
     queryKey: keyFac.identity.getCurrentUser.queryKey,
@@ -57,13 +57,14 @@ export const useGetCurrentUserInfo = () => {
 export const useLogout = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const logout = authStorage.clearAll;
+  const logout = useAuthStore((s) => s.logout);
+  const setLogoutAt = useAuthStore((s) => s.setLogoutAt);
 
   const handleLogout = () => {
     logout();
     queryClient.clear();
     navigate("/", { replace: true });
-    authStorage.setLogoutAt();
+    setLogoutAt();
   };
 
   return handleLogout;
@@ -95,10 +96,14 @@ export const useRegister = () => {
 };
 
 export const useLogin = () => {
-  const queryClient = useQueryClient();
+  const location = useLocation();
   const navigate = useNavigate();
-  const setAccessToken = authStorage.setAccessToken;
-  const setRefreshToken = authStorage.setRefreshToken;
+  const queryClient = useQueryClient();
+  const from = location.state?.from?.pathname || "/";
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+  const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
+  const setLoginAt = useAuthStore((s) => s.setLoginAt);
+
   return useMutation({
     mutationFn: (data: LoginCommand) => login(data),
     onSuccess: async (data) => {
@@ -107,8 +112,8 @@ export const useLogin = () => {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
       await queryClient.invalidateQueries();
-      navigate("/");
-      authStorage.setLoginAt();
+      navigate(from, { replace: true });
+      setLoginAt();
     },
     onError: (error, variables) =>
       handleApiError(error, {
@@ -135,10 +140,14 @@ export const useLogin = () => {
 };
 
 export const useLoginWithGoogle = () => {
-  const setAccessToken = authStorage.setAccessToken;
-  const setRefreshToken = authStorage.setRefreshToken;
-  const queryClient = useQueryClient();
+  const { state } = useLocation();
   const navigate = useNavigate();
+  const from = state?.from || "/";
+  const queryClient = useQueryClient();
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+  const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
+  const setLoginAt = useAuthStore((s) => s.setLoginAt);
+
   return useMutation({
     mutationFn: (data: LoginWithGoogleCommand) => loginWithGoogle(data),
     onSuccess: async (data) => {
@@ -146,9 +155,9 @@ export const useLoginWithGoogle = () => {
       const { accessToken, refreshToken } = data;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      await queryClient.invalidateQueries();
-      navigate("/");
-      authStorage.setLoginAt();
+      queryClient.invalidateQueries();
+      navigate(from, { replace: true });
+      setLoginAt();
     },
     onError: (error) =>
       handleApiError(error, {
@@ -342,7 +351,7 @@ export const useUpdateUserProfileSelf = () => {
 };
 
 export const useGetWorkProfileSelf = () => {
-  const accessToken = authStorage.getAccessToken();
+  const accessToken = useAuthStore((s) => s.accessToken);
   return useQuery({
     queryKey: keyFac.identity.getWorkProfileSelf.queryKey,
     queryFn: getWorkProfileSelf,

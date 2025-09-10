@@ -4,7 +4,7 @@ import { GraduationCap, Plus, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 import { useGetCourses } from "../../../features/course/course.hooks";
 import { CourseStatus } from "../../../features/course/course.types";
 import { usePageSEO } from "../../../hooks/usePageSEO";
@@ -17,7 +17,7 @@ export default function InstructorCoursesPage() {
   const [createCourseModalOpened, { open: openCreateCourseModal, close: closeCreateCourseModal }] =
     useDisclosure(false);
 
-  const { data: currentUser } = useGetCurrentUserInfo();
+  const { data: currentUser } = useGetCurrentUser();
 
   const [status, setStatus] = useQueryState(
     "status",

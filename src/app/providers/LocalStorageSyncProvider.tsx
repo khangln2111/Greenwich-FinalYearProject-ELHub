@@ -4,7 +4,6 @@ import { authStorage } from "../../utils/storageHelper";
 import router from "../routes";
 
 export const LocalStorageSyncProvider = ({ children }: { children: ReactNode }) => {
-  const logout = authStorage.clearAll;
   const queryClient = useQueryClient();
   useEffect(() => {
     const handleStorage = (event: StorageEvent) => {
@@ -17,9 +16,10 @@ export const LocalStorageSyncProvider = ({ children }: { children: ReactNode }) 
           break;
         // When another tab logs out, log out in this tab as well
         case authStorage.getLogoutAtKey():
-          logout();
+          authStorage.clearAll();
           queryClient.clear();
-          router.navigate(window.location.pathname + window.location.search, { replace: true });
+          // router.navigate(window.location.pathname + window.location.search, { replace: true });
+          router.navigate("/", { replace: true });
           break;
       }
     };

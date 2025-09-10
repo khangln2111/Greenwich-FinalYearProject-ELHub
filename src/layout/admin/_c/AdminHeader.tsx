@@ -12,10 +12,10 @@ import SearchBox from "../../user/_c/SearchBox";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
 import { RoleName } from "../../../features/auth/identity.types";
-import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 
 const InstructorHeader = () => {
-  const { data: currentUser } = useGetCurrentUserInfo();
+  const { data: currentUser } = useGetCurrentUser();
   const desktopAdminSidebarCollapsed = useAppStore((s) => s.desktopAdminSidebarCollapsed);
   const toggleDesktopAdminSidebar = useAppStore((s) => s.toggleDesktopAdminSidebar);
   const openMobileAdminSidebar = useAppStore((s) => s.openMobileAdminSidebar);
