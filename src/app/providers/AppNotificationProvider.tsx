@@ -6,10 +6,10 @@ import {
 } from "@microsoft/signalr";
 import { useQueryClient } from "@tanstack/react-query";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useGetCurrentUserInfo } from "../../features/auth/identity.hooks";
 import { keyFac } from "../../features/common-service/queryKeyFactory";
-import { authStorageHelper } from "../../utils/storageHelper";
 import { showNotificationToast } from "../../utils/toastHelper";
-import { useAppStore } from "../../zustand/stores/appStore";
+import { useAuthStore } from "../../zustand/stores/authStore";
 
 interface NotificationContextValue {
   connection: HubConnection | null;
@@ -22,8 +22,9 @@ const NotificationContext = createContext<NotificationContextValue>({
 export const useNotificationHub = () => useContext(NotificationContext);
 
 export function AppNotificationProvider({ children }: { children: ReactNode }) {
-  const accessToken = authStorageHelper.getAccessToken();
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
+
+  const { data: currentUser } = useGetCurrentUserInfo();
 
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const queryClient = useQueryClient();

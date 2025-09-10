@@ -1,22 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import { useAppStore } from "../../../../zustand/stores/appStore";
+import { Loader } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import dayjs from "dayjs";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import CusModal from "../../../../components/CusModal/CusModal";
+import { useGetCurrentUserInfo } from "../../../../features/auth/identity.hooks";
+import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplication.hooks";
+import { InstructorApplicationStatus } from "../../../../features/instructorApplication/instructorApplication.types";
+import ApplicationStatusModal from "./ApplicationStatusModal";
 import CreateInstructorApplicationForm from "./CreateInstructorApplicationForm";
 import RetryInstructorApplicationForm from "./RetryInstructorApplicationForm";
-import { Loader } from "@mantine/core";
-import dayjs from "dayjs";
-import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplication.hooks";
-import ApplicationStatusModal from "./ApplicationStatusModal";
-import { useState } from "react";
-import { InstructorApplicationStatus } from "../../../../features/instructorApplication/instructorApplication.types";
-import CusModal from "../../../../components/CusModal/CusModal";
 
 const MAX_RETRY = 2;
 const RETRY_DELAY_DAYS = 7;
 
 const BecomeInstructorCTA = () => {
   const navigate = useNavigate();
-  const currentUser = useAppStore((s) => s.currentUser);
+  const { data: currentUser } = useGetCurrentUserInfo();
   const [opened, { open, close }] = useDisclosure(false);
   const [statusModal, { open: openStatusModal, close: closeStatusModal }] = useDisclosure(false);
   const [statusType, setStatusType] = useState<"pending" | "rejected-wait" | "approved" | null>(

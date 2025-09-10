@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { getInstructorDashboard } from "./instructorDashboard.api";
 import { instructorDashboardKeyFac } from "./instructorDashboard.keyFac";
-import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetInstructorDashboard = () => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
+
   return useQuery({
     queryKey: instructorDashboardKeyFac.getInstructorDashboard.queryKey,
     queryFn: getInstructorDashboard,
-    enabled: !!currentUser,
+    enabled: !!accessToken,
   });
 };

@@ -1,4 +1,5 @@
 import { Avatar, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconMessageUser } from "@tabler/icons-react";
 import {
   BellRingIcon,
@@ -11,9 +12,9 @@ import {
 import { Link } from "react-router-dom";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
+import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
 import { cn } from "../../../utils/cn";
 import { useAppStore } from "../../../zustand/stores/appStore";
-import { useMediaQuery } from "@mantine/hooks";
 
 type AdminSidebarProps = {
   collapsedToIcon?: boolean;
@@ -70,7 +71,7 @@ const navItems: NavItem[] = [
 
 const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
   const closeMobileSidebar = useAppStore((s) => s.closeMobileAdminSidebar);
-  const currentUser = useAppStore((s) => s.currentUser);
+  const { data: currentUser } = useGetCurrentUserInfo();
   const isMobile = useMediaQuery("max-width: 1023px");
   return (
     <div className="flex flex-col h-full min-h-screen">

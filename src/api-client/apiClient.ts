@@ -59,7 +59,7 @@ apiClient.interceptors.response.use(
         }
         return apiClient(originalRequest);
       } catch (refreshError) {
-        authStorageHelper.clearTokens();
+        authStorageHelper.clearAll();
         window.location.href = "/login";
         loginSessionStorageHelper.setSessionExpiredToastFlag();
         return Promise.reject(refreshError);

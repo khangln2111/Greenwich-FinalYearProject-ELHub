@@ -1,8 +1,10 @@
 import { CurrentUser } from "../features/auth/identity.types";
 
-const ACCESS_TOKEN_KEY = "accessToken";
-const REFRESH_TOKEN_KEY = "refreshToken";
+const ACCESS_TOKEN_KEY = "access-token";
+const REFRESH_TOKEN_KEY = "refresh-token";
 const CURRENT_USER_KEY = "current-user";
+const LOGIN_AT_KEY = "login-at";
+const LOGOUT_AT_KEY = "logout-at";
 
 export const authStorageHelper = {
   getAccessToken(): string | null {
@@ -22,10 +24,6 @@ export const authStorageHelper = {
     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
   },
 
-  removeAccessToken(): void {
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
-  },
-
   getRefreshToken(): string | null {
     return localStorage.getItem(REFRESH_TOKEN_KEY);
   },
@@ -33,22 +31,27 @@ export const authStorageHelper = {
   setRefreshToken(token: string): void {
     localStorage.setItem(REFRESH_TOKEN_KEY, token);
   },
-
-  removeRefreshToken(): void {
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
+  setLoginAt(): void {
+    localStorage.setItem(LOGIN_AT_KEY, new Date().toISOString());
   },
-
-  setTokens(accessToken: string, refreshToken: string): void {
-    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+  setLogoutAt(): void {
+    localStorage.setItem(LOGOUT_AT_KEY, new Date().toISOString());
   },
-
-  clearTokens(): void {
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
-    localStorage.removeItem(CURRENT_USER_KEY);
+  getAccessTokenKey(): string {
+    return ACCESS_TOKEN_KEY;
   },
-
+  getRefreshTokenKey(): string {
+    return REFRESH_TOKEN_KEY;
+  },
+  getCurrentUserKey(): string {
+    return CURRENT_USER_KEY;
+  },
+  getLoginAtKey(): string {
+    return LOGIN_AT_KEY;
+  },
+  getLogoutAtKey(): string {
+    return LOGOUT_AT_KEY;
+  },
   clearAll(): void {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);

@@ -1,15 +1,15 @@
 import { Anchor, Box, Container, Text, Title } from "@mantine/core";
 import { useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 import { loginSessionStorageHelper } from "../../../utils/storageHelper";
 import { showErrorToast } from "../../../utils/toastHelper";
-import { useAppStore } from "../../../zustand/stores/appStore";
 import LoginForm from "./LoginForm";
-import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function LoginPage() {
   usePageSEO({ title: "Login" });
-  const currentUser = useAppStore((s) => s.currentUser);
+  const { data: currentUser } = useGetCurrentUserInfo();
 
   useEffect(() => {
     if (loginSessionStorageHelper.shouldShowSessionExpiredToast()) {

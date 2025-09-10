@@ -17,9 +17,8 @@ import {
   PackageIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useLogout } from "../../../features/auth/identity.hooks";
+import { useGetCurrentUserInfo, useLogout } from "../../../features/auth/identity.hooks";
 import { cn } from "../../../utils/cn";
-import { useAppStore } from "../../../zustand/stores/appStore";
 
 interface AvatarMenuProps {
   className?: string;
@@ -27,7 +26,7 @@ interface AvatarMenuProps {
 
 const AvatarMenu = ({ className }: AvatarMenuProps) => {
   const handleLogout = useLogout();
-  const currentUser = useAppStore((s) => s.currentUser);
+  const { data: currentUser } = useGetCurrentUserInfo();
   return (
     <Menu
       transitionProps={{ transition: "pop-top-right" }}

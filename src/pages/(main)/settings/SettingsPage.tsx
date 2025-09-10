@@ -133,7 +133,7 @@ export default function UserSettingsPage() {
             ) : error ? (
               <div>Error loading user data</div>
             ) : (
-              <UpdateUserProfileForm user={user} />
+              user && <UpdateUserProfileForm user={user} />
             )}
           </Card>
         )}

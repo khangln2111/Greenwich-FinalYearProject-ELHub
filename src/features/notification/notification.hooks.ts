@@ -1,4 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { showSuccessToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
+import { RoleName } from "../auth/identity.types";
+import { keyFac } from "../common-service/queryKeyFactory";
 import {
   getNotifications,
   getUnreadNotificationsCount,
@@ -6,25 +10,22 @@ import {
   toggleNotificationRead,
 } from "./notification.api";
 import { NotificationQueryCriteria } from "./notification.types";
-import { keyFac } from "../common-service/queryKeyFactory";
-import { showSuccessToast } from "../../utils/toastHelper";
-import { useAppStore } from "../../zustand/stores/appStore";
-import { RoleName } from "../auth/identity.types";
 
 export const useGetNotifications = (roleName: RoleName, query?: NotificationQueryCriteria) => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
+
   return useQuery({
-    enabled: !!currentUser,
+    enabled: !!accessToken,
     queryKey: keyFac.notifications.getNotifications(roleName, query).queryKey,
     queryFn: () => getNotifications(roleName, query),
   });
 };
 
 export const useGetUnreadNotificationsCount = (roleName: RoleName) => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   return useQuery({
-    enabled: !!currentUser,
+    enabled: !!accessToken,
     queryKey: keyFac.notifications.getUnreadNotificationsCount(roleName).queryKey,
     queryFn: () => getUnreadNotificationsCount(roleName),
   });

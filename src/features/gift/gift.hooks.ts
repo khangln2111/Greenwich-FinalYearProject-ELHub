@@ -1,4 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ErrorCode } from "../../api-client/api.types";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
+import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
   changeGiftReceiver,
@@ -9,24 +13,22 @@ import {
   revokeGift,
 } from "./gift.api";
 import { ChangeGiftReceiverCommand, CreateGiftCommand, GiftQueryCriteria } from "./gift.types";
-import { handleApiError } from "../common-service/handleApiError";
-import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { ErrorCode } from "../../api-client/api.types";
-import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetSentGifts = (query?: GiftQueryCriteria) => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
+
   return useQuery({
-    enabled: !!currentUser,
+    enabled: !!accessToken,
     queryKey: keyFac.gifts.getSentGifts(query).queryKey,
     queryFn: () => getSentGifts(query),
   });
 };
 
 export const useGetReceivedGifts = (query?: GiftQueryCriteria) => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
+
   return useQuery({
-    enabled: !!currentUser,
+    enabled: !!accessToken,
     queryKey: keyFac.gifts.getReceivedGifts(query).queryKey,
     queryFn: () => getReceivedGifts(query),
   });

@@ -1,15 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { showErrorToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
+import { createOrder, getOrderDetailSelf, getOrdersSelf, processOrder } from "./order.api";
 import { CreateOrderCommand, OrderQueryCriteria } from "./order.types";
-import { processOrder, createOrder, getOrderDetailSelf, getOrdersSelf } from "./order.api";
-import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
+
   return useQuery({
-    enabled: !!currentUser,
+    enabled: !!accessToken,
     queryKey: keyFac.orders.getOrdersSelf(query).queryKey,
     queryFn: () => getOrdersSelf(query),
   });

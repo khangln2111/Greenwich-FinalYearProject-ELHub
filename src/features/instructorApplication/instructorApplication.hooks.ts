@@ -1,23 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ErrorCode } from "../../api-client/api.types";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
+import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
+import {
+  createInstructorApplication,
+  getInstructorApplicationById,
+  getInstructorApplications,
+  getInstructorApplicationSelf,
+  moderateInstructorApplication,
+  resubmitInstructorApplication,
+} from "./instructorApplication.api";
 import {
   CreateInstructorApplicationCommand,
   InstructorApplicationQueryCriteria,
-  ResubmitInstructorApplicationCommand,
   ModerateInstructorApplicationCommand,
+  ResubmitInstructorApplicationCommand,
 } from "./instructorApplication.types";
-import {
-  createInstructorApplication,
-  getInstructorApplications,
-  getInstructorApplicationSelf,
-  resubmitInstructorApplication,
-  moderateInstructorApplication,
-  getInstructorApplicationById,
-} from "./instructorApplication.api";
-import { handleApiError } from "../common-service/handleApiError";
-import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { ErrorCode } from "../../api-client/api.types";
-import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetInstructorApplications = (query?: InstructorApplicationQueryCriteria) => {
   return useQuery({
@@ -35,7 +35,7 @@ export const useGetInstructorApplicationById = (id: string) => {
 };
 
 export const useGetInstructorApplicationSelf = () => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   return useQuery({
     queryKey: keyFac.instructorApplications.getInstructorApplicationSelf.queryKey,
@@ -48,7 +48,7 @@ export const useGetInstructorApplicationSelf = () => {
       // ✅ Retry maximum 2 times for other errors
       return failureCount < 2;
     },
-    enabled: !!currentUser,
+    enabled: !!accessToken,
   });
 };
 

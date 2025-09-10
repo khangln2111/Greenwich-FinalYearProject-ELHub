@@ -1,34 +1,35 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ErrorCode } from "../../api-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { useAppStore } from "../../zustand/stores/appStore";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { EnrollFromInventoryCommand, EnrollmentQueryCriteria } from "./enrollment.types";
 import { enrollFromInventory, getEnrollmentDetailSelf, getEnrollmentsSelf } from "./enrollment.api";
-import { ErrorCode } from "../../api-client/api.types";
+import { EnrollFromInventoryCommand, EnrollmentQueryCriteria } from "./enrollment.types";
 
 export const useGetEnrollmentsSelf = (query?: EnrollmentQueryCriteria) => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   return useQuery({
-    enabled: !!currentUser,
+    enabled: !!accessToken,
     queryKey: keyFac.enrollments.getEnrollmentsSelf(query).queryKey,
     queryFn: () => getEnrollmentsSelf(query),
   });
 };
 
 export const useGetEnrollmentDetailSelf = (id: string) => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
+
   return useQuery({
     queryKey: keyFac.enrollments.getEnrollmentDetailSelf(id).queryKey,
     queryFn: () => getEnrollmentDetailSelf(id),
-    enabled: !!id && !!currentUser,
+    enabled: !!id && !!accessToken,
     retry: (failureCount, error) => {
-      // ❌ Không retry nếu là 404
+      // ❌ Do not retry if 404
       if (error && error.response?.status === 404) {
         return false;
       }
-      // ✅ Retry tối đa 2 lần cho lỗi khác
+      // ✅ Retry maximum 2 times for other errors
       return failureCount < 2;
     },
   });

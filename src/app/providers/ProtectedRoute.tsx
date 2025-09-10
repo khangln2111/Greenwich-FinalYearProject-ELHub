@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppStore } from "../../zustand/stores/appStore";
+import { useGetCurrentUserInfo } from "../../features/auth/identity.hooks";
 
 // options: roles are array of roles that are allowed to access the route
 interface ProtectedRouteProps {
@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ requiredRoles, redirectPath = "/login" }: ProtectedRouteProps) => {
-  const user = useAppStore((s) => s.currentUser);
+  const { data: user } = useGetCurrentUserInfo();
 
   // If not logged in, redirect to login page
   if (!user) return <Navigate to={redirectPath} replace />;

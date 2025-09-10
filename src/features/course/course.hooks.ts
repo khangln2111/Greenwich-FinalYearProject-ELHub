@@ -1,27 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorCode } from "../../api-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
+import {
+  createCourse,
+  deleteCourse,
+  getCourseDetail,
+  getCourses,
+  getCurrentUserCourseEnrollmentStatus,
+  getInstructorByCourseId,
+  moderateCourse,
+  resubmitCourse,
+  submitCourse,
+  updateCourse,
+} from "./course.api";
 import {
   CourseQueryCriteria,
   CreateCourseCommand,
   ModerateCourseCommand,
   UpdateCourseCommand,
 } from "./course.types";
-import {
-  createCourse,
-  deleteCourse,
-  getCourseDetail,
-  getCourses,
-  getInstructorByCourseId,
-  getCurrentUserCourseEnrollmentStatus,
-  moderateCourse,
-  resubmitCourse,
-  submitCourse,
-  updateCourse,
-} from "./course.api";
-import { useAppStore } from "../../zustand/stores/appStore";
 
 export const useGetCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
@@ -31,11 +31,12 @@ export const useGetCourses = (query?: CourseQueryCriteria) => {
 };
 
 export const useGetCurrentUserEnrollmentStatus = (courseId: string) => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
+
   return useQuery({
     queryKey: keyFac.courses.getCurrentUserCourseEnrollmentStatus(courseId).queryKey,
     queryFn: () => getCurrentUserCourseEnrollmentStatus(courseId),
-    enabled: !!courseId && !!currentUser,
+    enabled: !!courseId && !!accessToken,
   });
 };
 

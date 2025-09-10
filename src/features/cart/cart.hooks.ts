@@ -1,17 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { useAppStore } from "../../zustand/stores/appStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { AddCartItemCommand, UpdateCartItemCommand } from "./cart.types";
 import { addCartItem, deleteCartItem, getCartSelf, updateCartItem } from "./cart.api";
+import { AddCartItemCommand, UpdateCartItemCommand } from "./cart.types";
+import { useAuthStore } from "../../zustand/stores/authStore";
 
 export const useGetCart = () => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const accessToken = useAuthStore((s) => s.accessToken);
   return useQuery({
     queryKey: keyFac.cart._def,
     queryFn: getCartSelf,
-    enabled: !!currentUser,
+    enabled: !!accessToken,
   });
 };
 

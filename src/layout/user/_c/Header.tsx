@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Group, Indicator } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, Indicator, Skeleton } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { ArrowLeftIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
@@ -8,15 +8,15 @@ import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useGetCart } from "../../../features/cart/cart.hooks";
 import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
-import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "./AvatarMenu";
 import MobileHamburgerMenu from "./MobileHamburgerMenu";
 import SearchBox from "./SearchBox";
 import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
 import { RoleName } from "../../../features/auth/identity.types";
+import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
 
 const Header = () => {
-  const currentUser = useAppStore((s) => s.currentUser);
+  const { data: currentUser, isLoading: isUserLoading } = useGetCurrentUserInfo();
   const [isSearching, setIsSearching] = useState(false);
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [{ search }, setCoursesQuery] = useCourseQueryState();
@@ -112,7 +112,7 @@ const Header = () => {
 
           {/* Action icons */}
           <Group className="h-full">
-            {currentUser === null && (
+            {!currentUser && !isUserLoading && (
               <>
                 <ThemeToggler />
                 <Button
@@ -138,51 +138,68 @@ const Header = () => {
             </ActionIcon>
 
             {/* Notification (desktop only) */}
-            {currentUser && (
-              <Indicator
-                label={unreadNotificationsCount ?? 0}
-                size={20}
-                offset={2}
-                position="top-end"
-                visibleFrom="lg"
-              >
-                <ActionIcon
-                  variant="default"
-                  size="lg"
-                  aria-label="Notification trigger"
-                  component={Link}
-                  to="/dashboard/notifications"
+            {isUserLoading ? (
+              <Skeleton visibleFrom="lg" width={34} height={34} />
+            ) : (
+              currentUser && (
+                <Indicator
+                  label={unreadNotificationsCount ?? 0}
+                  size={20}
+                  offset={2}
+                  position="top-end"
+                  visibleFrom="lg"
                 >
-                  <IconBell size={19} strokeWidth={1.5} />
-                </ActionIcon>
-              </Indicator>
+                  <ActionIcon
+                    variant="default"
+                    size="lg"
+                    aria-label="Notification trigger"
+                    component={Link}
+                    to="/dashboard/notifications"
+                  >
+                    <IconBell size={19} strokeWidth={1.5} />
+                  </ActionIcon>
+                </Indicator>
+              )
             )}
 
             {/* Cart */}
-            {currentUser && (
-              <Indicator
-                label={cart?.cartItems?.reduce((sum, item) => sum + item.quantity, 0) ?? 0}
-                size={20}
-                offset={2}
-                position="top-end"
-              >
-                <ActionIcon
-                  variant="default"
-                  size="lg"
-                  aria-label="Shopping cart trigger"
-                  component={Link}
-                  to="/cart"
+            {isUserLoading ? (
+              <Skeleton width={34} height={34} />
+            ) : (
+              currentUser && (
+                <Indicator
+                  label={cart?.cartItems?.reduce((sum, item) => sum + item.quantity, 0) ?? 0}
+                  size={20}
+                  offset={2}
+                  position="top-end"
                 >
-                  <ShoppingCart size={19} strokeWidth={1.5} />
-                </ActionIcon>
-              </Indicator>
+                  <ActionIcon
+                    variant="default"
+                    size="lg"
+                    aria-label="Shopping cart trigger"
+                    component={Link}
+                    to="/cart"
+                  >
+                    <ShoppingCart size={19} strokeWidth={1.5} />
+                  </ActionIcon>
+                </Indicator>
+              )
             )}
 
-            {currentUser && (
+            {isUserLoading ? (
               <>
-                <ThemeToggler />
-                <AvatarMenu />
+                <Skeleton width={34} height={34} />
+                <div className="px-2 py-1">
+                  <Skeleton width={38} height={38} radius="full" />
+                </div>
               </>
+            ) : (
+              currentUser && (
+                <>
+                  <ThemeToggler />
+                  <AvatarMenu />
+                </>
+              )
             )}
           </Group>
         </div>

@@ -12,10 +12,10 @@ import { NuqsAdapter } from "nuqs/adapters/react-router/v6";
 import { RouterProvider } from "react-router-dom";
 import "../styles/globals.css";
 import theme from "../styles/theme";
-import IdentityProvider from "./providers/IdentityProvider";
-import router from "./routes";
-import { AppNotificationProvider } from "./providers/AppNotificationProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { AppNotificationProvider } from "./providers/AppNotificationProvider";
+import router from "./routes";
+import { LocalStorageSyncProvider } from "./providers/LocalStorageSyncProvider";
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
@@ -36,7 +36,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <Toasts />
-        <IdentityProvider>
+        <LocalStorageSyncProvider>
           <GoogleOAuthProvider clientId="1008746493649-naguo15v10pmde540vr9ac4a6tbinm0t.apps.googleusercontent.com">
             <AppNotificationProvider>
               <ModalsProvider>
@@ -46,7 +46,7 @@ const App = () => {
               </ModalsProvider>
             </AppNotificationProvider>
           </GoogleOAuthProvider>
-        </IdentityProvider>
+        </LocalStorageSyncProvider>
       </QueryClientProvider>
     </MantineProvider>
   );

@@ -1,6 +1,4 @@
 import { create, StateCreator } from "zustand";
-import { CurrentUser } from "../../features/auth/identity.types";
-import { authStorageHelper } from "../../utils/storageHelper";
 import { createSelectors } from "../auto-selectors";
 
 interface AdminLayoutSlice {
@@ -44,37 +42,9 @@ export const createInstructorLayoutSlice: StateCreator<InstructorLayoutSlice> = 
 
 // Slice for managing the state of the course filter
 
-// Slice for managing the state of the sidebar
-interface AuthSlice {
-  accessToken: string | null;
-  refreshToken: string | null;
-  setTokens: (accessToken: string, refreshToken: string) => void;
-  logout: () => void;
-  currentUser: CurrentUser | null;
-  setUser: (user: CurrentUser) => void;
-}
-
-export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
-  accessToken: authStorageHelper.getAccessToken(),
-  refreshToken: authStorageHelper.getRefreshToken(),
-  currentUser: null,
-  setTokens: (accessToken, refreshToken) => {
-    authStorageHelper.setAccessToken(accessToken);
-    authStorageHelper.setRefreshToken(refreshToken);
-    set({ accessToken, refreshToken });
-  },
-
-  logout: () => {
-    authStorageHelper.clearTokens();
-    set({ accessToken: null, refreshToken: null, currentUser: null });
-  },
-  setUser: (user) => set({ currentUser: user }),
-});
-
-type AppStore = AuthSlice & InstructorLayoutSlice & AdminLayoutSlice;
+type AppStore = InstructorLayoutSlice & AdminLayoutSlice;
 
 const useAppStoreBase = create<AppStore>()((...a) => ({
-  ...createAuthSlice(...a),
   ...createInstructorLayoutSlice(...a),
   ...createAdminLayoutSlice(...a),
 }));

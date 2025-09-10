@@ -3,56 +3,65 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { ErrorCode } from "../../api-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { useAppStore } from "../../zustand/stores/appStore";
+import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
+import {
+  confirmEmail,
+  getCurrentUserInfo,
+  getWorkProfileSelf,
+  login,
+  loginWithGoogle,
+  refreshToken,
+  register,
+  resetPassword,
+  sendEmailConfirmationOtp,
+  sendResetPasswordOtp,
+  updateUserProfileSelf,
+  updateWorkProfileSelf,
+  validateResetPasswordOtp,
+} from "./identity.api";
 import {
   ConfirmEmailCommand,
   LoginCommand,
   LoginWithGoogleCommand,
   RefreshTokenCommand,
   RegisterCommand,
-  SendEmailConfirmationOtpCommand,
   ResetPasswordCommand,
+  SendEmailConfirmationOtpCommand,
   SendResetPasswordOtpCommand,
   UpdateUserProfileSelfCommand,
-  ValidateResetPasswordOtpCommand,
   UpdateWorkProfileSelfCommand,
+  ValidateResetPasswordOtpCommand,
 } from "./identity.types";
-import {
-  confirmEmail,
-  getCurrentUserInfo,
-  login,
-  loginWithGoogle,
-  refreshToken,
-  register,
-  sendEmailConfirmationOtp,
-  resetPassword,
-  sendResetPasswordOtp,
-  updateUserProfileSelf,
-  validateResetPasswordOtp,
-  updateWorkProfileSelf,
-  getWorkProfileSelf,
-} from "./identity.api";
 
 export const useGetCurrentUserInfo = () => {
-  const accessToken = useAppStore((s) => s.accessToken);
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const setCurrentUser = useAuthStore((s) => s.setCurrentUser);
+  const currentUser = useAuthStore((s) => s.currentUser);
+
   return useQuery({
     queryKey: keyFac.identity.getCurrentUser.queryKey,
-    queryFn: getCurrentUserInfo,
-    enabled: !!accessToken,
+    queryFn: async () => {
+      const data = await getCurrentUserInfo();
+      setCurrentUser(data);
+      return data;
+    },
+    initialData: () => currentUser,
+    staleTime: currentUser ? Infinity : 0,
     refetchOnWindowFocus: false,
+    enabled: !!accessToken,
   });
 };
 
 export const useLogout = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const logout = useAppStore((s) => s.logout);
+  const logout = useAuthStore((s) => s.logout);
 
   const handleLogout = () => {
-    queryClient.clear();
     logout();
+    queryClient.clear();
     navigate("/", { replace: true });
   };
 
@@ -86,14 +95,16 @@ export const useRegister = () => {
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
-  const setTokens = useAppStore((s) => s.setTokens);
   const navigate = useNavigate();
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+  const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
   return useMutation({
     mutationFn: (data: LoginCommand) => login(data),
     onSuccess: async (data) => {
       showSuccessToast("Logged In", "You are now logged in successfully.");
       const { accessToken, refreshToken } = data;
-      setTokens(accessToken, refreshToken);
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
       await queryClient.invalidateQueries();
       navigate("/");
     },
@@ -122,15 +133,17 @@ export const useLogin = () => {
 };
 
 export const useLoginWithGoogle = () => {
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+  const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
   const queryClient = useQueryClient();
-  const setTokens = useAppStore((s) => s.setTokens);
   const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: LoginWithGoogleCommand) => loginWithGoogle(data),
     onSuccess: async (data) => {
       showSuccessToast("Logged In with google", "You are now logged in.");
       const { accessToken, refreshToken } = data;
-      setTokens(accessToken, refreshToken);
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
       await queryClient.invalidateQueries({ queryKey: keyFac.identity.getCurrentUser.queryKey });
       navigate("/");
     },
@@ -326,8 +339,7 @@ export const useUpdateUserProfileSelf = () => {
 };
 
 export const useGetWorkProfileSelf = () => {
-  const accessToken = useAppStore((s) => s.accessToken);
-
+  const accessToken = useAuthStore((s) => s.accessToken);
   return useQuery({
     queryKey: keyFac.identity.getWorkProfileSelf.queryKey,
     queryFn: getWorkProfileSelf,

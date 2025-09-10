@@ -2,22 +2,22 @@ import { ActionIcon, Button, Select, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { GraduationCap, Plus, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
+import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import { CourseStatus } from "../../../features/course/course.types";
+import { useGetCurrentUserInfo } from "../../../features/auth/identity.hooks";
 import { useGetCourses } from "../../../features/course/course.hooks";
+import { CourseStatus } from "../../../features/course/course.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 import CreateCourseModal from "./_c/CreateCourseModal";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
-import { useAppStore } from "../../../zustand/stores/appStore";
-import { useState } from "react";
-import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function InstructorCoursesPage() {
   usePageSEO({ title: "My Owned Courses" });
   const [createCourseModalOpened, { open: openCreateCourseModal, close: closeCreateCourseModal }] =
     useDisclosure(false);
 
-  const currentUser = useAppStore((s) => s.currentUser);
+  const { data: currentUser } = useGetCurrentUserInfo();
 
   const [status, setStatus] = useQueryState(
     "status",
