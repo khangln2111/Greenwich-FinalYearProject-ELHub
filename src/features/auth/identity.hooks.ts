@@ -63,8 +63,8 @@ export const useLogout = () => {
   const handleLogout = () => {
     logout();
     queryClient.clear();
-    navigate("/", { replace: true });
     setLogoutAt();
+    navigate("/", { replace: true });
   };
 
   return handleLogout;

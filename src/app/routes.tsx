@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouteObject } from "react-router";
-import ProtectedRoute from "./providers/ProtectedRoute";
+import PrivateRoute from "./providers/PrivateRoute";
 import { lazyRoute } from "../utils/lazyRoute";
 
 import CenterLoaderWithLogo from "../components/CenterLoader/CenterLoaderWithLogo";
@@ -29,7 +29,7 @@ const userRoute: RouteObject = {
       lazy: lazyRoute(() => import("../pages/(main)/become-instructor/BecomeInstructorPage")),
     },
     {
-      Component: () => <ProtectedRoute isLayoutRoute={true} />,
+      Component: () => <PrivateRoute isLayoutRoute={true} />,
       children: [
         {
           path: "dashboard/order-history/:orderId",
@@ -92,9 +92,9 @@ const instructorRoute: RouteObject = {
       const InstructorLayout = (await import("../layout/instructor/InstructorLayout")).default;
       return function InstructorProtectedLayout() {
         return (
-          <ProtectedRoute requiredRoles={["Instructor"]}>
+          <PrivateRoute requiredRoles={["Instructor"]}>
             <InstructorLayout />
-          </ProtectedRoute>
+          </PrivateRoute>
         );
       };
     },
@@ -137,9 +137,9 @@ const adminRoute: RouteObject = {
       const AdminLayout = (await import("../layout/admin/AdminLayout")).default;
       return function AdminProtectedLayout() {
         return (
-          <ProtectedRoute requiredRoles={["Admin"]}>
+          <PrivateRoute requiredRoles={["Admin"]}>
             <AdminLayout />
-          </ProtectedRoute>
+          </PrivateRoute>
         );
       };
     },

@@ -3,19 +3,19 @@ import CenterLoader from "../../components/CenterLoader/CenterLoader";
 import { useGetCurrentUser } from "../../features/auth/identity.hooks";
 import { useAuthStore } from "../../zustand/stores/authStore";
 
-interface ProtectedRouteProps {
+interface PrivateRouteProps {
   requiredRoles?: string[];
   redirectPath?: string;
   isLayoutRoute?: boolean;
   children?: React.ReactNode;
 }
 
-const ProtectedRoute = ({
+const PrivateRoute = ({
   requiredRoles,
   redirectPath = "/login",
   children,
   isLayoutRoute = false,
-}: ProtectedRouteProps) => {
+}: PrivateRouteProps) => {
   const location = useLocation();
   const accessToken = useAuthStore((s) => s.accessToken);
 
@@ -38,4 +38,4 @@ const ProtectedRoute = ({
   return isLayoutRoute ? <Outlet /> : <>{children}</>;
 };
 
-export default ProtectedRoute;
+export default PrivateRoute;
