@@ -107,13 +107,13 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: (data: LoginCommand) => login(data),
     onSuccess: async (data) => {
-      showSuccessToast("Logged In", "You are now logged in successfully.");
       const { accessToken, refreshToken } = data;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
       await queryClient.invalidateQueries();
       navigate(from, { replace: true });
       setLoginAt();
+      showSuccessToast("Logged In", "You are now logged in successfully.");
     },
     onError: (error, variables) =>
       handleApiError(error, {
@@ -151,13 +151,13 @@ export const useLoginWithGoogle = () => {
   return useMutation({
     mutationFn: (data: LoginWithGoogleCommand) => loginWithGoogle(data),
     onSuccess: async (data) => {
-      showSuccessToast("Logged In with google", "You are now logged in.");
       const { accessToken, refreshToken } = data;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
       queryClient.invalidateQueries();
       navigate(from, { replace: true });
       setLoginAt();
+      showSuccessToast("Logged In with google", "You are now logged in.");
     },
     onError: (error) =>
       handleApiError(error, {

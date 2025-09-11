@@ -1,85 +1,77 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
+import ProtectedRoute from "./providers/ProtectedRoute";
+
+// Layouts
 import AdminLayout from "../layout/admin/AdminLayout";
 import InstructorLayout from "../layout/instructor/InstructorLayout";
 import UserDashboardLayout from "../layout/user-dashboard/UserDashboardLayout";
 import UserLayout from "../layout/user/UserLayout";
-import AdminDashboardPage from "../pages/(admin)/dashboard/AdminDashboardPage";
-import AdminCategoriesPage from "../pages/(admin)/categories/AdminCategoriesPage";
-import AdminCourseDetailPage from "../pages/(admin)/course-detail/AdminCourseDetailPage";
-import AdminCoursesPage from "../pages/(admin)/courses/AdminCoursesPage";
-import AdminPendingCoursesPage from "../pages/(admin)/courses/AdminPendingCoursesPage";
-import AdminUsersPage from "../pages/(admin)/users/AdminUsersPage";
-import ForgotPasswordPage from "../pages/(auth)/forgot-password/ForgotPasswordPage";
-import LoginPage from "../pages/(auth)/login/LoginPage";
-import RegisterPage from "../pages/(auth)/register/RegisterPage";
-import VerifyEmailPage from "../pages/(auth)/verify-email/VerifyEmailPage";
-import InstructorDashboardPage from "../pages/(instructor)/dashboard/InstructorDashboardPage";
-import InstructorCoursesPage from "../pages/(instructor)/courses/InstructorCoursesPage";
-import InstructorEditCoursePage from "../pages/(instructor)/edit-course/InstructorEditCoursePage";
-import InstructorProfilePage from "../pages/(instructor)/profile/InstructorProfilePage";
-import BecomeInstructorPage from "../pages/(main)/become-instructor/BecomeInstructorPage";
-import CartPage from "../pages/(main)/cart/CartPage";
-import CheckoutResultPage from "../pages/(main)/checkout-result/CheckoutResultPage";
-import CheckoutPage from "../pages/(main)/checkout/CheckoutPage";
-import CourseDetailPage from "../pages/(main)/course-detail/CourseDetailPage";
-import CoursesPage from "../pages/(main)/courses/CoursesPage";
-import MyLearningPage from "../pages/(main)/enrolled-courses/MyLearningPage";
-import ErrorPage from "../pages/(main)/error/ErrorPage";
-import GiftsPage from "../pages/(main)/gift/GiftsPage";
-import HomePage from "../pages/(main)/home/HomePage";
-import InstructorDetailPage from "../pages/(main)/instructor-detail/InstructorDetailPage";
-import InventoryPage from "../pages/(main)/inventory/InventoryPage";
-import LearningPage from "../pages/(main)/learning/LearningPage";
-import MyProfilePage from "../pages/(main)/my-account/MyProfilePage";
-import OrderHistoryDetailPage from "../pages/(main)/order-detail/OrderHistoryDetailPage";
-import OrderHistoryPage from "../pages/(main)/order-history/OrderHistoryPage";
-import UserDashboardPage from "../pages/(main)/dashboard/UserDashboardPage";
-import NotificationsPage from "../pages/(main)/notifications/NotificationsPage";
-import InstructorNotificationsPage from "../pages/(instructor)/notifications/InstructorNotificationsPage";
-import AdminNotificationsPage from "../pages/(admin)/notifications/AdminNotificationsPage";
-import AdminInstructorApplicationsPage from "../pages/(admin)/instructor-applications/AdminInstructorApplicationsPage";
-import InstructorSettingsPage from "../pages/(instructor)/settings/InstructorSettingsPage";
-import AdminSettingsPage from "../pages/(admin)/settings/AdminSettingsPage";
-import SettingsPage from "../pages/(main)/settings/SettingsPage";
-import ProtectedRoute from "./providers/ProtectedRoute";
 
+// ===================== User Routes =====================
 const userRoute: RouteObject = {
   element: <UserLayout />,
-  // errorElement: <h1>[Error boundary] Error occured, please check</h1>, // Error page for the user routes
   children: [
-    { path: "*", element: <ErrorPage /> },
-    { index: true, element: <HomePage /> },
-    { path: "courses", element: <CoursesPage /> },
-    { path: "courses/:courseId", element: <CourseDetailPage /> },
+    {
+      path: "*",
+      lazy: async () => ({ Component: (await import("../pages/(main)/error/ErrorPage")).default }),
+    },
+    {
+      index: true,
+      lazy: async () => ({ Component: (await import("../pages/(main)/home/HomePage")).default }),
+    },
+    {
+      path: "courses",
+      lazy: async () => ({
+        Component: (await import("../pages/(main)/courses/CoursesPage")).default,
+      }),
+    },
+    {
+      path: "courses/:courseId",
+      lazy: async () => ({
+        Component: (await import("../pages/(main)/course-detail/CourseDetailPage")).default,
+      }),
+    },
     {
       path: "cart",
-      element: (
-        <ProtectedRoute>
-          <CartPage />
-        </ProtectedRoute>
-      ),
+      lazy: async () => ({ Component: (await import("../pages/(main)/cart/CartPage")).default }),
+      element: <ProtectedRoute />,
     },
-    { path: "checkout", element: <CheckoutPage /> },
-    { path: "checkout/result", element: <CheckoutResultPage /> },
     {
-      path: "instructors",
-      element: <p>Instructors Page</p>,
+      path: "checkout",
+      lazy: async () => ({
+        Component: (await import("../pages/(main)/checkout/CheckoutPage")).default,
+      }),
     },
+    {
+      path: "checkout/result",
+      lazy: async () => ({
+        Component: (await import("../pages/(main)/checkout-result/CheckoutResultPage")).default,
+      }),
+    },
+    { path: "instructors", lazy: async () => ({ Component: () => <p>Instructors Page</p> }) },
     {
       path: "instructors/:instructorId",
-      element: <InstructorDetailPage />,
+      lazy: async () => ({
+        Component: (await import("../pages/(main)/instructor-detail/InstructorDetailPage")).default,
+      }),
     },
     {
       path: "become-instructor",
-      element: <BecomeInstructorPage />,
+      lazy: async () => ({
+        Component: (await import("../pages/(main)/become-instructor/BecomeInstructorPage")).default,
+      }),
     },
     {
       path: "test",
-      element: <AdminUsersPage />,
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/users/AdminUsersPage")).default,
+      }),
     },
     {
       path: "dashboard/order-history/:orderId",
-      element: <OrderHistoryDetailPage />,
+      lazy: async () => ({
+        Component: (await import("../pages/(main)/order-detail/OrderHistoryDetailPage")).default,
+      }),
     },
     {
       path: "dashboard",
@@ -88,135 +80,222 @@ const userRoute: RouteObject = {
           <UserDashboardLayout />
         </ProtectedRoute>
       ),
+      lazy: async () => ({
+        Component: (await import("../layout/user-dashboard/UserDashboardLayout")).default,
+      }),
       children: [
-        { index: true, element: <UserDashboardPage /> },
+        {
+          index: true,
+          lazy: async () => ({
+            Component: (await import("../pages/(main)/dashboard/UserDashboardPage")).default,
+          }),
+        },
         {
           path: "my-profile",
-          element: <MyProfilePage />,
+          lazy: async () => ({
+            Component: (await import("../pages/(main)/my-account/MyProfilePage")).default,
+          }),
         },
         {
           path: "my-learning",
-          element: <MyLearningPage />,
+          lazy: async () => ({
+            Component: (await import("../pages/(main)/enrolled-courses/MyLearningPage")).default,
+          }),
         },
         {
           path: "inventory",
-          element: <InventoryPage />,
+          lazy: async () => ({
+            Component: (await import("../pages/(main)/inventory/InventoryPage")).default,
+          }),
         },
-        {
-          path: "dashboard",
-          element: <p>User Dashboard Page</p>,
-        },
+        { path: "dashboard", lazy: async () => ({ Component: () => <p>User Dashboard Page</p> }) },
         {
           path: "order-history",
-          element: <OrderHistoryPage />,
+          lazy: async () => ({
+            Component: (await import("../pages/(main)/order-history/OrderHistoryPage")).default,
+          }),
         },
         {
           path: "gifts",
-          element: <GiftsPage />,
+          lazy: async () => ({
+            Component: (await import("../pages/(main)/gift/GiftsPage")).default,
+          }),
         },
         {
           path: "notifications",
-          element: <NotificationsPage />,
+          lazy: async () => ({
+            Component: (await import("../pages/(main)/notifications/NotificationsPage")).default,
+          }),
         },
         {
           path: "settings",
-          element: <SettingsPage />,
+          lazy: async () => ({
+            Component: (await import("../pages/(main)/settings/SettingsPage")).default,
+          }),
         },
       ],
     },
   ],
 };
 
+// ===================== Instructor Routes =====================
 const instructorRoute: RouteObject = {
-  element: <InstructorLayout />,
   path: "/instructor",
-  children: [
-    { path: "dashboard", element: <InstructorDashboardPage /> },
-    { path: "students", element: <p>Instructor Students Page</p> },
-    {
-      path: "courses",
-      element: <InstructorCoursesPage />,
-    },
-    {
-      path: "courses/:courseId/edit",
-      element: <InstructorEditCoursePage />,
-    },
-    {
-      path: "profile",
-      element: <InstructorProfilePage />,
-    },
-    {
-      path: "notifications",
-      element: <InstructorNotificationsPage />,
-    },
-    {
-      path: "coupons",
-      element: <p>Instructor Coupons Page</p>,
-    },
-    {
-      path: "settings",
-      element: <InstructorSettingsPage />,
-    },
-  ],
-};
-
-const adminRoute: RouteObject = {
-  element: <AdminLayout />,
-  path: "/admin",
+  element: (
+    <ProtectedRoute requiredRoles={["Instructor"]}>
+      <InstructorLayout />
+    </ProtectedRoute>
+  ),
   children: [
     {
       path: "dashboard",
-      element: <AdminDashboardPage />,
+      lazy: async () => ({
+        Component: (await import("../pages/(instructor)/dashboard/InstructorDashboardPage"))
+          .default,
+      }),
     },
-    {
-      path: "categories",
-      element: <AdminCategoriesPage />,
-    },
-    {
-      path: "instructor-applications",
-      element: <AdminInstructorApplicationsPage />,
-    },
+    { path: "students", lazy: async () => ({ Component: () => <p>Instructor Students Page</p> }) },
     {
       path: "courses",
-      element: <AdminCoursesPage />,
+      lazy: async () => ({
+        Component: (await import("../pages/(instructor)/courses/InstructorCoursesPage")).default,
+      }),
     },
     {
-      path: "courses/:courseId",
-      element: <AdminCourseDetailPage />,
+      path: "courses/:courseId/edit",
+      lazy: async () => ({
+        Component: (await import("../pages/(instructor)/edit-course/InstructorEditCoursePage"))
+          .default,
+      }),
     },
     {
-      path: "courses/pending",
-      element: <AdminPendingCoursesPage />,
-    },
-    {
-      path: "users",
-      element: <AdminUsersPage />,
+      path: "profile",
+      lazy: async () => ({
+        Component: (await import("../pages/(instructor)/profile/InstructorProfilePage")).default,
+      }),
     },
     {
       path: "notifications",
-      element: <AdminNotificationsPage />,
+      lazy: async () => ({
+        Component: (await import("../pages/(instructor)/notifications/InstructorNotificationsPage"))
+          .default,
+      }),
     },
+    { path: "coupons", lazy: async () => ({ Component: () => <p>Instructor Coupons Page</p> }) },
     {
       path: "settings",
-      element: <AdminSettingsPage />,
+      lazy: async () => ({
+        Component: (await import("../pages/(instructor)/settings/InstructorSettingsPage")).default,
+      }),
     },
   ],
 };
 
-const authRoutes: RouteObject[] = [
-  { path: "/login", element: <LoginPage /> },
-  { path: "/register", element: <RegisterPage /> },
-  { path: "/forgot-password", element: <ForgotPasswordPage /> },
-  { path: "/verify-email", element: <VerifyEmailPage /> },
-];
+// ===================== Admin Routes =====================
+const adminRoute: RouteObject = {
+  path: "/admin",
+  element: (
+    <ProtectedRoute requiredRoles={["Admin"]}>
+      <AdminLayout />
+    </ProtectedRoute>
+  ),
+  children: [
+    {
+      path: "dashboard",
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/dashboard/AdminDashboardPage")).default,
+      }),
+    },
+    {
+      path: "categories",
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/categories/AdminCategoriesPage")).default,
+      }),
+    },
+    {
+      path: "instructor-applications",
+      lazy: async () => ({
+        Component: (
+          await import("../pages/(admin)/instructor-applications/AdminInstructorApplicationsPage")
+        ).default,
+      }),
+    },
+    {
+      path: "courses",
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/courses/AdminCoursesPage")).default,
+      }),
+    },
+    {
+      path: "courses/:courseId",
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/course-detail/AdminCourseDetailPage")).default,
+      }),
+    },
+    {
+      path: "courses/pending",
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/courses/AdminPendingCoursesPage")).default,
+      }),
+    },
+    {
+      path: "users",
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/users/AdminUsersPage")).default,
+      }),
+    },
+    {
+      path: "notifications",
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/notifications/AdminNotificationsPage")).default,
+      }),
+    },
+    {
+      path: "settings",
+      lazy: async () => ({
+        Component: (await import("../pages/(admin)/settings/AdminSettingsPage")).default,
+      }),
+    },
+  ],
+};
 
-const otherRoutes: RouteObject[] = [
+// ===================== Auth Routes =====================
+const authRoutes: RouteObject[] = [
   {
-    path: "learning/:enrollmentId",
-    element: <LearningPage />,
+    path: "/login",
+    lazy: async () => ({ Component: (await import("../pages/(auth)/login/LoginPage")).default }),
+  },
+  {
+    path: "/register",
+    lazy: async () => ({
+      Component: (await import("../pages/(auth)/register/RegisterPage")).default,
+    }),
+  },
+  {
+    path: "/forgot-password",
+    lazy: async () => ({
+      Component: (await import("../pages/(auth)/forgot-password/ForgotPasswordPage")).default,
+    }),
+  },
+  {
+    path: "/verify-email",
+    lazy: async () => ({
+      Component: (await import("../pages/(auth)/verify-email/VerifyEmailPage")).default,
+    }),
   },
 ];
 
+// ===================== Other Routes =====================
+const otherRoutes: RouteObject[] = [
+  {
+    path: "learning/:enrollmentId",
+    lazy: async () => ({
+      Component: (await import("../pages/(main)/learning/LearningPage")).default,
+    }),
+  },
+];
+
+// ===================== Router =====================
 const router = createBrowserRouter([
   userRoute,
   instructorRoute,
