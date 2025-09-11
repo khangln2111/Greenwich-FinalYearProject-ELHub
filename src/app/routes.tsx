@@ -2,8 +2,6 @@ import { createBrowserRouter, RouteObject } from "react-router";
 import ProtectedRoute from "./providers/ProtectedRoute";
 
 import CenterLoaderWithLogo from "../components/CenterLoader/CenterLoaderWithLogo";
-import AdminLayout from "../layout/admin/AdminLayout";
-import InstructorLayout from "../layout/instructor/InstructorLayout";
 import UserLayout from "../layout/user/UserLayout";
 
 // ===================== User Routes =====================
@@ -151,11 +149,18 @@ const userRoute: RouteObject = {
 
 const instructorRoute: RouteObject = {
   path: "/instructor",
-  Component: () => (
-    <ProtectedRoute requiredRoles={["Instructor"]}>
-      <InstructorLayout />
-    </ProtectedRoute>
-  ),
+  lazy: {
+    Component: async () => {
+      const InstructorLayout = (await import("../layout/instructor/InstructorLayout")).default;
+      return function InstructorProtectedLayout() {
+        return (
+          <ProtectedRoute requiredRoles={["Instructor"]}>
+            <InstructorLayout />
+          </ProtectedRoute>
+        );
+      };
+    },
+  },
   children: [
     {
       path: "dashboard",
@@ -205,11 +210,18 @@ const instructorRoute: RouteObject = {
 // ===================== Admin Routes =====================
 const adminRoute: RouteObject = {
   path: "/admin",
-  Component: () => (
-    <ProtectedRoute requiredRoles={["Admin"]}>
-      <AdminLayout />
-    </ProtectedRoute>
-  ),
+  lazy: {
+    Component: async () => {
+      const AdminLayout = (await import("../layout/admin/AdminLayout")).default;
+      return function AdminProtectedLayout() {
+        return (
+          <ProtectedRoute requiredRoles={["Admin"]}>
+            <AdminLayout />
+          </ProtectedRoute>
+        );
+      };
+    },
+  },
   children: [
     {
       path: "dashboard",

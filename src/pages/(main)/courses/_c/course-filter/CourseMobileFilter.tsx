@@ -66,21 +66,20 @@ const CourseMobileFilter = ({}: CourseMobileFilterProps) => {
   });
 
   const handleReset = () => {
-    closeMobileFilter();
-
     startTransition(() => {
       resetCourseQuery();
     });
+    closeMobileFilter();
   };
 
   const handleApply = () => {
-    closeMobileFilter();
     startTransition(() => {
       setCourseQuery({
         ...tempFilters,
         orderBy: encodeOrderOption(tempSorter),
       });
     });
+    closeMobileFilter();
   };
 
   useEffect(() => {
