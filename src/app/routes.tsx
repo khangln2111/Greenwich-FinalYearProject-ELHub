@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouteObject } from "react-router";
 import ProtectedRoute from "./providers/ProtectedRoute";
+import { lazyRoute } from "../utils/lazyRoute";
 
 import CenterLoaderWithLogo from "../components/CenterLoader/CenterLoaderWithLogo";
 import UserLayout from "../layout/user/UserLayout";
@@ -8,137 +9,75 @@ import UserLayout from "../layout/user/UserLayout";
 const userRoute: RouteObject = {
   Component: UserLayout,
   children: [
-    {
-      path: "*",
-      lazy: {
-        Component: async () => (await import("../pages/(main)/error/ErrorPage")).default,
-      },
-    },
-    {
-      index: true,
-      lazy: {
-        Component: async () => (await import("../pages/(main)/home/HomePage")).default,
-      },
-    },
-    {
-      path: "courses",
-      lazy: {
-        Component: async () => (await import("../pages/(main)/courses/CoursesPage")).default,
-      },
-    },
+    { path: "*", lazy: lazyRoute(() => import("../pages/(main)/error/ErrorPage")) },
+    { index: true, lazy: lazyRoute(() => import("../pages/(main)/home/HomePage")) },
+    { path: "courses", lazy: lazyRoute(() => import("../pages/(main)/courses/CoursesPage")) },
     {
       path: "courses/:courseId",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(main)/course-detail/CourseDetailPage")).default,
-      },
-    },
-    {
-      path: "cart",
-      lazy: {
-        Component: async () => (await import("../pages/(main)/cart/CartPage")).default,
-      },
-    },
-    {
-      path: "checkout",
-      lazy: {
-        Component: async () => (await import("../pages/(main)/checkout/CheckoutPage")).default,
-      },
-    },
-    {
-      path: "checkout/result",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(main)/checkout-result/CheckoutResultPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(main)/course-detail/CourseDetailPage")),
     },
     {
       path: "instructors",
-      lazy: {
-        Component: async () => () => <p>Instructors Page</p>,
-      },
+      lazy: { Component: async () => () => <p>Instructors Page</p> },
     },
     {
       path: "instructors/:instructorId",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(main)/instructor-detail/InstructorDetailPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(main)/instructor-detail/InstructorDetailPage")),
     },
     {
       path: "become-instructor",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(main)/become-instructor/BecomeInstructorPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(main)/become-instructor/BecomeInstructorPage")),
     },
     {
-      path: "dashboard/order-history/:orderId",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(main)/order-detail/OrderHistoryDetailPage")).default,
-      },
-    },
-    {
-      path: "dashboard",
-      lazy: {
-        Component: async () =>
-          (await import("../layout/user-dashboard/UserDashboardLayout")).default,
-      },
+      Component: () => <ProtectedRoute isLayoutRoute={true} />,
       children: [
         {
-          index: true,
-          lazy: {
-            Component: async () =>
-              (await import("../pages/(main)/dashboard/UserDashboardPage")).default,
-          },
+          path: "dashboard/order-history/:orderId",
+          lazy: lazyRoute(() => import("../pages/(main)/order-detail/OrderHistoryDetailPage")),
+        },
+        { path: "cart", lazy: lazyRoute(() => import("../pages/(main)/cart/CartPage")) },
+        {
+          path: "checkout",
+          lazy: lazyRoute(() => import("../pages/(main)/checkout/CheckoutPage")),
         },
         {
-          path: "my-profile",
-          lazy: {
-            Component: async () =>
-              (await import("../pages/(main)/my-account/MyProfilePage")).default,
-          },
+          path: "checkout/result",
+          lazy: lazyRoute(() => import("../pages/(main)/checkout-result/CheckoutResultPage")),
         },
         {
-          path: "my-learning",
-          lazy: {
-            Component: async () =>
-              (await import("../pages/(main)/enrolled-courses/MyLearningPage")).default,
-          },
-        },
-        {
-          path: "inventory",
-          lazy: {
-            Component: async () =>
-              (await import("../pages/(main)/inventory/InventoryPage")).default,
-          },
-        },
-        {
-          path: "order-history",
-          lazy: {
-            Component: async () =>
-              (await import("../pages/(main)/order-history/OrderHistoryPage")).default,
-          },
-        },
-        {
-          path: "gifts",
-          lazy: {
-            Component: async () => (await import("../pages/(main)/gift/GiftsPage")).default,
-          },
-        },
-        {
-          path: "notifications",
-          lazy: {
-            Component: async () =>
-              (await import("../pages/(main)/notifications/NotificationsPage")).default,
-          },
-        },
-        {
-          path: "settings",
-          lazy: {
-            Component: async () => (await import("../pages/(main)/settings/SettingsPage")).default,
-          },
+          path: "dashboard",
+          lazy: lazyRoute(() => import("../layout/user-dashboard/UserDashboardLayout")),
+          children: [
+            {
+              index: true,
+              lazy: lazyRoute(() => import("../pages/(main)/dashboard/UserDashboardPage")),
+            },
+            {
+              path: "my-profile",
+              lazy: lazyRoute(() => import("../pages/(main)/my-account/MyProfilePage")),
+            },
+            {
+              path: "my-learning",
+              lazy: lazyRoute(() => import("../pages/(main)/enrolled-courses/MyLearningPage")),
+            },
+            {
+              path: "inventory",
+              lazy: lazyRoute(() => import("../pages/(main)/inventory/InventoryPage")),
+            },
+            {
+              path: "order-history",
+              lazy: lazyRoute(() => import("../pages/(main)/order-history/OrderHistoryPage")),
+            },
+            { path: "gifts", lazy: lazyRoute(() => import("../pages/(main)/gift/GiftsPage")) },
+            {
+              path: "settings",
+              lazy: lazyRoute(() => import("../pages/(main)/settings/SettingsPage")),
+            },
+            {
+              path: "notifications",
+              lazy: lazyRoute(() => import("../pages/(main)/notifications/NotificationsPage")),
+            },
+          ],
         },
       ],
     },
@@ -146,7 +85,6 @@ const userRoute: RouteObject = {
 };
 
 // ===================== Instructor Routes =====================
-
 const instructorRoute: RouteObject = {
   path: "/instructor",
   lazy: {
@@ -164,45 +102,29 @@ const instructorRoute: RouteObject = {
   children: [
     {
       path: "dashboard",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(instructor)/dashboard/InstructorDashboardPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(instructor)/dashboard/InstructorDashboardPage")),
     },
     {
       path: "courses",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(instructor)/courses/InstructorCoursesPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(instructor)/courses/InstructorCoursesPage")),
     },
     {
       path: "courses/:courseId/edit",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(instructor)/edit-course/InstructorEditCoursePage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(instructor)/edit-course/InstructorEditCoursePage")),
     },
     {
       path: "profile",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(instructor)/profile/InstructorProfilePage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(instructor)/profile/InstructorProfilePage")),
     },
     {
       path: "notifications",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(instructor)/notifications/InstructorNotificationsPage")).default,
-      },
+      lazy: lazyRoute(
+        () => import("../pages/(instructor)/notifications/InstructorNotificationsPage"),
+      ),
     },
     {
       path: "settings",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(instructor)/settings/InstructorSettingsPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(instructor)/settings/InstructorSettingsPage")),
     },
   ],
 };
@@ -225,94 +147,53 @@ const adminRoute: RouteObject = {
   children: [
     {
       path: "dashboard",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(admin)/dashboard/AdminDashboardPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(admin)/dashboard/AdminDashboardPage")),
     },
     {
       path: "categories",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(admin)/categories/AdminCategoriesPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(admin)/categories/AdminCategoriesPage")),
     },
     {
       path: "instructor-applications",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(admin)/instructor-applications/AdminInstructorApplicationsPage"))
-            .default,
-      },
+      lazy: lazyRoute(
+        () => import("../pages/(admin)/instructor-applications/AdminInstructorApplicationsPage"),
+      ),
     },
     {
       path: "courses",
-      lazy: {
-        Component: async () => (await import("../pages/(admin)/courses/AdminCoursesPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(admin)/courses/AdminCoursesPage")),
     },
     {
       path: "courses/:courseId",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(admin)/course-detail/AdminCourseDetailPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(admin)/course-detail/AdminCourseDetailPage")),
     },
     {
       path: "courses/pending",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(admin)/courses/AdminPendingCoursesPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(admin)/courses/AdminPendingCoursesPage")),
     },
-    {
-      path: "users",
-      lazy: {
-        Component: async () => (await import("../pages/(admin)/users/AdminUsersPage")).default,
-      },
-    },
+    { path: "users", lazy: lazyRoute(() => import("../pages/(admin)/users/AdminUsersPage")) },
     {
       path: "notifications",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(admin)/notifications/AdminNotificationsPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(admin)/notifications/AdminNotificationsPage")),
     },
     {
       path: "settings",
-      lazy: {
-        Component: async () =>
-          (await import("../pages/(admin)/settings/AdminSettingsPage")).default,
-      },
+      lazy: lazyRoute(() => import("../pages/(admin)/settings/AdminSettingsPage")),
     },
   ],
 };
+
 // ===================== Auth Routes =====================
 const authRoutes: RouteObject[] = [
-  {
-    path: "/login",
-    lazy: {
-      Component: async () => (await import("../pages/(auth)/login/LoginPage")).default,
-    },
-  },
-  {
-    path: "/register",
-    lazy: {
-      Component: async () => (await import("../pages/(auth)/register/RegisterPage")).default,
-    },
-  },
+  { path: "/login", lazy: lazyRoute(() => import("../pages/(auth)/login/LoginPage")) },
+  { path: "/register", lazy: lazyRoute(() => import("../pages/(auth)/register/RegisterPage")) },
   {
     path: "/forgot-password",
-    lazy: {
-      Component: async () =>
-        (await import("../pages/(auth)/forgot-password/ForgotPasswordPage")).default,
-    },
+    lazy: lazyRoute(() => import("../pages/(auth)/forgot-password/ForgotPasswordPage")),
   },
   {
     path: "/verify-email",
-    lazy: {
-      Component: async () => (await import("../pages/(auth)/verify-email/VerifyEmailPage")).default,
-    },
+    lazy: lazyRoute(() => import("../pages/(auth)/verify-email/VerifyEmailPage")),
   },
 ];
 
@@ -320,9 +201,7 @@ const authRoutes: RouteObject[] = [
 const otherRoutes: RouteObject[] = [
   {
     path: "learning/:enrollmentId",
-    lazy: {
-      Component: async () => (await import("../pages/(main)/learning/LearningPage")).default,
-    },
+    lazy: lazyRoute(() => import("../pages/(main)/learning/LearningPage")),
   },
 ];
 
@@ -333,5 +212,4 @@ const route: RouteObject = {
 
 // ===================== Router =====================
 const router = createBrowserRouter([route]);
-
 export default router;

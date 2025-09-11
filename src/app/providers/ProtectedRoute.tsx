@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router";
+import { Navigate, Outlet, useLocation } from "react-router";
 import CenterLoader from "../../components/CenterLoader/CenterLoader";
 import { useGetCurrentUser } from "../../features/auth/identity.hooks";
 import { useAuthStore } from "../../zustand/stores/authStore";
@@ -6,6 +6,7 @@ import { useAuthStore } from "../../zustand/stores/authStore";
 interface ProtectedRouteProps {
   requiredRoles?: string[];
   redirectPath?: string;
+  isLayoutRoute?: boolean;
   children?: React.ReactNode;
 }
 
@@ -13,6 +14,7 @@ const ProtectedRoute = ({
   requiredRoles,
   redirectPath = "/login",
   children,
+  isLayoutRoute = false,
 }: ProtectedRouteProps) => {
   const location = useLocation();
   const accessToken = useAuthStore((s) => s.accessToken);
@@ -22,7 +24,6 @@ const ProtectedRoute = ({
   if (isFetching) return <CenterLoader height={500} />;
 
   if (!accessToken || !user) {
-    // Pass state current location
     return (
       <Navigate to={redirectPath} replace state={{ from: location.pathname + location.search }} />
     );
@@ -34,7 +35,7 @@ const ProtectedRoute = ({
     );
   }
 
-  return <>{children}</>;
+  return isLayoutRoute ? <Outlet /> : <>{children}</>;
 };
 
 export default ProtectedRoute;
