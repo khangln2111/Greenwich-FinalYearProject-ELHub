@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { OrderItemVm } from "../../../../features/order/order.types";
 
 const OrderItemList = ({ items }: { items: OrderItemVm[] }) => {

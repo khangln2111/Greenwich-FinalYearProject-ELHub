@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@mantine/hooks";
 import { ResponsiveDialog } from "mantine-vaul";
 import { useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 import { useCompleteLecture } from "../../../features/lecture/lecture.hooks";
 import { cn } from "../../../utils/cn";

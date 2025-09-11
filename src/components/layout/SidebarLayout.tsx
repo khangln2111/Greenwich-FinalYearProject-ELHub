@@ -1,5 +1,5 @@
 import { Drawer, rem } from "@mantine/core";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { cn } from "../../utils/cn";
 
 const DASHBOARD_SIDEBAR_WIDTH = "256px";

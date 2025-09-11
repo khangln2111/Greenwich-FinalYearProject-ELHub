@@ -1,6 +1,6 @@
 import { Button, Text } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { CartItemVm } from "../../../../features/cart/cart.types";
 import { useCreateOrder } from "../../../../features/order/order.hooks";
 import { cn } from "../../../../utils/cn";

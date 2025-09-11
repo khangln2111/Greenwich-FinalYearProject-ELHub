@@ -1,5 +1,5 @@
 import { ElementType, SVGProps } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { CollapsedNavLink } from "./CollapsedNavLink";
 import { ExpandedNavLink } from "./ExpandedNavLink";
 

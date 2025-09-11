@@ -1,7 +1,7 @@
 import { Button, Container, Image, List, Text, ThemeIcon, Title } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import image1 from "../../../../assets/homePageImages/HeroImage2.png";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const Hero = () => {
   return (

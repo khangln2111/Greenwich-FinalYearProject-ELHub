@@ -3,7 +3,7 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { ArrowLeftIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useGetCart } from "../../../features/cart/cart.hooks";
@@ -118,6 +118,7 @@ const Header = () => {
                 <Button
                   to="/login"
                   component={Link}
+                  prefetch="render"
                   variant="gradient"
                   gradient={{ from: "blue", to: "cyan" }}
                 >

@@ -13,7 +13,7 @@ import {
   User,
 } from "lucide-react";
 import { ReactNode, useState } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import avatarPlaceholder from "../../assets/placeholder/profile-avatar-placeholder.svg";
 import background from "../../assets/userDashboard/background-info.png";
 import { useGetCurrentUser } from "../../features/auth/identity.hooks";

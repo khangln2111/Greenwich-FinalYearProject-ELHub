@@ -24,7 +24,7 @@ import {
   User2,
 } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 import UpdateUserProfileForm from "../my-account/_c/UpdateUserProfileForm";
 import { parseAsStringEnum, useQueryState } from "nuqs";

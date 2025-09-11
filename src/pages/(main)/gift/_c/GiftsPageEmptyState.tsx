@@ -1,5 +1,5 @@
 import { GiftIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 type GiftsPageEmptyStateProps = {
   type: "sent" | "received";

@@ -1,6 +1,6 @@
 import { Box, ActionIcon, Menu, RingProgress, Text } from "@mantine/core";
 import { ChevronLeftIcon, EllipsisVerticalIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import BrandLogo from "../../../../components/BrandLogo/BrandLogo";
 
 interface LearningHeaderProps {

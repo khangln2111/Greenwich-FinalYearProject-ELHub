@@ -15,7 +15,7 @@ import { hasLength, isEmail, matchesField, useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { ArrowLeftIcon } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { ErrorCode } from "../../../api-client/api.types";
 import {
   useResetPassword,

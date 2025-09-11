@@ -1,5 +1,5 @@
 import { Anchor, Box, Container, Text, Title } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import RegisterForm from "./RegisterForm";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 

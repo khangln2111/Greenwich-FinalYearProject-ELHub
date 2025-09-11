@@ -22,7 +22,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetWorkProfileSelf } from "../../../features/auth/identity.hooks";
 import UpdateWorkProfileForm from "../profile/UpdateWorkProfileForm";

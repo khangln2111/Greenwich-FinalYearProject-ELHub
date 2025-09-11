@@ -1,7 +1,7 @@
 import { Anchor, Box, Checkbox, Divider } from "@mantine/core";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
 import {

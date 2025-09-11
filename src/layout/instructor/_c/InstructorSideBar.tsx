@@ -2,7 +2,7 @@ import { Avatar, Text } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconBellRinging } from "@tabler/icons-react";
 import { ChartNoAxesCombinedIcon, ScreenShareIcon, SettingsIcon, User2Icon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { useGetCurrentUser } from "../../../features/auth/identity.hooks";

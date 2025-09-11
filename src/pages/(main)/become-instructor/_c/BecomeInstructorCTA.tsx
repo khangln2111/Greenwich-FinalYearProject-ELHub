@@ -2,7 +2,7 @@ import { Loader } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import CusModal from "../../../../components/CusModal/CusModal";
 import { useGetCurrentUser } from "../../../../features/auth/identity.hooks";
 import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplication.hooks";

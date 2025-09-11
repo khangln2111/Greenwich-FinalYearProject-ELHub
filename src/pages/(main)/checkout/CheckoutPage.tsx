@@ -2,7 +2,7 @@ import { Anchor, Box, Divider, useComputedColorScheme } from "@mantine/core";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft } from "lucide-react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router";
 import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
 import { CartItemVm } from "../../../features/cart/cart.types";
 import CheckoutForm from "./_c/CheckoutForm";

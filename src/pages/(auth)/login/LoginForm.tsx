@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { useGoogleLogin } from "@react-oauth/google";
 import { IconAt, IconLock, IconLogin2 } from "@tabler/icons-react";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import GoogleIcon from "../../../components/svg-icons/GoogleIcon";
 import { LoginFormValues, loginSchema } from "../../../features/auth/identity.schema";
 import { LoginCommand } from "../../../features/auth/identity.types";

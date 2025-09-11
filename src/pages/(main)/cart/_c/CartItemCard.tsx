@@ -4,7 +4,7 @@ import QuantityControl from "./QuantityControl";
 
 import { CartItemVm } from "../../../../features/cart/cart.types";
 import { cn } from "../../../../utils/cn";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 type CartItemCardProps = {
   item: CartItemVm;

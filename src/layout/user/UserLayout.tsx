@@ -1,4 +1,4 @@
-import { Outlet, ScrollRestoration } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router";
 import BottomNav from "./_c/BottomNav";
 import Footer from "./_c/Footer";
 import Header from "./_c/Header";

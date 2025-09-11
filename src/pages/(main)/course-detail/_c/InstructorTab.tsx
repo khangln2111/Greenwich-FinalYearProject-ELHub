@@ -1,6 +1,6 @@
 import { Spoiler, Title, Button } from "@mantine/core";
 import { MessageSquare, PlayCircle, Star, Users } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import image from "../../../../assets/placeholder/avatar-placeholder.jpg";
 import { CourseDetailVm } from "../../../../features/course/course.types";
 import { cn } from "../../../../utils/cn";

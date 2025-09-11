@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router";
 import CenterLoader from "../../components/CenterLoader/CenterLoader";
 import { useGetCurrentUser } from "../../features/auth/identity.hooks";
 import { useAuthStore } from "../../zustand/stores/authStore";

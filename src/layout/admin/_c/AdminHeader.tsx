@@ -4,7 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { PanelLeftCloseIcon, PanelRightCloseIcon } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "../../user/_c/AvatarMenu";

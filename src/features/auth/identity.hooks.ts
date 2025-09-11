@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 import { ErrorCode } from "../../api-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";

@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import { PencilIcon, SearchIcon, ShieldQuestionIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { UserVm } from "../../../features/user/user.types";

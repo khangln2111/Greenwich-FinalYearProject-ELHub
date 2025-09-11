@@ -13,7 +13,7 @@ import {
   UploadIcon,
   XCircleIcon,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useToggleNotificationRead } from "../../features/notification/notification.hooks";
 import { NotificationType, NotificationVm } from "../../features/notification/notification.types";
 import { cn } from "../../utils/cn";

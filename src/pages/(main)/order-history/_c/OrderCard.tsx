@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import { FirstOrderItemPreviewer } from "./FirstOrderItemPreviewer";
 import { Box } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { OrderStatus, OrderVm } from "../../../../features/order/order.types";
 import { formatDate } from "../../../../utils/format";
 

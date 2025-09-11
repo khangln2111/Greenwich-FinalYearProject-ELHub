@@ -12,7 +12,7 @@ import {
   StarIcon,
 } from "lucide-react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router";
 import image from "../../../assets/placeholder/courseDetail.jpg";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 import { useAddCartItem } from "../../../features/cart/cart.hooks";

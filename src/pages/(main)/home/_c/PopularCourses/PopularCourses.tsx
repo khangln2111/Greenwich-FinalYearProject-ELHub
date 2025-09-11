@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { mockCourses } from "../../../../../features/mockData";
 import CourseCard from "../../../../../components/course-cards/CourseCard";
 

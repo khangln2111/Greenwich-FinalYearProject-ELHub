@@ -2,7 +2,7 @@
 import { Button, Rating } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { CourseStatus, CourseVm } from "../../../../features/course/course.types";
 import { useDeleteCourse } from "../../../../features/course/course.hooks";
 import { formatCurrency, formatDuration } from "../../../../utils/format";

@@ -13,7 +13,7 @@ import {
   ShoppingCart,
   UserPlusIcon,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useGetCurrentUser, useLogout } from "../../../features/auth/identity.hooks";

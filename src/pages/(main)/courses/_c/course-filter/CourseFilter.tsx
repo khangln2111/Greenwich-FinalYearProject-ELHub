@@ -17,7 +17,7 @@ import {
 import { IconFilterCog } from "@tabler/icons-react";
 import { RotateCcw } from "lucide-react";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { encodeOrderOption } from "../../../../../api-client/api.types";
 import { useGetCategories } from "../../../../../features/category/category.hooks";
 import { CourseLevel, CoursePriceMode } from "../../../../../features/course/course.types";

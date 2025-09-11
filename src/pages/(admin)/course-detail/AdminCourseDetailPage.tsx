@@ -17,7 +17,7 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { useState } from "react";
-import { Link, Navigate, useLocation, useParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useParams } from "react-router";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 import {

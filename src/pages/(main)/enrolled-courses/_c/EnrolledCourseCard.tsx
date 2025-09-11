@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { Play, Star } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { EnrollmentSelfVm } from "../../../../features/enrollment/enrollment.types";
 import {
   CreateReviewFormSchema,

@@ -9,7 +9,7 @@ import {
   TagsIcon,
   Users2Icon,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import SidebarNavLink from "../../../components/layout/SidebarNavLink/SidebarNavLink";
 import { useGetCurrentUser } from "../../../features/auth/identity.hooks";

@@ -1,5 +1,5 @@
 import { Anchor, Breadcrumbs, Container, Title } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const breadcrumbItems = [
   { title: "Home", href: "/" },

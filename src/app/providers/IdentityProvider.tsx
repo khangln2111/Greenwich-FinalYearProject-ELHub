@@ -15,7 +15,7 @@ const IdentityProvider = ({ children }: { children: React.ReactNode }) => {
 
   if (isPending)
     return (
-      <Center h="100vh">
+      <Center h="100dvh">
         <Stack align="center">
           {/* <MantineLogo color="primary" size={50} /> */}
           <BrandLogo iconSize={50} textSize={35} className="gap-4" />

@@ -1,5 +1,5 @@
 import { Button, Container, Image, SimpleGrid, Text, Title } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import image from "../../../assets/NotFoundImage.svg";
 
 export default function ErrorPage() {

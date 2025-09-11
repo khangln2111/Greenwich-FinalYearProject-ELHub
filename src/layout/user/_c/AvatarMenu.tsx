@@ -16,7 +16,7 @@ import {
   MonitorCheckIcon,
   PackageIcon,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useGetCurrentUser, useLogout } from "../../../features/auth/identity.hooks";
 import { cn } from "../../../utils/cn";
 

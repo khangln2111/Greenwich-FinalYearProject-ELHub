@@ -4,7 +4,7 @@ import { CheckCircle, KeyIcon, GiftIcon } from "lucide-react";
 import { useEnrollFromInventory } from "../../../../features/enrollment/enrollment.hooks";
 import { InventoryItemVm } from "../../../../features/inventory/inventory.types";
 import { cn } from "../../../../utils/cn";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 
 type InventoryItemCardProps = {
   item: InventoryItemVm;

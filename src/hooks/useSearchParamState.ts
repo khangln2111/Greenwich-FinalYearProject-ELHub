@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 
 function parseValue<T>(value: string | null, defaultValue?: T): T | null {
   if (value === null) return defaultValue ?? null;

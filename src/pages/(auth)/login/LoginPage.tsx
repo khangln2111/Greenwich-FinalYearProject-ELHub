@@ -1,6 +1,6 @@
 import { Anchor, Box, Container, Text, Title } from "@mantine/core";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 import { loginSessionStorageHelper } from "../../../utils/storageHelper";
 import { showErrorToast } from "../../../utils/toastHelper";
