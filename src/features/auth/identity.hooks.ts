@@ -60,14 +60,16 @@ export const useLogout = () => {
   const logout = useAuthStore((s) => s.logout);
   const setLogoutAt = useAuthStore((s) => s.setLogoutAt);
 
-  const handleLogout = () => {
-    logout();
-    queryClient.clear();
-    setLogoutAt();
-    navigate("/", { replace: true });
-  };
-
-  return handleLogout;
+  return useMutation({
+    mutationFn: async () => {
+      logout();
+    },
+    onSuccess: () => {
+      queryClient.clear();
+      setLogoutAt();
+      navigate("/", { replace: true });
+    },
+  });
 };
 
 export const useRegister = () => {

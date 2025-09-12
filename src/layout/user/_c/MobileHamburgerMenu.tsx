@@ -36,7 +36,7 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
   const location = useLocation();
   const { data: currentUser } = useGetCurrentUser();
-  const handleLogout = useLogout();
+  const logout = useLogout();
 
   return (
     <Drawer
@@ -213,7 +213,7 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
               variant="light"
               color="red"
               leftSection={<LogOutIcon size={16} />}
-              onClick={handleLogout}
+              onClick={() => logout.mutate()}
             >
               Logout
             </Button>

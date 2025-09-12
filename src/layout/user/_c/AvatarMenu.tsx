@@ -25,8 +25,8 @@ interface AvatarMenuProps {
 }
 
 const AvatarMenu = ({ className }: AvatarMenuProps) => {
-  const handleLogout = useLogout();
   const { data: currentUser } = useGetCurrentUser();
+  const logout = useLogout();
   return (
     <Menu
       transitionProps={{ transition: "pop-top-right" }}
@@ -145,7 +145,11 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           Settings
         </Menu.Item>
-        <Menu.Item color="red" leftSection={<IconTrash size={15} />} onClick={handleLogout}>
+        <Menu.Item
+          color="red"
+          leftSection={<IconTrash size={15} />}
+          onClick={() => logout.mutate()}
+        >
           Logout
         </Menu.Item>
       </Menu.Dropdown>
