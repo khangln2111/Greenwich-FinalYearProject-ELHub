@@ -18,7 +18,6 @@ const PrivateRoute = ({
 }: PrivateRouteProps) => {
   const location = useLocation();
   const accessToken = useAuthStore((s) => s.accessToken);
-
   const { data: user, isFetching } = useGetCurrentUser();
 
   if (isFetching) return <CenterLoader height={500} />;
@@ -30,9 +29,7 @@ const PrivateRoute = ({
   }
 
   if (requiredRoles && !requiredRoles.some((r) => user.roles.includes(r))) {
-    return (
-      <Navigate to="/unauthorized" replace state={{ from: location.pathname + location.search }} />
-    );
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return isLayoutRoute ? <Outlet /> : <>{children}</>;

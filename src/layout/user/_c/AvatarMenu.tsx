@@ -145,13 +145,7 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
         >
           Settings
         </Menu.Item>
-        <Menu.Item
-          color="red"
-          leftSection={<IconTrash size={15} />}
-          onClick={() => {
-            handleLogout();
-          }}
-        >
+        <Menu.Item color="red" leftSection={<IconTrash size={15} />} onClick={handleLogout}>
           Logout
         </Menu.Item>
       </Menu.Dropdown>
