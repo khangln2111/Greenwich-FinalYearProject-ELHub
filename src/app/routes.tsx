@@ -89,7 +89,11 @@ const instructorRoute: RouteObject = {
   path: "/instructor",
   lazy: {
     Component: async () => {
-      const InstructorLayout = (await import("../layout/instructor/InstructorLayout")).default;
+      const [{ default: InstructorLayout }, { default: PrivateRoute }] = await Promise.all([
+        import("../layout/instructor/InstructorLayout"),
+        import("../app/providers/PrivateRoute"),
+      ]);
+
       return function InstructorProtectedLayout() {
         return (
           <PrivateRoute requiredRoles={["Instructor"]}>
@@ -134,7 +138,11 @@ const adminRoute: RouteObject = {
   path: "/admin",
   lazy: {
     Component: async () => {
-      const AdminLayout = (await import("../layout/admin/AdminLayout")).default;
+      const [{ default: AdminLayout }, { default: PrivateRoute }] = await Promise.all([
+        import("../layout/admin/AdminLayout"),
+        import("../app/providers/PrivateRoute"),
+      ]);
+
       return function AdminProtectedLayout() {
         return (
           <PrivateRoute requiredRoles={["Admin"]}>

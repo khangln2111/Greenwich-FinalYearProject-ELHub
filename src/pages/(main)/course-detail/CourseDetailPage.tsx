@@ -12,7 +12,7 @@ import {
   StarIcon,
 } from "lucide-react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
-import { Link, Navigate, useParams } from "react-router";
+import { Link, Navigate, useLocation, useParams } from "react-router";
 import image from "../../../assets/placeholder/courseDetail.jpg";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 import { useAddCartItem } from "../../../features/cart/cart.hooks";
@@ -28,6 +28,8 @@ import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
 import ReviewTab from "./_c/ReviewTab";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import { useNavigate } from "react-router";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 
 const items = [
   { title: "Home", href: "/" },
@@ -82,12 +84,17 @@ export default function CourseDetailPage() {
 
   usePageSEO({ title: course ? course.title : "Course Detail" });
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [activeTab, setActiveTab] = useQueryState<CourseDetailTab>(
     "activeTab",
     parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
   );
 
   const { data: enrollmentStatus } = useGetCurrentUserEnrollmentStatus(courseId!);
+
+  const { data: user } = useGetCurrentUser();
 
   const addCartItemMutation = useAddCartItem();
 
@@ -288,7 +295,13 @@ export default function CourseDetailPage() {
                   font-semibold mt-6 h-13 shadow-md"
                 variant="gradient"
                 loading={addCartItemMutation.isPending}
-                onClick={() => addCartItemMutation.mutate({ courseId: courseId, quantity: 1 })}
+                onClick={() => {
+                  if (!user) {
+                    navigate("/login", { state: { from: location.pathname + location.search } });
+                    return;
+                  }
+                  addCartItemMutation.mutate({ courseId: courseId, quantity: 1 });
+                }}
                 leftSection={
                   <ShoppingCart className="size-5 group-hover:scale-110 transition-transform" />
                 }
