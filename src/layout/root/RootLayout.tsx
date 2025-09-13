@@ -1,8 +1,11 @@
-import { Outlet, useNavigation } from "react-router";
-import CenterLoaderWithLogo from "../../components/CenterLoader/CenterLoaderWithLogo";
+import { Outlet } from "react-router";
+import GlobalNavigationProgress from "../../components/GlobalNavigationProgress/GlobalNavigationProgress";
 
 export default function RootLayout() {
-  const { state } = useNavigation();
-
-  return state === "loading" ? <CenterLoaderWithLogo /> : <Outlet />;
+  return (
+    <>
+      <GlobalNavigationProgress />
+      <Outlet />
+    </>
+  );
 }

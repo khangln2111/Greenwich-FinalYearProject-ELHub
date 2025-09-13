@@ -4,6 +4,7 @@ import { lazyRoute } from "../utils/lazyRoute";
 
 import CenterLoaderWithLogo from "../components/CenterLoader/CenterLoaderWithLogo";
 import UserLayout from "../layout/user/UserLayout";
+import RootLayout from "../layout/root/RootLayout";
 
 // ===================== User Routes =====================
 const userRoute: RouteObject = {
@@ -215,6 +216,7 @@ const otherRoutes: RouteObject[] = [
 
 const route: RouteObject = {
   HydrateFallback: CenterLoaderWithLogo,
+  Component: () => <RootLayout />,
   children: [userRoute, instructorRoute, adminRoute, ...authRoutes, ...otherRoutes],
 };
 
