@@ -58,14 +58,14 @@ public class CourseService(
         return course;
     }
 
-    public async Task<Paged<CourseVm>> GetList(GridifyQuery query)
+    public async Task<Paged<CourseVm>> GetAll(GridifyQuery query)
     {
         return await context.Courses
             .AsNoTracking()
             .GridifyToAsync<Course, CourseVm>(query, mapper, gridifyMapper);
     }
 
-    public async Task<Paged<CourseVm>> GetOwnedCourses(GridifyQuery query)
+    public async Task<Paged<CourseVm>> GetOwned(GridifyQuery query)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
@@ -76,7 +76,7 @@ public class CourseService(
             .GridifyToAsync<Course, CourseVm>(query, mapper, gridifyMapper);
     }
 
-    public async Task<Paged<CourseVm>> GetPublishedCourses(GridifyQuery query)
+    public async Task<Paged<CourseVm>> GetPublished(GridifyQuery query)
     {
         return await context.Courses
             .AsNoTracking()

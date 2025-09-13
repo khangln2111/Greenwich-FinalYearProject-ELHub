@@ -10,7 +10,11 @@ public interface ICourseService
 {
     Task<CourseDetailVm> GetById(Guid id);
 
-    Task<Paged<CourseVm>> GetList(GridifyQuery query);
+    Task<Paged<CourseVm>> GetAll(GridifyQuery query);
+
+    Task<Paged<CourseVm>> GetOwned(GridifyQuery query);
+
+    Task<Paged<CourseVm>> GetPublished(GridifyQuery query);
 
     Task<Success> Create(CreateCourseCommand command);
 

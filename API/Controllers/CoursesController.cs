@@ -13,13 +13,26 @@ namespace API.Controllers;
 [ApiController]
 public class CoursesController(ICourseService courseService) : ControllerBase
 {
-    // GET: api/Courses
-    [HttpGet]
+    // GET: api/Courses/all
+    [HttpGet("all")]
     [ProducesResponseType<Paged<CourseVm>>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
+    public async Task<IActionResult> GetAll([FromQuery] GridifyQuery query)
     {
-        var courses = await courseService.GetList(query);
+        var courses = await courseService.GetAll(query);
         return Ok(courses);
+    }
+
+    [HttpGet("owned")]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
+    public async Task<Paged<CourseVm>> GetOwned([FromQuery] GridifyQuery query)
+    {
+        return await courseService.GetOwned(query);
+    }
+
+    [HttpGet("published")]
+    public async Task<Paged<CourseVm>> GetPublished([FromQuery] GridifyQuery query)
+    {
+        return await courseService.GetPublished(query);
     }
 
     // GET: api/courses/{id}
