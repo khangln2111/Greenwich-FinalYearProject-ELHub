@@ -25,9 +25,10 @@ public class InstructorService(
     public async Task<Paged<InstructorVm>> GetList(GridifyQuery query)
     {
         return await context.Users
+            .AsNoTracking()
             .Include(u => u.Roles)
             .Include(u => u.Avatar)
-            .Where(u => u.Roles.Any(r => r.Name == nameof(RoleName.INSTRUCTOR)))
+            .Where(u => u.Roles.Any(r => r.Name == nameof(RoleName.Instructor)))
             .GridifyToAsync<ApplicationUser,
                 InstructorVm>(query, mapper, instructorGridifyMapper);
     }
@@ -36,7 +37,7 @@ public class InstructorService(
     public async Task<InstructorVm> GetById(Guid id)
     {
         var instructor = await context.Users
-            .Include(u => u.Roles)
+            .AsNoTracking()
             .Where(u => u.Id == id)
             .ProjectTo<InstructorVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
@@ -50,7 +51,8 @@ public class InstructorService(
     public async Task<Paged<CourseVm>> GetCoursesByInstructorId(Guid instructorId, GridifyQuery query)
     {
         var courses = context.Courses
-            .Where(c => c.InstructorId == instructorId)
+            .AsNoTracking()
+            .Where(c => c.InstructorId == instructorId && c.Status == CourseStatus.Published)
             .GridifyToAsync<Course, CourseVm>(query, mapper, courseGridifyMapper);
 
         return await courses;

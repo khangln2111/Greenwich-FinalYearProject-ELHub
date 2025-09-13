@@ -16,7 +16,7 @@ public class CourseResubmittedEventHandler(
     {
         var course = notification.Course;
 
-        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.ADMIN));
+        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.Admin));
 
         foreach (var admin in admins)
             await notificationService.CreateAndSend(
@@ -24,7 +24,7 @@ public class CourseResubmittedEventHandler(
                 "Course resubmitted",
                 $"Course \"{course.Title}\" has been resubmitted for moderation.",
                 NotificationType.CourseResubmitted,
-                RoleName.ADMIN,
+                RoleName.Admin,
                 $"/admin/courses/{course.Id}"
             );
     }

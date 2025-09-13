@@ -39,7 +39,7 @@ public class SectionUpdatedEventHandler(
             title,
             content,
             type,
-            RoleName.LEARNER,
+            RoleName.Learner,
             url,
             cancellationToken);
     }

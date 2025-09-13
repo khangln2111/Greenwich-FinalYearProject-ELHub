@@ -31,7 +31,7 @@ public class InstructorApplicationCreatedEventHandler(
 
         if (application == null) return;
 
-        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.ADMIN));
+        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.Admin));
 
         foreach (var admin in admins)
             await notificationService.CreateAndSend(
@@ -39,7 +39,7 @@ public class InstructorApplicationCreatedEventHandler(
                 "New Instructor Application",
                 $"A new instructor application has been submitted by {application.FirstName} {application.LastName}.",
                 NotificationType.CourseSubmitted,
-                RoleName.ADMIN,
+                RoleName.Admin,
                 $"/admin/instructor-applications?viewAppId={application.Id}"
             );
     }

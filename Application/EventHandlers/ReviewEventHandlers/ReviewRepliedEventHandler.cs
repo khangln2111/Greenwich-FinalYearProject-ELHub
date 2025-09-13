@@ -26,7 +26,7 @@ public class ReviewRepliedEventHandler(
             "Instructor replied to your review",
             $"Your review for \"{review.Enrollment.Course.Title}\" has a new reply: \"{review.Reply.Content}\"",
             NotificationType.ReviewReplied,
-            RoleName.LEARNER,
+            RoleName.Learner,
             $"/account/reviews/{review.Id}"
         );
     }

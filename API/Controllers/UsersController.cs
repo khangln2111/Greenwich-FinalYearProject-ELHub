@@ -2,7 +2,9 @@
 using Application.Common.Models;
 using Application.DTOs.UserDTOs;
 using Application.Gridify.CustomModels;
+using Domain.Enums;
 using Gridify;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -13,6 +15,7 @@ public class UsersController(IUserService userService) : ControllerBase
 {
     // GET: api/users
     [HttpGet]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType<Paged<UserVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
     {
@@ -22,6 +25,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     // GET: api/users/{id}
     [HttpGet("{id:guid}")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType<UserDetailVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
@@ -32,6 +36,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     // POST: api/users/assign-roles
     [HttpPost("assign-roles")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType<Success>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AssignRolesToUser([FromBody] AssignRolesToUserCommand command)
@@ -42,6 +47,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     // PUT: api/users/set-activation
     [HttpPut("set-activation")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType<Success>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -53,6 +59,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     // PUT: api/users
     [HttpPut]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType<Success>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

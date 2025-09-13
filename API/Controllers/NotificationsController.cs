@@ -3,6 +3,7 @@ using Application.DTOs.NotificationDTOs;
 using Application.Gridify.CustomModels;
 using Domain.Enums;
 using Gridify;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -13,6 +14,7 @@ public class NotificationsController(INotificationService notificationService) :
 {
     // GET: api/notifications/self
     [HttpGet("self")]
+    [Authorize]
     [ProducesResponseType<Paged<NotificationVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetNotifications([FromQuery] GridifyQuery query, [FromQuery] RoleName roleName)
     {
@@ -22,6 +24,7 @@ public class NotificationsController(INotificationService notificationService) :
 
     // PUT: api/notifications/mark-all-as-read
     [HttpPut("mark-all-as-read")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> MarkAllAsRead([FromBody] RoleName roleName)
     {
@@ -31,6 +34,7 @@ public class NotificationsController(INotificationService notificationService) :
 
     // PUT: api/notifications/{id}/mark-as-read
     [HttpPut("{id:guid}/toggle-read")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ToggleRead(Guid id)
@@ -41,6 +45,7 @@ public class NotificationsController(INotificationService notificationService) :
 
     // GET: api/notifications/unread-count
     [HttpGet("unread-count")]
+    [Authorize]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUnreadCount([FromQuery] RoleName roleName)
     {

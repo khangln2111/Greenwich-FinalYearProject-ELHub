@@ -1,11 +1,14 @@
 ﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.AdminDashboardDTOs;
+using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = nameof(RoleName.Admin))]
 public class AdminDashboardController(IAdminDashboardService adminDashboardService) : ControllerBase
 {
     // GET: api/AdminDashboard/overview

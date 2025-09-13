@@ -41,15 +41,13 @@ public class CourseService(
         var currentUser = currentUserUtility.GetCurrentUser();
         var userId = currentUser?.Id;
         var roles = currentUser?.Roles ?? [];
-        var isAdmin = true;
-        var isOwner = userId != null && context.Courses.Any(c => c.Id == id && c.InstructorId == userId);
+        var isAdmin = roles.Contains(nameof(RoleName.Admin), StringComparer.OrdinalIgnoreCase);
+        var isOwner = userId != null &&
+                      await context.Courses.AsNoTracking().AnyAsync(c => c.Id == id && c.InstructorId == userId);
         var course = await context.Courses
             .AsNoTracking()
+            .AsSplitQuery()
             .Where(c => c.Id == id)
-            .Include(c => c.Category)
-            .Include(c => c.Image)
-            .Include(c => c.PromoVideo)
-            .Include(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
             .ProjectTo<CourseDetailVm>(
                 mapper.ConfigurationProvider,
                 new { isAdmin, isOwner })
@@ -64,6 +62,25 @@ public class CourseService(
     {
         return await context.Courses
             .AsNoTracking()
+            .GridifyToAsync<Course, CourseVm>(query, mapper, gridifyMapper);
+    }
+
+    public async Task<Paged<CourseVm>> GetOwnedCourses(GridifyQuery query)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null) throw new UnauthorizedException();
+
+        return await context.Courses
+            .AsNoTracking()
+            .Where(c => c.InstructorId == currentUser.Id)
+            .GridifyToAsync<Course, CourseVm>(query, mapper, gridifyMapper);
+    }
+
+    public async Task<Paged<CourseVm>> GetPublishedCourses(GridifyQuery query)
+    {
+        return await context.Courses
+            .AsNoTracking()
+            .Where(c => c.Status == CourseStatus.Published)
             .GridifyToAsync<Course, CourseVm>(query, mapper, gridifyMapper);
     }
 

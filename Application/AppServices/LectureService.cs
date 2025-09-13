@@ -48,41 +48,42 @@ public class LectureService(
             .GridifyToAsync<Lecture, LectureVm>(query, mapper, gridifyMapper);
     }
 
-    public async Task<Success> CompleteLecture(Guid id)
+    public async Task<Success> CompleteLecture(Guid lectureId)
     {
-        // get current user 
         var user = currentUserUtility.GetCurrentUser();
         if (user == null) throw new UnauthorizedException();
 
         var lecture = await context.Lectures
-            .Include(l => l.Section)
-            .FirstOrDefaultAsync(l => l.Id == id);
+            .AsNoTracking()
+            .Select(l => new { l.Id, l.Section.CourseId })
+            .FirstOrDefaultAsync(l => l.Id == lectureId);
 
-        if (lecture == null) throw new NotFoundException(nameof(Lecture), id);
+        if (lecture == null) throw new NotFoundException(nameof(Lecture), lectureId);
 
-        var courseId = lecture.Section.CourseId;
+        var enrollmentId = await context.Enrollments
+            .Where(e => e.CourseId == lecture.CourseId && e.UserId == user.Id)
+            .Select(e => e.Id)
+            .FirstOrDefaultAsync();
 
-        var enrollment = await context.Enrollments
-            .FirstOrDefaultAsync(e => e.CourseId == courseId && e.UserId == user.Id);
+        if (enrollmentId == Guid.Empty)
+            throw new UnauthorizedException();
 
-        if (enrollment == null) throw new UnauthorizedException();
+        var progress = await context.LectureProgresses
+            .FirstOrDefaultAsync(lp => lp.LectureId == lectureId && lp.EnrollmentId == enrollmentId);
 
-        var existingProgress = await context.LectureProgresses
-            .FirstOrDefaultAsync(lp => lp.LectureId == id && lp.EnrollmentId == enrollment.Id);
-
-        if (existingProgress == null)
+        if (progress == null)
         {
-            var progress = new LectureProgress
+            progress = new LectureProgress
             {
-                LectureId = id,
-                EnrollmentId = enrollment.Id,
+                LectureId = lectureId,
+                EnrollmentId = enrollmentId,
                 Completed = true
             };
-            await context.LectureProgresses.AddAsync(progress);
+            context.LectureProgresses.Add(progress);
         }
         else
         {
-            existingProgress.ToggleCompleted();
+            progress.ToggleCompleted();
         }
 
         await context.SaveChangesAsync();
@@ -95,7 +96,7 @@ public class LectureService(
         await validationService.ValidateAsync(command);
         await EnsureRelatedSectionExistsAsync(command.SectionId);
         var lecture = mapper.Map<Lecture>(command);
-        //File upload 
+        //File upload   
         var video = await mediaManager.SaveFile(command.Video, MediaType.Video);
         await context.Media.AddAsync(video);
         lecture.Video = video as DurationMedia;

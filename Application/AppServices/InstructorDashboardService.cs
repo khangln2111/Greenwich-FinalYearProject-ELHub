@@ -33,7 +33,8 @@ public class InstructorDashboardService(
 
     private async Task<List<InstructorDashboardCoursesInfoByCategoryVm>> GetCoursesInfoByCategory(Guid instructorId)
     {
-        var result = await context.Courses.AsNoTracking()
+        var result = await context.Courses
+            .AsNoTracking()
             .Where(c => c.InstructorId == instructorId)
             .GroupBy(c => c.Category.Name)
             .Select(g => new InstructorDashboardCoursesInfoByCategoryVm

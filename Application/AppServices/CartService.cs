@@ -27,6 +27,7 @@ public class CartService(
 
 
         var cart = await context.Carts
+            .AsNoTracking()
             .Include(x => x.CartItems)
             .ThenInclude(x => x.Course).ThenInclude(c => c.Image)
             .ProjectTo<CartVm>(mapper.ConfigurationProvider)

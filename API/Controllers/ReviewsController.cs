@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.ReviewDTOs;
 using Application.Gridify.CustomModels;
+using Domain.Enums;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +66,7 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
 
     // POST: /api/reviews/reply
     [HttpPost("reply")]
-    [Authorize]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ReplyToReview([FromBody] ReplyToReviewCommand command)
@@ -76,7 +77,7 @@ public class ReviewsController(IReviewService reviewService) : ControllerBase
 
     // PUT: /api/reviews/reply
     [HttpPut("reply")]
-    [Authorize]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateReplyToReview([FromBody] UpdateReviewReplyCommand command)

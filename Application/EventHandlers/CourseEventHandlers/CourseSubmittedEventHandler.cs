@@ -13,7 +13,7 @@ public class CourseSubmittedEventHandler(
 {
     public async Task Handle(CourseSubmittedEvent notification, CancellationToken cancellationToken)
     {
-        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.INSTRUCTOR));
+        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.Instructor));
         var course = notification.Course;
 
         foreach (var admin in admins)
@@ -22,7 +22,7 @@ public class CourseSubmittedEventHandler(
                 "New course submitted",
                 $"Course \"{course.Title}\" has been submitted for moderation.",
                 NotificationType.CourseSubmitted,
-                RoleName.ADMIN,
+                RoleName.Admin,
                 $"/admin/courses/{course.Id}"
             );
     }

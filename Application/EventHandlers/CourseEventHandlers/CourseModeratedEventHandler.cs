@@ -21,7 +21,7 @@ public class CourseModeratedEventHandler(INotificationService notificationServic
             notification.IsApproved ? "Course approved" : "Course rejected",
             content,
             notification.IsApproved ? NotificationType.CourseApproved : NotificationType.CourseRejected,
-            RoleName.INSTRUCTOR,
+            RoleName.Instructor,
             $"/instructor/courses/{notification.Course.Id}"
         );
     }

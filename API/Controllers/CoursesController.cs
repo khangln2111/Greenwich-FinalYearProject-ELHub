@@ -2,6 +2,7 @@ using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.CourseDTOs;
 using Application.DTOs.InstructorDTO;
 using Application.Gridify.CustomModels;
+using Domain.Enums;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
 
     // POST: api/Courses
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromForm] CreateCourseCommand command)
@@ -45,6 +46,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
 
     // PUT: api/Courses
     [HttpPut]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -56,6 +58,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
 
     // DELETE: api/courses/{id}
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
@@ -66,6 +69,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
 
     // POST: api/courses/{id}/submit
     [HttpPost("{id:guid}/submit")]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SubmitCourse(Guid id)
@@ -76,6 +80,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
 
     // POST: api/courses/moderate
     [HttpPost("moderate")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -87,6 +92,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
 
     // POST: api/courses/{id}/resubmit
     [HttpPost("{id:guid}/resubmit")]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ResubmitCourse(Guid id)

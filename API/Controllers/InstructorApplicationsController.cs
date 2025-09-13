@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.InstructorApplicationDTOs;
 using Application.Gridify.CustomModels;
+using Domain.Enums;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
 {
     // GET: api/instructor-applications
     [HttpGet]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType<Paged<InstructorApplicationVm>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] GridifyQuery query)
     {
@@ -22,6 +24,7 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
 
     // GET: api/instructor-applications/{id}
     [HttpGet("{id}")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType<InstructorApplicationVm>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
@@ -78,6 +81,7 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
 
     // POST: api/instructor-applications/moderate
     [HttpPost("moderate")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

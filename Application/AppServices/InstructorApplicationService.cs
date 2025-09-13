@@ -166,9 +166,9 @@ public class InstructorApplicationService(
             user.About = application.About;
             user.Avatar = application.Avatar;
 
-            if (!await userManager.IsInRoleAsync(user, nameof(RoleName.INSTRUCTOR)))
+            if (!await userManager.IsInRoleAsync(user, nameof(RoleName.Instructor)))
             {
-                var result = await userManager.AddToRoleAsync(user, nameof(RoleName.INSTRUCTOR));
+                var result = await userManager.AddToRoleAsync(user, nameof(RoleName.Instructor));
                 if (!result.Succeeded)
                     throw new BadRequestException("Failed to assign instructor role.", ErrorCode.CannotAssignRole);
             }

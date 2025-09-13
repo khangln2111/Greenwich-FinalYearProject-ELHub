@@ -36,7 +36,7 @@ public class InstructorApplicationModeratedEventHandler(
             title,
             message,
             type,
-            RoleName.INSTRUCTOR,
+            RoleName.Instructor,
             "/become-instructor"
         );
     }

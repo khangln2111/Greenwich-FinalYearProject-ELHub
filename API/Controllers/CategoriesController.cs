@@ -1,6 +1,8 @@
 using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.CategoryDTOs;
+using Domain.Enums;
 using Gridify;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -30,6 +32,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
 
     // POST: api/Categories
     [HttpPost]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromForm] CreateCategoryCommand command)
@@ -40,6 +43,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
 
     // PUT: api/categories/{id}
     [HttpPut]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -51,6 +55,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
 
     // DELETE: api/categories/{id}
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)

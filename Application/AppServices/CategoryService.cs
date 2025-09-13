@@ -25,13 +25,16 @@ public class CategoryService(
 {
     public async Task<Paged<CategoryVm>> GetList(GridifyQuery query)
     {
-        return await context.Categories.AsNoTracking()
+        return await context.Categories
+            .AsNoTracking()
             .GridifyToAsync<Category, CategoryVm>(query, mapper, gridifyMapper);
     }
 
     public async Task<CategoryVm> GetById(Guid id)
     {
-        var category = await context.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        var category = await context.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
         if (category == null) throw new NotFoundException(nameof(Category), id);
         return mapper.Map<CategoryVm>(category);
     }

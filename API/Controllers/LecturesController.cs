@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.LectureDTOs;
+using Domain.Enums;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
 
     // POST: api/lectures
     [HttpPost]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromForm] CreateLectureCommand command)
@@ -52,6 +54,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
 
     // PUT: api/lectures
     [HttpPut]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,6 +66,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
 
     // DELETE: api/lectures/{id}
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
@@ -73,6 +77,7 @@ public class LecturesController(ILectureService lectureService) : ControllerBase
 
     // PUT: api/lectures/reorder-lecture
     [HttpPut("reorder-lecture")]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

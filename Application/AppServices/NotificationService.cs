@@ -121,6 +121,7 @@ public class NotificationService(
         if (user is null)
             throw new UnauthorizedException("User is not authenticated");
 
+        // Safety check, if role is not found, return empty list
         if (!RoleNotificationMap.TryGetValue(roleName, out var allowedTypes))
             return new Paged<NotificationVm>(0, new List<NotificationVm>());
 
@@ -151,6 +152,7 @@ public class NotificationService(
         if (user is null)
             throw new UnauthorizedException("User is not authenticated");
 
+        // Safety check, if role is not found, return success without doing anything
         if (!RoleNotificationMap.TryGetValue(roleName, out var allowedTypes))
             return new Success("No notifications to mark as read");
 
@@ -212,7 +214,7 @@ public class NotificationService(
     private static readonly Dictionary<RoleName, NotificationType[]> RoleNotificationMap = new()
     {
         {
-            RoleName.LEARNER, [
+            RoleName.Learner, [
                 NotificationType.CourseUpdated,
                 NotificationType.GiftRedeemed,
                 NotificationType.ReceivedGift,
@@ -224,7 +226,7 @@ public class NotificationService(
             ]
         },
         {
-            RoleName.ADMIN, [
+            RoleName.Admin, [
                 NotificationType.CourseSubmitted,
                 NotificationType.CourseResubmitted,
                 NotificationType.InstructorApplicationSubmitted,
@@ -232,7 +234,7 @@ public class NotificationService(
             ]
         },
         {
-            RoleName.INSTRUCTOR, [
+            RoleName.Instructor, [
                 NotificationType.ReviewCreated,
                 NotificationType.CourseApproved,
                 NotificationType.CourseRejected

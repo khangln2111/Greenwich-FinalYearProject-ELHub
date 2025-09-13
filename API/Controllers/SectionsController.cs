@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.SectionDTOs;
+using Domain.Enums;
 using Gridify;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -30,6 +32,7 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
 
     // POST: api/sections
     [HttpPost]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateSectionCommand command)
@@ -40,6 +43,7 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
 
     // PUT: api/sections
     [HttpPut]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -51,6 +55,7 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
 
     // DELETE: api/sections/{id}
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
@@ -61,6 +66,7 @@ public class SectionsController(ISectionService sectionService) : ControllerBase
 
     // PUT: api/sections/reorder-section
     [HttpPut("reorder-section")]
+    [Authorize(Roles = nameof(RoleName.Instructor))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

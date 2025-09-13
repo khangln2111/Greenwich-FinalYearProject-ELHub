@@ -86,11 +86,6 @@ public class EnrollmentService(
         var enrollmentVm = await context.Enrollments
             .AsNoTracking()
             .Where(e => e.Id == id && e.UserId == currentUser.Id)
-            .Include(e => e.Course).ThenInclude(c => c.Category)
-            .Include(e => e.Course).ThenInclude(c => c.Image)
-            .Include(e => e.Course).ThenInclude(c => c.PromoVideo)
-            .Include(e => e.Course).ThenInclude(c => c.Instructor)
-            .Include(e => e.Course).ThenInclude(c => c.Sections).ThenInclude(s => s.Lectures).ThenInclude(l => l.Video)
             .ProjectTo<EnrollmentDetailSelfVm>(mapper.ConfigurationProvider, new
             {
                 enrollmentId = id

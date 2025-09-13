@@ -33,6 +33,6 @@ public class LectureUpdatedEventHandler(
                            .Select(e => e.UserId)
                            .AsAsyncEnumerable()
                            .WithCancellation(cancellationToken))
-            await notificationService.CreateAndSend(userId, title, content, type, RoleName.LEARNER, url);
+            await notificationService.CreateAndSend(userId, title, content, type, RoleName.Learner, url);
     }
 }
