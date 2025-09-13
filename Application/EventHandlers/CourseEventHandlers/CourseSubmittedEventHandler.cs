@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces.AppInterfaces;
-using Domain.Constants;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Events.CourseEvents;

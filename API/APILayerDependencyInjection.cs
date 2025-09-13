@@ -12,7 +12,7 @@ namespace API;
 
 public static class ApiLayerDependencyInjection
 {
-    public static IServiceCollection AddPresentationLayer(this IServiceCollection services)
+    public static void AddPresentationLayer(this IServiceCollection services)
     {
         services.Configure<FormOptions>(options =>
         {
@@ -74,7 +74,5 @@ public static class ApiLayerDependencyInjection
         services.AddFluentValidationRulesToSwagger();
         services.AddProblemDetails();
         services.AddExceptionHandler<GlobalExceptionHandler>();
-
-        return services;
     }
 }

@@ -4,6 +4,7 @@ using Application.Common.Interfaces.InfrastructureInterfaces;
 using Domain.Entities;
 using Hangfire;
 using Infrastructure.Data;
+using Infrastructure.Data.DataSeeding;
 using Infrastructure.Data.Interceptors;
 using Infrastructure.Utilities;
 using LLL.AutoCompute.EFCore;
@@ -28,11 +29,8 @@ public static class InfrastructureLayerDependencyInjection
 
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
-
         var sqlServerConnectionString = configuration.GetConnectionString("SQLServerConnection");
-
-
+        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
         services.AddDbContextFactory<ApplicationDbContext>(opts =>
         {
             opts.UseSqlServer(sqlServerConnectionString);

@@ -1,6 +1,5 @@
 using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.CourseDTOs;
-using Application.DTOs.EnrollmentDTOs;
 using Application.DTOs.InstructorDTO;
 using Application.Gridify.CustomModels;
 using Gridify;

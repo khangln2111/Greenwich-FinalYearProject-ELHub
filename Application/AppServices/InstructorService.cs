@@ -7,7 +7,6 @@ using Application.Gridify;
 using Application.Gridify.CustomModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain.Constants;
 using Domain.Entities;
 using Domain.Enums;
 using Gridify;

@@ -17,7 +17,6 @@ using Domain.Enums;
 using Domain.Events.CourseEvents;
 using Gridify;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.AppServices;

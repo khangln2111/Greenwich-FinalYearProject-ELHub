@@ -6,8 +6,6 @@ namespace Domain.Entities;
 
 public class ApplicationUser : IdentityUser<Guid>
 {
-//constructor
-
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public Media? Avatar { get; set; }

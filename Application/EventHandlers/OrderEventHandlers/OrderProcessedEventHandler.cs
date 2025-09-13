@@ -19,7 +19,7 @@ public class OrderProcessedEventHandler(
             $"Your order with ID {order.Id} has been processed",
             NotificationType.OrderProcessed,
             RoleName.LEARNER,
-            $"/account/orders/{order.Id}"
+            $"/dashboard/order-history/{order.Id}"
         );
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Application.DTOs.InstructorDTO;
 using AutoMapper;
-using Application.DTOs.CourseDTOs;
 using Domain.Entities;
 
 namespace Application.AutoMapperProfiles;

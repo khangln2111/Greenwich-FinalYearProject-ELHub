@@ -1,6 +1,5 @@
 ﻿using Application.DTOs.InstructorApplicationDTOs;
 using AutoMapper;
-using Application.Validations.InstructorApplicationValidators;
 using Domain.Entities;
 
 namespace Application.AutoMapperProfiles;

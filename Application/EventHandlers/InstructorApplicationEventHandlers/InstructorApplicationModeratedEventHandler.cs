@@ -1,10 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Interfaces.AppInterfaces;
-using Domain.Entities;
 using Domain.Enums;
 using Domain.Events.InstructorApplicationEvents;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.EventHandlers.InstructorApplicationEventHandlers;

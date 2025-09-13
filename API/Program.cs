@@ -1,7 +1,7 @@
 using API;
 using Application;
 using Infrastructure;
-using Infrastructure.Data;
+using Infrastructure.Data.DataSeeding;
 using Infrastructure.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +20,8 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
                 "https://localhost:5173",
                 "http://localhost:5173",
-                "https://localhost:5174"
+                "https://localhost:5174",
+                "https://localhost:4173"
             )
             .AllowAnyMethod()
             .AllowAnyHeader()

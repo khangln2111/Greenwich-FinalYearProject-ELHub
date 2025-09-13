@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces.AppInterfaces;
 using Application.DTOs.InstructorDashboardDTOs;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
