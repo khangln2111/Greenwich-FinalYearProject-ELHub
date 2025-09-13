@@ -4,15 +4,15 @@ import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import AppPagination from "../../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 import { CourseVm } from "../../../../features/course/course.types";
-import { useGetCourses } from "../../../../features/course/course.hooks";
 import { useCourseQueryState } from "../../../../hooks/useCoursesQueryState";
 import { useCoursesPageStore } from "../../../../zustand/stores/coursesPageStore";
 import CourseGrid from "./CourseGrid";
 import CourseList from "./CourseList";
 import { keyFac } from "../../../../features/common-service/queryKeyFactory";
-import { getCourses } from "../../../../features/course/course.api";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useGetPublishedCourses } from "../../../../features/course/course.hooks";
+import { getPublishedCourses } from "../../../../features/course/course.api";
 
 type CourseMainProps = {};
 
@@ -37,29 +37,29 @@ const CourseMain = ({}: CourseMainProps) => {
     parseAsInteger.withDefault(layout === "grid" ? 6 : 4),
   );
 
-  const { data, isPending, isError } = useGetCourses({
+  const { data, isPending, isError } = useGetPublishedCourses({
     ...courseQuery,
     pageSize,
   });
 
   useEffect(() => {
-    if (!courseQuery?.page) return;
+    const hasNextPage = data?.count && courseQuery?.page * pageSize < data.count;
+    if (!hasNextPage) return;
 
-    // prefetch next page
     queryClient.prefetchQuery({
-      queryKey: keyFac.courses.getCourses({
+      queryKey: keyFac.courses.getPublishedCourses({
         ...courseQuery,
         page: courseQuery.page + 1,
         pageSize,
       }).queryKey,
       queryFn: () =>
-        getCourses({
+        getPublishedCourses({
           ...courseQuery,
           page: courseQuery.page + 1,
           pageSize,
         }),
     });
-  }, [courseQuery, pageSize, queryClient]);
+  }, [courseQuery, pageSize, queryClient, data?.count]);
 
   const courses: CourseVm[] = data?.items ?? [];
 

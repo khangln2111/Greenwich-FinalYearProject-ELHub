@@ -32,9 +32,7 @@ export const useReorderLecture = () => {
         ],
       }),
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses.getCourseDetail._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses.getCourseDetail._def });
     },
   });
 };
@@ -46,9 +44,7 @@ export const useCompleteLecture = () => {
     mutationFn: (id: string) => completeLecture(id),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.enrollments._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.enrollments._def });
       showSuccessToast("Lecture Completed", "The lecture was completed successfully.");
     },
 
@@ -71,9 +67,7 @@ export const useCreateLecture = () => {
     mutationFn: (command: CreateLectureCommand) => createLecture(command),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Lecture Created", "The lecture was created successfully.");
     },
 
@@ -96,9 +90,7 @@ export const useUpdateLecture = () => {
     mutationFn: (command: UpdateLectureCommand) => updateLecture(command),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Lecture Updated", "The lecture was updated successfully.");
     },
 
@@ -121,9 +113,7 @@ export const useDeleteLecture = () => {
     mutationFn: (lectureId: string) => deleteLecture(lectureId),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Lecture Deleted", "The lecture was deleted successfully.");
     },
 

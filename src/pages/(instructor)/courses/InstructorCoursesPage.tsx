@@ -5,12 +5,12 @@ import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } fr
 import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
-import { useGetCourses } from "../../../features/course/course.hooks";
 import { CourseStatus } from "../../../features/course/course.types";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 import CreateCourseModal from "./_c/CreateCourseModal";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
+import { useGetOwnedCourses } from "../../../features/course/course.hooks";
 
 export default function InstructorCoursesPage() {
   usePageSEO({ title: "My Owned Courses" });
@@ -29,7 +29,7 @@ export default function InstructorCoursesPage() {
 
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
-  const { data, isPending: isCoursesPending } = useGetCourses({
+  const { data, isPending: isCoursesPending } = useGetOwnedCourses({
     page,
     pageSize,
     status: status === "All" ? undefined : status,

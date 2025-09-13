@@ -7,10 +7,12 @@ import { keyFac } from "../common-service/queryKeyFactory";
 import {
   createCourse,
   deleteCourse,
+  getAllCourses,
   getCourseDetail,
-  getCourses,
   getCurrentUserCourseEnrollmentStatus,
   getInstructorByCourseId,
+  getOwnedCourses,
+  getPublishedCourses,
   moderateCourse,
   resubmitCourse,
   submitCourse,
@@ -23,10 +25,24 @@ import {
   UpdateCourseCommand,
 } from "./course.types";
 
-export const useGetCourses = (query?: CourseQueryCriteria) => {
+export const useGetAllCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
-    queryKey: keyFac.courses.getCourses(query).queryKey,
-    queryFn: () => getCourses(query),
+    queryKey: keyFac.courses.getAllCourses(query).queryKey,
+    queryFn: () => getAllCourses(query),
+  });
+};
+
+export const useGetOwnedCourses = (query?: CourseQueryCriteria) => {
+  return useQuery({
+    queryKey: keyFac.courses.getOwnedCourses(query).queryKey,
+    queryFn: () => getOwnedCourses(query),
+  });
+};
+
+export const useGetPublishedCourses = (query?: CourseQueryCriteria) => {
+  return useQuery({
+    queryKey: keyFac.courses.getPublishedCourses(query).queryKey,
+    queryFn: () => getPublishedCourses(query),
   });
 };
 
@@ -194,11 +210,8 @@ export const useUpdateCourse = () => {
 
   return useMutation({
     mutationFn: (command: UpdateCourseCommand) => updateCourse(command),
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses.getCourseDetail(variables.id).queryKey,
-      });
-      queryClient.invalidateQueries({ queryKey: keyFac.courses.getCourses._def });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Course Updated", "The course was updated successfully.");
     },
     onError: (error) =>
@@ -220,7 +233,7 @@ export const useDeleteCourse = () => {
   return useMutation({
     mutationFn: (id: string) => deleteCourse(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: keyFac.courses.getCourses._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Course Deleted", "The course was deleted successfully.");
     },
     onError: (error) =>
@@ -251,3 +264,10 @@ export const useGetInstructorByCourseId = (courseId: string) => {
     },
   });
 };
+
+// export const useGetCourses = (query?: CourseQueryCriteria) => {
+//   return useQuery({
+//     queryKey: keyFac.courses.getCourses(query).queryKey,
+//     queryFn: () => getCourses(query),
+//   });
+// };

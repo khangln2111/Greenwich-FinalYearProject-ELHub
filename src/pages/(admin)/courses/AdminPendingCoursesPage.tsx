@@ -5,11 +5,11 @@ import { useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { useGetCourses } from "../../../features/course/course.hooks";
 import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
 import AdminCourseCard from "./_c/AdminCourseCard";
 import AdminPendingCoursesPageEmptyState from "./_c/AdminPendingCoursesPageEmptyState";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import { useGetAllCourses } from "../../../features/course/course.hooks";
 
 const COURSE_ORDER_OPTIONS: {
   label: string;
@@ -48,7 +48,7 @@ export default function AdminPendingCoursesPage() {
     setSearch(searchInput);
   };
 
-  const { data, isPending, error } = useGetCourses({
+  const { data, isPending, error } = useGetAllCourses({
     search: search || undefined,
     orderBy: decodedOrderBy,
     status: CourseStatus.Pending,

@@ -24,9 +24,7 @@ export const useReorderSection = () => {
         ],
       }),
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses.getCourseDetail._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses.getCourseDetail._def });
     },
   });
 };
@@ -37,9 +35,7 @@ export const useCreateSection = () => {
   return useMutation({
     mutationFn: (command: CreateSectionCommand) => createSection(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses.getCourseDetail._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Section Created", "The section was created successfully.");
     },
     onError: (error) =>
@@ -59,9 +55,7 @@ export const useUpdateSection = () => {
   return useMutation({
     mutationFn: (command: UpdateSectionCommand) => updateSection(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses.getCourseDetail._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Section Updated", "The section was updated successfully.");
     },
     onError: (error) =>
@@ -94,9 +88,7 @@ export const useDeleteSection = () => {
         ],
       }),
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
     },
   });
 };

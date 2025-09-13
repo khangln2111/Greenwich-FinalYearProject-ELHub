@@ -137,7 +137,6 @@ export const useResubmitInstructorApplication = () => {
       queryClient.invalidateQueries({
         queryKey: keyFac.instructorApplications._def,
       });
-
       showSuccessToast(
         "Application resubmitted",
         "Your application has been resubmitted successfully!, please wait for the moderation.",

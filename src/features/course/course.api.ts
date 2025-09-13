@@ -97,8 +97,21 @@ export const buildCourseQuery = (query: CourseQueryCriteria = {}) => {
   return qb.build();
 };
 
-export const getCourses = async (query?: CourseQueryCriteria) => {
-  const response = await apiClient.get<ListData<CourseVm>>(`${BASE_URL}`, {
+export const getAllCourses = async (query?: CourseQueryCriteria) => {
+  const response = await apiClient.get<ListData<CourseVm>>(`${BASE_URL}/all`, {
+    params: buildCourseQuery(query),
+  });
+  return response.data;
+};
+
+export const getOwnedCourses = async (query?: CourseQueryCriteria) => {
+  const response = await apiClient.get<ListData<CourseVm>>(`${BASE_URL}/owned`, {
+    params: buildCourseQuery(query),
+  });
+  return response.data;
+};
+export const getPublishedCourses = async (query?: CourseQueryCriteria) => {
+  const response = await apiClient.get<ListData<CourseVm>>(`${BASE_URL}/published`, {
     params: buildCourseQuery(query),
   });
   return response.data;
@@ -158,3 +171,10 @@ export const getCurrentUserCourseEnrollmentStatus = async (courseId: string) => 
   );
   return response.data;
 };
+
+// export const getCourses = async (query?: CourseQueryCriteria) => {
+//   const response = await apiClient.get<ListData<CourseVm>>(`${BASE_URL}`, {
+//     params: buildCourseQuery(query),
+//   });
+//   return response.data;
+// };

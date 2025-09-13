@@ -32,15 +32,9 @@ export const useCreateReview = () => {
   return useMutation({
     mutationFn: (command: CreateReviewCommand) => createReview(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.reviews._def,
-      });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.enrollments._def,
-      });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.reviews._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.enrollments._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Review Created", "Your review has been successfully created");
     },
     onError: (error) =>
@@ -67,15 +61,9 @@ export const useUpdateReview = () => {
   return useMutation({
     mutationFn: (command: UpdateReviewCommand) => updateReview(command), // Assuming updateReview is similar to createReview
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.reviews._def,
-      });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.enrollments._def,
-      });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.reviews._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.enrollments._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Review Updated", "Your review has been successfully updated");
     },
     onError: (error) =>
@@ -96,15 +84,9 @@ export const useDeleteReview = () => {
   return useMutation({
     mutationFn: (id: string) => deleteReview(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.reviews._def,
-      });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.enrollments._def,
-      });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.reviews._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.enrollments._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Review Deleted", "Your review has been successfully deleted");
     },
     onError: (error) =>
@@ -125,12 +107,8 @@ export const useReplyToReview = () => {
   return useMutation({
     mutationFn: (command: ReplyToReviewCommand) => replyToReview(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.reviews._def,
-      });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.reviews._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Reply Sent", "Your reply has been successfully sent");
     },
     onError: (error) =>
@@ -156,12 +134,8 @@ export const useUpdateReviewReply = () => {
   return useMutation({
     mutationFn: (command: UpdateReviewReplyCommand) => updateReviewReply(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: keyFac.reviews._def,
-      });
-      queryClient.invalidateQueries({
-        queryKey: keyFac.courses._def,
-      });
+      queryClient.invalidateQueries({ queryKey: keyFac.reviews._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Reply Updated", "Your reply has been successfully updated");
     },
     onError: (error) =>

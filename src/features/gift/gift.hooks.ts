@@ -152,6 +152,7 @@ export const useChangeGiftReceiver = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getSentGifts._def });
       queryClient.invalidateQueries({ queryKey: keyFac.gifts.getReceivedGifts._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.inventories.getInventoryItemsSelf._def });
       showSuccessToast("Receiver Changed", "The gift receiver has been changed successfully!");
     },
     onError: (error) =>
