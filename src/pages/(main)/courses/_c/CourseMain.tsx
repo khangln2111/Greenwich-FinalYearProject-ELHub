@@ -1,6 +1,4 @@
-import { ActionIcon, Button } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
-import { LayoutGrid, LayoutList, ListFilter, Search } from "lucide-react";
 import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useEffect } from "react";
 import AppPagination from "../../../../components/AppPagination/AppPagination";
@@ -9,18 +7,14 @@ import { getPublishedCourses } from "../../../../features/course/course.api";
 import { useGetPublishedCourses } from "../../../../features/course/course.hooks";
 import { CourseVm } from "../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../hooks/useCoursesQueryState";
-import { useCoursesPageStore } from "../../../../zustand/stores/coursesPageStore";
 import CourseGrid from "./CourseGrid";
 import CourseList from "./CourseList";
+import CoursesPageActions from "./CoursesPageActions";
+import CoursesPageEmptyState from "./CoursesPageEmptyState";
 
 type CourseMainProps = {};
 
 const CourseMain = ({}: CourseMainProps) => {
-  const toggleDesktopFilter = useCoursesPageStore((s) => s.toggleDesktopFilter);
-  const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
-  const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
-  const openMobileFilter = useCoursesPageStore((s) => s.openMobileFilter);
-
   const [layout, setLayout] = useQueryState(
     "layout",
     parseAsStringLiteral(["grid", "list"]).withDefault("grid"),
@@ -86,66 +80,13 @@ const CourseMain = ({}: CourseMainProps) => {
           )}
         </span>
 
-        {/* Actions */}
-        <div className="flex sm:items-center gap-4">
-          {/* Filter buttons */}
-          <div className="flex gap-2">
-            <Button
-              variant={isDesktopFilterOpen ? "filled" : "default"}
-              visibleFrom="lg"
-              leftSection={<ListFilter size={18} />}
-              onClick={toggleDesktopFilter}
-            >
-              Filter
-            </Button>
-
-            <Button
-              hiddenFrom="lg"
-              variant={isMobileFilterOpen ? "filled" : "default"}
-              onClick={openMobileFilter}
-              leftSection={<ListFilter size={18} />}
-            >
-              Filter
-            </Button>
-          </div>
-
-          {/* Layout switcher */}
-          <div className="flex gap-2">
-            <ActionIcon
-              size="lg"
-              variant={layout === "grid" ? "outline" : "default"}
-              onClick={() => {
-                setLayout("grid");
-                setCourseQuery({ page: 1 });
-              }}
-              radius="lg"
-              data-active={layout === "grid"}
-              aria-label="Grid view"
-              title="Grid view"
-              className="bg-body not-data-[active=true]:hover:border-primary-outline
-                not-data-[active=true]:hover:text-primary-outline not-data-[active=true]:hover:bg-body"
-            >
-              <LayoutGrid strokeWidth={1.3} />
-            </ActionIcon>
-
-            <ActionIcon
-              size="lg"
-              variant={layout === "list" ? "outline" : "default"}
-              onClick={() => {
-                setLayout("list");
-                setCourseQuery({ page: 1 });
-              }}
-              data-active={layout === "list"}
-              radius="lg"
-              aria-label="List view"
-              title="List view"
-              className="bg-body not-data-[active=true]:hover:border-primary-outline
-                not-data-[active=true]:hover:text-primary-outline not-data-[active=true]:hover:bg-body"
-            >
-              <LayoutList strokeWidth={1.3} />
-            </ActionIcon>
-          </div>
-        </div>
+        <CoursesPageActions
+          layout={layout}
+          onSetLayout={(l) => {
+            setLayout(l);
+            setCourseQuery({ page: 1 });
+          }}
+        />
       </div>
 
       {/* Body */}
@@ -156,15 +97,7 @@ const CourseMain = ({}: CourseMainProps) => {
           </div>
         )}
 
-        {!isPending && !isError && courses.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-[400px] gap-4 text-center px-4">
-            <Search className="w-16 h-16 text-gray-400" />
-            <p className="text-lg font-semibold">No courses found</p>
-            <p className="text-sm text-gray-500">
-              Try adjusting your search keywords or filters to find more results.
-            </p>
-          </div>
-        )}
+        {!isPending && !isError && courses.length === 0 && <CoursesPageEmptyState />}
 
         {!isError &&
           (layout === "grid" ? (
