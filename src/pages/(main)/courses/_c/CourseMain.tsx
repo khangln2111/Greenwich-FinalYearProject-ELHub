@@ -1,18 +1,17 @@
 import { ActionIcon, Button } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
 import { LayoutGrid, LayoutList, ListFilter, Search } from "lucide-react";
 import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
+import { useEffect } from "react";
 import AppPagination from "../../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
+import { keyFac } from "../../../../features/common-service/queryKeyFactory";
+import { getPublishedCourses } from "../../../../features/course/course.api";
+import { useGetPublishedCourses } from "../../../../features/course/course.hooks";
 import { CourseVm } from "../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../hooks/useCoursesQueryState";
 import { useCoursesPageStore } from "../../../../zustand/stores/coursesPageStore";
 import CourseGrid from "./CourseGrid";
 import CourseList from "./CourseList";
-import { keyFac } from "../../../../features/common-service/queryKeyFactory";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useGetPublishedCourses } from "../../../../features/course/course.hooks";
-import { getPublishedCourses } from "../../../../features/course/course.api";
 
 type CourseMainProps = {};
 
@@ -151,8 +150,6 @@ const CourseMain = ({}: CourseMainProps) => {
 
       {/* Body */}
       <div className="mt-7">
-        {isPending && <CenterLoader />}
-
         {isError && (
           <div className="flex items-center justify-center h-[300px]">
             <p className="text-red-500">Error loading courses</p>
@@ -169,10 +166,12 @@ const CourseMain = ({}: CourseMainProps) => {
           </div>
         )}
 
-        {!isPending &&
-          !isError &&
-          courses.length > 0 &&
-          (layout === "grid" ? <CourseGrid courses={courses} /> : <CourseList courses={courses} />)}
+        {!isError &&
+          (layout === "grid" ? (
+            <CourseGrid courses={courses} isLoading={isPending} skeletonCount={pageSize} />
+          ) : (
+            <CourseList courses={courses} isLoading={isPending} skeletonCount={pageSize} />
+          ))}
 
         {/* Pagination */}
         <AppPagination
