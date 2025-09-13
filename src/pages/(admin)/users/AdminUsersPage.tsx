@@ -194,14 +194,7 @@ export default function AdminUsersPage() {
                         </div>
                       </Table.Td>
                       <Table.Td>
-                        <div className="flex flex-col gap-2 min-w-[120px]">
-                          <Badge
-                            variant="light"
-                            color="gray"
-                            className="text-[13px] px-2 text-center w-fit"
-                          >
-                            Learner
-                          </Badge>
+                        <div className="flex flex-col gap-2 min-w-[120px] justify-center">
                           {user.roles.length > 0 &&
                             user.roles.map((role: string) => (
                               <Badge
@@ -215,6 +208,13 @@ export default function AdminUsersPage() {
                                 {role}
                               </Badge>
                             ))}
+                          <Badge
+                            variant="light"
+                            color="gray"
+                            className="text-[13px] px-2 text-center w-fit"
+                          >
+                            Learner
+                          </Badge>
                         </div>
                       </Table.Td>
 

@@ -2,6 +2,7 @@ import { Button, Checkbox, Group, Modal, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useAssignRolesToUser } from "../../../../features/user/user.hooks";
 import { UserVm, AssignRoleToUserCommand } from "../../../../features/user/user.types";
+import { RoleName } from "../../../../features/auth/identity.types";
 
 interface Props {
   user: UserVm;
@@ -9,7 +10,7 @@ interface Props {
   onClose: () => void;
 }
 
-const allRoles = ["Learner", "Instructor", "Admin"];
+const allRoles = [RoleName.Admin, RoleName.Instructor];
 
 export default function EditUserRoleModal({ user, opened, onClose }: Props) {
   const { mutate: assignRoles, isPending } = useAssignRolesToUser();

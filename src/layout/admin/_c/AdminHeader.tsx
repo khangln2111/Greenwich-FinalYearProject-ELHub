@@ -20,7 +20,7 @@ const InstructorHeader = () => {
   const toggleDesktopAdminSidebar = useAppStore((s) => s.toggleDesktopAdminSidebar);
   const openMobileAdminSidebar = useAppStore((s) => s.openMobileAdminSidebar);
 
-  const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.ADMIN);
+  const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.Admin);
 
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);

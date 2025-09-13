@@ -26,7 +26,7 @@ const Header = () => {
   const [searchInput, setSearchInput] = useState<string>(search);
   const navigate = useNavigate();
   const { data: cart } = useGetCart();
-  const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.LEARNER);
+  const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.Learner);
 
   const handleSearch = () => {
     const trimmed = searchInput.trim();

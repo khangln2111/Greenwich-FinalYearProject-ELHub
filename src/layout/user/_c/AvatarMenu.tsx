@@ -49,7 +49,6 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
                 `${currentUser?.firstName?.trim()} ${currentUser?.lastName?.trim()}`.trim() ||
                 "Nguyen Khang"
               }
-              allowedInitialsColors={["blue", "red"]}
             />
           </Indicator>
         </div>

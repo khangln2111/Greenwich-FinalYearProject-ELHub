@@ -112,10 +112,10 @@ export const useLogin = () => {
       const { accessToken, refreshToken } = data;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      await queryClient.invalidateQueries();
       navigate(from, { replace: true });
-      setLoginAt();
+      await queryClient.invalidateQueries();
       showSuccessToast("Logged In", "You are now logged in successfully.");
+      setLoginAt();
     },
     onError: (error, variables) =>
       handleApiError(error, {
@@ -156,10 +156,10 @@ export const useLoginWithGoogle = () => {
       const { accessToken, refreshToken } = data;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      queryClient.invalidateQueries();
       navigate(from, { replace: true });
-      setLoginAt();
+      await queryClient.invalidateQueries();
       showSuccessToast("Logged In with google", "You are now logged in.");
+      setLoginAt();
     },
     onError: (error) =>
       handleApiError(error, {

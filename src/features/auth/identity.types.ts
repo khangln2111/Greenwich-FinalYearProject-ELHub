@@ -72,9 +72,9 @@ export interface CurrentUser {
 }
 
 export enum RoleName {
-  ADMIN = "ADMIN",
-  INSTRUCTOR = "INSTRUCTOR",
-  LEARNER = "LEARNER",
+  Admin = "Admin",
+  Instructor = "Instructor",
+  Learner = "Learner",
 }
 
 export interface WorkProfileVm {

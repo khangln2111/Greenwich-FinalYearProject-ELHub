@@ -28,7 +28,11 @@ const PrivateRoute = ({
     );
   }
 
-  if (requiredRoles && !requiredRoles.some((r) => user.roles.includes(r))) {
+  if (
+    requiredRoles &&
+    requiredRoles.length > 0 &&
+    !requiredRoles.some((r) => user.roles.includes(r))
+  ) {
     return <Navigate to="/unauthorized" replace />;
   }
 

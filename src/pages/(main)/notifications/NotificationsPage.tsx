@@ -40,13 +40,13 @@ export default function NotificationsPage() {
     parseAsArrayOf(parseAsStringEnum(Object.values(NotificationType))).withDefault([]),
   );
 
-  const { data, isPending } = useGetNotifications(RoleName.LEARNER, {
+  const { data, isPending } = useGetNotifications(RoleName.Learner, {
     isRead: filterUnread === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
     pageSize: pageSize,
   });
 
-  const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.LEARNER);
+  const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.Learner);
   const markAllMutation = useMarkAllNotificationsAsRead();
 
   return (
@@ -78,7 +78,7 @@ export default function NotificationsPage() {
             leftSection={<CheckCheckIcon size={16} />}
             variant="filled"
             loading={markAllMutation.isPending}
-            onClick={() => markAllMutation.mutate(RoleName.LEARNER)}
+            onClick={() => markAllMutation.mutate(RoleName.Learner)}
             className="w-full sm:w-auto"
           >
             Mark all as read

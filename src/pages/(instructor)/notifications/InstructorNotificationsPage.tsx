@@ -40,13 +40,13 @@ export default function InstructorNotificationsPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
 
-  const { data, isPending } = useGetNotifications(RoleName.INSTRUCTOR, {
+  const { data, isPending } = useGetNotifications(RoleName.Instructor, {
     isRead: filterUnread === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
     pageSize: pageSize,
   });
 
-  const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.INSTRUCTOR);
+  const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.Instructor);
 
   const markAllMutation = useMarkAllNotificationsAsRead();
 
@@ -75,7 +75,7 @@ export default function InstructorNotificationsPage() {
             leftSection={<CheckCheckIcon size={16} />}
             variant="subtle"
             loading={markAllMutation.isPending}
-            onClick={() => markAllMutation.mutate(RoleName.ADMIN)}
+            onClick={() => markAllMutation.mutate(RoleName.Admin)}
             className="w-full sm:w-auto mt-2 sm:mt-0"
           >
             Mark all as read

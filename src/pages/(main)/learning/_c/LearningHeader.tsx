@@ -22,7 +22,9 @@ export default function LearningHeader({ title, progressPercent }: LearningHeade
         </Box>
 
         {/* Logo - hidden on mobile */}
-        <BrandLogo iconSize={28} variant="mark" className="hidden md:block shrink-0" />
+        <Link to="/">
+          <BrandLogo iconSize={28} variant="mark" className="hidden md:block shrink-0" />
+        </Link>
 
         <h1 className="text-sm md:text-md font-bold text-white truncate pr-2">{title}</h1>
       </div>

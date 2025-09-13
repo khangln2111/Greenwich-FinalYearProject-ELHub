@@ -5,6 +5,7 @@ import { lazyRoute } from "../utils/lazyRoute";
 import CenterLoaderWithLogo from "../components/CenterLoader/CenterLoaderWithLogo";
 import UserLayout from "../layout/user/UserLayout";
 import RootLayout from "../layout/root/RootLayout";
+import { RoleName } from "../features/auth/identity.types";
 
 // ===================== User Routes =====================
 const userRoute: RouteObject = {
@@ -97,7 +98,7 @@ const instructorRoute: RouteObject = {
 
       return function InstructorProtectedLayout() {
         return (
-          <PrivateRoute requiredRoles={["Instructor"]}>
+          <PrivateRoute requiredRoles={[RoleName.Instructor]}>
             <InstructorLayout />
           </PrivateRoute>
         );
@@ -146,7 +147,7 @@ const adminRoute: RouteObject = {
 
       return function AdminProtectedLayout() {
         return (
-          <PrivateRoute requiredRoles={["Admin"]}>
+          <PrivateRoute requiredRoles={[RoleName.Admin]}>
             <AdminLayout />
           </PrivateRoute>
         );
