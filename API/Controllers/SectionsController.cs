@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.AppInterfaces;
+﻿using Application.Common.Contracts.AppContracts;
 using Application.DTOs.SectionDTOs;
 using Domain.Enums;
 using Gridify;

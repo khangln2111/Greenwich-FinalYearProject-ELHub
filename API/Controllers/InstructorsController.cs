@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.AppInterfaces;
+﻿using Application.Common.Contracts.AppContracts;
 using Application.DTOs.CourseDTOs;
 using Application.DTOs.InstructorDTO;
 using Application.Gridify.CustomModels;

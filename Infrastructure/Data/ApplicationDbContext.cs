@@ -1,4 +1,5 @@
-using Application.Common.Interfaces;
+using Application.Common.Contracts;
+using Application.Common.Contracts.GeneralContracts;
 using Domain.Entities;
 using Domain.Entities.MediaEntities;
 using Microsoft.AspNetCore.Identity;

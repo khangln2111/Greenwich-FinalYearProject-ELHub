@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using Application.Common.Interfaces.InfrastructureInterfaces;
+using Application.Common.Contracts.InfraContracts;
 using Application.Common.Models;
 using Microsoft.AspNetCore.Http;
 

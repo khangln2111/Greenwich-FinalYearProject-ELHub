@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Application.Common.Interfaces.InfrastructureInterfaces;
+using Application.Common.Contracts.InfraContracts;
 using Application.Common.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;

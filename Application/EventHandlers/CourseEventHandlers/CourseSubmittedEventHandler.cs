@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.AppInterfaces;
+﻿using Application.Common.Contracts.AppContracts;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Events.CourseEvents;

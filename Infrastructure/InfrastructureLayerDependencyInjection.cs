@@ -1,6 +1,8 @@
+using System.Reflection;
 using Application.Common;
-using Application.Common.Interfaces;
-using Application.Common.Interfaces.InfrastructureInterfaces;
+using Application.Common.Contracts;
+using Application.Common.Contracts.GeneralContracts;
+using Application.Common.Contracts.InfraContracts;
 using Domain.Entities;
 using Hangfire;
 using Infrastructure.Data;
@@ -58,15 +60,12 @@ public static class InfrastructureLayerDependencyInjection
         services.AddHttpContextAccessor();
         services.AddHttpClient();
         services.AddSignalR();
-        services.AddScoped<IMediaManager, MediaManager>();
-        services.AddScoped<IMediaProcessor, MediaProcessor>();
-        services.AddScoped<IEmailUtility, EmailUtility>();
-        services.AddScoped<ICurrentUserUtility, CurrentUserUtility>();
-        services.AddScoped<IStripePaymentUtility, StripePaymentUtility>();
-        services.AddScoped<IHtmlSanitizerUtility, HtmlSanitizerUtility>();
-        services.AddScoped<IExternalAuthUtility, ExternalAuthUtility>();
-        services.AddScoped<INotificationUtility, NotificationUtility>();
         services.AddScoped<DataSeeder>();
+        services.Scan(scan => scan
+            .FromAssemblies(Assembly.GetExecutingAssembly())
+            .AddClasses(classes => classes.AssignableTo<IInfraService>())
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
     }
 
     private static void AddBackgroundServices(this IServiceCollection services)

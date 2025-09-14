@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.InfrastructureInterfaces;
+﻿using Application.Common.Contracts.InfraContracts;
 using Application.DTOs.CourseDTOs;
 using Domain.Constants;
 using FluentValidation;

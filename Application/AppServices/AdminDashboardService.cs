@@ -1,5 +1,6 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Interfaces.AppInterfaces;
+﻿using Application.Common.Contracts;
+using Application.Common.Contracts.AppContracts;
+using Application.Common.Contracts.GeneralContracts;
 using Application.DTOs.AdminDashboardDTOs;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;

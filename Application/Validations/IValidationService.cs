@@ -1,6 +1,9 @@
-﻿namespace Application.Validations;
+﻿using Application.Common.Contracts;
+using Application.Common.Contracts.GeneralContracts;
 
-public interface IValidationService
+namespace Application.Validations;
+
+public interface IValidationService : IAppService
 {
     Task ValidateAsync<T>(T command);
 }

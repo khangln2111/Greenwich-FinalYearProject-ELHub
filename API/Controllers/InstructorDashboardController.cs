@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.AppInterfaces;
+﻿using Application.Common.Contracts.AppContracts;
 using Application.DTOs.InstructorDashboardDTOs;
 using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;

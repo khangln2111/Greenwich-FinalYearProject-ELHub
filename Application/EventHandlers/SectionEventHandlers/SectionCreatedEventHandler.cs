@@ -1,5 +1,6 @@
 ﻿using Application.Common;
-using Application.Common.Interfaces.AppInterfaces;
+using Application.Common.Contracts.AppContracts;
+using Application.Common.Contracts.GeneralContracts;
 using Domain.Enums;
 using Domain.Events.SectionEvents;
 using MediatR;

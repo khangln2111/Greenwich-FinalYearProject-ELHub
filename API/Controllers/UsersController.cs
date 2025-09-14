@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.AppInterfaces;
+﻿using Application.Common.Contracts.AppContracts;
 using Application.Common.Models;
 using Application.DTOs.UserDTOs;
 using Application.Gridify.CustomModels;

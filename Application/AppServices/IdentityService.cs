@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
-using Application.Common.Interfaces;
-using Application.Common.Interfaces.AppInterfaces;
-using Application.Common.Interfaces.InfrastructureInterfaces;
+using Application.Common.Contracts;
+using Application.Common.Contracts.AppContracts;
+using Application.Common.Contracts.GeneralContracts;
+using Application.Common.Contracts.InfraContracts;
 using Application.Common.Models;
 using Application.DTOs.IdentityDTOs;
 using Application.Exceptions;

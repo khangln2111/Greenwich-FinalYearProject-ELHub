@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using Application.Common.Interfaces.InfrastructureInterfaces;
+using Application.Common.Contracts.InfraContracts;
 using Hangfire;
 
 namespace Infrastructure.Utilities;
@@ -31,8 +31,7 @@ public class EmailUtility : IEmailUtility
 
         await _client.SendMailAsync(message);
     }
-    
-    
+
 
     public Task SendGiftEmail(string receiverEmail, string giftCode, string giverEmail,
         string? giverName = null, string? courseTitle = null)

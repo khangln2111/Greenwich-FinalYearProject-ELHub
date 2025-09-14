@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.InfrastructureInterfaces;
+﻿using Application.Common.Contracts.InfraContracts;
 using Domain.Entities;
 using Domain.Enums;
 using LLL.AutoCompute.EFCore.Metadata.Internal;

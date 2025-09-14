@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.AppInterfaces;
+﻿using Application.Common.Contracts.AppContracts;
 using Application.DTOs.InstructorApplicationDTOs;
 using Application.Gridify.CustomModels;
 using Domain.Enums;

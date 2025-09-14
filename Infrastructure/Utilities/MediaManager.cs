@@ -1,5 +1,6 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Interfaces.InfrastructureInterfaces;
+﻿using Application.Common.Contracts;
+using Application.Common.Contracts.GeneralContracts;
+using Application.Common.Contracts.InfraContracts;
 using Domain.Entities.MediaEntities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Hosting;
