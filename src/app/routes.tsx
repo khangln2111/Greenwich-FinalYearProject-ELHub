@@ -60,7 +60,7 @@ const userRoute: RouteObject = {
             },
             {
               path: "my-learning",
-              lazy: lazyRoute(() => import("../pages/(main)/enrolled-courses/MyLearningPage")),
+              lazy: lazyRoute(() => import("../pages/(main)/my-learning/MyLearningPage")),
             },
             {
               path: "inventory",

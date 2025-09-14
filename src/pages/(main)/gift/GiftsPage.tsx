@@ -4,19 +4,21 @@ import { GemIcon } from "lucide-react";
 import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import {
   useChangeGiftReceiver,
   useGetReceivedGifts,
   useGetSentGifts,
   useRevokeGift,
 } from "../../../features/gift/gift.hooks";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 import { ChangeGiftReceiverModal } from "./_c/ChangeGiftReceiverModal";
+import { GiftList } from "./_c/GiftList";
 import GiftsPageEmptyState from "./_c/GiftsPageEmptyState";
 import { ReceivedGiftItemCard } from "./_c/ReceivedGiftItemCard";
+import { ReceivedGiftItemCardSkeleton } from "./_c/ReceivedGiftItemCardSkeleton";
 import { RedeemGiftModal } from "./_c/RedeemGiftModal";
 import { SentGiftItemCard } from "./_c/SentGiftItemCard";
-import { usePageSEO } from "../../../hooks/usePageSEO";
+import { SentGiftItemCardSkeleton } from "./_c/SentGiftItemCardSkeleton";
 
 const GIFT_PAGE_TABS = ["sent", "received"];
 
@@ -89,40 +91,6 @@ export default function GiftsPage() {
 
   const handleRedeem = (giftId: string) => alert(`Redeem: ${giftId}`);
 
-  const renderSent = () => {
-    if (pendingSent) return <CenterLoader />;
-
-    if (!sentGifts || sentGifts.items.length === 0) return <GiftsPageEmptyState type="sent" />;
-
-    return (
-      <div className="space-y-4">
-        {sentGifts.items.map((gift) => (
-          <SentGiftItemCard
-            key={gift.id}
-            gift={gift}
-            onRevoke={handleRevoke}
-            onChangeReceiver={() => handleOpenChangeGiftReceiverModal(gift.id)}
-          />
-        ))}
-      </div>
-    );
-  };
-
-  const renderReceived = () => {
-    if (pendingReceived) return <CenterLoader />;
-
-    if (!receivedGifts || receivedGifts.items.length === 0)
-      return <GiftsPageEmptyState type="received" />;
-
-    return (
-      <div className="space-y-4">
-        {receivedGifts.items.map((gift) => (
-          <ReceivedGiftItemCard key={gift.id} gift={gift} onRedeem={handleRedeem} />
-        ))}
-      </div>
-    );
-  };
-
   const selectedGift = sentGifts?.items.find((g) => g.id === selectedGiftId) ?? null;
 
   return (
@@ -138,8 +106,9 @@ export default function GiftsPage() {
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
               activeTab === "sent"
                 ? "bg-primary text-white"
-                : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
-                }`}
+                : `bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100
+                  dark:hover:bg-gray-500`
+              }`}
           >
             Sent
           </button>
@@ -148,8 +117,9 @@ export default function GiftsPage() {
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
               activeTab === "received"
                 ? "bg-primary text-white"
-                : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
-            }`}
+                : `bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100
+                  dark:hover:bg-gray-500`
+              }`}
           >
             Received
           </button>
@@ -166,7 +136,36 @@ export default function GiftsPage() {
       </div>
 
       <div className="mx-auto max-w-4xl">
-        {activeTab === "sent" ? renderSent() : renderReceived()}
+        {activeTab === "sent" ? (
+          <GiftList
+            items={sentGifts?.items}
+            pending={pendingSent}
+            emptyState={<GiftsPageEmptyState type="sent" />}
+            skeleton={Array.from({ length: 4 }).map((_, i) => (
+              <SentGiftItemCardSkeleton key={i} />
+            ))}
+            renderItem={(gift) => (
+              <SentGiftItemCard
+                key={gift.id}
+                gift={gift}
+                onRevoke={handleRevoke}
+                onChangeReceiver={() => handleOpenChangeGiftReceiverModal(gift.id)}
+              />
+            )}
+          />
+        ) : (
+          <GiftList
+            items={receivedGifts?.items}
+            pending={pendingReceived}
+            emptyState={<GiftsPageEmptyState type="received" />}
+            skeleton={Array.from({ length: 4 }).map((_, i) => (
+              <ReceivedGiftItemCardSkeleton key={i} />
+            ))}
+            renderItem={(gift) => (
+              <ReceivedGiftItemCard key={gift.id} gift={gift} onRedeem={handleRedeem} />
+            )}
+          />
+        )}
       </div>
 
       <AppPagination

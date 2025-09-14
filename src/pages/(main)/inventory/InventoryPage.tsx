@@ -3,12 +3,12 @@ import { SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetInventoryItemsSelf } from "../../../features/inventory/inventory.hooks";
-import GiftingModal from "./_c/GiftingModal";
-import InventoryPageEmptyState from "./_c/InventoryPageEmptyState";
-import InventoryItemCard from "./_c/InventoryItemCard";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import GiftingModal from "./_c/GiftingModal";
+import InventoryItemCard from "./_c/InventoryItemCard";
+import InventoryItemCardSkeleton from "./_c/InventoryItemCardSkeleton";
+import InventoryPageEmptyState from "./_c/InventoryPageEmptyState";
 
 export default function InventoryPage() {
   usePageSEO({ title: "My Inventory" });
@@ -20,7 +20,11 @@ export default function InventoryPage() {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   // Call API to fetch inventory items
-  const { data, isPending, error } = useGetInventoryItemsSelf({
+  const {
+    data,
+    isPending,
+    error: isError,
+  } = useGetInventoryItemsSelf({
     page,
     pageSize,
     search: search,
@@ -32,7 +36,7 @@ export default function InventoryPage() {
     setPage(1);
   };
 
-  if (error) return <div>Error loading inventory items: {error.message}</div>;
+  if (isError) return <div>Failed to load inventory items</div>;
 
   return (
     <div className="mx-auto">
@@ -87,13 +91,13 @@ export default function InventoryPage() {
 
       <div className="space-y-5">
         {isPending ? (
-          <CenterLoader />
-        ) : data.items.length === 0 ? (
-          <InventoryPageEmptyState />
-        ) : (
+          Array.from({ length: pageSize }).map((_, i) => <InventoryItemCardSkeleton key={i} />)
+        ) : data.items.length > 0 ? (
           data.items.map((item) => (
             <InventoryItemCard key={item.id} item={item} onGift={(id) => setSelectedItemId(id)} />
           ))
+        ) : (
+          <InventoryPageEmptyState />
         )}
       </div>
 

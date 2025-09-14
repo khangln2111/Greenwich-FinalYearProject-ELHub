@@ -14,8 +14,8 @@ const EnrolledCoursesPageEmptyState = () => {
       </p>
       <Link
         to="/courses"
-        className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium
-          transition"
+        className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg
+          text-sm font-medium transition"
       >
         Browse Courses
       </Link>

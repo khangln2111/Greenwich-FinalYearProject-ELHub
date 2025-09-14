@@ -3,13 +3,13 @@ import { ArrowUpDownIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetOrdersSelf } from "../../../features/order/order.hooks";
 import { OrderOrderableFields, OrderStatus } from "../../../features/order/order.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 import { OrderCard } from "./_c/OrderCard";
+import { OrderCardSkeleton } from "./_c/OrderCardSkeleton";
 import OrderHistoryPageEmptyState from "./_c/OrderHistoryPageEmptyState";
 import { OrderHistoryTabs } from "./_c/OrderHistoryTabs";
-import { usePageSEO } from "../../../hooks/usePageSEO";
 
 const ORDER_SORT_OPTIONS: {
   label: string;
@@ -40,14 +40,14 @@ export default function OrderHistoryPage() {
   );
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(3));
 
-  const { data, isPending, error } = useGetOrdersSelf({
+  const { data, isPending, isError } = useGetOrdersSelf({
     orderBy: decodedOrderBy,
     status: statusParam === "All" ? undefined : statusParam,
     page: page,
     pageSize: pageSize,
   });
 
-  if (error) return <div>Error loading orders: {error.message}</div>;
+  if (isError) return <div>Failed to load orders</div>;
 
   return (
     <div>
@@ -72,16 +72,14 @@ export default function OrderHistoryPage() {
 
       <OrderHistoryTabs activeTab={statusParam} onTabChange={setStatusParam} />
 
-      {isPending ? (
-        <CenterLoader />
-      ) : data.items.length === 0 ? (
-        <OrderHistoryPageEmptyState />
-      ) : (
+      {isPending || data.items.length > 0 ? (
         <div className="mx-auto mt-4">
-          {data.items.map((order) => (
-            <OrderCard key={order.id} order={order} />
-          ))}
+          {isPending
+            ? Array.from({ length: pageSize }).map((_, i) => <OrderCardSkeleton key={i} />)
+            : data.items.map((order) => <OrderCard key={order.id} order={order} />)}
         </div>
+      ) : (
+        <OrderHistoryPageEmptyState />
       )}
 
       <AppPagination

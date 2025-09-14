@@ -127,8 +127,8 @@ const EnrolledCourseCard = ({ enrollment }: EnrolledCourseCardProps) => {
       </CusModal>
 
       <div
-        className="bg-body rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300
-          overflow-hidden flex flex-col group p-4"
+        className="bg-body rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition
+          duration-300 overflow-hidden flex flex-col group p-4"
       >
         {/* Image Section */}
         <div
@@ -148,10 +148,14 @@ const EnrolledCourseCard = ({ enrollment }: EnrolledCourseCardProps) => {
           />
 
           <div
-            className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0
-              group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+            className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent
+              opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center
+              justify-center"
           >
-            <div className="bg-white dark:bg-dark-4 bg-opacity-90 backdrop-blur-sm rounded-full p-3 shadow-lg">
+            <div
+              className="bg-white dark:bg-dark-4 bg-opacity-90 backdrop-blur-sm rounded-full p-3
+                shadow-lg"
+            >
               <Play size={28} className="text-gray-800 dark:text-white" />
             </div>
           </div>

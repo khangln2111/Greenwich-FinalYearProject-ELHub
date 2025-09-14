@@ -4,12 +4,12 @@ import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } fr
 import { useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
-import AdminCourseCard from "./_c/AdminCourseCard";
-import AdminCoursesPageEmptyState from "./_c/AdminCoursesPageEmptyState";
-import { usePageSEO } from "../../../hooks/usePageSEO";
 import { useGetAllCourses } from "../../../features/course/course.hooks";
+import { CourseOrderableFields, CourseStatus } from "../../../features/course/course.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
+import AdminCourseCard from "./_c/AdminCourseCard";
+import AdminCourseCardSkeleton from "./_c/AdminCourseCardSkeleton";
+import AdminCoursesPageEmptyState from "./_c/AdminCoursesPageEmptyState";
 
 const COURSE_ORDER_OPTIONS: {
   label: string;
@@ -134,15 +134,14 @@ export default function AdminCoursesPage() {
           />
         </div>
 
-        {/* Main content */}
-        {isPending ? (
-          <CenterLoader />
-        ) : data.items?.length === 0 ? (
-          <AdminCoursesPageEmptyState />
-        ) : (
+        {isPending || data.items.length > 0 ? (
           <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-6">
-            {data?.items.map((course) => <AdminCourseCard key={course.id} course={course} />)}
+            {isPending
+              ? Array.from({ length: pageSize }).map((_, i) => <AdminCourseCardSkeleton key={i} />)
+              : data.items.map((course) => <AdminCourseCard key={course.id} course={course} />)}
           </div>
+        ) : (
+          <AdminCoursesPageEmptyState />
         )}
 
         <AppPagination

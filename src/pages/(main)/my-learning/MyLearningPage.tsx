@@ -3,11 +3,11 @@ import { SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetEnrollmentsSelf } from "../../../features/enrollment/enrollment.hooks";
-import EnrolledCourseCard from "./_c/EnrolledCourseCard";
-import EnrolledCoursesPageEmptyState from "./_c/EnrolledCoursesPageEmptyState";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import EnrolledCourseCard from "./_c/EnrolledCourseCard";
+import EnrolledCourseCardSkeleton from "./_c/EnrolledCourseCardSkeleton";
+import EnrolledCoursesPageEmptyState from "./_c/MyLearningPageEmptyState";
 
 export default function MyLearningPage() {
   usePageSEO({ title: "My Learning" });
@@ -16,7 +16,11 @@ export default function MyLearningPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
 
-  const { data, isPending, error } = useGetEnrollmentsSelf({
+  const {
+    data,
+    isPending,
+    error: isError,
+  } = useGetEnrollmentsSelf({
     page,
     pageSize,
     search: search,
@@ -28,7 +32,7 @@ export default function MyLearningPage() {
     setPage(1);
   };
 
-  if (error) return <div>Error loading enrollments: {error.message}</div>;
+  if (isError) return <div>Failed to load enrollments</div>;
 
   return (
     <div>
@@ -75,16 +79,16 @@ export default function MyLearningPage() {
       </div>
 
       {/* Content */}
-      {isPending ? (
-        <CenterLoader />
-      ) : data.items.length === 0 ? (
-        <EnrolledCoursesPageEmptyState />
-      ) : (
+      {isPending || data.items.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          {data.items.map((enrollment) => (
-            <EnrolledCourseCard key={enrollment.id} enrollment={enrollment} />
-          ))}
+          {isPending
+            ? Array.from({ length: pageSize }).map((_, i) => <EnrolledCourseCardSkeleton key={i} />)
+            : data.items.map((enrollment) => (
+                <EnrolledCourseCard key={enrollment.id} enrollment={enrollment} />
+              ))}
         </div>
+      ) : (
+        <EnrolledCoursesPageEmptyState />
       )}
 
       <AppPagination
