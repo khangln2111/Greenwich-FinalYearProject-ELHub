@@ -12,14 +12,14 @@ interface AvatarUploadFieldProps {
   accept?: string;
 }
 
-export default function AvatarUploadField({
+const AvatarUploadField = ({
   value,
   defaultValue,
   onChange,
   error,
   previewUrl,
   accept = "image/png,image/jpeg,image/jpg,image/webp",
-}: AvatarUploadFieldProps) {
+}: AvatarUploadFieldProps) => {
   const [_value, handleChange] = useUncontrolled({
     value,
     defaultValue,
@@ -58,4 +58,6 @@ export default function AvatarUploadField({
       {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
-}
+};
+
+export default AvatarUploadField;

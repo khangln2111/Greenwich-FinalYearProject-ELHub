@@ -5,7 +5,7 @@ import SidebarLayout from "../../components/layout/SidebarLayout";
 import { useMediaQuery } from "@mantine/hooks";
 import { useMantineTheme } from "@mantine/core";
 
-const AdminLayout = () => {
+export default function AdminLayout() {
   const sidebarCollapsed = useAppStore((s) => s.desktopAdminSidebarCollapsed);
   const mobileSidebarOpened = useAppStore((s) => s.mobileAdminSidebarOpened);
   const closeMobileSidebar = useAppStore((s) => s.closeMobileAdminSidebar);
@@ -24,6 +24,4 @@ const AdminLayout = () => {
       }}
     />
   );
-};
-
-export default AdminLayout;
+}

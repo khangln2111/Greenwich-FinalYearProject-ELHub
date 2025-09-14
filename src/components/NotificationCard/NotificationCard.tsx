@@ -91,7 +91,7 @@ const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNod
   },
 };
 
-export default function NotificationCard({ n }: { n: NotificationVm }) {
+const NotificationCard = ({ n }: { n: NotificationVm }) => {
   const markMutation = useToggleNotificationRead(n.id);
   const cfg = typeConfig[n.type];
 
@@ -175,4 +175,6 @@ export default function NotificationCard({ n }: { n: NotificationVm }) {
       </Group>
     </Card>
   );
-}
+};
+
+export default NotificationCard;

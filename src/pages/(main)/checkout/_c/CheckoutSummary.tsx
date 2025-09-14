@@ -14,12 +14,7 @@ type CheckoutSummaryProps = {
   orderId: string;
 };
 
-export default function CheckoutSummary({
-  items,
-  className,
-  clientSecret,
-  orderId,
-}: CheckoutSummaryProps) {
+const CheckoutSummary = ({ items, className, clientSecret, orderId }: CheckoutSummaryProps) => {
   const provisional = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const totalDirectDiscount = items.reduce(
     (acc, item) => acc + (item.price - item.discountedPrice) * item.quantity,
@@ -108,4 +103,6 @@ export default function CheckoutSummary({
       </Text>
     </div>
   );
-}
+};
+
+export default CheckoutSummary;

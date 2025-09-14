@@ -5,7 +5,7 @@ interface Props {
   discount: number;
 }
 
-export default function PricingForm({ price, discount }: Props) {
+const PricingForm = ({ price, discount }: Props) => {
   return (
     <div className="bg-white dark:bg-neutral-900 shadow-sm rounded-xl p-6 space-y-6">
       <Title order={3} className="text-xl font-semibold">
@@ -20,4 +20,6 @@ export default function PricingForm({ price, discount }: Props) {
       </Stack>
     </div>
   );
-}
+};
+
+export default PricingForm;

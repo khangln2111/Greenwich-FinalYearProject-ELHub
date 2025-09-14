@@ -6,7 +6,7 @@ interface CheckoutItemProps {
   className?: string;
 }
 
-export default function CheckoutItem({ item, className }: CheckoutItemProps) {
+const CheckoutItem = ({ item, className }: CheckoutItemProps) => {
   return (
     <div className={cn("flex items-start py-4 gap-4", className)}>
       <img
@@ -35,4 +35,6 @@ export default function CheckoutItem({ item, className }: CheckoutItemProps) {
       </div>
     </div>
   );
-}
+};
+
+export default CheckoutItem;

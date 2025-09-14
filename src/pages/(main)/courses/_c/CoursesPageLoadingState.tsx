@@ -7,10 +7,7 @@ type CoursesPageLoadingStateProps = {
   pageSize: number;
 };
 
-export default function CoursesPageLoadingState({
-  layout,
-  pageSize,
-}: CoursesPageLoadingStateProps) {
+const CoursesPageLoadingState = ({ layout, pageSize }: CoursesPageLoadingStateProps) => {
   if (layout === "grid") {
     return (
       <div className="@container">
@@ -30,4 +27,6 @@ export default function CoursesPageLoadingState({
       ))}
     </div>
   );
-}
+};
+
+export default CoursesPageLoadingState;

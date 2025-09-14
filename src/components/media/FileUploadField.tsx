@@ -56,7 +56,7 @@ function MediaPreview({ url, type }: { url: string | null; type: "image" | "vide
   return <span className="text-sm text-gray-400">No preview available</span>;
 }
 
-export default function FileUploadField({
+const FileUploadField = ({
   label,
   description,
   error,
@@ -67,7 +67,7 @@ export default function FileUploadField({
   previewUrl, // Optional preview
   previewMediaType,
   maxSize,
-}: FileUploadFieldProps) {
+}: FileUploadFieldProps) => {
   const openRef = useRef<() => void>(null);
   const [_value, handleChange] = useUncontrolled({
     value,
@@ -144,4 +144,6 @@ export default function FileUploadField({
       </div>
     </div>
   );
-}
+};
+
+export default FileUploadField;

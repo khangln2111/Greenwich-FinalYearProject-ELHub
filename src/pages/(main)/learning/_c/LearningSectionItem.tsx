@@ -15,7 +15,7 @@ interface LearningSectionItemProps {
   onLectureComplete?: (lectureId: string) => void;
 }
 
-export default function LearningSectionItem({
+const LearningSectionItem = ({
   section,
   opened,
   toggleSection,
@@ -23,7 +23,7 @@ export default function LearningSectionItem({
   currentLectureIndex,
   onLectureClick,
   onLectureComplete,
-}: LearningSectionItemProps) {
+}: LearningSectionItemProps) => {
   return (
     <div>
       <button
@@ -64,4 +64,6 @@ export default function LearningSectionItem({
       </Collapse>
     </div>
   );
-}
+};
+
+export default LearningSectionItem;

@@ -3,7 +3,7 @@ import InstructorHeader from "./_c/InstructorHeader";
 import SidebarLayout from "../../components/layout/SidebarLayout";
 import InstructorSidebar from "./_c/InstructorSideBar";
 
-const InstructorLayout = () => {
+export default function InstructorLayout() {
   const sidebarCollapsed = useAppStore((s) => s.desktopInstructorSidebarCollapsed);
   const mobileSidebarOpened = useAppStore((s) => s.mobileInstructorSidebarOpened);
   const closeMobileSidebar = useAppStore((s) => s.closeMobileInstructorSidebar);
@@ -17,6 +17,4 @@ const InstructorLayout = () => {
       closeMobileSidebar={closeMobileSidebar}
     />
   );
-};
-
-export default InstructorLayout;
+}

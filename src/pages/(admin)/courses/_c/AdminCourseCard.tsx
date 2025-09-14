@@ -9,7 +9,7 @@ interface AdminCourseCardProps {
   course: CourseVm;
 }
 
-export default function AdminCourseCard({ course }: AdminCourseCardProps) {
+const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
   return (
     <Link
       to={`/admin/courses/${course.id}`}
@@ -112,4 +112,6 @@ export default function AdminCourseCard({ course }: AdminCourseCardProps) {
       </div>
     </Link>
   );
-}
+};
+
+export default AdminCourseCard;

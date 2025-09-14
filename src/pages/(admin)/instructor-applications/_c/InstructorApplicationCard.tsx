@@ -21,7 +21,7 @@ interface Props {
   onView: (app: InstructorApplicationVm) => void;
 }
 
-export default function InstructorApplicationCard({ app, onView }: Props) {
+const InstructorApplicationCard = ({ app, onView }: Props) => {
   return (
     <Card
       key={app.id}
@@ -80,7 +80,7 @@ export default function InstructorApplicationCard({ app, onView }: Props) {
 
       {/* Actions */}
       <Button
-        variant="gradient"
+        variant="light"
         gradient={{ from: "indigo", to: "cyan" }}
         size="xs"
         fullWidth
@@ -91,4 +91,6 @@ export default function InstructorApplicationCard({ app, onView }: Props) {
       </Button>
     </Card>
   );
-}
+};
+
+export default InstructorApplicationCard;

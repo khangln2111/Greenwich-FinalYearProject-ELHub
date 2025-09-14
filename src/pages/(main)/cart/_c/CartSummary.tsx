@@ -11,7 +11,7 @@ type CartSummaryProps = {
   className?: string;
 };
 
-export default function CartSummary({ selectedItems, className }: CartSummaryProps) {
+const CartSummary = ({ selectedItems, className }: CartSummaryProps) => {
   const provisional = selectedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const totalDirectDiscount = selectedItems.reduce(
     (acc, item) => acc + (item.price - item.discountedPrice) * item.quantity,
@@ -101,4 +101,6 @@ export default function CartSummary({ selectedItems, className }: CartSummaryPro
       </Text>
     </div>
   );
-}
+};
+
+export default CartSummary;

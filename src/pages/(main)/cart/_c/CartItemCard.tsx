@@ -15,14 +15,14 @@ type CartItemCardProps = {
   className?: string;
 };
 
-export default function CartItemCard({
+const CartItemCard = ({
   item,
   onChangeQuantity,
   onRemove,
   checked,
   onToggle,
   className,
-}: CartItemCardProps) {
+}: CartItemCardProps) => {
   return (
     <div className={cn("flex items-start py-4 gap-4", className)}>
       <div className="flex gap-5 items-center">
@@ -77,4 +77,6 @@ export default function CartItemCard({
       </div>
     </div>
   );
-}
+};
+
+export default CartItemCard;

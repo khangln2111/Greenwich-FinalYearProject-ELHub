@@ -24,13 +24,13 @@ interface Props {
   handleModeration: (id: string, approve: boolean) => void;
 }
 
-export default function InstructorApplicationViewModal({
+const InstructorApplicationViewModal = ({
   id,
   opened,
   onClose,
   stackId,
   handleModeration,
-}: Props) {
+}: Props) => {
   const { data: app, isPending } = useGetInstructorApplicationById(id);
 
   return (
@@ -115,4 +115,6 @@ export default function InstructorApplicationViewModal({
       ) : null}
     </CusModal>
   );
-}
+};
+
+export default InstructorApplicationViewModal;

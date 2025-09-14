@@ -10,12 +10,12 @@ interface CourseListProps {
   className?: string;
 }
 
-export default function CourseList({
+const CourseList = ({
   courses = [],
   isLoading = false,
   skeletonCount = 4,
   className,
-}: CourseListProps) {
+}: CourseListProps) => {
   const itemsToRender = isLoading ? Array.from({ length: skeletonCount }) : courses;
 
   return (
@@ -33,4 +33,6 @@ export default function CourseList({
       )}
     </div>
   );
-}
+};
+
+export default CourseList;

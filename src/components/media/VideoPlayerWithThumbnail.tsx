@@ -17,13 +17,13 @@ type VideoPlayerWithThumbnailProps = {
   onVideoEnd?: () => void;
 };
 
-export default function VideoPlayerWithThumbnail({
+const VideoPlayerWithThumbnail = ({
   videoUrl,
   className,
   classNames,
   previewThumbnailUrl,
   onVideoEnd,
-}: VideoPlayerWithThumbnailProps) {
+}: VideoPlayerWithThumbnailProps) => {
   const [thumbnail, setThumbnail] = useState<string | null>(previewThumbnailUrl ?? null);
   const [thumbnailLoading, setThumbnailLoading] = useState(!previewThumbnailUrl);
   const [playing, setPlaying] = useState(false);
@@ -88,4 +88,6 @@ export default function VideoPlayerWithThumbnail({
       />
     </div>
   );
-}
+};
+
+export default VideoPlayerWithThumbnail;

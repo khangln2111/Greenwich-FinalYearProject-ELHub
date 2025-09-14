@@ -1,7 +1,7 @@
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { ReactNode } from "react";
 import CountUp, { CountUpProps } from "react-countup";
-import { cn } from "../../../../utils/cn";
+import { cn } from "../../utils/cn";
 
 interface DashboardStatCardProps {
   title: string;
@@ -20,7 +20,7 @@ interface DashboardStatCardProps {
   countUpProps?: Omit<CountUpProps, "end" | "duration" | "suffix" | "prefix" | "duration">;
 }
 
-export default function DashboardStatCard({
+const DashboardStatCard = ({
   title,
   value,
   growth,
@@ -32,7 +32,7 @@ export default function DashboardStatCard({
   decimals = 0,
   duration = 7,
   countUpProps,
-}: DashboardStatCardProps) {
+}: DashboardStatCardProps) => {
   const isPositive = growth !== undefined && growth >= 0;
 
   return (
@@ -111,4 +111,6 @@ export default function DashboardStatCard({
       )}
     </div>
   );
-}
+};
+
+export default DashboardStatCard;

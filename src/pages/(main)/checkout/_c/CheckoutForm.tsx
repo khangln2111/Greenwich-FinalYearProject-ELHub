@@ -1,6 +1,6 @@
 import { PaymentElement } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm() {
+const CheckoutForm = () => {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Payment methods</h3>
@@ -12,4 +12,6 @@ export default function CheckoutForm() {
       />
     </div>
   );
-}
+};
+
+export default CheckoutForm;

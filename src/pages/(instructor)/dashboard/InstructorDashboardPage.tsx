@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { BookOpen, DollarSign, RefreshCcw, ShoppingBag, Star, User } from "lucide-react";
 import { Legend } from "recharts";
-import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
+import DashboardStatCard from "../../../components/DashboardStatCard/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetInstructorDashboard } from "../../../features/instructorDashboard/instructorDashboard.hooks";
 import { usePageSEO } from "../../../hooks/usePageSEO";

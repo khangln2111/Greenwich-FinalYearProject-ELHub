@@ -18,7 +18,7 @@ interface Props {
   category: CategoryVm | null;
 }
 
-export default function UpdateCategoryModal({ opened, onClose, category }: Props) {
+const UpdateCategoryModal = ({ opened, onClose, category }: Props) => {
   const form = useForm<UpdateCategoryFormValues>({
     mode: "uncontrolled",
     initialValues: { name: category?.name ?? "", image: category?.imageUrl ?? "" },
@@ -86,4 +86,6 @@ export default function UpdateCategoryModal({ opened, onClose, category }: Props
       </form>
     </CusModal>
   );
-}
+};
+
+export default UpdateCategoryModal;

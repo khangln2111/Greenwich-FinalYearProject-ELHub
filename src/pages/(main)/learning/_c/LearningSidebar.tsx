@@ -13,7 +13,7 @@ interface CourseSidebarProps {
   onLectureComplete?: (lectureId: string) => void;
 }
 
-export default function LearningSidebar({
+const LearningSidebar = ({
   sections,
   currentLectureIndex,
   openedSections,
@@ -21,7 +21,7 @@ export default function LearningSidebar({
   onLectureClick,
   toggleSection,
   onLectureComplete,
-}: CourseSidebarProps) {
+}: CourseSidebarProps) => {
   const noContent =
     (!sections ||
       sections.length === 0 ||
@@ -65,4 +65,6 @@ export default function LearningSidebar({
       </div>
     </div>
   );
-}
+};
+
+export default LearningSidebar;

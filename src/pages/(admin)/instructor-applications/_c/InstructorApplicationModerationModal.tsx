@@ -20,14 +20,14 @@ interface Props {
   isSubmitting: boolean;
 }
 
-export default function InstructorApplicationModerationModal({
+const InstructorApplicationModerationModal = ({
   id,
   approveMode,
   opened,
   onClose,
   onSubmit,
   isSubmitting,
-}: Props) {
+}: Props) => {
   const form = useForm<ModerateCourseFormValues>({
     initialValues: { note: "" },
     validate: zodResolver(moderateCourseSchema),
@@ -82,4 +82,6 @@ export default function InstructorApplicationModerationModal({
       )}
     </CusModal>
   );
-}
+};
+
+export default InstructorApplicationModerationModal;

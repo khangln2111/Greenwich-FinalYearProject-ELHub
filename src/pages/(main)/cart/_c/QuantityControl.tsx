@@ -9,7 +9,7 @@ type QuantityControlProps = {
   className?: string;
 };
 
-export default function QuantityControl({ quantity, onChange, className }: QuantityControlProps) {
+const QuantityControl = ({ quantity, onChange, className }: QuantityControlProps) => {
   const handleInputChange = useDebouncedCallback(
     (value: number) => onChange(value - quantity),
     500,
@@ -51,4 +51,6 @@ export default function QuantityControl({ quantity, onChange, className }: Quant
       </button>
     </div>
   );
-}
+};
+
+export default QuantityControl;

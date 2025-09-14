@@ -8,7 +8,7 @@ interface LearningHeaderProps {
   progressPercent: number;
 }
 
-export default function LearningHeader({ title, progressPercent }: LearningHeaderProps) {
+const LearningHeader = ({ title, progressPercent }: LearningHeaderProps) => {
   return (
     <header className="flex justify-between items-center px-3 md:px-6 py-1 shadow-sm bg-[#29303b]">
       {/* Left: Back + Logo + Title */}
@@ -62,4 +62,6 @@ export default function LearningHeader({ title, progressPercent }: LearningHeade
       </div>
     </header>
   );
-}
+};
+
+export default LearningHeader;

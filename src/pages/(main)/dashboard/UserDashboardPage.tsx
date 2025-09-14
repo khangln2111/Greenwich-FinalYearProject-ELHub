@@ -8,7 +8,7 @@ import {
   TimerIcon,
   UserCheckIcon,
 } from "lucide-react";
-import DashboardStatCard from "../../(admin)/dashboard/_c/DashboardStatCard";
+import DashboardStatCard from "../../../components/DashboardStatCard/DashboardStatCard";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetUserDashboard } from "../../../features/userDashboard/userDashboard.hooks";
 import { CompositeChart, FunnelChart, RadarChart } from "@mantine/charts";

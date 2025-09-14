@@ -12,7 +12,7 @@ interface Props {
 
 const allRoles = [RoleName.Admin, RoleName.Instructor];
 
-export default function EditUserRoleModal({ user, opened, onClose }: Props) {
+const EditUserRoleModal = ({ user, opened, onClose }: Props) => {
   const { mutate: assignRoles, isPending } = useAssignRolesToUser();
 
   const form = useForm<AssignRoleToUserCommand>({
@@ -62,4 +62,6 @@ export default function EditUserRoleModal({ user, opened, onClose }: Props) {
       </form>
     </Modal>
   );
-}
+};
+
+export default EditUserRoleModal;

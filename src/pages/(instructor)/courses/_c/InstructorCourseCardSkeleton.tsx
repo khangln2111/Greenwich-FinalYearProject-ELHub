@@ -1,6 +1,6 @@
 import { Skeleton } from "@mantine/core";
 
-export default function InstructorCourseCardSkeleton() {
+const InstructorCourseCardSkeleton = () => {
   return (
     <div
       className="bg-white dark:bg-dark-6 border border-gray-200 dark:border-dark-4 rounded-2xl shadow p-4 flex
@@ -45,4 +45,6 @@ export default function InstructorCourseCardSkeleton() {
       </div>
     </div>
   );
-}
+};
+
+export default InstructorCourseCardSkeleton;

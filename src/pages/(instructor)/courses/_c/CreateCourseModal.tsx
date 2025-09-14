@@ -32,7 +32,7 @@ type CreateCourseModalProps = {
   onClose: () => void;
 };
 
-export default function CreateCourseModal({ opened, onClose }: CreateCourseModalProps) {
+const CreateCourseModal = ({ opened, onClose }: CreateCourseModalProps) => {
   const form = useForm<CreateCourseFormValues>({
     mode: "uncontrolled",
     validate: zodResolver(createCourseSchema),
@@ -205,4 +205,6 @@ export default function CreateCourseModal({ opened, onClose }: CreateCourseModal
       </form>
     </CusModal>
   );
-}
+};
+
+export default CreateCourseModal;

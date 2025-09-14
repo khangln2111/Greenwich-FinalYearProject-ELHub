@@ -16,7 +16,7 @@ type UpdateWorkProfileFormProps = {
   profile: WorkProfileVm;
 };
 
-export default function UpdateWorkProfileForm({ profile }: UpdateWorkProfileFormProps) {
+const UpdateWorkProfileForm = ({ profile }: UpdateWorkProfileFormProps) => {
   const updateWorkProfileMutation = useUpdateWorkProfileSelf();
 
   const form = useForm<UpdateWorkProfileFormType>({
@@ -158,4 +158,6 @@ export default function UpdateWorkProfileForm({ profile }: UpdateWorkProfileForm
       </Button>
     </div>
   );
-}
+};
+
+export default UpdateWorkProfileForm;

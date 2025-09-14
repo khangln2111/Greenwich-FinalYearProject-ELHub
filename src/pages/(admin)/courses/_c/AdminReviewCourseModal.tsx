@@ -15,14 +15,14 @@ interface AdminReviewCourseModalProps {
   };
 }
 
-export default function AdminReviewCourseModal({
+const AdminReviewCourseModal = ({
   opened,
   onClose,
   onSubmit,
   type,
   loading,
   course,
-}: AdminReviewCourseModalProps) {
+}: AdminReviewCourseModalProps) => {
   const [note, setNote] = useState("");
 
   useEffect(() => {
@@ -105,4 +105,6 @@ export default function AdminReviewCourseModal({
       </Stack>
     </Modal>
   );
-}
+};
+
+export default AdminReviewCourseModal;

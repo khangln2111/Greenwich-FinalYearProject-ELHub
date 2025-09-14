@@ -13,14 +13,14 @@ interface LearningLectureItemProps {
   onLectureComplete?: (lectureId: string) => void;
 }
 
-export default function LearningLectureItem({
+const LearningLectureItem = ({
   lecture,
   index,
   lectureIndex,
   isActive,
   onLectureClick,
   onLectureComplete,
-}: LearningLectureItemProps) {
+}: LearningLectureItemProps) => {
   return (
     <li
       onClick={() => onLectureClick(lectureIndex)}
@@ -67,4 +67,6 @@ export default function LearningLectureItem({
       </div>
     </li>
   );
-}
+};
+
+export default LearningLectureItem;

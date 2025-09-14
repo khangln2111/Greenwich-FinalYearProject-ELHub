@@ -16,7 +16,7 @@ interface Props {
   onClose: () => void;
 }
 
-export default function CreateCategoryModal({ opened, onClose }: Props) {
+const CreateCategoryModal = ({ opened, onClose }: Props) => {
   const form = useForm<CreateCategoryFormValues>({
     mode: "uncontrolled",
     validate: zodResolver(createCategorySchema),
@@ -84,4 +84,6 @@ export default function CreateCategoryModal({ opened, onClose }: Props) {
       </form>
     </CusModal>
   );
-}
+};
+
+export default CreateCategoryModal;

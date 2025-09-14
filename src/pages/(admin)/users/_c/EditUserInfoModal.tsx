@@ -16,7 +16,7 @@ type Props = {
   user: UserVm;
 };
 
-export default function EditUserInfoModal({ opened, onClose, user }: Props) {
+const EditUserInfoModal = ({ opened, onClose, user }: Props) => {
   const updateUserMutation = useUpdateUser();
 
   const form = useForm<EditUserFormValues>({
@@ -162,4 +162,6 @@ export default function EditUserInfoModal({ opened, onClose, user }: Props) {
       </Stack>
     </CusModal>
   );
-}
+};
+
+export default EditUserInfoModal;

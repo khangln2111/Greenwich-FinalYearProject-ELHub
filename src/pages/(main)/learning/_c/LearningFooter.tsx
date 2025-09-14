@@ -12,7 +12,7 @@ interface LearningFooterProps {
   desktopSidebarOpened: boolean;
 }
 
-export default function LearningFooter({
+const LearningFooter = ({
   onPrev,
   onNext,
   prevDisabled,
@@ -20,7 +20,7 @@ export default function LearningFooter({
   onToggleSidebar,
   onOpenDrawer,
   desktopSidebarOpened,
-}: LearningFooterProps) {
+}: LearningFooterProps) => {
   return (
     <footer
       className="border-t px-4 md:px-6 py-2 flex items-center justify-between text-sm shadow-sm bg-[#f0f0f0]
@@ -74,4 +74,6 @@ export default function LearningFooter({
       </ActionIcon>
     </footer>
   );
-}
+};
+
+export default LearningFooter;

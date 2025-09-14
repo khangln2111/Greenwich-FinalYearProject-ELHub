@@ -22,7 +22,7 @@ type UpdateUserProfileFormProps = {
   user: CurrentUser;
 };
 
-export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormProps) {
+const UpdateUserProfileForm = ({ user }: UpdateUserProfileFormProps) => {
   const updateUserProfileMutation = useUpdateUserProfileSelf();
 
   const form = useForm<UpdateUserProfileFormType>({
@@ -160,4 +160,6 @@ export default function UpdateUserProfileForm({ user }: UpdateUserProfileFormPro
       </Button>
     </div>
   );
-}
+};
+
+export default UpdateUserProfileForm;

@@ -19,7 +19,7 @@ interface Props {
   course: CourseVm;
 }
 
-export default function InstructorCourseCard({ course }: Props) {
+const InstructorCourseCard = ({ course }: Props) => {
   const deleteCourseMutation = useDeleteCourse();
   const navigate = useNavigate();
 
@@ -117,4 +117,6 @@ export default function InstructorCourseCard({ course }: Props) {
       </div>
     </div>
   );
-}
+};
+
+export default InstructorCourseCard;

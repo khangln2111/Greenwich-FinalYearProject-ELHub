@@ -22,7 +22,7 @@ interface EnrolledCourseCardProps {
   enrollment: EnrollmentSelfVm;
 }
 
-export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardProps) {
+const EnrolledCourseCard = ({ enrollment }: EnrolledCourseCardProps) => {
   const navigate = useNavigate();
   const createReviewMutation = useCreateReview();
   const updateReviewMutation = useUpdateReview();
@@ -218,4 +218,6 @@ export default function EnrolledCourseCard({ enrollment }: EnrolledCourseCardPro
       </div>
     </>
   );
-}
+};
+
+export default EnrolledCourseCard;
