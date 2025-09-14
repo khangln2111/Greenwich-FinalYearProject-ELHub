@@ -7,12 +7,6 @@ import { keyFac } from "../common-service/queryKeyFactory";
 import {
   createCourse,
   deleteCourse,
-  getAllCourses,
-  getCourseDetail,
-  getCurrentUserCourseEnrollmentStatus,
-  getInstructorByCourseId,
-  getOwnedCourses,
-  getPublishedCourses,
   moderateCourse,
   resubmitCourse,
   submitCourse,
@@ -28,21 +22,21 @@ import {
 export const useGetAllCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.courses.getAllCourses(query).queryKey,
-    queryFn: () => getAllCourses(query),
+    queryFn: keyFac.courses.getAllCourses(query).queryFn,
   });
 };
 
 export const useGetOwnedCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.courses.getOwnedCourses(query).queryKey,
-    queryFn: () => getOwnedCourses(query),
+    queryFn: keyFac.courses.getOwnedCourses(query).queryFn,
   });
 };
 
 export const useGetPublishedCourses = (query?: CourseQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.courses.getPublishedCourses(query).queryKey,
-    queryFn: () => getPublishedCourses(query),
+    queryFn: keyFac.courses.getPublishedCourses(query).queryFn,
   });
 };
 
@@ -51,7 +45,7 @@ export const useGetCurrentUserEnrollmentStatus = (courseId: string) => {
 
   return useQuery({
     queryKey: keyFac.courses.getCurrentUserCourseEnrollmentStatus(courseId).queryKey,
-    queryFn: () => getCurrentUserCourseEnrollmentStatus(courseId),
+    queryFn: keyFac.courses.getCurrentUserCourseEnrollmentStatus(courseId).queryFn,
     enabled: !!courseId && !!accessToken,
   });
 };
@@ -59,7 +53,7 @@ export const useGetCurrentUserEnrollmentStatus = (courseId: string) => {
 export const useGetCourseDetail = (id: string) => {
   return useQuery({
     queryKey: keyFac.courses.getCourseDetail(id).queryKey,
-    queryFn: () => getCourseDetail(id),
+    queryFn: keyFac.courses.getCourseDetail(id).queryFn,
     enabled: !!id,
     retry: (failureCount, error) => {
       // ❌ Do not retry if 404
@@ -252,7 +246,7 @@ export const useDeleteCourse = () => {
 export const useGetInstructorByCourseId = (courseId: string) => {
   return useQuery({
     queryKey: keyFac.courses.getInstructorByCourseId(courseId).queryKey,
-    queryFn: () => getInstructorByCourseId(courseId),
+    queryFn: keyFac.courses.getInstructorByCourseId(courseId).queryFn,
     enabled: !!courseId,
     retry: (failureCount, error) => {
       // ❌ Do not retry if 404

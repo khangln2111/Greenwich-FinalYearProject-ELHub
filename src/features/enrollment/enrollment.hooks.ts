@@ -4,7 +4,7 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { enrollFromInventory, getEnrollmentDetailSelf, getEnrollmentsSelf } from "./enrollment.api";
+import { enrollFromInventory } from "./enrollment.api";
 import { EnrollFromInventoryCommand, EnrollmentQueryCriteria } from "./enrollment.types";
 
 export const useGetEnrollmentsSelf = (query?: EnrollmentQueryCriteria) => {
@@ -13,7 +13,7 @@ export const useGetEnrollmentsSelf = (query?: EnrollmentQueryCriteria) => {
   return useQuery({
     enabled: !!accessToken,
     queryKey: keyFac.enrollments.getEnrollmentsSelf(query).queryKey,
-    queryFn: () => getEnrollmentsSelf(query),
+    queryFn: keyFac.enrollments.getEnrollmentsSelf(query).queryFn,
   });
 };
 
@@ -22,7 +22,7 @@ export const useGetEnrollmentDetailSelf = (id: string) => {
 
   return useQuery({
     queryKey: keyFac.enrollments.getEnrollmentDetailSelf(id).queryKey,
-    queryFn: () => getEnrollmentDetailSelf(id),
+    queryFn: keyFac.enrollments.getEnrollmentDetailSelf(id).queryFn,
     enabled: !!id && !!accessToken,
     retry: (failureCount, error) => {
       // ❌ Do not retry if 404

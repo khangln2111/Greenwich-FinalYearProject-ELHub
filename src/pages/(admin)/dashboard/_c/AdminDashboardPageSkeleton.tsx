@@ -1,7 +1,7 @@
 import { SimpleGrid, Card, Skeleton } from "@mantine/core";
 import DashboardStatCardSkeleton from "../../../../components/DashboardStatCard/DashboardStatCardSkeleton";
 
-const AdminDashboardPageLoadingState = () => {
+const AdminDashboardPageSkeleton = () => {
   return (
     <div className="mt-6">
       {/* STAT CARDS */}
@@ -61,4 +61,4 @@ const AdminDashboardPageLoadingState = () => {
   );
 };
 
-export default AdminDashboardPageLoadingState;
+export default AdminDashboardPageSkeleton;

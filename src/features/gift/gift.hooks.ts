@@ -4,14 +4,7 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import {
-  changeGiftReceiver,
-  createGift,
-  getReceivedGifts,
-  getSentGifts,
-  redeemGift,
-  revokeGift,
-} from "./gift.api";
+import { changeGiftReceiver, createGift, redeemGift, revokeGift } from "./gift.api";
 import { ChangeGiftReceiverCommand, CreateGiftCommand, GiftQueryCriteria } from "./gift.types";
 
 export const useGetSentGifts = (query?: GiftQueryCriteria) => {
@@ -20,7 +13,7 @@ export const useGetSentGifts = (query?: GiftQueryCriteria) => {
   return useQuery({
     enabled: !!accessToken,
     queryKey: keyFac.gifts.getSentGifts(query).queryKey,
-    queryFn: () => getSentGifts(query),
+    queryFn: keyFac.gifts.getSentGifts(query).queryFn,
   });
 };
 
@@ -30,7 +23,7 @@ export const useGetReceivedGifts = (query?: GiftQueryCriteria) => {
   return useQuery({
     enabled: !!accessToken,
     queryKey: keyFac.gifts.getReceivedGifts(query).queryKey,
-    queryFn: () => getReceivedGifts(query),
+    queryFn: keyFac.gifts.getReceivedGifts(query).queryFn,
   });
 };
 

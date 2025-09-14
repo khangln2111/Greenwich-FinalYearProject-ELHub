@@ -2,18 +2,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
+import { assignRolesToUser, setUserActivation, updateUser } from "./user.api";
 import {
   AssignRoleToUserCommand,
   SetUserActivationCommand,
   UpdateUserCommand,
   UserQueryCriteria,
 } from "./user.types";
-import { assignRolesToUser, getUsers, setUserActivation, updateUser } from "./user.api";
 
 export const useGetUsers = (query?: UserQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.users.getUsers(query).queryKey,
-    queryFn: () => getUsers(query),
+    queryFn: keyFac.users.getUsers(query).queryFn,
   });
 };
 

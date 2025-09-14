@@ -6,9 +6,6 @@ import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import {
   createInstructorApplication,
-  getInstructorApplicationById,
-  getInstructorApplications,
-  getInstructorApplicationSelf,
   moderateInstructorApplication,
   resubmitInstructorApplication,
 } from "./instructorApplication.api";
@@ -22,7 +19,7 @@ import {
 export const useGetInstructorApplications = (query?: InstructorApplicationQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.instructorApplications.getInstructorApplications(query).queryKey,
-    queryFn: () => getInstructorApplications(query),
+    queryFn: keyFac.instructorApplications.getInstructorApplications(query).queryFn,
   });
 };
 
@@ -30,7 +27,7 @@ export const useGetInstructorApplicationById = (id: string) => {
   return useQuery({
     enabled: !!id,
     queryKey: keyFac.instructorApplications.getInstructorApplicationById(id).queryKey,
-    queryFn: () => getInstructorApplicationById(id),
+    queryFn: keyFac.instructorApplications.getInstructorApplicationById(id).queryFn,
   });
 };
 
@@ -39,7 +36,7 @@ export const useGetInstructorApplicationSelf = () => {
 
   return useQuery({
     queryKey: keyFac.instructorApplications.getInstructorApplicationSelf.queryKey,
-    queryFn: getInstructorApplicationSelf,
+    queryFn: keyFac.instructorApplications.getInstructorApplicationSelf.queryFn,
     retry: (failureCount, error) => {
       // ❌ Do not retry if 404
       if (error && error.response?.status === 404) {

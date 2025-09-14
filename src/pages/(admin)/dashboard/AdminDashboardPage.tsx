@@ -24,7 +24,7 @@ import {
 import { Legend } from "recharts";
 import { useGetAdminDashboard } from "../../../features/adminDashboard/adminDashboard.hooks";
 import { usePageSEO } from "../../../hooks/usePageSEO";
-import AdminDashboardPageSkeleton from "./_c/AdminDashboardPageLoadingState";
+import AdminDashboardPageSkeleton from "./_c/AdminDashboardPageSkeleton";
 import DashboardStatCard from "../../../components/DashboardStatCard/DashboardStatCard";
 
 export default function AdminDashboardPage() {

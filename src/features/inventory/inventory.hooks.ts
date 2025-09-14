@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../zustand/stores/authStore";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { getInventoryItemsSelf } from "./inventory.api";
 import { InventoryItemQueryCriteria } from "./inventory.types";
 
 export const useGetInventoryItemsSelf = (query?: InventoryItemQueryCriteria) => {
@@ -9,7 +8,7 @@ export const useGetInventoryItemsSelf = (query?: InventoryItemQueryCriteria) => 
 
   return useQuery({
     queryKey: keyFac.inventories.getInventoryItemsSelf(query).queryKey,
-    queryFn: () => getInventoryItemsSelf(query),
+    queryFn: keyFac.inventories.getInventoryItemsSelf(query).queryFn,
     enabled: !!accessToken,
   });
 };

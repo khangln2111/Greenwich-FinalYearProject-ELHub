@@ -8,25 +8,19 @@ import {
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import {
-  createCategory,
-  deleteCategory,
-  getCategories,
-  getCategoryDetail,
-  updateCategory,
-} from "./category.api";
+import { createCategory, deleteCategory, updateCategory } from "./category.api";
 
 export const useGetCategories = (query: CategoryQueryCriteria = {}) => {
   return useQuery({
     queryKey: keyFac.categories.list(query).queryKey,
-    queryFn: () => getCategories(query),
+    queryFn: keyFac.categories.list(query).queryFn,
   });
 };
 
 export const useGetCategoryDetail = (id: string) => {
   return useQuery({
     queryKey: keyFac.categories.detail(id).queryKey,
-    queryFn: () => getCategoryDetail(id),
+    queryFn: keyFac.categories.detail(id).queryFn,
     enabled: !!id,
     retry: (failureCount, error) => {
       // ❌ Do not retry if 404

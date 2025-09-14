@@ -12,7 +12,7 @@ function StatSkeleton() {
   );
 }
 
-const CourseDetailPageLoadingState = () => {
+const CourseDetailPageSkeleton = () => {
   return (
     <div className="flex-1">
       <Box
@@ -102,4 +102,4 @@ const CourseDetailPageLoadingState = () => {
   );
 };
 
-export default CourseDetailPageLoadingState;
+export default CourseDetailPageSkeleton;

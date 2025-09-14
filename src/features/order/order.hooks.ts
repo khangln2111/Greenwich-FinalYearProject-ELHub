@@ -3,7 +3,7 @@ import { showErrorToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { createOrder, getOrderDetailSelf, getOrdersSelf, processOrder } from "./order.api";
+import { createOrder } from "./order.api";
 import { CreateOrderCommand, OrderQueryCriteria } from "./order.types";
 
 export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
@@ -12,14 +12,14 @@ export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
   return useQuery({
     enabled: !!accessToken,
     queryKey: keyFac.orders.getOrdersSelf(query).queryKey,
-    queryFn: () => getOrdersSelf(query),
+    queryFn: keyFac.orders.getOrdersSelf(query).queryFn,
   });
 };
 
 export const useGetOrderDetailSelf = (id: string) => {
   return useQuery({
     queryKey: keyFac.orders.getOrderDetailSelf(id).queryKey,
-    queryFn: () => getOrderDetailSelf(id),
+    queryFn: keyFac.orders.getOrderDetailSelf(id).queryFn,
     enabled: !!id,
     retry: (failureCount, error) => {
       // ❌ Không retry nếu là 404
@@ -50,7 +50,7 @@ export const useCreateOrder = () => {
 export const useProcessOrder = (id: string) => {
   return useQuery({
     queryKey: keyFac.orders.processOrder(id).queryKey,
-    queryFn: () => processOrder(id),
+    queryFn: keyFac.orders.processOrder(id).queryFn,
     enabled: !!id,
     retry: false,
   });

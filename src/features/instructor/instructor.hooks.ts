@@ -1,20 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { InstructorQueryCriteria } from "./instructor.types";
-import { getCoursesByInstructorId, getInstructorById, getInstructors } from "./instructor.api";
 import { CourseQueryCriteria } from "../course/course.types";
+import { InstructorQueryCriteria } from "./instructor.types";
 
 export const useGetInstructors = (query?: InstructorQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.instructors.getInstructors(query).queryKey,
-    queryFn: () => getInstructors(query),
+    queryFn: keyFac.instructors.getInstructors(query).queryFn,
   });
 };
 
 export const useGetInstructorById = (id: string) => {
   return useQuery({
     queryKey: keyFac.instructors.getInstructorById(id).queryKey,
-    queryFn: () => getInstructorById(id),
+    queryFn: keyFac.instructors.getInstructorById(id).queryFn,
     enabled: !!id,
     retry: (failureCount, error) => {
       // ❌ Do not retry if 404
@@ -30,7 +29,7 @@ export const useGetInstructorById = (id: string) => {
 export const useGetCoursesByInstructorId = (instructorId: string, query?: CourseQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.instructors.getCoursesByInstructorId(instructorId, query).queryKey,
-    queryFn: () => getCoursesByInstructorId(instructorId, query),
+    queryFn: keyFac.instructors.getCoursesByInstructorId(instructorId, query).queryFn,
     enabled: !!instructorId,
     retry: (failureCount, error) => {
       // ❌ Do not retry if 404

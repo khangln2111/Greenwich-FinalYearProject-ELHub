@@ -3,7 +3,6 @@ import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useEffect } from "react";
 import AppPagination from "../../../../components/AppPagination/AppPagination";
 import { keyFac } from "../../../../features/common-service/queryKeyFactory";
-import { getPublishedCourses } from "../../../../features/course/course.api";
 import { useGetPublishedCourses } from "../../../../features/course/course.hooks";
 import { CourseVm } from "../../../../features/course/course.types";
 import { useCourseQueryState } from "../../../../hooks/useCoursesQueryState";
@@ -40,17 +39,11 @@ const CourseMain = ({}: CourseMainProps) => {
     if (!hasNextPage) return;
 
     queryClient.prefetchQuery({
-      queryKey: keyFac.courses.getPublishedCourses({
+      ...keyFac.courses.getPublishedCourses({
         ...courseQuery,
         page: courseQuery.page + 1,
         pageSize,
-      }).queryKey,
-      queryFn: () =>
-        getPublishedCourses({
-          ...courseQuery,
-          page: courseQuery.page + 1,
-          pageSize,
-        }),
+      }),
     });
   }, [courseQuery, pageSize, queryClient, data?.count]);
 

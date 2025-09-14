@@ -3,12 +3,7 @@ import { showSuccessToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
 import { RoleName } from "../auth/identity.types";
 import { keyFac } from "../common-service/queryKeyFactory";
-import {
-  getNotifications,
-  getUnreadNotificationsCount,
-  markAllNotificationsAsRead,
-  toggleNotificationRead,
-} from "./notification.api";
+import { markAllNotificationsAsRead, toggleNotificationRead } from "./notification.api";
 import { NotificationQueryCriteria } from "./notification.types";
 
 export const useGetNotifications = (roleName: RoleName, query?: NotificationQueryCriteria) => {
@@ -17,7 +12,7 @@ export const useGetNotifications = (roleName: RoleName, query?: NotificationQuer
   return useQuery({
     enabled: !!accessToken,
     queryKey: keyFac.notifications.getNotifications(roleName, query).queryKey,
-    queryFn: () => getNotifications(roleName, query),
+    queryFn: keyFac.notifications.getNotifications(roleName, query).queryFn,
   });
 };
 
@@ -27,7 +22,7 @@ export const useGetUnreadNotificationsCount = (roleName: RoleName) => {
   return useQuery({
     enabled: !!accessToken,
     queryKey: keyFac.notifications.getUnreadNotificationsCount(roleName).queryKey,
-    queryFn: () => getUnreadNotificationsCount(roleName),
+    queryFn: keyFac.notifications.getUnreadNotificationsCount(roleName).queryFn,
   });
 };
 

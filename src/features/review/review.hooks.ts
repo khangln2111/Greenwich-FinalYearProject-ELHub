@@ -1,13 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ErrorCode } from "../../api-client/api.types";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { handleApiError } from "../common-service/handleApiError";
+import { keyFac } from "../common-service/queryKeyFactory";
 import {
   createReview,
   deleteReview,
-  getReviewsByCourseId,
   replyToReview,
   updateReview,
   updateReviewReply,
 } from "./review.api";
-import { keyFac } from "../common-service/queryKeyFactory";
 import {
   CreateReviewCommand,
   ReplyToReviewCommand,
@@ -15,14 +17,11 @@ import {
   UpdateReviewCommand,
   UpdateReviewReplyCommand,
 } from "./review.types";
-import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
-import { handleApiError } from "../common-service/handleApiError";
-import { ErrorCode } from "../../api-client/api.types";
 
 export const useGetReviewsByCourseId = (courseId: string, query?: ReviewQueryCriteria) => {
   return useQuery({
     queryKey: keyFac.reviews.getReviewsByCourseId(courseId, query).queryKey,
-    queryFn: () => getReviewsByCourseId(courseId, query),
+    queryFn: keyFac.reviews.getReviewsByCourseId(courseId, query).queryFn,
     enabled: !!courseId,
   });
 };

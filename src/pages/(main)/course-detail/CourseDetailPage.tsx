@@ -22,7 +22,7 @@ import {
 } from "../../../features/course/course.hooks";
 import { cn } from "../../../utils/cn";
 import { formatDate, formatDuration } from "../../../utils/format";
-import CourseDetailPageLoadingState from "./_c/CourseDetailPageLoadingState";
+import CourseDetailPageSkeleton from "./_c/CourseDetailPageSkeleton";
 import CurriculumTab from "./_c/CurriculumTab/CurriculumTab";
 import InstructorTab from "./_c/InstructorTab";
 import OverviewTab from "./_c/OverviewTab";
@@ -98,7 +98,7 @@ export default function CourseDetailPage() {
 
   const addCartItemMutation = useAddCartItem();
 
-  if (isPending) return <CourseDetailPageLoadingState />;
+  if (isPending) return <CourseDetailPageSkeleton />;
 
   if (error || !courseId) return <Navigate to="/404" replace />;
 

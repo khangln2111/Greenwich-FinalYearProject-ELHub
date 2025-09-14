@@ -1,5 +1,4 @@
 {
-  "typescript.tsdk": "node_modules\\typescript\\lib",
   "cssVariables.lookupFiles": [
     "**/*.css",
     "**/*.scss",
@@ -34,5 +33,8 @@
     "localhost-key.pem": true,
     "localhost.pem": true
   },
-  "explorerExclude.backup": {}
+  "explorerExclude.backup": {},
+  "typescript.tsserver.maxTsServerMemory": 6000,
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "typescript.tsserver.nodePath": "node"
 }
