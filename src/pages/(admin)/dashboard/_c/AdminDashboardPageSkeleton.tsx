@@ -3,7 +3,7 @@ import DashboardStatCardSkeleton from "../../../../components/DashboardStatCard/
 
 const AdminDashboardPageSkeleton = () => {
   return (
-    <div className="mt-6">
+    <>
       {/* STAT CARDS */}
       <SimpleGrid cols={{ base: 1, md: 2, xl: 3 }} spacing="md" mt="lg">
         {Array.from({ length: 9 }).map((_, idx) => (
@@ -57,7 +57,7 @@ const AdminDashboardPageSkeleton = () => {
           </Card>
         ))}
       </SimpleGrid>
-    </div>
+    </>
   );
 };
 

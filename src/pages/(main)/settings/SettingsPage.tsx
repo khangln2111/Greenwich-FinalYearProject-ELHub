@@ -20,15 +20,15 @@ import {
   Shield,
   SlidersHorizontal,
   SunIcon,
-  Trash2,
+  Trash2Icon,
   User2,
 } from "lucide-react";
+import { parseAsStringEnum, useQueryState } from "nuqs";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
-import UpdateUserProfileForm from "../my-account/_c/UpdateUserProfileForm";
-import { parseAsStringEnum, useQueryState } from "nuqs";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import UpdateUserProfileForm from "../my-account/_c/UpdateUserProfileForm";
 
 enum Tabs {
   Profile = "Profile",
@@ -115,8 +115,11 @@ export default function UserSettingsPage() {
             {
               value: Tabs.Danger,
               label: (
-                <div className="flex items-center justify-center gap-2 text-red-600 group-data-active:text-white">
-                  <Trash2 size={16} /> Danger
+                <div
+                  className="flex items-center justify-center gap-2 text-red
+                    group-data-active:text-white"
+                >
+                  <Trash2Icon size={16} /> Danger
                 </div>
               ),
             },

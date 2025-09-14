@@ -8,9 +8,9 @@ import {
   useQueryState,
 } from "nuqs";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { MultiSelectWithMaxDisplayedItems } from "../../../components/MultiSelectWithMaxDisplayedItems/MultiSelectWithMaxDisplayedItems";
 import NotificationCard from "../../../components/NotificationCard/NotificationCard";
+import NotificationCardSkeleton from "../../../components/NotificationCard/NotificationCardSkeleton";
 import { RoleName } from "../../../features/auth/identity.types";
 import {
   useGetNotifications,
@@ -21,8 +21,8 @@ import {
   NotificationType,
   NotificationVm,
 } from "../../../features/notification/notification.types";
-import AdminNotificationsPageEmptyState from "./_c/AdminNotificationsPageEmptyState";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import AdminNotificationsPageEmptyState from "./_c/AdminNotificationsPageEmptyState";
 
 export default function AdminNotificationsPage() {
   usePageSEO({ title: "Admin Notifications" });
@@ -40,7 +40,7 @@ export default function AdminNotificationsPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
 
-  const { data, isPending } = useGetNotifications(RoleName.Admin, {
+  const { data, isPending, isError } = useGetNotifications(RoleName.Admin, {
     isRead: filterUnread === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
     pageSize: pageSize,
@@ -49,6 +49,14 @@ export default function AdminNotificationsPage() {
   const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.Admin);
 
   const markAllMutation = useMarkAllNotificationsAsRead();
+
+  if (isError) {
+    return (
+      <div className="flex-1 p-4 sm:p-6 xl:p-8">
+        <div className="text-center text-red">Failed to load notifications.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 p-4 sm:p-6 xl:p-8">
@@ -83,7 +91,10 @@ export default function AdminNotificationsPage() {
         </div>
 
         {/* Row 2: Filters */}
-        <div className="flex flex-col sm:flex-row gap-x-2 gap-y-3 items-stretch sm:items-center sm:justify-between">
+        <div
+          className="flex flex-col sm:flex-row gap-x-2 gap-y-3 items-stretch sm:items-center
+            sm:justify-between"
+        >
           <SegmentedControl
             value={filterUnread}
             onChange={(val: string) => setFilterUnread(val as "all" | "unread")}
@@ -122,17 +133,15 @@ export default function AdminNotificationsPage() {
       </div>
 
       {/* Notification list */}
-      {isPending ? (
-        <CenterLoader height={300} />
-      ) : data?.items?.length ? (
-        <Stack className="mx-auto gap-4 w-full">
-          {data.items.map((n: NotificationVm) => (
-            <NotificationCard key={n.id} n={n} />
-          ))}
-        </Stack>
-      ) : (
-        <AdminNotificationsPageEmptyState />
-      )}
+      <Stack className="mx-auto gap-6 w-full">
+        {isPending ? (
+          Array.from({ length: pageSize }).map((_, i) => <NotificationCardSkeleton key={i} />)
+        ) : data.items.length > 0 ? (
+          data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
+        ) : (
+          <AdminNotificationsPageEmptyState />
+        )}
+      </Stack>
 
       <AppPagination
         page={page}

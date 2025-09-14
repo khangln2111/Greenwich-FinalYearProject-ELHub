@@ -7,9 +7,10 @@ import {
   parseAsStringLiteral,
   useQueryState,
 } from "nuqs";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import { MultiSelectWithMaxDisplayedItems } from "../../../components/MultiSelectWithMaxDisplayedItems/MultiSelectWithMaxDisplayedItems";
 import NotificationCard from "../../../components/NotificationCard/NotificationCard";
+import NotificationCardSkeleton from "../../../components/NotificationCard/NotificationCardSkeleton";
 import { RoleName } from "../../../features/auth/identity.types";
 import {
   useGetNotifications,
@@ -20,9 +21,8 @@ import {
   NotificationType,
   NotificationVm,
 } from "../../../features/notification/notification.types";
-import NotificationsPageEmptyState from "./_c/NotificationsPageEmptyState";
-import AppPagination from "../../../components/AppPagination/AppPagination";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import NotificationsPageEmptyState from "./_c/NotificationsPageEmptyState";
 
 export default function NotificationsPage() {
   usePageSEO({ title: "Notifications" });
@@ -40,7 +40,7 @@ export default function NotificationsPage() {
     parseAsArrayOf(parseAsStringEnum(Object.values(NotificationType))).withDefault([]),
   );
 
-  const { data, isPending } = useGetNotifications(RoleName.Learner, {
+  const { data, isPending, isError } = useGetNotifications(RoleName.Learner, {
     isRead: filterUnread === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
     pageSize: pageSize,
@@ -48,6 +48,14 @@ export default function NotificationsPage() {
 
   const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.Learner);
   const markAllMutation = useMarkAllNotificationsAsRead();
+
+  if (isError) {
+    return (
+      <div className="flex-1 p-4 sm:p-6 xl:p-8">
+        <div className="text-center text-red">Failed to load notifications.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto w-full px-3 sm:px-4 lg:px-6">
@@ -121,17 +129,15 @@ export default function NotificationsPage() {
       </div>
 
       {/* List */}
-      {isPending ? (
-        <CenterLoader height={500} />
-      ) : (
-        <Stack className="mx-auto gap-6">
-          {data?.items?.length ? (
-            data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
-          ) : (
-            <NotificationsPageEmptyState />
-          )}
-        </Stack>
-      )}
+      <Stack className="mx-auto gap-6 w-full">
+        {isPending ? (
+          Array.from({ length: pageSize }).map((_, i) => <NotificationCardSkeleton key={i} />)
+        ) : data.items.length > 0 ? (
+          data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
+        ) : (
+          <NotificationsPageEmptyState />
+        )}
+      </Stack>
 
       <AppPagination
         page={page}

@@ -1,5 +1,5 @@
 import { Skeleton } from "@mantine/core";
-import { Clock, Layers, LibraryBig, Tag, Users } from "lucide-react";
+import { ClockIcon, LayersIcon, LibraryBigIcon, TagIcon, UsersIcon } from "lucide-react";
 import { cn } from "../../utils/cn";
 
 type CourseCardSkeletonProps = {
@@ -7,7 +7,7 @@ type CourseCardSkeletonProps = {
 };
 
 const CourseCardSkeleton = ({ className }: CourseCardSkeletonProps) => {
-  const statsIcons = [Clock, LibraryBig, Layers, Users, Tag];
+  const statsIcons = [ClockIcon, LibraryBigIcon, LayersIcon, UsersIcon, TagIcon];
 
   return (
     <div
@@ -20,8 +20,8 @@ const CourseCardSkeleton = ({ className }: CourseCardSkeletonProps) => {
       <div className="p-4 flex flex-col flex-1">
         {/* Image Skeleton */}
         <div
-          className="relative w-full aspect-video mb-3 rounded-md overflow-hidden border border-black/10
-            dark:border-white/10"
+          className="relative w-full aspect-video mb-3 rounded-md overflow-hidden border
+            border-black/10 dark:border-white/10"
         >
           <Skeleton className="w-full h-full" />
         </div>
@@ -46,7 +46,7 @@ const CourseCardSkeleton = ({ className }: CourseCardSkeletonProps) => {
 
           {/* Stats Skeleton */}
           <div className="grid grid-cols-2 gap-y-2 gap-x-4 mt-3">
-            {statsIcons.map((Icon, idx) => {
+            {statsIcons.map((_, idx) => {
               const isLast = idx === statsIcons.length - 1;
               const isOdd = statsIcons.length % 2 !== 0;
 
@@ -57,7 +57,7 @@ const CourseCardSkeleton = ({ className }: CourseCardSkeletonProps) => {
                     "col-span-2": isLast && isOdd,
                   })}
                 >
-                  <Icon size={16} className="text-gray-400" />
+                  <Skeleton circle height={16} className="text-gray-400" />
                   <Skeleton className="h-4 w-16 rounded" />
                 </div>
               );

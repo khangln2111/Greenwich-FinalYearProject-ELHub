@@ -1,5 +1,5 @@
 import { Skeleton } from "@mantine/core";
-import { Clock, Layers, LibraryBig, Tag, Users } from "lucide-react";
+import { ClockIcon, LayersIcon, LibraryBigIcon, TagIcon, UsersIcon } from "lucide-react";
 import { cn } from "../../utils/cn";
 
 type CourseListItemSkeletonProps = {
@@ -7,20 +7,20 @@ type CourseListItemSkeletonProps = {
 };
 
 const CourseListItemSkeleton = ({ className }: CourseListItemSkeletonProps) => {
-  const statsIcons = [Clock, LibraryBig, Layers, Users, Tag];
+  const statsIcons = [ClockIcon, LibraryBigIcon, LayersIcon, UsersIcon, TagIcon];
 
   return (
     <div
       className={cn(
-        `group flex flex-col md:flex-row bg-white dark:bg-dark-6 rounded-xl border shadow-md overflow-hidden
-        p-4 md:p-6 gap-4 cursor-pointer select-none`,
+        `group flex flex-col md:flex-row bg-white dark:bg-dark-6 rounded-xl border shadow-md
+        overflow-hidden p-4 md:p-6 gap-4 cursor-pointer select-none`,
         className,
       )}
     >
       {/* Left: Image Skeleton */}
       <div
-        className="relative w-full md:w-56 flex-shrink-0 aspect-video md:aspect-square rounded-lg overflow-hidden
-          shadow-sm"
+        className="relative w-full md:w-56 flex-shrink-0 aspect-video md:aspect-square rounded-lg
+          overflow-hidden shadow-sm"
       >
         <Skeleton className="w-full h-full" />
       </div>
@@ -44,9 +44,9 @@ const CourseListItemSkeleton = ({ className }: CourseListItemSkeletonProps) => {
 
         {/* Stats Skeleton */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-          {statsIcons.map((Icon, idx) => (
+          {statsIcons.map((_, idx) => (
             <div key={idx} className="flex items-center gap-1.5">
-              <Icon size={17} className="text-gray-400" strokeWidth={2} />
+              <Skeleton circle height={17} className="text-gray-400" />
               <Skeleton className="h-4 w-16 rounded" />
             </div>
           ))}
@@ -57,8 +57,8 @@ const CourseListItemSkeleton = ({ className }: CourseListItemSkeletonProps) => {
 
         {/* Footer Skeleton */}
         <div
-          className="flex flex-wrap md:flex-nowrap items-center justify-between mt-auto gap-3 pt-3 border-t
-            border-gray-200 dark:border-gray-700"
+          className="flex flex-wrap md:flex-nowrap items-center justify-between mt-auto gap-3 pt-3
+            border-t border-gray-200 dark:border-gray-700"
         >
           <div className="flex items-center gap-3 flex-wrap">
             <Skeleton className="h-5 w-16 rounded" />

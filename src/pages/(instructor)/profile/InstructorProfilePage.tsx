@@ -18,7 +18,7 @@ export default function InstructorProfilePage() {
 
   if (isError || !data) {
     return (
-      <div className="text-center text-red-600 mt-12">
+      <div className="text-center text-red mt-12">
         Failed to load work profile. Please try again later.
       </div>
     );
@@ -26,7 +26,9 @@ export default function InstructorProfilePage() {
   return (
     <div className="px-4 py-8 flex-1">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+        <h1
+          className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center"
+        >
           Instructor Profile
         </h1>
         <UpdateWorkProfileForm profile={data} />

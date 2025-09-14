@@ -7,9 +7,10 @@ import {
   parseAsStringLiteral,
   useQueryState,
 } from "nuqs";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import { MultiSelectWithMaxDisplayedItems } from "../../../components/MultiSelectWithMaxDisplayedItems/MultiSelectWithMaxDisplayedItems";
 import NotificationCard from "../../../components/NotificationCard/NotificationCard";
+import NotificationCardSkeleton from "../../../components/NotificationCard/NotificationCardSkeleton";
 import { RoleName } from "../../../features/auth/identity.types";
 import {
   useGetNotifications,
@@ -20,9 +21,8 @@ import {
   NotificationType,
   NotificationVm,
 } from "../../../features/notification/notification.types";
-import InstructorNotifcationsPageEmptyState from "./_c/InstructorNotifcationsPageEmptyState";
-import AppPagination from "../../../components/AppPagination/AppPagination";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import InstructorNotifcationsPageEmptyState from "./_c/InstructorNotifcationsPageEmptyState";
 
 export default function InstructorNotificationsPage() {
   usePageSEO({ title: "Notifications" });
@@ -40,7 +40,7 @@ export default function InstructorNotificationsPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
 
-  const { data, isPending } = useGetNotifications(RoleName.Instructor, {
+  const { data, isPending, isError } = useGetNotifications(RoleName.Instructor, {
     isRead: filterUnread === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
     pageSize: pageSize,
@@ -49,6 +49,14 @@ export default function InstructorNotificationsPage() {
   const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.Instructor);
 
   const markAllMutation = useMarkAllNotificationsAsRead();
+
+  if (isError) {
+    return (
+      <div className="flex-1 p-4 sm:p-6 xl:p-8">
+        <div className="text-center text-red">Failed to load notifications.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 p-6 xl:p-8">
@@ -83,7 +91,10 @@ export default function InstructorNotificationsPage() {
         </div>
 
         {/* Row 2: Filters */}
-        <div className="flex flex-col sm:flex-row gap-x-2 gap-y-3 items-stretch sm:items-center sm:justify-between">
+        <div
+          className="flex flex-col sm:flex-row gap-x-2 gap-y-3 items-stretch sm:items-center
+            sm:justify-between"
+        >
           <SegmentedControl
             value={filterUnread}
             onChange={(val: string) => setFilterUnread(val as "all" | "unread")}
@@ -115,17 +126,15 @@ export default function InstructorNotificationsPage() {
       </div>
 
       {/* Notification list */}
-      {isPending ? (
-        <CenterLoader height={300} />
-      ) : (
-        <Stack className="mx-auto gap-6">
-          {data?.items?.length ? (
-            data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
-          ) : (
-            <InstructorNotifcationsPageEmptyState />
-          )}
-        </Stack>
-      )}
+      <Stack className="mx-auto gap-6 w-full">
+        {isPending ? (
+          Array.from({ length: pageSize }).map((_, i) => <NotificationCardSkeleton key={i} />)
+        ) : data.items.length > 0 ? (
+          data.items.map((n: NotificationVm) => <NotificationCard key={n.id} n={n} />)
+        ) : (
+          <InstructorNotifcationsPageEmptyState />
+        )}
+      </Stack>
 
       <AppPagination
         page={page}

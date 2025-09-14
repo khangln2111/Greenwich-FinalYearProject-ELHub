@@ -86,7 +86,7 @@ const CourseMain = ({}: CourseMainProps) => {
       <div className="mt-7">
         {isError && (
           <div className="flex items-center justify-center h-[300px]">
-            <p className="text-red-500">Error loading courses</p>
+            <p className="text-red">Failed to load courses</p>
           </div>
         )}
 

@@ -84,7 +84,7 @@ export default function AdminSettingsPage() {
           {isPending ? (
             <CenterLoader />
           ) : error ? (
-            <div className="text-red-600">Failed to load profile. Please try again later.</div>
+            <div className="text-red">Failed to load profile. Please try again later.</div>
           ) : (
             user && <UpdateUserProfileForm user={user} />
           )}

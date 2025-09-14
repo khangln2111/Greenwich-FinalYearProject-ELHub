@@ -3,8 +3,11 @@ import { Button, Text } from "@mantine/core";
 import { Link } from "react-router";
 const NotificationsPageEmptyState = () => {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">
-      <InboxIcon size={64} className="text-gray-300 mb-4" />
+    <div
+      className="flex flex-col items-center justify-center py-20 text-center text-gray-500
+        dark:text-gray-400"
+    >
+      <InboxIcon size={64} className="text-gray-400 mb-4" />
       <Text size="xl" fw={600} className="mb-2">
         No notifications yet
       </Text>
