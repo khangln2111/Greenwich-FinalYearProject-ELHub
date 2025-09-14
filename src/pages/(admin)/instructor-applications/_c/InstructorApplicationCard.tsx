@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Card, Group, Stack, Text } from "@mantine/core";
+import { Avatar, Badge, Button, Card, Group, Stack, Text, Tooltip } from "@mantine/core";
 import dayjs from "dayjs";
 import {
   InstructorApplicationStatus,
@@ -25,63 +25,70 @@ export default function InstructorApplicationCard({ app, onView }: Props) {
   return (
     <Card
       key={app.id}
-      shadow="md"
+      shadow="sm"
       padding="lg"
       radius="lg"
       withBorder
-      className="transition-all duration-200 hover:shadow-lg flex flex-col justify-between"
+      className="relative transition-transform duration-200 hover:scale-[1.02] hover:shadow-xl flex flex-col
+        justify-between"
     >
-      <Stack gap="sm">
-        <Group align="start">
-          <Avatar src={app.avatarUrl} size="lg" radius="xl" />
-          <div className="flex-1">
-            <Text size="md" fw={600} lineClamp={1}>
-              {`${app.firstName} ${app.lastName}`}
-            </Text>
-            <Text size="sm" c="dimmed" lineClamp={1}>
-              {app.email}
-            </Text>
-            <Group gap="xs" mt={4}>
-              <Badge color={getStatusColor(app.status)} size="sm" variant="light">
-                {app.status}
-              </Badge>
-              {app.retryCount > 0 && (
-                <Badge color="orange" size="sm" variant="light">
-                  Retry #{app.retryCount}
-                </Badge>
-              )}
-            </Group>
-          </div>
-        </Group>
+      {/* Absolute badges */}
+      <div className="absolute top-3 right-3 flex flex-col items-end gap-1">
+        <Badge color={getStatusColor(app.status)} variant="light">
+          {app.status}
+        </Badge>
+        {app.retryCount > 0 && (
+          <Tooltip label={`This application has been retried ${app.retryCount} times`} withArrow>
+            <Badge color="orange" variant="light">
+              Retry #{app.retryCount}
+            </Badge>
+          </Tooltip>
+        )}
+      </div>
 
-        <Stack gap={6}>
-          <Text size="sm" lineClamp={2}>
-            <strong>Title:</strong> {app.professionalTitle}
+      {/* Header: Avatar + Name + Email */}
+      <Group gap="sm" wrap="nowrap">
+        <Avatar src={app.avatarUrl} size="lg" radius="xl" />
+        <div className="flex flex-col min-w-0">
+          <Text size="md" fw={600} className="truncate">
+            {`${app.firstName} ${app.lastName}`}
           </Text>
-          <Text size="sm" lineClamp={3} className="whitespace-pre-line line-clamp-1">
-            <strong>About:</strong> {app.about}
+          <Text size="sm" c="dimmed" className="truncate">
+            {app.email}
           </Text>
+        </div>
+      </Group>
 
+      {/* Body: Professional info */}
+      <Stack mt="sm" gap={6}>
+        <Text size="sm" lineClamp={1}>
+          <strong>Title:</strong> {app.professionalTitle}
+        </Text>
+        <Text size="sm" lineClamp={3} className="whitespace-pre-line">
+          <strong>About:</strong> {app.about}
+        </Text>
+
+        <Text size="xs" c="dimmed">
+          Submitted: {dayjs(app.createdAt).format("DD/MM/YYYY HH:mm")}
+        </Text>
+        {app.reviewedAt && (
           <Text size="xs" c="dimmed">
-            Submitted: {dayjs(app.createdAt).format("DD/MM/YYYY HH:mm")}
+            Reviewed: {dayjs(app.reviewedAt).format("DD/MM/YYYY HH:mm")}
           </Text>
-          {app.reviewedAt && (
-            <Text size="xs" c="dimmed">
-              Reviewed: {dayjs(app.reviewedAt).format("DD/MM/YYYY HH:mm")}
-            </Text>
-          )}
-          <Button
-            variant="light"
-            size="xs"
-            onClick={() => {
-              onView(app);
-            }}
-            className="mt-1 self-end"
-          >
-            View full profile
-          </Button>
-        </Stack>
+        )}
       </Stack>
+
+      {/* Actions */}
+      <Button
+        variant="gradient"
+        gradient={{ from: "indigo", to: "cyan" }}
+        size="xs"
+        fullWidth
+        mt="sm"
+        onClick={() => onView(app)}
+      >
+        View full profile
+      </Button>
     </Card>
   );
 }

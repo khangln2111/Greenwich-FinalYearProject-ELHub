@@ -15,17 +15,17 @@ import {
 } from "@mantine/core";
 import { IconFilterCog } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { PencilIcon, SearchIcon, ShieldQuestionIcon } from "lucide-react";
+import { PencilIcon, SearchIcon, ShieldPlusIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { UserVm } from "../../../features/user/user.types";
 import { useGetUsers, useSetUserActivation } from "../../../features/user/user.hooks";
+import { UserVm } from "../../../features/user/user.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 import EditUserInfoModal from "./_c/EditUserInfoModal";
 import EditUserRoleModal from "./_c/EditUserRoleModal";
-import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function AdminUsersPage() {
   usePageSEO({ title: "User Management" });
@@ -237,7 +237,6 @@ export default function AdminUsersPage() {
                       <Table.Td>
                         <Group gap="xs" wrap="nowrap">
                           <Button
-                            size="xs"
                             variant="outline"
                             leftSection={<PencilIcon size={14} />}
                             onClick={() => handleEditUser(user)}
@@ -246,10 +245,9 @@ export default function AdminUsersPage() {
                           </Button>
 
                           <Button
-                            size="xs"
                             variant="outline"
-                            color="gray"
-                            leftSection={<ShieldQuestionIcon size={14} />}
+                            color="teal"
+                            leftSection={<ShieldPlusIcon size={14} />}
                             onClick={() => handleEditRole(user)}
                           >
                             Role
