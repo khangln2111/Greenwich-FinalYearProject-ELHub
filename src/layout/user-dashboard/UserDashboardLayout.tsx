@@ -7,7 +7,7 @@ import {
   ChevronUp,
   GiftIcon,
   HistoryIcon,
-  LogOut,
+  LogOutIcon,
   MonitorCheckIcon,
   PackageIcon,
   User,
@@ -16,7 +16,7 @@ import { ReactNode, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import avatarPlaceholder from "../../assets/placeholder/profile-avatar-placeholder.svg";
 import background from "../../assets/userDashboard/background-info.png";
-import { useGetCurrentUser } from "../../features/auth/identity.hooks";
+import { useGetCurrentUser, useLogout } from "../../features/auth/identity.hooks";
 import { cn } from "../../utils/cn";
 
 type MenuItem = {
@@ -59,6 +59,8 @@ export default function UserDashboardLayout() {
   const navigate = useNavigate();
   const { data: currentUser } = useGetCurrentUser();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+
+  const logout = useLogout();
 
   const isActive = (href: string) => location.pathname === href;
 
@@ -104,8 +106,12 @@ export default function UserDashboardLayout() {
         ))}
       </div>
 
-      <button className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:underline px-4 py-2 text-sm">
-        <LogOut className="size-5" />
+      <button
+        onClick={() => logout.mutate()}
+        className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:underline px-4 py-2
+          text-sm"
+      >
+        <LogOutIcon className="size-5" />
         Log out
       </button>
     </div>
