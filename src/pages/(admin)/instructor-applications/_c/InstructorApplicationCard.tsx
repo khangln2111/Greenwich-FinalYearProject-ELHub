@@ -29,8 +29,8 @@ const InstructorApplicationCard = ({ app, onView }: Props) => {
       padding="lg"
       radius="lg"
       withBorder
-      className="relative transition-transform duration-200 hover:scale-[1.02] hover:shadow-xl flex flex-col
-        justify-between"
+      className="relative transition-transform duration-200 hover:scale-[1.02] hover:shadow-xl flex
+        flex-col justify-between"
     >
       {/* Absolute badges */}
       <div className="absolute top-3 right-3 flex flex-col items-end gap-1">

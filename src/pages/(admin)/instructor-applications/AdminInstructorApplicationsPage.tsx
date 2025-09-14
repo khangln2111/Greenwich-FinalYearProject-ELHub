@@ -7,7 +7,6 @@ import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } fr
 import { useEffect, useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import {
   ModerateCourseFormValues,
   moderateCourseSchema,
@@ -21,12 +20,13 @@ import {
   InstructorApplicationStatus,
   ModerateInstructorApplicationCommand,
 } from "../../../features/instructorApplication/instructorApplication.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
 import { cn } from "../../../utils/cn";
 import AdminInstructorApplicationsPageEmptyState from "./_c/AdminInstructorApplicationsPageEmptyState";
 import InstructorApplicationCard from "./_c/InstructorApplicationCard";
+import InstructorApplicationCardSkeleton from "./_c/InstructorApplicationCardSkeleton";
 import InstructorApplicationModerationModal from "./_c/InstructorApplicationModerationModal";
 import InstructorApplicationViewModal from "./_c/InstructorApplicationViewModal";
-import { usePageSEO } from "../../../hooks/usePageSEO";
 
 const statuses: ("All" | InstructorApplicationStatus)[] = [
   "All",
@@ -110,7 +110,8 @@ export default function AdminInstructorApplicationsPage() {
     validate: zodResolver(moderateCourseSchema),
   });
 
-  const { mutate, isPending } = useModerateInstructorApplication();
+  const { mutate, isPending: isModerateInstructorApplicationPending } =
+    useModerateInstructorApplication();
 
   const handleSearchSubmit = () => {
     setSearch(searchInput);
@@ -150,8 +151,6 @@ export default function AdminInstructorApplicationsPage() {
     orderBy: decodedOrderBy,
   });
 
-  const apps = data?.items ?? [];
-
   if (error) return <Text c="red">Error loading applications: {error.message}</Text>;
 
   return (
@@ -188,7 +187,10 @@ export default function AdminInstructorApplicationsPage() {
         />
       </div>
 
-      <div className="flex flex-wrap-reverse md:flex-wrap gap-4 items-center justify-between mb-8 w-full">
+      <div
+        className="flex flex-wrap-reverse md:flex-wrap gap-4 items-center justify-between mb-8
+          w-full"
+      >
         <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
         <Select
           data={ORDER_BY_OPTIONS.map((opt) => ({
@@ -204,23 +206,25 @@ export default function AdminInstructorApplicationsPage() {
         />
       </div>
 
-      {isGetPending ? (
-        <CenterLoader />
-      ) : apps.length === 0 ? (
-        <AdminInstructorApplicationsPageEmptyState />
-      ) : (
+      {isGetPending || data.items.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {apps.map((app) => (
-            <InstructorApplicationCard
-              key={app.id}
-              app={app}
-              onView={() => {
-                setViewAppId(app.id);
-                modalStack.open("view");
-              }}
-            />
-          ))}
+          {isGetPending
+            ? Array.from({ length: pageSize }).map((_, i) => (
+                <InstructorApplicationCardSkeleton key={i} />
+              ))
+            : data.items.map((app) => (
+                <InstructorApplicationCard
+                  key={app.id}
+                  app={app}
+                  onView={() => {
+                    setViewAppId(app.id);
+                    modalStack.open("view");
+                  }}
+                />
+              ))}
         </div>
+      ) : (
+        <AdminInstructorApplicationsPageEmptyState />
       )}
 
       <AppPagination
@@ -246,7 +250,7 @@ export default function AdminInstructorApplicationsPage() {
           {...modalStack.register("moderation")}
           approveMode={approveMode}
           onSubmit={handleSubmitModeration}
-          isSubmitting={isPending}
+          isSubmitting={isModerateInstructorApplicationPending}
         />
       )}
     </div>

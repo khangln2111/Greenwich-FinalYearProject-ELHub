@@ -1,15 +1,17 @@
-import { ActionIcon, Badge, Button, Image, Text, TextInput, Title } from "@mantine/core";
+import { ActionIcon, Button, Text, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Pencil, Plus, SearchIcon } from "lucide-react";
+import { Plus, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { CategoryVm } from "../../../features/category/category.types";
 import { useGetCategories } from "../../../features/category/category.hooks";
+import { CategoryVm } from "../../../features/category/category.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
+import AdminCategoriesPageEmptyState from "./_c/AdminCategoriesPageEmptyState";
+import AdminCategoryCard from "./_c/AdminCategoryCard";
+import AdminCategoryCardSkeleton from "./_c/AdminCategoryCardSkeleton";
 import CreateCategoryModal from "./_c/CreateCategoryModal";
 import UpdateCategoryModal from "./_c/UpdateCategoryModal";
-import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function AdminCategoriesPage() {
   usePageSEO({ title: "Categories management" });
@@ -24,9 +26,9 @@ export default function AdminCategoriesPage() {
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
-  const { data, isPending, error } = useGetCategories({ name: search, page, pageSize });
+  const { data, isPending, isError } = useGetCategories({ name: search, page, pageSize });
 
-  if (error) return <Text>Error loading categories: {error.message}</Text>;
+  if (isError) return <Text>Failed to load categories</Text>;
 
   const handleSearchSubmit = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
@@ -83,40 +85,16 @@ export default function AdminCategoriesPage() {
         </div>
       </div>
 
-      {isPending ? (
-        <CenterLoader />
-      ) : (
+      {isPending || data.items.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {data?.items.map((cat) => (
-            <div
-              key={cat.id}
-              className="rounded-2xl border border-gray-200 dark:border-dark-4 overflow-hidden bg-white dark:bg-dark-6
-                shadow-sm hover:shadow-md transition-all duration-300 flex flex-col"
-            >
-              <div className="aspect-video overflow-hidden">
-                <Image src={cat.imageUrl} alt={cat.name} className="w-full h-full object-cover" />
-              </div>
-
-              <div className="p-4 flex-1 flex flex-col justify-between">
-                <h3 className="text-lg font-semibold mb-2">{cat.name}</h3>
-                <div className="flex items-center justify-between mt-auto">
-                  <Badge color="gray" variant="light" radius="sm" size="sm">
-                    {cat.courseCount} course{cat.courseCount !== 1 && "s"}
-                  </Badge>
-                  <Button
-                    variant="default"
-                    size="xs"
-                    leftSection={<Pencil size={14} />}
-                    onClick={() => handleEdit(cat)}
-                    className="rounded-lg dark:bg-dark-4 dark:text-white"
-                  >
-                    Edit
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
+          {isPending
+            ? Array.from({ length: pageSize }).map((_, i) => <AdminCategoryCardSkeleton key={i} />)
+            : data?.items.map((cat) => (
+                <AdminCategoryCard key={cat.id} category={cat} handleEdit={handleEdit} />
+              ))}
         </div>
+      ) : (
+        <AdminCategoriesPageEmptyState />
       )}
 
       <AppPagination
