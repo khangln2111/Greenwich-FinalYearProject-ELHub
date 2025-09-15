@@ -211,7 +211,7 @@ const authRoutes: RouteObject[] = [
 const otherRoutes: RouteObject[] = [
   {
     path: "learning/:enrollmentId",
-    lazy: lazyRoute(() => import("../pages/(main)/learning/LearningPage")),
+    lazy: lazyRoute(() => import("../pages/(main)/learning/CourseLearningPage")),
   },
 ];
 

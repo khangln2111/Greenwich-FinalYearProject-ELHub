@@ -1,6 +1,7 @@
 {
-  "plugins": ["prettier-plugin-classnames"],
+  "plugins": ["prettier-plugin-classnames", "prettier-plugin-merge"],
   "customAttributes": ["classNames"],
   "customFunctions": ["cn"],
-  "printWidth": 100
+  "printWidth": 100,
+  "endingPosition": "relative"
 }

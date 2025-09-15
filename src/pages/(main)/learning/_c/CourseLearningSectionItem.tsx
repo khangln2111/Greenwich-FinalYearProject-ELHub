@@ -3,9 +3,9 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { EnrollmentSectionVm } from "../../../../features/section/section.types";
 import { EnrollmentLectureVm } from "../../../../features/lecture/lecture.types";
 import { formatDuration } from "../../../../utils/format";
-import LearningLectureItem from "./LearningLectureItem";
+import CourseLearningLectureItem from "./CourseLearningLectureItem";
 
-interface LearningSectionItemProps {
+interface CourseLearningSectionItemProps {
   section: EnrollmentSectionVm;
   opened: boolean;
   toggleSection: (sectionId: string) => void;
@@ -15,7 +15,7 @@ interface LearningSectionItemProps {
   onLectureComplete?: (lectureId: string) => void;
 }
 
-const LearningSectionItem = ({
+const CourseLearningSectionItem = ({
   section,
   opened,
   toggleSection,
@@ -23,7 +23,7 @@ const LearningSectionItem = ({
   currentLectureIndex,
   onLectureClick,
   onLectureComplete,
-}: LearningSectionItemProps) => {
+}: CourseLearningSectionItemProps) => {
   return (
     <div>
       <button
@@ -49,7 +49,7 @@ const LearningSectionItem = ({
             const isActive = lectureIndex === currentLectureIndex;
 
             return (
-              <LearningLectureItem
+              <CourseLearningLectureItem
                 key={lecture.id}
                 lecture={lecture}
                 index={index}
@@ -66,4 +66,4 @@ const LearningSectionItem = ({
   );
 };
 
-export default LearningSectionItem;
+export default CourseLearningSectionItem;

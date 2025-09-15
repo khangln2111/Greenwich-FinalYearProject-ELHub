@@ -1,19 +1,19 @@
 import { useMediaQuery } from "@mantine/hooks";
+import { HourglassIcon } from "lucide-react";
 import { ResponsiveDialog } from "mantine-vaul";
 import { useState } from "react";
 import { Navigate, useParams } from "react-router";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
-import { useCompleteLecture } from "../../../features/lecture/lecture.hooks";
-import { cn } from "../../../utils/cn";
-import LearningFooter from "./_c/LearningFooter";
-import LearningHeader from "./_c/LearningHeader";
-import LearningSidebar from "./_c/LearningSidebar";
-import { Hourglass } from "lucide-react";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import { useGetEnrollmentDetailSelf } from "../../../features/enrollment/enrollment.hooks";
+import { useCompleteLecture } from "../../../features/lecture/lecture.hooks";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import { cn } from "../../../utils/cn";
+import CourseLearningFooter from "./_c/CourseLearningFooter";
+import LearningHeader from "./_c/CourseLearningHeader";
+import CourseLearningPageSkeleton from "./_c/CourseLearningPageSkeleton";
+import CourseLearningSidebar from "./_c/CourseLearningSidebar";
 
-export default function LearningCoursePage() {
+export default function CourseLearningPage() {
   const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
   const [openedSections, setOpenedSections] = useState<Record<string, boolean>>({});
   const [drawerOpened, setDrawerOpened] = useState(false);
@@ -22,15 +22,15 @@ export default function LearningCoursePage() {
 
   const { enrollmentId } = useParams<{ enrollmentId: string }>();
 
-  const { data, isPending, error } = useGetEnrollmentDetailSelf(enrollmentId!);
+  const { data, isPending, isError } = useGetEnrollmentDetailSelf(enrollmentId!);
 
   const completeLectureMutation = useCompleteLecture();
 
   usePageSEO({ title: data?.courseTitle ? `Learning - ${data.courseTitle}` : "Learning Course" });
 
-  if (isPending) return <CenterLoader height="800px" />;
+  if (isPending) return <CourseLearningPageSkeleton />;
 
-  if (error || !enrollmentId) return <Navigate to="/404" replace />;
+  if (isError || !enrollmentId) return <Navigate to="/404" replace />;
 
   const allLectures =
     data.sections?.flatMap(
@@ -88,7 +88,7 @@ export default function LearningCoursePage() {
         <main className="flex-1 bg-black flex items-center justify-center text-white text-center">
           {allLectures.length === 0 ? (
             <div className="space-y-3 flex flex-col items-center">
-              <Hourglass size={48} className="text-gray-400 mb-2" />
+              <HourglassIcon size={48} className="text-gray-400 mb-2" />
               <h2 className="text-xl font-semibold">Course coming soon</h2>
               <p className="text-sm text-gray-300">
                 The instructor is still working on this course. Once lectures are added, they’ll
@@ -114,7 +114,7 @@ export default function LearningCoursePage() {
               "w-0 opacity-0": !desktopSidebarOpened,
             })}
           >
-            <LearningSidebar
+            <CourseLearningSidebar
               sections={data.sections || []}
               currentLectureIndex={currentLectureIndex}
               onLectureComplete={handleLectureComplete}
@@ -152,7 +152,7 @@ export default function LearningCoursePage() {
           md: "drawer",
         }}
       >
-        <LearningSidebar
+        <CourseLearningSidebar
           sections={data.sections || []}
           currentLectureIndex={currentLectureIndex}
           onLectureComplete={handleLectureComplete}
@@ -167,7 +167,7 @@ export default function LearningCoursePage() {
       </ResponsiveDialog>
 
       {/* Footer navigation */}
-      <LearningFooter
+      <CourseLearningFooter
         onPrev={handlePrev}
         onNext={handleNext}
         prevDisabled={currentLectureIndex === 0}

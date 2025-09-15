@@ -1,9 +1,9 @@
 import { HourglassIcon } from "lucide-react";
 import { EnrollmentLectureVm } from "../../../../features/lecture/lecture.types";
 import { EnrollmentSectionVm } from "../../../../features/section/section.types";
-import LearningSectionItem from "./LearningSectionItem";
+import CourseLearningSectionItem from "./CourseLearningSectionItem";
 
-interface CourseSidebarProps {
+interface CourseLearningSidebarProps {
   sections: EnrollmentSectionVm[];
   currentLectureIndex: number;
   openedSections: Record<string, boolean>;
@@ -13,7 +13,7 @@ interface CourseSidebarProps {
   onLectureComplete?: (lectureId: string) => void;
 }
 
-const LearningSidebar = ({
+const CourseLearningSidebar = ({
   sections,
   currentLectureIndex,
   openedSections,
@@ -21,7 +21,7 @@ const LearningSidebar = ({
   onLectureClick,
   toggleSection,
   onLectureComplete,
-}: CourseSidebarProps) => {
+}: CourseLearningSidebarProps) => {
   const noContent =
     (!sections ||
       sections.length === 0 ||
@@ -50,7 +50,7 @@ const LearningSidebar = ({
         {sections?.map((section) => {
           const opened = openedSections[section.id] ?? true;
           return (
-            <LearningSectionItem
+            <CourseLearningSectionItem
               key={section.id}
               section={section}
               opened={opened}
@@ -67,4 +67,4 @@ const LearningSidebar = ({
   );
 };
 
-export default LearningSidebar;
+export default CourseLearningSidebar;

@@ -4,7 +4,7 @@ import { EnrollmentLectureVm } from "../../../../features/lecture/lecture.types"
 import { cn } from "../../../../utils/cn";
 import { formatDuration } from "../../../../utils/format";
 
-interface LearningLectureItemProps {
+interface CourseLearningLectureItemProps {
   lecture: EnrollmentLectureVm;
   index: number;
   lectureIndex: number;
@@ -13,14 +13,14 @@ interface LearningLectureItemProps {
   onLectureComplete?: (lectureId: string) => void;
 }
 
-const LearningLectureItem = ({
+const CourseLearningLectureItem = ({
   lecture,
   index,
   lectureIndex,
   isActive,
   onLectureClick,
   onLectureComplete,
-}: LearningLectureItemProps) => {
+}: CourseLearningLectureItemProps) => {
   return (
     <li
       onClick={() => onLectureClick(lectureIndex)}
@@ -69,4 +69,4 @@ const LearningLectureItem = ({
   );
 };
 
-export default LearningLectureItem;
+export default CourseLearningLectureItem;

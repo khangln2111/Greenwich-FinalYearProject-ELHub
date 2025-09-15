@@ -16,7 +16,7 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     ".gitignore": true,
-    ".prettierrc": true,
+    ".prettierrc": false,
     ".vscode": true,
     "**/*.git": true,
     "**/CVS": true,
