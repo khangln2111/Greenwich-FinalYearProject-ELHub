@@ -6,7 +6,7 @@ import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
 import {
   useDeleteCartItem,
-  useGetCartSelf,
+  useGetCartItemsSelf,
   useUpdateCartItem,
 } from "../../../features/cart/cart.hooks";
 import { UpdateCartItemCommand } from "../../../features/cart/cart.types";
@@ -14,11 +14,19 @@ import { usePageSEO } from "../../../hooks/usePageSEO";
 import CartItemCard from "./_c/CartItemCard";
 import CartSummary from "./_c/CartSummary";
 import EmptyCartPlaceholder from "./_c/EmptyCartPlaceholder";
+import { parseAsInteger, useQueryState } from "nuqs";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 
 export default function CartPage() {
   usePageSEO({ title: "Cart" });
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
-  const { data, isPending, error } = useGetCartSelf();
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(20));
+
+  const { data, isPending, error } = useGetCartItemsSelf({
+    page,
+    pageSize,
+  });
   const updateCartItem = useUpdateCartItem();
   const deleteCartItem = useDeleteCartItem();
 
@@ -28,7 +36,7 @@ export default function CartPage() {
 
   if (isPending) return <CenterLoader height={500} />;
 
-  const cartItems = data.cartItems || [];
+  const cartItems = data.items || [];
   const selectedItems = cartItems.filter((item) => selectedIds.includes(item.id));
 
   if (cartItems.length === 0) {
@@ -100,6 +108,15 @@ export default function CartPage() {
                 />
               ))}
             </div>
+
+            <AppPagination
+              page={page}
+              pageSize={pageSize}
+              itemsCount={data?.count ?? 0}
+              onPageChange={setPage}
+              withEdges
+              className="flex justify-center items-center mt-10"
+            />
           </div>
 
           {/* right section: cart summary */}

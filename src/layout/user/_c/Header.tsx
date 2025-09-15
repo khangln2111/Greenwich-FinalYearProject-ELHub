@@ -6,14 +6,14 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
-import { useGetCartSelf } from "../../../features/cart/cart.hooks";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
+import { RoleName } from "../../../features/auth/identity.types";
+import { useGetCartItemCountSelf } from "../../../features/cart/cart.hooks";
+import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
 import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
 import AvatarMenu from "./AvatarMenu";
 import MobileHamburgerMenu from "./MobileHamburgerMenu";
 import SearchBox from "./SearchBox";
-import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
-import { RoleName } from "../../../features/auth/identity.types";
-import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 
 const Header = () => {
   const { data: currentUser, isLoading: isUserLoading } = useGetCurrentUser();
@@ -25,7 +25,7 @@ const Header = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [searchInput, setSearchInput] = useState<string>(search);
   const navigate = useNavigate();
-  const { data: cart } = useGetCartSelf();
+  const { data: cartItemCount } = useGetCartItemCountSelf();
   const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.Learner);
 
   const handleSearch = () => {
@@ -168,12 +168,7 @@ const Header = () => {
               <Skeleton width={34} height={34} />
             ) : (
               currentUser && (
-                <Indicator
-                  label={cart?.cartItems?.reduce((sum, item) => sum + item.quantity, 0) ?? 0}
-                  size={20}
-                  offset={2}
-                  position="top-end"
-                >
+                <Indicator label={cartItemCount ?? 0} size={20} offset={2} position="top-end">
                   <ActionIcon
                     variant="default"
                     size="lg"

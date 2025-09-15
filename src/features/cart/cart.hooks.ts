@@ -4,7 +4,7 @@ import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
 import { addCartItem, deleteCartItem, updateCartItem } from "./cart.api";
-import { AddCartItemCommand, UpdateCartItemCommand } from "./cart.types";
+import { AddCartItemCommand, CartItemQueryCriteria, UpdateCartItemCommand } from "./cart.types";
 
 export const useGetCartSelf = () => {
   const accessToken = useAuthStore((s) => s.accessToken);
@@ -15,11 +15,11 @@ export const useGetCartSelf = () => {
   });
 };
 
-export const useGetCartItemsSelf = () => {
+export const useGetCartItemsSelf = (query: CartItemQueryCriteria) => {
   const accessToken = useAuthStore((s) => s.accessToken);
   return useQuery({
-    queryKey: keyFac.cart.getCartItemsSelf.queryKey,
-    queryFn: keyFac.cart.getCartItemsSelf.queryFn,
+    queryKey: keyFac.cart.getCartItemsSelf(query).queryKey,
+    queryFn: keyFac.cart.getCartItemsSelf(query).queryFn,
     enabled: !!accessToken,
   });
 };
