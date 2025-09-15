@@ -1,3 +1,7 @@
+import { BaseQueryCriteria } from "../../api-client/api.types";
+
+export interface CartItemQueryCriteria extends BaseQueryCriteria {}
+
 export type CartVm = {
   id: string;
   userId: string;

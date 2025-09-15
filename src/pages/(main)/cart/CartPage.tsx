@@ -6,7 +6,7 @@ import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
 import {
   useDeleteCartItem,
-  useGetCart,
+  useGetCartSelf,
   useUpdateCartItem,
 } from "../../../features/cart/cart.hooks";
 import { UpdateCartItemCommand } from "../../../features/cart/cart.types";
@@ -18,7 +18,7 @@ import EmptyCartPlaceholder from "./_c/EmptyCartPlaceholder";
 export default function CartPage() {
   usePageSEO({ title: "Cart" });
 
-  const { data, isPending, error } = useGetCart();
+  const { data, isPending, error } = useGetCartSelf();
   const updateCartItem = useUpdateCartItem();
   const deleteCartItem = useDeleteCartItem();
 

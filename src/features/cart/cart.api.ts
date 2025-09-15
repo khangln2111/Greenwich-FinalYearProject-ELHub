@@ -1,11 +1,36 @@
+import { GridifyQueryBuilder } from "gridify-client";
 import { ApiSuccessResponse } from "../../api-client/api.types";
 import apiClient from "../../api-client/apiClient";
-import { AddCartItemCommand, CartVm, UpdateCartItemCommand } from "./cart.types";
+import {
+  AddCartItemCommand,
+  CartItemQueryCriteria,
+  CartVm,
+  UpdateCartItemCommand,
+} from "./cart.types";
 
 const BASE_URL = "/cart";
 
+export const buildCartItemQuery = (query: CartItemQueryCriteria = {}) => {
+  const qb = new GridifyQueryBuilder();
+  qb.setPage(query.page ?? 1);
+  qb.setPageSize(query.pageSize ?? 20);
+  return qb;
+};
+
 export const getCartSelf = async () => {
   const response = await apiClient.get<CartVm>(`${BASE_URL}/self`);
+  return response.data;
+};
+
+export const getCartItemsSelf = async (query?: CartItemQueryCriteria) => {
+  const response = await apiClient.get<CartVm>(`${BASE_URL}/self/cart-items`, {
+    params: buildCartItemQuery(query),
+  });
+  return response.data;
+};
+
+export const getCartItemCountSelf = async () => {
+  const response = await apiClient.get<number>(`${BASE_URL}/self/cart-item-count`);
   return response.data;
 };
 

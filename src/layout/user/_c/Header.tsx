@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
-import { useGetCart } from "../../../features/cart/cart.hooks";
+import { useGetCartSelf } from "../../../features/cart/cart.hooks";
 import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
 import AvatarMenu from "./AvatarMenu";
 import MobileHamburgerMenu from "./MobileHamburgerMenu";
@@ -25,7 +25,7 @@ const Header = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [searchInput, setSearchInput] = useState<string>(search);
   const navigate = useNavigate();
-  const { data: cart } = useGetCart();
+  const { data: cart } = useGetCartSelf();
   const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.Learner);
 
   const handleSearch = () => {

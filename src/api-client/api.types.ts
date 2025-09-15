@@ -52,7 +52,7 @@ export interface OrderBy<TField extends string> {
   direction: OrderDirection;
 }
 
-export interface BaseQueryCriteria<TField extends string> {
+export interface BaseQueryCriteria<TField extends string = string> {
   page?: number | null;
   pageSize?: number | null;
   orderBy?: OrderBy<TField> | null;

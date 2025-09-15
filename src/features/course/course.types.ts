@@ -1,7 +1,6 @@
 import { BaseQueryCriteria } from "../../api-client/api.types";
 import { SectionVm } from "../section/section.types";
 
-// course.type.ts
 export enum CourseStatus {
   Draft = "Draft",
   Published = "Published",

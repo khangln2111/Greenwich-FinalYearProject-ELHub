@@ -3,14 +3,32 @@ import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { addCartItem, deleteCartItem, getCartSelf, updateCartItem } from "./cart.api";
+import { addCartItem, deleteCartItem, updateCartItem } from "./cart.api";
 import { AddCartItemCommand, UpdateCartItemCommand } from "./cart.types";
 
-export const useGetCart = () => {
+export const useGetCartSelf = () => {
   const accessToken = useAuthStore((s) => s.accessToken);
   return useQuery({
-    queryKey: keyFac.cart._def,
-    queryFn: getCartSelf,
+    queryKey: keyFac.cart.getCartSelf.queryKey,
+    queryFn: keyFac.cart.getCartSelf.queryFn,
+    enabled: !!accessToken,
+  });
+};
+
+export const useGetCartItemsSelf = () => {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  return useQuery({
+    queryKey: keyFac.cart.getCartItemsSelf.queryKey,
+    queryFn: keyFac.cart.getCartItemsSelf.queryFn,
+    enabled: !!accessToken,
+  });
+};
+
+export const useGetCartItemCountSelf = () => {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  return useQuery({
+    queryKey: keyFac.cart.getCartItemCountSelf.queryKey,
+    queryFn: keyFac.cart.getCartItemCountSelf.queryFn,
     enabled: !!accessToken,
   });
 };
