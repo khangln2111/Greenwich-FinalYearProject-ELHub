@@ -1,4 +1,4 @@
 const CartPageSkeleton = () => {
-  return <div>Cart Page </div>;
+  return <div>Cart Page Ske</div>;
 };
 export default CartPageSkeleton;
