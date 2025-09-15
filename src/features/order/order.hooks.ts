@@ -48,10 +48,11 @@ export const useCreateOrder = () => {
 };
 
 export const useProcessOrder = (id: string) => {
+  const accessToken = useAuthStore((s) => s.accessToken);
   return useQuery({
     queryKey: keyFac.orders.processOrder(id).queryKey,
     queryFn: keyFac.orders.processOrder(id).queryFn,
-    enabled: !!id,
+    enabled: !!id && !!accessToken,
     retry: false,
   });
 };

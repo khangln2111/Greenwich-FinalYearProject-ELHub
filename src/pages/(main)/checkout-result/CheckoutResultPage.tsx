@@ -1,32 +1,33 @@
 import { Button, Loader } from "@mantine/core";
-import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, XCircle } from "lucide-react";
-import { Link, Navigate, useSearchParams } from "react-router";
+import { parseAsString, useQueryState } from "nuqs";
+import { useEffect } from "react";
+import { Link, Navigate } from "react-router";
+import { keyFac } from "../../../features/common-service/queryKeyFactory";
 import { useProcessOrder } from "../../../features/order/order.hooks";
 import { OrderStatus } from "../../../features/order/order.types";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function CheckoutResultPage() {
   usePageSEO({ title: "Checkout Result" });
-  const [searchParams] = useSearchParams();
-  const paymentIntentId = searchParams.get("payment_intent");
-  const orderId = searchParams.get("orderId");
+  const [orderId] = useQueryState("orderId", parseAsString);
 
-  const validId = orderId || paymentIntentId;
   const queryClient = useQueryClient();
 
-  const { data, isPending, isError, isSuccess } = useProcessOrder(validId || "");
+  const { data, isPending, isError, isSuccess } = useProcessOrder(orderId!);
 
   const isCompleted = data?.data?.status === OrderStatus.Completed;
 
   // Redirect if no valid ID
-  if (!validId) return <Navigate to="/cart" />;
+  if (!orderId) return <Navigate to="/cart" />;
 
   // Invalidate caches after successful payment confirmation
   useEffect(() => {
     if (isSuccess) {
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: keyFac.cart._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.orders._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.inventories._def });
     }
   }, [isSuccess, queryClient]);
 
@@ -41,7 +42,7 @@ export default function CheckoutResultPage() {
   );
 }
 
-function PaymentProcessing() {
+const PaymentProcessing = () => {
   return (
     <>
       <Loader size={48} color="blue" className="mx-auto" />
@@ -51,9 +52,9 @@ function PaymentProcessing() {
       </p>
     </>
   );
-}
+};
 
-function PaymentSuccess() {
+const PaymentSuccess = () => {
   return (
     <>
       <CheckCircle className="text-green-500 w-16 h-16 mx-auto" />
@@ -66,9 +67,9 @@ function PaymentSuccess() {
       </Button>
     </>
   );
-}
+};
 
-function PaymentFailed() {
+const PaymentFailed = () => {
   return (
     <>
       <XCircle className="text-red-500 w-16 h-16 mx-auto" />
@@ -87,4 +88,4 @@ function PaymentFailed() {
       </Button>
     </>
   );
-}
+};
