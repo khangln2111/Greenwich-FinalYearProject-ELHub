@@ -22,7 +22,7 @@ const CourseGrid = ({
       <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-md">
         {itemsToRender.map((item, idx) =>
           isLoading ? (
-            <CourseCardSkeleton key={idx} />
+            <CourseCardSkeleton key={idx} className="dark:bg-dark-7" />
           ) : (
             <CourseCard
               key={(item as CourseVm).id}

@@ -18,10 +18,10 @@ export const buildCartItemQuery = (query: CartItemQueryCriteria = {}) => {
   return qb.build();
 };
 
-// export const getCartSelf = async () => {
-//   const response = await apiClient.get<CartVm>(`${BASE_URL}/self`);
-//   return response.data;
-// };
+export const getCartSelf = async () => {
+  const response = await apiClient.get<CartVm>(`${BASE_URL}/self`);
+  return response.data;
+};
 
 export const getCartItemsSelf = async (query?: CartItemQueryCriteria) => {
   const response = await apiClient.get<ListData<CartItemVm>>(`${BASE_URL}/self/cart-items`, {

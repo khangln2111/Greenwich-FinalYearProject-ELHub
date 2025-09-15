@@ -1,9 +1,9 @@
 import { Avatar, Button, Image, Rating, Text, Tooltip } from "@mantine/core";
-import { Clock, LibraryBig, Layers, Tag, Users } from "lucide-react";
+import { ClockIcon, LayersIcon, LibraryBigIcon, TagIcon, UsersIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { CourseVm } from "../../features/course/course.types";
-import { formatDuration } from "../../utils/format";
 import { cn } from "../../utils/cn";
+import { formatDuration } from "../../utils/format";
 
 type CourseCardProps = {
   course: CourseVm;
@@ -18,23 +18,23 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
         seconds: course.durationInSeconds,
         formatType: "long",
       }),
-      icon: Clock,
+      icon: ClockIcon,
     },
     {
       label: `${course.lectureCount} lectures`,
-      icon: LibraryBig,
+      icon: LibraryBigIcon,
     },
     {
       label: course.level,
-      icon: Layers,
+      icon: LayersIcon,
     },
     {
       label: `${course.enrollmentCount ?? 0} enrolled`,
-      icon: Users,
+      icon: UsersIcon,
     },
     {
       label: course.categoryName,
-      icon: Tag,
+      icon: TagIcon,
     },
   ];
 
@@ -71,7 +71,7 @@ const CourseCard = ({ course, className }: CourseCardProps) => {
           <Tooltip label={course.title} withArrow position="bottom" withinPortal={false}>
             <Text
               className="text-[21px] font-semibold leading-snug line-clamp-2 hover:text-primary-600
-                dark:hover:text-primary-400 transition"
+                dark:hover:text-primary-400 transition hover:text-blue-600 dark:hover:text-blue-400"
             >
               {course.title}
             </Text>

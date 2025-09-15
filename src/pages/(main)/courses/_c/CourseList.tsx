@@ -22,7 +22,7 @@ const CourseList = ({
     <div className={cn("flex flex-col gap-6", className)}>
       {itemsToRender.map((item, idx) =>
         isLoading ? (
-          <CourseListItemSkeleton key={idx} />
+          <CourseListItemSkeleton key={idx} className="dark:bg-dark-7" />
         ) : (
           <CourseListItem
             key={(item as CourseVm).id}

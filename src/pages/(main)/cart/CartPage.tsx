@@ -1,8 +1,9 @@
 import { Anchor, Box, Checkbox, Divider } from "@mantine/core";
 import { ArrowLeft } from "lucide-react";
+import { parseAsInteger, useQueryState } from "nuqs";
 import { useState } from "react";
 import { Link } from "react-router";
-import CenterLoader from "../../../components/CenterLoader/CenterLoader";
+import AppPagination from "../../../components/AppPagination/AppPagination";
 import SummaryDecorator from "../../../components/SummaryDecorator/SummaryDecorator";
 import {
   useDeleteCartItem,
@@ -12,10 +13,9 @@ import {
 import { UpdateCartItemCommand } from "../../../features/cart/cart.types";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 import CartItemCard from "./_c/CartItemCard";
+import CartItemCardSkeleton from "./_c/CartItemCardSkeleton";
 import CartSummary from "./_c/CartSummary";
 import EmptyCartPlaceholder from "./_c/EmptyCartPlaceholder";
-import { parseAsInteger, useQueryState } from "nuqs";
-import AppPagination from "../../../components/AppPagination/AppPagination";
 
 export default function CartPage() {
   usePageSEO({ title: "Cart" });
@@ -34,12 +34,10 @@ export default function CartPage() {
 
   if (error) return <div>Error loading cart. Please try again later.</div>;
 
-  if (isPending) return <CenterLoader height={500} />;
-
-  const cartItems = data.items || [];
+  const cartItems = data?.items || [];
   const selectedItems = cartItems.filter((item) => selectedIds.includes(item.id));
 
-  if (cartItems.length === 0) {
+  if (cartItems.length === 0 && !isPending) {
     return <EmptyCartPlaceholder />;
   }
 
@@ -96,17 +94,23 @@ export default function CartPage() {
             <Divider className="-mx-4 mt-2 border-[#EDF0F3] dark:border-dark-5" size="md" />
 
             <div className="divide-y">
-              {cartItems.map((item) => (
-                <CartItemCard
-                  key={item.id}
-                  item={item}
-                  onChangeQuantity={(id, delta) => handleQuantityChange(id, delta, item.quantity)}
-                  onRemove={handleRemove}
-                  checked={selectedIds.includes(item.id)}
-                  onToggle={handleToggle}
-                  className="last:pb-0"
-                />
-              ))}
+              {isPending
+                ? Array.from({ length: pageSize }).map((_, index) => (
+                    <CartItemCardSkeleton key={index} />
+                  ))
+                : cartItems.map((item) => (
+                    <CartItemCard
+                      key={item.id}
+                      item={item}
+                      onChangeQuantity={(id, delta) =>
+                        handleQuantityChange(id, delta, item.quantity)
+                      }
+                      onRemove={handleRemove}
+                      checked={selectedIds.includes(item.id)}
+                      onToggle={handleToggle}
+                      className="last:pb-0"
+                    />
+                  ))}
             </div>
 
             <AppPagination

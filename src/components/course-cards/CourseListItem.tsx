@@ -1,5 +1,5 @@
 import { Avatar, Badge, Button, Group, Rating, Text, Tooltip } from "@mantine/core";
-import { Clock, Layers, LibraryBig, Tag, Users } from "lucide-react";
+import { ClockIcon, LayersIcon, LibraryBigIcon, TagIcon, UsersIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { CourseVm } from "../../features/course/course.types";
 import { cn } from "../../utils/cn";
@@ -16,23 +16,23 @@ const CourseListItem = ({ course, className }: CourseListItemProps) => {
   const stats = [
     {
       label: formatDuration({ seconds: course.durationInSeconds, formatType: "long" }),
-      icon: Clock,
+      icon: ClockIcon,
     },
     {
       label: `${course.lectureCount} lectures`,
-      icon: LibraryBig,
+      icon: LibraryBigIcon,
     },
     {
       label: course.level,
-      icon: Layers,
+      icon: LayersIcon,
     },
     {
       label: `${course.enrollmentCount ?? 0} enrolled`,
-      icon: Users,
+      icon: UsersIcon,
     },
     {
       label: course.categoryName,
-      icon: Tag,
+      icon: TagIcon,
     },
   ];
 

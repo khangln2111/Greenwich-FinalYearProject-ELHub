@@ -1,4 +1,3 @@
-// CoursesPageLoadingState.tsx
 import CourseCardSkeleton from "../../../../components/course-cards/CourseCardSkeleton";
 import CourseListItemSkeleton from "../../../../components/course-cards/CourseListItemSkeleton";
 
