@@ -1,5 +1,7 @@
 ﻿using Application.Common.Contracts.AppContracts;
 using Application.DTOs.CartDTOs;
+using Application.Gridify.CustomModels;
+using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +22,29 @@ public class CartController(ICartService cartService) : ControllerBase
         var result = await cartService.GetCartSelf();
         return Ok(result);
     }
+
+    // GET: api/cart/self/cart-items
+    [HttpGet("self/cart-items")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<Paged<CartItemVm>>> GetCartItemsSelf([FromQuery] GridifyQuery query)
+    {
+        var result = await cartService.GetCartItemsSelf(query);
+        return Ok(result);
+    }
+
+    // GET: api/cart/self/cart-item-count
+    [HttpGet("self/cart-item-count")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<int>> GetCartItemCountSelf()
+    {
+        var result = await cartService.GetCartItemCountSelf();
+        return Ok(result);
+    }
+
 
     // POST: api/cart/add-cart-item
     [HttpPost("add-cart-item")]

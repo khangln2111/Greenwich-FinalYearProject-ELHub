@@ -5,10 +5,13 @@ using Application.Common.Contracts.InfraContracts;
 using Application.Common.Models;
 using Application.DTOs.CartDTOs;
 using Application.Exceptions;
+using Application.Gridify;
+using Application.Gridify.CustomModels;
 using Application.Validations;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
+using Gridify;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.AppServices;
@@ -17,6 +20,7 @@ public class CartService(
     IApplicationDbContext context,
     IMapper mapper,
     IValidationService validationService,
+    IGridifyMapper<CartItem> cartItemGridifyMapper,
     ICurrentUserUtility currentUserUtility)
     : ICartService
 {
@@ -29,14 +33,42 @@ public class CartService(
 
         var cart = await context.Carts
             .AsNoTracking()
-            .Include(x => x.CartItems)
-            .ThenInclude(x => x.Course).ThenInclude(c => c.Image)
+            .Where(x => x.UserId == currentUser.Id)
             .ProjectTo<CartVm>(mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
+            .FirstOrDefaultAsync();
 
         if (cart == null) throw new NotFoundException("Cart not found for the current user");
 
         return cart;
+    }
+
+    public async Task<Paged<CartItemVm>> GetCartItemsSelf(GridifyQuery query)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null)
+            throw new UnauthorizedException();
+
+        var cartItems = await context.CartItems
+            .AsNoTracking()
+            .Where(ci => ci.Cart.UserId == currentUser.Id)
+            .GridifyToAsync<CartItem, CartItemVm>(query, mapper, cartItemGridifyMapper);
+
+        return cartItems;
+    }
+
+
+    public async Task<int> GetCartItemCountSelf()
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null)
+            throw new UnauthorizedException();
+
+        var totalQuantity = await context.CartItems
+            .AsNoTracking()
+            .Where(ci => ci.Cart.UserId == currentUser.Id)
+            .SumAsync(ci => ci.Quantity);
+
+        return totalQuantity;
     }
 
     public async Task<Success> AddCartItem(AddCartItemCommand command)
