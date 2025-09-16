@@ -58,16 +58,13 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className={cn(
-        "min-h-[55px] px-4 lg:px-7 content-center transition-all duration-300 ease-in-out",
-        {
-          "bg-transparent border-b-0 shadow-none z-0 absolute left-0 right-0": !shouldBeSticky,
-          [`fixed top-0 left-0 right-0 bg-white dark:bg-dark-7 shadow-md z-[calc(var(--mantine-z-index-app)+1)]
-          backdrop-blur-sm dark:border-b dark:border-dark-4`]: shouldBeSticky,
-          [`sticky top-0 bg-white dark:bg-dark-7 shadow-md z-[calc(var(--mantine-z-index-app)+1)]
-          backdrop-blur-sm dark:border-b dark:border-dark-4`]: !isHomePage,
-        },
-      )}
+      className={cn("min-h-[55px] px-4 lg:px-7 content-center transition-all", {
+        "bg-transparent border-b-0 shadow-none z-0 absolute left-0 right-0": !shouldBeSticky,
+        [`fixed top-0 left-0 right-0 bg-white dark:bg-dark-7 shadow-md z-[calc(var(--mantine-z-index-app)+1)]
+        backdrop-blur-sm dark:border-b dark:border-dark-4`]: shouldBeSticky,
+        [`sticky top-0 bg-white dark:bg-dark-7 shadow-md z-[calc(var(--mantine-z-index-app)+1)]
+        backdrop-blur-sm dark:border-b dark:border-dark-4`]: !isHomePage,
+      })}
     >
       {/* Search mode (mobile full width) */}
       {(isSearching || isInCoursesPage) && isMobile ? (
