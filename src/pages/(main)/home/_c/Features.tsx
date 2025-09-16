@@ -1,25 +1,26 @@
 import { Badge, Card, Group, SimpleGrid, Text, Title } from "@mantine/core";
-import { IconCookie, IconGauge, IconUser } from "@tabler/icons-react";
+import { IconRocket, IconBook, IconUsers } from "@tabler/icons-react";
 import HomePageSectionWrapper from "./HomePageSectionWrapper";
+import { cn } from "../../../../utils/cn";
 
 const mockdata = [
   {
-    title: "Extreme performance",
+    title: "Learn at Your Own Pace",
     description:
-      "This dust is actually a powerful poison that will even make a pro wrestler sick, Regice cloaks itself with frigid air of -328 degrees Fahrenheit",
-    icon: IconGauge,
+      "Access courses anytime, anywhere. Move through lessons at a speed that suits you, and fully grasp new skills without pressure.",
+    icon: IconBook,
   },
   {
-    title: "Privacy focused",
+    title: "Expert-Led Courses",
     description:
-      "People say it can run at the same speed as lightning striking, Its icy body is so cold, it will not melt even if it is immersed in magma",
-    icon: IconUser,
+      "Gain knowledge from top instructors and industry professionals. Learn practical, real-world skills that you can immediately apply.",
+    icon: IconUsers,
   },
   {
-    title: "No third parties",
+    title: "Accelerate Your Growth",
     description:
-      "They’re popular, but they’re rare. Trainers who show them off recklessly may be targeted by thieves",
-    icon: IconCookie,
+      "Boost your career and personal development with targeted learning paths designed to help you achieve your goals faster.",
+    icon: IconRocket,
   },
 ];
 
@@ -27,37 +28,52 @@ const Features = () => {
   const features = mockdata.map((feature) => (
     <Card
       key={feature.title}
-      shadow="md"
-      radius="md"
-      className="border border-gray-1 dark:border-dark-5"
+      shadow="xl"
+      radius="xl"
       padding="xl"
+      className={cn(
+        "relative overflow-hidden rounded-xl",
+        "bg-white/20 dark:bg-slate-800/30", // semi-transparent
+        "backdrop-blur-lg", // glassmorphism effect
+        "border border-white/30 dark:border-white/10", // subtle border
+        "shadow-lg shadow-primary-200/20 dark:shadow-black/20", // soft depth
+        "transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:backdrop-brightness-110",
+      )}
     >
-      <feature.icon stroke={2} className="text-primary-6 size-[50px]" />
-      <Text fz="lg" fw={500} mt="md">
-        {feature.title}
-      </Text>
-      <div className="bg-primary-filled w-[45px] h-[2px] mt-sm"></div>
-      <Text fz="sm" c="dimmed" mt="sm">
-        {feature.description}
-      </Text>
+      {/* Gradient overlay for subtle glow */}
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-pink-400/10 via-blue-400/10 to-sky-400/10 rounded-xl
+          pointer-events-none"
+      ></div>
+
+      <div className="relative z-10 flex flex-col items-center justify-center text-center">
+        <feature.icon stroke={2} className="text-primary-6 w-12 h-12 mb-3" />
+        <Text fz="lg" fw={600}>
+          {feature.title}
+        </Text>
+        <div className="bg-primary-filled w-[45px] h-[2px] mt-2 mb-3"></div>
+        <Text fz="sm" className="text-gray-600 dark:text-gray-400">
+          {feature.description}
+        </Text>
+      </div>
     </Card>
   ));
 
   return (
     <HomePageSectionWrapper>
       <Group justify="center">
-        <Badge variant="filled" size="lg">
-          Best company ever
+        <Badge variant="light" size="lg">
+          Learn with Confidence
         </Badge>
       </Group>
 
       <Title order={2} className="text-[24px] lg:text-[34px] font-black" ta="center" mt="sm">
-        Integrate effortlessly with any technology stack
+        Empower Your Skills, Unlock Your Potential
       </Title>
 
-      <Text c="dimmed" className="m-auto max-w-[600px]" ta="center" mt="md">
-        Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when
-        hunger drives it to try biting a Steel-type Pokémon.
+      <Text className="m-auto max-w-[600px] text-gray-600 dark:text-gray-400" ta="center" mt="md">
+        Explore expertly designed courses, gain valuable knowledge, and achieve your personal and
+        professional goals with ease.
       </Text>
       <div className="bg-primary-filled w-[45px] h-[2px] mt-sm mx-auto"></div>
 
