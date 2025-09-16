@@ -10,9 +10,9 @@ const Hero = () => {
       className="min-h-[calc(100dvh-55px)] flex items-center justify-center bg-gradient-to-br from-blue-50
         via-blue-100 to-pink-200 dark:from-slate-800 dark:via-slate-900 dark:to-pink-900"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Left column */}
-        <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+      <div className="flex flex-col-reverse lg:flex-row items-center lg:items-center gap-3 md:gap-6 lg:gap-12 w-full">
+        {/* Left column (text) */}
+        <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left">
           <Title
             order={1}
             className="font-black leading-tight text-3xl md:text-5xl mb-4 text-slate-900 dark:text-white"
@@ -60,14 +60,12 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Right column */}
-        <div className="flex justify-center lg:justify-end mt-8 lg:mt-0">
+        {/* Right column (image) */}
+        <div className="flex-1 flex justify-center lg:justify-end mb-8 lg:mb-0">
           <Image
             src={heroImg}
             alt="Students learning online"
-            className="rounded-full shadow-xl max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-lg"
-            width={600}
-            height={600}
+            className="rounded-full shadow-xl max-w-[240px] md:max-w-[200px] lg:max-w-lg aspect-square"
           />
         </div>
       </div>
