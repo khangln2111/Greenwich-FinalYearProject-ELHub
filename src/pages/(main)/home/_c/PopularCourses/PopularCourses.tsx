@@ -2,7 +2,6 @@ import {
   ActionIcon,
   Anchor,
   Button,
-  Container,
   Group,
   Modal,
   ScrollArea,
@@ -13,8 +12,9 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconX } from "@tabler/icons-react";
 import { Link } from "react-router";
-import { mockCourses } from "../../../../../features/mockData";
 import CourseCard from "../../../../../components/course-cards/CourseCard";
+import { mockCourses } from "../../../../../features/mockData";
+import HomePageSectionWrapper from "../HomePageSectionWrapper";
 
 const PopularCourses = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -23,7 +23,7 @@ const PopularCourses = () => {
     .map((_, index) => <p key={index}>Modal with scroll</p>);
 
   return (
-    <Container className="mb-15" size="lg">
+    <HomePageSectionWrapper>
       <Group justify="space-between">
         <Title order={1}>Popular Courses</Title>
         <Anchor
@@ -107,7 +107,7 @@ const PopularCourses = () => {
           </Group>
         </Modal.Content>
       </Modal.Root>
-    </Container>
+    </HomePageSectionWrapper>
   );
 };
 export default PopularCourses;

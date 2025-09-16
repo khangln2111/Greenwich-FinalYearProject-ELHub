@@ -7,7 +7,7 @@ import PopularCourses from "./_c/PopularCourses/PopularCourses";
 export default function HomePage() {
   usePageSEO({});
   return (
-    <div className="flex-1">
+    <div className="flex-1 space-y-10">
       <Hero />
       <Features />
       <Categories />

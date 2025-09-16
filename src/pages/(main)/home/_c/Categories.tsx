@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useGetCategories } from "../../../../features/category/category.hooks";
 import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 import { Link } from "react-router";
+import HomePageSectionWrapper from "./HomePageSectionWrapper";
 
 const Categories = () => {
   const { data, isPending, error } = useGetCategories();
@@ -22,7 +23,7 @@ const Categories = () => {
     );
   }
   return (
-    <Container className="mb-[128px]" size="lg">
+    <HomePageSectionWrapper>
       <Title order={1} ta="start">
         Categories
       </Title>
@@ -91,7 +92,7 @@ const Categories = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </Container>
+    </HomePageSectionWrapper>
   );
 };
 

@@ -1,5 +1,6 @@
-import { Badge, Card, Container, Group, SimpleGrid, Text, Title } from "@mantine/core";
+import { Badge, Card, Group, SimpleGrid, Text, Title } from "@mantine/core";
 import { IconCookie, IconGauge, IconUser } from "@tabler/icons-react";
+import HomePageSectionWrapper from "./HomePageSectionWrapper";
 
 const mockdata = [
   {
@@ -43,7 +44,7 @@ const Features = () => {
   ));
 
   return (
-    <Container mb="100" size="lg">
+    <HomePageSectionWrapper>
       <Group justify="center">
         <Badge variant="filled" size="lg">
           Best company ever
@@ -63,7 +64,7 @@ const Features = () => {
       <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xl" mt={50}>
         {features}
       </SimpleGrid>
-    </Container>
+    </HomePageSectionWrapper>
   );
 };
 
