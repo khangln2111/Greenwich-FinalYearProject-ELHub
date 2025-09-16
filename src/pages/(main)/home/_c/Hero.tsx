@@ -1,7 +1,9 @@
-import { Button, Image, List, Text, ThemeIcon, Title } from "@mantine/core";
+import { Image, List, Text, ThemeIcon, Title } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import heroImg from "../../../../assets/homePageImages/HeroImage8.jpg";
+import HoverButton from "../../../../components/HoverButton/HoverButton";
 import HomePageSectionWrapper from "./HomePageSectionWrapper";
 
 const Hero = () => {
@@ -18,7 +20,7 @@ const Hero = () => {
             className="font-black leading-tight text-3xl md:text-5xl mb-4 text-slate-900 dark:text-white"
           >
             A modern
-            <span className="relative ml-2 bg-blue-200 dark:bg-blue-700 rounded px-3 py-1">
+            <span className="relative ml-2 bg-primary-2 dark:bg-primary-9 rounded px-2 py-1">
               Lifelong
             </span>{" "}
             learning platform
@@ -51,12 +53,14 @@ const Hero = () => {
           </List>
 
           <div className="flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-3 mt-4 w-full">
-            <Button size="md" radius="md" component={Link} to="/courses" variant="gradient">
+            <HoverButton
+              icon={ArrowRight}
+              className="w-full max-w-sm"
+              component={Link}
+              to="/courses"
+            >
               Browse Courses
-            </Button>
-            <Button variant="outline" size="md" radius="md" component={Link} to="/help">
-              How It Works
-            </Button>
+            </HoverButton>
           </div>
         </div>
 
