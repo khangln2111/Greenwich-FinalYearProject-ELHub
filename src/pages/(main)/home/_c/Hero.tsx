@@ -1,6 +1,6 @@
 import { Button, Container, Image, List, Text, ThemeIcon, Title } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
-import image1 from "../../../../assets/homePageImages/HeroImage2.png";
+import image1 from "../../../../assets/homePageImages/HeroImage8.jpg";
 import { Link } from "react-router";
 
 const Hero = () => {
@@ -46,13 +46,13 @@ const Hero = () => {
           </List>
 
           {/* <Group mt={30}>
-            <Button size="md" className="flex-1 md:flex-initial">
-              Get started
-            </Button>
-            <Button variant="default" size="md" className="flex-1 md:flex-initial">
-              Source code
-            </Button>
-          </Group> */}
+              <Button size="md" className="flex-1 md:flex-initial">
+                Get started
+              </Button>
+              <Button variant="default" size="md" className="flex-1 md:flex-initial">
+                Source code
+              </Button>
+            </Group> */}
           <div className="grid grid-cols-2 md:grid-cols-[min-content_min-content] gap-md mt-[30px]">
             <Button size="md" component={Link} to="/courses" className="flex-1">
               Get started
@@ -62,7 +62,12 @@ const Hero = () => {
             </Button>
           </div>
         </div>
-        <Image src={image1} alt="" width={800} height={800} className="hidden lg:block mx-auto" />
+        <Image
+          src={image1}
+          width={800}
+          height={800}
+          className="hidden lg:block mx-auto rounded-full"
+        />
       </div>
     </Container>
   );
