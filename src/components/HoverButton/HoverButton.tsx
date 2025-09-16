@@ -63,7 +63,7 @@ const _HoverButton = forwardRef<HTMLButtonElement, HoverButtonProps>(
           {children}
         </span>
 
-        {/* Invisible text để giữ layout */}
+        {/* Invisible text  to keep layout */}
         <span className="relative invisible">{children}</span>
       </Button>
     );
