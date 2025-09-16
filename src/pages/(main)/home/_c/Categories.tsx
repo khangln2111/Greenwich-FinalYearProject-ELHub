@@ -1,8 +1,10 @@
-import { Badge, Box, Card, Container, Image, Stack, Text, Title, Tooltip } from "@mantine/core";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useGetCategories } from "../../../../features/category/category.hooks";
-import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
+import { Badge, Container, Text, Title, Tooltip } from "@mantine/core";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { Link } from "react-router";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
+import { useGetCategories } from "../../../../features/category/category.hooks";
 import HomePageSectionWrapper from "./HomePageSectionWrapper";
 
 const Categories = () => {
@@ -12,86 +14,99 @@ const Categories = () => {
 
   if (error) {
     return (
-      <Container className="mb-[128px]" size="lg">
-        <Title order={1} ta="start" c="red">
+      <Container className="my-16 px-4 md:px-8 lg:px-16" size="lg">
+        <Title order={2} ta="center" c="red">
           Error Loading Categories
         </Title>
-        <Text c="dimmed" mt="md">
+        <Text c="dimmed" mt="md" ta="center">
           {error.message || "An error occurred while fetching categories."}
         </Text>
       </Container>
     );
   }
+
   return (
     <HomePageSectionWrapper>
-      <Title order={1} ta="start">
-        Categories
-      </Title>
-      <Text c="dimmed" mt="md">
-        Several popular categories of courses are available on the platform. You can choose from a
-        variety of categories to learn from.
-      </Text>
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={1}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 10,
-          },
-          768: {
-            slidesPerView: 3,
-            spaceBetween: 10,
-          },
-          1024: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-        }}
-        className="size-full p-sm"
-      >
-        {data.items.map((category) => (
-          <SwiperSlide
-            key={category.id}
-            className="transition-transform duration-300 cursor-pointer hover:scale-105"
-          >
-            <Card
-              shadow="md"
-              radius="md"
-              withBorder
-              className="h-full overflow-hidden border border-gray-2 dark:border-dark-5"
-              component={Link}
-              to={`/courses?categoryId=${category.id}`}
-            >
-              <Card.Section className="relative aspect-video">
-                <Image
-                  src={category.imageUrl}
-                  alt={category.name}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </Card.Section>
-              <Stack mb="xs" justify="space-between" align="center" h="100%">
-                <Box className="content-[''] block bg-primary-filled w-[45px] h-[2px] my-sm"></Box>
-                <Tooltip label={category.name}>
-                  <Text
-                    ta="center"
-                    fw="500"
-                    className="text-[24px] font-black line-clamp-1"
-                    style={{ textWrap: "wrap" }}
-                    variant="gradient"
-                    gradient={{ from: "indigo", to: "cyan", deg: 90 }}
-                  >
-                    {category.name}
-                  </Text>
-                </Tooltip>
-                <Badge color="teal" variant="light">
-                  {category.courseCount} Courses
-                </Badge>
-              </Stack>
-            </Card>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <div className="mb-8 text-center">
+        <Badge size="lg" variant="light" color="violet" className="mb-3">
+          Trending Categories
+        </Badge>
+        <Title order={2} className="text-4xl font-extrabold dark:text-white">
+          Top Categories We Offer
+        </Title>
+        <Text c="dimmed" mt="md" className="max-w-2xl mx-auto">
+          Pick a category and start learning today. Find what sparks your interest.
+        </Text>
+      </div>
+
+      {/* wrapper flex cho responsive */}
+      <div className="flex items-center gap-1">
+        {/*  prev */}
+        <div
+          className="swiper-button-prev-custom flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full
+            border bg-body text-primary-6 hover:bg-primary-6 hover:text-white shadow transition cursor-pointer"
+        >
+          <ArrowLeftIcon className="w-6 h-6" />
+        </div>
+
+        {/* Swiper */}
+        <Swiper
+          modules={[Autoplay, Navigation]}
+          slidesPerView={1}
+          centeredSlides={false}
+          speed={800}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+          }}
+          navigation={{
+            prevEl: ".swiper-button-prev-custom",
+            nextEl: ".swiper-button-next-custom",
+          }}
+          breakpoints={{
+            640: { slidesPerView: 2, spaceBetween: 16 },
+            768: { slidesPerView: 3, spaceBetween: 16 },
+            1024: { slidesPerView: 4, spaceBetween: 24 },
+          }}
+          className="py-4 flex-1"
+        >
+          {data.items.map((category) => (
+            <SwiperSlide key={category.id}>
+              <Link
+                to={`/courses?categoryId=${category.id}`}
+                className="block overflow-hidden rounded-lg group"
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-gray-50">
+                  <img
+                    src={category.imageUrl ?? ""}
+                    alt={category.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
+                </div>
+                <div className="mt-4 px-2 text-center">
+                  <Tooltip label={category.name}>
+                    <h3 className="text-xl font-semibold text-primary-6 line-clamp-1 dark:text-primary-4">
+                      {category.name}
+                    </h3>
+                  </Tooltip>
+                  <Badge className="mt-2 text-sm px-3 py-1 bg-blue-100 text-primary-8 dark:bg-blue-900 dark:text-blue-300">
+                    {category.courseCount} Courses
+                  </Badge>
+                </div>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        {/*  next */}
+        <div
+          className="swiper-button-next-custom flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full
+            border bg-body text-primary-6 hover:bg-primary-6 hover:text-white shadow transition cursor-pointer"
+        >
+          <ArrowRightIcon className="w-6 h-6" />
+        </div>
+      </div>
     </HomePageSectionWrapper>
   );
 };

@@ -16,7 +16,7 @@ const Hero = () => {
         {/* Left column (text) */}
         <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left">
           <Title
-            order={1}
+            order={2}
             className="font-black leading-tight text-3xl md:text-5xl mb-4 text-slate-900 dark:text-white"
           >
             A modern

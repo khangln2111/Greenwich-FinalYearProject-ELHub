@@ -67,7 +67,12 @@ const Features = () => {
         </Badge>
       </Group>
 
-      <Title order={2} className="text-[24px] lg:text-[34px] font-black" ta="center" mt="sm">
+      <Title
+        order={2}
+        className="text-[24px] lg:text-[34px] font-black dark:text-white"
+        ta="center"
+        mt="sm"
+      >
         Empower Your Skills, Unlock Your Potential
       </Title>
 
