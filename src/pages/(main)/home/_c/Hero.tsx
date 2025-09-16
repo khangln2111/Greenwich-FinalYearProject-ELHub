@@ -7,8 +7,8 @@ import HomePageSectionWrapper from "./HomePageSectionWrapper";
 const Hero = () => {
   return (
     <HomePageSectionWrapper
-      className="min-h-[calc(100dvh-55px)] flex items-center justify-center bg-gradient-to-br from-blue-50
-        via-blue-100 to-pink-200 dark:from-slate-800 dark:via-slate-900 dark:to-pink-900"
+      className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-pink-200
+        dark:from-slate-800 dark:via-slate-900 dark:to-pink-900 py-10 lg:py-0"
     >
       <div className="flex flex-col-reverse lg:flex-row items-center lg:items-center gap-3 md:gap-6 lg:gap-12 w-full">
         {/* Left column (text) */}

@@ -2,7 +2,7 @@ import { ActionIcon, Box, Button, Group, Indicator, Skeleton } from "@mantine/co
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { ArrowLeftIcon, PanelRightCloseIcon, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
@@ -14,6 +14,7 @@ import { useCourseQueryState } from "../../../hooks/useCoursesQueryState";
 import AvatarMenu from "./AvatarMenu";
 import MobileHamburgerMenu from "./MobileHamburgerMenu";
 import SearchBox from "./SearchBox";
+import { cn } from "../../../utils/cn";
 
 const Header = () => {
   const { data: currentUser, isLoading: isUserLoading } = useGetCurrentUser();
@@ -27,6 +28,20 @@ const Header = () => {
   const navigate = useNavigate();
   const { data: cartItemCount } = useGetCartItemCountSelf();
   const { data: unreadNotificationsCount } = useGetUnreadNotificationsCount(RoleName.Learner);
+
+  const [windowScrolled, setWindowScrolled] = useState(false);
+
+  const isHomePage = location.pathname === "/";
+
+  const shouldBeSticky = windowScrolled || !isHomePage || isSearching;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setWindowScrolled(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleSearch = () => {
     const trimmed = searchInput.trim();
@@ -43,8 +58,16 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className="min-h-[55px] px-4 lg:px-7 dark:border-b dark:border-dark-4 bg-white dark:bg-dark-7 sticky top-0
-        z-[calc(var(--mantine-z-index-app)+1)] content-center shadow-md"
+      className={cn(
+        "min-h-[55px] px-4 lg:px-7 content-center transition-all duration-300 ease-in-out",
+        {
+          "bg-transparent border-b-0 shadow-none z-0 absolute left-0 right-0": !shouldBeSticky,
+          [`fixed top-0 left-0 right-0 bg-white dark:bg-dark-7 shadow-md z-[calc(var(--mantine-z-index-app)+1)]
+          backdrop-blur-sm dark:border-b dark:border-dark-4`]: shouldBeSticky,
+          [`sticky top-0 bg-white dark:bg-dark-7 shadow-md z-[calc(var(--mantine-z-index-app)+1)]
+          backdrop-blur-sm dark:border-b dark:border-dark-4`]: !isHomePage,
+        },
+      )}
     >
       {/* Search mode (mobile full width) */}
       {(isSearching || isInCoursesPage) && isMobile ? (

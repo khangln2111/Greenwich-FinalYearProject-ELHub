@@ -39,6 +39,9 @@ const SearchBox = ({
       onKeyDown={(e) => {
         if (e.key === "Enter") handleSearch();
       }}
+      classNames={{
+        input: "bg-transparent",
+      }}
       leftSection={<IconSearch size={20} strokeWidth={1.5} />}
       rightSection={
         <div className="flex items-center justify-end gap-1 max-w-full pr-2">
