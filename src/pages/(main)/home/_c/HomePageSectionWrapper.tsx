@@ -18,7 +18,7 @@ export default function HomePageSectionWrapper({
 }: HomePageSectionWrapperProps) {
   return (
     <section className={cn("px-2 md:px-4", className, classNames?.root)}>
-      <Container size="lg" className={cn("py-12", classNames?.container)}>
+      <Container size="lg" className={cn("py-15", classNames?.container)}>
         {children}
       </Container>
     </section>

@@ -2,12 +2,12 @@ import { Button } from "@mantine/core";
 import { GraduationCap } from "lucide-react";
 import { Link } from "react-router";
 import HomePageSectionWrapper from "./HomePageSectionWrapper";
-import becomeInstructorImg from "../../../../assets/homePageImages/BecomeInstructor.png";
+import becomeInstructorImg from "../../../../assets/homePageImages/BecomeInstructor.webp";
 
 const BecomeInstructorSection = () => {
   return (
     <HomePageSectionWrapper
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900
+      className="relative overflow-hidden bg-gradient-to-br from-slate-100 to-gray-200 dark:from-slate-900
         dark:to-gray-900"
       classNames={{
         container: "grid md:grid-cols-2 gap-12 items-center",
