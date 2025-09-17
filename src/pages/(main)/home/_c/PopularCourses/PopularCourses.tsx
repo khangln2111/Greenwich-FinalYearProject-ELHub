@@ -1,26 +1,26 @@
-import {
-  ActionIcon,
-  Anchor,
-  Button,
-  Group,
-  Modal,
-  ScrollArea,
-  SimpleGrid,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconArrowRight, IconX } from "@tabler/icons-react";
+import { Anchor, Group, SimpleGrid, Text, Title } from "@mantine/core";
+import { IconArrowRight } from "@tabler/icons-react";
 import { Link } from "react-router";
 import CourseCard from "../../../../../components/course-cards/CourseCard";
-import { mockCourses } from "../../../../../features/mockData";
+import CourseCardSkeleton from "../../../../../components/course-cards/CourseCardSkeleton";
+import { useGetPublishedCourses } from "../../../../../features/course/course.hooks";
 import HomePageSectionWrapper from "../HomePageSectionWrapper";
 
 const PopularCourses = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const content = Array(100)
-    .fill(0)
-    .map((_, index) => <p key={index}>Modal with scroll</p>);
+  const {
+    data: courses,
+    isPending,
+    isError,
+  } = useGetPublishedCourses({
+    page: 1,
+    pageSize: 6,
+    orderBy: {
+      field: "enrollmentCount",
+      direction: "desc",
+    },
+  });
+
+  if (isError) return <div>Failed to load courses</div>;
 
   return (
     <HomePageSectionWrapper>
@@ -38,9 +38,6 @@ const PopularCourses = () => {
           View more courses
           <IconArrowRight size="1.2rem" style={{ marginLeft: 5 }} />
         </Anchor>
-        {/* <p className="font-bold text-xl text-blue-500 font-[Poppins]">
-          View all courses
-        </p> */}
       </Group>
       <Text c="dimmed" mt="md">
         Several popular categories of courses are available on the platform. You can choose from a
@@ -49,64 +46,12 @@ const PopularCourses = () => {
       {/* Auto column grid */}
 
       <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
-        {mockCourses.map((course) => (
-          <CourseCard key={course.id} course={course} className="border" />
-        ))}
+        {isPending
+          ? Array.from({ length: 6 }).map((_, index) => <CourseCardSkeleton key={index} />)
+          : courses.items.map((course) => (
+              <CourseCard key={course.id} course={course} className="border" />
+            ))}
       </SimpleGrid>
-
-      {/* beautiful button to view all courses */}
-      <Button
-        variant="gradient"
-        gradient={{ from: "pink", to: "yellow" }}
-        fullWidth
-        style={{ maxWidth: 200, margin: "0 auto" }}
-        radius={40}
-        onClick={open}
-      >
-        View all courses
-      </Button>
-
-      <Modal.Root
-        opened={opened}
-        onClose={close}
-        centered
-        classNames={{ content: "flex flex-col" }}
-        size="100%"
-        transitionProps={{
-          transition: "fade",
-          duration: 400,
-          timingFunction: "linear",
-        }}
-      >
-        <Modal.Overlay />
-        <Modal.Content>
-          {/* Header */}
-          <Group justify="space-between" className="border-b-2 p-3">
-            <Title order={1}>All Courses</Title>
-            <ActionIcon radius="lg" variant="default" size="md" onClick={close}>
-              <IconX size={20} stroke={1.5} />
-            </ActionIcon>
-          </Group>
-          {/* Scrollable Content */}
-          <ScrollArea.Autosize
-            classNames={{
-              root: "flex-grow",
-              viewport: "p-4",
-            }}
-          >
-            {content}
-          </ScrollArea.Autosize>
-          {/* Footer */}
-          <Group justify="flex-end" className="border-t-2 p-4 space-x-0.">
-            <Button variant="gradient" gradient={{ from: "pink", to: "yellow" }}>
-              Save
-            </Button>
-            <Button variant="light" color="red" onClick={close}>
-              Close
-            </Button>
-          </Group>
-        </Modal.Content>
-      </Modal.Root>
     </HomePageSectionWrapper>
   );
 };

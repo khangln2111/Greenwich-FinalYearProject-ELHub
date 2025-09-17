@@ -1,4 +1,4 @@
-import { Container } from "@mantine/core";
+import { Container, MantineBreakpoint } from "@mantine/core";
 import React from "react";
 import { cn } from "../../../../utils/cn";
 
@@ -9,16 +9,18 @@ type HomePageSectionWrapperProps = {
     root?: string;
     container?: string;
   };
+  size?: MantineBreakpoint;
 };
 
 export default function HomePageSectionWrapper({
   className,
   children,
   classNames,
+  size = "xl",
 }: HomePageSectionWrapperProps) {
   return (
     <section className={cn("px-2 md:px-4", className, classNames?.root)}>
-      <Container size="lg" className={cn("py-15", classNames?.container)}>
+      <Container size={size} className={cn("py-15", classNames?.container)}>
         {children}
       </Container>
     </section>
