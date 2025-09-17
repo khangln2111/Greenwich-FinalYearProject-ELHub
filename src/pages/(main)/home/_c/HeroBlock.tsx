@@ -21,9 +21,9 @@ const HeroBlock = () => {
           >
             A modern
             <span className="relative ml-2 bg-primary-2 dark:bg-primary-9 rounded px-2 py-1">
-              Lifelong
+              E-learning
             </span>{" "}
-            learning platform
+            platform
           </Title>
 
           <Text size="lg" className="text-slate-600 dark:text-slate-300 mb-6 max-w-xl">

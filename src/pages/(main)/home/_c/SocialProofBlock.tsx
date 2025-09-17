@@ -11,7 +11,7 @@ const SocialProofBlock = () => {
       suffix: "+",
       desc: "Experts sharing their knowledge",
       icon: GraduationCap,
-      color: "from-blue-500 to-blue-400", // gradient background
+      color: "from-blue-500 to-blue-400",
       iconBg: "bg-blue-100 dark:bg-blue-800",
       iconColor: "text-blue-600 dark:text-blue-200",
     },
