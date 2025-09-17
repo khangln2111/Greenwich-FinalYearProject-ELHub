@@ -1,11 +1,11 @@
 import { Button } from "@mantine/core";
 import { Link } from "react-router";
 import { MessageCircle, HelpCircle, PhoneCall } from "lucide-react";
-import HomePageSectionWrapper from "./HomePageSectionWrapper";
+import HomePageBlockWrapper from "./HomePageBlockWrapper";
 
-export default function SupportSection() {
+const SupportBlock = () => {
   return (
-    <HomePageSectionWrapper
+    <HomePageBlockWrapper
       className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50
         dark:from-indigo-900 dark:via-purple-900 dark:to-pink-900"
       classNames={{
@@ -56,6 +56,8 @@ export default function SupportSection() {
           </Button>
         </Link>
       </div>
-    </HomePageSectionWrapper>
+    </HomePageBlockWrapper>
   );
-}
+};
+
+export default SupportBlock;

@@ -1,9 +1,9 @@
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
-import HomePageSectionWrapper from "./HomePageSectionWrapper";
+import HomePageBlockWrapper from "./HomePageBlockWrapper";
 import { Users, GraduationCap, Star, BookOpen } from "lucide-react";
 
-export default function SocialProofSection() {
+const SocialProofBlock = () => {
   const stats = [
     {
       label: "Instructors",
@@ -49,7 +49,7 @@ export default function SocialProofSection() {
   ];
 
   return (
-    <HomePageSectionWrapper
+    <HomePageBlockWrapper
       className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-gray-100 dark:from-slate-900
         dark:via-gray-900 dark:to-slate-950"
       classNames={{
@@ -108,6 +108,8 @@ export default function SocialProofSection() {
           );
         })}
       </div>
-    </HomePageSectionWrapper>
+    </HomePageBlockWrapper>
   );
-}
+};
+
+export default SocialProofBlock;

@@ -4,11 +4,11 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import heroImg from "../../../../assets/homePageImages/HeroImage8.jpg";
 import HoverButton from "../../../../components/HoverButton/HoverButton";
-import HomePageSectionWrapper from "./HomePageSectionWrapper";
+import HomePageBlockWrapper from "./HomePageBlockWrapper";
 
-const Hero = () => {
+const HeroBlock = () => {
   return (
-    <HomePageSectionWrapper
+    <HomePageBlockWrapper
       className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-pink-200
         dark:from-slate-800 dark:via-slate-900 dark:to-pink-900 py-10 lg:py-0"
     >
@@ -73,8 +73,8 @@ const Hero = () => {
           />
         </div>
       </div>
-    </HomePageSectionWrapper>
+    </HomePageBlockWrapper>
   );
 };
 
-export default Hero;
+export default HeroBlock;

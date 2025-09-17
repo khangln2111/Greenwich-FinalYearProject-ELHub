@@ -12,12 +12,12 @@ type HomePageSectionWrapperProps = {
   size?: MantineBreakpoint;
 };
 
-export default function HomePageSectionWrapper({
+const HomePageBlockWrapper = ({
   className,
   children,
   classNames,
   size = "xl",
-}: HomePageSectionWrapperProps) {
+}: HomePageSectionWrapperProps) => {
   return (
     <section className={cn("px-2 md:px-4", className, classNames?.root)}>
       <Container size={size} className={cn("py-15", classNames?.container)}>
@@ -25,4 +25,6 @@ export default function HomePageSectionWrapper({
       </Container>
     </section>
   );
-}
+};
+
+export default HomePageBlockWrapper;

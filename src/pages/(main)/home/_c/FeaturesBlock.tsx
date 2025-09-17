@@ -1,6 +1,6 @@
 import { Badge, Card, Group, SimpleGrid, Text, Title } from "@mantine/core";
 import { IconRocket, IconBook, IconUsers } from "@tabler/icons-react";
-import HomePageSectionWrapper from "./HomePageSectionWrapper";
+import HomePageBlockWrapper from "./HomePageBlockWrapper";
 import { cn } from "../../../../utils/cn";
 
 const mockdata = [
@@ -24,7 +24,7 @@ const mockdata = [
   },
 ];
 
-const Features = () => {
+const FeaturesBlock = () => {
   const features = mockdata.map((feature) => (
     <Card
       key={feature.title}
@@ -60,7 +60,7 @@ const Features = () => {
   ));
 
   return (
-    <HomePageSectionWrapper>
+    <HomePageBlockWrapper>
       <Group justify="center">
         <Badge variant="light" size="lg">
           Learn with Confidence
@@ -85,8 +85,8 @@ const Features = () => {
       <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xl" mt={50}>
         {features}
       </SimpleGrid>
-    </HomePageSectionWrapper>
+    </HomePageBlockWrapper>
   );
 };
 
-export default Features;
+export default FeaturesBlock;

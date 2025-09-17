@@ -4,9 +4,9 @@ import { Link } from "react-router";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useGetCategories } from "../../../../features/category/category.hooks";
-import HomePageSectionWrapper from "./HomePageSectionWrapper";
+import HomePageBlockWrapper from "./HomePageBlockWrapper";
 
-const Categories = () => {
+const CategoriesBlock = () => {
   const { data, isPending, error } = useGetCategories();
 
   if (error) {
@@ -23,7 +23,7 @@ const Categories = () => {
   }
 
   return (
-    <HomePageSectionWrapper size="2xl">
+    <HomePageBlockWrapper size="2xl">
       <div className="mb-8 text-center">
         <Badge size="lg" variant="light" color="violet" className="mb-3">
           Trending Categories
@@ -119,8 +119,8 @@ const Categories = () => {
           <ArrowRightIcon className="w-6 h-6" />
         </div>
       </div>
-    </HomePageSectionWrapper>
+    </HomePageBlockWrapper>
   );
 };
 
-export default Categories;
+export default CategoriesBlock;

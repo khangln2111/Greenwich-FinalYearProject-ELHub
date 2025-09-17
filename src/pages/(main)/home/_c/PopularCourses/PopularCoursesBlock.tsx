@@ -4,9 +4,9 @@ import { Link } from "react-router";
 import CourseCard from "../../../../../components/course-cards/CourseCard";
 import CourseCardSkeleton from "../../../../../components/course-cards/CourseCardSkeleton";
 import { useGetPublishedCourses } from "../../../../../features/course/course.hooks";
-import HomePageSectionWrapper from "../HomePageSectionWrapper";
+import HomePageBlockWrapper from "../HomePageBlockWrapper";
 
-const PopularCourses = () => {
+const PopularCoursesBlock = () => {
   const {
     data: courses,
     isPending,
@@ -23,9 +23,11 @@ const PopularCourses = () => {
   if (isError) return <div>Failed to load courses</div>;
 
   return (
-    <HomePageSectionWrapper className="bg-[#F8F8FF] dark:bg-zinc-950">
+    <HomePageBlockWrapper className="bg-[#F8F8FF] dark:bg-zinc-950">
       <Group justify="space-between">
-        <Title order={1}>Popular Courses</Title>
+        <Title order={2} className="dark:text-white">
+          Popular Courses
+        </Title>
         <Anchor
           fz="lg"
           underline="hover"
@@ -64,7 +66,7 @@ const PopularCourses = () => {
       >
         View all courses
       </Button>
-    </HomePageSectionWrapper>
+    </HomePageBlockWrapper>
   );
 };
-export default PopularCourses;
+export default PopularCoursesBlock;

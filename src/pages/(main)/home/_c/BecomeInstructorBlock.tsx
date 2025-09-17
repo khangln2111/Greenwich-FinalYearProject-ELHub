@@ -1,12 +1,12 @@
 import { Button } from "@mantine/core";
 import { GraduationCap } from "lucide-react";
 import { Link } from "react-router";
-import HomePageSectionWrapper from "./HomePageSectionWrapper";
+import HomePageBlockWrapper from "./HomePageBlockWrapper";
 import becomeInstructorImg from "../../../../assets/homePageImages/BecomeInstructor.webp";
 
-const BecomeInstructorSection = () => {
+const BecomeInstructorBlock = () => {
   return (
-    <HomePageSectionWrapper
+    <HomePageBlockWrapper
       className="relative overflow-hidden bg-gradient-to-br from-slate-100 to-gray-200 dark:from-slate-900
         dark:to-gray-900"
       classNames={{
@@ -55,8 +55,8 @@ const BecomeInstructorSection = () => {
             opacity-50"
         />
       </div>
-    </HomePageSectionWrapper>
+    </HomePageBlockWrapper>
   );
 };
 
-export default BecomeInstructorSection;
+export default BecomeInstructorBlock;
