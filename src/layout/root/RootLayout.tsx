@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 import GlobalNavigationProgress from "../../components/GlobalNavigationProgress/GlobalNavigationProgress";
 
 export default function RootLayout() {
@@ -6,6 +6,7 @@ export default function RootLayout() {
     <>
       <GlobalNavigationProgress />
       <Outlet />
+      <ScrollRestoration />
     </>
   );
 }
