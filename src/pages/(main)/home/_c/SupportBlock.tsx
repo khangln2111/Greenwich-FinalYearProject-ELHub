@@ -3,6 +3,24 @@ import { Link } from "react-router";
 import { MessageCircle, HelpCircle, PhoneCall } from "lucide-react";
 import HomePageBlockWrapper from "./HomePageBlockWrapper";
 
+const supportItems = [
+  {
+    icon: <MessageCircle className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
+    title: "Live Chat",
+    description: "Get quick answers from our friendly support team.",
+  },
+  {
+    icon: <HelpCircle className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
+    title: "Knowledge Base",
+    description: "Browse helpful guides, tips, and common questions.",
+  },
+  {
+    icon: <PhoneCall className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
+    title: "Call Support",
+    description: "Speak directly with our support specialists.",
+  },
+];
+
 const SupportBlock = () => {
   return (
     <HomePageBlockWrapper
@@ -23,29 +41,17 @@ const SupportBlock = () => {
 
       {/* Icons */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl w-full mt-8">
-        <div className="flex flex-col items-center bg-white dark:bg-primary-8/40 rounded-xl shadow p-6">
-          <MessageCircle className="w-10 h-10 text-primary-6 dark:text-primary-3 mb-4" />
-          <h3 className="font-semibold text-primary-9 dark:text-white">Live Chat</h3>
-          <p className="text-sm text-primary-7 dark:text-primary-2 mt-2">
-            Get quick answers from our friendly support team.
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center bg-white dark:bg-primary-8/40 rounded-xl shadow p-6">
-          <HelpCircle className="w-10 h-10 text-primary-6 dark:text-primary-3 mb-4" />
-          <h3 className="font-semibold text-primary-9 dark:text-white">Knowledge Base</h3>
-          <p className="text-sm text-primary-7 dark:text-primary-2 mt-2">
-            Browse helpful guides, tips, and common questions.
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center bg-white dark:bg-primary-8/40 rounded-xl shadow p-6">
-          <PhoneCall className="w-10 h-10 text-primary-6 dark:text-primary-3 mb-4" />
-          <h3 className="font-semibold text-primary-9 dark:text-white">Call Support</h3>
-          <p className="text-sm text-primary-7 dark:text-primary-2 mt-2">
-            Speak directly with our support specialists.
-          </p>
-        </div>
+        {supportItems.map((item) => (
+          <div
+            className="flex flex-col items-center bg-white dark:bg-primary-8/40 rounded-xl shadow p-6 border
+              border-gray-200 dark:border-gray-700"
+            key={item.title}
+          >
+            {item.icon}
+            <h3 className="font-semibold text-primary-9 dark:text-white">{item.title}</h3>
+            <p className="text-sm text-primary-7 dark:text-primary-2 mt-2">{item.description}</p>
+          </div>
+        ))}
       </div>
 
       {/* Button to FAQ */}

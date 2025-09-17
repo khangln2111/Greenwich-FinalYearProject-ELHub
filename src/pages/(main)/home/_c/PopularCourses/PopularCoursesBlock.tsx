@@ -25,7 +25,7 @@ const PopularCoursesBlock = () => {
   return (
     <HomePageBlockWrapper className="bg-[#F8F8FF] dark:bg-zinc-950">
       <Group justify="space-between">
-        <Title order={2} className="dark:text-white">
+        <Title order={2} className="dark:text-white text-3xl">
           Popular Courses
         </Title>
         <Anchor
