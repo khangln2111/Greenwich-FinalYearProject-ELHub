@@ -23,7 +23,7 @@ const Categories = () => {
   }
 
   return (
-    <HomePageSectionWrapper>
+    <HomePageSectionWrapper size="2xl">
       <div className="mb-8 text-center">
         <Badge size="lg" variant="light" color="violet" className="mb-3">
           Trending Categories

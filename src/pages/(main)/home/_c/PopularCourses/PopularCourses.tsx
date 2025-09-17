@@ -1,4 +1,4 @@
-import { Anchor, Group, SimpleGrid, Text, Title } from "@mantine/core";
+import { Anchor, Button, Group, SimpleGrid, Text, Title } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { Link } from "react-router";
 import CourseCard from "../../../../../components/course-cards/CourseCard";
@@ -23,7 +23,7 @@ const PopularCourses = () => {
   if (isError) return <div>Failed to load courses</div>;
 
   return (
-    <HomePageSectionWrapper>
+    <HomePageSectionWrapper className="bg-[#F8F8FF] dark:bg-zinc-950">
       <Group justify="space-between">
         <Title order={1}>Popular Courses</Title>
         <Anchor
@@ -45,13 +45,25 @@ const PopularCourses = () => {
       </Text>
       {/* Auto column grid */}
 
-      <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg" my={25}>
+      <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="xl" className="mt-6">
         {isPending
           ? Array.from({ length: 6 }).map((_, index) => <CourseCardSkeleton key={index} />)
           : courses.items.map((course) => (
-              <CourseCard key={course.id} course={course} className="border" />
+              <CourseCard key={course.id} course={course} className="shadow-xl border" />
             ))}
       </SimpleGrid>
+
+      <Button
+        variant="gradient"
+        gradient={{ from: "pink", to: "yellow" }}
+        fullWidth
+        className="mt-15 max-w-[200px] mx-auto"
+        radius={40}
+        component={Link}
+        to="/courses"
+      >
+        View all courses
+      </Button>
     </HomePageSectionWrapper>
   );
 };
