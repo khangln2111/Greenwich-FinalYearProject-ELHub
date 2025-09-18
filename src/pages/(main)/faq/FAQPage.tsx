@@ -91,30 +91,33 @@ const faqs = [
       "You automatically get access to all updates and new lectures added to the course without extra cost.",
   },
 ];
+
 const FAQPage = () => {
   return (
     <div
-      className="min-h-screen py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 dark:from-slate-900
+      className="min-h-screen py-24 bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 dark:from-slate-900
         dark:via-slate-950 dark:to-slate-900"
     >
       <Container size="lg">
         {/* Heading */}
-        <div className="text-center mb-16 space-y-3" data-aos="fade-down" data-aos-duration="700">
+        <div className="text-center space-y-4" data-aos="fade-down" data-aos-duration="700">
           <Badge
             size="lg"
-            className="mx-auto px-4 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
+            className="mx-auto px-4 py-1 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700
+              dark:from-indigo-900 dark:to-purple-900 dark:text-indigo-200"
           >
             <Sparkles className="inline-block mr-1 size-4" />
             FAQ Center
           </Badge>
           <Title
             order={1}
-            className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white"
+            className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600
+              bg-clip-text text-transparent dark:from-indigo-400 dark:via-purple-400 dark:to-blue-400"
           >
             Frequently Asked Questions
           </Title>
           <Text className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Find answers to common questions about our e-learning platform.
+            Quick answers to help you get the most out of our e-learning platform.
           </Text>
         </div>
 
@@ -124,15 +127,16 @@ const FAQPage = () => {
           multiple
           variant="separated"
           classNames={{
-            item: `bg-white/90 dark:bg-slate-800/90 border border-gray-200 dark:border-gray-700 mb-6 shadow-md
-            hover:shadow-lg transition-shadow rounded-2xl`,
+            item: `bg-white/90 dark:bg-slate-800/90 border border-transparent bg-clip-padding mb-6 rounded-2xl
+            shadow-md hover:shadow-xl hover:scale-[1.01] transition-all duration-200 hover:border-gradient-to-r
+            hover:from-indigo-500 hover:to-purple-500`,
             control:
-              "hover:bg-gray-50/70 dark:hover:bg-slate-700/70 transition-colors px-5 py-1 rounded-2xl",
+              "hover:bg-gray-50/70 dark:hover:bg-slate-700/70 transition-colors px-5 py-2 rounded-2xl",
             label:
               "font-semibold text-gray-900 dark:text-white text-left text-base md:text-lg rounded-2xl",
             content:
               "text-gray-600 dark:text-gray-300 px-5 pb-5 text-sm md:text-base leading-relaxed rounded-2xl",
-            root: "max-w-2xl mx-auto",
+            root: "max-w-2xl mx-auto mt-12",
           }}
         >
           {faqs.map((faq, i) => (
@@ -144,46 +148,54 @@ const FAQPage = () => {
         </Accordion>
 
         {/* Extra help section */}
-        <div className="mt-20 text-center space-y-6" data-aos="zoom-in-up">
-          <Title order={2} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-            Still need help?
-          </Title>
-          <Text className="text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
-            Our support team is ready to assist you. Contact us through one of the options below:
-          </Text>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-            <Link to="/support">
-              <Button
-                size="lg"
-                className="px-6 py-3 rounded-full flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500
-                  dark:hover:bg-indigo-600 text-white"
-                leftSection={<MessageCircle className="size-5" />}
-              >
-                Live Chat
-              </Button>
-            </Link>
-            <a href="tel:18001234">
-              <Button
-                size="lg"
-                variant="outline"
-                className="px-6 py-3 rounded-full flex items-center gap-2 border-indigo-600 text-indigo-700 hover:bg-indigo-50
-                  dark:border-indigo-400 dark:text-indigo-200 dark:hover:bg-slate-800"
-                leftSection={<PhoneCall className="size-5" />}
-              >
-                Call Us
-              </Button>
-            </a>
-            <Link to="/contact">
-              <Button
-                size="lg"
-                variant="subtle"
-                className="px-6 py-3 rounded-full flex items-center gap-2 text-indigo-700 hover:bg-indigo-50
-                  dark:text-indigo-200 dark:hover:bg-slate-800"
-                leftSection={<HelpCircle className="size-5" />}
-              >
-                Send Email
-              </Button>
-            </Link>
+        <div className="mt-12" data-aos="zoom-in-up" data-aos-duration="700">
+          <div
+            className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-50 via-purple-50 to-blue-50
+              dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 p-10 shadow-lg text-center"
+          >
+            <Title
+              order={2}
+              className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
+            >
+              Still need help?
+            </Title>
+            <Text className="mt-3 text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+              Our support team is ready to assist you. Choose one of the options below:
+            </Text>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+              <Link to="/support">
+                <Button
+                  size="lg"
+                  className="px-6 py-3 rounded-full flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500
+                    dark:hover:bg-indigo-600 text-white shadow-md hover:shadow-xl"
+                  leftSection={<MessageCircle className="size-5" />}
+                >
+                  Live Chat
+                </Button>
+              </Link>
+              <a href="tel:18001234">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="px-6 py-3 rounded-full flex items-center gap-2 border-indigo-600 text-indigo-700 hover:bg-indigo-50
+                    dark:border-indigo-400 dark:text-indigo-200 dark:hover:bg-slate-800"
+                  leftSection={<PhoneCall className="size-5" />}
+                >
+                  Call Us
+                </Button>
+              </a>
+              <Link to="/contact">
+                <Button
+                  size="lg"
+                  variant="subtle"
+                  className="px-6 py-3 rounded-full flex items-center gap-2 text-indigo-700 hover:bg-indigo-50
+                    dark:text-indigo-200 dark:hover:bg-slate-800"
+                  leftSection={<HelpCircle className="size-5" />}
+                >
+                  Send Email
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </Container>
