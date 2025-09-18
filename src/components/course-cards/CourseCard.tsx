@@ -8,7 +8,7 @@ import { formatDuration } from "../../utils/format";
 type CourseCardProps = {
   course: CourseVm;
   className?: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const CourseCard = ({ course, className }: CourseCardProps) => {
   const navigate = useNavigate();

@@ -24,7 +24,7 @@ const CategoriesBlock = () => {
 
   return (
     <HomePageBlockWrapper size="2xl">
-      <div className="mb-8 text-center">
+      <div className="mb-8 text-center" data-aos="fade-up">
         <Badge size="lg" variant="light" color="violet" className="mb-3">
           Trending Categories
         </Badge>
@@ -61,9 +61,13 @@ const CategoriesBlock = () => {
           // normal state
           <Swiper
             modules={[Autoplay, Navigation]}
+            observer={true}
+            observeParents={true}
             slidesPerView={1}
             centeredSlides={false}
             speed={800}
+            spaceBetween={16}
+            data-aos="fade-up"
             autoplay={{
               delay: 4000,
               disableOnInteraction: false,
@@ -80,7 +84,7 @@ const CategoriesBlock = () => {
             }}
             className="py-4 flex-1"
           >
-            {data.items.map((category) => (
+            {data.items.map((category, _) => (
               <SwiperSlide key={category.id}>
                 <Link
                   to={`/courses?categoryId=${category.id}`}

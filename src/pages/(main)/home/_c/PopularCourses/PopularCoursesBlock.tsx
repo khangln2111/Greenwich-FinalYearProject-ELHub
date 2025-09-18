@@ -24,7 +24,7 @@ const PopularCoursesBlock = () => {
 
   return (
     <HomePageBlockWrapper className="bg-[#F8F8FF] dark:bg-zinc-950">
-      <Group justify="space-between">
+      <Group justify="space-between" data-aos="fade-up">
         <Title order={2} className="dark:text-white text-3xl">
           Popular Courses
         </Title>
@@ -41,7 +41,7 @@ const PopularCoursesBlock = () => {
           <IconArrowRight size="1.2rem" style={{ marginLeft: 5 }} />
         </Anchor>
       </Group>
-      <Text c="dimmed" mt="md">
+      <Text c="dimmed" mt="md" data-aos="fade-up" data-aos-delay={200}>
         Several popular categories of courses are available on the platform. You can choose from a
         variety of categories to learn from.
       </Text>
@@ -49,9 +49,21 @@ const PopularCoursesBlock = () => {
 
       <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="xl" className="mt-6">
         {isPending
-          ? Array.from({ length: 6 }).map((_, index) => <CourseCardSkeleton key={index} />)
-          : courses.items.map((course) => (
-              <CourseCard key={course.id} course={course} className="shadow-xl border" />
+          ? Array.from({ length: 6 }).map((_, index) => (
+              <CourseCardSkeleton
+                key={index}
+                data-aos="fade-up"
+                data-aos-delay={100 + index * 100}
+              />
+            ))
+          : courses.items.map((course, index) => (
+              <CourseCard
+                key={course.id}
+                course={course}
+                data-aos="fade-up"
+                data-aos-delay={100 + index * 100}
+                className="shadow-xl border"
+              />
             ))}
       </SimpleGrid>
 

@@ -1,7 +1,6 @@
+import { BookOpen, GraduationCap, Star, Users } from "lucide-react";
 import CountUp from "react-countup";
-import { motion } from "framer-motion";
 import HomePageBlockWrapper from "./HomePageBlockWrapper";
-import { Users, GraduationCap, Star, BookOpen } from "lucide-react";
 
 const SocialProofBlock = () => {
   const stats = [
@@ -57,7 +56,7 @@ const SocialProofBlock = () => {
       }}
     >
       {/* Heading */}
-      <div className="max-w-2xl">
+      <div className="max-w-2xl" data-aos="fade-up" data-aos-delay="100">
         <h2 className="text-3xl md:text-4xl font-extrabold text-primary-9 dark:text-primary-1">
           Join Our Thriving Community
         </h2>
@@ -71,15 +70,13 @@ const SocialProofBlock = () => {
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <motion.div
+            <div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
               className={
                 "flex flex-col items-center rounded-xl shadow-lg border p-8 bg-white dark:bg-slate-800"
               }
+              data-aos="fade-up"
+              data-aos-delay={200 + index * 150} // stagger effect
             >
               {/* Icon */}
               <div
@@ -104,7 +101,7 @@ const SocialProofBlock = () => {
                 {stat.label}
               </div>
               <p className="mt-1 text-sm text-primary-7 dark:text-primary-3">{stat.desc}</p>
-            </motion.div>
+            </div>
           );
         })}
       </div>

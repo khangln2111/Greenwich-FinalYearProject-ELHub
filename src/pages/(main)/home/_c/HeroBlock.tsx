@@ -14,7 +14,10 @@ const HeroBlock = () => {
     >
       <div className="flex flex-col-reverse lg:flex-row items-center lg:items-center gap-3 md:gap-6 lg:gap-12 w-full">
         {/* Left column (text) */}
-        <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div
+          className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left"
+          data-aos="fade-right"
+        >
           <Title
             order={2}
             className="font-black leading-tight text-3xl md:text-5xl mb-4 text-slate-900 dark:text-white"
@@ -68,6 +71,7 @@ const HeroBlock = () => {
         <div className="flex-1 flex justify-center lg:justify-end mb-8 lg:mb-0">
           <Image
             src={heroImg}
+            data-aos="fade-left"
             alt="Students learning online"
             className="rounded-full shadow-xl max-w-[240px] md:max-w-[200px] lg:max-w-lg aspect-square"
           />

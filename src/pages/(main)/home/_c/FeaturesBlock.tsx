@@ -25,7 +25,7 @@ const mockdata = [
 ];
 
 const FeaturesBlock = () => {
-  const features = mockdata.map((feature) => (
+  const features = mockdata.map((feature, index) => (
     <Card
       key={feature.title}
       shadow="xl"
@@ -39,6 +39,8 @@ const FeaturesBlock = () => {
         "shadow-lg shadow-primary-200/20 dark:shadow-black/20", // soft depth
         "transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:backdrop-brightness-110",
       )}
+      data-aos="fade-down"
+      data-aos-delay={100 + index * 150} // stagger delay
     >
       {/* Gradient overlay for subtle glow */}
       <div
@@ -62,7 +64,7 @@ const FeaturesBlock = () => {
   return (
     <HomePageBlockWrapper>
       <Group justify="center">
-        <Badge variant="light" size="lg">
+        <Badge variant="light" size="lg" data-aos="fade-down" data-aos-delay={100}>
           Learn with Confidence
         </Badge>
       </Group>
@@ -72,15 +74,27 @@ const FeaturesBlock = () => {
         className="text-[24px] lg:text-[34px] font-black dark:text-white"
         ta="center"
         mt="sm"
+        data-aos="fade-down"
+        data-aos-delay={200}
       >
         Empower Your Skills, Unlock Your Potential
       </Title>
 
-      <Text className="m-auto max-w-[600px] text-gray-600 dark:text-gray-400" ta="center" mt="md">
+      <Text
+        className="m-auto max-w-[600px] text-gray-600 dark:text-gray-400"
+        ta="center"
+        mt="md"
+        data-aos="fade-down"
+        data-aos-delay={300}
+      >
         Explore expertly designed courses, gain valuable knowledge, and achieve your personal and
         professional goals with ease.
       </Text>
-      <div className="bg-primary-filled w-[45px] h-[2px] mt-sm mx-auto"></div>
+      <div
+        className="bg-primary-filled w-[45px] h-[2px] mt-sm mx-auto"
+        data-aos="fade-down"
+        data-aos-delay={400}
+      />
 
       <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="xl" mt={50}>
         {features}
