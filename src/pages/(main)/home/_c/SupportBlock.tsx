@@ -1,21 +1,21 @@
 import { Button } from "@mantine/core";
+import { HelpCircleIcon, MessageCircleIcon, PhoneCallIcon } from "lucide-react";
 import { Link } from "react-router";
-import { MessageCircle, HelpCircle, PhoneCall } from "lucide-react";
 import HomePageBlockWrapper from "./HomePageBlockWrapper";
 
 const supportItems = [
   {
-    icon: <MessageCircle className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
+    icon: <MessageCircleIcon className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
     title: "Live Chat",
     description: "Get quick answers from our friendly support team.",
   },
   {
-    icon: <HelpCircle className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
+    icon: <HelpCircleIcon className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
     title: "Knowledge Base",
     description: "Browse helpful guides, tips, and common questions.",
   },
   {
-    icon: <PhoneCall className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
+    icon: <PhoneCallIcon className="size-10 text-primary-6 dark:text-primary-3 mb-4" />,
     title: "Call Support",
     description: "Speak directly with our support specialists.",
   },
@@ -57,7 +57,11 @@ const SupportBlock = () => {
       {/* Button to FAQ */}
       <div className="mt-10">
         <Link to="/faq">
-          <Button size="lg" className="px-8 py-3 rounded-full">
+          <Button
+            size="lg"
+            className="px-8 py-3 rounded-full"
+            rightSection={<HelpCircleIcon className="size-5" />}
+          >
             Visit FAQ
           </Button>
         </Link>
