@@ -132,7 +132,8 @@ public class OrderService(
     public async Task<Success> ProcessOrder(Guid id)
     {
         var order = await context.Orders
-            .Include(o => o.OrderItems).ThenInclude(orderItem => orderItem.Course)
+            .Include(o => o.OrderItems)
+            .ThenInclude(orderItem => orderItem.Course)
             .FirstOrDefaultAsync(o => o.Id == id);
 
         if (order == null) throw new NotFoundException("Order not found");

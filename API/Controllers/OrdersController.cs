@@ -59,11 +59,10 @@ public class OrdersController(IOrderService orderService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id:guid}/Process")]
+    [HttpPut("{id:guid}/Process")]
     [Authorize]
     public async Task<IActionResult> ProcessOrder(Guid id)
     {
-        if (id == Guid.Empty) return BadRequest("Invalid order ID.");
         var result = await orderService.ProcessOrder(id);
         return Ok(result);
     }
