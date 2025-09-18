@@ -1,9 +1,9 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showErrorToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
 import { keyFac } from "../common-service/queryKeyFactory";
-import { createOrder } from "./order.api";
+import { createOrder, processOrder } from "./order.api";
 import { CreateOrderCommand, OrderQueryCriteria } from "./order.types";
 
 export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
@@ -47,12 +47,15 @@ export const useCreateOrder = () => {
   });
 };
 
-export const useProcessOrder = (id: string) => {
-  const accessToken = useAuthStore((s) => s.accessToken);
-  return useQuery({
-    queryKey: keyFac.orders.processOrder(id).queryKey,
-    queryFn: keyFac.orders.processOrder(id).queryFn,
-    enabled: !!id && !!accessToken,
-    retry: false,
+export const useProcessOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => processOrder(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.cart._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.orders._def });
+      queryClient.invalidateQueries({ queryKey: keyFac.inventories._def });
+    },
   });
 };

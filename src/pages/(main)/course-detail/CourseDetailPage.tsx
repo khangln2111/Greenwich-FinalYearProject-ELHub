@@ -111,8 +111,8 @@ export default function CourseDetailPage() {
         pt={{ base: "xl", md: "2xl" }}
       >
         <div
-          className="py-md gap-x-15 gap-y-10 grid grid-cols-1 lg:grid-cols-[8fr_4fr] xl:grid-cols-[8.5fr_3.5fr]
-            items-start justify-items-center"
+          className="py-md lg:gap-x-6 xl:gap-x-15 gap-y-10 grid grid-cols-1 lg:grid-cols-[8fr_4fr]
+            xl:grid-cols-[8.5fr_3.5fr] items-start justify-items-center"
         >
           {/* 1st column */}
           <div className="w-full">
@@ -227,9 +227,9 @@ export default function CourseDetailPage() {
             </Tabs>
           </div>
           {/* 2nd column */}
-          <div
-            className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-xl overflow-hidden
-              max-lg:max-w-lg w-full"
+          <aside
+            className="w-full max-w-md bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-xl
+              overflow-hidden lg:sticky lg:top-24"
           >
             <div className="p-6 size-full dark:bg-dark-6 bg-white rounded-[inherit]">
               {/* Price box */}
@@ -325,7 +325,7 @@ export default function CourseDetailPage() {
                 </Button>
               )}
             </div>
-          </div>
+          </aside>
         </div>
       </Box>
     </div>

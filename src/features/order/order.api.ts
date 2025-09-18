@@ -20,7 +20,7 @@ export const createOrder = async (command: CreateOrderCommand) => {
 };
 
 export const processOrder = async (id: string) => {
-  const response = await apiClient.get<
+  const response = await apiClient.put<
     ApiSuccessResponse<{
       orderId: string;
       status: string;

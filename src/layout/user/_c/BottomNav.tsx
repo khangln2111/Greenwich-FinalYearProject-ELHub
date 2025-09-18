@@ -1,5 +1,5 @@
 import { BookOpen, Home, User } from "lucide-react";
-import { Link, useLocation } from "react-router";
+import { Link, matchPath, useLocation } from "react-router";
 import { cn } from "../../../utils/cn";
 
 const tabs = [
@@ -8,11 +8,15 @@ const tabs = [
   { to: "/dashboard/my-profile", label: "Profile", icon: User },
 ];
 
-const mainRoutes = ["/courses"];
+const mainRoutes = ["/courses", "/courses/:id"];
 
 const BottomNav = () => {
   const location = useLocation();
-  const shouldHide = mainRoutes.includes(location.pathname);
+
+  const shouldHide = mainRoutes.some((pattern) =>
+    matchPath({ path: pattern, end: true }, location.pathname),
+  );
+
   if (shouldHide) return null;
 
   return (
