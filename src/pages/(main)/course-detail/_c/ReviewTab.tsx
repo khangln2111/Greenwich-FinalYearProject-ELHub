@@ -70,8 +70,8 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId, className }: ReviewT
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 rounded-lg">
         {/* Left section */}
         <div
-          className="flex flex-col items-center justify-center md:col-span-4 xl:col-span-3 gap-3
-            p-sm md:border-r md:aspect-square"
+          className="flex flex-col items-center justify-center md:col-span-4 xl:col-span-3 gap-3 p-sm md:border-r
+            md:aspect-square"
         >
           <div className="text-orange-500 text-5xl font-bold">{rating.toFixed(1)}</div>
           <Rating value={rating} readOnly size="lg" />
@@ -82,10 +82,7 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId, className }: ReviewT
         </div>
 
         {/* Right section */}
-        <div
-          className="grid grid-rows-5 gap-y-5 gap-x-3 grid-cols-[auto_1fr_auto] md:col-span-8
-            xl:col-span-9"
-        >
+        <div className="grid grid-rows-5 gap-y-5 gap-x-3 grid-cols-[auto_1fr_auto] md:col-span-8 xl:col-span-9">
           {stars.map(({ stars, percentage }) => (
             <div
               key={stars}
@@ -158,9 +155,9 @@ const ReviewTab = ({ rating, totalReviews, stars, courseId, className }: ReviewT
           />
         </div>
         {/* Reviews */}
-        <div className="flex flex-col items-center justify-center gap-6 min-h-[300px]">
+        <div className="flex flex-col items-center justify-center gap-6 py-10">
           {isPending ? (
-            <CenterLoader />
+            <CenterLoader height={80} />
           ) : reviews.items.length === 0 ? (
             <p className="text-center text-gray-500">No reviews found.</p>
           ) : (

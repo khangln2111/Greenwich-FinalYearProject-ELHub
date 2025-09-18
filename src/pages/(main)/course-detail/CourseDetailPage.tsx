@@ -186,10 +186,9 @@ export default function CourseDetailPage() {
               data={Object.values(CourseDetailTab)}
               transitionDuration={300}
               size="md"
-              className="w-full mt-5 grid grid-cols-2 md:grid-flow-col md:auto-cols-fr border border-gray-200
-                dark:border-gray-700"
               classNames={{
-                root: "bg-white dark:bg-dark-6 shadow-sm border border-gray-1 dark:border-dark-4 p-[10px]",
+                root: `w-full p-[10px] mt-10 bg-white dark:bg-dark-6 shadow-lg border grid grid-cols-2 md:grid-flow-col
+                md:auto-cols-fr`,
                 indicator: "bg-linear-to-r from-blue to-cyan",
                 control: "before:hidden",
                 label: "data-active:text-white hover:data-active:text-white",
@@ -230,7 +229,7 @@ export default function CourseDetailPage() {
           {/* 2nd column */}
           <aside
             className="w-full max-w-md bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-1 rounded-3xl shadow-xl
-              overflow-hidden lg:sticky lg:top-24"
+              overflow-hidden"
           >
             <div className="p-6 size-full dark:bg-dark-6 bg-white rounded-[inherit]">
               {/* Price box */}
