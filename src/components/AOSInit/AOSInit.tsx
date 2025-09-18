@@ -1,12 +1,11 @@
 import { useEffect } from "react";
+import "aos/dist/aos.css";
 
 const AOSInit = () => {
   useEffect(() => {
     const loadAOS = async () => {
       // Lazy load JS
       const AOS = (await import("aos")).default;
-      // Lazy load CSS
-      await import("aos/dist/aos.css");
 
       // Init AOS
       AOS.init({

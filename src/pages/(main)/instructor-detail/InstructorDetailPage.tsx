@@ -19,7 +19,7 @@ import {
   IconStar,
   IconUsers,
 } from "@tabler/icons-react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import {
   useGetCoursesByInstructorId,
   useGetInstructorById,
@@ -141,6 +141,8 @@ export default function InstructorDetailPage() {
                   key={course.id}
                   course={course}
                   className="border border-gray-200 dark:border-gray-800"
+                  component={Link}
+                  to={`/courses/${course.id}`}
                 />
               ))}
             </SimpleGrid>

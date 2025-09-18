@@ -14,7 +14,7 @@ const BecomeInstructorBlock = () => {
       }}
     >
       {/* Text content */}
-      <div>
+      <div data-aos="zoom-in-right">
         <div className="flex items-center gap-2 mb-3">
           <GraduationCap className="w-6 h-6 text-primary-6 dark:text-primary-3" />
           <span className="uppercase tracking-wide text-sm font-semibold text-primary-6 dark:text-primary-2">
@@ -31,7 +31,7 @@ const BecomeInstructorBlock = () => {
           worldwide.
         </p>
 
-        <div className="mt-6 flex flex-wrap gap-4">
+        <div className="mt-6 flex flex-wrap gap-4" data-aos="zoom-in-right">
           <Link to="/become-instructor">
             <Button size="lg" className="px-6 py-3 rounded-full">
               Start Teaching
@@ -41,7 +41,7 @@ const BecomeInstructorBlock = () => {
       </div>
 
       {/* Image */}
-      <div className="relative">
+      <div className="relative" data-aos="zoom-in-left">
         <div className="rounded-2xl overflow-hidden shadow-xl">
           <img
             src={becomeInstructorImg}

@@ -11,7 +11,7 @@ export default function RegisterPage() {
       className="flex items-center justify-center min-h-dvh bgi-auth-light dark:bgi-auth-dark bg-cover bg-center
         bg-no-repeat"
     >
-      <Container size={500} flex={1}>
+      <Container size={500} flex={1} data-aos="zoom-in-down">
         <Title ta="center" className="font-black">
           Welcome to ELearning Hub
         </Title>

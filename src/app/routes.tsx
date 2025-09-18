@@ -31,6 +31,10 @@ const userRoute: RouteObject = {
       lazy: lazyRoute(() => import("../pages/(main)/become-instructor/BecomeInstructorPage")),
     },
     {
+      path: "faq",
+      lazy: lazyRoute(() => import("../pages/(main)/faq/FAQPage")),
+    },
+    {
       Component: () => <PrivateRoute isLayoutRoute={true} />,
       children: [
         {

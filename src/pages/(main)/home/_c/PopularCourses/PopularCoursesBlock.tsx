@@ -49,20 +49,16 @@ const PopularCoursesBlock = () => {
 
       <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="xl" className="mt-6">
         {isPending
-          ? Array.from({ length: 6 }).map((_, index) => (
-              <CourseCardSkeleton
-                key={index}
-                data-aos="fade-up"
-                data-aos-delay={100 + index * 100}
-              />
-            ))
+          ? Array.from({ length: 6 }).map((_, index) => <CourseCardSkeleton key={index} />)
           : courses.items.map((course, index) => (
               <CourseCard
                 key={course.id}
                 course={course}
-                data-aos="fade-up"
+                data-aos="zoom-in-down"
                 data-aos-delay={100 + index * 100}
                 className="shadow-xl border"
+                component={Link}
+                to={`/courses/${course.id}`}
               />
             ))}
       </SimpleGrid>
@@ -75,6 +71,7 @@ const PopularCoursesBlock = () => {
         radius={40}
         component={Link}
         to="/courses"
+        data-aos="zoom-in-up"
       >
         View all courses
       </Button>

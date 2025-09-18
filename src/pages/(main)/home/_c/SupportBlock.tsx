@@ -31,21 +31,30 @@ const SupportBlock = () => {
       }}
     >
       {/* Heading */}
-      <h2 className="text-3xl md:text-4xl font-extrabold text-primary-9 dark:text-primary-1">
+      <h2
+        className="text-3xl md:text-4xl font-extrabold text-primary-9 dark:text-primary-1"
+        data-aos="fade-down"
+      >
         We’re Here to Help You Succeed
       </h2>
-      <p className="max-w-2xl text-lg text-primary-7 dark:text-primary-2">
+      <p
+        className="max-w-2xl text-lg text-primary-7 dark:text-primary-2"
+        data-aos="fade-down"
+        data-aos-delay="150"
+      >
         Have questions about courses, instructors, or how our platform works? Our support team and
         resources are ready to assist you every step of the way.
       </p>
 
       {/* Icons */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl w-full mt-8">
-        {supportItems.map((item) => (
+        {supportItems.map((item, index) => (
           <div
             className="flex flex-col items-center bg-white dark:bg-primary-8/40 rounded-xl shadow p-6 border
               border-gray-200 dark:border-gray-700"
             key={item.title}
+            data-aos="fade-up"
+            data-aos-delay={100 + index * 100}
           >
             {item.icon}
             <h3 className="font-semibold text-primary-9 dark:text-white">{item.title}</h3>
@@ -61,6 +70,8 @@ const SupportBlock = () => {
             size="lg"
             className="px-8 py-3 rounded-full"
             rightSection={<HelpCircleIcon className="size-5" />}
+            data-aos="zoom-in-up"
+            data-aos-delay="200"
           >
             Visit FAQ
           </Button>
