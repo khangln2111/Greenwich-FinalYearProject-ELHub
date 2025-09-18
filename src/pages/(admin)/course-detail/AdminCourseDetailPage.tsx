@@ -232,12 +232,13 @@ export default function AdminCourseDetailPage() {
         value={activeTab}
         onChange={(val) => setActiveTab(val as CourseDetailTab)}
         data={Object.values(CourseDetailTab)}
-        size="md"
         transitionDuration={300}
-        className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
+        size="md"
+        radius={"3xl"}
         classNames={{
-          root: "bg-white dark:bg-dark-6 shadow-md border border-gray-1 dark:border-dark-4 p-[10px]",
-          indicator: "bg-linear-to-r bg-blue",
+          root: `w-full p-[10px] mt-7 bg-white dark:bg-dark-6 shadow-lg border grid grid-cols-2 md:grid-flow-col
+          md:auto-cols-fr`,
+          indicator: "bg-linear-to-r bg-blue-5",
           control: "before:hidden",
           label: "data-active:text-white hover:data-active:text-white",
         }}

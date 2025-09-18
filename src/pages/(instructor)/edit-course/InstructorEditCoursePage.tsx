@@ -93,22 +93,17 @@ export default function InstructorEditCoursePage() {
       </div>
 
       {/* Course title */}
-      <div
-        className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2"
-      >
+      <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">
         <IconPencil className="text-blue-600 dark:text-blue-400 size-5 sm:size-6 md:size-7" />
-        <span
-          className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic text-gray-800
-            dark:text-gray-300"
-        >
+        <span className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
           {courseDetail.title}
         </span>
       </div>
 
       {/* Status bar */}
       <div
-        className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-between
-          bg-gray-100 dark:bg-dark-6 p-4 rounded-xl mb-6 gap-4 text-sm"
+        className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-between bg-gray-100 dark:bg-dark-6
+          p-4 rounded-xl mb-6 gap-4 text-sm"
       >
         <Group gap="xs">
           <Text>Status:</Text>
@@ -161,15 +156,17 @@ export default function InstructorEditCoursePage() {
       </div>
 
       {/* Navigation */}
+
       <SegmentedControl
         value={activeTab}
-        data={Object.values(CourseDetailTab)}
         onChange={(val) => setActiveTab(val as CourseDetailTab)}
-        size="md"
+        data={Object.values(CourseDetailTab)}
         transitionDuration={300}
-        className="w-full mt-5 grid grid-cols-2 gap-2 md:gap-0 md:grid-flow-col md:auto-cols-fr"
+        size="md"
+        radius={"3xl"}
         classNames={{
-          root: "bg-white dark:bg-dark-6 shadow-md border border-gray-1 dark:border-dark-4 p-[10px]",
+          root: `w-full p-[10px] mt-7 bg-white dark:bg-dark-6 shadow-lg border grid grid-cols-2 md:grid-flow-col
+          md:auto-cols-fr`,
           indicator: "bg-linear-to-r bg-blue-5",
           control: "before:hidden",
           label: "data-active:text-white hover:data-active:text-white",
@@ -177,10 +174,7 @@ export default function InstructorEditCoursePage() {
       />
 
       {/* Decoration line */}
-      <div
-        className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full
-          mt-10"
-      />
+      <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
 
       {/* Tab Content */}
       <Tabs variant="pills" value={activeTab} className="mt-7" keepMounted>

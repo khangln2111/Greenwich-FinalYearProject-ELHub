@@ -186,6 +186,7 @@ export default function CourseDetailPage() {
               data={Object.values(CourseDetailTab)}
               transitionDuration={300}
               size="md"
+              radius={"3xl"}
               classNames={{
                 root: `w-full p-[10px] mt-10 bg-white dark:bg-dark-6 shadow-lg border grid grid-cols-2 md:grid-flow-col
                 md:auto-cols-fr`,
