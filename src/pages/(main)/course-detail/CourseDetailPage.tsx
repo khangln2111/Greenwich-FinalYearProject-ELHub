@@ -122,7 +122,7 @@ export default function CourseDetailPage() {
               </Breadcrumbs>
               <Title className="mt-5">{course.title}</Title>
               {/* Course stats */}
-              <div className="flex flex-wrap items-center gap border py-6 px-4 text-sm mt-xl rounded-lg shadow-lg">
+              <div className="flex flex-wrap items-center gap border py-0 md:py-6 px-4 text-sm mt-xl rounded-lg shadow-lg">
                 {/* Created By */}
                 <div
                   className="flex w-full md:w-1/4 items-center gap-3 py-4 md:py-0 md:pr-6 md:border-r border-t first:border-t-0
@@ -186,7 +186,8 @@ export default function CourseDetailPage() {
               data={Object.values(CourseDetailTab)}
               transitionDuration={300}
               size="md"
-              className="w-full mt-5 grid grid-cols-2 md:grid-flow-col md:auto-cols-fr"
+              className="w-full mt-5 grid grid-cols-2 md:grid-flow-col md:auto-cols-fr border border-gray-300
+                dark:border-gray-700"
               classNames={{
                 root: "bg-white dark:bg-dark-6 shadow-sm border border-gray-1 dark:border-dark-4 p-[10px]",
                 indicator: "bg-linear-to-r from-blue to-cyan",
