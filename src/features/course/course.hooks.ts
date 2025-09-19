@@ -9,14 +9,15 @@ import {
   deleteCourse,
   moderateCourse,
   resubmitCourse,
+  setCourseBannedStatus,
   submitCourse,
-  toggleBannedStatus,
   updateCourse,
 } from "./course.api";
 import {
   CourseQueryCriteria,
   CreateCourseCommand,
   ModerateCourseCommand,
+  SetCourseBannedStatusCommand,
   UpdateCourseCommand,
 } from "./course.types";
 
@@ -244,10 +245,10 @@ export const useDeleteCourse = () => {
   });
 };
 
-export const useToggleBannedStatus = () => {
+export const useSetCourseBannedStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => toggleBannedStatus(id),
+    mutationFn: (command: SetCourseBannedStatusCommand) => setCourseBannedStatus(command),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
       showSuccessToast("Course Banned", "The course was banned successfully.");

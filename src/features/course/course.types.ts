@@ -95,6 +95,7 @@ export interface CourseDetailVm {
   instructorCourseCount: number;
   instructorStudentCount: number;
   retryCount: number;
+  bannedReason: string | null;
   approvalHistories: CourseApprovalHistoryVm[];
 
   ratingDistribution: CourseRatingDistributionVm;
@@ -103,6 +104,21 @@ export interface CourseDetailVm {
   updatedAt: string;
   submittedAt: string | null;
   lastRejectedAt: string | null;
+}
+
+export interface SetCourseBannedStatusCommand {
+  id: string;
+  isBanned: boolean;
+  bannedReason?: string;
+}
+
+export interface SetCourseBannedStatusResponse {
+  message: string;
+  data: {
+    id: string;
+    status: string;
+    bannedReason?: string;
+  };
 }
 
 export interface ModerateCourseCommand {

@@ -12,6 +12,8 @@ import {
   CourseVm,
   CreateCourseCommand,
   ModerateCourseCommand,
+  SetCourseBannedStatusCommand,
+  SetCourseBannedStatusResponse,
   UpdateCourseCommand,
 } from "./course.types";
 
@@ -145,9 +147,10 @@ export const deleteCourse = async (id: string) => {
   return response.data;
 };
 
-export const toggleBannedStatus = async (id: string) => {
-  const response = await apiClient.post<ApiSuccessResponse>(
-    `${BASE_URL}/${id}/toggle-banned-status`,
+export const setCourseBannedStatus = async (command: SetCourseBannedStatusCommand) => {
+  const response = await apiClient.put<ApiSuccessResponse<SetCourseBannedStatusResponse>>(
+    "/api/courses/set-banned-status",
+    command,
   );
   return response.data;
 };
