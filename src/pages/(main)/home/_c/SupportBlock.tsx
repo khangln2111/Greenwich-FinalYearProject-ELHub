@@ -71,7 +71,6 @@ const SupportBlock = () => {
             className="px-8 py-3 rounded-full"
             rightSection={<HelpCircleIcon className="size-5" />}
             data-aos="zoom-in-up"
-            data-aos-delay="200"
           >
             Visit FAQ
           </Button>

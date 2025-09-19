@@ -82,10 +82,10 @@ export default function CourseDetailPage() {
 
   const { data: course, isPending, error } = useGetCourseDetail(courseId!);
 
-  usePageSEO({ title: course ? course.title : "Course Detail" });
-
   const navigate = useNavigate();
   const location = useLocation();
+
+  usePageSEO({ title: course ? course.title : "Course Detail" });
 
   const [activeTab, setActiveTab] = useQueryState<CourseDetailTab>(
     "activeTab",

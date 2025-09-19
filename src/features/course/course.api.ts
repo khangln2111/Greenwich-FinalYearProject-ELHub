@@ -145,6 +145,13 @@ export const deleteCourse = async (id: string) => {
   return response.data;
 };
 
+export const toggleBannedStatus = async (id: string) => {
+  const response = await apiClient.post<ApiSuccessResponse>(
+    `${BASE_URL}/${id}/toggle-banned-status`,
+  );
+  return response.data;
+};
+
 export const getInstructorByCourseId = async (id: string) => {
   const response = await apiClient.get<InstructorVm>(`${BASE_URL}/${id}/instructor`);
   return response.data;

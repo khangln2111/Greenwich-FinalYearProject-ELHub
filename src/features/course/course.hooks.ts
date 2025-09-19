@@ -10,6 +10,7 @@ import {
   moderateCourse,
   resubmitCourse,
   submitCourse,
+  toggleBannedStatus,
   updateCourse,
 } from "./course.api";
 import {
@@ -237,6 +238,33 @@ export const useDeleteCourse = () => {
             status: 404,
             handler: () =>
               showErrorToast("Not Found", "The course you are trying to delete does not exist."),
+          },
+        ],
+      }),
+  });
+};
+
+export const useToggleBannedStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => toggleBannedStatus(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
+      showSuccessToast("Course Banned", "The course was banned successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () =>
+              showErrorToast("Not Found", "The course you are trying to ban does not exist."),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.InvalidOperation,
+            handler: () =>
+              showErrorToast("Invalid Operation", "You cannot ban a course that is not published."),
           },
         ],
       }),

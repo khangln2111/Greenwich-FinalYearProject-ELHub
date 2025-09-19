@@ -127,7 +127,7 @@ export default function InstructorEditCoursePage() {
           </Badge>
         </Group>
 
-        {courseDetail.retryCount > 0 && (
+        {courseDetail.retryCount > 0 && canRetry && (
           <Group gap="xs">
             <Text className="text-red-500">Rejected:</Text>
             <Text>
