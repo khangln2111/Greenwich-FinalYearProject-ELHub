@@ -238,7 +238,9 @@ public class NotificationService(
             RoleName.Instructor, [
                 NotificationType.ReviewCreated,
                 NotificationType.CourseApproved,
-                NotificationType.CourseRejected
+                NotificationType.CourseRejected,
+                NotificationType.CourseBanned,
+                NotificationType.CourseUnbanned
             ]
         }
     };

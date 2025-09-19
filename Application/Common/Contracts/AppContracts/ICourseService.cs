@@ -31,5 +31,7 @@ public interface ICourseService : IAppService
 
     Task<Success> ResubmitCourse(Guid id);
 
+    Task<Success> SetBannedStatus(SetCourseBannedStatusCommand command);
+
     Task<CourseEnrollmentStatusVm> GetCurrentUserEnrollmentStatus(Guid courseId);
 }

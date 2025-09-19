@@ -73,6 +73,7 @@ public static class AppConstants
         public const int PrerequisitesMaxLength = 1500;
         public const int LearningOutcomesMaxLength = 1500;
         public const int NoteMaxLength = 500;
+        public const int BannedReasonMaxLength = 300;
 
         public const int VideoMaxSizeBytes = 500 * FileSize.Megabyte;
         public const int ImageMaxSizeBytes = 50 * FileSize.Megabyte;

@@ -30,6 +30,9 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.Property(c => c.Status)
             .HasMaxLength(AppConstants.Course.StatusMaxLength);
 
+        builder.Property(c => c.BannedReason)
+            .HasMaxLength(AppConstants.Course.BannedReasonMaxLength);
+
 
         builder.Property(c => c.Level)
             .HasMaxLength(AppConstants.Course.LevelMaxLength);

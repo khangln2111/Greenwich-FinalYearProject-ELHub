@@ -22,7 +22,7 @@ public class CourseModeratedEventHandler(INotificationService notificationServic
             content,
             notification.IsApproved ? NotificationType.CourseApproved : NotificationType.CourseRejected,
             RoleName.Instructor,
-            $"/instructor/courses/{notification.Course.Id}"
+            $"/instructor/courses/{notification.Course.Id}/edit"
         );
     }
 }

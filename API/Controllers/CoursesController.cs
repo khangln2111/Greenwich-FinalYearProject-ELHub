@@ -114,6 +114,18 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return Ok(result);
     }
 
+    // PUT: api/courses/set-banned-status
+    [HttpPut("set-banned-status")]
+    [Authorize(Roles = nameof(RoleName.Admin))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SetBannedStatus([FromBody] SetCourseBannedStatusCommand command)
+    {
+        var result = await courseService.SetBannedStatus(command);
+        return Ok(result);
+    }
+
 
     // GET: api/courses/{courseId}/instructor
     [HttpGet("{courseId:guid}/instructor")]

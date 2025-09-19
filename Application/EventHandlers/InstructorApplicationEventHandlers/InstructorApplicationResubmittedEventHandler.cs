@@ -41,7 +41,7 @@ public class InstructorApplicationResubmittedEventHandler(
                 $"Instructor {application.FirstName} {application.LastName} has resubmitted their application.",
                 NotificationType.CourseResubmitted,
                 RoleName.Admin,
-                $"/admin/instructor-applications/viewAppId={application.Id}"
+                $"/admin/instructor-applications?viewAppId={application.Id}"
             );
     }
 }

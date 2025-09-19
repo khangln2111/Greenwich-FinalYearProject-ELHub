@@ -28,7 +28,7 @@ public class ReviewRepliedEventHandler(
             $"Your review for \"{review.Enrollment.Course.Title}\" has a new reply: \"{review.Reply.Content}\"",
             NotificationType.ReviewReplied,
             RoleName.Learner,
-            $"/account/reviews/{review.Id}"
+            $"/courses/{review.Enrollment.CourseId}?activeTab=Reviews"
         );
     }
 }

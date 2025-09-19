@@ -15,5 +15,7 @@ public enum NotificationType
     InstructorApplicationSubmitted,
     InstructorApplicationResubmitted,
     InstructorApplicationApproved,
-    InstructorApplicationRejected
+    InstructorApplicationRejected,
+    CourseBanned,
+    CourseUnbanned
 }

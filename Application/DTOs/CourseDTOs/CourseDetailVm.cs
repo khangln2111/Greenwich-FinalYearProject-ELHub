@@ -66,6 +66,8 @@ public class CourseDetailVm
 
     public int RetryCount { get; init; }
 
+    public string? BannedReason { get; init; }
+
     public CourseApprovalHistoryVm[] ApprovalHistories { get; init; } = [];
 
     public required CourseRatingDistributionVm RatingDistribution { get; set; }

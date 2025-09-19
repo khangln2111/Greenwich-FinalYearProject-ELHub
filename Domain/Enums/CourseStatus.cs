@@ -6,5 +6,6 @@ public enum CourseStatus
     Published,
     Pending,
     Archived,
-    Rejected
+    Rejected,
+    Banned
 }

@@ -20,7 +20,7 @@ public class GiftRedeemedEventHandler(
             $"Your gift has just been redeemed by {gift.ReceiverEmail}. Thanks for sharing the joy!",
             NotificationType.GiftRedeemed,
             RoleName.Learner,
-            "/account/sent-gifts"
+            "/dashboard/gifts?type=sent"
         );
     }
 }

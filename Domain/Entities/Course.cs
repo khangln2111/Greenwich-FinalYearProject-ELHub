@@ -49,6 +49,7 @@ public class Course : BaseAuditableEntity
 
     public DateTime? SubmittedAt { get; set; }
 
+    public string? BannedReason { get; set; }
 
     // Denormalized properties for performance optimization
     public int DurationInSeconds { get; set; }

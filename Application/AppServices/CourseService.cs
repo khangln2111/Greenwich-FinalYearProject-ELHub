@@ -227,6 +227,7 @@ public class CourseService(
         return new Success("Moderated course successfully", new { id = course.Id });
     }
 
+
     public async Task<Success> SubmitCourse(Guid id)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
@@ -288,6 +289,48 @@ public class CourseService(
 
 
         return new Success("Resubmitted course successfully", new { id = course.Id });
+    }
+
+
+    public async Task<Success> SetBannedStatus(SetCourseBannedStatusCommand command)
+    {
+        var currentUser = currentUserUtility.GetCurrentUser();
+        if (currentUser == null ||
+            !currentUser.Roles.Contains(nameof(RoleName.Admin), StringComparer.OrdinalIgnoreCase))
+            throw new UnauthorizedException();
+
+        var course = await context.Courses.FirstOrDefaultAsync(c => c.Id == command.Id)
+                     ?? throw new NotFoundException(nameof(Course), command.Id);
+
+        if (command.IsBanned)
+        {
+            if (course.Status != CourseStatus.Published)
+                throw new BadRequestException("Only Published courses can be banned", ErrorCode.InvalidOperation);
+
+            course.Status = CourseStatus.Banned;
+            course.BannedReason = command.BannedReason;
+        }
+        else
+        {
+            if (course.Status != CourseStatus.Banned)
+                throw new BadRequestException("Course is not banned", ErrorCode.InvalidOperation);
+
+            course.Status = CourseStatus.Published;
+            course.BannedReason = null;
+        }
+
+        await context.SaveChangesAsync();
+
+        await mediator.Publish(new CourseBannedStatusSetEvent(course));
+
+        var message = command.IsBanned ? "Banned successfully" : "Unbanned successfully";
+
+        return new Success(message, new
+        {
+            id = course.Id,
+            status = course.Status,
+            bannedReason = course.BannedReason
+        });
     }
 
     public async Task<InstructorVm> GetInstructorByCourseId(Guid courseId)
