@@ -37,15 +37,14 @@ export default function AdminUsersPage() {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [_, setSearchParams] = useSearchParams();
-
   const [editingUser, setEditingUser] = useState<UserVm | null>(null);
   const [editingRoleUser, setEditingRoleUser] = useState<UserVm | null>(null);
-  const setActivation = useSetUserActivation();
+  const setActivationMutation = useSetUserActivation();
 
   const handleEditUser = (user: UserVm) => setEditingUser(user);
   const handleEditRole = (user: UserVm) => setEditingRoleUser(user);
   const handleToggleActivation = (userId: string, isCurrentlyActive: boolean) => {
-    setActivation.mutate({ userId, isActive: !isCurrentlyActive });
+    setActivationMutation.mutate({ userId, isActive: !isCurrentlyActive });
   };
 
   const handleSearchSubmit = (e?: React.SyntheticEvent) => {
