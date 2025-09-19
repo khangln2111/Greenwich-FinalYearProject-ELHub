@@ -32,4 +32,6 @@ export enum NotificationType {
   InstructorApplicationResubmitted = "InstructorApplicationResubmitted",
   InstructorApplicationApproved = "InstructorApplicationApproved",
   InstructorApplicationRejected = "InstructorApplicationRejected",
+  CourseBanned = "CourseBanned",
+  CourseUnbanned = "CourseUnbanned",
 }

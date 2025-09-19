@@ -24,6 +24,22 @@ enum CourseDetailTab {
   Submissions = "Submissions",
 }
 
+const getStatusBadge = (status: CourseStatus) => {
+  switch (status) {
+    case CourseStatus.Pending:
+      return { color: "yellow", label: "Pending" };
+    case CourseStatus.Published:
+      return { color: "green", label: "Published" };
+    case CourseStatus.Rejected:
+      return { color: "red", label: "Rejected" };
+    case CourseStatus.Banned:
+      return { color: "dark", label: "Banned" };
+    case CourseStatus.Draft:
+    default:
+      return { color: "blue", label: "Draft" };
+  }
+};
+
 export default function InstructorEditCoursePage() {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
@@ -76,6 +92,8 @@ export default function InstructorEditCoursePage() {
     });
   };
 
+  const { color } = getStatusBadge(courseDetail.status as CourseStatus);
+
   return (
     <div className="flex-1 p-6 xl:p-8">
       {/* Back button */}
@@ -107,22 +125,7 @@ export default function InstructorEditCoursePage() {
       >
         <Group gap="xs">
           <Text>Status:</Text>
-          <Badge
-            color={
-              courseDetail.status === CourseStatus.Draft
-                ? "gray"
-                : courseDetail.status === CourseStatus.Pending
-                  ? "yellow"
-                  : courseDetail.status === CourseStatus.Rejected
-                    ? "red"
-                    : courseDetail.status === CourseStatus.Published
-                      ? "green"
-                      : "gray"
-            }
-            variant="light"
-            size="lg"
-            radius="sm"
-          >
+          <Badge color={color} variant="light" size="lg" radius="sm">
             {courseDetail.status}
           </Badge>
         </Group>

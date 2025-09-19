@@ -36,7 +36,7 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
                   ? "yellow"
                   : course.status === CourseStatus.Rejected
                     ? "red"
-                    : course.status === CourseStatus.Archived
+                    : course.status === CourseStatus.Banned
                       ? "gray"
                       : "blue"
             }

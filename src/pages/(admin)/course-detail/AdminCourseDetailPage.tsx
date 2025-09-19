@@ -21,11 +21,17 @@ import { Link, Navigate, useLocation, useParams } from "react-router";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
 import VideoPlayerWithThumbnail from "../../../components/media/VideoPlayerWithThumbnail";
 import {
+  BanCourseFormValues,
+  banCourseSchema,
   CourseApprovalFormValues,
   courseApprovalSchema,
 } from "../../../features/course/course.schema";
 import { CourseStatus } from "../../../features/course/course.types";
-import { useGetCourseDetail, useModerateCourse } from "../../../features/course/course.hooks";
+import {
+  useGetCourseDetail,
+  useModerateCourse,
+  useSetCourseBannedStatus,
+} from "../../../features/course/course.hooks";
 import { formatDuration } from "../../../utils/format";
 import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
@@ -42,8 +48,8 @@ const getStatusBadge = (status: CourseStatus) => {
       return { color: "green", label: "Published" };
     case CourseStatus.Rejected:
       return { color: "red", label: "Rejected" };
-    case CourseStatus.Archived:
-      return { color: "gray", label: "Archived" };
+    case CourseStatus.Banned:
+      return { color: "dark", label: "Banned" };
     case CourseStatus.Draft:
     default:
       return { color: "blue", label: "Draft" };
@@ -64,6 +70,7 @@ export default function AdminCourseDetailPage() {
   usePageSEO({ title: course?.title ? `Admin - ${course.title}` : "Admin Course Detail" });
 
   const reviewCourseMutation = useModerateCourse();
+  const setCourseBannedStatusMutation = useSetCourseBannedStatus();
   const [activeTab, setActiveTab] = useQueryState(
     "activeTab",
     parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
@@ -74,7 +81,10 @@ export default function AdminCourseDetailPage() {
 
   const [approveModalOpen, setApproveModalOpen] = useState(false);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
-  const [archiveModalOpen, setArchiveModalOpen] = useState(false);
+  const [banUnbanModal, setBanUnbanModal] = useState<{
+    open: boolean;
+    action: "ban" | "unban";
+  }>({ open: false, action: "ban" });
 
   const approveForm = useForm<CourseApprovalFormValues>({
     mode: "uncontrolled",
@@ -88,10 +98,10 @@ export default function AdminCourseDetailPage() {
     validate: zodResolver(courseApprovalSchema),
   });
 
-  const archiveForm = useForm<CourseApprovalFormValues>({
+  const banForm = useForm<BanCourseFormValues>({
     mode: "uncontrolled",
-    initialValues: { note: "" },
-    validate: zodResolver(courseApprovalSchema),
+    initialValues: { bannedReason: "" },
+    validate: zodResolver(banCourseSchema),
   });
 
   if (isPending) return <CenterLoader />;
@@ -142,15 +152,28 @@ export default function AdminCourseDetailPage() {
           )}
           {course.status === CourseStatus.Published && (
             <Button
-              color="dark"
+              color="red"
               variant="light"
-              size="xs"
+              loading={setCourseBannedStatusMutation.isPending}
               onClick={() => {
-                archiveForm.reset();
-                setArchiveModalOpen(true);
+                banForm.reset();
+                setBanUnbanModal({ open: true, action: "ban" });
               }}
             >
-              Archive
+              Ban
+            </Button>
+          )}
+
+          {course.status === CourseStatus.Banned && (
+            <Button
+              color="green"
+              variant="light"
+              loading={setCourseBannedStatusMutation.isPending}
+              onClick={() => {
+                setBanUnbanModal({ open: true, action: "unban" });
+              }}
+            >
+              Unban
             </Button>
           )}
         </div>
@@ -335,31 +358,72 @@ export default function AdminCourseDetailPage() {
         </form>
       </Modal>
 
-      {/* Archive Modal */}
+      {/* Ban Modal */}
       <Modal
-        opened={archiveModalOpen}
-        onClose={() => setArchiveModalOpen(false)}
-        title="Archive Course"
+        opened={banUnbanModal.open}
+        onClose={() => setBanUnbanModal({ ...banUnbanModal, open: false })}
+        title={banUnbanModal.action === "ban" ? "Ban Course" : "Unban Course"}
         centered
       >
-        <form onSubmit={archiveForm.onSubmit(() => setArchiveModalOpen(false))}>
-          <Textarea
-            label="Archive Note"
-            placeholder="Please provide a reason for archiving this course..."
-            {...archiveForm.getInputProps("note")}
-            key={archiveForm.key("note")}
-            autosize
-            minRows={3}
-          />
-          <Group justify="end" mt="md">
-            <Button variant="default" onClick={() => setArchiveModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button color="orange" type="submit">
-              Confirm Archive
-            </Button>
-          </Group>
-        </form>
+        {banUnbanModal.action === "ban" ? (
+          <form
+            onSubmit={banForm.onSubmit((values) => {
+              setCourseBannedStatusMutation.mutate({
+                id: course.id,
+                isBanned: true,
+                bannedReason: values.bannedReason,
+              });
+              setBanUnbanModal({ ...banUnbanModal, open: false });
+            })}
+          >
+            <Textarea
+              label="Ban Reason"
+              placeholder="Please provide a reason for banning this course..."
+              {...banForm.getInputProps("bannedReason")}
+              key={banForm.key("bannedReason")}
+              autosize
+              minRows={3}
+            />
+            <Group justify="end" mt="md">
+              <Button
+                variant="default"
+                onClick={() => setBanUnbanModal({ ...banUnbanModal, open: false })}
+              >
+                Cancel
+              </Button>
+              <Button color="red" type="submit" loading={setCourseBannedStatusMutation.isPending}>
+                Confirm Ban
+              </Button>
+            </Group>
+          </form>
+        ) : (
+          <div>
+            <Text size="sm" mb="md">
+              Are you sure you want to unban this course? It will become available again.
+            </Text>
+            <Group justify="end">
+              <Button
+                variant="default"
+                onClick={() => setBanUnbanModal({ ...banUnbanModal, open: false })}
+              >
+                Cancel
+              </Button>
+              <Button
+                color="green"
+                loading={setCourseBannedStatusMutation.isPending}
+                onClick={() => {
+                  setCourseBannedStatusMutation.mutate({
+                    id: course.id,
+                    isBanned: false,
+                  });
+                  setBanUnbanModal({ ...banUnbanModal, open: false });
+                }}
+              >
+                Confirm Unban
+              </Button>
+            </Group>
+          </div>
+        )}
       </Modal>
     </div>
   );

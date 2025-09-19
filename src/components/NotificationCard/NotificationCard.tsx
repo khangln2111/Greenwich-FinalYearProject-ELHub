@@ -89,6 +89,16 @@ const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNod
     icon: <XCircleIcon size={20} />,
     bg: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300",
   },
+  [NotificationType.CourseBanned]: {
+    label: "Course Banned",
+    icon: <XCircleIcon size={20} />,
+    bg: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300",
+  },
+  [NotificationType.CourseUnbanned]: {
+    label: "Course Unbanned",
+    icon: <CheckCircle2Icon size={20} />,
+    bg: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-300",
+  },
 };
 
 const NotificationCard = ({ n }: { n: NotificationVm }) => {

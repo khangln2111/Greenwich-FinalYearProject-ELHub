@@ -149,7 +149,7 @@ export const deleteCourse = async (id: string) => {
 
 export const setCourseBannedStatus = async (command: SetCourseBannedStatusCommand) => {
   const response = await apiClient.put<ApiSuccessResponse<SetCourseBannedStatusResponse>>(
-    "/api/courses/set-banned-status",
+    `${BASE_URL}/set-banned-status`,
     command,
   );
   return response.data;

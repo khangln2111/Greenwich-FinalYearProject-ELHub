@@ -108,7 +108,7 @@ export default function AdminCoursesPage() {
               { value: CourseStatus.Published, label: "Published" },
               { value: CourseStatus.Rejected, label: "Rejected" },
               { value: CourseStatus.Draft, label: "Draft" },
-              { value: CourseStatus.Archived, label: "Archived" },
+              { value: CourseStatus.Banned, label: "Banned" },
             ]}
             placeholder="Filter by status"
             checkIconPosition="right"

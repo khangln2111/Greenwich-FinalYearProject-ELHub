@@ -113,3 +113,9 @@ export const moderateCourseSchema = z.object({
 });
 
 export type ModerateCourseFormValues = z.infer<typeof moderateCourseSchema>;
+
+export const banCourseSchema = z.object({
+  bannedReason: z.string().min(5, { message: "Reason must be at least 5 characters long" }),
+});
+
+export type BanCourseFormValues = z.infer<typeof banCourseSchema>;
