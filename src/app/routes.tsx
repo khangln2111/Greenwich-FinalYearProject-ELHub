@@ -51,6 +51,12 @@ const userRoute: RouteObject = {
           lazy: lazyRoute(() => import("../pages/(main)/checkout-result/CheckoutResultPage")),
         },
         {
+          path: "instructor/courses/:courseId/preview",
+          lazy: lazyRoute(
+            () => import("../pages/(instructor)/preview-course/InstructorPreviewCoursePage"),
+          ),
+        },
+        {
           path: "dashboard",
           lazy: lazyRoute(() => import("../layout/user-dashboard/UserDashboardLayout")),
           children: [

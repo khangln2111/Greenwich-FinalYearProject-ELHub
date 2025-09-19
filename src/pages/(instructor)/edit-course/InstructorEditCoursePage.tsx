@@ -98,7 +98,7 @@ export default function InstructorEditCoursePage() {
   return (
     <div className="flex-1 p-6 xl:p-8">
       {/* Back button */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center justify-between gap-3 mb-6">
         <Button
           component={Link}
           to="/instructor/courses"
@@ -108,6 +108,17 @@ export default function InstructorEditCoursePage() {
           className="w-fit"
         >
           Back to Courses
+        </Button>
+
+        <Button
+          component={Link}
+          to={`/instructor/courses/${courseId}/preview`}
+          variant="light"
+          size="sm"
+          color="pink"
+          className="w-fit"
+        >
+          Preview as Learner
         </Button>
       </div>
 

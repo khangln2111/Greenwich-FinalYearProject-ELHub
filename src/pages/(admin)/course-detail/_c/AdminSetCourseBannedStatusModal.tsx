@@ -13,14 +13,14 @@ interface AdminSetCourseBannedStatusModalProps {
   onSubmit: (data: SetCourseBannedStatusCommand) => void;
 }
 
-export default function AdminSetCourseBannedStatusModal({
+const AdminSetCourseBannedStatusModal = ({
   opened,
   onClose,
   courseId,
   action,
   isLoading,
   onSubmit,
-}: AdminSetCourseBannedStatusModalProps) {
+}: AdminSetCourseBannedStatusModalProps) => {
   // Only need form when action is "ban"
   const form = useForm<BanCourseFormValues>({
     mode: "uncontrolled",
@@ -87,4 +87,6 @@ export default function AdminSetCourseBannedStatusModal({
       </form>
     </Modal>
   );
-}
+};
+
+export default AdminSetCourseBannedStatusModal;
