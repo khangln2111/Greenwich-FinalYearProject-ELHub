@@ -1,17 +1,19 @@
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { useModerateCourse } from "../../../../features/course/course.hooks";
 import {
   CourseApprovalFormValues,
   courseApprovalSchema,
 } from "../../../../features/course/course.schema";
 import { Button, Group, Modal, Textarea } from "@mantine/core";
+import { ModerateCourseCommand } from "../../../../features/course/course.types";
 
 interface AdminModerateCourseModalProps {
   opened: boolean;
   onClose: () => void;
   courseId: string;
   mode: "approve" | "reject";
+  isLoading: boolean;
+  onSubmit: (command: ModerateCourseCommand) => void;
 }
 
 const AdminModerateCourseModal = ({
@@ -19,9 +21,9 @@ const AdminModerateCourseModal = ({
   onClose,
   courseId,
   mode,
+  isLoading,
+  onSubmit,
 }: AdminModerateCourseModalProps) => {
-  const reviewCourseMutation = useModerateCourse();
-
   const form = useForm<CourseApprovalFormValues>({
     mode: "uncontrolled",
     initialValues: { note: "" },
@@ -39,11 +41,12 @@ const AdminModerateCourseModal = ({
     >
       <form
         onSubmit={form.onSubmit((values) => {
-          reviewCourseMutation.mutate({
+          onSubmit({
             id: courseId,
             isApproved: isApprove,
             note: values.note,
           });
+          form.reset();
           onClose();
         })}
       >
@@ -62,11 +65,7 @@ const AdminModerateCourseModal = ({
           <Button variant="default" onClick={onClose}>
             Cancel
           </Button>
-          <Button
-            color={isApprove ? "green" : "red"}
-            type="submit"
-            loading={reviewCourseMutation.isPending}
-          >
+          <Button color={isApprove ? "green" : "red"} type="submit" loading={isLoading}>
             {isApprove ? "Confirm Approval" : "Confirm Rejection"}
           </Button>
         </Group>

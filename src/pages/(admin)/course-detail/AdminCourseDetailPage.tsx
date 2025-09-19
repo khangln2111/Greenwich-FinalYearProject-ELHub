@@ -77,7 +77,7 @@ export default function AdminCourseDetailPage() {
     mode: "approve" | "reject";
   }>({ open: false, mode: "approve" });
 
-  const [banUnbanModal, setBanUnbanModal] = useState<{
+  const [courseBannedModal, setCourseBannedModal] = useState<{
     open: boolean;
     action: "ban" | "unban";
   }>({ open: false, action: "ban" });
@@ -128,7 +128,7 @@ export default function AdminCourseDetailPage() {
               variant="light"
               loading={setCourseBannedStatusMutation.isPending}
               onClick={() => {
-                setBanUnbanModal({ open: true, action: "ban" });
+                setCourseBannedModal({ open: true, action: "ban" });
               }}
             >
               Ban
@@ -140,7 +140,7 @@ export default function AdminCourseDetailPage() {
               variant="light"
               loading={setCourseBannedStatusMutation.isPending}
               onClick={() => {
-                setBanUnbanModal({ open: true, action: "unban" });
+                setCourseBannedModal({ open: true, action: "unban" });
               }}
             >
               Unban
@@ -254,19 +254,26 @@ export default function AdminCourseDetailPage() {
         </Tabs.Panel>
       </Tabs>
 
+      {/* Moderate Course Modal */}
       <AdminModerateCourseModal
         opened={moderateModal.open}
         onClose={() => setModerateModal({ ...moderateModal, open: false })}
         courseId={course.id}
         mode={moderateModal.mode}
+        isLoading={reviewCourseMutation.isPending}
+        onSubmit={(command) => reviewCourseMutation.mutate(command)}
       />
 
-      {/* Ban Modal */}
+      {/* Ban course Modal */}
       <AdminSetCourseBannedStatusModal
-        opened={banUnbanModal.open}
-        onClose={() => setBanUnbanModal({ ...banUnbanModal, open: false })}
+        opened={courseBannedModal.open}
+        onClose={() => setCourseBannedModal({ ...courseBannedModal, open: false })}
         courseId={course.id}
-        action={banUnbanModal.action}
+        action={courseBannedModal.action}
+        isLoading={setCourseBannedStatusMutation.isPending}
+        onSubmit={(command) => {
+          setCourseBannedStatusMutation.mutate(command);
+        }}
       />
     </div>
   );

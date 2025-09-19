@@ -249,9 +249,13 @@ export const useSetCourseBannedStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (command: SetCourseBannedStatusCommand) => setCourseBannedStatus(command),
-    onSuccess: () => {
+    onSuccess: (_data, { isBanned }) => {
       queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
-      showSuccessToast("Course Banned", "The course was banned successfully.");
+
+      showSuccessToast(
+        isBanned ? "Course Banned" : "Course Unbanned",
+        `The course was ${isBanned ? "banned" : "unbanned"} successfully.`,
+      );
     },
     onError: (error) =>
       handleApiError(error, {

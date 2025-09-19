@@ -1,6 +1,6 @@
-import { Badge, Button, Group, SegmentedControl, Tabs, Text, Tooltip } from "@mantine/core";
+import { Alert, Badge, Button, Group, SegmentedControl, Tabs, Text, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
+import { IconAlertTriangle, IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import { Link, Navigate, useParams } from "react-router";
@@ -16,6 +16,7 @@ import OverviewForm from "./_c/OverviewForm/OverviewForm";
 import InstructorReviewManager from "./_c/ReviewManager/InstructorReviewManager";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmissionTab";
+import { HelpCircleIcon } from "lucide-react";
 
 enum CourseDetailTab {
   Overview = "Overview",
@@ -109,6 +110,48 @@ export default function InstructorEditCoursePage() {
           Back to Courses
         </Button>
       </div>
+
+      {courseDetail.status === CourseStatus.Banned && (
+        <Alert
+          icon={<IconAlertTriangle size={24} />}
+          title="This course has been banned"
+          color="red"
+          variant="light"
+          radius="lg"
+          className="mb-6 shadow-sm"
+          classNames={{
+            title: "text-sm md:text-md",
+          }}
+        >
+          <div className="flex flex-col gap-3 text-sm md:text-md">
+            <p className="text-gray-800 dark:text-gray-200">
+              Your course has been banned by the admin. Please review the reason below or contact
+              support for more information.
+            </p>
+
+            {courseDetail.bannedReason && (
+              <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-md p-3">
+                <div className="flex items-start gap-2">
+                  <span className="font-semibold text-red-700 dark:text-red-200">Reason:</span>
+                  <span className="italic text-red-800 dark:text-red-100">
+                    {courseDetail.bannedReason}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <Button
+              variant="outline"
+              color="indigo"
+              radius="md"
+              className="self-start mt-1"
+              leftSection={<HelpCircleIcon size={14} />}
+            >
+              Contact support
+            </Button>
+          </div>
+        </Alert>
+      )}
 
       {/* Course title */}
       <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">

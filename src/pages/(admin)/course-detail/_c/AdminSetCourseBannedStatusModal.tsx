@@ -1,14 +1,16 @@
-import { Modal, Textarea, Button, Group, Text } from "@mantine/core";
+import { Button, Group, Modal, Text, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { BanCourseFormValues, banCourseSchema } from "../../../../features/course/course.schema";
-import { useSetCourseBannedStatus } from "../../../../features/course/course.hooks";
+import { SetCourseBannedStatusCommand } from "../../../../features/course/course.types";
 
 interface AdminSetCourseBannedStatusModalProps {
   opened: boolean;
   onClose: () => void;
   courseId: string;
   action: "ban" | "unban";
+  isLoading: boolean;
+  onSubmit: (data: SetCourseBannedStatusCommand) => void;
 }
 
 export default function AdminSetCourseBannedStatusModal({
@@ -16,9 +18,9 @@ export default function AdminSetCourseBannedStatusModal({
   onClose,
   courseId,
   action,
+  isLoading,
+  onSubmit,
 }: AdminSetCourseBannedStatusModalProps) {
-  const setCourseBannedStatusMutation = useSetCourseBannedStatus();
-
   // Only need form when action is "ban"
   const form = useForm<BanCourseFormValues>({
     mode: "uncontrolled",
@@ -38,9 +40,9 @@ export default function AdminSetCourseBannedStatusModal({
           </Button>
           <Button
             color="green"
-            loading={setCourseBannedStatusMutation.isPending}
+            loading={isLoading}
             onClick={() => {
-              setCourseBannedStatusMutation.mutate({ id: courseId, isBanned: false });
+              onSubmit({ id: courseId, isBanned: false });
               onClose();
             }}
           >
@@ -56,11 +58,12 @@ export default function AdminSetCourseBannedStatusModal({
     <Modal opened={opened} onClose={onClose} title="Ban Course" centered>
       <form
         onSubmit={form.onSubmit((values) => {
-          setCourseBannedStatusMutation.mutate({
+          onSubmit({
             id: courseId,
             isBanned: true,
             bannedReason: values.bannedReason,
           });
+          form.reset();
           onClose();
         })}
       >
@@ -77,7 +80,7 @@ export default function AdminSetCourseBannedStatusModal({
           <Button variant="default" onClick={onClose}>
             Cancel
           </Button>
-          <Button color="red" type="submit" loading={setCourseBannedStatusMutation.isPending}>
+          <Button color="red" type="submit" loading={isLoading}>
             Confirm Ban
           </Button>
         </Group>
