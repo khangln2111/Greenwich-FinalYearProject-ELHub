@@ -1,7 +1,6 @@
 import { ActionIcon, Select, Text, TextInput, Title, useModalsStack } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconSearch } from "@tabler/icons-react";
-import { ArrowUpAzIcon } from "lucide-react";
+import { ArrowUpAzIcon, SearchIcon } from "lucide-react";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
@@ -21,8 +20,8 @@ import {
   ModerateInstructorApplicationCommand,
 } from "../../../features/instructorApplication/instructorApplication.types";
 import { usePageSEO } from "../../../hooks/usePageSEO";
-import { cn } from "../../../utils/cn";
 import AdminInstructorApplicationsPageEmptyState from "./_c/AdminInstructorApplicationsPageEmptyState";
+import AdminInstructorApplicationStatusFilterBadges from "./_c/AdminInstructorApplicationStatusFilterBadges";
 import InstructorApplicationCard from "./_c/InstructorApplicationCard";
 import InstructorApplicationCardSkeleton from "./_c/InstructorApplicationCardSkeleton";
 import InstructorApplicationModerationModal from "./_c/InstructorApplicationModerationModal";
@@ -32,36 +31,6 @@ const statuses: ("All" | InstructorApplicationStatus)[] = [
   "All",
   ...Object.values(InstructorApplicationStatus),
 ];
-
-function StatusFilterBadges({
-  value,
-  onChange,
-}: {
-  value: "All" | InstructorApplicationStatus;
-  onChange: (status: "All" | InstructorApplicationStatus) => void;
-}) {
-  return (
-    <div className="flex gap-2 flex-wrap mx-auto md:mx-[initial]">
-      {statuses.map((status) => {
-        const isActive = value === status;
-        return (
-          <button
-            key={status}
-            onClick={() => onChange(status)}
-            className={cn(
-              "px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150",
-              isActive
-                ? "bg-primary text-white "
-                : "bg-gray-200 text-black hover:bg-gray-300 dark:bg-gray-400 dark:hover:bg-gray-500",
-            )}
-          >
-            {status}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
 
 const ORDER_BY_OPTIONS: {
   label: string;
@@ -113,8 +82,10 @@ export default function AdminInstructorApplicationsPage() {
   const { mutate, isPending: isModerateInstructorApplicationPending } =
     useModerateInstructorApplication();
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
     setSearch(searchInput);
+    setPage(1);
   };
 
   const handleModeration = (id: string, isApprove: boolean) => {
@@ -149,6 +120,8 @@ export default function AdminInstructorApplicationsPage() {
     search,
     status: statusFilter === "All" ? undefined : statusFilter,
     orderBy: decodedOrderBy,
+    page,
+    pageSize,
   });
 
   if (error) return <Text c="red">Error loading applications: {error.message}</Text>;
@@ -165,40 +138,59 @@ export default function AdminInstructorApplicationsPage() {
           onChange={(e) => setSearchInput(e.currentTarget.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handleSearchSubmit();
+              handleSearchSubmit(e);
             }
           }}
+          rightSectionPointerEvents="all"
           rightSection={
-            search && (
+            search ? (
               <ActionIcon
                 variant="subtle"
                 size="lg"
                 onClick={() => {
                   setSearchInput("");
                   setSearch(null);
+                  setPage(1);
                 }}
+                aria-label="Clear search"
               >
                 ✕
               </ActionIcon>
+            ) : (
+              <ActionIcon
+                type="submit"
+                variant="subtle"
+                size="lg"
+                onClick={handleSearchSubmit}
+                aria-label="Search"
+              >
+                <SearchIcon className="text-gray-500" size={16} />
+              </ActionIcon>
             )
           }
-          leftSection={<IconSearch size={16} />}
           className="md:max-w-65 flex-1"
         />
       </div>
 
-      <div
-        className="flex flex-wrap-reverse md:flex-wrap gap-4 items-center justify-between mb-8
-          w-full"
-      >
-        <StatusFilterBadges value={statusFilter} onChange={setStatusFilter} />
+      <div className="flex flex-wrap-reverse md:flex-wrap gap-4 items-center justify-between mb-8 w-full">
+        <AdminInstructorApplicationStatusFilterBadges
+          value={statusFilter}
+          onChange={(status) => {
+            setStatusFilter(status);
+            setPage(1);
+          }}
+          statuses={statuses}
+        />
         <Select
           data={ORDER_BY_OPTIONS.map((opt) => ({
             label: opt.label,
             value: encodeOrderOption(opt.value),
           }))}
           value={orderByParam}
-          onChange={(val) => val && setOrderByParam(val)}
+          onChange={(val) => {
+            val && setOrderByParam(val);
+            setPage(1);
+          }}
           checkIconPosition="right"
           leftSection={<ArrowUpAzIcon size={16} />}
           placeholder="Sort by"

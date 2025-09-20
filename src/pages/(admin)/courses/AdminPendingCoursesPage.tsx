@@ -44,8 +44,10 @@ export default function AdminPendingCoursesPage() {
     "desc",
   );
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
     setSearch(searchInput);
+    setPage(1);
   };
 
   const { data, isPending, error } = useGetAllCourses({
@@ -69,26 +71,37 @@ export default function AdminPendingCoursesPage() {
             <TextInput
               placeholder="Search course..."
               className="flex-1"
-              leftSection={<SearchIcon size={16} />}
               value={searchInput}
               onChange={(e) => setSearchInput(e.currentTarget.value)}
               label="Search"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handleSearchSubmit();
+                  handleSearchSubmit(e);
                 }
               }}
               rightSection={
-                searchInput && (
+                search ? (
                   <ActionIcon
                     variant="subtle"
                     size="lg"
                     onClick={() => {
                       setSearchInput("");
                       setSearch(null);
+                      setPage(1);
                     }}
+                    aria-label="Clear search"
                   >
                     ✕
+                  </ActionIcon>
+                ) : (
+                  <ActionIcon
+                    type="submit"
+                    variant="subtle"
+                    size="lg"
+                    onClick={handleSearchSubmit}
+                    aria-label="Search"
+                  >
+                    <SearchIcon className="text-gray-500" size={16} />
                   </ActionIcon>
                 )
               }
@@ -103,7 +116,10 @@ export default function AdminPendingCoursesPage() {
               placeholder="Sort by"
               className="flex-1"
               value={orderByParam}
-              onChange={(value) => value && setOrderByParam(value)}
+              onChange={(value) => {
+                value && setOrderByParam(value);
+                setPage(1);
+              }}
               leftSection={<ArrowUpAzIcon size={16} />}
               checkIconPosition="right"
             />

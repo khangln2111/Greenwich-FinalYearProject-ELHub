@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Select, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { GraduationCap, Plus, SearchIcon } from "lucide-react";
+import { BookmarkIcon, GraduationCap, Plus, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
@@ -54,8 +54,7 @@ export default function InstructorCoursesPage() {
         <div className="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto">
           <Button
             onClick={openCreateCourseModal}
-            leftSection={<Plus className="size-4" />}
-            size="sm"
+            leftSection={<Plus size={18} />}
             className="w-full"
           >
             New Course
@@ -106,10 +105,14 @@ export default function InstructorCoursesPage() {
               { label: "Pending", value: CourseStatus.Pending },
               { label: "Rejected", value: CourseStatus.Rejected },
             ]}
+            leftSection={<BookmarkIcon size={16} />}
             value={status}
             allowDeselect={false}
             checkIconPosition="right"
-            onChange={(val) => setStatus(val as CourseStatus | "All")}
+            onChange={(val) => {
+              setStatus(val as CourseStatus | "All");
+              setPage(1);
+            }}
             placeholder="Filter by status"
             className="w-full md:max-w-60"
           />

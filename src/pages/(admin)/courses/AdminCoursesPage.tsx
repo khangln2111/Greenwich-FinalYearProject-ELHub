@@ -1,5 +1,5 @@
 import { ActionIcon, Select, TextInput, Title } from "@mantine/core";
-import { ArrowUpAzIcon, BookmarkIcon, Search } from "lucide-react";
+import { ArrowUpAzIcon, BookmarkIcon, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
@@ -48,8 +48,10 @@ export default function AdminCoursesPage() {
 
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
     setSearch(searchInput);
+    setPage(1);
   };
 
   const { data, isPending, error } = useGetAllCourses({
@@ -75,28 +77,39 @@ export default function AdminCoursesPage() {
           </Title>
           <TextInput
             placeholder="Search course..."
-            leftSection={<Search size={16} />}
             value={searchInput}
+            size="md"
             onChange={(e) => setSearchInput(e.currentTarget.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSearchSubmit();
             }}
             rightSection={
-              searchInput && (
+              search ? (
                 <ActionIcon
                   variant="subtle"
                   size="lg"
                   onClick={() => {
                     setSearchInput("");
                     setSearch(null);
+                    setPage(1);
                   }}
+                  aria-label="Clear search"
                 >
                   ✕
+                </ActionIcon>
+              ) : (
+                <ActionIcon
+                  type="submit"
+                  variant="subtle"
+                  size="lg"
+                  onClick={handleSearchSubmit}
+                  aria-label="Search"
+                >
+                  <SearchIcon className="text-gray-500" size={16} />
                 </ActionIcon>
               )
             }
             className="w-full @md:max-w-[320px]"
-            classNames={{ input: "h-[42px]" }}
           />
         </div>
         {/* Status Filter + Sort */}
@@ -115,7 +128,10 @@ export default function AdminCoursesPage() {
             label="Course status"
             leftSection={<BookmarkIcon size={16} />}
             value={statusFilter}
-            onChange={(value) => value && setStatusFilter(value as CourseStatus | "All")}
+            onChange={(value) => {
+              value && setStatusFilter(value as CourseStatus | "All");
+              setPage(1);
+            }}
             searchable
             classNames={{ input: "h-[42px]" }}
           />
@@ -127,7 +143,10 @@ export default function AdminCoursesPage() {
             label="Sort by"
             placeholder="Sort by"
             value={orderByParam}
-            onChange={(value) => value && setOrderByParam(value)}
+            onChange={(value) => {
+              value && setOrderByParam(value);
+              setPage(1);
+            }}
             leftSection={<ArrowUpAzIcon size={16} />}
             checkIconPosition="right"
             classNames={{ input: "h-[42px]" }}

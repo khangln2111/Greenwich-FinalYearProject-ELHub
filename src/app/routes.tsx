@@ -35,7 +35,14 @@ const userRoute: RouteObject = {
       lazy: lazyRoute(() => import("../pages/(main)/faq/FAQPage")),
     },
     {
-      Component: () => <PrivateRoute isLayoutRoute={true} />,
+      lazy: {
+        Component: async () => {
+          const { default: PrivateRoute } = await import("../app/providers/PrivateRoute");
+          return function PrivateRouteLayout() {
+            return <PrivateRoute isLayoutRoute={true} />;
+          };
+        },
+      },
       children: [
         {
           path: "dashboard/order-history/:orderId",

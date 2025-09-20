@@ -27,7 +27,7 @@ import InstructorNotifcationsPageEmptyState from "./_c/InstructorNotifcationsPag
 export default function InstructorNotificationsPage() {
   usePageSEO({ title: "Notifications" });
 
-  const [filterUnread, setFilterUnread] = useQueryState(
+  const [tab, setTab] = useQueryState(
     "isRead",
     parseAsStringLiteral(["all", "unread"]).withDefault("all"),
   );
@@ -41,9 +41,10 @@ export default function InstructorNotificationsPage() {
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
 
   const { data, isPending, isError } = useGetNotifications(RoleName.Instructor, {
-    isRead: filterUnread === "unread" ? false : null,
+    isRead: tab === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
     pageSize: pageSize,
+    page: page,
   });
 
   const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.Instructor);
@@ -83,7 +84,7 @@ export default function InstructorNotificationsPage() {
             leftSection={<CheckCheckIcon size={16} />}
             variant="subtle"
             loading={markAllMutation.isPending}
-            onClick={() => markAllMutation.mutate(RoleName.Admin)}
+            onClick={() => markAllMutation.mutate(RoleName.Instructor)}
             className="w-full sm:w-auto mt-2 sm:mt-0"
           >
             Mark all as read
@@ -91,13 +92,13 @@ export default function InstructorNotificationsPage() {
         </div>
 
         {/* Row 2: Filters */}
-        <div
-          className="flex flex-col sm:flex-row gap-x-2 gap-y-3 items-stretch sm:items-center
-            sm:justify-between"
-        >
+        <div className="flex flex-col sm:flex-row gap-x-2 gap-y-3 items-stretch sm:items-center sm:justify-between">
           <SegmentedControl
-            value={filterUnread}
-            onChange={(val: string) => setFilterUnread(val as "all" | "unread")}
+            value={tab}
+            onChange={(val: string) => {
+              setTab(val as "all" | "unread");
+              setPage(1);
+            }}
             data={[
               { label: "All", value: "all" },
               { label: "Unread", value: "unread" },
@@ -118,7 +119,10 @@ export default function InstructorNotificationsPage() {
                 leftSection: <TagsIcon size={18} />,
               }}
               placeholder="Select types"
-              onChange={(vals) => setFilterTypes(vals as NotificationType[])}
+              onChange={(vals) => {
+                setFilterTypes(vals as NotificationType[]);
+                setPage(1);
+              }}
               value={filterTypes}
             />
           </div>

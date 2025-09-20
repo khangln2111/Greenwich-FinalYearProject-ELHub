@@ -33,6 +33,7 @@ export default function AdminCategoriesPage() {
   const handleSearchSubmit = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
     setSearch(searchInput.trim());
+    setPage(1);
   };
 
   const handleEdit = (category: CategoryVm) => {

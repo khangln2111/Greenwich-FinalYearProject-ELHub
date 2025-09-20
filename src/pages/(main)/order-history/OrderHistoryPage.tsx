@@ -70,7 +70,13 @@ export default function OrderHistoryPage() {
         />
       </div>
 
-      <OrderHistoryTabs activeTab={statusParam} onTabChange={setStatusParam} />
+      <OrderHistoryTabs
+        activeTab={statusParam}
+        onTabChange={(tab) => {
+          setStatusParam(tab);
+          setPage(1);
+        }}
+      />
 
       {isPending || data.items.length > 0 ? (
         <div className="mx-auto mt-4">

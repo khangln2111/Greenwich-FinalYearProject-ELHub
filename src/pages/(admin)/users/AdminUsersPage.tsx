@@ -50,6 +50,7 @@ export default function AdminUsersPage() {
   const handleSearchSubmit = (e?: React.SyntheticEvent) => {
     e?.preventDefault();
     setSearch(searchInput.trim());
+    setPage(1);
   };
 
   const { data, isPending, error } = useGetUsers({
@@ -94,6 +95,7 @@ export default function AdminUsersPage() {
                   onClick={() => {
                     setSearchInput("");
                     setSearch(null);
+                    setPage(1);
                   }}
                 >
                   ✕
@@ -115,7 +117,10 @@ export default function AdminUsersPage() {
               clearable
               label="Filter by Role"
               value={roleFilter}
-              onChange={(val) => setRoleFilter(val)}
+              onChange={(val) => {
+                setRoleFilter(val);
+                setPage(1);
+              }}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
             />
             <Select
@@ -125,7 +130,10 @@ export default function AdminUsersPage() {
               label="Filter by Status"
               clearable
               value={statusFilter}
-              onChange={(val) => setStatusFilter(val)}
+              onChange={(val) => {
+                setStatusFilter(val);
+                setPage(1);
+              }}
               className="flex-1 min-w-[130px] sm:min-w-[150px]"
             />
             <Button

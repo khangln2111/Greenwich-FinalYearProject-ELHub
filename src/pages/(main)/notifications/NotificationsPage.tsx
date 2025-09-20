@@ -27,23 +27,24 @@ import NotificationsPageEmptyState from "./_c/NotificationsPageEmptyState";
 export default function NotificationsPage() {
   usePageSEO({ title: "Notifications" });
 
-  const [filterUnread, setFilterUnread] = useQueryState(
+  const [tab, setTab] = useQueryState(
     "isRead",
     parseAsStringLiteral(["all", "unread"]).withDefault("all"),
   );
-
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
 
   const [filterTypes, setFilterTypes] = useQueryState(
     "types",
     parseAsArrayOf(parseAsStringEnum(Object.values(NotificationType))).withDefault([]),
   );
 
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
+
   const { data, isPending, isError } = useGetNotifications(RoleName.Learner, {
-    isRead: filterUnread === "unread" ? false : null,
+    isRead: tab === "unread" ? false : null,
     types: filterTypes.length ? filterTypes : null,
     pageSize: pageSize,
+    page: page,
   });
 
   const { data: unreadCount } = useGetUnreadNotificationsCount(RoleName.Learner);
@@ -96,8 +97,11 @@ export default function NotificationsPage() {
         {/* Row 2: Segmented control + Mark all */}
         <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
           <SegmentedControl
-            value={filterUnread}
-            onChange={(val: string) => setFilterUnread(val as "all" | "unread")}
+            value={tab}
+            onChange={(val: string) => {
+              setTab(val as "all" | "unread");
+              setPage(1);
+            }}
             data={[
               { label: "All", value: "all" },
               { label: "Unread", value: "unread" },
@@ -121,7 +125,10 @@ export default function NotificationsPage() {
                 leftSection: <TagsIcon size={18} />,
               }}
               placeholder="Select types"
-              onChange={(vals) => setFilterTypes(vals as NotificationType[])}
+              onChange={(vals) => {
+                setFilterTypes(vals as NotificationType[]);
+                setPage(1);
+              }}
               value={filterTypes}
             />
           </div>
