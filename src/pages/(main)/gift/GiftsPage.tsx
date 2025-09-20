@@ -33,7 +33,10 @@ export default function GiftsPage() {
   );
 
   // Shared state for 2 tabs
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
 
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
 
@@ -106,8 +109,7 @@ export default function GiftsPage() {
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
               activeTab === "sent"
                 ? "bg-primary text-white"
-                : `bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100
-                  dark:hover:bg-gray-500`
+                : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
               }`}
           >
             Sent
@@ -117,8 +119,7 @@ export default function GiftsPage() {
             className={`px-4 py-2 text-sm font-medium rounded-full transition ${
               activeTab === "received"
                 ? "bg-primary text-white"
-                : `bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100
-                  dark:hover:bg-gray-500`
+                : "bg-gray-50 dark:bg-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500"
               }`}
           >
             Received

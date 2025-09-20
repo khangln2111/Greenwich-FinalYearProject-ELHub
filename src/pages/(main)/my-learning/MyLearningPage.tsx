@@ -13,7 +13,10 @@ export default function MyLearningPage() {
   usePageSEO({ title: "My Learning" });
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
 
   const {

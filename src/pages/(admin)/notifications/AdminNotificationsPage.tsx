@@ -37,7 +37,10 @@ export default function AdminNotificationsPage() {
     parseAsArrayOf(parseAsStringEnum(Object.values(NotificationType))).withDefault([]),
   );
 
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
 
   const { data, isPending, isError } = useGetNotifications(RoleName.Admin, {

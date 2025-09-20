@@ -24,7 +24,10 @@ export default function AdminCategoriesPage() {
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
 
   const { data, isPending, isError } = useGetCategories({ name: search, page, pageSize });
 

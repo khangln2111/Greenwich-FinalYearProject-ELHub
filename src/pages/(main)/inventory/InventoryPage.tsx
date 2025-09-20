@@ -13,7 +13,10 @@ import InventoryPageEmptyState from "./_c/InventoryPageEmptyState";
 export default function InventoryPage() {
   usePageSEO({ title: "My Inventory" });
 
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [searchInput, setSearchInput] = useState(search);

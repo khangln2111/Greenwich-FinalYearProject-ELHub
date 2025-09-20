@@ -23,7 +23,10 @@ const COURSE_ORDER_OPTIONS: {
 ];
 
 export default function AdminPendingCoursesPage() {
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
 

@@ -51,7 +51,10 @@ export default function AdminInstructorApplicationsPage() {
   const [moderationAppId, setModerationAppId] = useQueryState("moderationAppId", parseAsString);
   const [approveMode, setApproveMode] = useState(true);
 
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(9));
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);

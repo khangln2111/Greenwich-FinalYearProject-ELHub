@@ -44,7 +44,10 @@ export default function AdminCoursesPage() {
     "desc",
   );
 
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
 
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
 

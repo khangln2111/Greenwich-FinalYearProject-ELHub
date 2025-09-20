@@ -34,7 +34,10 @@ export default function AdminUsersPage() {
   const [searchInput, setSearchInput] = useState(search);
   const [roleFilter, setRoleFilter] = useQueryState("role");
   const [statusFilter, setStatusFilter] = useQueryState("status");
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(6));
   const [_, setSearchParams] = useSearchParams();
   const [editingUser, setEditingUser] = useState<UserVm | null>(null);

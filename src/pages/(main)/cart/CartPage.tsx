@@ -19,7 +19,10 @@ import EmptyCartPlaceholder from "./_c/EmptyCartPlaceholder";
 
 export default function CartPage() {
   usePageSEO({ title: "Cart" });
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ scroll: true }),
+  );
 
   const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(20));
 
