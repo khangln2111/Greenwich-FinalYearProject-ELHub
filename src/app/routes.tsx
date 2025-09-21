@@ -1,11 +1,10 @@
 import { createBrowserRouter, RouteObject } from "react-router";
-import PrivateRoute from "./providers/PrivateRoute";
 import { lazyRoute } from "../utils/lazyRoute";
 
 import CenterLoaderWithLogo from "../components/CenterLoader/CenterLoaderWithLogo";
-import UserLayout from "../layout/user/UserLayout";
-import RootLayout from "../layout/root/RootLayout";
 import { RoleName } from "../features/auth/identity.types";
+import RootLayout from "../layout/root/RootLayout";
+import UserLayout from "../layout/user/UserLayout";
 
 // ===================== User Routes =====================
 const userRoute: RouteObject = {
@@ -219,8 +218,8 @@ const authRoutes: RouteObject[] = [
     lazy: lazyRoute(() => import("../pages/(auth)/forgot-password/ForgotPasswordPage")),
   },
   {
-    path: "/verify-email",
-    lazy: lazyRoute(() => import("../pages/(auth)/verify-email/VerifyEmailPage")),
+    path: "/confirm-email",
+    lazy: lazyRoute(() => import("../pages/(auth)/confirm-email/ConfirmEmailPage")),
   },
 ];
 

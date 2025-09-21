@@ -10,20 +10,20 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate } from "react-router";
 import {
   useConfirmEmail,
   useSendEmailConfirmationOtp,
 } from "../../../features/auth/identity.hooks";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 
-export default function VerifyEmailPage() {
-  usePageSEO({ title: "Verify Email" });
+export default function ConfirmEmailPage() {
+  usePageSEO({ title: "Confirm Email" });
 
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const email = searchParams.get("email") ?? "";
+  const [email] = useQueryState("email", parseAsString.withDefault(""));
   const [otp, setOtp] = useState("");
 
   const confirmEmail = useConfirmEmail();
@@ -31,14 +31,7 @@ export default function VerifyEmailPage() {
 
   const handleConfirm = () => {
     if (otp.length !== 6 || !email) return;
-    confirmEmail.mutate(
-      { email, otp },
-      {
-        onSuccess: () => {
-          navigate("/login");
-        },
-      },
-    );
+    confirmEmail.mutate({ email, otp });
   };
 
   const handleResend = () => {
@@ -53,7 +46,7 @@ export default function VerifyEmailPage() {
     >
       <Container size={420}>
         <Title ta="center" order={2} className="text-gray-900 dark:text-white font-bold mb-1">
-          Verify Your Email
+          Confirm Your Email
         </Title>
 
         <Text ta="center" size="sm" className="text-gray-700 dark:text-gray-300 mb-3 text-center">

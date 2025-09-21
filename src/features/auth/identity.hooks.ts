@@ -81,7 +81,7 @@ export const useRegister = () => {
         "Registered",
         "You have registered successfully, please check your email to confirm your account.",
       );
-      navigate(`/verify-email?email=${encodeURIComponent(variables.email)}`);
+      navigate(`/confirm-email?email=${encodeURIComponent(variables.email)}`);
     },
     onError: (error) =>
       handleApiError(error, {
@@ -133,7 +133,7 @@ export const useLogin = () => {
                 "Email Not Confirmed",
                 "Please confirm your email address before logging in.",
               );
-              navigate(`/verify-email?email=${encodeURIComponent(variables.email)}`);
+              navigate(`/confirm-email?email=${encodeURIComponent(variables.email)}`);
             },
           },
         ],
@@ -206,10 +206,24 @@ export const useSendEmailConfirmationOtp = () => {
 };
 
 export const useConfirmEmail = () => {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const from = state?.from || "/";
+  const queryClient = useQueryClient();
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+  const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
+  const setLoginAt = useAuthStore((s) => s.setLoginAt);
+
   return useMutation({
     mutationFn: (data: ConfirmEmailCommand) => confirmEmail(data),
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      const { accessToken, refreshToken } = data;
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+      await queryClient.invalidateQueries();
+      navigate(from, { replace: true });
       showSuccessToast("Email Confirmed", "Your email has been confirmed successfully.");
+      setLoginAt();
     },
     onError: (error) =>
       handleApiError(error, {

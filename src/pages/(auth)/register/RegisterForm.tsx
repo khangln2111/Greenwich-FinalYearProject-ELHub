@@ -8,8 +8,10 @@ import { RegisterCommand } from "../../../features/auth/identity.types";
 import { useRegister } from "../../../features/auth/identity.hooks";
 import { formSubmitWithFocus } from "../../../utils/form";
 import { extractPasswordRequirements } from "../../../utils/zodHelper";
+import { useNavigate } from "react-router";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const registerMutation = useRegister();
   const form = useForm<RegisterFormValues>({
     initialValues: {
@@ -41,6 +43,7 @@ const RegisterForm = () => {
     registerMutation.mutate(payload, {
       onSuccess: () => {
         form.reset();
+        navigate(`/confirm-email?email=${encodeURIComponent(payload.email)}`);
       },
     });
   };
@@ -94,8 +97,8 @@ const RegisterForm = () => {
         />
         <PasswordInputWithStrength
           withAsterisk
-          label="Your password"
-          placeholder="Your password"
+          label="Password"
+          placeholder="Password"
           key={form.key("password")}
           {...form.getInputProps("password")}
           leftSection={<IconLock size={16} stroke={1.5} />}

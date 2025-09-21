@@ -43,7 +43,7 @@ export const sendEmailConfirmationOtp = async (data: SendEmailConfirmationOtpCom
 };
 
 export const confirmEmail = async (data: ConfirmEmailCommand) => {
-  const response = await apiClient.post<ApiSuccessResponse>(`${BASE_URL}/confirm-email`, data);
+  const response = await apiClient.post<AuthResponse>(`${BASE_URL}/confirm-email`, data);
   return response.data;
 };
 
