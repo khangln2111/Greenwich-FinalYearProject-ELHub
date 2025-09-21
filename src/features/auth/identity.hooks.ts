@@ -101,7 +101,7 @@ export const useLogin = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from || "/";
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
   const setLoginAt = useAuthStore((s) => s.setLoginAt);
@@ -112,9 +112,9 @@ export const useLogin = () => {
       const { accessToken, refreshToken } = data;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      navigate(from, { replace: true });
       await queryClient.invalidateQueries();
       showSuccessToast("Logged In", "You are now logged in successfully.");
+      navigate(from, { replace: true });
       setLoginAt();
     },
     onError: (error, variables) =>
@@ -142,9 +142,9 @@ export const useLogin = () => {
 };
 
 export const useLoginWithGoogle = () => {
-  const { state } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
-  const from = state?.from || "/";
+  const from = location.state?.from || "/";
   const queryClient = useQueryClient();
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
@@ -156,9 +156,9 @@ export const useLoginWithGoogle = () => {
       const { accessToken, refreshToken } = data;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      navigate(from, { replace: true });
       await queryClient.invalidateQueries();
       showSuccessToast("Logged In with google", "You are now logged in.");
+      navigate(from, { replace: true });
       setLoginAt();
     },
     onError: (error) =>
@@ -206,9 +206,9 @@ export const useSendEmailConfirmationOtp = () => {
 };
 
 export const useConfirmEmail = () => {
-  const { state } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
-  const from = state?.from || "/";
+  const from = location.state?.from || "/";
   const queryClient = useQueryClient();
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const setRefreshToken = useAuthStore((s) => s.setRefreshToken);

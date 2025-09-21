@@ -1,10 +1,15 @@
 import { Anchor, Box, Container, Text, Title } from "@mantine/core";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
 import RegisterForm from "./RegisterForm";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 
 export default function RegisterPage() {
   usePageSEO({ title: "Register" });
+
+  const { data: currentUser } = useGetCurrentUser();
+
+  if (currentUser) return <Navigate to="/" replace />;
 
   return (
     <Box
