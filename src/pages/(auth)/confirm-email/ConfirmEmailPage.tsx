@@ -17,6 +17,7 @@ import {
   useConfirmEmail,
   useSendEmailConfirmationOtp,
 } from "../../../features/auth/identity.hooks";
+import { useCountdown } from "../../../hooks/useCountDown";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 
 export default function ConfirmEmailPage() {
@@ -29,6 +30,12 @@ export default function ConfirmEmailPage() {
   const confirmEmail = useConfirmEmail();
   const sendOtp = useSendEmailConfirmationOtp();
 
+  const {
+    seconds: secondsLeft,
+    reset: resetCountdown,
+    isRunning: isCountingDown,
+  } = useCountdown(60);
+
   const handleConfirm = () => {
     if (otp.length !== 6 || !email) return;
     confirmEmail.mutate({ email, otp });
@@ -36,7 +43,7 @@ export default function ConfirmEmailPage() {
 
   const handleResend = () => {
     if (!email) return;
-    sendOtp.mutate({ email });
+    sendOtp.mutate({ email }, { onSuccess: resetCountdown }); // reset lại countdown khi gửi xong
   };
 
   return (
@@ -60,9 +67,9 @@ export default function ConfirmEmailPage() {
           radius="md"
           className="rounded-2xl bg-white dark:bg-neutral-900 border border-white/30"
         >
-          <Stack gap="sm">
+          <Stack gap="md">
             {/* Email input (disabled) */}
-            <TextInput label="Email" value={email} disabled />
+            <TextInput label="Email" value={email} disabled size="md" />
 
             {/* OTP input */}
             <Box className="flex justify-center">
@@ -83,10 +90,15 @@ export default function ConfirmEmailPage() {
 
             {/* Resend + Back buttons */}
             <Group justify="space-between" grow>
-              <Button variant="subtle" size="xs" onClick={handleResend} loading={sendOtp.isPending}>
-                Resend Code
+              <Button
+                variant="subtle"
+                onClick={handleResend}
+                disabled={isCountingDown}
+                loading={sendOtp.isPending}
+              >
+                {secondsLeft > 0 ? `Resend after ${secondsLeft} (s)` : "Resend Code"}
               </Button>
-              <Button variant="subtle" size="xs" onClick={() => navigate("/login")}>
+              <Button variant="subtle" onClick={() => navigate("/login")}>
                 Back to Login
               </Button>
             </Group>

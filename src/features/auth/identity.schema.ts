@@ -93,3 +93,22 @@ export const updateUserProfileSchema = z.object({
 });
 
 export type UpdateUserProfileFormType = z.infer<typeof updateUserProfileSchema>;
+
+// Schema for changing password
+export const changePasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .regex(/[a-z]/, "Add at least one lowercase letter")
+      .regex(/[A-Z]/, "Add at least one uppercase letter")
+      .regex(/[0-9]/, "Include at least one number in your password")
+      .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, "Use at least one special symbol like !@#$")
+      .min(8, "Enter at least 8 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: "Confirm passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;
