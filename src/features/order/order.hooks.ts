@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showErrorToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
 import { handleApiError } from "../common-service/handleApiError";
@@ -13,6 +13,7 @@ export const useGetOrdersSelf = (query?: OrderQueryCriteria) => {
     enabled: !!accessToken,
     queryKey: keyFac.orders.getOrdersSelf(query).queryKey,
     queryFn: keyFac.orders.getOrdersSelf(query).queryFn,
+    placeholderData: keepPreviousData,
   });
 };
 

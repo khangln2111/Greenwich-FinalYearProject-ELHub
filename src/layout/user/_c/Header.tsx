@@ -189,7 +189,12 @@ const Header = () => {
               <Skeleton width={34} height={34} />
             ) : (
               currentUser && (
-                <Indicator label={cartItemCount ?? 0} size={20} offset={2} position="top-end">
+                <Indicator
+                  label={cartItemCount && cartItemCount > 99 ? "99+" : (cartItemCount ?? 0)}
+                  size={20}
+                  offset={2}
+                  position="top-end"
+                >
                   <ActionIcon
                     variant="default"
                     size="lg"
