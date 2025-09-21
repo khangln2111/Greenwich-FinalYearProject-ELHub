@@ -70,8 +70,8 @@ public class IdentityController(IIdentityService identityService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand command)
     {
-        var result = await identityService.ConfirmEmail(command);
-        return Ok(result);
+        await identityService.ConfirmEmail(command);
+        return Empty;
     }
 
 

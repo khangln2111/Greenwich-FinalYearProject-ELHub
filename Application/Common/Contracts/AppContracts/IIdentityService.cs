@@ -14,7 +14,7 @@ public interface IIdentityService : IAppService
 
     Task LoginWithGoogle(GoogleLoginCommand command);
 
-    Task<Success> ConfirmEmail(ConfirmEmailCommand command);
+    Task ConfirmEmail(ConfirmEmailCommand command);
 
     Task<Success> SendEmailConfirmationOtp(ResendConfirmationEmailCommand command);
 

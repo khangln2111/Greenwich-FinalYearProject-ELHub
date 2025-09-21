@@ -137,7 +137,7 @@ public class IdentityService(
         return new Success("Confirmation email has been sent, please check your email");
     }
 
-    public async Task<Success> ConfirmEmail(ConfirmEmailCommand command)
+    public async Task ConfirmEmail(ConfirmEmailCommand command)
     {
         await validationService.ValidateAsync(command);
         var user = await userManager.FindByEmailAsync(command.Email);
@@ -152,7 +152,8 @@ public class IdentityService(
             throw new HttpException(StatusCodes.Status400BadRequest, "Please provide a valid Otp",
                 ErrorCode.InvalidOtp);
 
-        return new Success("Email confirmed successfully, now you can log in");
+        signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
+        await signInManager.SignInAsync(user, false);
     }
 
 
