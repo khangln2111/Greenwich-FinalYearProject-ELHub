@@ -12,6 +12,7 @@ import { useMemo, useState } from "react";
 import { OrderBy } from "../../../../../api-client/api.types";
 import { AppSegmentedControl } from "../../../../../components/AppSegmentedControl";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
+import { motion } from "motion/react";
 
 export interface CourseSorterProps {
   value: OrderBy<CourseOrderableFields>;
@@ -73,7 +74,7 @@ export const CourseSorter = ({ value, onChange }: CourseSorterProps) => {
           Sorting:
         </Text>
         <div className="flex items-center gap-2">
-          {/* <motion.p
+          <motion.p
             key={currentHoveredField ?? value.field}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -82,13 +83,13 @@ export const CourseSorter = ({ value, onChange }: CourseSorterProps) => {
             className="text-sm font-semibold"
           >
             {displayLabel}
-          </motion.p> */}
-          <p
+          </motion.p>
+          {/* <p
             key={currentHoveredField ?? value.field}
-            className="text-sm font-semibold starting:opacity-0 transition-opacity duration-300"
+            className="text-sm font-semibold starting:opacity-0 starting:-translate-y-2 transition-all duration-300"
           >
             {displayLabel}
-          </p>
+          </p> */}
           <Button
             variant="default"
             size="compact-xs"

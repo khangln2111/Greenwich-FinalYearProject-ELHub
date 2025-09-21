@@ -36,8 +36,6 @@ export default defineConfig({
           state: ["zustand", "@tanstack/react-query", "@tanstack/react-query-devtools"],
           // Icons
           icons: ["@tabler/icons-react", "lucide-react"],
-          // Animation
-          motion: ["framer-motion"],
           // Editor
           editor: [
             "@tiptap/react",
