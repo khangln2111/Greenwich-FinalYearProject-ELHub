@@ -53,6 +53,7 @@ const LoginForm = () => {
     >
       <form onSubmit={formSubmitWithFocus(form, handleSubmit)} noValidate>
         <TextInput
+          size="md"
           mt="md"
           required
           label="Email"
@@ -67,6 +68,7 @@ const LoginForm = () => {
         />
 
         <PasswordInput
+          size="md"
           mt="md"
           required
           label="Password"
@@ -83,7 +85,9 @@ const LoginForm = () => {
         <Group justify="space-between" mt="lg">
           <Checkbox
             label="Remember me"
+            size="md"
             {...form.getInputProps("rememberMe", { type: "checkbox" })}
+            key={form.key("rememberMe")}
           />
           <Anchor size="sm" component={Link} to="/forgot-password">
             Forgot password?
@@ -96,7 +100,7 @@ const LoginForm = () => {
           type="submit"
           variant="gradient"
           gradient={{ from: "red", to: "pink", deg: 90 }}
-          rightSection={<IconLogin2 />}
+          leftSection={<IconLogin2 />}
           loading={isLoginPending}
           radius="2xl"
         >

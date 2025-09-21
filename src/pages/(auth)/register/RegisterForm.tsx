@@ -61,6 +61,7 @@ const RegisterForm = () => {
         <div className="flex items-stretch gap-2 *:grow">
           <TextInput
             label="First Name"
+            size="md"
             placeholder="John"
             required
             key={form.key("firstName")}
@@ -72,6 +73,7 @@ const RegisterForm = () => {
           />
           <TextInput
             label="Last Name"
+            size="md"
             placeholder="Doe"
             required
             key={form.key("lastName")}
@@ -83,6 +85,7 @@ const RegisterForm = () => {
           />
         </div>
         <TextInput
+          size="md"
           required
           placeholder="Your email"
           label="Email"
@@ -96,6 +99,7 @@ const RegisterForm = () => {
           }}
         />
         <PasswordInputWithStrength
+          size="md"
           withAsterisk
           label="Password"
           placeholder="Password"
@@ -111,6 +115,7 @@ const RegisterForm = () => {
         />
         <PasswordInput
           mt="md"
+          size="md"
           required
           label="Confirm Password"
           placeholder="Confirm password"
@@ -126,6 +131,7 @@ const RegisterForm = () => {
           <Checkbox
             key={form.key("agreeToTerms")}
             {...form.getInputProps("agreeToTerms", { type: "input" })}
+            size="md"
             label={
               <>
                 I accept to the{" "}

@@ -55,6 +55,7 @@ export default function ForgotPasswordPage() {
   const emailForm = useForm({
     initialValues: { email: "" },
     validate: { email: isEmail("Invalid email") },
+    mode: "uncontrolled",
   });
 
   const changePasswordForm = useForm({
@@ -63,6 +64,7 @@ export default function ForgotPasswordPage() {
       confirmPassword: "",
     },
     validate: zodResolver(changePasswordSchema),
+    mode: "uncontrolled",
   });
 
   // Extract list of password requirements from the schema
