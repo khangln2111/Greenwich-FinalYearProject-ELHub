@@ -12,7 +12,6 @@ import { useMemo, useState } from "react";
 import { OrderBy } from "../../../../../api-client/api.types";
 import { AppSegmentedControl } from "../../../../../components/AppSegmentedControl";
 import { CourseOrderableFields } from "../../../../../features/course/course.types";
-import { motion } from "motion/react";
 
 export interface CourseSorterProps {
   value: OrderBy<CourseOrderableFields>;
@@ -74,7 +73,7 @@ export const CourseSorter = ({ value, onChange }: CourseSorterProps) => {
           Sorting:
         </Text>
         <div className="flex items-center gap-2">
-          <motion.p
+          {/* <motion.p
             key={currentHoveredField ?? value.field}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -83,17 +82,17 @@ export const CourseSorter = ({ value, onChange }: CourseSorterProps) => {
             className="text-sm font-semibold"
           >
             {displayLabel}
-          </motion.p>
-          {/* <p
+          </motion.p> */}
+          <p
             key={currentHoveredField ?? value.field}
-            className="text-sm font-semibold starting:opacity-0 starting:-translate-y-2 transition-all duration-300"
+            className="text-sm font-semibold starting:opacity-0 starting:-translate-y-1 transition-all ease-in duration-200"
           >
             {displayLabel}
-          </p> */}
+          </p>
           <Button
             variant="default"
             size="compact-xs"
-            className="p-0 w-7 h-7 flex items-center justify-center"
+            className="p-0 size-7 flex items-center justify-center"
             onClick={handleDirectionToggle}
           >
             {value.direction === "asc" ? <IconArrowUp size={16} /> : <IconArrowDown size={16} />}

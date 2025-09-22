@@ -19,6 +19,7 @@ import {
 import { Link } from "react-router";
 import { useGetCurrentUser, useLogout } from "../../../features/auth/identity.hooks";
 import { cn } from "../../../utils/cn";
+import { RoleName } from "../../../features/auth/identity.types";
 
 interface AvatarMenuProps {
   className?: string;
@@ -108,35 +109,43 @@ const AvatarMenu = ({ className }: AvatarMenuProps) => {
 
         <Menu.Divider />
 
-        <Menu.Label>Sites navigation</Menu.Label>
+        {currentUser?.roles && currentUser.roles.length > 0 && (
+          <>
+            <Menu.Label>Sites navigation</Menu.Label>
 
-        {/* menu item as link to /home student */}
-        <Menu.Item
-          className="cursor-pointer"
-          component={Link}
-          to="/"
-          leftSection={<GraduationCap size={15} />}
-        >
-          Student sites
-        </Menu.Item>
-        <Menu.Item
-          leftSection={<IconBriefcase size={15} />}
-          className="cursor-pointer"
-          component={Link}
-          to="/instructor/dashboard"
-        >
-          Instructor sites
-        </Menu.Item>
-        <Menu.Item
-          className="cursor-pointer"
-          component={Link}
-          to="/admin/dashboard"
-          leftSection={<IconUserCog size={15} />}
-        >
-          Admin sites
-        </Menu.Item>
+            {/* menu item as link to /home student */}
+            <Menu.Item
+              className="cursor-pointer"
+              component={Link}
+              to="/"
+              leftSection={<GraduationCap size={15} />}
+            >
+              Student sites
+            </Menu.Item>
+            {currentUser?.roles.includes(RoleName.Instructor) && (
+              <Menu.Item
+                leftSection={<IconBriefcase size={15} />}
+                className="cursor-pointer"
+                component={Link}
+                to="/instructor/dashboard"
+              >
+                Instructor sites
+              </Menu.Item>
+            )}
+            {currentUser?.roles.includes(RoleName.Admin) && (
+              <Menu.Item
+                className="cursor-pointer"
+                component={Link}
+                to="/admin/dashboard"
+                leftSection={<IconUserCog size={15} />}
+              >
+                Admin sites
+              </Menu.Item>
+            )}
 
-        <Menu.Divider />
+            <Menu.Divider />
+          </>
+        )}
         <Menu.Item
           leftSection={<IconSettings size={15} />}
           component={Link}
