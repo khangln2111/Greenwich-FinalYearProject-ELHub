@@ -18,7 +18,7 @@ import { cn } from "../../../utils/cn";
 
 const Header = () => {
   const { data: currentUser, isLoading: isUserLoading } = useGetCurrentUser();
-  const [isSearching, setIsSearching] = useState(false);
+  const [isMobileSearching, setIsMobileSearching] = useState(false);
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [{ search }, setCoursesQuery] = useCourseQueryState();
   const location = useLocation();
@@ -33,7 +33,7 @@ const Header = () => {
 
   const isHomePage = location.pathname === "/";
 
-  const shouldBeSticky = windowScrolled || !isHomePage || isSearching;
+  const shouldBeSticky = windowScrolled || !isHomePage || (isMobileSearching && isMobile);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,16 +53,16 @@ const Header = () => {
     } else {
       navigate(`/courses?search=${encodeURIComponent(trimmed)}`);
     }
-    setIsSearching(false);
+    setIsMobileSearching(false);
   };
 
   return (
     <Box
       component="header"
       className={cn(
-        "min-h-[55px] px-4 lg:px-7 content-center z-[calc(var(--mantine-z-index-app)+1)] transition-all",
+        `min-h-[55px] px-4 lg:px-7 content-center z-[calc(var(--mantine-z-index-app)+1)] transition-all
+        bg-transparent border-b-0 shadow-none absolute left-0 right-0`,
         {
-          "bg-transparent border-b-0 shadow-none absolute left-0 right-0": !shouldBeSticky,
           [`fixed top-0 left-0 right-0 bg-white dark:bg-dark-7 shadow-md backdrop-blur-sm dark:border-b
           dark:border-dark-4`]: shouldBeSticky,
           "sticky top-0 bg-white dark:bg-dark-7 shadow-md backdrop-blur-sm dark:border-b dark:border-dark-4":
@@ -71,7 +71,7 @@ const Header = () => {
       )}
     >
       {/* Search mode (mobile full width) */}
-      {(isSearching || isInCoursesPage) && isMobile ? (
+      {(isMobileSearching || isInCoursesPage) && isMobile ? (
         <div className="flex items-center justify-center gap-4 h-full w-full">
           <ActionIcon
             variant="default"
@@ -81,7 +81,7 @@ const Header = () => {
                 setCoursesQuery({ search: "" });
                 navigate("");
               }
-              setIsSearching(false);
+              setIsMobileSearching(false);
             }}
             aria-label="Back"
           >
@@ -153,7 +153,7 @@ const Header = () => {
 
             {/* Search icon (mobile only) */}
             <ActionIcon
-              onClick={() => setIsSearching(true)}
+              onClick={() => setIsMobileSearching(true)}
               className="md:hidden"
               variant="default"
               size="lg"

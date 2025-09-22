@@ -39,7 +39,7 @@ const CategoriesBlock = () => {
       <div className="flex items-center gap-3">
         {/* prev */}
         <div
-          className="swiper-button-next-custom flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full
+          className="swiper-button-prev-custom flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full
             border dark:border-dark-5 bg-body text-primary hover:bg-primary hover:text-white shadow-lg
             transition cursor-pointer dark:bg-dark-4"
         >
