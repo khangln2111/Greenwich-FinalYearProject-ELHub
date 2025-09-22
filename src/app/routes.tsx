@@ -210,18 +210,21 @@ const adminRoute: RouteObject = {
 };
 
 // ===================== Auth Routes =====================
-const authRoutes: RouteObject[] = [
-  { path: "/login", lazy: lazyRoute(() => import("../pages/(auth)/login/LoginPage")) },
-  { path: "/register", lazy: lazyRoute(() => import("../pages/(auth)/register/RegisterPage")) },
-  {
-    path: "/forgot-password",
-    lazy: lazyRoute(() => import("../pages/(auth)/forgot-password/ForgotPasswordPage")),
-  },
-  {
-    path: "/confirm-email",
-    lazy: lazyRoute(() => import("../pages/(auth)/confirm-email/ConfirmEmailPage")),
-  },
-];
+const authRoutes: RouteObject = {
+  lazy: lazyRoute(() => import("../layout/auth/AuthLayout")),
+  children: [
+    { path: "/login", lazy: lazyRoute(() => import("../pages/(auth)/login/LoginPage")) },
+    { path: "/register", lazy: lazyRoute(() => import("../pages/(auth)/register/RegisterPage")) },
+    {
+      path: "/forgot-password",
+      lazy: lazyRoute(() => import("../pages/(auth)/forgot-password/ForgotPasswordPage")),
+    },
+    {
+      path: "/confirm-email",
+      lazy: lazyRoute(() => import("../pages/(auth)/confirm-email/ConfirmEmailPage")),
+    },
+  ],
+};
 
 // ===================== Other Routes =====================
 const otherRoutes: RouteObject[] = [
@@ -234,7 +237,7 @@ const otherRoutes: RouteObject[] = [
 const route: RouteObject = {
   HydrateFallback: CenterLoaderWithLogo,
   Component: () => <RootLayout />,
-  children: [userRoute, instructorRoute, adminRoute, ...authRoutes, ...otherRoutes],
+  children: [userRoute, instructorRoute, adminRoute, authRoutes, ...otherRoutes],
 };
 
 // ===================== Router =====================
