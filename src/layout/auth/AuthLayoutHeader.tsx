@@ -23,7 +23,7 @@ const AuthLayoutHeader = () => {
     <Box
       component="header"
       className={cn(
-        `min-h-[55px] px-4 lg:px-7 content-center transition-all bg-transparent border-b-0 shadow-none z-0
+        `min-h-[55px] px-4 lg:px-7 content-center transition-all bg-transparent border-b-0 shadow-none z-10
         fixed top-0 left-0 right-0`,
       )}
     >

@@ -19,7 +19,7 @@ export default function LoginPage() {
   return (
     <Box
       className="flex justify-center items-center min-h-dvh bg-gradient-to-br from-cyan-200 to-pink-300
-        dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700"
+        dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 pt-[55px] md:pt-0"
     >
       <Container size={500} flex={1} data-aos="zoom-in-down">
         <Title ta="center" className="font-black">

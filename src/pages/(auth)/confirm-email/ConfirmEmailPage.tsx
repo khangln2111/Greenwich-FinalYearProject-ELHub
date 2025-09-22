@@ -17,8 +17,8 @@ import {
   useConfirmEmail,
   useSendEmailConfirmationOtp,
 } from "../../../features/auth/identity.hooks";
-import { useCountdown } from "../../../hooks/useCountDown";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import { useCountdown } from "../../../hooks/useCountdown";
 
 export default function ConfirmEmailPage() {
   usePageSEO({ title: "Confirm Email" });
@@ -49,7 +49,7 @@ export default function ConfirmEmailPage() {
   return (
     <Box
       className="flex justify-center items-center min-h-dvh px-2 bg-gradient-to-br from-blue-100 to-purple-200
-        dark:from-gray-900 dark:to-gray-800"
+        dark:from-gray-900 dark:to-gray-800 pt-[55px] md:pt-0"
     >
       <Container size={420}>
         <Title ta="center" order={2} className="text-gray-900 dark:text-white font-bold mb-1">

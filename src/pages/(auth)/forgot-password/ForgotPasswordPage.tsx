@@ -26,9 +26,9 @@ import {
   useValidateResetPasswordOtp,
 } from "../../../features/auth/identity.hooks";
 import { changePasswordSchema } from "../../../features/auth/identity.schema";
-import { useCountdown } from "../../../hooks/useCountDown";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 import { extractPasswordRequirements } from "../../../utils/zodHelper";
+import { useCountdown } from "../../../hooks/useCountdown";
 
 export default function ForgotPasswordPage() {
   usePageSEO({ title: "Forgot Password" });
@@ -141,7 +141,7 @@ export default function ForgotPasswordPage() {
   return (
     <Box
       className="flex justify-center items-center min-h-dvh px-2 bg-gradient-to-br from-cyan-200 to-pink-300
-        dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700"
+        dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 pt-[55px] md:pt-0"
     >
       <Container size={800} flex={1}>
         <Title ta="center" order={2} className="text-gray-900 dark:text-white font-bold mb-1">

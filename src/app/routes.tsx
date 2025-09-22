@@ -210,7 +210,7 @@ const adminRoute: RouteObject = {
 };
 
 // ===================== Auth Routes =====================
-const authRoutes: RouteObject = {
+const authRoute: RouteObject = {
   lazy: lazyRoute(() => import("../layout/auth/AuthLayout")),
   children: [
     { path: "/login", lazy: lazyRoute(() => import("../pages/(auth)/login/LoginPage")) },
@@ -237,7 +237,7 @@ const otherRoutes: RouteObject[] = [
 const route: RouteObject = {
   HydrateFallback: CenterLoaderWithLogo,
   Component: () => <RootLayout />,
-  children: [userRoute, instructorRoute, adminRoute, authRoutes, ...otherRoutes],
+  children: [userRoute, instructorRoute, adminRoute, authRoute, ...otherRoutes],
 };
 
 // ===================== Router =====================
