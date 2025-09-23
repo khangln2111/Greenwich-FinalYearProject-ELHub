@@ -8,6 +8,7 @@ import {
   useChangeGiftReceiver,
   useGetReceivedGifts,
   useGetSentGifts,
+  useRedeemGift,
   useRevokeGift,
 } from "../../../features/gift/gift.hooks";
 import { usePageSEO } from "../../../hooks/usePageSEO";
@@ -49,6 +50,7 @@ export default function GiftsPage() {
 
   const changeReceiverMutation = useChangeGiftReceiver();
   const revokeGiftMutation = useRevokeGift();
+  const redeemGiftMutation = useRedeemGift();
 
   const [selectedGiftId, setSelectedGiftId] = useState<string | null>(null);
   const [changeModalOpen, setChangeModalOpen] = useState(false);
@@ -92,7 +94,29 @@ export default function GiftsPage() {
     });
   };
 
-  const handleRedeem = (giftId: string) => alert(`Redeem: ${giftId}`);
+  const handleRedeem = (giftId: string) => {
+    const gift = receivedGifts?.items.find((g) => g.id === giftId);
+    if (!gift) return;
+
+    modals.openConfirmModal({
+      title: "Redeem Gift",
+      centered: true,
+      children: (
+        <>
+          <p>
+            Do you want to <strong>redeem</strong> this gift from:{" "}
+            <span className="font-semibold">{gift.giverEmail}</span>?
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            Once redeemed, the gift will be added to your account.
+          </p>
+        </>
+      ),
+      labels: { confirm: "Redeem", cancel: "Cancel" },
+      confirmProps: { color: "violet", loading: redeemGiftMutation.isPending },
+      onConfirm: () => redeemGiftMutation.mutate(giftId),
+    });
+  };
 
   const selectedGift = sentGifts?.items.find((g) => g.id === selectedGiftId) ?? null;
 

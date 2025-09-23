@@ -57,6 +57,12 @@ export const useCreateGift = () => {
                 "The receiver is already enrolled in this course.",
               ),
           },
+          {
+            status: 400,
+            errorCode: ErrorCode.CannotGiftToSelf,
+            handler: () =>
+              showErrorToast("Invalid Gift", "You cannot redeem a gift you sent to yourself."),
+          },
         ],
       }),
   });
@@ -161,6 +167,12 @@ export const useChangeGiftReceiver = () => {
             errorCode: ErrorCode.GiftUnavailable,
             handler: () =>
               showErrorToast("Gift Unavailable", "This gift has already been redeemed or revoked."),
+          },
+          {
+            status: 400,
+            errorCode: ErrorCode.CannotGiftToSelf,
+            handler: () =>
+              showErrorToast("Invalid Gift", "You cannot change the receiver to yourself."),
           },
         ],
       }),

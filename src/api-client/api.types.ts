@@ -43,6 +43,7 @@ export enum ErrorCode {
   CannotAssignRole = "CannotAssignRole",
   RetryLimitExceeded = "RetryLimitExceeded",
   RetryCooldown = "RetryCooldown",
+  CannotGiftToSelf = "CannotGiftToSelf",
 }
 
 export type OrderDirection = "asc" | "desc";
