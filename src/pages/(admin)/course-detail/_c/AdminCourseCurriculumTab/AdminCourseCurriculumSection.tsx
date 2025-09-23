@@ -1,4 +1,5 @@
-import { Accordion, Text } from "@mantine/core";
+import { Accordion, Box, Text } from "@mantine/core";
+import { FileQuestion } from "lucide-react";
 import { SectionVm } from "../../../../../features/section/section.types";
 import { AdminCourseCurriculumLecture } from "./AdminCourseCurriculumLecture";
 
@@ -13,6 +14,8 @@ export const AdminCourseCurriculumSection = ({
   secIndex,
   onPreview,
 }: AdminCourseCurriculumSectionProps) => {
+  const hasLectures = section.lectures && section.lectures.length > 0;
+
   return (
     <Accordion.Item value={section.title}>
       {/* Accordion header */}
@@ -27,11 +30,23 @@ export const AdminCourseCurriculumSection = ({
 
       {/* Accordion body */}
       <Accordion.Panel>
-        <ul className="grid gap-y-10 capitalize pt-4 md:px-3">
-          {section.lectures.map((lecture, index) => (
-            <AdminCourseCurriculumLecture key={index} lecture={lecture} onPreview={onPreview} />
-          ))}
-        </ul>
+        {hasLectures ? (
+          <ul className="grid gap-y-10 capitalize pt-4 md:px-3">
+            {section.lectures.map((lecture, index) => (
+              <AdminCourseCurriculumLecture key={index} lecture={lecture} onPreview={onPreview} />
+            ))}
+          </ul>
+        ) : (
+          <Box className="flex flex-col items-center justify-center py-8 text-center">
+            <FileQuestion className="w-10 h-10 text-gray-400 dark:text-gray-500 mb-3" />
+            <Text className="font-medium text-gray-600 dark:text-gray-300">
+              No lectures in this section yet
+            </Text>
+            <Text size="sm" className="text-gray-500 dark:text-gray-400 mt-1">
+              Add a lecture to make this section more engaging.
+            </Text>
+          </Box>
+        )}
       </Accordion.Panel>
     </Accordion.Item>
   );

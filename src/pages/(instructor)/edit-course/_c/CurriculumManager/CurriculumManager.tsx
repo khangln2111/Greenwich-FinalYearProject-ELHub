@@ -135,9 +135,9 @@ const CurriculumManager = ({
         />
       )}
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-y-6">
         <Title order={2}>Course Content</Title>
-        <div className="flex items-center gap-4">
+        <div className="flex justify-between items-center gap-4">
           {sections.length > 0 && (
             <Button leftSection={<PlusIcon size={16} />} onClick={openCreateSectionModal}>
               Add Section

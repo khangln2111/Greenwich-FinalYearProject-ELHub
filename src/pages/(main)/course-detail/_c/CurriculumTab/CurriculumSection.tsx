@@ -10,7 +10,7 @@ type CurriculumSectionProps = {
 };
 
 export const CurriculumSection = ({ section, secIndex, onPreview }: CurriculumSectionProps) => {
-  const isEmpty = section.lectures.length === 0;
+  const hasLectures = section.lectures && section.lectures.length > 0;
 
   return (
     <Accordion.Item value={section.title}>
@@ -26,7 +26,13 @@ export const CurriculumSection = ({ section, secIndex, onPreview }: CurriculumSe
 
       {/* Accordion body */}
       <Accordion.Panel>
-        {isEmpty ? (
+        {hasLectures ? (
+          <ul className="grid gap-y-10 capitalize pt-4 md:px-3">
+            {section.lectures.map((lecture, index) => (
+              <CurriculumLecture key={index} lecture={lecture} onPreview={onPreview} />
+            ))}
+          </ul>
+        ) : (
           <Center className="rounded-xl pt-8 pb-4 px-6">
             <div className="flex flex-col items-center text-center gap-3">
               <BookOpen className="h-10 w-10 text-gray-400" />
@@ -35,12 +41,6 @@ export const CurriculumSection = ({ section, secIndex, onPreview }: CurriculumSe
               </Text>
             </div>
           </Center>
-        ) : (
-          <ul className="grid gap-y-10 capitalize pt-4 md:px-3">
-            {section.lectures.map((lecture, index) => (
-              <CurriculumLecture key={index} lecture={lecture} onPreview={onPreview} />
-            ))}
-          </ul>
         )}
       </Accordion.Panel>
     </Accordion.Item>
