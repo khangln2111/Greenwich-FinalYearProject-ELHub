@@ -151,7 +151,7 @@ export default function AdminCourseDetailPage() {
 
       {/* Course Title + Status */}
       <div className="text-center mb-6 max-w-[--container-size-4xl] mx-auto">
-        <Title order={2} className="italic text-gray-800 dark:text-gray-300">
+        <Title order={2} className="italic">
           {course.title}
         </Title>
         <Text size="sm" c="dimmed" mt={4}>

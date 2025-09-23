@@ -167,7 +167,7 @@ export default function InstructorEditCoursePage() {
       {/* Course title */}
       <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">
         <IconPencil className="text-blue-600 dark:text-blue-400 size-5 sm:size-6 md:size-7" />
-        <span className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic text-gray-800 dark:text-gray-300">
+        <span className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic">
           {courseDetail.title}
         </span>
       </div>

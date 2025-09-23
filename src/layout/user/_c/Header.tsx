@@ -162,6 +162,18 @@ const Header = () => {
               <IconSearch size={20} />
             </ActionIcon>
 
+            {currentUser && (
+              <Button
+                variant="subtle"
+                visibleFrom="md"
+                className="font-normal"
+                component={Link}
+                to="/dashboard/my-learning"
+              >
+                My learning
+              </Button>
+            )}
+
             {/* Notification (desktop only) */}
             {isUserLoading ? (
               <Skeleton visibleFrom="lg" width={34} height={34} />
