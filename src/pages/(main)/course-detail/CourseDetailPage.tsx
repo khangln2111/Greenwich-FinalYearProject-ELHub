@@ -120,7 +120,7 @@ export default function CourseDetailPage() {
               <Breadcrumbs separator="→" separatorMargin="md">
                 {items}
               </Breadcrumbs>
-              <Title className="mt-5 dark:text-white">{course.title}</Title>
+              <Title className="mt-5">{course.title}</Title>
               {/* Course stats */}
               <div className="flex flex-wrap items-center gap border py-0 md:py-6 px-4 text-sm mt-xl rounded-lg shadow-lg">
                 {/* Created By */}

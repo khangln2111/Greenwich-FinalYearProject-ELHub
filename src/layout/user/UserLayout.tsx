@@ -5,7 +5,7 @@ import Header from "./_c/Header";
 
 export default function UserLayout() {
   return (
-    <div className="flex flex-col min-h-dvh">
+    <div className="flex flex-col min-h-dvh dark:text-gray-100">
       <Header />
       <main className="flex flex-col flex-1">
         <Outlet />

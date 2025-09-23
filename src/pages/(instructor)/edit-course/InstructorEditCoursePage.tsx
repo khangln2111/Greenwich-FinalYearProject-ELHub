@@ -1,4 +1,14 @@
-import { Alert, Badge, Button, Group, SegmentedControl, Tabs, Text, Tooltip } from "@mantine/core";
+import {
+  Alert,
+  Badge,
+  Button,
+  Group,
+  SegmentedControl,
+  Tabs,
+  Text,
+  Title,
+  Tooltip,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconAlertTriangle, IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -167,9 +177,9 @@ export default function InstructorEditCoursePage() {
       {/* Course title */}
       <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">
         <IconPencil className="text-blue-600 dark:text-blue-400 size-5 sm:size-6 md:size-7" />
-        <span className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic">
+        <Title className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic">
           {courseDetail.title}
-        </span>
+        </Title>
       </div>
 
       {/* Status bar */}

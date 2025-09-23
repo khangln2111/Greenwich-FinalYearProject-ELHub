@@ -32,7 +32,7 @@ const SidebarLayout = ({
 
   return (
     <div
-      className="min-h-dvh bg-body flex flex-col"
+      className="min-h-dvh bg-body flex flex-col dark:text-gray-100"
       style={
         {
           "--sidebar-width": rem(sidebarWidth),

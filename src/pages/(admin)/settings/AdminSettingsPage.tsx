@@ -80,7 +80,7 @@ export default function AdminSettingsPage() {
 
       {/* Profile */}
       {tab === Tabs.Profile && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           {isPending ? (
             <CenterLoader />
           ) : error ? (
@@ -93,7 +93,7 @@ export default function AdminSettingsPage() {
 
       {/* Notifications */}
       {tab === Tabs.Notifications && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           <Stack gap="xl">
             {/* User reports */}
             <Group justify="space-between" align="flex-start">
@@ -147,7 +147,7 @@ export default function AdminSettingsPage() {
 
       {/* Preferences */}
       {tab === Tabs.Preferences && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           <Stack gap="lg">
             {/* Theme */}
             <div>
@@ -213,7 +213,7 @@ export default function AdminSettingsPage() {
 
       {/* Security */}
       {tab === Tabs.Security && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           <Stack gap="lg">
             <Text fw={500} className="flex items-center gap-2 text-lg">
               <Shield size={18} /> Security
@@ -243,7 +243,7 @@ export default function AdminSettingsPage() {
 
       {/* System */}
       {tab === Tabs.System && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           <Stack gap="lg">
             <Text fw={500} className="flex items-center gap-2 text-lg">
               <Server size={18} /> System Settings

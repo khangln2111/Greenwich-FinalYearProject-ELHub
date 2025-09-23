@@ -115,10 +115,7 @@ export default function UserSettingsPage() {
             {
               value: Tabs.Danger,
               label: (
-                <div
-                  className="flex items-center justify-center gap-2 text-red
-                    group-data-active:text-white"
-                >
+                <div className="flex items-center justify-center gap-2 text-red group-data-active:text-white">
                   <Trash2Icon size={16} /> Danger
                 </div>
               ),
@@ -130,7 +127,7 @@ export default function UserSettingsPage() {
       {/* Panels */}
       <div>
         {tab === Tabs.Profile && (
-          <Card shadow="sm" radius="xl" className="p-6 items-center max-w-3xl mx-auto">
+          <Card shadow="sm" radius="xl" className="p-6 items-center max-w-3xl mx-auto bg-body">
             {isPending ? (
               <div>Loading...</div>
             ) : error ? (
@@ -142,7 +139,7 @@ export default function UserSettingsPage() {
         )}
 
         {tab === Tabs.Notifications && (
-          <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
+          <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
             <Stack gap="xl">
               {/* Email notifications */}
               <Group justify="space-between">
@@ -231,7 +228,7 @@ export default function UserSettingsPage() {
         )}
 
         {tab === Tabs.Security && (
-          <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
+          <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
             <Stack gap="lg">
               <Text fw={500} className="flex items-center gap-2 text-lg">
                 <LockIcon size={18} /> Password
@@ -262,7 +259,7 @@ export default function UserSettingsPage() {
         )}
 
         {tab === Tabs.Preferences && (
-          <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto">
+          <Card shadow="sm" radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
             <Stack gap="lg">
               {/* Theme */}
               <div>

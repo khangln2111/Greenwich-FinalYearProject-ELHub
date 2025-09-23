@@ -108,8 +108,7 @@ export default function UserDashboardLayout() {
 
       <button
         onClick={() => logout.mutate()}
-        className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:underline px-4 py-2
-          text-sm"
+        className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:underline px-4 py-2 text-sm"
       >
         <LogOutIcon className="size-5" />
         Log out
@@ -118,7 +117,7 @@ export default function UserDashboardLayout() {
   );
 
   return (
-    <div className="bg-gray-200 dark:bg-dark-5 text-gray-900 dark:text-white flex-1">
+    <div className="bg-gray-200 dark:bg-dark-5 flex-1">
       <div className="p-4 md:p-6 xl:px-15 py-10 container">
         {/* Mobile toggle */}
         <div className="lg:hidden hidden justify-between items-center mb-4">

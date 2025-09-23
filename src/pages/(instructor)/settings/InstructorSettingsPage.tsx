@@ -77,7 +77,7 @@ export default function InstructorSettingsPage() {
 
       {/* Profile */}
       {tab === Tabs.Profile && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           {isPending ? (
             <CenterLoader />
           ) : error ? (
@@ -90,7 +90,7 @@ export default function InstructorSettingsPage() {
 
       {/* Payments */}
       {tab === Tabs.Payments && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           <Stack gap="lg">
             <Text fw={500} className="flex items-center gap-2 text-lg">
               <Wallet size={18} /> Payment & Payouts
@@ -120,7 +120,7 @@ export default function InstructorSettingsPage() {
 
       {/* Notifications */}
       {tab === Tabs.Notifications && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           <Stack gap="xl">
             {/* Sales */}
             <Group justify="space-between" align="flex-start">
@@ -186,7 +186,7 @@ export default function InstructorSettingsPage() {
 
       {/* Preferences */}
       {tab === Tabs.Preferences && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           <Stack gap="lg">
             {/* Theme */}
             <div>
@@ -252,7 +252,7 @@ export default function InstructorSettingsPage() {
 
       {/* Security */}
       {tab === Tabs.Security && (
-        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto">
+        <Card shadow="lg" withBorder radius="xl" className="p-6 max-w-3xl mx-auto bg-body">
           <Stack gap="lg">
             <Text fw={500} className="flex items-center gap-2 text-lg">
               <Shield size={18} /> Security

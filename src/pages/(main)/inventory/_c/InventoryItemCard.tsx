@@ -35,12 +35,12 @@ const InventoryItemCard = ({ item, onGift }: InventoryItemCardProps) => {
 
   return (
     <div
-      className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-shadow
-        duration-300 p-4 sm:p-5 flex flex-col sm:flex-row gap-4"
+      className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4
+        sm:p-5 flex flex-col sm:flex-row gap-4"
     >
       <div
-        className="w-full sm:w-28 h-44 sm:h-28 rounded-xl overflow-hidden border border-gray-200
-          dark:border-zinc-700 shadow-sm flex-shrink-0"
+        className="w-full sm:w-28 h-44 sm:h-28 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700
+          shadow-sm flex-shrink-0"
       >
         <img
           src={item.courseImageUrl}
@@ -53,15 +53,14 @@ const InventoryItemCard = ({ item, onGift }: InventoryItemCardProps) => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <Link
             to={`/courses/${item.courseId}`}
-            className="text-lg font-semibold text-gray-900 dark:text-white hover:text-blue-600
-              dark:hover:text-blue-400"
+            className="text-lg font-semibold hover:text-blue-600 dark:hover:text-blue-400"
             onClick={() => navigate(`/courses/${item.courseId}`)}
           >
             {item.courseTitle}
           </Link>
           <span
-            className="text-xs px-2 py-0.5 rounded-full font-medium bg-gradient-to-br
-              from-indigo-500 to-purple-500 text-white shadow-sm w-fit"
+            className="text-xs px-2 py-0.5 rounded-full font-medium bg-gradient-to-br from-indigo-500 to-purple-500
+              text-white shadow-sm w-fit"
           >
             Quantity: {item.quantity}
           </span>

@@ -60,9 +60,7 @@ const InstructorCourseCard = ({ course }: Props) => {
         className="rounded-xl object-cover mb-4 aspect-video border border-black/10 dark:border-white/10"
       />
       <div className="flex-1">
-        <h2 className="text-lg font-bold mb-1 text-gray-900 dark:text-white line-clamp-2">
-          {course.title}
-        </h2>
+        <h2 className="text-lg font-bold mb-1 line-clamp-2">{course.title}</h2>
         {/* <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
           {course.description}
         </p> */}
