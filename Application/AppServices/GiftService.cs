@@ -51,6 +51,10 @@ public class GiftService(
         // Normalize email
         var normalizedEmail = command.ReceiverEmail.Trim().ToLower();
 
+        if (normalizedEmail == currentUser.Email.Trim().ToLower())
+            throw new BadRequestException("You cannot gift a course to yourself",
+                ErrorCode.CannotGiftToSelf);
+
         var receiver = await context.Users
             .FirstOrDefaultAsync(u => u.Email!.ToLower() == normalizedEmail);
 
@@ -102,16 +106,22 @@ public class GiftService(
                 g.Id == command.Id &&
                 g.GiverId == currentUser.Id);
 
+
         if (gift == null)
             throw new NotFoundException("Gift not found");
 
         if (gift.Status != GiftStatus.Pending)
             throw new BadRequestException("This gift has already been redeemed or revoked", ErrorCode.GiftUnavailable);
 
+        var newReceiverEmail = command.ReceiverEmail.Trim();
+        if (string.Equals(newReceiverEmail, currentUser.Email, StringComparison.OrdinalIgnoreCase))
+            throw new BadRequestException(
+                "You cannot send a gift to your own email.",
+                ErrorCode.CannotGiftToSelf
+            );
 
-        // Update new receiver email
-        gift.ReceiverEmail = command.ReceiverEmail.Trim();
 
+        gift.ReceiverEmail = newReceiverEmail;
         await context.SaveChangesAsync();
 
         // Resend gift email to new receiver
@@ -176,7 +186,6 @@ public class GiftService(
         gift.Status = GiftStatus.Redeemed;
 
         await context.SaveChangesAsync();
-
         await mediator.Publish(new GiftRedeemedEvent(gift));
 
         return new Success("Successfully redeemed the gift");

@@ -25,5 +25,6 @@ public enum ErrorCode
     GiftUnavailable,
     CannotAssignRole,
     RetryLimitExceeded,
-    RetryCooldown
+    RetryCooldown,
+    CannotGiftToSelf
 }
