@@ -10,6 +10,7 @@ import { CreateSectionModal } from "./CreateSectionModal";
 import { SectionItem } from "./SectionItem";
 import { UpdateSectionModal } from "./UpdateSectionModal";
 import { cn } from "../../../../../utils/cn";
+import { reorderArray, moveItemBetweenArrays } from "../../../../../utils/arrayUtils";
 
 type CurriculumManagerProps = {
   courseId: string;
@@ -35,6 +36,9 @@ const CurriculumManager = ({
 
   const [selectedSection, setSelectedSection] = useState<SectionVm | null>(null);
 
+  const reorderSectionMutation = useReorderSection();
+  const reorderLectureMutation = useReorderLecture();
+
   useEffect(() => {
     if (initialSections) {
       setSections(initialSections);
@@ -46,76 +50,71 @@ const CurriculumManager = ({
     openUpdateSectionModal();
   };
 
-  const reorderSectionMutation = useReorderSection();
-  const reorderLectureMutation = useReorderLecture();
-
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result;
-
     if (!destination) return;
 
-    // --- Reorder Sections ---
     if (type === "section") {
       if (source.index === destination.index) return;
 
-      const updatedSections = [...sections];
-      const [moved] = updatedSections.splice(source.index, 1);
-      updatedSections.splice(destination.index, 0, moved);
-
-      // update local state
+      const updatedSections = reorderArray(sections, source.index, destination.index);
       setSections(updatedSections);
 
-      // send mutation
+      const movedSection = updatedSections[destination.index];
       reorderSectionMutation.mutate({
-        id: moved.id,
+        id: movedSection.id,
         newOrder: destination.index,
       });
-
       return;
     }
 
-    // --- Reorder Lectures ---
     if (type === "lecture") {
-      // Early return if the lecture is being moved within the same section && to the same position
-      if (source.droppableId === destination.droppableId && source.index === destination.index)
-        return;
+      const sourceSectionIndex = sections.findIndex((s) => s.id === source.droppableId);
+      const destinationSectionIndex = sections.findIndex((s) => s.id === destination.droppableId);
+      if (sourceSectionIndex === -1 || destinationSectionIndex === -1) return;
 
-      const sourceSection = sections.find((s) => s.id === source.droppableId);
-      const destinationSection = sections.find((s) => s.id === destination.droppableId);
-
-      if (!sourceSection || !destinationSection) return;
-
-      const movedLecture = sourceSection.lectures?.[source.index];
-      if (!movedLecture) return;
-
-      // --- Update lectures in localState ---
       const updatedSections = [...sections];
-      const sourceSectionIndex = updatedSections.findIndex((s) => s.id === sourceSection.id);
-      const destinationSectionIndex = updatedSections.findIndex(
-        (s) => s.id === destinationSection.id,
-      );
 
-      // Early return if source or destination section not found
-      if (sourceSectionIndex !== -1 && destinationSectionIndex !== -1) {
-        // Remove lecture from source section
-        updatedSections[sourceSectionIndex].lectures?.splice(source.index, 1);
-        // Add lecture to destination section
-        updatedSections[destinationSectionIndex].lectures?.splice(
+      // Moving within the same section
+      if (sourceSectionIndex === destinationSectionIndex) {
+        updatedSections[sourceSectionIndex].lectures = reorderArray(
+          updatedSections[sourceSectionIndex].lectures!,
+          source.index,
           destination.index,
-          0,
-          movedLecture,
         );
 
-        // Update local state
-        setSections(updatedSections);
+        const movedLecture = updatedSections[sourceSectionIndex].lectures[destination.index];
+
+        reorderLectureMutation.mutate({
+          id: movedLecture.id,
+          newOrder: destination.index,
+          newSectionId: updatedSections[sourceSectionIndex].id,
+        });
+      }
+      // Moving to a different section
+      else {
+        const {
+          source: newSourceArray,
+          destination: newDestArray,
+          moved,
+        } = moveItemBetweenArrays(
+          updatedSections[sourceSectionIndex].lectures!,
+          updatedSections[destinationSectionIndex].lectures!,
+          source.index,
+          destination.index,
+        );
+
+        updatedSections[sourceSectionIndex].lectures = newSourceArray;
+        updatedSections[destinationSectionIndex].lectures = newDestArray;
+
+        reorderLectureMutation.mutate({
+          id: moved.id,
+          newOrder: destination.index,
+          newSectionId: updatedSections[destinationSectionIndex].id,
+        });
       }
 
-      // Send mutation to update lectures on server
-      reorderLectureMutation.mutate({
-        id: movedLecture.id,
-        newOrder: destination.index,
-        newSectionId: destinationSection.id,
-      });
+      setSections(updatedSections);
     }
   };
 
@@ -150,7 +149,17 @@ const CurriculumManager = ({
       </div>
 
       {sections.length > 0 ? (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext
+          onDragStart={() => {
+            document.documentElement.classList.remove("scroll-smooth");
+            document.documentElement.classList.add("scroll-auto");
+          }}
+          onDragEnd={(result) => {
+            onDragEnd(result);
+            document.documentElement.classList.remove("scroll-auto");
+            document.documentElement.classList.add("scroll-smooth");
+          }}
+        >
           <Droppable droppableId="sections" type="section">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>

@@ -1,3 +1,5 @@
+// splice is mutable and slice is immutable
+
 export function reorderArray<T>(list: T[], startIndex: number, endIndex: number): T[] {
   // create a shallow copy of the array to avoid mutating the original array
   const result = Array.from(list);
@@ -9,15 +11,15 @@ export function reorderArray<T>(list: T[], startIndex: number, endIndex: number)
   return result;
 }
 
-export const moveItemBetweenArrays = <T>(
+export function moveItemBetweenArrays<T>(
   source: T[],
   destination: T[],
   sourceIndex: number,
   destinationIndex: number,
-) => {
+) {
   const sourceClone = [...source];
   const destClone = [...destination];
   const [moved] = sourceClone.splice(sourceIndex, 1);
   destClone.splice(destinationIndex, 0, moved);
   return { source: sourceClone, destination: destClone, moved };
-};
+}

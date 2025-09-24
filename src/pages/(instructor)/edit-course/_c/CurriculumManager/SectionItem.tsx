@@ -158,18 +158,18 @@ export const SectionItem = ({ section, index, onUpdate }: SectionItemProps) => {
 
             <Accordion.Panel>
               <Droppable droppableId={section.id} type="lecture">
-                {(provided, snapshot) => (
+                {(dropProvided, dropSnapshot) => (
                   <div>
                     <ul
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
+                      ref={dropProvided.innerRef}
+                      {...dropProvided.droppableProps}
                       className={cn("capitalize transition-colors py-8 px-3 md:px-8", {
-                        "bg-primary-1/40 dark:bg-primary-9/10": snapshot.isDraggingOver,
-                        "bg-gray-100 dark:bg-dark-4": snapshot.draggingFromThisWith,
+                        "bg-primary-1/40 dark:bg-primary-9/10": dropSnapshot.isDraggingOver,
+                        "bg-gray-100 dark:bg-dark-4": dropSnapshot.draggingFromThisWith,
                       })}
                     >
                       <LectureList lectures={section.lectures} onUpdate={handleUpdateLecture} />
-                      {provided.placeholder}
+                      {dropProvided.placeholder}
                       <Button
                         variant="subtle"
                         leftSection={<PlusIcon size={16} />}
