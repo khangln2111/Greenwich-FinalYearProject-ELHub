@@ -43,7 +43,7 @@ export const AdminCourseCurriculumSection = ({
               No lectures in this section yet
             </Text>
             <Text size="sm" className="text-gray-500 dark:text-gray-400 mt-1">
-              Add a lecture to make this section more engaging.
+              Instructor hasn't added any lectures to this section.
             </Text>
           </Box>
         )}

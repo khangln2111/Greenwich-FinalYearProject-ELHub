@@ -12,7 +12,7 @@ export const showErrorToast = (title: string, message?: string | ReactNode) => {
     autoClose: ms("10s"),
     color: "red",
     withBorder: true,
-    position: "bottom-right",
+    position: "top-right",
   });
 };
 
@@ -23,7 +23,7 @@ export const showSuccessToast = (title: string, message?: string | ReactNode) =>
     icon: <IconCheck size={20} />,
     color: "green",
     withBorder: true,
-    position: "bottom-right",
+    position: "top-right",
   });
 };
 
@@ -33,7 +33,7 @@ export const showLoadingToast = (title?: string, message?: string | ReactNode) =
     message: message || "Please wait...",
     loading: true,
     withBorder: true,
-    position: "bottom-right",
+    position: "top-right",
     autoClose: false,
   });
 
@@ -50,6 +50,6 @@ export const showNotificationToast = (
     icon: <BellRingIcon size={20} />,
     color: "orange",
     withBorder: true,
-    position: "bottom-right",
+    position: "top-right",
   });
 };
