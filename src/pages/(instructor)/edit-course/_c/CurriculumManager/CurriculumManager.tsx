@@ -1,15 +1,15 @@
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { Accordion, Button, Text, Title } from "@mantine/core";
-import { useDisclosure, useListState } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import { ChevronDownIcon, LayoutListIcon, PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useReorderLecture } from "../../../../../features/lecture/lecture.hooks";
-import { useReorderSection } from "../../../../../features/section/section.hooks";
 import { SectionVm } from "../../../../../features/section/section.types";
-import { cn } from "../../../../../utils/cn";
+import { useReorderSection } from "../../../../../features/section/section.hooks";
 import { CreateSectionModal } from "./CreateSectionModal";
 import { SectionItem } from "./SectionItem";
 import { UpdateSectionModal } from "./UpdateSectionModal";
+import { cn } from "../../../../../utils/cn";
 
 type CurriculumManagerProps = {
   courseId: string;
@@ -31,12 +31,14 @@ const CurriculumManager = ({
     { open: openUpdateSectionModal, close: closeUpdateSectionModal },
   ] = useDisclosure(false);
 
-  const [sections, sectionsHandlers] = useListState<SectionVm>(initialSections);
+  const [sections, setSections] = useState<SectionVm[]>(initialSections);
 
   const [selectedSection, setSelectedSection] = useState<SectionVm | null>(null);
 
   useEffect(() => {
-    sectionsHandlers.setState(initialSections);
+    if (initialSections) {
+      setSections(initialSections);
+    }
   }, [initialSections]);
 
   const handleUpdateSection = (section: SectionVm) => {
@@ -47,70 +49,73 @@ const CurriculumManager = ({
   const reorderSectionMutation = useReorderSection();
   const reorderLectureMutation = useReorderLecture();
 
-  const handleReorderSections = (sourceIndex: number, destinationIndex: number) => {
-    sectionsHandlers.reorder({ from: sourceIndex, to: destinationIndex });
-
-    reorderSectionMutation.mutate({
-      id: sections[destinationIndex].id,
-      newOrder: destinationIndex,
-    });
-  };
-
-  const handleReorderLectures = (
-    sourceSectionId: string,
-    destSectionId: string,
-    sourceIndex: number,
-    destIndex: number,
-  ) => {
-    // find lecture being moved
-    const movedLecture = sections.find((s) => s.id === sourceSectionId)?.lectures[sourceIndex];
-    if (!movedLecture) return;
-
-    // update state
-    sectionsHandlers.apply((section) => {
-      if (section.id === sourceSectionId) {
-        // remove lecture from source section
-        return {
-          ...section,
-          lectures: section.lectures.filter((_, i) => i !== sourceIndex),
-        };
-      }
-      if (section.id === destSectionId) {
-        // insert lecture into destination section
-        const newLectures = Array.from(section.lectures);
-        newLectures.splice(destIndex, 0, movedLecture);
-        return { ...section, lectures: newLectures };
-      }
-      return section;
-    });
-
-    // call API
-    reorderLectureMutation.mutate({
-      id: movedLecture.id,
-      newOrder: destIndex,
-      newSectionId: destSectionId,
-    });
-  };
-
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result;
+
     if (!destination) return;
 
+    // --- Reorder Sections ---
     if (type === "section") {
       if (source.index === destination.index) return;
-      handleReorderSections(source.index, destination.index);
+
+      const updatedSections = [...sections];
+      const [moved] = updatedSections.splice(source.index, 1);
+      updatedSections.splice(destination.index, 0, moved);
+
+      // update local state
+      setSections(updatedSections);
+
+      // send mutation
+      reorderSectionMutation.mutate({
+        id: moved.id,
+        newOrder: destination.index,
+      });
+
       return;
     }
 
+    // --- Reorder Lectures ---
     if (type === "lecture") {
+      // Early return if the lecture is being moved within the same section && to the same position
       if (source.droppableId === destination.droppableId && source.index === destination.index)
         return;
-      handleReorderLectures(
-        source.droppableId,
-        destination.droppableId,
-        source.index,
-        destination.index,
+
+      const sourceSection = sections.find((s) => s.id === source.droppableId);
+      const destinationSection = sections.find((s) => s.id === destination.droppableId);
+
+      if (!sourceSection || !destinationSection) return;
+
+      const movedLecture = sourceSection.lectures?.[source.index];
+      if (!movedLecture) return;
+
+      // --- Update lectures in localState ---
+      const updatedSections = [...sections];
+      const sourceSectionIndex = updatedSections.findIndex((s) => s.id === sourceSection.id);
+      const destinationSectionIndex = updatedSections.findIndex(
+        (s) => s.id === destinationSection.id,
       );
+
+      // Early return if source or destination section not found
+      if (sourceSectionIndex !== -1 && destinationSectionIndex !== -1) {
+        // Remove lecture from source section
+        updatedSections[sourceSectionIndex].lectures?.splice(source.index, 1);
+        // Add lecture to destination section
+        updatedSections[destinationSectionIndex].lectures?.splice(
+          destination.index,
+          0,
+          movedLecture,
+        );
+
+        // Update local state
+        setSections(updatedSections);
+      }
+
+      // Send mutation to update lectures on server
+      reorderLectureMutation.mutate({
+        id: movedLecture.id,
+        newOrder: destination.index,
+        newSectionId: destinationSection.id,
+      });
     }
   };
 

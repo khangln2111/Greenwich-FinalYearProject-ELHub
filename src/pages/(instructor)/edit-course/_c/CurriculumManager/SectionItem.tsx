@@ -4,20 +4,31 @@ import { useDisclosure } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { EllipsisVerticalIcon, Move, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { LectureVm } from "../../../../../features/lecture/lecture.types";
-import { SectionVm as lectureVm } from "../../../../../features/section/section.types";
 import { useDeleteSection } from "../../../../../features/section/section.hooks";
 import { cn } from "../../../../../utils/cn";
 import { CreateLectureModal } from "./CreateLectureModal";
 import { LectureItem } from "./LectureItem";
 import { UpdateLectureModal } from "./UpdateLectureModal";
+import { SectionVm } from "../../../../../features/section/section.types";
 
 type SectionItemProps = {
-  section: lectureVm;
+  section: SectionVm;
   index: number;
-  onUpdate: (section: lectureVm) => void;
+  onUpdate: (section: SectionVm) => void;
 };
+
+type LectureListProps = {
+  lectures: LectureVm[];
+  onUpdate: (lecture: LectureVm) => void;
+};
+
+const LectureList = memo(function InnerLectureList({ lectures, onUpdate }: LectureListProps) {
+  return lectures.map((lecture, idx) => (
+    <LectureItem key={lecture.id} lecture={lecture} index={idx} onUpdate={onUpdate} />
+  ));
+});
 
 export const SectionItem = ({ section, index, onUpdate }: SectionItemProps) => {
   const [selectedLecture, setSelectedLecture] = useState<LectureVm | null>(null);
@@ -157,14 +168,7 @@ export const SectionItem = ({ section, index, onUpdate }: SectionItemProps) => {
                         "bg-gray-100 dark:bg-dark-4": snapshot.draggingFromThisWith,
                       })}
                     >
-                      {section.lectures?.map((lecture, idx) => (
-                        <LectureItem
-                          key={lecture.id}
-                          lecture={lecture}
-                          index={idx}
-                          onUpdate={handleUpdateLecture}
-                        />
-                      ))}
+                      <LectureList lectures={section.lectures} onUpdate={handleUpdateLecture} />
                       {provided.placeholder}
                       <Button
                         variant="subtle"

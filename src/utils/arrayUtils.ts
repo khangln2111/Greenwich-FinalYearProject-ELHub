@@ -8,3 +8,16 @@ export function reorderArray<T>(list: T[], startIndex: number, endIndex: number)
   // return the new array after reordering
   return result;
 }
+
+export const moveItemBetweenArrays = <T>(
+  source: T[],
+  destination: T[],
+  sourceIndex: number,
+  destinationIndex: number,
+) => {
+  const sourceClone = [...source];
+  const destClone = [...destination];
+  const [moved] = sourceClone.splice(sourceIndex, 1);
+  destClone.splice(destinationIndex, 0, moved);
+  return { source: sourceClone, destination: destClone, moved };
+};
