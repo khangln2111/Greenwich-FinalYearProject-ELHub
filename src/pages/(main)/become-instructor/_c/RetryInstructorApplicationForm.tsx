@@ -1,8 +1,14 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import dayjs from "dayjs";
 import { zodResolver } from "mantine-form-zod-resolver";
+import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 import FileUploadField from "../../../../components/media/FileUploadField";
 import { ALLOWED_IMAGE_TYPES } from "../../../../constants/ValidationConstants";
+import {
+  useGetRetryInfoSelf,
+  useResubmitInstructorApplication,
+} from "../../../../features/instructorApplication/instructorApplication.hooks";
 import {
   RetryInstructorApplicationFormValues,
   retryInstructorApplicationSchema,
@@ -11,18 +17,14 @@ import {
   InstructorApplicationVm,
   ResubmitInstructorApplicationCommand,
 } from "../../../../features/instructorApplication/instructorApplication.types";
-import { useResubmitInstructorApplication } from "../../../../features/instructorApplication/instructorApplication.hooks";
 import { formSubmitWithFocus } from "../../../../utils/form";
 
-type RetryInstructorApplicationFormProps = {
+type Props = {
   application: InstructorApplicationVm;
   onCancel?: () => void;
 };
 
-const RetryInstructorApplicationForm = ({
-  application,
-  onCancel,
-}: RetryInstructorApplicationFormProps) => {
+const RetryInstructorApplicationForm = ({ application, onCancel }: Props) => {
   const form = useForm<RetryInstructorApplicationFormValues>({
     initialValues: {
       firstName: application.firstName ?? "",
@@ -35,6 +37,7 @@ const RetryInstructorApplicationForm = ({
   });
 
   const { mutate: retryApplication, isPending } = useResubmitInstructorApplication();
+  const { data: retryInfo, isPending: isRetryPending } = useGetRetryInfoSelf();
 
   const handleSubmit = (values: RetryInstructorApplicationFormValues) => {
     const payload: ResubmitInstructorApplicationCommand = {
@@ -47,30 +50,50 @@ const RetryInstructorApplicationForm = ({
     retryApplication(payload);
   };
 
+  if (isRetryPending) return <CenterLoader />;
+
+  const retryMessage = retryInfo
+    ? retryInfo.canRetry
+      ? `You can retry now (${retryInfo.retryRemaining} retries left)`
+      : `You can retry after ${dayjs(retryInfo.retryAvailableAt).format(
+          "HH:mm YYYY-MM-DD",
+        )} (${retryInfo.retryRemaining} retries left)`
+    : null;
+
   return (
     <form onSubmit={formSubmitWithFocus(form, handleSubmit)}>
       <Stack>
-        {application.note && (
+        {(application.note || retryMessage) && (
           <div
-            className="bg-yellow-50 dark:bg-yellow-900 border border-yellow-400 dark:border-yellow-700 text-yellow-800
-              dark:text-yellow-200 p-4 rounded text-sm"
+            className="bg-red-50 dark:bg-red-900 border border-red-300 dark:border-red-700 text-red-800 dark:text-red-200
+              p-4 rounded text-sm space-y-3"
           >
-            <strong>Previous Feedback:</strong>
-            <p className="mt-1 whitespace-pre-line">{application.note}</p>
+            <p>
+              <strong>Your application was rejected</strong>
+            </p>
+            {application.note && (
+              <p>
+                <strong>Reason:</strong> {application.note}
+              </p>
+            )}
+            {retryMessage && <p>{retryMessage}</p>}
           </div>
         )}
+
         <Group grow>
           <TextInput
             label="First Name"
             size="md"
             placeholder="e.g. John"
             {...form.getInputProps("firstName")}
+            key={form.key("firstName")}
           />
           <TextInput
             label="Last Name"
             size="md"
             placeholder="e.g. Doe"
             {...form.getInputProps("lastName")}
+            key={form.key("lastName")}
           />
         </Group>
 
@@ -79,6 +102,7 @@ const RetryInstructorApplicationForm = ({
           size="md"
           placeholder="e.g. Senior Web Developer, Data Scientist..."
           {...form.getInputProps("professionalTitle")}
+          key={form.key("professionalTitle")}
         />
         <Textarea
           label="About"
@@ -87,6 +111,7 @@ const RetryInstructorApplicationForm = ({
           size="md"
           minRows={4}
           {...form.getInputProps("about")}
+          key={form.key("about")}
         />
         <FileUploadField
           previewMediaType="image"
@@ -95,7 +120,9 @@ const RetryInstructorApplicationForm = ({
           description="Upload a professional-looking avatar (JPG, PNG, WEBP)"
           accept={ALLOWED_IMAGE_TYPES}
           {...form.getInputProps("avatar")}
+          key={form.key("avatar")}
         />
+
         <Group justify="flex-end">
           {onCancel && (
             <Button variant="subtle" onClick={onCancel}>

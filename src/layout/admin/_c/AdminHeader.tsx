@@ -133,6 +133,9 @@ const InstructorHeader = () => {
           >
             <IconSearch size={20} />
           </ActionIcon>
+          <Button variant="subtle" visibleFrom="md" className="font-normal" component={Link} to="/">
+            Student site
+          </Button>
           <Indicator label={unreadNotificationsCount ?? 0} size={20} offset={2} position="top-end">
             <ActionIcon
               variant="default"

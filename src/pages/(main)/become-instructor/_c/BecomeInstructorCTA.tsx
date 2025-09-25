@@ -1,8 +1,7 @@
-import { Loader } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import dayjs from "dayjs";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import CenterLoader from "../../../../components/CenterLoader/CenterLoader";
 import CusModal from "../../../../components/CusModal/CusModal";
 import { useGetCurrentUser } from "../../../../features/auth/identity.hooks";
 import { useGetInstructorApplicationSelf } from "../../../../features/instructorApplication/instructorApplication.hooks";
@@ -11,23 +10,18 @@ import ApplicationStatusModal from "./ApplicationStatusModal";
 import CreateInstructorApplicationForm from "./CreateInstructorApplicationForm";
 import RetryInstructorApplicationForm from "./RetryInstructorApplicationForm";
 
-const MAX_RETRY = 2;
-const RETRY_DELAY_DAYS = 2;
-
 const BecomeInstructorCTA = () => {
   const navigate = useNavigate();
   const { data: currentUser } = useGetCurrentUser();
-  const [opened, { open, close }] = useDisclosure(false);
+  const [formModalOpened, { open: openFormModal, close: closeFormModal }] = useDisclosure(false);
   const [statusModal, { open: openStatusModal, close: closeStatusModal }] = useDisclosure(false);
-  const [statusType, setStatusType] = useState<"pending" | "rejected-wait" | "approved" | null>(
-    null,
-  );
+  const [statusType, setStatusType] = useState<"pending" | "approved" | null>(null);
 
-  const { data: application, isLoading } = useGetInstructorApplicationSelf();
+  const { data: application, isPending } = useGetInstructorApplicationSelf();
 
   const handleClick = () => {
     if (!currentUser) {
-      navigate("/login", { state: { from: "/become-an-instructor" } });
+      navigate("/login", { state: { from: "/become-instructor" } });
       return;
     }
 
@@ -37,36 +31,22 @@ const BecomeInstructorCTA = () => {
     }
 
     if (!application) {
-      open(); // open create new form
+      openFormModal(); // Create new
       return;
     }
 
-    if (application.status === InstructorApplicationStatus.Pending) {
-      setStatusType("pending");
-      openStatusModal();
-      return;
-    }
-
-    if (application.status === InstructorApplicationStatus.Approved) {
-      setStatusType("approved");
-      openStatusModal();
-      return;
-    }
-
-    if (application.status === InstructorApplicationStatus.Rejected) {
-      const canRetry =
-        application.retryCount < MAX_RETRY &&
-        (!application.lastRejectedAt ||
-          dayjs().diff(dayjs(application.lastRejectedAt), "day") >= RETRY_DELAY_DAYS);
-
-      if (canRetry) {
-        open(); // open retry form
-      } else {
-        setStatusType("rejected-wait");
+    switch (application.status) {
+      case InstructorApplicationStatus.Pending:
+        setStatusType("pending");
         openStatusModal();
-      }
-
-      return;
+        break;
+      case InstructorApplicationStatus.Approved:
+        setStatusType("approved");
+        openStatusModal();
+        break;
+      case InstructorApplicationStatus.Rejected:
+        openFormModal();
+        break;
     }
   };
 
@@ -88,15 +68,20 @@ const BecomeInstructorCTA = () => {
         </button>
       </div>
 
-      <CusModal opened={opened} onClose={close} title="Instructor Application" size="700px">
-        {isLoading ? (
+      <CusModal
+        opened={formModalOpened}
+        onClose={closeFormModal}
+        title="Instructor Application"
+        size="700px"
+      >
+        {isPending ? (
           <div className="flex items-center justify-center py-10">
-            <Loader />
+            <CenterLoader />
           </div>
-        ) : application?.status === "Rejected" ? (
-          <RetryInstructorApplicationForm onCancel={close} application={application} />
+        ) : application?.status === InstructorApplicationStatus.Rejected ? (
+          <RetryInstructorApplicationForm onCancel={closeFormModal} application={application} />
         ) : (
-          <CreateInstructorApplicationForm onCancel={close} />
+          <CreateInstructorApplicationForm onCancel={closeFormModal} />
         )}
       </CusModal>
 

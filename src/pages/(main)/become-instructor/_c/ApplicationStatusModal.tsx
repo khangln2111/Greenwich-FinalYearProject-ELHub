@@ -6,7 +6,7 @@ type Props = {
   opened: boolean;
   onClose: () => void;
   type: "pending" | "rejected-wait" | "approved";
-  note?: string; // thêm props note
+  note?: string;
 };
 
 const statusMap = {
@@ -19,7 +19,7 @@ const statusMap = {
   "rejected-wait": {
     icon: <XCircle className="text-red-500 w-10 h-10" />,
     title: "You Can't Apply Yet",
-    message: "Your application was rejected. Please wait at least 2 days before reapplying.",
+    message: "Your application was rejected. Please wait before reapplying.",
   },
   approved: {
     icon: <CheckCircle className="text-green-600 w-10 h-10" />,
@@ -37,10 +37,7 @@ const ApplicationStatusModal = ({ opened, onClose, type, note }: Props) => {
       opened={opened}
       onClose={onClose}
       size="500px"
-      classNames={{
-        header: "border-b-0",
-        body: "pt-0",
-      }}
+      classNames={{ header: "border-b-0", body: "pt-0" }}
     >
       <div className="flex flex-col items-center text-center space-y-4">
         {status.icon}
