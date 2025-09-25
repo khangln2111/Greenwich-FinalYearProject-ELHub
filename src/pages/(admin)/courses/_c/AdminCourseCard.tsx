@@ -16,7 +16,7 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
       to={`/admin/courses/${course.id}`}
       state={{ from: location.pathname }}
       className="border rounded-2xl overflow-hidden shadow-sm transition-all flex flex-col cursor-pointer
-        hover:shadow-lg hover:scale-[1.01]"
+        hover:shadow-lg hover:scale-[1.01] bg-white dark:bg-zinc-900"
     >
       <img
         src={course.imageUrl ?? undefined}
