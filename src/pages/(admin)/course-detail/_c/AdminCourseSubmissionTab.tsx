@@ -16,7 +16,7 @@ const AdminCourseSubmissionTab = ({ history, className }: Props) => {
     <div className={cn("space-y-5", className)}>
       <Title order={2}>Approval History</Title>
 
-      <Paper withBorder p="lg" radius="md">
+      <Paper withBorder p="lg" radius="md" shadow="md">
         {sortedHistory.length === 0 ? (
           <Text c="dimmed" ta="center">
             No approval history found for this course.
@@ -34,12 +34,14 @@ const AdminCourseSubmissionTab = ({ history, className }: Props) => {
                   title={
                     <Stack gap={3}>
                       <Group gap={6} align="center">
-                        <Text fw={500}>{isApproved ? "Approved" : "Rejected"}</Text>
-                        <Text c="dimmed" size="sm">
+                        <Text size="lg" fw={500}>
+                          {isApproved ? "Approved" : "Rejected"}
+                        </Text>
+                        <Text c="dimmed" size="md">
                           –
                         </Text>
                         <Badge
-                          size="sm"
+                          size="md"
                           color={isApproved ? "green" : "red"}
                           variant="light"
                           radius="sm"
@@ -48,13 +50,13 @@ const AdminCourseSubmissionTab = ({ history, className }: Props) => {
                           {createdAt.fromNow()}
                         </Badge>
                       </Group>
-                      <Text size="xs" c="dimmed" className="mt-1">
+                      <Text size="sm" c="dimmed" className="mt-1">
                         {createdAt.format("MMM D, YYYY • HH:mm")}
                       </Text>
                     </Stack>
                   }
                 >
-                  <Text c="dimmed" fw={500} size="sm">
+                  <Text c="dimmed" fw={500} size="md">
                     {item.note}
                   </Text>
                 </Timeline.Item>

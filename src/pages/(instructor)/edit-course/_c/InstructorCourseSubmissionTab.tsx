@@ -14,7 +14,7 @@ const InstructorCourseSubmissionTab = ({ history }: InstructorCourseSubmissionPr
     <Stack>
       <Title order={2}>Approval History</Title>
 
-      <Paper withBorder p="lg" radius="md">
+      <Paper withBorder p="lg" radius="md" shadow="md">
         {sortedHistory.length === 0 ? (
           <Text c="dimmed" ta="center">
             No approval history found for this course.
