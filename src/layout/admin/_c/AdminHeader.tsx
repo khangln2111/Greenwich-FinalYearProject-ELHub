@@ -3,16 +3,17 @@ import { ActionIcon, Box, Button, Group, Indicator, Modal } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks";
 import { IconBell, IconSearch } from "@tabler/icons-react";
 import { PanelLeftCloseIcon, PanelRightCloseIcon } from "lucide-react";
-import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { parseAsString, useQueryState } from "nuqs";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
+import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
+import { RoleName } from "../../../features/auth/identity.types";
+import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
 import { useAppStore } from "../../../zustand/stores/appStore";
 import AvatarMenu from "../../user/_c/AvatarMenu";
 import SearchBox from "../../user/_c/SearchBox";
-import BrandLogo from "../../../components/BrandLogo/BrandLogo";
-import { useGetUnreadNotificationsCount } from "../../../features/notification/notification.hooks";
-import { RoleName } from "../../../features/auth/identity.types";
-import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
 
 const InstructorHeader = () => {
   const { data: currentUser } = useGetCurrentUser();
@@ -25,15 +26,19 @@ const InstructorHeader = () => {
   const [mobileSearchOpened, { open: openMobileSearch, close: closeMobileSearch }] =
     useDisclosure(false);
   // get search value from url
-  const [searchParams] = useSearchParams();
+  const [searchParam, setSearchParam] = useQueryState("search", parseAsString.withDefault(""));
 
-  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
+  const [searchInput, setSearchInput] = useState(searchParam);
   const navigate = useNavigate();
   const handleSearch = () => {
-    if (searchValue.trim()) {
-      navigate(`/courses?search=${encodeURIComponent(searchValue.trim())}`);
+    if (searchInput.trim()) {
+      navigate(`/admin/courses?search=${encodeURIComponent(searchInput.trim())}`);
     }
   };
+
+  useEffect(() => {
+    setSearchInput(searchParam);
+  }, [searchParam]);
 
   return (
     <Box
@@ -55,13 +60,13 @@ const InstructorHeader = () => {
         xOffset={5}
       >
         <SearchBox
-          value={searchValue}
-          onChange={setSearchValue}
+          value={searchInput}
+          onChange={setSearchInput}
           onSearch={() => {
             handleSearch();
             closeMobileSearch();
           }}
-          onClear={() => setSearchValue("")}
+          onClear={() => setSearchInput("")}
           size="lg"
           placeholder="Search courses..."
           radius="3xl"
@@ -91,10 +96,13 @@ const InstructorHeader = () => {
         {/* Nav links (desktop) */}
         <div className="flex flex-1 items-center visible-from-md">
           <SearchBox
-            value={searchValue}
-            onChange={setSearchValue}
+            value={searchInput}
+            onChange={setSearchInput}
             onSearch={handleSearch}
-            onClear={() => setSearchValue("")}
+            onClear={() => {
+              setSearchInput("");
+              setSearchParam("");
+            }}
             size="md"
             placeholder="Search courses..."
             radius="3xl"

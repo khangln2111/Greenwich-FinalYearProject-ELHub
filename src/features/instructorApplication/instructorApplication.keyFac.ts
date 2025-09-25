@@ -4,6 +4,7 @@ import {
   getInstructorApplicationById,
   getInstructorApplications,
   getInstructorApplicationSelf,
+  getRetryInfoSelf,
 } from "./instructorApplication.api";
 
 export const instructorApplicationKeyFac = createQueryKeys("instructorApplications", {
@@ -19,4 +20,8 @@ export const instructorApplicationKeyFac = createQueryKeys("instructorApplicatio
     queryKey: [id],
     queryFn: () => getInstructorApplicationById(id),
   }),
+  getRetryInfoSelf: {
+    queryKey: null,
+    queryFn: () => getRetryInfoSelf(),
+  },
 });

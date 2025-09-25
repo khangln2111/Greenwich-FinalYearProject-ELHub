@@ -19,7 +19,7 @@ const statusMap = {
   "rejected-wait": {
     icon: <XCircle className="text-red-500 w-10 h-10" />,
     title: "You Can't Apply Yet",
-    message: "Your application was rejected. Please wait at least 7 days before reapplying.",
+    message: "Your application was rejected. Please wait at least 2 days before reapplying.",
   },
   approved: {
     icon: <CheckCircle className="text-green-600 w-10 h-10" />,

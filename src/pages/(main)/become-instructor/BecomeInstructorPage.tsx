@@ -4,7 +4,7 @@ import BecomeInstructorCTA from "./_c/BecomeInstructorCTA";
 import BecomeInstructorDiscover from "./_c/BecomeInstructorDiscover";
 import BecomeInstructorJourney from "./_c/BecomeInstructorJourney";
 
-export default function InstructorIntroPage() {
+export default function BecomeInstructorPage() {
   usePageSEO({ title: "Become an Instructor" });
   return (
     <>

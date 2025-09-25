@@ -1,7 +1,7 @@
 import { ActionIcon, Select, TextInput, Title } from "@mantine/core";
 import { ArrowUpAzIcon, BookmarkIcon, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { decodeOrderOption, encodeOrderOption, OrderBy } from "../../../api-client/api.types";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import { useGetAllCourses } from "../../../features/course/course.hooks";
@@ -64,6 +64,10 @@ export default function AdminCoursesPage() {
     page,
     pageSize,
   });
+
+  useEffect(() => {
+    setSearchInput(search);
+  }, [search]);
 
   if (error) return <div>Error loading courses</div>;
 

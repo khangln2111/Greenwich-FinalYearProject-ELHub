@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { ErrorCode } from "../../api-client/api.types";
 import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
@@ -168,8 +169,16 @@ export const useResubmitCourse = () => {
             status: 400,
             errorCode: ErrorCode.RetryCooldown,
             handler: (err) => {
-              const msg = err.response?.data?.message ?? "";
-              showErrorToast("Retry Too Soon", msg); // e.g. "Please retry after ..."
+              const retryAt = err.response?.data?.metadata.retryAvailableAt
+                ? new Date(err.response.data.metadata.retryAvailableAt)
+                : null;
+
+              showErrorToast(
+                "Retry Too Soon",
+                retryAt
+                  ? `Please retry after ${dayjs(retryAt).format("HH:mm DD/MM/YYYY")}`
+                  : "Please retry later",
+              );
             },
           },
         ],

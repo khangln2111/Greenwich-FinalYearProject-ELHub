@@ -14,43 +14,17 @@ interface FormatDateOptions {
 }
 
 export function formatDate({ input, formatType = "longMonth" }: FormatDateOptions): string {
-  const date = new Date(input);
+  let date = dayjs(input);
 
   switch (formatType) {
     case "longMonth":
-      return date.toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
-
+      return date.format("MMMM D, YYYY"); // September 26, 2025
     case "ddmmyyyy":
-      return date.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-
+      return date.format("DD/MM/YYYY"); // 26/09/2025
     case "longMonthWithTime":
-      return date.toLocaleString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      });
-
+      return date.format("MMMM D, YYYY HH:mm"); // September 26, 2025 07:00
     case "ddmmyyyyWithTime":
-      return date.toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      });
-
+      return date.format("DD/MM/YYYY HH:mm"); // 26/09/2025 07:00
     default:
       return date.toISOString();
   }

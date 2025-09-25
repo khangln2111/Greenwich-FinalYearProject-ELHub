@@ -7,6 +7,7 @@ import {
   InstructorApplicationVm,
   ResubmitInstructorApplicationCommand,
   ModerateInstructorApplicationCommand,
+  InstructorApplicationRetryInfoVm,
 } from "./instructorApplication.types";
 import { GridifyQueryBuilder, ConditionalOperator as op } from "gridify-client";
 
@@ -90,7 +91,9 @@ export const getInstructorApplicationSelf = async () => {
   return response.data;
 };
 
-export const getCanRetrySelf = async () => {
-  const response = await apiClient.get<boolean>(`${BASE_URL}/self/can-resubmit`);
+export const getRetryInfoSelf = async () => {
+  const response = await apiClient.get<InstructorApplicationRetryInfoVm>(
+    `${BASE_URL}/self/retry-info`,
+  );
   return response.data;
 };

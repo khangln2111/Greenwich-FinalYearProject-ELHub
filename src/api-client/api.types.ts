@@ -20,6 +20,7 @@ export interface ApiErrorResponse {
   message: string; // Error message
   statusCode: number; // HTTP status code
   errors?: Record<string, string[]>; // Validation errors
+  metadata?: any;
 }
 
 export enum ErrorCode {

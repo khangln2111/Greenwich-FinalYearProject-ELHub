@@ -12,7 +12,7 @@ import CreateInstructorApplicationForm from "./CreateInstructorApplicationForm";
 import RetryInstructorApplicationForm from "./RetryInstructorApplicationForm";
 
 const MAX_RETRY = 2;
-const RETRY_DELAY_DAYS = 7;
+const RETRY_DELAY_DAYS = 2;
 
 const BecomeInstructorCTA = () => {
   const navigate = useNavigate();

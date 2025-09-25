@@ -2,15 +2,15 @@ import { ActionIcon, Button, Select, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BookmarkIcon, GraduationCap, Plus, SearchIcon } from "lucide-react";
 import { parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppPagination from "../../../components/AppPagination/AppPagination";
 import { useGetCurrentUser } from "../../../features/auth/identity.hooks";
+import { useGetOwnedCourses } from "../../../features/course/course.hooks";
 import { CourseStatus } from "../../../features/course/course.types";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 import CreateCourseModal from "./_c/CreateCourseModal";
 import InstructorCourseCard from "./_c/InstructorCourseCard";
 import InstructorCourseCardSkeleton from "./_c/InstructorCourseCardSkeleton";
-import { useGetOwnedCourses } from "../../../features/course/course.hooks";
 
 export default function InstructorCoursesPage() {
   usePageSEO({ title: "My Owned Courses" });
@@ -32,7 +32,11 @@ export default function InstructorCoursesPage() {
 
   const [search, setSearch] = useQueryState("search", parseAsString.withDefault(""));
   const [searchInput, setSearchInput] = useState(search);
-  const { data, isPending: isCoursesPending } = useGetOwnedCourses({
+  const {
+    data,
+    isPending: isCoursesPending,
+    isError,
+  } = useGetOwnedCourses({
     page,
     pageSize,
     status: status === "All" ? undefined : status,
@@ -45,6 +49,12 @@ export default function InstructorCoursesPage() {
     setSearch(searchInput);
     setPage(1);
   };
+
+  useEffect(() => {
+    setSearchInput(search);
+  }, [search]);
+
+  if (isError) return <div>Error loading courses</div>;
 
   return (
     <div className="flex-1 p-6 xl:p-8 @container">

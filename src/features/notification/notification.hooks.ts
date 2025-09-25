@@ -26,13 +26,12 @@ export const useGetUnreadNotificationsCount = (roleName: RoleName) => {
   });
 };
 
-export const useToggleNotificationRead = (id: string) => {
+export const useToggleNotificationRead = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => toggleNotificationRead(id),
+    mutationFn: (id: string) => toggleNotificationRead(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keyFac.notifications._def });
-      showSuccessToast("Done!", "The notification has been marked as read.");
     },
   });
 };

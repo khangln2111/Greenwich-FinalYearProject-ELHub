@@ -17,6 +17,7 @@ import { useNavigate } from "react-router";
 import { useToggleNotificationRead } from "../../features/notification/notification.hooks";
 import { NotificationType, NotificationVm } from "../../features/notification/notification.types";
 import { cn } from "../../utils/cn";
+import { showSuccessToast } from "../../utils/toastHelper";
 
 const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNode; bg: string }> = {
   [NotificationType.CourseSubmitted]: {
@@ -102,7 +103,7 @@ const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNod
 };
 
 const NotificationCard = ({ n }: { n: NotificationVm }) => {
-  const markMutation = useToggleNotificationRead(n.id);
+  const markMutation = useToggleNotificationRead();
   const cfg = typeConfig[n.type];
 
   const navigate = useNavigate();
@@ -111,7 +112,7 @@ const NotificationCard = ({ n }: { n: NotificationVm }) => {
     <Card
       withBorder
       onClick={() => {
-        if (!n.isRead) markMutation.mutate();
+        if (!n.isRead) markMutation.mutate(n.id);
         navigate(n.url ?? "#");
       }}
       radius="lg"
@@ -170,7 +171,10 @@ const NotificationCard = ({ n }: { n: NotificationVm }) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                markMutation.mutate();
+                markMutation.mutate(n.id, {
+                  onSuccess: () =>
+                    showSuccessToast("Done!", "The notification has been marked as read."),
+                });
               }}
               leftSection={n.isRead ? <EyeClosedIcon size={16} /> : <CheckCheckIcon size={16} />}
               radius="full"

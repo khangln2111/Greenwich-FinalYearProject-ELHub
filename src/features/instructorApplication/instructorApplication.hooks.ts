@@ -171,3 +171,12 @@ export const useResubmitInstructorApplication = () => {
       }),
   });
 };
+
+export const useGetRetryInfoSelf = () => {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  return useQuery({
+    queryKey: keyFac.instructorApplications.getRetryInfoSelf.queryKey,
+    queryFn: keyFac.instructorApplications.getRetryInfoSelf.queryFn,
+    enabled: !!accessToken,
+  });
+};

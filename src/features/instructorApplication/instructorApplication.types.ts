@@ -16,6 +16,12 @@ export interface ResubmitInstructorApplicationCommand {
   avatar?: File;
 }
 
+export interface InstructorApplicationRetryInfoVm {
+  canRetry: boolean;
+  retryRemaining: number;
+  retryAvailableAt: string | null;
+}
+
 export interface ModerateInstructorApplicationCommand {
   id: string;
   isApproved: boolean;
