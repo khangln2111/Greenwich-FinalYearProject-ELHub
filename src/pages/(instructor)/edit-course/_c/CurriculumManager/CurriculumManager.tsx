@@ -10,7 +10,7 @@ import { CreateSectionModal } from "./CreateSectionModal";
 import { SectionItem } from "./SectionItem";
 import { UpdateSectionModal } from "./UpdateSectionModal";
 import { cn } from "../../../../../utils/cn";
-import { reorderArray, moveItemBetweenArrays } from "../../../../../utils/arrayUtils";
+import { produce } from "immer";
 
 type CurriculumManagerProps = {
   courseId: string;
@@ -50,72 +50,60 @@ const CurriculumManager = ({
     openUpdateSectionModal();
   };
 
+  const handleSectionDrag = (sourceIndex: number, destinationIndex: number) => {
+    if (sourceIndex === destinationIndex) return;
+
+    setSections(
+      produce((draft) => {
+        const [moved] = draft.splice(sourceIndex, 1);
+        draft.splice(destinationIndex, 0, moved);
+      }),
+    );
+
+    reorderSectionMutation.mutate({
+      id: sections[sourceIndex].id,
+      newOrder: destinationIndex,
+    });
+  };
+
+  const handleLectureDrag = (
+    sourceSectionId: string,
+    destinationSectionId: string,
+    sourceIndex: number,
+    destinationIndex: number,
+  ) => {
+    setSections(
+      produce((draft) => {
+        const sourceSection = draft.find((s) => s.id === sourceSectionId);
+        const destSection = draft.find((s) => s.id === destinationSectionId);
+        if (!sourceSection || !destSection) return;
+        // if same section and same index, do nothing
+        if (sourceSectionId === destinationSectionId && sourceIndex === destinationIndex) return;
+        // source section & dest section can be the same or different
+        const [movedLecture] = sourceSection.lectures.splice(sourceIndex, 1);
+        destSection.lectures.splice(destinationIndex, 0, movedLecture);
+
+        reorderLectureMutation.mutate({
+          id: movedLecture.id,
+          newOrder: destinationIndex,
+          newSectionId: destinationSectionId,
+        });
+      }),
+    );
+  };
+
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result;
     if (!destination) return;
 
-    if (type === "section") {
-      if (source.index === destination.index) return;
-
-      const updatedSections = reorderArray(sections, source.index, destination.index);
-      setSections(updatedSections);
-
-      const movedSection = updatedSections[destination.index];
-      reorderSectionMutation.mutate({
-        id: movedSection.id,
-        newOrder: destination.index,
-      });
-      return;
-    }
-
-    if (type === "lecture") {
-      const sourceSectionIndex = sections.findIndex((s) => s.id === source.droppableId);
-      const destinationSectionIndex = sections.findIndex((s) => s.id === destination.droppableId);
-      if (sourceSectionIndex === -1 || destinationSectionIndex === -1) return;
-
-      const updatedSections = [...sections];
-
-      // Moving within the same section
-      if (sourceSectionIndex === destinationSectionIndex) {
-        updatedSections[sourceSectionIndex].lectures = reorderArray(
-          updatedSections[sourceSectionIndex].lectures!,
-          source.index,
-          destination.index,
-        );
-
-        const movedLecture = updatedSections[sourceSectionIndex].lectures[destination.index];
-
-        reorderLectureMutation.mutate({
-          id: movedLecture.id,
-          newOrder: destination.index,
-          newSectionId: updatedSections[sourceSectionIndex].id,
-        });
-      }
-      // Moving to a different section
-      else {
-        const {
-          source: newSourceArray,
-          destination: newDestArray,
-          moved,
-        } = moveItemBetweenArrays(
-          updatedSections[sourceSectionIndex].lectures!,
-          updatedSections[destinationSectionIndex].lectures!,
-          source.index,
-          destination.index,
-        );
-
-        updatedSections[sourceSectionIndex].lectures = newSourceArray;
-        updatedSections[destinationSectionIndex].lectures = newDestArray;
-
-        reorderLectureMutation.mutate({
-          id: moved.id,
-          newOrder: destination.index,
-          newSectionId: updatedSections[destinationSectionIndex].id,
-        });
-      }
-
-      setSections(updatedSections);
-    }
+    if (type === "section") handleSectionDrag(source.index, destination.index);
+    if (type === "lecture")
+      handleLectureDrag(
+        source.droppableId,
+        destination.droppableId,
+        source.index,
+        destination.index,
+      );
   };
 
   return (

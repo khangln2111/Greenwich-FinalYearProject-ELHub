@@ -1,4 +1,4 @@
-// components/InstructorCourseCard.tsx
+// components/InstructorCourseCardV2.tsx
 import { Button, Rating } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
@@ -19,7 +19,7 @@ interface Props {
   course: CourseVm;
 }
 
-const InstructorCourseCard = ({ course }: Props) => {
+const InstructorCourseCardV2 = ({ course }: Props) => {
   const deleteCourseMutation = useDeleteCourse();
   const navigate = useNavigate();
 
@@ -42,28 +42,31 @@ const InstructorCourseCard = ({ course }: Props) => {
   };
 
   return (
-    <div className="bg-white dark:bg-dark-6 border rounded-2xl shadow p-5 flex flex-col relative transition-colors">
-      <span
-        className={`absolute top-2 right-2 text-sm font-medium px-3 py-1 rounded-full capitalize z-10
-          ${statusBadgeMap[course.status]}`}
-      >
-        {course.status}
-      </span>
-
+    <div className="bg-white dark:bg-dark-6 border rounded-2xl shadow p-5 flex flex-col transition-colors">
+      {/* Ảnh */}
       <img
         src={course.imageUrl || "haha"}
         alt={course.title}
-        className="rounded-xl object-cover aspect-video border border-black/10 dark:border-white/10"
+        className="rounded-xl object-cover mb-4 aspect-video border border-black/10 dark:border-white/10"
       />
 
-      <div className="flex-1 mt-4">
+      {/* Badge status đưa vào body */}
+      <div className="flex-1">
+        <div className="flex items-center justify-between mb-2">
+          <span
+            className={`text-sm font-medium px-3 py-1 rounded-full capitalize ${statusBadgeMap[course.status]}`}
+          >
+            {course.status}
+          </span>
+        </div>
+        {/* Title */}
         <h2 className="text-xl font-bold line-clamp-2">{course.title}</h2>
-
+        {/* Rating */}
         <div className="flex items-center mt-2 gap-2">
           <Rating size="md" readOnly value={course.averageRating} />
           <span className="text-md text-gray-500 dark:text-gray-400">({course.reviewCount})</span>
         </div>
-
+        {/* Thông tin phụ */}
         <div className="mt-4 flex flex-col gap-1 text-md text-gray-700 dark:text-gray-300">
           <div className="flex items-center gap-2">
             <Users className="size-4 text-gray-500 dark:text-gray-400" />
@@ -75,13 +78,19 @@ const InstructorCourseCard = ({ course }: Props) => {
           </div>
           <div className="flex items-center gap-2">
             <Clock className="size-4 text-gray-500 dark:text-gray-400" />
-            <span>{formatDuration({ seconds: course.durationInSeconds, formatType: "long" })}</span>
+            <span>
+              {formatDuration({
+                seconds: course.durationInSeconds,
+                formatType: "long",
+              })}
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between">
-        {/* Price xuống dưới thay cho status badge */}
+      {/* Pricing + Action */}
+      <div className="mt-5 flex items-center justify-between">
+        {/* Pricing */}
         <div className="text-lg font-semibold">
           {course.discountedPrice ? (
             <>
@@ -120,4 +129,4 @@ const InstructorCourseCard = ({ course }: Props) => {
   );
 };
 
-export default InstructorCourseCard;
+export default InstructorCourseCardV2;

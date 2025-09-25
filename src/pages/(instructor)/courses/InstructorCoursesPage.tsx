@@ -49,7 +49,7 @@ export default function InstructorCoursesPage() {
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row items-center md:justify-between mb-6 gap-4">
+      <div className="flex flex-col lg:flex-row items-center md:justify-between mb-8 gap-4">
         {/* Title */}
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">My Courses</h1>
 
@@ -123,7 +123,7 @@ export default function InstructorCoursesPage() {
       </div>
 
       {/* Courses grid or loading or empty state */}
-      <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 gap-8">
         {isCoursesPending &&
           Array.from({ length: 9 }).map((_, i) => <InstructorCourseCardSkeleton key={i} />)}
 

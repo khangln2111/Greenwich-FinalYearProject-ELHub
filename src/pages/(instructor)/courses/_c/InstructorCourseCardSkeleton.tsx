@@ -3,19 +3,19 @@ import { Skeleton } from "@mantine/core";
 const InstructorCourseCardSkeleton = () => {
   return (
     <div
-      className="bg-white dark:bg-dark-6 border border-gray-200 dark:border-dark-4 rounded-2xl shadow p-4 flex
+      className="bg-white dark:bg-dark-6 border border-gray-200 dark:border-dark-4 rounded-2xl shadow p-5 flex
         flex-col relative animate-pulse"
     >
       <div className="absolute top-2 right-2">
         <Skeleton height={24} width={80} radius="xl" />
       </div>
 
-      <Skeleton height={160} radius="lg" className="mb-4 aspect-video" />
+      <Skeleton height={160} radius="lg" className="aspect-video" />
 
-      <div className="flex-1">
-        <Skeleton height={20} width="60%" radius="sm" className="mb-2" />
+      <div className="flex-1 mt-4">
+        <Skeleton height={20} width="60%" radius="sm" />
 
-        <div className="flex items-center gap-2 mt-2 mb-4">
+        <div className="flex items-center gap-2 mt-2">
           <Skeleton height={20} width={100} radius="xl" />
           <Skeleton height={16} width={40} radius="xl" />
         </div>

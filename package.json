@@ -44,6 +44,7 @@
     "dayjs": "^1.11.13",
     "dompurify": "^3.2.6",
     "gridify-client": "^2.1.0",
+    "immer": "^10.1.3",
     "lucide-react": "^0.511.0",
     "mantine-form-zod-resolver": "^1.3.0",
     "mantine-vaul": "^0.5.6",
