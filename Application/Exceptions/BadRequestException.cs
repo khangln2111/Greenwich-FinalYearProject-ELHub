@@ -7,58 +7,65 @@ namespace Application.Exceptions;
 
 public class BadRequestException : HttpException
 {
+    /// Validation errors, optional.
     public IDictionary<string, string[]> ValidationErrors { get; } = new Dictionary<string, string[]>();
 
+    /// Metadata object, optional, can be used to pass additional info.
+    public object? Metadata { get; }
 
-    // Constructor using FluentValidation's ValidationResult to build errors.
-    public BadRequestException(ValidationResult validationResult) : base(StatusCodes.Status400BadRequest,
-        "One or more validation errors occurred.", ErrorCode.ValidationError)
+    // ================= Constructors =================
+
+    // 1. FluentValidation's ValidationResult
+    public BadRequestException(ValidationResult validationResult, object? metadata = null)
+        : base(StatusCodes.Status400BadRequest, "One or more validation errors occurred.", ErrorCode.ValidationError)
     {
         ValidationErrors = validationResult.ToDictionary();
+        Metadata = metadata;
     }
 
-    // Constructor using a pre-built dictionary of validation errors.
-    public BadRequestException(IDictionary<string, string[]> validationErrors) : base(StatusCodes.Status400BadRequest,
-        "One or more validation errors occurred.", ErrorCode.ValidationError)
+    // 2. Pre-built dictionary of validation errors
+    public BadRequestException(IDictionary<string, string[]> validationErrors, object? metadata = null)
+        : base(StatusCodes.Status400BadRequest, "One or more validation errors occurred.", ErrorCode.ValidationError)
     {
         ValidationErrors = validationErrors;
+        Metadata = metadata;
     }
 
-    // Constructor using multiple IdentityError items to build errors.
-    public BadRequestException(IEnumerable<IdentityError> identityErrors) : base(StatusCodes.Status400BadRequest,
-        "One or more identity errors occurred.", ErrorCode.IdentityError)
+    // 3. Multiple IdentityError items
+    public BadRequestException(IEnumerable<IdentityError> identityErrors, object? metadata = null)
+        : base(StatusCodes.Status400BadRequest, "One or more identity errors occurred.", ErrorCode.IdentityError)
     {
         foreach (var error in identityErrors)
-        {
-            string[] newDescriptions;
-
             if (ValidationErrors.TryGetValue(error.Code, out var descriptions))
             {
-                newDescriptions = new string[descriptions.Length + 1];
+                var newDescriptions = new string[descriptions.Length + 1];
                 Array.Copy(descriptions, newDescriptions, descriptions.Length);
                 newDescriptions[descriptions.Length] = error.Description;
+                ValidationErrors[error.Code] = newDescriptions;
             }
             else
             {
-                newDescriptions = [error.Description];
+                ValidationErrors[error.Code] = new[] { error.Description };
             }
 
-            ValidationErrors[error.Code] = newDescriptions;
-        }
+        Metadata = metadata;
     }
 
-    // Constructor using a single IdentityError.
-    public BadRequestException(IdentityError identityError) : base(StatusCodes.Status400BadRequest,
-        "Identity validation error", ErrorCode.IdentityError)
+    // 4. Single IdentityError
+    public BadRequestException(IdentityError identityError, object? metadata = null)
+        : base(StatusCodes.Status400BadRequest, "Identity validation error", ErrorCode.IdentityError)
     {
         ValidationErrors = new Dictionary<string, string[]>
         {
-            { identityError.Code, [identityError.Description] }
+            { identityError.Code, new[] { identityError.Description } }
         };
+        Metadata = metadata;
     }
 
-    public BadRequestException(string message, ErrorCode errorCode) : base(StatusCodes.Status400BadRequest,
-        message, errorCode)
+    // 5. Custom message + errorCode + optional metadata
+    public BadRequestException(string message, ErrorCode errorCode, object? metadata = null)
+        : base(StatusCodes.Status400BadRequest, message, errorCode)
     {
+        Metadata = metadata;
     }
 }

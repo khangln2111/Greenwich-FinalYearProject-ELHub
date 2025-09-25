@@ -20,7 +20,7 @@ public class SectionProfiles : Profile
         CreateMap<UpdateSectionCommand, Section>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CourseId, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.Now))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTimeOffset.UtcNow))
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();

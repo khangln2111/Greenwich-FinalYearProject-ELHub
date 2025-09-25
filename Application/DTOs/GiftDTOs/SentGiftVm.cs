@@ -11,8 +11,8 @@ public class SentGiftVm
 
     public required string Status { get; set; }
 
-    public DateTime? RedeemedAt { get; set; }
-    public DateTime? RevokedAt { get; set; }
+    public DateTimeOffset? RedeemedAt { get; set; }
+    public DateTimeOffset? RevokedAt { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 }

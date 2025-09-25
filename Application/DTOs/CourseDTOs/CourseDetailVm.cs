@@ -72,11 +72,11 @@ public class CourseDetailVm
 
     public required CourseRatingDistributionVm RatingDistribution { get; set; }
 
-    public DateTime? LastRejectedAt { get; init; }
+    public DateTimeOffset? LastRejectedAt { get; init; }
 
-    public DateTime? SubmittedAt { get; init; }
+    public DateTimeOffset? SubmittedAt { get; init; }
 
-    public DateTime CreatedAt { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
 
-    public DateTime UpdatedAt { get; init; }
+    public DateTimeOffset UpdatedAt { get; init; }
 }

@@ -2,7 +2,7 @@ namespace Domain.Common;
 
 public class BaseAuditableEntity : BaseEntity
 {
-    public DateTime CreatedAt { get; init; } = DateTime.Now;
+    public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
 
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
 }

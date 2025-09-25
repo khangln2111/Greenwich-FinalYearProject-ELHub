@@ -26,7 +26,7 @@ public class InstructorApplication : BaseAuditableEntity
 
     public int RetryCount { get; set; } = 0;
 
-    public DateTime? ReviewedAt { get; set; }
+    public DateTimeOffset? ReviewedAt { get; set; }
 
-    public DateTime? LastRejectedAt { get; set; }
+    public DateTimeOffset? LastRejectedAt { get; set; }
 }

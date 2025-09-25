@@ -216,7 +216,7 @@ public class CourseService(
         else
         {
             course.Status = CourseStatus.Rejected;
-            course.LastRejectedAt = DateTime.Now;
+            course.LastRejectedAt = DateTimeOffset.UtcNow;
             course.RetryCount++;
         }
 
@@ -245,7 +245,7 @@ public class CourseService(
                 ErrorCode.InvalidOperation);
 
         course.Status = CourseStatus.Pending;
-        course.SubmittedAt = DateTime.Now;
+        course.SubmittedAt = DateTimeOffset.UtcNow;
         await context.SaveChangesAsync();
 
         await mediator.Publish(new CourseSubmittedEvent(course));
@@ -276,10 +276,15 @@ public class CourseService(
         if (course.LastRejectedAt.HasValue)
         {
             var cooldownEnd = course.LastRejectedAt.Value.AddDays(RetryCooldownDays);
-            if (DateTime.Now < cooldownEnd)
+            if (DateTimeOffset.UtcNow < cooldownEnd)
                 throw new BadRequestException(
-                    $"Please retry after {cooldownEnd:dd-MM-yyyy HH:mm}",
-                    ErrorCode.RetryCooldown);
+                    "Please retry later",
+                    ErrorCode.RetryCooldown,
+                    new
+                    {
+                        retryAvailableAt = cooldownEnd.UtcDateTime // gửi UTC cho frontend
+                    }
+                );
         }
 
         course.Status = CourseStatus.Pending;

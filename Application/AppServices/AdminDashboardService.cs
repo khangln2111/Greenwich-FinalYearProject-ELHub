@@ -28,7 +28,7 @@ public class AdminDashboardService(IApplicationDbContext context)
 
     private async Task<AdminDashboardStatsVm> GetStats()
     {
-        var now = DateTime.Now;
+        var now = DateTimeOffset.UtcNow;
         var thisWeekStart = now.AddDays(-7);
         var lastWeekStart = now.AddDays(-14);
         var lastWeekEnd = now.AddDays(-7);

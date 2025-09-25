@@ -7,6 +7,6 @@ public class CourseApprovalHistoryVm
     public Guid CourseId { get; set; }
     public bool IsApproved { get; set; }
     public required string Note { get; set; }
-    public DateTime CreatedAt { get; init; }
-    public DateTime UpdatedAt { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
+    public DateTimeOffset UpdatedAt { get; init; }
 }

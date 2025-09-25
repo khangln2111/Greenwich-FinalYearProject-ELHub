@@ -96,9 +96,9 @@ public class InstructorApplicationService(
         if (application.LastRejectedAt.HasValue)
         {
             var cooldownEnd = application.LastRejectedAt.Value.AddDays(RetryCooldownDays);
-            if (DateTime.Now < cooldownEnd)
+            if (DateTimeOffset.UtcNow < cooldownEnd)
                 throw new BadRequestException(
-                    $"Please retry after {cooldownEnd:g}.",
+                    $"Please retry later",
                     ErrorCode.RetryCooldown);
         }
 
@@ -115,7 +115,8 @@ public class InstructorApplicationService(
         return new Success("Instructor application retried successfully.");
     }
 
-    public async Task<bool> CanResubmitSelf()
+
+    public async Task<InstructorApplicationRetryInfoVm> GetRetryInfoSelf()
     {
         var currentUser = currentUserUtility.GetCurrentUser();
         if (currentUser == null) throw new UnauthorizedException();
@@ -126,16 +127,29 @@ public class InstructorApplicationService(
             .FirstOrDefaultAsync();
 
         if (latestRejected == null)
-            return false;
+            return new InstructorApplicationRetryInfoVm
+            {
+                CanRetry = false,
+                RetryRemaining = MaxRetryCount,
+                RetryAvailableAt = null
+            };
 
-        if (latestRejected.RetryCount >= MaxRetryCount)
-            return false;
+        var retryRemaining = MaxRetryCount - latestRejected.RetryCount;
+        DateTimeOffset? retryAvailableAt = null;
 
-        if (latestRejected.LastRejectedAt.HasValue &&
-            (DateTime.Now - latestRejected.LastRejectedAt.Value).TotalDays < RetryCooldownDays)
-            return false;
+        if (latestRejected.LastRejectedAt.HasValue)
+        {
+            retryAvailableAt = latestRejected.LastRejectedAt.Value.AddDays(RetryCooldownDays);
+            if (retryAvailableAt <= DateTimeOffset.UtcNow)
+                retryAvailableAt = null;
+        }
 
-        return true;
+        return new InstructorApplicationRetryInfoVm
+        {
+            CanRetry = retryRemaining > 0 && retryAvailableAt == null,
+            RetryRemaining = retryRemaining,
+            RetryAvailableAt = retryAvailableAt
+        };
     }
 
     public async Task<Success> Moderate(ModerateInstructorApplicationCommand command)
@@ -154,7 +168,7 @@ public class InstructorApplicationService(
             throw new BadRequestException("This application has already been reviewed.", ErrorCode.InvalidOperation);
 
         application.Note = command.Note;
-        application.ReviewedAt = DateTime.Now;
+        application.ReviewedAt = DateTimeOffset.UtcNow;
 
         if (command.IsApproved)
         {
@@ -177,7 +191,7 @@ public class InstructorApplicationService(
         else
         {
             application.Status = InstructorApplicationStatus.Rejected;
-            application.LastRejectedAt = DateTime.Now;
+            application.LastRejectedAt = DateTimeOffset.UtcNow;
         }
 
         await context.SaveChangesAsync();

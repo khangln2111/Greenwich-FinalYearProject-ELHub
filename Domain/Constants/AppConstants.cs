@@ -57,7 +57,7 @@ public static class AppConstants
         public const int AvatarMaxSizeBytes = 50 * FileSize.Megabyte;
         public const int FirstNameMaxLength = User.FirstNameMaxLength;
         public const int LastNameMaxLength = User.LastNameMaxLength;
-        public const int MaxRetryCount = 3; // Maximum retry attempts for application review
+        public const int MaxRetryCount = 2; // Maximum retry attempts for application review
 
         public const int
             RetryCooldownDays = 1; // Maximum days after which the last rejection is considered invalid
@@ -77,8 +77,8 @@ public static class AppConstants
 
         public const int VideoMaxSizeBytes = 500 * FileSize.Megabyte;
         public const int ImageMaxSizeBytes = 50 * FileSize.Megabyte;
-        public const int MaxRetryCount = 3; // Maximum retry attempts for course approval
-        public const int RetryCooldownDays = 2; // Maximum days after which the last rejection is considered invalid
+        public const int MaxRetryCount = 2; // Maximum retry attempts for course approval
+        public const int RetryCooldownDays = 0; // Maximum days after which the last rejection is considered invalid
     }
 
     public static class Section

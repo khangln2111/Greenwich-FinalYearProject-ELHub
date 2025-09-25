@@ -25,7 +25,7 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public int UnreadNotificationCount { get; set; } = 0;
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 
     public ICollection<Experience> Experiences { get; init; } = new List<Experience>();
 

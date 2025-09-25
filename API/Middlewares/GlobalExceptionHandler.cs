@@ -16,7 +16,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         var response = exception switch
         {
             BadRequestException ex => CreateBadRequestResponse(httpContext, ex.StatusCode, ex.Message, ex.ErrorCode,
-                ex.ValidationErrors),
+                ex.ValidationErrors, ex.Metadata),
             NotFoundException ex => CreateResponse(httpContext, ex.StatusCode, ex.Message, ex.ErrorCode),
             HttpException ex => CreateResponse(httpContext, ex.StatusCode, ex.Message, ex.ErrorCode),
             // _ => HandleUnexpectedError(httpContext, exception) // (Production mode only)
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
     }
 
     private static object CreateBadRequestResponse(HttpContext context, int statusCode, string message,
-        ErrorCode errorCode, IDictionary<string, string[]> validationErrors)
+        ErrorCode errorCode, IDictionary<string, string[]> validationErrors, object? metadata)
     {
         context.Response.StatusCode = statusCode;
         return new
@@ -53,7 +53,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
             statusCode,
             errorCode,
             message,
-            errors = validationErrors // Only in BadRequestException
+            errors = validationErrors, // Only in BadRequestException
+            metadata // optional
         };
     }
 

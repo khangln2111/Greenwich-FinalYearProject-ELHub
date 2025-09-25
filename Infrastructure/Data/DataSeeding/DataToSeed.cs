@@ -275,7 +275,7 @@ public static class DataToSeed
                     Bio = profile.Bio,
                     IsActivated = true,
                     IsInitialPasswordChanged = true,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTimeOffset.UtcNow
                 };
 
                 users.Add((user, DefaultPassword, role.ToString()));

@@ -17,7 +17,7 @@ public class ReviewProfiles : Profile
         CreateMap<CreateReviewCommand, Review>();
         CreateMap<UpdateReviewCommand, Review>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.Now))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTimeOffset.UtcNow))
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();

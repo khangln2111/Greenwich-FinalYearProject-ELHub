@@ -10,7 +10,7 @@ public interface IInstructorApplicationService : IAppService
 {
     Task<Success> Create(CreateInstructorApplicationCommand command);
     Task<Success> Resubmit(ResubmitInstructorApplicationCommand command);
-    Task<bool> CanResubmitSelf();
+    Task<InstructorApplicationRetryInfoVm> GetRetryInfoSelf();
     Task<Success> Moderate(ModerateInstructorApplicationCommand command);
     Task<Paged<InstructorApplicationVm>> GetList(GridifyQuery query);
     Task<InstructorApplicationVm> GetById(Guid id);

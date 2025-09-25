@@ -6,6 +6,6 @@ public class ReviewReplyVm
     public string Content { get; set; } = null!;
     public string CreatorFullName { get; set; } = null!;
     public string? CreatorAvatarUrl { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
 }

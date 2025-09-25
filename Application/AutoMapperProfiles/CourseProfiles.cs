@@ -100,7 +100,7 @@ public class CourseProfiles : Profile
                 if (src.Price.HasValue) dest.Price = src.Price.Value;
                 if (src.DiscountedPrice.HasValue) dest.DiscountedPrice = src.DiscountedPrice.Value;
             })
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.Now))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTimeOffset.UtcNow))
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();

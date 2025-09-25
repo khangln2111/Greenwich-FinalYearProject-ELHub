@@ -41,7 +41,7 @@ public class LectureProfiles : Profile
         CreateMap<UpdateLectureCommand, Lecture>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Video, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.Now))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTimeOffset.UtcNow))
             .ForAllMembers(opts =>
             {
                 opts.AllowNull();

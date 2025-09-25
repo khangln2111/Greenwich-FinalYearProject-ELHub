@@ -11,8 +11,8 @@ public class InstructorApplicationDetailVm
     public int RetryCount { get; set; }
     public string? AvatarUrl { get; set; }
     public required string Status { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? ReviewedAt { get; set; }
-    public DateTime? LastRejectedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? ReviewedAt { get; set; }
+    public DateTimeOffset? LastRejectedAt { get; set; }
     public required string Note { get; set; }
 }

@@ -17,7 +17,7 @@ public class Gift : BaseAuditableEntity
 
     public GiftStatus Status { get; set; } = GiftStatus.Pending;
 
-    public DateTime? RedeemedAt { get; set; }
+    public DateTimeOffset? RedeemedAt { get; set; }
 
-    public DateTime? RevokedAt { get; set; }
+    public DateTimeOffset? RevokedAt { get; set; }
 }

@@ -45,9 +45,9 @@ public class Course : BaseAuditableEntity
     public ApplicationUser Instructor { get; set; } = null!;
 
     public int RetryCount { get; set; } = 0;
-    public DateTime? LastRejectedAt { get; set; }
+    public DateTimeOffset? LastRejectedAt { get; set; }
 
-    public DateTime? SubmittedAt { get; set; }
+    public DateTimeOffset? SubmittedAt { get; set; }
 
     public string? BannedReason { get; set; }
 

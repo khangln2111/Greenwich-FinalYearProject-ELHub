@@ -34,9 +34,9 @@ public class CourseVm
 
     public required string CategoryName { get; init; }
 
-    public DateTime CreatedAt { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
 
-    public DateTime UpdatedAt { get; init; }
+    public DateTimeOffset UpdatedAt { get; init; }
 
     public required string InstructorId { get; init; }
 
@@ -54,7 +54,7 @@ public class CourseVm
 
     public int RejectionCount { get; init; }
 
-    public DateTime? SubmittedAt { get; init; }
+    public DateTimeOffset? SubmittedAt { get; init; }
 
-    public DateTime? LastRejectedAt { get; init; }
+    public DateTimeOffset? LastRejectedAt { get; init; }
 }

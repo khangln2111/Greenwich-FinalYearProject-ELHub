@@ -68,15 +68,14 @@ public class InstructorApplicationsController(IInstructorApplicationService serv
         return Ok(application);
     }
 
-    // GET: api/instructor-applications/self/can-resubmit
-    [HttpGet("self/can-resubmit")]
+    // GET: api/instructor-applications/self/retry-info
+    [HttpGet("self/retry-info")]
     [Authorize]
-    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CanRetrySelf()
+    [ProducesResponseType<InstructorApplicationRetryInfoVm>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetRetryInfoSelf()
     {
-        var canRetry = await service.CanResubmitSelf();
-        return Ok(canRetry);
+        var retryInfo = await service.GetRetryInfoSelf();
+        return Ok(retryInfo);
     }
 
     // POST: api/instructor-applications/moderate
