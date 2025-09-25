@@ -10,7 +10,7 @@ const InstructorCourseCardSkeleton = () => {
         <Skeleton height={24} width={80} radius="xl" />
       </div>
 
-      <Skeleton height={160} radius="lg" className="aspect-video" />
+      <Skeleton radius="lg" className="aspect-video" />
 
       <div className="flex-1 mt-4">
         <Skeleton height={20} width="60%" radius="sm" />
