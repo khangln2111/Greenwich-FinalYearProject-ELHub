@@ -237,7 +237,7 @@ public class InstructorDashboardService(
                 Pending = g.Count(c => c.Status == CourseStatus.Pending),
                 Rejected = g.Count(c => c.Status == CourseStatus.Rejected),
                 Draft = g.Count(c => c.Status == CourseStatus.Draft),
-                Archived = g.Count(c => c.Status == CourseStatus.Archived)
+                Banned = g.Count(c => c.Status == CourseStatus.Banned)
             })
             .FirstOrDefaultAsync() ?? new InstructorDashboardCourseDistributionByStatusVm();
     }

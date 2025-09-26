@@ -62,6 +62,8 @@ public class AdminDashboardCourseDistributionByStatusVm
     public int Published { get; set; }
     public int Pending { get; set; }
     public int Rejected { get; set; }
+    public int Draft { get; set; }
+    public int Banned { get; set; }
 }
 
 public class AdminDashboardRatingDistributionVm

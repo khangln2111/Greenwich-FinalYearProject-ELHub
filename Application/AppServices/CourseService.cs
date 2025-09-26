@@ -290,7 +290,7 @@ public class CourseService(
         course.Status = CourseStatus.Pending;
         await context.SaveChangesAsync();
 
-        await mediator.Publish(new CourseSubmittedEvent(course));
+        await mediator.Publish(new CourseResubmittedEvent(course));
 
 
         return new Success("Resubmitted course successfully", new { id = course.Id });

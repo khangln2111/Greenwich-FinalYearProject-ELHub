@@ -44,7 +44,7 @@ public class InstructorDashboardCourseDistributionByStatusVm
     public int Pending { get; set; }
     public int Rejected { get; set; }
     public int Draft { get; set; }
-    public int Archived { get; set; }
+    public int Banned { get; set; }
 }
 
 public class InstructorDashboardCoursesInfoByCategoryVm

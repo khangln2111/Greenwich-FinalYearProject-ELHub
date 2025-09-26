@@ -13,8 +13,8 @@ public class CourseSubmittedEventHandler(
 {
     public async Task Handle(CourseSubmittedEvent notification, CancellationToken cancellationToken)
     {
-        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.Instructor));
         var course = notification.Course;
+        var admins = await userManager.GetUsersInRoleAsync(nameof(RoleName.Instructor));
 
         foreach (var admin in admins)
             await notificationService.CreateAndSend(

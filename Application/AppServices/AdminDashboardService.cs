@@ -253,7 +253,9 @@ public class AdminDashboardService(IApplicationDbContext context)
         {
             Published = dict.GetValueOrDefault(CourseStatus.Published),
             Pending = dict.GetValueOrDefault(CourseStatus.Pending),
-            Rejected = dict.GetValueOrDefault(CourseStatus.Rejected)
+            Rejected = dict.GetValueOrDefault(CourseStatus.Rejected),
+            Draft = dict.GetValueOrDefault(CourseStatus.Draft),
+            Banned = dict.GetValueOrDefault(CourseStatus.Banned)
         };
     }
 
