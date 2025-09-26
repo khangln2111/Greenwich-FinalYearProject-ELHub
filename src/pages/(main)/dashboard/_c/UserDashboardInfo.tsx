@@ -99,8 +99,7 @@ const UserDashboardInfo = ({ data }: UserDashboardInfoProps) => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg
-            transition dark:bg-gray-900"
+          className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition dark:bg-gray-900"
         >
           <Text size="lg" fw={600} mb="md">
             Courses Distribution by level
@@ -128,8 +127,7 @@ const UserDashboardInfo = ({ data }: UserDashboardInfoProps) => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg
-            transition dark:bg-gray-900"
+          className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition dark:bg-gray-900"
         >
           <Text size="lg" fw={600} mb="md">
             Course Conversion Funnel
@@ -208,8 +206,8 @@ const UserDashboardInfo = ({ data }: UserDashboardInfoProps) => {
         withBorder
         radius="2xl"
         p="lg"
-        className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition
-          dark:bg-gray-900 mt-lg"
+        className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition dark:bg-gray-900
+          mt-lg"
       >
         <Text size="lg" fw={600} mb="md">
           Info by Category
@@ -293,8 +291,7 @@ const UserDashboardInfo = ({ data }: UserDashboardInfoProps) => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg
-            transition dark:bg-gray-900"
+          className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition dark:bg-gray-900"
         >
           <Text size="lg" fw={600} mb="md">
             Overall Completion Progress
@@ -324,8 +321,7 @@ const UserDashboardInfo = ({ data }: UserDashboardInfoProps) => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg
-            transition dark:bg-gray-900"
+          className="border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition dark:bg-gray-900"
         >
           <Text size="lg" fw={600} mb="md">
             Rating Distribution

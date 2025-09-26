@@ -1,5 +1,14 @@
 import { CompositeChart, DonutChart, RadarChart } from "@mantine/charts";
-import { Badge, Card, Group, ScrollArea, SimpleGrid, Table, Text } from "@mantine/core";
+import {
+  Badge,
+  Card,
+  Group,
+  ScrollArea,
+  SimpleGrid,
+  Table,
+  Text,
+  useComputedColorScheme,
+} from "@mantine/core";
 import { BookOpenIcon, DollarSignIcon, ShoppingBagIcon, StarIcon, UserIcon } from "lucide-react";
 import { Legend } from "recharts";
 import DashboardStatCard from "../../../../components/DashboardStatCard/DashboardStatCard";
@@ -10,6 +19,7 @@ type InstructorDashboardInfoProps = {
 };
 
 const InstructorDashboardInfo = ({ data }: InstructorDashboardInfoProps) => {
+  const colorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
   return (
     <>
       {/* ------------------- STATS CARDS ------------------- */}
@@ -89,8 +99,7 @@ const InstructorDashboardInfo = ({ data }: InstructorDashboardInfoProps) => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl
-            transition dark:bg-gray-900"
+          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
         >
           <Text size="lg" fw={600}>
             Course Distribution by Status
@@ -126,12 +135,12 @@ const InstructorDashboardInfo = ({ data }: InstructorDashboardInfoProps) => {
               {
                 name: "Draft",
                 value: data.courseStatusDistribution.draft,
-                color: "gray.6",
+                color: colorScheme === "dark" ? "gray.5" : "gray.6",
               },
               {
-                name: "Archived",
-                value: data.courseStatusDistribution.archived,
-                color: "dark.6",
+                name: "Banned",
+                value: data.courseStatusDistribution.banned,
+                color: colorScheme === "dark" ? "#ffffff" : "dark.6",
               },
             ]}
           >
@@ -144,8 +153,7 @@ const InstructorDashboardInfo = ({ data }: InstructorDashboardInfoProps) => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl
-            transition dark:bg-gray-900"
+          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
         >
           <Text size="lg" fw={600} mb="md">
             Rating Distribution
@@ -175,8 +183,7 @@ const InstructorDashboardInfo = ({ data }: InstructorDashboardInfoProps) => {
         radius="2xl"
         p="lg"
         mt="xl"
-        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition
-          dark:bg-gray-900"
+        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
       >
         <Group justify="apart" mb="md">
           <Text size="lg" fw={700}>
@@ -225,8 +232,7 @@ const InstructorDashboardInfo = ({ data }: InstructorDashboardInfoProps) => {
         radius="2xl"
         p="lg"
         mt="xl"
-        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition
-          dark:bg-gray-900"
+        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
       >
         <Text size="lg" fw={600} mb="md">
           Course info by Category

@@ -8,6 +8,7 @@ import {
   Table,
   Group,
   Badge,
+  useComputedColorScheme,
 } from "@mantine/core";
 
 import { Legend } from "recharts";
@@ -28,6 +29,7 @@ type AdminDashboardInfoProps = {
 };
 
 const AdminDashboardInfo = ({ data }: AdminDashboardInfoProps) => {
+  const colorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
   return (
     <>
       {/* STAT CARDS */}
@@ -219,8 +221,7 @@ const AdminDashboardInfo = ({ data }: AdminDashboardInfoProps) => {
         radius="2xl"
         p="lg"
         mt="xl"
-        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition
-          dark:bg-gray-900"
+        className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
       >
         <Text size="lg" fw={600} mb="md">
           Course info by Category
@@ -364,8 +365,7 @@ const AdminDashboardInfo = ({ data }: AdminDashboardInfoProps) => {
           withBorder
           radius="2xl"
           p="lg"
-          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl
-            transition dark:bg-gray-900"
+          className="border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition dark:bg-gray-900"
         >
           <Text size="lg" fw={600} mb="md">
             Rating Distribution
@@ -421,17 +421,27 @@ const AdminDashboardInfo = ({ data }: AdminDashboardInfoProps) => {
               {
                 name: "Published",
                 value: data.courseDistributionByStatus.published,
-                color: "green.6",
+                color: "green",
               },
               {
                 name: "Pending",
                 value: data.courseDistributionByStatus.pending,
-                color: "yellow.6",
+                color: "yellow",
               },
               {
                 name: "Rejected",
                 value: data.courseDistributionByStatus.rejected,
-                color: "red.6",
+                color: "red",
+              },
+              {
+                name: "Draft",
+                value: data.courseDistributionByStatus.draft,
+                color: colorScheme === "dark" ? "gray.5" : "gray.6",
+              },
+              {
+                name: "Banned",
+                value: data.courseDistributionByStatus.banned,
+                color: colorScheme === "dark" ? "#ffffff" : "dark.6",
               },
             ]}
             withTooltip

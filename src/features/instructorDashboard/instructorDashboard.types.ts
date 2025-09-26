@@ -39,7 +39,7 @@ export interface InstructorDashboardCourseDistributionByStatusVm {
   pending: number;
   rejected: number;
   draft: number;
-  archived: number;
+  banned: number;
 }
 
 export interface InstructorDashboardCoursesInfoByCategoryVm {

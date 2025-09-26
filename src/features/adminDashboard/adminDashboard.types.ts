@@ -57,6 +57,8 @@ export interface AdminDashboardCourseDistributionByStatusVm {
   published: number;
   pending: number;
   rejected: number;
+  draft: number;
+  banned: number;
 }
 
 export interface AdminDashboardRevenueByCategoryVm {
