@@ -100,8 +100,6 @@ const InstructorHeader = () => {
         {/* Nav links (desktop) */}
         <div className="flex flex-1 items-center visible-from-md">
           <SearchBox
-            key={searchParam}
-            defaultValue={searchParam}
             value={searchInput}
             onChange={setSearchInput}
             onSearch={handleSearch}
