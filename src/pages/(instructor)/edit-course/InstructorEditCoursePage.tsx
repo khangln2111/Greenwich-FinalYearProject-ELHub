@@ -165,7 +165,7 @@ export default function InstructorEditCoursePage() {
           <Text>Status:</Text>
           <span
             className={cn(
-              "text-md font-medium px-4 py-2 rounded-sm capitalize z-10",
+              "text-md font-medium px-4 py-1 rounded-sm capitalize z-10",
               getCourseStatusBadgeMap[courseDetail.status],
             )}
           >

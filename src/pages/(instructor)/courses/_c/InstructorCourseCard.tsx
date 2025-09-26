@@ -2,7 +2,7 @@
 import { Button, Rating } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDeleteCourse } from "../../../../features/course/course.hooks";
 import { CourseVm } from "../../../../features/course/course.types";
 import { getCourseStatusBadgeMap } from "../../../../features/course/course.utils";
@@ -36,7 +36,12 @@ const InstructorCourseCard = ({ course }: Props) => {
   };
 
   return (
-    <div className="bg-white dark:bg-dark-6 border rounded-2xl shadow p-5 flex flex-col relative transition-colors">
+    <Link
+      to={`/instructor/courses/${course.id}/edit`}
+      state={{ from: location.pathname }}
+      className="bg-white dark:bg-dark-6 outline outline-default-border rounded-2xl shadow p-5 flex flex-col relative
+        transition-colors hover:shadow-xl duration-400 hover:outline-2 hover:outline-primary-5"
+    >
       <span
         className={cn(
           "absolute top-2 right-2 text-sm font-medium px-3 py-1 rounded-full capitalize z-10",
@@ -112,7 +117,7 @@ const InstructorCourseCard = ({ course }: Props) => {
           </Button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

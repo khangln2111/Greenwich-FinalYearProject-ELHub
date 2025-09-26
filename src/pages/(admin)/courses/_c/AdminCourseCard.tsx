@@ -17,8 +17,9 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
     <Link
       to={`/admin/courses/${course.id}`}
       state={{ from: location.pathname }}
-      className="relative border rounded-2xl overflow-hidden shadow-sm transition-all flex flex-col cursor-pointer
-        hover:shadow-lg hover:scale-[1.01] bg-white dark:bg-dark-6 p-5"
+      className="relative outline outline-default-border rounded-2xl overflow-hidden shadow-sm flex flex-col
+        cursor-pointer bg-white dark:bg-dark-6 p-5 transition-colors hover:shadow-xl duration-400
+        hover:outline-2 hover:outline-primary-5"
     >
       <span
         className={cn(
@@ -33,32 +34,12 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
         alt={course.title}
         className="w-full h-[180px] aspect-video border border-black/10 dark:border-white/10 rounded-xl object-cover"
       />
-      <div className="flex flex-col gap-6 flex-1 mt-5">
-        <div className="space-y-2 flex-1">
-          <Title order={4} className="line-clamp-2 text-xl">
-            {course.title}
-          </Title>
-          {/* <Badge
-            size="md"
-            color={
-              course.status === CourseStatus.Published
-                ? "green"
-                : course.status === CourseStatus.Pending
-                  ? "yellow"
-                  : course.status === CourseStatus.Rejected
-                    ? "red"
-                    : course.status === CourseStatus.Banned
-                      ? "dark"
-                      : course.status === CourseStatus.Draft
-                        ? "gray"
-                        : "blue"
-            }
-          >
-            {course.status}
-          </Badge> */}
-        </div>
+      <div className="flex flex-col flex-1 mt-5">
+        <Title order={4} className="line-clamp-2 text-xl flex-1">
+          {course.title}
+        </Title>
 
-        <div className="text-md text-gray-600 dark:text-gray-300 space-y-1 leading-snug">
+        <div className="text-md text-gray-600 dark:text-gray-300 space-y-1 leading-snug mt-3">
           <div>
             🏷️ <span className="font-medium">{course.categoryName}</span>
           </div>
@@ -87,7 +68,7 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
           )}
         </div>
 
-        <div className="grid grid-cols-3 gap-2 text-[13px] text-gray-800 dark:text-gray-200">
+        <div className="grid grid-cols-3 gap-2 text-[13px] text-gray-800 dark:text-gray-200 mt-6">
           <AdminCourseCardStat icon={BookOpenIcon} value={course.sectionCount} label="Sections" />
           <AdminCourseCardStat icon={FilmIcon} value={course.lectureCount} label="Lectures" />
           <AdminCourseCardStat
@@ -97,7 +78,7 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
           />
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mt-6">
           <Avatar
             src={course.instructorAvatarUrl}
             color="initials"
