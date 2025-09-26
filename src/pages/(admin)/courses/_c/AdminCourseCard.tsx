@@ -1,10 +1,12 @@
-import { Avatar, Badge, Title } from "@mantine/core";
+import { Avatar, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { BookOpenIcon, ClockIcon, FilmIcon } from "lucide-react";
 import { Link } from "react-router";
 import { CourseStatus, CourseVm } from "../../../../features/course/course.types";
 import { formatDuration } from "../../../../utils/format";
 import AdminCourseCardStat from "./AdminCourseCardStat";
+import { getCourseStatusBadgeMap } from "../../../../features/course/course.utils";
+import { cn } from "../../../../utils/cn";
 
 interface AdminCourseCardProps {
   course: CourseVm;
@@ -15,20 +17,28 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
     <Link
       to={`/admin/courses/${course.id}`}
       state={{ from: location.pathname }}
-      className="border rounded-2xl overflow-hidden shadow-sm transition-all flex flex-col cursor-pointer
-        hover:shadow-lg hover:scale-[1.01] bg-white dark:bg-zinc-900"
+      className="relative border rounded-2xl overflow-hidden shadow-sm transition-all flex flex-col cursor-pointer
+        hover:shadow-lg hover:scale-[1.01] bg-white dark:bg-dark-6 p-5"
     >
+      <span
+        className={cn(
+          "absolute top-2 right-2 text-sm font-medium px-3 py-1 rounded-full capitalize z-10",
+          getCourseStatusBadgeMap[course.status],
+        )}
+      >
+        {course.status}
+      </span>
       <img
         src={course.imageUrl ?? undefined}
         alt={course.title}
-        className="w-full h-[180px] object-cover"
+        className="w-full h-[180px] aspect-video border border-black/10 dark:border-white/10 rounded-xl object-cover"
       />
-      <div className="p-5 flex flex-col gap-6 flex-1">
+      <div className="flex flex-col gap-6 flex-1 mt-5">
         <div className="space-y-2 flex-1">
           <Title order={4} className="line-clamp-2 text-xl">
             {course.title}
           </Title>
-          <Badge
+          {/* <Badge
             size="md"
             color={
               course.status === CourseStatus.Published
@@ -38,12 +48,14 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
                   : course.status === CourseStatus.Rejected
                     ? "red"
                     : course.status === CourseStatus.Banned
-                      ? "gray"
-                      : "blue"
+                      ? "dark"
+                      : course.status === CourseStatus.Draft
+                        ? "gray"
+                        : "blue"
             }
           >
             {course.status}
-          </Badge>
+          </Badge> */}
         </div>
 
         <div className="text-md text-gray-600 dark:text-gray-300 space-y-1 leading-snug">
@@ -75,7 +87,7 @@ const AdminCourseCard = ({ course }: AdminCourseCardProps) => {
           )}
         </div>
 
-        <div className="grid grid-cols-3 gap-2 text-[13px] text-gray-700 dark:text-gray-300">
+        <div className="grid grid-cols-3 gap-2 text-[13px] text-gray-800 dark:text-gray-200">
           <AdminCourseCardStat icon={BookOpenIcon} value={course.sectionCount} label="Sections" />
           <AdminCourseCardStat icon={FilmIcon} value={course.lectureCount} label="Lectures" />
           <AdminCourseCardStat

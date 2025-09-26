@@ -72,7 +72,7 @@ export interface CourseDetailVm {
 
   durationInSeconds: number;
 
-  status: string;
+  status: CourseStatus;
 
   level: CourseLevel;
 

@@ -1,5 +1,4 @@
 import {
-  Badge,
   Button,
   Paper,
   SegmentedControl,
@@ -23,6 +22,7 @@ import {
 } from "../../../features/course/course.hooks";
 import { CourseStatus } from "../../../features/course/course.types";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import { cn } from "../../../utils/cn";
 import { formatDuration } from "../../../utils/format";
 import AdminCourseCurriculumTab from "./_c/AdminCourseCurriculumTab/AdminCourseCurriculumTab";
 import AdminCourseInstructorTab from "./_c/AdminCourseInstructorTab";
@@ -30,22 +30,7 @@ import AdminCourseOverviewTab from "./_c/AdminCourseOverviewTab";
 import AdminCourseSubmissionTab from "./_c/AdminCourseSubmissionTab";
 import AdminModerateCourseModal from "./_c/AdminModerateCourseModal";
 import AdminSetCourseBannedStatusModal from "./_c/AdminSetCourseBannedStatusModal";
-
-const getStatusBadge = (status: CourseStatus) => {
-  switch (status) {
-    case CourseStatus.Pending:
-      return { color: "yellow", label: "Pending" };
-    case CourseStatus.Published:
-      return { color: "green", label: "Published" };
-    case CourseStatus.Rejected:
-      return { color: "red", label: "Rejected" };
-    case CourseStatus.Banned:
-      return { color: "dark", label: "Banned" };
-    case CourseStatus.Draft:
-    default:
-      return { color: "blue", label: "Draft" };
-  }
-};
+import { getCourseStatusBadgeMap } from "../../../features/course/course.utils";
 
 enum CourseDetailTab {
   Overview = "Overview",
@@ -84,8 +69,6 @@ export default function AdminCourseDetailPage() {
 
   if (isPending) return <CenterLoader />;
   if (error || !courseId || !course) return <Navigate to="/404" replace />;
-
-  const { color, label } = getStatusBadge(course.status as CourseStatus);
 
   return (
     <div className="flex-1 p-6 xl:p-8 @container">
@@ -162,17 +145,15 @@ export default function AdminCourseDetailPage() {
           {dayjs(course.updatedAt).fromNow()}
         </Text>
 
-        <Tooltip label={`Current course status is "${label}"`} withArrow>
-          <Badge
-            color={color}
-            size="lg"
-            variant="filled"
-            radius="2xl"
-            mt="md"
-            style={{ fontWeight: 500 }}
+        <Tooltip label={`Current course status is "${course.status}"`} withArrow>
+          <span
+            className={cn(
+              "text-md font-medium px-4 py-1 rounded-full capitalize mt-4 inline-block",
+              getCourseStatusBadgeMap[course.status],
+            )}
           >
-            Status: {label}
-          </Badge>
+            {course.status}
+          </span>
         </Tooltip>
 
         {course.retryCount > 0 && (

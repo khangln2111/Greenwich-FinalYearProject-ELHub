@@ -1,32 +1,24 @@
-import {
-  Alert,
-  Badge,
-  Button,
-  Group,
-  SegmentedControl,
-  Tabs,
-  Text,
-  Title,
-  Tooltip,
-} from "@mantine/core";
+import { Alert, Button, Group, SegmentedControl, Tabs, Text, Title, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconAlertTriangle, IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
 import dayjs from "dayjs";
+import { HelpCircleIcon } from "lucide-react";
 import { parseAsStringEnum, useQueryState } from "nuqs";
 import { Link, Navigate, useParams } from "react-router";
 import CenterLoader from "../../../components/CenterLoader/CenterLoader";
-import { CourseStatus } from "../../../features/course/course.types";
 import {
   useGetCourseDetail,
   useResubmitCourse,
   useSubmitCourse,
 } from "../../../features/course/course.hooks";
+import { CourseStatus } from "../../../features/course/course.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
+import { cn } from "../../../utils/cn";
 import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
+import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmissionTab";
 import OverviewForm from "./_c/OverviewForm/OverviewForm";
 import InstructorReviewManager from "./_c/ReviewManager/InstructorReviewManager";
-import { usePageSEO } from "../../../hooks/usePageSEO";
-import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmissionTab";
-import { HelpCircleIcon } from "lucide-react";
+import { getCourseStatusBadgeMap } from "../../../features/course/course.utils";
 
 enum CourseDetailTab {
   Overview = "Overview",
@@ -34,22 +26,6 @@ enum CourseDetailTab {
   Reviews = "Reviews",
   Submissions = "Submissions",
 }
-
-const getStatusBadge = (status: CourseStatus) => {
-  switch (status) {
-    case CourseStatus.Pending:
-      return { color: "yellow", label: "Pending" };
-    case CourseStatus.Published:
-      return { color: "green", label: "Published" };
-    case CourseStatus.Rejected:
-      return { color: "red", label: "Rejected" };
-    case CourseStatus.Banned:
-      return { color: "dark", label: "Banned" };
-    case CourseStatus.Draft:
-    default:
-      return { color: "blue", label: "Draft" };
-  }
-};
 
 export default function InstructorEditCoursePage() {
   const { courseId } = useParams<{ courseId: string }>();
@@ -102,8 +78,6 @@ export default function InstructorEditCoursePage() {
       onConfirm: () => retrySubmitMutation.mutate(courseId!),
     });
   };
-
-  const { color } = getStatusBadge(courseDetail.status as CourseStatus);
 
   return (
     <div className="flex-1 p-6 xl:p-8">
@@ -189,9 +163,14 @@ export default function InstructorEditCoursePage() {
       >
         <Group gap="xs">
           <Text>Status:</Text>
-          <Badge color={color} variant="light" size="lg" radius="sm">
+          <span
+            className={cn(
+              "text-md font-medium px-4 py-2 rounded-sm capitalize z-10",
+              getCourseStatusBadgeMap[courseDetail.status],
+            )}
+          >
             {courseDetail.status}
-          </Badge>
+          </span>
         </Group>
 
         {courseDetail.retryCount > 0 && canRetry && (

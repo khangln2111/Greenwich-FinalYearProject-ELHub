@@ -3,17 +3,11 @@ import { Button, Rating } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { Clock, ListOrdered, Pencil, Trash, Users } from "lucide-react";
 import { useNavigate } from "react-router";
-import { CourseStatus, CourseVm } from "../../../../features/course/course.types";
 import { useDeleteCourse } from "../../../../features/course/course.hooks";
+import { CourseVm } from "../../../../features/course/course.types";
+import { getCourseStatusBadgeMap } from "../../../../features/course/course.utils";
+import { cn } from "../../../../utils/cn";
 import { formatCurrency, formatDuration } from "../../../../utils/format";
-
-const statusBadgeMap: Record<CourseStatus, string> = {
-  [CourseStatus.Draft]: "bg-slate-200 text-slate-900 dark:bg-slate-200 dark:text-slate-900",
-  [CourseStatus.Published]: "bg-green-100 text-green-900 dark:bg-green-200 dark:text-green-900",
-  [CourseStatus.Pending]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900",
-  [CourseStatus.Banned]: "bg-black text-white ",
-  [CourseStatus.Rejected]: "bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900",
-};
 
 interface Props {
   course: CourseVm;
@@ -44,8 +38,10 @@ const InstructorCourseCard = ({ course }: Props) => {
   return (
     <div className="bg-white dark:bg-dark-6 border rounded-2xl shadow p-5 flex flex-col relative transition-colors">
       <span
-        className={`absolute top-2 right-2 text-sm font-medium px-3 py-1 rounded-full capitalize z-10
-          ${statusBadgeMap[course.status]}`}
+        className={cn(
+          "absolute top-2 right-2 text-sm font-medium px-3 py-1 rounded-full capitalize z-10",
+          getCourseStatusBadgeMap[course.status],
+        )}
       >
         {course.status}
       </span>
