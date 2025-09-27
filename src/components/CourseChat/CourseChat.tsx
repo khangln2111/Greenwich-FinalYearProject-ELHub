@@ -18,12 +18,10 @@ export default function CourseChat() {
 
   // Auto scroll
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: "instant",
-      });
-    }
+    scrollRef.current!.scrollTo({
+      top: scrollRef.current!.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages]);
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -37,6 +35,15 @@ export default function CourseChat() {
     };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+
+    // Scroll xuống đáy chỉ khi user gửi message
+    setTimeout(() => {
+      scrollRef.current!.scrollTo({
+        top: scrollRef.current!.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 0);
+
     setIsStreaming(true);
 
     const assistantMessage: Message = {
@@ -102,7 +109,7 @@ export default function CourseChat() {
         to-gray-100 dark:from-gray-900 dark:to-gray-800"
     >
       {/* Messages */}
-      <ScrollArea ref={scrollRef} className="flex-1 mb-2" type="auto" scrollbarSize={6}>
+      <ScrollArea viewportRef={scrollRef} className="flex-1 mb-2" type="auto" scrollbarSize={6}>
         <div className="flex flex-col space-y-3 p-1">
           {messages.map((msg) => (
             <div
@@ -149,7 +156,14 @@ export default function CourseChat() {
               <IconArrowUp size={20} />
             </ActionIcon>
           ) : (
-            <ActionIcon color="red" radius="md" size="lg" variant="filled" onClick={handleStop}>
+            <ActionIcon
+              color="red"
+              radius="md"
+              size="lg"
+              variant="filled"
+              onClick={handleStop}
+              className="animate-pulse"
+            >
               <IconSquare size={20} />
             </ActionIcon>
           )}
