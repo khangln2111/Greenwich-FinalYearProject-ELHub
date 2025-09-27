@@ -9,14 +9,16 @@ using ChatRole = Microsoft.Extensions.AI.ChatRole;
 
 namespace API;
 
+public record CourseRecommendationRequest(string UserQuery);
+
 [ApiController]
 [Route("api/[controller]")]
 public class CourseRecommendationController(ApplicationDbContext dbContext, IChatClient chatClient) : ControllerBase
 {
-    [HttpGet("recommend-stream")]
-    public async Task RecommendStream([FromQuery] string userQuery, CancellationToken ct)
+    [HttpPost("recommend-stream")]
+    public async Task RecommendStream([FromBody] CourseRecommendationRequest request, CancellationToken ct)
     {
-        if (string.IsNullOrWhiteSpace(userQuery))
+        if (string.IsNullOrWhiteSpace(request.UserQuery))
         {
             Response.StatusCode = 400;
             await Response.WriteAsync("Query cannot be empty.", ct);
@@ -66,7 +68,7 @@ public class CourseRecommendationController(ApplicationDbContext dbContext, ICha
                 "You are an expert e-learning advisor. Provide clear, friendly, and structured recommendations for online courses based on user interests."),
             new(ChatRole.User, $"""
 
-                                User wants to learn about: '{userQuery}'.
+                                User wants to learn about: '{request.UserQuery}'.
 
                                 Course list:
                                 {coursesText}
