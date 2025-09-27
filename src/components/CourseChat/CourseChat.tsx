@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Card, Textarea, Button, ScrollArea, Loader } from "@mantine/core";
+import { Card, Textarea, ScrollArea, Loader, ActionIcon, Group } from "@mantine/core";
+import { IconArrowUp, IconSquare } from "@tabler/icons-react";
 
 interface Message {
   id: string;
@@ -15,15 +16,18 @@ export default function CourseChat() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Auto-scroll khi có message mới
+  // Auto scroll
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "instant",
+      });
     }
   }, [messages]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!input.trim() || isStreaming) return;
 
     const userMessage: Message = {
@@ -62,7 +66,6 @@ export default function CourseChat() {
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-
         const chunk = decoder.decode(value);
 
         setMessages((prev) => {
@@ -92,23 +95,28 @@ export default function CourseChat() {
   };
 
   return (
-    <Card shadow="sm" padding="lg" className="max-w-3xl min-w-3xl mx-auto h-[80vh] flex flex-col">
+    <Card
+      shadow="lg"
+      padding="lg"
+      className="max-w-3xl min-w-3xl mx-auto h-[80vh] flex flex-col rounded-2xl bg-gradient-to-br from-gray-50
+        to-gray-100 dark:from-gray-900 dark:to-gray-800"
+    >
       {/* Messages */}
-      <ScrollArea ref={scrollRef} className="flex-1 mb-2" type="auto">
-        <div className="flex flex-col space-y-2">
+      <ScrollArea ref={scrollRef} className="flex-1 mb-2" type="auto" scrollbarSize={6}>
+        <div className="flex flex-col space-y-3 p-1">
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`p-2 rounded max-w-[80%] break-words whitespace-pre-wrap ${
+              className={`relative p-3 rounded-2xl max-w-[75%] break-words whitespace-pre-wrap shadow transition-all ${
                 msg.role === "user"
-                  ? "bg-blue-100 self-end text-black"
-                  : "bg-gray-100 dark:bg-gray-700 self-start text-black dark:text-white"
+                  ? "bg-gradient-to-r from-blue-400 to-blue-500 text-white self-end"
+                  : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white self-start"
               }`}
             >
               {msg.content}
               {msg.isLoading && (
-                <span className="ml-1 animate-pulse">
-                  <Loader />
+                <span className="absolute bottom-1 right-2 animate-pulse">
+                  <Loader size="xs" />
                 </span>
               )}
             </div>
@@ -116,38 +124,37 @@ export default function CourseChat() {
         </div>
       </ScrollArea>
 
-      {/* Input */}
-      <form onSubmit={handleSubmit} className="flex gap-2 mt-auto">
+      {/* Input & buttons */}
+      <form onSubmit={handleSubmit} className="flex items-center gap-2 mt-auto">
         <Textarea
           value={input}
           onChange={(e) => setInput(e.currentTarget.value)}
           placeholder="Type your course interest..."
           minRows={1}
           maxRows={4}
-          className="flex-1"
-          disabled={isStreaming}
+          className="flex-1 shadow-md focus:shadow-lg transition-all rounded-xl"
+          disabled={false}
         />
-        <Button type="submit" color="blue" disabled={isStreaming}>
-          Send
-        </Button>
-        <Button color="red" variant="outline" onClick={handleStop} disabled={!isStreaming}>
-          Stop
-        </Button>
-      </form>
 
-      {/* Tailwind animation keyframes */}
-      <style>
-        {`
-          @keyframes blink {
-            0%, 50%, 100% { opacity: 1; }
-            25%, 75% { opacity: 0; }
-          }
-          .animate-blink {
-            display: inline-block;
-            animation: blink 1s infinite;
-          }
-        `}
-      </style>
+        <Group gap={4}>
+          {!isStreaming ? (
+            <ActionIcon
+              type="submit"
+              color="blue"
+              radius="xl"
+              size="lg"
+              variant="filled"
+              disabled={!input.trim()}
+            >
+              <IconArrowUp size={20} />
+            </ActionIcon>
+          ) : (
+            <ActionIcon color="red" radius="md" size="lg" variant="filled" onClick={handleStop}>
+              <IconSquare size={20} />
+            </ActionIcon>
+          )}
+        </Group>
+      </form>
     </Card>
   );
 }
