@@ -1,4 +1,3 @@
-using Application.Common.Contracts;
 using Application.Common.Contracts.GeneralContracts;
 using Domain.Entities;
 using Domain.Entities.MediaEntities;
@@ -61,6 +60,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
         builder.Entity<ApplicationUser>()
             .HasMany(u => u.Roles)
             .WithMany(r => r.Users)

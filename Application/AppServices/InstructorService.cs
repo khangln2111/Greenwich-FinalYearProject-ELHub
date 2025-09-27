@@ -1,5 +1,4 @@
-﻿using Application.Common.Contracts;
-using Application.Common.Contracts.AppContracts;
+﻿using Application.Common.Contracts.AppContracts;
 using Application.Common.Contracts.GeneralContracts;
 using Application.DTOs.CourseDTOs;
 using Application.DTOs.InstructorDTO;

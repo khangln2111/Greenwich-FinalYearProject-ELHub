@@ -1,6 +1,4 @@
-﻿using Application.Common;
-using Application.Common.Contracts;
-using Application.Common.Contracts.GeneralContracts;
+﻿using Application.Common.Contracts.GeneralContracts;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

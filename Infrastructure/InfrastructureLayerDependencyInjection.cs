@@ -1,14 +1,10 @@
 using System.Reflection;
-using Application.Common;
-using Application.Common.Contracts;
 using Application.Common.Contracts.GeneralContracts;
-using Application.Common.Contracts.InfraContracts;
 using Domain.Entities;
 using Hangfire;
 using Infrastructure.Data;
 using Infrastructure.Data.DataSeeding;
 using Infrastructure.Data.Interceptors;
-using Infrastructure.Utilities;
 using LLL.AutoCompute.EFCore;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OllamaSharp;
 
 namespace Infrastructure;
 
@@ -26,6 +23,7 @@ public static class InfrastructureLayerDependencyInjection
         services.AddPersistence(configuration);
         services.AddIdentity();
         services.AddUtilities();
+        services.AddAiClient();
         services.AddBackgroundServices();
     }
 
@@ -52,6 +50,12 @@ public static class InfrastructureLayerDependencyInjection
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddSingleton<IApplicationDbContextFactory, ApplicationDbContextFactory>();
+    }
+
+    private static void AddAiClient(this IServiceCollection services)
+    {
+        services.AddChatClient(new OllamaApiClient(new Uri("http://localhost:11434"), "gemma3:4b"));
+        services.AddEmbeddingGenerator(new OllamaApiClient(new Uri("http://localhost:11434"), "nomic-embed-text"));
     }
 
 

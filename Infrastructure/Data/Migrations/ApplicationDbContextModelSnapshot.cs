@@ -195,7 +195,7 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.CartItem", b =>
@@ -227,7 +227,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>
@@ -254,7 +254,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Course", b =>
@@ -374,7 +374,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("PromoVideoId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.CourseApprovalHistory", b =>
@@ -404,7 +404,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("CourseApprovalHistories");
+                    b.ToTable("CourseApprovalHistories", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Enrollment", b =>
@@ -441,7 +441,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId", "CourseId");
 
-                    b.ToTable("Enrollments");
+                    b.ToTable("Enrollments", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Experience", b =>
@@ -479,7 +479,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Experience");
+                    b.ToTable("Experience", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Gift", b =>
@@ -525,7 +525,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("InventoryItemId");
 
-                    b.ToTable("Gifts");
+                    b.ToTable("Gifts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.InstructorApplication", b =>
@@ -588,7 +588,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("InstructorApplications");
+                    b.ToTable("InstructorApplications", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Inventory", b =>
@@ -611,7 +611,7 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Inventories");
+                    b.ToTable("Inventories", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.InventoryItem", b =>
@@ -641,7 +641,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("InventoryId");
 
-                    b.ToTable("InventoryItems");
+                    b.ToTable("InventoryItems", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Lecture", b =>
@@ -685,7 +685,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("SectionId", "Id");
 
-                    b.ToTable("Lectures");
+                    b.ToTable("Lectures", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.LectureProgress", b =>
@@ -715,7 +715,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("LectureId");
 
-                    b.ToTable("LectureProgresses");
+                    b.ToTable("LectureProgresses", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.MediaEntities.Media", b =>
@@ -758,7 +758,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("Type");
 
-                    b.ToTable("Media");
+                    b.ToTable("Media", (string)null);
 
                     b.HasDiscriminator<int>("MediaType").HasValue(3);
 
@@ -807,7 +807,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -852,7 +852,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderItem", b =>
@@ -890,7 +890,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Review", b =>
@@ -928,7 +928,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("Rating", "EnrollmentId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ReviewReply", b =>
@@ -961,7 +961,7 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("ReviewId")
                         .IsUnique();
 
-                    b.ToTable("ReviewReplies");
+                    b.ToTable("ReviewReplies", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Section", b =>
@@ -1005,7 +1005,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("CourseId", "Id");
 
-                    b.ToTable("Sections");
+                    b.ToTable("Sections", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.WalletTransaction", b =>
@@ -1039,7 +1039,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WalletTransactions");
+                    b.ToTable("WalletTransactions", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

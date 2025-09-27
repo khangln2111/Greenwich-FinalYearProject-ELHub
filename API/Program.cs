@@ -6,9 +6,6 @@ using Infrastructure.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-
 //Add layers
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddApplicationLayer();
@@ -40,6 +37,7 @@ using (var scope = app.Services.CreateScope())
     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
     await seeder.SeedAsync();
 }
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,10 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Application.AppServices;
-using Application.Common.Contracts;
 using Application.Common.Contracts.GeneralContracts;
-using Application.Validations;
 using Gridify;
 using MediatR.NotificationPublishers;
 

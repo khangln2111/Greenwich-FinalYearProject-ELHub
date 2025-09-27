@@ -24,7 +24,9 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.AI" Version="9.9.1"/>
         <PackageReference Include="NReco.VideoInfo" Version="1.2.0"/>
+        <PackageReference Include="OllamaSharp" Version="5.4.7"/>
         <PackageReference Include="Stripe.net" Version="45.11.0"/>
     </ItemGroup>
 

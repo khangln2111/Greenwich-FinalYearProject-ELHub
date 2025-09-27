@@ -1,6 +1,5 @@
 ﻿using Application.Common.Contracts.AppContracts;
 using Application.DTOs.EnrollmentDTOs;
-using Domain.Enums;
 using Gridify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
