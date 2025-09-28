@@ -9,11 +9,11 @@ export interface Message {
 
 interface UseChatOptions {
   apiUrl: string; // URL API chat
-  bodyBuilder?: (input: string) => any; // custom JSON body
+  bodyBuilder?: (input: string) => any; // allowed caller to customize body payload
   onStreamChunk?: (chunk: string, messages: Message[]) => Message[];
   scroll?: {
-    onSubmit?: boolean; // scroll khi user submit message
-    onStreaming?: boolean; // scroll khi assistant streaming
+    onSubmit?: boolean; // scroll when user submit message
+    onStreaming?: boolean; // scroll when assistant streaming
   };
 }
 
@@ -24,7 +24,6 @@ export function useChat({
   scroll = { onSubmit: true, onStreaming: true },
 }: UseChatOptions) {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -40,17 +39,16 @@ export function useChat({
     }
   }, [messages, scroll.onStreaming]);
 
-  const handleSubmit = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!input.trim() || isStreaming) return;
+  // Send new message
+  const sendMessage = async (text: string) => {
+    if (!text.trim() || isStreaming) return;
 
-    const userMessage: Message = {
+    const newUserMessage: Message = {
       id: crypto.randomUUID(),
       role: "user",
-      content: input,
+      content: text,
     };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+    setMessages((prev) => [...prev, newUserMessage]);
 
     // Scroll to bottom when user submits message (if onSubmit=true)
     if (scroll.onSubmit) {
@@ -76,9 +74,7 @@ export function useChat({
     abortControllerRef.current = controller;
 
     try {
-      const payload = bodyBuilder
-        ? bodyBuilder(userMessage.content)
-        : { userQuery: userMessage.content };
+      const payload = bodyBuilder ? bodyBuilder(text) : { userQuery: text };
 
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -112,11 +108,6 @@ export function useChat({
       }
     } catch (err) {
       console.error("Streaming error", err);
-      setMessages((prev) => {
-        const last = prev[prev.length - 1];
-        if (last.role !== "assistant") return prev;
-        return [{ ...last, isLoading: false }];
-      });
     } finally {
       setIsStreaming(false);
     }
@@ -131,11 +122,9 @@ export function useChat({
 
   return {
     messages,
-    input,
-    setInput,
     isStreaming,
     scrollRef,
-    handleSubmit,
+    sendMessage,
     handleStop,
     resetChat,
   };
