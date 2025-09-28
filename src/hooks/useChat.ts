@@ -89,11 +89,13 @@ export function useChat({
 
       if (!res.body) return;
 
+      // Create a readable stream from the response body
       const reader = res.body.getReader();
       const decoder = new TextDecoder("utf-8");
 
       while (true) {
         const { value, done } = await reader.read();
+        // Exit the loop if the stream is done
         if (done) break;
         const chunk = decoder.decode(value);
 
