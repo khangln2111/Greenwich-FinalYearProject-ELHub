@@ -26,6 +26,12 @@ public static class AppConstants
         public const int DescriptionMaxLength = 500;
     }
 
+    public static class CourseRecommendation
+    {
+        public const int ChatSessionIdMaxLength = 200;
+        public const int UserQueryMaxLength = 5000;
+    }
+
     public static class Notification
     {
         public const int TitleMaxLength = 100;

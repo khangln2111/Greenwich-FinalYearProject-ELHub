@@ -1,10 +1,13 @@
 using System.Reflection;
 using Application.Common.Contracts.GeneralContracts;
+using Application.Common.Contracts.InfraContracts;
 using Domain.Entities;
 using Hangfire;
+using Infrastructure.BackgroundService;
 using Infrastructure.Data;
 using Infrastructure.Data.DataSeeding;
 using Infrastructure.Data.Interceptors;
+using Infrastructure.Utilities;
 using LLL.AutoCompute.EFCore;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
@@ -65,6 +68,8 @@ public static class InfrastructureLayerDependencyInjection
         services.AddHttpClient();
         services.AddSignalR();
         services.AddScoped<DataSeeder>();
+        // Register ChatSessionManager as a singleton to maintain session state across the application
+        services.AddSingleton<IChatSessionManager, ChatSessionManager>();
         services.Scan(scan => scan
             .FromAssemblies(Assembly.GetExecutingAssembly())
             .AddClasses(classes => classes.AssignableTo<IInfraService>())
@@ -74,6 +79,7 @@ public static class InfrastructureLayerDependencyInjection
 
     private static void AddBackgroundServices(this IServiceCollection services)
     {
+        services.AddHostedService<ChatSessionCleanupBackgroundService>();
         services.AddHangfire(cfg =>
         {
             cfg.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
