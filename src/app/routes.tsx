@@ -63,12 +63,6 @@ const userRoute: RouteObject = {
           ),
         },
         {
-          path: "course-recommendation",
-          lazy: lazyRoute(
-            () => import("../pages/(main)/course-recommendation/CourseRecommendationPage"),
-          ),
-        },
-        {
           path: "dashboard",
           lazy: lazyRoute(() => import("../layout/user-dashboard/UserDashboardLayout")),
           children: [

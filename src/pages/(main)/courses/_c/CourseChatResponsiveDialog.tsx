@@ -65,13 +65,21 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
           <Textarea
             placeholder="Ask me anything about courses... 💡"
             minRows={2}
+            data-autofocus
             size="md"
+            radius={"xl"}
             maxRows={5}
             autosize
-            className="flex-1 rounded-xl shadow focus:shadow-md transition-all"
+            className="flex-1 rounded-xl shadow focus:shadow-md"
             {...form.getInputProps("message")}
             key={form.key("message")}
             disabled={isStreaming}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleFormSubmit();
+              }
+            }}
           />
           {!isStreaming ? (
             <Tooltip label="Send">
@@ -96,7 +104,6 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
         </form>
       }
       vaulProps={{
-        trapFocus: true,
         classNames: {
           header: "border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-zinc-900",
           footer:
