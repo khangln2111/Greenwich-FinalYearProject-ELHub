@@ -44,6 +44,10 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
       opened={opened}
       radius={"xl"}
       onClose={onClose}
+      overlayProps={{
+        backgroundOpacity: 0.55,
+        blur: 3,
+      }}
       title={
         <div className="flex items-center gap-2">
           <span className="text-lg font-semibold dark:text-gray-100">✨ AI Course Advisor</span>
