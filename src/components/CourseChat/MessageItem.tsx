@@ -5,11 +5,29 @@ import { memo } from "react";
 import { Message } from "../../hooks/useChat";
 import { cn } from "../../utils/cn";
 
-export const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
+type Props = {
+  msg: Message;
+  className?: string;
+  classNames?: {
+    userMessage?: string;
+    botMessage?: string;
+  };
+};
+
+export const MessageItem = memo(function MessageItem({ msg, className, classNames }: Props) {
   const isUser = msg.role === "user";
 
   return (
-    <div className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}>
+    <div
+      className={cn(
+        "flex flex-col",
+        {
+          "items-end": isUser,
+          "items-start": !isUser,
+        },
+        className,
+      )}
+    >
       {!isUser && (
         <div className="flex items-center gap-2">
           <BotIcon className="size-8 text-primary inline-block" />
@@ -22,8 +40,9 @@ export const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) 
           "mt-2 relative p-3 rounded-2xl max-w-[75%] break-words whitespace-pre-wrap shadow transition-all",
           {
             "bg-blue-500 text-white": isUser,
-            "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white": !isUser,
+            "bg-gray-200 dark:bg-slate-700 text-gray-900 dark:text-white": !isUser,
           },
+          isUser && classNames?.userMessage,
         )}
       >
         {msg.isLoading ? (

@@ -1,14 +1,17 @@
 import { Box, Grid, GridCol, Paper } from "@mantine/core";
-import { useCoursesPageStore } from "../../../zustand/stores/coursesPageStore";
-import CourseMobileFilter from "./_c/course-filter/CourseMobileFilter";
-import CourseMain from "./_c/CourseMain";
-import CourseDesktopFilter from "./_c/course-filter/CourseDesktopFilter";
 import { parseAsString, useQueryState } from "nuqs";
 import { usePageSEO } from "../../../hooks/usePageSEO";
+import { useCoursesPageStore } from "../../../zustand/stores/coursesPageStore";
+import CourseDesktopFilter from "./_c/course-filter/CourseDesktopFilter";
+import CourseMobileFilter from "./_c/course-filter/CourseMobileFilter";
+import CourseMain from "./_c/CourseMain";
+import CourseChatResponsiveDialog from "./_c/CourseChatResponsiveDialog";
 
 export default function CoursesPage() {
   const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
   const [search] = useQueryState("search", parseAsString);
+  const chatModalOpen = useCoursesPageStore((s) => s.chatModalOpen);
+  const setChatModalOpen = useCoursesPageStore((s) => s.setChatModalOpen);
 
   usePageSEO({ title: search ? `Search results` : "Courses" });
 
@@ -38,6 +41,11 @@ export default function CoursesPage() {
           </GridCol>
         </Grid>
         <CourseMobileFilter />
+
+        <CourseChatResponsiveDialog
+          opened={chatModalOpen}
+          onClose={() => setChatModalOpen(false)}
+        />
       </Box>
     </div>
   );

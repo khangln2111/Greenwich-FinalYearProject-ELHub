@@ -9,6 +9,8 @@ interface CourseFilterStore {
   toggleMobileFilter: () => void;
   openMobileFilter: () => void;
   closeMobileFilter: () => void;
+  chatModalOpen: boolean;
+  setChatModalOpen: (open: boolean) => void;
 }
 
 export const useCoursesPageStore = create<CourseFilterStore>((set) => ({
@@ -18,4 +20,6 @@ export const useCoursesPageStore = create<CourseFilterStore>((set) => ({
   toggleMobileFilter: () => set((state) => ({ isMobileFilterOpen: !state.isMobileFilterOpen })),
   openMobileFilter: () => set({ isMobileFilterOpen: true }),
   closeMobileFilter: () => set({ isMobileFilterOpen: false }),
+  chatModalOpen: false,
+  setChatModalOpen: (open: boolean) => set({ chatModalOpen: open }),
 }));

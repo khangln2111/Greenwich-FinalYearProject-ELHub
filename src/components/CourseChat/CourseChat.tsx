@@ -94,7 +94,7 @@ export default function CourseChat({ className }: CourseChatProps) {
             <ActionIcon
               type="submit"
               color="blue"
-              radius="xl"
+              radius="full"
               size="lg"
               variant="filled"
               disabled={!form.values.message.trim()}
@@ -102,7 +102,7 @@ export default function CourseChat({ className }: CourseChatProps) {
               <IconArrowUp size={20} />
             </ActionIcon>
           ) : (
-            <ActionIcon color="red" radius="xl" size="lg" variant="filled" onClick={handleStop}>
+            <ActionIcon color="red" radius="full" size="lg" variant="filled" onClick={handleStop}>
               <IconSquare size={20} />
             </ActionIcon>
           )}

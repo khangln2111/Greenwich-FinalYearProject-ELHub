@@ -47,9 +47,7 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
       title={
         <div className="flex items-center gap-2">
           <span className="text-lg font-semibold">✨ AI Course Advisor</span>
-          <Badge variant="light" color="blue">
-            Beta
-          </Badge>
+          <Badge variant="light">Beta</Badge>
         </div>
       }
       // footer = input + nút send/stop
@@ -71,7 +69,7 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
               <ActionIcon
                 type="submit"
                 color="blue"
-                radius="xl"
+                radius="full"
                 size="lg"
                 variant="filled"
                 disabled={!form.values.message.trim() || isPending}
@@ -81,7 +79,7 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
             </Tooltip>
           ) : (
             <Tooltip label="Stop generating">
-              <ActionIcon color="red" radius="xl" size="lg" variant="filled" onClick={handleStop}>
+              <ActionIcon color="red" radius="full" size="lg" variant="filled" onClick={handleStop}>
                 <IconSquare size={20} />
               </ActionIcon>
             </Tooltip>
@@ -100,7 +98,7 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
       }}
       // Modal style cho tablet/desktop
       modalProps={{
-        size: "xl",
+        size: "800px",
         centered: true,
         classNames: {
           header: "border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-zinc-900",
@@ -124,15 +122,15 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
           ref={scrollRef}
         >
           {messages.length === 0 && (
-            <div className="text-center text-gray-500 dark:text-gray-400 mt-20 space-y-2">
-              <p className="text-xl font-medium">👋 Welcome! I’m your personal Course Advisor.</p>
-              <p className="text-md">
+            <div className="text-center text-gray-700 dark:text-gray-400 mt-20 space-y-2">
+              <p className="text-2xl font-medium">👋 Welcome! I’m your personal Course Advisor.</p>
+              <p className="text-lg">
                 Ask me about your learning goals and I’ll recommend the best courses for you.
               </p>
             </div>
           )}
           {messages.map((msg) => (
-            <MessageItem key={msg.id} msg={msg} />
+            <MessageItem key={msg.id} msg={msg} classNames={{}} />
           ))}
         </div>
       )}

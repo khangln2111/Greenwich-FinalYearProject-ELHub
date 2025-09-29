@@ -1,5 +1,5 @@
-import { Button, ActionIcon } from "@mantine/core";
-import { ListFilter, LayoutGrid, LayoutList } from "lucide-react";
+import { ActionIcon, Button, Tooltip } from "@mantine/core";
+import { LayoutGrid, LayoutList, ListFilter, SparklesIcon } from "lucide-react";
 import { useCoursesPageStore } from "../../../../zustand/stores/coursesPageStore";
 
 type CoursesPageActionsProps = {
@@ -12,10 +12,22 @@ const CoursesPageActions = ({ layout, onSetLayout }: CoursesPageActionsProps) =>
   const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
   const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
   const openMobileFilter = useCoursesPageStore((s) => s.openMobileFilter);
+  const setChatModalOpen = useCoursesPageStore((s) => s.setChatModalOpen);
 
   return (
     <div className="flex sm:items-center gap-4">
       {/* Filter buttons */}
+      <Tooltip label="AI Course Recommendation" position="bottom" withArrow>
+        <ActionIcon
+          radius="full"
+          size="lg"
+          onClick={() => setChatModalOpen(true)}
+          className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 dark:from-purple-700 dark:via-pink-600
+            dark:to-orange-500 text-white shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
+        >
+          <SparklesIcon size={20} />
+        </ActionIcon>
+      </Tooltip>
       <div className="flex gap-2">
         <Button
           variant={isDesktopFilterOpen ? "filled" : "default"}
