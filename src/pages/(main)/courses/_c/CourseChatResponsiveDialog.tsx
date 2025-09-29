@@ -13,7 +13,7 @@ type Props = {
   onClose: () => void;
 };
 
-export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
+const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
   const [sessionId, setSessionId] = useState("");
   const { mutate, isPending } = useCreateChatSession();
 
@@ -50,7 +50,6 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
           <Badge variant="light">Beta</Badge>
         </div>
       }
-      // footer = input + nút send/stop
       footer={
         <form onSubmit={handleFormSubmit} className="flex items-center gap-3 w-full">
           <Textarea
@@ -86,7 +85,6 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
           )}
         </form>
       }
-      // Vaul chỉ định style header/footer/content
       vaulProps={{
         trapFocus: true,
         classNames: {
@@ -96,7 +94,6 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
           body: "overflow-y-auto p-0",
         },
       }}
-      // Modal style cho tablet/desktop
       modalProps={{
         size: "800px",
         centered: true,
@@ -136,4 +133,6 @@ export default function CourseChatResponsiveDialog({ opened, onClose }: Props) {
       )}
     </ResponsiveDialog>
   );
-}
+};
+
+export default CourseChatResponsiveDialog;

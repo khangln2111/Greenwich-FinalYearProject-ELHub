@@ -14,7 +14,7 @@ type CourseChatProps = {
   className?: string;
 };
 
-export default function CourseChat({ className }: CourseChatProps) {
+const CourseChat = ({ className }: CourseChatProps) => {
   const [sessionId, setSessionId] = useState<string>("");
   const { mutate, isPending } = useCreateChatSession();
 
@@ -110,4 +110,6 @@ export default function CourseChat({ className }: CourseChatProps) {
       </form>
     </Card>
   );
-}
+};
+
+export default CourseChat;
