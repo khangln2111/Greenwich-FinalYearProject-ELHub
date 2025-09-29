@@ -1,4 +1,3 @@
-// MessageItem.tsx
 import { BotIcon } from "lucide-react";
 import { Loader, Text } from "@mantine/core";
 import Markdown from "react-markdown";

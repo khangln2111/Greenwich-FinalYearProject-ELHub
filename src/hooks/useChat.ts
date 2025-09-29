@@ -106,7 +106,9 @@ export function useChat({
           ];
         });
       }
-    } catch (err) {
+    } catch (err: any) {
+      // If the error is due to aborting, ignore it and don't log
+      if (err.name === "AbortError") return;
       console.error("Streaming error", err);
     } finally {
       setIsStreaming(false);
