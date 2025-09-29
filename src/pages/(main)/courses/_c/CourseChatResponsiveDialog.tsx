@@ -47,7 +47,13 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
       title={
         <div className="flex items-center gap-2">
           <span className="text-lg font-semibold">✨ AI Course Advisor</span>
-          <Badge variant="light">Beta</Badge>
+          <Badge
+            variant="gradient"
+            className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 dark:from-purple-700 dark:via-pink-600
+              dark:to-orange-500"
+          >
+            Beta
+          </Badge>
         </div>
       }
       footer={

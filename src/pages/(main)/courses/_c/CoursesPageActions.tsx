@@ -19,9 +19,10 @@ const CoursesPageActions = ({ layout, onSetLayout }: CoursesPageActionsProps) =>
       {/* Filter buttons */}
       <Tooltip label="AI Course Recommendation" position="bottom" withArrow>
         <ActionIcon
-          radius="full"
           size="lg"
+          radius="full"
           onClick={() => setChatModalOpen(true)}
+          variant="gradient"
           className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 dark:from-purple-700 dark:via-pink-600
             dark:to-orange-500 text-white shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
         >
