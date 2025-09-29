@@ -1,29 +1,37 @@
-import { useState, useEffect } from "react";
 import { ActionIcon, Card, Group, ScrollArea, Textarea } from "@mantine/core";
-import { IconArrowUp, IconSquare } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
+import { IconArrowUp, IconSquare } from "@tabler/icons-react";
+import { useState } from "react";
 
+import { useCreateChatSession } from "../../features/courseRecommendation/courseRecommendation.hooks";
 import { useChat } from "../../hooks/useChat";
+import { useDelayedEffect } from "../../hooks/useDelayedEffect";
+import CenterLoader from "../CenterLoader/CenterLoader";
 import { MessageItem } from "./MessageItem";
 
 export default function CourseChat() {
-  // Generate temporary sessionId for this chat
   const [sessionId, setSessionId] = useState<string>("");
-
-  useEffect(() => {
-    setSessionId(crypto.randomUUID());
-  }, []);
+  const { mutate, isPending } = useCreateChatSession();
 
   const { messages, isStreaming, scrollRef, sendMessage, handleStop } = useChat({
-    apiUrl: "https://localhost:7014/api/CourseRecommendation/chat-stream", // updated backend endpoint
+    apiUrl: "https://localhost:7014/api/CourseRecommendation/chat-stream",
     bodyBuilder: (input) => ({
       userQuery: input,
-      sessionId: sessionId, // send sessionId for temporary multi-turn chat
+      sessionId,
     }),
     scroll: {
       onSubmit: true,
       onStreaming: false,
     },
+  });
+
+  useDelayedEffect(() => {
+    if (sessionId) return;
+    mutate(undefined, {
+      onSuccess: (sessionId) => {
+        setSessionId(sessionId);
+      },
+    });
   });
 
   const form = useForm({
@@ -36,8 +44,13 @@ export default function CourseChat() {
   const handleFormSubmit = form.onSubmit((values) => {
     if (!values.message.trim()) return;
     sendMessage(values.message); // send user input to backend
-    form.reset(); // reset textarea
+    form.reset();
   });
+
+  // ✅ Render loading state while initializing chat session
+  if (isPending) {
+    return <CenterLoader />;
+  }
 
   return (
     <Card className="max-w-3xl min-w-3xl mx-auto h-[80vh] flex flex-col rounded-2xl bg-gray-50 dark:bg-gray-900 shadow-lg">
