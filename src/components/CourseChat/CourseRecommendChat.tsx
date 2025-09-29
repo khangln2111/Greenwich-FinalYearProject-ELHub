@@ -10,11 +10,11 @@ import CenterLoader from "../CenterLoader/CenterLoader";
 import { MessageItem } from "./MessageItem";
 import { cn } from "../../utils/cn";
 
-type CourseChatProps = {
+type CourseRecommendChatProps = {
   className?: string;
 };
 
-const CourseChat = ({ className }: CourseChatProps) => {
+const CourseRecommendChat = ({ className }: CourseRecommendChatProps) => {
   const [sessionId, setSessionId] = useState<string>("");
   const { mutate, isPending } = useCreateChatSession();
 
@@ -112,4 +112,4 @@ const CourseChat = ({ className }: CourseChatProps) => {
   );
 };
 
-export default CourseChat;
+export default CourseRecommendChat;

@@ -46,7 +46,7 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
       onClose={onClose}
       title={
         <div className="flex items-center gap-2">
-          <span className="text-lg font-semibold">✨ AI Course Advisor</span>
+          <span className="text-lg font-semibold dark:text-gray-100">✨ AI Course Advisor</span>
           <Badge
             variant="gradient"
             className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 dark:from-purple-700 dark:via-pink-600

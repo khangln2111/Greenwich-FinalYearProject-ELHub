@@ -1,5 +1,5 @@
 import { Container, Title } from "@mantine/core";
-import CourseChat from "../../../components/CourseChat/CourseChat";
+import CourseRecommendChat from "../../../components/CourseChat/CourseRecommendChat";
 
 export default function CourseRecommendationPage() {
   return (
@@ -8,7 +8,7 @@ export default function CourseRecommendationPage() {
         Find Your Perfect Courses
       </Title>
       <div className="flex-1">
-        <CourseChat />
+        <CourseRecommendChat />
       </div>
     </Container>
   );
