@@ -3,6 +3,7 @@ import { Loader, Text } from "@mantine/core";
 import Markdown from "react-markdown";
 import { memo } from "react";
 import { Message } from "../../hooks/useChat";
+import { cn } from "../../utils/cn";
 
 export const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) {
   const isUser = msg.role === "user";
@@ -17,11 +18,13 @@ export const MessageItem = memo(function MessageItem({ msg }: { msg: Message }) 
       )}
 
       <div
-        className={`mt-2 relative p-3 rounded-2xl max-w-[75%] break-words whitespace-pre-wrap shadow transition-all ${
-          isUser
-            ? "bg-blue-500 text-white"
-            : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-          }`}
+        className={cn(
+          "mt-2 relative p-3 rounded-2xl max-w-[75%] break-words whitespace-pre-wrap shadow transition-all",
+          {
+            "bg-blue-500 text-white": isUser,
+            "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white": !isUser,
+          },
+        )}
       >
         {msg.isLoading ? (
           <div className="flex justify-end">

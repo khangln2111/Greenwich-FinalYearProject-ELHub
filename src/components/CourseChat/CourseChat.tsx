@@ -8,8 +8,13 @@ import { useChat } from "../../hooks/useChat";
 import { useDelayedEffect } from "../../hooks/useDelayedEffect";
 import CenterLoader from "../CenterLoader/CenterLoader";
 import { MessageItem } from "./MessageItem";
+import { cn } from "../../utils/cn";
 
-export default function CourseChat() {
+type CourseChatProps = {
+  className?: string;
+};
+
+export default function CourseChat({ className }: CourseChatProps) {
   const [sessionId, setSessionId] = useState<string>("");
   const { mutate, isPending } = useCreateChatSession();
 
@@ -53,7 +58,12 @@ export default function CourseChat() {
   }
 
   return (
-    <Card className="max-w-3xl min-w-3xl mx-auto h-[80vh] flex flex-col rounded-2xl bg-gray-50 dark:bg-gray-900 shadow-lg">
+    <Card
+      className={cn(
+        "max-w-3xl min-w-3xl mx-auto h-[80vh] flex flex-col rounded-2xl bg-gray-50 dark:bg-gray-900 shadow-lg",
+        className,
+      )}
+    >
       <ScrollArea
         viewportRef={scrollRef}
         className="flex-1 mb-2 px-3"
