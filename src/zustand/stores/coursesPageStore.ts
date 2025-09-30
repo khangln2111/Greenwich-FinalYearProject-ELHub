@@ -1,7 +1,5 @@
 import { create } from "zustand";
 
-export type CoursesPageLayout = "grid" | "list";
-
 interface CourseFilterStore {
   isDesktopFilterOpen: boolean;
   isMobileFilterOpen: boolean;
@@ -9,8 +7,11 @@ interface CourseFilterStore {
   toggleMobileFilter: () => void;
   openMobileFilter: () => void;
   closeMobileFilter: () => void;
+
   chatModalOpen: boolean;
+  chatLoaded: boolean;
   setChatModalOpen: (open: boolean) => void;
+  openChatModal: () => void;
 }
 
 export const useCoursesPageStore = create<CourseFilterStore>((set) => ({
@@ -20,6 +21,13 @@ export const useCoursesPageStore = create<CourseFilterStore>((set) => ({
   toggleMobileFilter: () => set((state) => ({ isMobileFilterOpen: !state.isMobileFilterOpen })),
   openMobileFilter: () => set({ isMobileFilterOpen: true }),
   closeMobileFilter: () => set({ isMobileFilterOpen: false }),
+
   chatModalOpen: false,
+  chatLoaded: false,
   setChatModalOpen: (open: boolean) => set({ chatModalOpen: open }),
+  openChatModal: () =>
+    set({
+      chatModalOpen: true,
+      chatLoaded: true,
+    }),
 }));

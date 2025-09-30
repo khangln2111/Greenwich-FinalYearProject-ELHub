@@ -1,17 +1,21 @@
-import { Box, Grid, GridCol, Paper } from "@mantine/core";
+import { Box, Grid, GridCol, Loader, Paper } from "@mantine/core";
 import { parseAsString, useQueryState } from "nuqs";
+import { lazy, Suspense } from "react";
 import { usePageSEO } from "../../../hooks/usePageSEO";
 import { useCoursesPageStore } from "../../../zustand/stores/coursesPageStore";
 import CourseDesktopFilter from "./_c/course-filter/CourseDesktopFilter";
 import CourseMobileFilter from "./_c/course-filter/CourseMobileFilter";
 import CourseMain from "./_c/CourseMain";
-import CourseChatResponsiveDialog from "./_c/CourseChatResponsiveDialog";
+
+// Lazy load modal
+const CourseChatResponsiveDialog = lazy(() => import("./_c/CourseChatResponsiveDialog"));
 
 export default function CoursesPage() {
   const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
-  const [search] = useQueryState("search", parseAsString);
   const chatModalOpen = useCoursesPageStore((s) => s.chatModalOpen);
+  const chatLoaded = useCoursesPageStore((s) => s.chatLoaded);
   const setChatModalOpen = useCoursesPageStore((s) => s.setChatModalOpen);
+  const [search] = useQueryState("search", parseAsString);
 
   usePageSEO({ title: search ? `Search results` : "Courses" });
 
@@ -35,17 +39,30 @@ export default function CoursesPage() {
               <CourseDesktopFilter />
             </Paper>
           </GridCol>
+
           {/* Column 2: Main content with course grid*/}
           <GridCol span="auto" className="transition-all duration-300">
             <CourseMain />
           </GridCol>
         </Grid>
+
         <CourseMobileFilter />
 
-        <CourseChatResponsiveDialog
-          opened={chatModalOpen}
-          onClose={() => setChatModalOpen(false)}
-        />
+        {/* Lazy load modal only when chatLoaded = true */}
+        {chatLoaded && (
+          <Suspense
+            fallback={
+              <div className="fixed inset-0 flex items-center justify-center z-[1000] bg-black/10 dark:bg-black/30">
+                <Loader size="lg" />
+              </div>
+            }
+          >
+            <CourseChatResponsiveDialog
+              opened={chatModalOpen}
+              onClose={() => setChatModalOpen(false)}
+            />
+          </Suspense>
+        )}
       </Box>
     </div>
   );

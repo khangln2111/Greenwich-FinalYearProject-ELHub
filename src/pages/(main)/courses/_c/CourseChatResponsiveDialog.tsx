@@ -73,9 +73,8 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
             className="flex-1 rounded-xl shadow focus:shadow-md"
             {...form.getInputProps("message")}
             key={form.key("message")}
-            disabled={isStreaming}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
+              if (e.key === "Enter" && !e.shiftKey && !isStreaming) {
                 e.preventDefault();
                 handleFormSubmit();
               }
@@ -96,7 +95,13 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
             </Tooltip>
           ) : (
             <Tooltip label="Stop generating">
-              <ActionIcon color="red" radius="full" size="lg" variant="filled" onClick={handleStop}>
+              <ActionIcon
+                color="gray"
+                radius="full"
+                size="lg"
+                variant="filled"
+                onClick={handleStop}
+              >
                 <IconSquare size={20} />
               </ActionIcon>
             </Tooltip>
@@ -112,7 +117,7 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
         },
       }}
       modalProps={{
-        size: "800px",
+        size: "900px",
         centered: true,
         classNames: {
           header: "border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-zinc-900",
@@ -144,7 +149,7 @@ const CourseChatResponsiveDialog = ({ opened, onClose }: Props) => {
             </div>
           )}
           {messages.map((msg) => (
-            <MessageItem key={msg.id} msg={msg} classNames={{}} />
+            <MessageItem key={msg.id} msg={msg} />
           ))}
         </div>
       )}

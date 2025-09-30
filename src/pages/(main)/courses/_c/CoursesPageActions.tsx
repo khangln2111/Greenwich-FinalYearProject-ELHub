@@ -12,16 +12,17 @@ const CoursesPageActions = ({ layout, onSetLayout }: CoursesPageActionsProps) =>
   const isDesktopFilterOpen = useCoursesPageStore((s) => s.isDesktopFilterOpen);
   const isMobileFilterOpen = useCoursesPageStore((s) => s.isMobileFilterOpen);
   const openMobileFilter = useCoursesPageStore((s) => s.openMobileFilter);
-  const setChatModalOpen = useCoursesPageStore((s) => s.setChatModalOpen);
+  const openChatModal = useCoursesPageStore((s) => s.openChatModal);
 
   return (
     <div className="flex sm:items-center gap-4">
       {/* Filter buttons */}
+      {/* AI Button */}
       <Tooltip label="AI Course Recommendation" position="bottom" withArrow>
         <ActionIcon
           size="lg"
           radius="full"
-          onClick={() => setChatModalOpen(true)}
+          onClick={openChatModal}
           variant="gradient"
           className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 dark:from-purple-700 dark:via-pink-600
             dark:to-orange-500 text-white shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"

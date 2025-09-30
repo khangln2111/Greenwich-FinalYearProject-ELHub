@@ -4,6 +4,7 @@ import Markdown from "react-markdown";
 import { memo } from "react";
 import { Message } from "../../hooks/useChat";
 import { cn } from "../../utils/cn";
+import remarkGfm from "remark-gfm";
 
 type Props = {
   msg: Message;
@@ -51,12 +52,30 @@ export const MessageItem = memo(function MessageItem({ msg, className, className
           </div>
         ) : (
           <Markdown
+            remarkPlugins={[remarkGfm]}
             components={{
               ul: ({ node, ...props }) => (
                 <ul className="list-disc list-inside space-y-1" {...props} />
               ),
               ol: ({ node, ...props }) => (
                 <ol className="list-decimal list-inside space-y-1" {...props} />
+              ),
+              table: ({ node, ...props }) => (
+                <div className="overflow-x-auto my-2">
+                  <table
+                    className="border border-gray-300 dark:border-gray-600 w-full table-auto"
+                    {...props}
+                  />
+                </div>
+              ),
+              th: ({ node, ...props }) => (
+                <th
+                  className="border border-gray-300 dark:border-gray-600 px-2 py-1 bg-gray-100 dark:bg-gray-700"
+                  {...props}
+                />
+              ),
+              td: ({ node, ...props }) => (
+                <td className="border border-gray-300 dark:border-gray-600 px-2 py-1" {...props} />
               ),
             }}
           >

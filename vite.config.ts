@@ -17,40 +17,5 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 800,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // core
-          react: ["react", "react-dom"],
-          // Mantine UI
-          mantineCore: ["@mantine/core"],
-          mantineForm: ["@mantine/form"],
-          mantineOthers: [
-            "@mantine/dates",
-            "@mantine/dropzone",
-            "@mantine/notifications",
-            "@mantine/nprogress",
-            "@mantine/tiptap",
-          ],
-          // State + data
-          state: ["zustand", "@tanstack/react-query", "@tanstack/react-query-devtools"],
-          // Icons
-          icons: ["@tabler/icons-react", "lucide-react"],
-          // Editor
-          editor: [
-            "@tiptap/react",
-            "@tiptap/starter-kit",
-            "@tiptap/extension-link",
-            "@tiptap/extension-placeholder",
-            "@tiptap/extension-text-align",
-          ],
-          // Stripe
-          stripe: ["@stripe/react-stripe-js", "@stripe/stripe-js"],
-          // Others heavy libs (optional)
-          charts: ["recharts"],
-          carousel: ["swiper"],
-        },
-      },
-    },
   },
 });
