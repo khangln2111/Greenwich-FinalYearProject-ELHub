@@ -10,7 +10,7 @@ import {
   LogOutIcon,
   MonitorCheckIcon,
   PackageIcon,
-  User,
+  UserIcon,
 } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router";
@@ -26,8 +26,8 @@ type MenuItem = {
 };
 
 const menuItems: MenuItem[] = [
+  { label: "My profile", icon: <UserIcon className="size-5" />, href: "/dashboard/my-profile" },
   { label: "Dashboard", icon: <ChartNoAxesCombinedIcon className="size-5" />, href: "/dashboard" },
-  { label: "My profile", icon: <User className="size-5" />, href: "/dashboard/my-profile" },
   {
     label: "My learning",
     icon: <MonitorCheckIcon className="size-5" />,
