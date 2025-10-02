@@ -15,8 +15,8 @@ public class ReviewRepliedEventHandler(
     public async Task Handle(ReviewRepliedEvent notification, CancellationToken cancellationToken)
     {
         var review = await context.Reviews
-            .Include(r => r.Enrollment)
-            .ThenInclude(e => e.Course)
+            .Include(r => r.Enrollment).ThenInclude(e => e.Course)
+            .Include(r => r.Reply)
             .FirstOrDefaultAsync(r => r.Id == notification.Review.Id, cancellationToken);
 
         if (review?.Reply is null) return;
