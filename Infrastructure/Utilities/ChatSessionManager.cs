@@ -14,7 +14,7 @@ public class ChatSessionManager : IChatSessionManager
     private readonly ConcurrentDictionary<string, ChatSession> _sessions = new();
 
     // After this time of inactivity, the session will be considered expired and will be cleaned up.
-    private TimeSpan SessionTimeoutAfter { get; } = TimeSpan.FromMinutes(5);
+    private TimeSpan SessionTimeoutAfter { get; } = TimeSpan.FromMinutes(20);
 
     public void CreateSession(out string sessionId, string? systemPrompt)
     {

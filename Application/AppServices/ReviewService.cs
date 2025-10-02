@@ -11,6 +11,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Events.ReviewEvents;
 using Gridify;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +83,8 @@ public class ReviewService(
         await context.Reviews.AddAsync(review);
         await context.SaveChangesAsync();
 
+        await mediator.Publish(new ReviewCreatedEvent(review));
+
         return new Success("Review added successfully.");
     }
 
@@ -124,6 +127,7 @@ public class ReviewService(
         var reply = new ReviewReply { Content = command.Content, ReviewId = review.Id, CreatorId = currentUser.Id };
         await context.ReviewReplies.AddAsync(reply);
         await context.SaveChangesAsync();
+        await mediator.Publish(new ReviewRepliedEvent(review));
         return new Success("Reply added successfully.");
     }
 

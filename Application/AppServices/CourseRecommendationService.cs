@@ -72,7 +72,7 @@ public class CourseRecommendationService(
                                     - Highlight suitable courses when relevant.
                                     - Answer clearly, concisely, and friendly.
                                     - Be helpful and engaging like a human advisor.
-                                    - Use emojis and UTF-8 icons widely to make users comfortable.
+                                    - Use emojis and UTF-8 icons widely & wisely to make users feel comfortable.
                                     - Remember previous conversation turns.
                                 """;
 

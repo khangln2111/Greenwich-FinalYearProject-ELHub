@@ -14,22 +14,30 @@ public class ReviewCreatedEventHandler(
 {
     public async Task Handle(ReviewCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var review = notification.Review;
+        var review = await context.Reviews
+            .Include(r => r.Enrollment)
+            .ThenInclude(e => e.User)
+            .FirstOrDefaultAsync(r => r.Id == notification.Review.Id, cancellationToken);
+
+        if (review is null)
+            return;
 
         var course = await context.Courses
             .AsNoTracking()
             .Include(c => c.Instructor)
             .FirstOrDefaultAsync(c => c.Id == review.Enrollment.CourseId, cancellationToken);
 
-        if (course is null) return;
+        if (course is null)
+            return;
 
         var instructorId = course.InstructorId;
+        var userName = review.Enrollment.User.UserName ?? "A learner";
 
         // Notify instructor
         await notificationService.CreateAndSend(
             instructorId,
             "New course review",
-            $"{review.Enrollment.User.UserName} rated your course \"{course.Title}\" {review.Rating} stars: \"{review.Content}\"",
+            $"{userName} rated your course \"{course.Title}\" {review.Rating} stars: \"{review.Content}\"",
             NotificationType.ReviewCreated,
             RoleName.Learner,
             $"/instructor/courses/{course.Id}/edit?activeTab=Reviews"

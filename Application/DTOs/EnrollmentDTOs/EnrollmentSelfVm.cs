@@ -10,6 +10,7 @@ public class EnrollmentSelfVm
     public required string CourseSummary { get; set; }
     public string? CourseImageUrl { get; set; }
     public string? InstructorName { get; set; }
+    public string? InstructorAvatarUrl { get; set; }
     public int ProgressPercentage { get; set; }
     public ReviewVm? Review { get; set; }
 }

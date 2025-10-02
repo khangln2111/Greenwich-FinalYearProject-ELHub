@@ -218,7 +218,6 @@ public class NotificationService(
                 NotificationType.CourseUpdated,
                 NotificationType.GiftRedeemed,
                 NotificationType.ReceivedGift,
-                NotificationType.ReviewCreated,
                 NotificationType.ReviewReplied,
                 NotificationType.OrderProcessed,
                 NotificationType.InstructorApplicationApproved,

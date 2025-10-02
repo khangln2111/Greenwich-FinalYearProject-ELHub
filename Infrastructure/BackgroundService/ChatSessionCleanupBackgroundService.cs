@@ -7,7 +7,7 @@ public class ChatSessionCleanupBackgroundService(IChatSessionManager chatSession
     : Microsoft.Extensions.Hosting.BackgroundService
 {
     // Interval to run the cleanup task
-    private readonly TimeSpan _interval = TimeSpan.FromMinutes(5);
+    private readonly TimeSpan _interval = TimeSpan.FromMinutes(10);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
