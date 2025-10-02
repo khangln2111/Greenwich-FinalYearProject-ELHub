@@ -101,6 +101,7 @@ const EnrolledCourseCard = ({ enrollment }: EnrolledCourseCardProps) => {
             {enrollment.review && (
               <Button
                 variant="subtle"
+                loading={deleteReviewMutation.isPending}
                 onClick={() => {
                   if (enrollment.review?.id) {
                     deleteReviewMutation.mutate(enrollment.review.id, {
