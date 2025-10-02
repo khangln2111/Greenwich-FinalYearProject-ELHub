@@ -152,16 +152,23 @@ public class ReviewService(
     public async Task<Success> Delete(Guid id)
     {
         var currentUser = currentUserUtility.GetCurrentUser();
-        if (currentUser == null) throw new UnauthorizedException();
+        if (currentUser == null)
+            throw new UnauthorizedException();
 
         var review = await context.Reviews
-            .Include(r => r.Enrollment).ThenInclude(e => e.User).ThenInclude(u => u.Avatar)
+            .Include(r => r.Enrollment)
+            .Include(r => r.Reply)
             .FirstOrDefaultAsync(r => r.Id == id && r.Enrollment.UserId == currentUser.Id);
 
-        if (review == null) throw new NotFoundException("Review not found or you do not have permission to delete it.");
+        if (review == null)
+            throw new NotFoundException("Review not found or you do not have permission to delete it.");
+
+        // If there's a reply associated with the review, delete it first
+        if (review.Reply != null) context.ReviewReplies.Remove(review.Reply);
 
         context.Reviews.Remove(review);
         await context.SaveChangesAsync();
+
         return new Success("Review deleted successfully.");
     }
 }

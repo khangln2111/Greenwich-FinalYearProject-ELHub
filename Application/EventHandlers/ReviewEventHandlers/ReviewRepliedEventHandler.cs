@@ -24,7 +24,7 @@ public class ReviewRepliedEventHandler(
         await notificationService.CreateAndSend(
             review.Enrollment.UserId,
             "Instructor replied to your review",
-            $"Your review for \"{review.Enrollment.Course.Title}\" has a new reply: \"{review.Reply.Content}\"",
+            $"Your review for \"{review.Enrollment.Course.Title}\" has a new reply",
             NotificationType.ReviewReplied,
             RoleName.Learner,
             $"/courses/{review.Enrollment.CourseId}?activeTab=Reviews"

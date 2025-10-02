@@ -35,7 +35,7 @@ public static class AppConstants
     public static class Notification
     {
         public const int TitleMaxLength = 100;
-        public const int ContentMaxLength = 500;
+        public const int ContentMaxLength = 1000;
         public const int UrlMaxLength = 3000;
     }
 

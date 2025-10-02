@@ -37,7 +37,7 @@ public class ReviewCreatedEventHandler(
         await notificationService.CreateAndSend(
             instructorId,
             "New course review",
-            $"{userName} rated your course \"{course.Title}\" {review.Rating} stars: \"{review.Content}\"",
+            $"{userName} rated your course \"{course.Title}\" {review.Rating} stars",
             NotificationType.ReviewCreated,
             RoleName.Learner,
             $"/instructor/courses/{course.Id}/edit?activeTab=Reviews"
