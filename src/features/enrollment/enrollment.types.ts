@@ -9,6 +9,7 @@ export interface EnrollmentSelfVm {
   courseSummary: string;
   courseImageUrl?: string;
   instructorName: string;
+  instructorAvatarUrl?: string;
   progressPercentage: number;
   review: ReviewVm | null;
 }
