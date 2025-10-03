@@ -7,8 +7,7 @@ export function GiftStatusBadge({ status }: { status: GiftStatus }) {
     case GiftStatus.Pending:
       return (
         <span
-          className={`${base} bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900 dark:text-yellow-200
-            dark:border-yellow-800`}
+          className={`${base} bg-yellow-200 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900`}
         >
           Pending
         </span>
@@ -17,8 +16,7 @@ export function GiftStatusBadge({ status }: { status: GiftStatus }) {
     case GiftStatus.Redeemed:
       return (
         <span
-          className={`${base} bg-green-100 text-green-800 border-green-200 dark:bg-green-900 dark:text-green-200
-            dark:border-green-800`}
+          className={`${base} bg-green-200 text-green-800 dark:bg-green-200 dark:text-green-900`}
         >
           Redeemed
         </span>
@@ -26,9 +24,7 @@ export function GiftStatusBadge({ status }: { status: GiftStatus }) {
 
     case GiftStatus.Revoked:
       return (
-        <span
-          className={`${base} bg-red-100 text-red-800 border-red-200 dark:bg-red-900 dark:text-red-200 dark:border-red-800`}
-        >
+        <span className={`${base} bg-red-100 text-red-800  dark:bg-red-200 dark:text-red-900 `}>
           Revoked
         </span>
       );
