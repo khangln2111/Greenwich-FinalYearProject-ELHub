@@ -56,7 +56,7 @@ export default function UserSettingsPage() {
   return (
     <div className="mx-auto space-y-6">
       {/* Header */}
-      <div className="space-y-2">
+      <div className="text-center md:text-left space-y-2">
         <Title
           order={1}
           className="text-2xl sm:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white"
