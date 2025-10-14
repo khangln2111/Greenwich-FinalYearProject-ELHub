@@ -17,6 +17,7 @@ import { Link, useLocation } from "react-router";
 import BrandLogo from "../../../components/BrandLogo/BrandLogo";
 import ThemeToggler from "../../../components/ThemeToggler/ThemeToggler";
 import { useGetCurrentUser, useLogout } from "../../../features/auth/identity.hooks";
+import { IconBell, IconSettings } from "@tabler/icons-react";
 
 interface MobileHamburgerMenuProps {
   opened: boolean;
@@ -133,21 +134,37 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
               active={location.pathname === "/dashboard/gifts"}
               onClick={onClose}
             />
-
             <NavLink
               component={Link}
-              to="/instructor"
-              label="Instructor Site"
-              leftSection={<GraduationCapIcon size={16} />}
-              active={location.pathname.startsWith("/instructor")}
+              label="Notifications"
+              to="/dashboard/notifications"
+              leftSection={<IconBell size={16} />}
+              active={location.pathname === "/dashboard/notifications"}
               onClick={onClose}
             />
             <NavLink
               component={Link}
-              to="/admin"
+              label="Settings"
+              to="/dashboard/settings"
+              leftSection={<IconSettings size={16} />}
+              active={location.pathname === "/dashboard/settings"}
+              onClick={onClose}
+            />
+
+            <NavLink
+              component={Link}
+              to="/instructor/dashboard"
+              label="Instructor Site"
+              leftSection={<GraduationCapIcon size={16} />}
+              active={location.pathname.startsWith("/instructor/dashboard")}
+              onClick={onClose}
+            />
+            <NavLink
+              component={Link}
+              to="/admin/dashboard"
               label="Admin Site"
               leftSection={<ShieldCheckIcon size={16} />}
-              active={location.pathname.startsWith("/admin")}
+              active={location.pathname.startsWith("/admin/dashboard")}
               onClick={onClose}
             />
           </div>
@@ -179,9 +196,9 @@ const MobileHamburgerMenu = ({ opened, onClose }: MobileHamburgerMenuProps) => {
           />
           <NavLink
             component={Link}
-            to="/faqs"
+            to="/faq"
             label="FAQs"
-            active={location.pathname === "/faqs"}
+            active={location.pathname === "/faq"}
             onClick={onClose}
           />
           <NavLink

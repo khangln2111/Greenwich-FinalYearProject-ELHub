@@ -46,18 +46,22 @@ export default function AdminCategoriesPage() {
 
   return (
     <div className="flex-1 p-6 xl:p-8">
-      <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
         <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
           Categories
         </Title>
-        <div className="flex gap-3 justify-between w-full sm:w-auto">
-          <Button onClick={openCreate} leftSection={<Plus size={16} />} className="flex-1 max-w-60">
+        <div className="flex flex-col sm:flex-row gap-3 justify-between w-full sm:w-auto">
+          <Button
+            onClick={openCreate}
+            leftSection={<Plus size={16} />}
+            className="w-full sm:w-auto"
+          >
             Add Category
           </Button>
-          <form onSubmit={handleSearchSubmit}>
+          <form onSubmit={handleSearchSubmit} className="w-full sm:w-auto">
             <TextInput
               placeholder="Search categories..."
-              className="max-w-60 flex-1"
+              className="sm:max-w-60 flex-1"
               value={searchInput}
               onChange={(e) => setSearchInput(e.currentTarget.value)}
               onKeyDown={(e) => {

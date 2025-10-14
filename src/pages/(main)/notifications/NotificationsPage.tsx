@@ -64,7 +64,7 @@ export default function NotificationsPage() {
   return (
     <div className="mx-auto w-full px-3 sm:px-4 lg:px-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 mb-8">
+      <div className="flex flex-col gap-y-4 gap-4 mb-8">
         {/* Row 1: Title + Filter by type */}
         <div className="flex flex-col gap-3 sm:flex-row items-center sm:justify-between">
           {/* Left: Title */}
@@ -88,7 +88,7 @@ export default function NotificationsPage() {
           <Button
             size="sm"
             leftSection={<CheckCheckIcon size={16} />}
-            variant="filled"
+            variant="subtle"
             loading={markAllMutation.isPending}
             onClick={() => markAllMutation.mutate(RoleName.Learner)}
             className="w-full sm:w-auto"
@@ -98,7 +98,7 @@ export default function NotificationsPage() {
         </div>
 
         {/* Row 2: Segmented control + Mark all */}
-        <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
+        <div className="flex flex-col sm:flex-row gap-y-4 gap-2 sm:items-center sm:justify-between">
           <SegmentedControl
             value={tab}
             onChange={(val: string) => {

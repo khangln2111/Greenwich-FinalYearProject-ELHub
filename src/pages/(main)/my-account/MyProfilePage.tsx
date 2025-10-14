@@ -17,14 +17,11 @@ export default function MyProfilePage() {
     <div>
       <Title
         order={1}
-        className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 flex-1"
+        className="text-center md:text-left text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 flex-1"
       >
         Personal Information
       </Title>
-      <div
-        className="w-full px-4 bg-body rounded-lg border border-gray-200 dark:border-gray-800
-          shadow-sm"
-      >
+      <div className="w-full px-4 bg-body rounded-lg border border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="rounded-xl max-w-md mx-auto px-2 py-4 md:py-10">
           <UpdateUserProfileForm user={user} />
         </div>

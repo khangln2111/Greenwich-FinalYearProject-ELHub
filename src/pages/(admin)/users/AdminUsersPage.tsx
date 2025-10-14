@@ -73,7 +73,10 @@ export default function AdminUsersPage() {
 
   return (
     <div className="flex-1 p-4 sm:p-6 xl:p-8 space-y-6">
-      <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+      <Title
+        order={1}
+        className="text-center md:text-left text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
+      >
         User Management
       </Title>
 

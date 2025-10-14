@@ -132,7 +132,10 @@ export default function AdminInstructorApplicationsPage() {
   return (
     <div className="flex-1 p-6 xl:p-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <Title order={1} className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+        <Title
+          order={1}
+          className="text-center md:text-left text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
+        >
           Instructor Applications Review
         </Title>
         <TextInput

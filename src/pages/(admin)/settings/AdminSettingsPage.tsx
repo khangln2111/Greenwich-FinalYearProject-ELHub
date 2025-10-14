@@ -54,7 +54,7 @@ export default function AdminSettingsPage() {
   return (
     <div className="flex-1 p-6 xl:p-8">
       {/* Header */}
-      <div className="space-y-2 mb-6">
+      <div className="text-center sm:text-left space-y-2 mb-6">
         <Title
           order={1}
           className="text-2xl sm:text-3xl font-bold whitespace-nowrap text-gray-900 dark:text-white"
