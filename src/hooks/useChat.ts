@@ -90,16 +90,28 @@ export function useChat({
       const decoder = new TextDecoder("utf-8");
 
       while (true) {
+        // Read the next chunk of bytes from the response stream
         const { value, done } = await reader.read();
-        // Exit the loop if the stream is done
+        // Stop the loop when the backend closes the stream (no more data)
         if (done) break;
-        const chunk = decoder.decode(value);
+        // Decode UTF-8 bytes into text; stream:true keeps incomplete multibyte chars
+        const chunk = decoder.decode(value, { stream: true });
 
+        // Update message list with the new chunk
         setMessages((prev) => {
+          // Allow external customization if provided
           if (onStreamChunk) return onStreamChunk(chunk, prev);
 
+          // Get the last message; it should be the assistant's streaming reply
           const last = prev[prev.length - 1];
+
+          // Guard: if the last message isn’t from the assistant, skip update
           if (last.role !== "assistant") return prev;
+
+          // Return a new array (immutability):
+          // - keep all previous messages except the last
+          // - replace the last one with a copy whose content includes the new chunk
+          // - stop initial streamming loading state of the assistant message
           return [
             ...prev.slice(0, prev.length - 1),
             { ...last, content: last.content + chunk, isLoading: false },
