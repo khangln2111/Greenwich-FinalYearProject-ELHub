@@ -24,7 +24,7 @@ export default function CartPage() {
     parseAsInteger.withDefault(1).withOptions({ scroll: true }),
   );
 
-  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(20));
+  const [pageSize] = useQueryState("pageSize", parseAsInteger.withDefault(10));
 
   const { data, isPending, error } = useGetCartItemsSelf({
     page,
