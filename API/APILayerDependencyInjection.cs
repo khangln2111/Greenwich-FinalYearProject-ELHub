@@ -63,6 +63,24 @@ public static class ApiLayerDependencyInjection
                 }
             });
 
+            o.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "ELHub API Documentation",
+                Version = "v1",
+                Description = """
+                              **Swagger UI documentation for ELHub E-learning Platform API**
+
+                              © 2025 Nguyen Khang Le — *All rights reserved.*
+
+                              Unauthorized use, distribution, or modification of this software is strictly prohibited.
+                              """,
+                Contact = new OpenApiContact
+                {
+                    Name = "Nguyen Khang Le - Author",
+                    Email = "lenguyenkhang21112003@gmail.com"
+                }
+            });
+
             o.IncludeXmlComments(
                 Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"),
                 true);

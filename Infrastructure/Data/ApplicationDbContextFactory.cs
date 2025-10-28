@@ -1,8 +1,7 @@
 ﻿using Application.Common.Contracts.GeneralContracts;
-using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure;
+namespace Infrastructure.Data;
 
 public class ApplicationDbContextFactory(IDbContextFactory<ApplicationDbContext> factory) : IApplicationDbContextFactory
 {
