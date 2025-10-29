@@ -18,10 +18,6 @@ const userRoute: RouteObject = {
       lazy: lazyRoute(() => import("../pages/(main)/course-detail/CourseDetailPage")),
     },
     {
-      path: "instructors",
-      lazy: { Component: async () => () => <p>Instructors Page</p> },
-    },
-    {
       path: "instructors/:instructorId",
       lazy: lazyRoute(() => import("../pages/(main)/instructor-detail/InstructorDetailPage")),
     },
