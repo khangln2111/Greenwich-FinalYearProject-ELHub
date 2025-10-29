@@ -13,7 +13,7 @@ const apiClient = axios.create({
   },
 });
 
-// Interceptor cho request: chèn token vào header nếu có
+// Interceptor for request: add Authorization header if access token exists
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = authStorage.getAccessToken();
