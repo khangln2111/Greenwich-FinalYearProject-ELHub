@@ -23,4 +23,6 @@ public class InstructorVm
     public int CourseCount { get; set; }
 
     public int StudentCount { get; set; }
+
+    public string Email { get; set; }
 }

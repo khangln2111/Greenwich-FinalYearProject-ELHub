@@ -34,17 +34,7 @@ public class CoursesController(ICourseService courseService) : ControllerBase
     {
         return await courseService.GetPublished(query);
     }
-
-    // GET: api/courses/{id}
-    [HttpGet("{id:guid}")]
-    [ProducesResponseType<CourseVm>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(Guid id)
-    {
-        var course = await courseService.GetById(id);
-        return Ok(course);
-    }
-
+    
     // POST: api/Courses
     [HttpPost]
     [Authorize(Roles = nameof(RoleName.Instructor))]
@@ -56,6 +46,15 @@ public class CoursesController(ICourseService courseService) : ControllerBase
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
+    // GET: api/courses/{id}
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType<CourseVm>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var course = await courseService.GetById(id);
+        return Ok(course);
+    }
 
     // PUT: api/Courses
     [HttpPut]
