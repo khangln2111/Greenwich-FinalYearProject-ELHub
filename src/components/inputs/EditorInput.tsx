@@ -32,7 +32,6 @@ export function EditorInput({
   editorRef,
   sticky = true,
   stickyOffset = 55,
-  ...rest
 }: EditorInputProps) {
   const [_value, handleChange] = useUncontrolled({
     value,
@@ -57,7 +56,7 @@ export function EditorInput({
       wrapperRef.current.scrollIntoView({ block: "center" });
       editor?.commands.focus();
     }
-  }, [error, wrapperRef, rest]);
+  }, [error, wrapperRef]);
 
   useEffect(() => {
     if (editorRef) editorRef.current = editor;

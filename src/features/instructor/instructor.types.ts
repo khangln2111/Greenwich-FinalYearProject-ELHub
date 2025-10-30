@@ -12,6 +12,7 @@ export interface InstructorVm {
   reviewCount: number;
   courseCount: number;
   studentCount: number;
+  email: string;
 }
 
 export type InstructorOrderableFields =

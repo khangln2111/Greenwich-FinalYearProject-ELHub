@@ -62,6 +62,7 @@ export default function InstructorDetailPage() {
           <p className="text-xs sm:text-sm uppercase tracking-widest">Instructor</p>
           <h1 className="text-2xl sm:text-3xl font-bold">{instructor.name}</h1>
           <p className="text-sm sm:text-lg">{instructor.professionalTitle}</p>
+          <p className="text-xs sm:text-sm tracking-widest">{instructor.email}</p>
           <Badge mt="sm" color="dark" variant="filled" radius="md">
             ELHub INSTRUCTOR PARTNER
           </Badge>
