@@ -1,15 +1,9 @@
 ﻿using System.Text;
 using Application.Common.Contracts.AppContracts;
-using Application.Common.Contracts.InfraContracts;
 using Application.DTOs.CourseRecommendationDTOs;
-using Domain.Enums;
-using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.AI;
-using ChatRole = Microsoft.Extensions.AI.ChatRole;
 
-namespace API;
+namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

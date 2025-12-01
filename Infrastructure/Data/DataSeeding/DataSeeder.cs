@@ -15,6 +15,9 @@ public class DataSeeder(
 {
     public async Task SeedAsync()
     {
+        // Ensure database is created and all migrations are applied
+        await context.Database.MigrateAsync();
+
         await SeedRoles();
         await SeedCategories();
         await SeedUsers();
