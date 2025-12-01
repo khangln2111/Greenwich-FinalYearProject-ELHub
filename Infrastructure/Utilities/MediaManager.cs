@@ -104,29 +104,28 @@ public class MediaManager(
 
     public async Task CleanOrphanMediaFiles(IApplicationDbContext context)
     {
-        // Lấy tất cả Media Ids từ database
-        var mediaIds = await context.Media
-            .Select(m => m.Id.ToString())
-            .ToListAsync();
-
+        // Load all media IDs from the database
+        var mediaIds = (await context.Media
+                .Select(m => m.Id)
+                .ToListAsync())
+            .ToHashSet();
 
         var mediaRoot = Path.Combine(webHostEnvironment.WebRootPath, "media");
+        if (!Directory.Exists(mediaRoot))
+            return;
 
-        if (!Directory.Exists(mediaRoot)) return;
-
-        // Scan all files in the media directory and its subdirectories
+        // Delete files that are not linked to any media record
         var files = Directory.GetFiles(mediaRoot, "*.*", SearchOption.AllDirectories);
 
         foreach (var filePath in files)
         {
-            var fileName = Path.GetFileNameWithoutExtension(filePath);
+            var fileNameWithoutExt = Path.GetFileNameWithoutExtension(filePath);
 
-            // If the file name (without extension) is not in the list of media IDs, delete it
-            if (!mediaIds.Contains(fileName))
+            if (!Guid.TryParse(fileNameWithoutExt, out var fileId) || !mediaIds.Contains(fileId))
                 try
                 {
                     File.Delete(filePath);
-                    Console.WriteLine($"Deleted orphan file: {filePath}");
+                    Console.WriteLine($"Deleted orphan media file: {filePath}");
                 }
                 catch (Exception ex)
                 {
