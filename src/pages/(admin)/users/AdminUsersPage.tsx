@@ -206,8 +206,10 @@ export default function AdminUsersPage() {
                     </Table.Td>
                     <Table.Td>
                       <div className="flex flex-col gap-2 min-w-[120px] justify-center">
-                        {user.roles.length > 0 &&
-                          user.roles.map((role: string) => (
+                        {user.roles
+                          .filter((role) => role !== "Learner")
+                          .filter((role, index, self) => self.indexOf(role) === index)
+                          .map((role) => (
                             <Badge
                               key={role}
                               variant="light"
