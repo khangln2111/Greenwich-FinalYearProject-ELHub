@@ -35,6 +35,7 @@
 
     <ItemGroup>
         <Folder Include="wwwroot\"/>
+        <Folder Include="wwwroot\media\"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -70,6 +71,44 @@
         <_ContentIncludedByDefault Remove="wwwroot\media\image\ef5752aa-3245-43c6-8cbc-d899cd766409.png"/>
         <_ContentIncludedByDefault Remove="wwwroot\media\image\f46e2482-3224-4a40-a8a2-5b41f23b4a3e.jpg"/>
         <_ContentIncludedByDefault Remove="wwwroot\media\image\faac17f7-c5c0-456a-9008-e77445f3fa38.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\047b41bf-ad05-44a6-9f81-b09c25971dda.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\067dcd15-e2f5-49fd-967a-1a31c6a32739.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\08372c14-bf3d-48e6-9265-7296ab7768ad.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\09c1ff05-79a7-4a38-9359-cacfc22645c1.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\10c7bf5d-bbe4-4fcf-a0ee-ad9707932267.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\1d379939-b830-4cbe-803d-aefc4779e400.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\1eae3030-b0ce-4f9a-8333-2a83be27100e.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\1f915f4a-4155-4934-8d2a-6a4eb037e434.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\2ab37529-536e-46ef-be73-c3d2fde111d0.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\33156510-ffb4-4fda-adb8-dd6d684b38f8.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\432fb103-7d72-4489-b3ae-917685a3cf93.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\43eefc86-ffc9-447f-922a-cdac9f4b31c9.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\448fcbf9-2d18-4f1b-b351-2f8df0547706.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\45875ad6-c353-4eb0-a10c-793d7619ce02.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\4c672a6f-6e7e-4012-a381-ebdc96650636.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\5594fc9f-d74e-460d-8a7f-c7ded85e9bdf.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\59e1143a-c9e6-460e-9ff1-25c048400306.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\59e9a800-0deb-4da5-a419-7078a0e4765d.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\5b432887-8b54-4fae-afae-0a9364cb8e89.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\6a7036e4-19e9-45c8-94c8-9d7352d6e521.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\6ffe74e9-1ff4-4c02-b36e-486770a018f4.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\7ce5d930-7c8b-47e2-b6db-0265b8d0ff35.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\84cfd848-a060-44bc-8ecb-05ae18cfbecc.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\84ff173c-19fe-437f-98c8-207697a770a0.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\9d2537d2-8e44-4162-9ea3-4d9347b1e245.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\9ffa5706-d5be-4b22-bf6d-9b5a0938a751.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\a108d088-31f9-4105-a794-59a0ac78802e.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\ab38696b-dcc6-4f2e-9dc2-a5d94cd6f267.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\aef9305c-3d18-402b-a63d-8b5568da1543.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\b97bd5cc-ed44-4ade-a75d-107e6be14cfd.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\bcc4e0d0-eacb-4da2-9d52-db15dd218f3e.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\ca2b2fed-3d11-4558-8a3b-dc8384ecec51.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\cef5ad70-f645-47e0-b845-3860d9220de1.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\d2a886df-d634-4f00-9708-8d0a97538b91.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\dd745b71-b7ac-474e-a02a-192567a3684c.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\f0d2e2c5-2dff-420d-9323-9311766621b8.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\f637b054-fa6b-4866-b0e6-ca03c7ca2d18.mp4"/>
+        <_ContentIncludedByDefault Remove="wwwroot\media\video\f72d3211-40c0-4db9-a7c8-c24711685285.mp4"/>
     </ItemGroup>
 
 </Project>

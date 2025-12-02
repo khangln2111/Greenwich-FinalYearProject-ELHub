@@ -10,7 +10,7 @@ public static class DataToSeed
     [
         new()
         {
-            Name = "Technology",
+            Name = "Cooking",
             Image = new Media
             {
                 Type = MediaType.Image,
@@ -20,7 +20,18 @@ public static class DataToSeed
                 FileSizeInBytes = 0
             }
         },
-
+        new()
+        {
+            Name = "Martial Arts",
+            Image = new Media
+            {
+                Type = MediaType.Image,
+                Url = "https://res.cloudinary.com/dr0hvau94/image/upload/v1751279169/Technology_ctbhfi.jpg",
+                LocalFilePath = "",
+                Extension = ".jpg",
+                FileSizeInBytes = 0
+            }
+        },
         new()
         {
             Name = "Business",
@@ -62,7 +73,7 @@ public static class DataToSeed
 
         new()
         {
-            Name = "Software Development",
+            Name = "IT & Software",
             Image = new Media
             {
                 Type = MediaType.Image,
@@ -281,6 +292,96 @@ public static class DataToSeed
                 users.Add((user, DefaultPassword, role.ToString()));
             }
 
+        // admin account
+        users.Add(CreateFixedUser(
+            "lenguyenkhang21112003@gmail.com",
+            "John",
+            "Reed",
+            "Platform Administrator",
+            "Leads the administration of the platform and coordinates core operations",
+            "Leadership is the capacity to translate vision into reality",
+            "Warren Bennis",
+            new DateTime(2003, 11, 21),
+            RoleName.Admin));
+
+        // instructor accounts
+        users.Add(CreateFixedUser(
+            "khanglngcs210650@fpt.edu.vn",
+            "Emily",
+            "Carter",
+            "Backend Instructor",
+            "Enjoys teaching clean backend patterns and scalable API design",
+            "Simplicity is the soul of efficiency",
+            "Austin Freeman",
+            new DateTime(2002, 5, 10),
+            RoleName.Instructor));
+
+        users.Add(CreateFixedUser(
+            "xaximami2111@gmail.com",
+            "Michael",
+            "Brooks",
+            "Frontend Instructor",
+            "Passionate about modern UI frameworks and practical UX techniques",
+            "Good design is good business",
+            "Thomas J. Watson Jr",
+            new DateTime(2001, 8, 3),
+            RoleName.Instructor));
+
+        // learner accounts
+        users.Add(CreateFixedUser(
+            "legendofrain2111@gmail.com",
+            "Sarah",
+            "Collins",
+            "Learner",
+            "Loves building full-stack side projects and learning from real examples",
+            "The future depends on what you do today",
+            "Mahatma Gandhi",
+            new DateTime(2004, 2, 14),
+            RoleName.Learner));
+
+        users.Add(CreateFixedUser(
+            "legendofrain21112003@gmail.com",
+            "Daniel",
+            "Morgan",
+            "Learner",
+            "Explores new tools, frameworks, and problem-solving strategies",
+            "Learning never exhausts the mind",
+            "Leonardo da Vinci",
+            new DateTime(2003, 12, 1),
+            RoleName.Learner));
+
         return users;
+    }
+
+    private static (ApplicationUser, string, string) CreateFixedUser(
+        string email,
+        string firstName,
+        string lastName,
+        string professionalTitle,
+        string bio,
+        string favoriteQuote,
+        string favoriteQuoteCite,
+        DateTime dateOfBirth,
+        RoleName role)
+    {
+        var user = new ApplicationUser
+        {
+            Id = Guid.NewGuid(),
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true,
+            FirstName = firstName,
+            LastName = lastName,
+            DateOfBirth = dateOfBirth,
+            ProfessionalTitle = professionalTitle,
+            FavoriteQuote = favoriteQuote,
+            FavoriteQuoteCite = favoriteQuoteCite,
+            Bio = bio,
+            IsActivated = true,
+            IsInitialPasswordChanged = true,
+            CreatedAt = DateTimeOffset.UtcNow
+        };
+
+        return (user, DefaultPassword, role.ToString());
     }
 }
