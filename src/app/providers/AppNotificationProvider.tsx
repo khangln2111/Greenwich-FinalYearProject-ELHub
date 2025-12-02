@@ -7,7 +7,6 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useGetCurrentUser } from "../../features/auth/identity.hooks";
-import { keyFac } from "../../features/common-service/queryKeyFactory";
 import { showNotificationToast } from "../../utils/toastHelper";
 import { useAuthStore } from "../../zustand/stores/authStore";
 
@@ -61,9 +60,7 @@ export function AppNotificationProvider({ children }: { children: ReactNode }) {
 
       connection.on("ReceiveNotification", (notification) => {
         console.log("📩 New notification received: ", notification);
-        queryClient.invalidateQueries({
-          queryKey: keyFac.notifications._def,
-        });
+        queryClient.invalidateQueries();
         showNotificationToast();
       });
     }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CourseLevel, CourseStatus, CourseVm } from "./course/course.types";
 
 export const mockCourses: CourseVm[] = [
