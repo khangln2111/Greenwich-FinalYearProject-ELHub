@@ -122,9 +122,13 @@ const AdminSidebar = ({ collapsedToIcon }: AdminSidebarProps) => {
             "border-t border-gray-200 dark:border-gray-800 p-3 flex items-center gap-3 mt-auto",
           )}
         >
-          <Avatar src={currentUser.avatarUrl} alt={currentUser.firstName} radius="xl" size={40}>
-            {currentUser.firstName?.[0] ?? currentUser.email[0]}
-          </Avatar>
+          <Avatar
+            src={currentUser.avatarUrl}
+            name={currentUser.firstName + " " + currentUser.lastName}
+            color="initials"
+            radius="xl"
+            size={40}
+          ></Avatar>
 
           {!collapsedToIcon && (
             <div className="flex flex-col truncate">

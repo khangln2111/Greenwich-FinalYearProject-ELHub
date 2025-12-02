@@ -41,9 +41,9 @@ const OverviewForm = ({ courseDetail, courseId, className }: CourseOverviewFormP
   const form = useForm<UpdateCourseOverviewFormValues>({
     mode: "uncontrolled",
     initialValues: {
-      title: courseDetail.title,
-      summary: courseDetail.summary,
-      description: courseDetail.description,
+      title: courseDetail.title ?? "",
+      summary: courseDetail.summary ?? "",
+      description: courseDetail.description ?? "",
       learningOutcomes:
         courseDetail.learningOutcomes?.map((value) => ({ id: randomId(), value })) ?? [],
       prerequisites: courseDetail.prerequisites?.map((value) => ({ id: randomId(), value })) ?? [],

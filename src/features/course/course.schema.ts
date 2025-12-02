@@ -53,7 +53,7 @@ export const updateCourseOverviewSchema = z
   .object({
     title: z.string().min(1, "Course title is required"),
     summary: z.string().min(10, "Summary must be at least 10 characters"),
-    description: z.string().min(200, "Enter a description of at least 200 characters"),
+    description: z.string().min(1, "Description is required"),
     price: z.number({ message: "Price is required" }).min(0, { message: "Price must be >= 0" }),
     discountedPrice: z
       .number({ message: "Discounted price is required" })
