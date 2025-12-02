@@ -60,11 +60,12 @@ public class InstructorDashboardService(
         var lastWeekStart = now.AddDays(-14);
         var lastWeekEnd = now.AddDays(-7);
 
-        var totalCourses = await context.Courses.AsNoTracking()
-            .CountAsync(c => c.InstructorId == instructorId);
+        var totalPublishedCourses = await context.Courses.AsNoTracking()
+            .CountAsync(c => c.InstructorId == instructorId && c.Status == CourseStatus.Published);
 
-        var coursesThisWeek = await context.Courses.AsNoTracking()
-            .CountAsync(c => c.InstructorId == instructorId && c.CreatedAt >= thisWeekStart);
+        var totalPublishedCoursesThisWeek = await context.Courses.AsNoTracking()
+            .CountAsync(c =>
+                c.InstructorId == instructorId && c.Status == CourseStatus.Published && c.CreatedAt >= thisWeekStart);
 
         var coursesLastWeek = await context.Courses.AsNoTracking()
             .CountAsync(c => c.InstructorId == instructorId &&
@@ -166,7 +167,7 @@ public class InstructorDashboardService(
 
         return new InstructorDashboardStatsVm
         {
-            TotalPublishedCourses = totalCourses,
+            TotalPublishedCourses = totalPublishedCourses,
             TotalEnrollments = totalEnrollments,
             TotalCoursesSold = totalCoursesSold,
             TotalRevenue = totalRevenue,
@@ -174,7 +175,7 @@ public class InstructorDashboardService(
             RatingCount = ratingCount,
 
             TotalPublishedCoursesGrowth = CalcGrowth(coursesLastWeek,
-                coursesThisWeek),
+                totalPublishedCoursesThisWeek),
             TotalEnrollmentsGrowth = CalcGrowth(enrollmentsLastWeek,
                 enrollmentsThisWeek),
             TotalCoursesSoldGrowth = CalcGrowth(coursesSoldLastWeek,
