@@ -1,4 +1,3 @@
-<img width="1025" height="1257" alt="image" src="https://github.com/user-attachments/assets/6f229595-81a8-4637-a9bc-a54739444cc6" /><h1 align="center">
 ELHub 🎓
 </h1>
 
