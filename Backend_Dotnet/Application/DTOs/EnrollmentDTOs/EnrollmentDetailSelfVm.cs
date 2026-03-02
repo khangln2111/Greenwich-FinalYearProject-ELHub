@@ -1,0 +1,40 @@
+﻿using Application.DTOs.SectionDTOs;
+
+namespace Application.DTOs.EnrollmentDTOs;
+
+public class EnrollmentDetailSelfVm
+{
+    public Guid Id { get; init; }
+
+    public required string CourseTitle { get; init; }
+
+    public required string CourseSummary { get; init; }
+
+    public int SectionCount { get; init; }
+
+    public int LectureCount { get; init; }
+
+    public EnrollmentSectionVm[] Sections { get; init; } = [];
+
+    public required string ImageUrl { get; init; }
+
+    public required string PromoVideoUrl { get; init; }
+
+    public int DurationInSeconds { get; init; }
+
+    public required string Status { get; init; }
+
+    public required string Level { get; init; }
+
+    public required string CategoryName { get; init; }
+
+    public required string InstructorName { get; init; }
+
+    public required string InstructorId { get; init; }
+
+    public int ProgressPercentage { get; set; }
+
+    public DateTimeOffset CreatedAt { get; init; }
+
+    public DateTimeOffset UpdatedAt { get; init; }
+}

@@ -1,0 +1,161 @@
+﻿using Application.Common.Contracts.AppContracts;
+using Application.Common.Contracts.GeneralContracts;
+using Application.Common.Contracts.InfraContracts;
+using Application.Common.Models;
+using Application.DTOs.SectionDTOs;
+using Application.Exceptions;
+using Application.Gridify;
+using Application.Gridify.CustomModels;
+using Application.Validations;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Domain.Entities;
+using Domain.Events.SectionEvents;
+using Gridify;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace Application.AppServices;
+
+public class SectionService(
+    IApplicationDbContext context,
+    IValidationService validationService,
+    IMapper mapper,
+    IGridifyMapper<Section> gridifyMapper,
+    IMediaManager mediaManager,
+    IMediator mediator
+) : ISectionService
+{
+    public async Task<SectionVm> GetById(Guid id)
+    {
+        var section = await context.Sections
+            .AsNoTracking()
+            .Include(s => s.Course)
+            .Include(s => s.Lectures).ThenInclude(l => l.Video)
+            .Where(s => s.Id == id)
+            .ProjectTo<SectionVm>(mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+        if (section == null) throw new NotFoundException(nameof(Section), id);
+        return section;
+    }
+
+    public async Task<Paged<SectionVm>> GetList(GridifyQuery query)
+    {
+        return await context.Sections
+            .AsNoTracking()
+            .Include(s => s.Lectures).ThenInclude(l => l.Video)
+            .GridifyToAsync<Section, SectionVm>(query, mapper, gridifyMapper);
+    }
+
+    public async Task<Guid> Create(CreateSectionCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        await EnsureRelatedCourseExistsAsync(command.CourseId);
+
+        var sectionEntity = mapper.Map<Section>(command);
+
+        var maxOrder = await context.Sections
+            .Where(s => s.CourseId == command.CourseId)
+            .MaxAsync(s => (int?)s.Order) ?? -1;
+
+        sectionEntity.Order = maxOrder + 1;
+
+        await context.Sections.AddAsync(sectionEntity);
+        await context.SaveChangesAsync();
+        await mediator.Publish(new SectionCreatedEvent(sectionEntity));
+        return sectionEntity.Id;
+    }
+
+    public async Task<Success> Update(UpdateSectionCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        var section = await context.Sections.FirstOrDefaultAsync(s => s.Id == command.Id);
+        if (section == null) throw new NotFoundException(nameof(Section), command.Id);
+        mapper.Map(command, section);
+        await context.SaveChangesAsync();
+
+        await mediator.Publish(new SectionUpdatedEvent(section));
+        return new Success("Updated section successfully");
+    }
+
+    public async Task<Success> Delete(Guid id)
+    {
+        var section = await context.Sections
+            .Include(s => s.Lectures)
+            .ThenInclude(l => l.Video)
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (section == null)
+            throw new NotFoundException(nameof(Section), id);
+
+        var deletedOrder = section.Order;
+
+        // Delete associated lectures' videos and Media records
+        section.Lectures
+            .Where(l => l.Video != null)
+            .ToList()
+            .ForEach(l =>
+            {
+                mediaManager.DeleteFile(l.Video!);
+                context.Media.Remove(l.Video!);
+            });
+
+        context.Lectures.RemoveRange(section.Lectures);
+        context.Sections.Remove(section);
+
+        await context.Sections
+            .Where(s => s.Order > deletedOrder)
+            .ExecuteUpdateAsync(setters =>
+                setters.SetProperty(s => s.Order, s => s.Order - 1));
+
+
+        await context.SaveChangesAsync();
+
+        return new Success("Deleted the section successfully");
+    }
+
+
+    public async Task<Success> ReorderSection(ReorderSectionCommand command)
+    {
+        await validationService.ValidateAsync(command);
+        var section = await context.Sections.FirstOrDefaultAsync(s => s.Id == command.Id);
+        if (section == null) throw new NotFoundException(nameof(Section), command.Id);
+
+        var courseId = section.CourseId;
+        var oldOrder = section.Order;
+        var newOrder = command.NewOrder;
+
+        if (oldOrder == newOrder)
+            return new Success("No changes made to the section order.");
+
+
+        var (min, max, delta) = (
+            Math.Min(oldOrder, newOrder),
+            Math.Max(oldOrder, newOrder),
+            newOrder < oldOrder ? 1 : -1
+        );
+
+        // Update the order of affected sections
+        await context.Sections
+            .Where(s =>
+                s.CourseId == courseId &&
+                s.Id != section.Id &&
+                s.Order >= min &&
+                s.Order <= max)
+            .ExecuteUpdateAsync(s => s.SetProperty(sec => sec.Order, sec => sec.Order + delta));
+
+
+        section.Order = newOrder;
+
+        await context.SaveChangesAsync();
+
+        return new Success("Reordered the section successfully.");
+    }
+
+    //Check if the related Course with the Section exists
+    private async Task EnsureRelatedCourseExistsAsync(Guid courseId)
+    {
+        var exists = await context.Courses.AsNoTracking().AnyAsync(c => c.Id == courseId);
+        if (!exists) throw new NotFoundException(nameof(Category), courseId);
+    }
+}
