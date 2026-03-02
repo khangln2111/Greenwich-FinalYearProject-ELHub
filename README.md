@@ -21,7 +21,7 @@
 
 **ELHub** is a comprehensive academic project that examines modern tendencies in online learning. It demonstrates how the powerful combination of the React and .NET ecosystems can be utilized to develop a highly interactive, scalable, and user-friendly educational platform.
 
-This platform exemplifies the practical application of current web development and software engineering concepts. It integrates a dynamic, responsive front-end experience with a strong, sustainable, and clean back-end architecture. Furthermore, the project highlights how cutting-edge technologies—specifically **Local Generative AI powered by Gemma 3 via Ollama**—can be leveraged to enhance learning quality and personalize the educational experience.
+This platform exemplifies the practical application of current web development and software engineering concepts. It integrates a dynamic, responsive front-end experience with a strong, sustainable, and clean back-end architecture. Furthermore, the project highlights how cutting-edge technologies, specifically **Local Generative AI powered by Gemma 3 via Ollama**, can be leveraged to enhance learning quality and personalize the educational experience.
 
 ---
 
