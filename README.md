@@ -57,7 +57,7 @@ ELHub is built with modern, enterprise-grade technologies, ensuring high perform
 ### ⚙️ Back-End (Clean Architecture)
 - **Framework:** .NET 9
 - **ORM:** Entity Framework Core (EF Core)
-- **Patterns & Libraries:** MediatR (CQRS Pattern), AutoMapper, Gridify (Dynamic filtering/sorting), FluentValidation
+- **Patterns & Libraries:** MediatR, AutoMapper, Gridify (Dynamic filtering/sorting), FluentValidation
 
 ### ☁️ Infrastructure & Integrations
 - **Database:** SQL Server
