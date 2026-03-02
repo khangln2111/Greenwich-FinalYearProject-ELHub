@@ -260,5 +260,4 @@ ELHub is built with modern, enterprise-grade technologies, ensuring high perform
 To explore the codebase or run the project locally, clone the repository:
 
 ```bash
-git clone [https://github.com/khangln2111/Greenwich-FinalYearProject-ELHub.git](https://github.com/khangln2111/Greenwich-FinalYearProject-ELHub.git)
-cd Greenwich-FinalYearProject-ELHub
+git clone https://github.com/khangln2111/Greenwich-FinalYearProject-ELHub.git
