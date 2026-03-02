@@ -1,0 +1,97 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  CategoryQueryCriteria,
+  CreateCategoryCommand,
+  UpdateCategoryCommand,
+} from "./category.types";
+
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { handleApiError } from "../common-service/handleApiError";
+import { keyFac } from "../common-service/queryKeyFactory";
+import { createCategory, deleteCategory, updateCategory } from "./category.api";
+
+export const useGetCategories = (query: CategoryQueryCriteria = {}) => {
+  return useQuery({
+    queryKey: keyFac.categories.list(query).queryKey,
+    queryFn: keyFac.categories.list(query).queryFn,
+  });
+};
+
+export const useGetCategoryDetail = (id: string) => {
+  return useQuery({
+    queryKey: keyFac.categories.detail(id).queryKey,
+    queryFn: keyFac.categories.detail(id).queryFn,
+    enabled: !!id,
+    retry: (failureCount, error) => {
+      // ❌ Do not retry if 404
+      if (error && error.response?.status === 404) {
+        return false;
+      }
+      // ✅ Retry maximum 2 times for other errors
+      return failureCount < 2;
+    },
+  });
+};
+
+export const useCreateCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (command: CreateCategoryCommand) => createCategory(command),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: keyFac.categories._def });
+      showSuccessToast("Category Created", "Category created successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The category may not exist."),
+          },
+        ],
+      }),
+  });
+};
+
+export const useUpdateCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (command: UpdateCategoryCommand) => updateCategory(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.categories._def });
+      showSuccessToast("Category Updated", "The category was updated successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The category may not exist."),
+          },
+        ],
+      }),
+  });
+};
+
+export const useDeleteCategory = (id: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => deleteCategory(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.categories._def });
+      showSuccessToast("Category Deleted", "The category was deleted successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The category may not exist."),
+          },
+        ],
+      }),
+  });
+};

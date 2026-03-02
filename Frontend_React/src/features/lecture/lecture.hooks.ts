@@ -1,0 +1,130 @@
+// src/api/lectureHooks.ts
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { handleApiError } from "../common-service/handleApiError";
+import { keyFac } from "../common-service/queryKeyFactory";
+import { CreateLectureCommand, ReorderLectureCommand, UpdateLectureCommand } from "./lecture.types";
+import {
+  completeLecture,
+  createLecture,
+  deleteLecture,
+  reorderLecture,
+  updateLecture,
+} from "./lecture.api";
+
+export const useReorderLecture = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (command: ReorderLectureCommand) => reorderLecture(command),
+    onSuccess: () => {
+      showSuccessToast("Lecture Reordered", "The lecture was reordered successfully.");
+    },
+
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The lecture or section was not found"),
+          },
+        ],
+      }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses.getCourseDetail._def });
+    },
+  });
+};
+
+export const useCompleteLecture = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => completeLecture(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.enrollments._def });
+      showSuccessToast("Lecture Completed", "The lecture was completed successfully.");
+    },
+
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The lecture ID was not found"),
+          },
+        ],
+      }),
+  });
+};
+
+export const useCreateLecture = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (command: CreateLectureCommand) => createLecture(command),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
+      showSuccessToast("Lecture Created", "The lecture was created successfully.");
+    },
+
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The section ID or course ID was not found"),
+          },
+        ],
+      }),
+  });
+};
+
+export const useUpdateLecture = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (command: UpdateLectureCommand) => updateLecture(command),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
+      showSuccessToast("Lecture Updated", "The lecture was updated successfully.");
+    },
+
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The lecture or section ID was not found"),
+          },
+        ],
+      }),
+  });
+};
+
+export const useDeleteLecture = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (lectureId: string) => deleteLecture(lectureId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.courses._def });
+      showSuccessToast("Lecture Deleted", "The lecture was deleted successfully.");
+    },
+
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The lecture ID was not found"),
+          },
+        ],
+      }),
+  });
+};

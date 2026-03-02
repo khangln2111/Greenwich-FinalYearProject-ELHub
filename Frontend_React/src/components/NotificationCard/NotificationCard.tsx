@@ -1,0 +1,194 @@
+import { Badge, Button, Card, Group, Text } from "@mantine/core";
+import dayjs from "dayjs";
+import {
+  CheckCheckIcon,
+  CheckCircle2Icon,
+  EyeClosedIcon,
+  GiftIcon,
+  PencilLineIcon,
+  RefreshCwIcon,
+  SendHorizonalIcon,
+  ShoppingCartIcon,
+  StarIcon,
+  UploadIcon,
+  XCircleIcon,
+} from "lucide-react";
+import { useNavigate } from "react-router";
+import { useToggleNotificationRead } from "../../features/notification/notification.hooks";
+import { NotificationType, NotificationVm } from "../../features/notification/notification.types";
+import { cn } from "../../utils/cn";
+import { showSuccessToast } from "../../utils/toastHelper";
+
+const typeConfig: Record<NotificationType, { label: string; icon: React.ReactNode; bg: string }> = {
+  [NotificationType.CourseSubmitted]: {
+    label: "Course Submitted",
+    icon: <UploadIcon size={20} />,
+    bg: "bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-300",
+  },
+  [NotificationType.CourseApproved]: {
+    label: "Course Approved",
+    icon: <CheckCircle2Icon size={20} />,
+    bg: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-300",
+  },
+  [NotificationType.CourseRejected]: {
+    label: "Course Rejected",
+    icon: <XCircleIcon size={20} />,
+    bg: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300",
+  },
+  [NotificationType.CourseResubmitted]: {
+    label: "Course Resubmitted",
+    icon: <RefreshCwIcon size={20} />,
+    bg: "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-300",
+  },
+  [NotificationType.ReceivedGift]: {
+    label: "Received Gift",
+    icon: <GiftIcon size={25} />,
+    bg: "bg-violet-100 text-violet-600 dark:bg-violet-500/20 dark:text-violet-300",
+  },
+  [NotificationType.GiftRedeemed]: {
+    label: "Gift Redeemed",
+    icon: <GiftIcon size={20} />,
+    bg: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300",
+  },
+  [NotificationType.ReviewCreated]: {
+    label: "Review Created",
+    icon: <StarIcon size={20} />,
+    bg: "bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-300",
+  },
+  [NotificationType.ReviewReplied]: {
+    label: "Review Replied",
+    icon: <SendHorizonalIcon size={20} />,
+    bg: "bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-300",
+  },
+  [NotificationType.OrderProcessed]: {
+    label: "Order Processed",
+    icon: <ShoppingCartIcon size={20} />,
+    bg: "bg-cyan-100 text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-300",
+  },
+  [NotificationType.CourseUpdated]: {
+    label: "Course Updated",
+    icon: <PencilLineIcon size={20} />,
+    bg: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-300",
+  },
+  [NotificationType.InstructorApplicationSubmitted]: {
+    label: "Instructor Application Submitted",
+    icon: <UploadIcon size={20} />,
+    bg: "bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-300",
+  },
+  [NotificationType.InstructorApplicationResubmitted]: {
+    label: "Instructor Application Resubmitted",
+    icon: <RefreshCwIcon size={20} />,
+    bg: "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-300",
+  },
+  [NotificationType.InstructorApplicationApproved]: {
+    label: "Instructor Application Approved",
+    icon: <CheckCircle2Icon size={20} />,
+    bg: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-300",
+  },
+  [NotificationType.InstructorApplicationRejected]: {
+    label: "Instructor Application Rejected",
+    icon: <XCircleIcon size={20} />,
+    bg: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300",
+  },
+  [NotificationType.CourseBanned]: {
+    label: "Course Banned",
+    icon: <XCircleIcon size={20} />,
+    bg: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-300",
+  },
+  [NotificationType.CourseUnbanned]: {
+    label: "Course Unbanned",
+    icon: <CheckCircle2Icon size={20} />,
+    bg: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-300",
+  },
+};
+
+const NotificationCard = ({ n }: { n: NotificationVm }) => {
+  const markMutation = useToggleNotificationRead();
+  const cfg = typeConfig[n.type];
+
+  const navigate = useNavigate();
+
+  return (
+    <Card
+      withBorder
+      onClick={() => {
+        if (!n.isRead) markMutation.mutate(n.id);
+        navigate(n.url ?? "#");
+      }}
+      radius="lg"
+      className={cn("relative cursor-pointer transition shadow-md hover:shadow-lg p-4", {
+        "border-l-4 border-primary": !n.isRead,
+      })}
+    >
+      <Group align="flex-start" wrap="nowrap" gap="md">
+        {/* Icon + Dot indicator */}
+        <div className="relative shrink-0">
+          <div
+            className={cn(
+              "flex items-center justify-center size-12 rounded-full *:stroke-[2]",
+              cfg.bg,
+            )}
+          >
+            {cfg.icon}
+          </div>
+
+          {!n.isRead && (
+            <span className="absolute top-0 right-0 flex size-3 items-center justify-center">
+              <span className="absolute inline-flex size-2 rounded-full bg-red opacity-75 animate-ping [animation-duration:2s]" />
+              <span className="relative inline-flex size-2 rounded-full bg-red" />
+            </span>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <Group gap="xs" mb={6} justify="space-between">
+            <Badge variant="default" color="blue" size="sm">
+              {cfg.label}
+            </Badge>
+          </Group>
+
+          {/* Title */}
+          <Text className="truncate font-medium dark:text-white text-md md:text-lg">{n.title}</Text>
+
+          {/* Content */}
+          {n.content && (
+            <Text
+              mt={2}
+              className="line-clamp-2 text-sm md:text-md text-gray-600 dark:text-gray-300"
+            >
+              {n.content}
+            </Text>
+          )}
+
+          {/* Footer: time + action */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mt-2 mx-auto">
+            <Text className="text-xs md:text-sm" c="gray">
+              {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
+            </Text>
+
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                markMutation.mutate(n.id, {
+                  onSuccess: () =>
+                    showSuccessToast("Done!", "The notification has been marked as read."),
+                });
+              }}
+              leftSection={n.isRead ? <EyeClosedIcon size={16} /> : <CheckCheckIcon size={16} />}
+              radius="full"
+              variant="subtle"
+              className="self-end"
+              loading={markMutation.isPending}
+            >
+              {n.isRead ? "Mark as unread" : "Mark as read"}
+            </Button>
+          </div>
+        </div>
+      </Group>
+    </Card>
+  );
+};
+
+export default NotificationCard;

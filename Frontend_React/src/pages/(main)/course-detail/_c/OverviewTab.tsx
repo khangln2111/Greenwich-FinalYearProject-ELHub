@@ -1,0 +1,89 @@
+import { Text, ThemeIcon, Title } from "@mantine/core";
+import DOMPurify from "dompurify";
+import { ArrowRight, AwardIcon } from "lucide-react";
+import { CourseDetailVm } from "../../../../features/course/course.types";
+import EmptyInformation from "../../../../components/EmptyInformation/EmptyInfomartion";
+import { cn } from "../../../../utils/cn";
+
+type OverviewTabProps = {
+  course: CourseDetailVm;
+  className?: string;
+};
+
+const OverviewTab = ({ course, className }: OverviewTabProps) => {
+  return (
+    <div className={cn("space-y-10", className)}>
+      {/* Learning Outcomes Section */}
+      {course.learningOutcomes && course.learningOutcomes.length > 0 && (
+        <div>
+          <Title order={2}>What you'll learn in this course</Title>
+          <Text className="mt-2 text-lg">
+            This course is designed to help you develop the following skills and knowledge:
+          </Text>
+          <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+            {course.learningOutcomes.map((item, idx) => (
+              <li
+                key={idx}
+                className="flex items-start gap-3 text-lg font-medium normal-case leading-relaxed"
+              >
+                <div>
+                  <ThemeIcon size="md" radius="2xl" variant="light">
+                    <AwardIcon className="size-[70%]" />
+                  </ThemeIcon>
+                </div>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Prerequisites Section */}
+      {course.prerequisites && course.prerequisites.length > 0 && (
+        <div>
+          <Title order={2}>What you need before starting</Title>
+          <Text className="mt-2 text-lg">
+            To get the most out of this course, it helps to have some background knowledge or
+            skills:
+          </Text>
+          <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+            {course.prerequisites.map((item, idx) => (
+              <li
+                key={idx}
+                className="flex items-start gap-3 text-lg font-medium normal-case leading-relaxed"
+              >
+                {/* <div>
+                  <IconCheck className="inline size-6 shrink-0 text-primary-4 dark:text-primary-8" />
+                </div> */}
+                <div>
+                  <ThemeIcon size="md" radius="2xl" variant="light">
+                    <ArrowRight className="size-[70%]" />
+                  </ThemeIcon>
+                </div>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {/* Course Description Section */}
+      <div>
+        <Title order={2} className="mb-5">
+          About the course
+        </Title>
+        {course.description && course.description.trim() ? (
+          <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(course.description),
+              }}
+            />
+          </div>
+        ) : (
+          <EmptyInformation message="No description has been added for this course yet." />
+        )}
+      </div>
+    </div>
+  );
+};
+export default OverviewTab;

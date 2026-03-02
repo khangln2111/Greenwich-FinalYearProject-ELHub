@@ -1,0 +1,40 @@
+{
+  "cssVariables.lookupFiles": [
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass",
+    "**/*.less",
+    "node_modules/@mantine/core/styles.css"
+  ],
+  "tailwindCSS.experimental.configFile": "src/styles/globals.css",
+  "typescript.suggest.autoImports": true,
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    ".gitignore": true,
+    ".prettierrc": false,
+    ".vscode": true,
+    "**/*.git": true,
+    "**/CVS": true,
+    "eslint.config.js": true,
+    "index.html": false,
+    "node_modules": true,
+    "package-lock.json": true,
+    "README.md": true,
+    "src/main.tsx": false,
+    "src/vite-env.d.ts": true,
+    "tailwind.config.ts": true,
+    "vite.config.ts": false,
+    "public": true,
+    "localhost-key.pem": true,
+    "localhost.pem": true
+  },
+  "explorerExclude.backup": {},
+  "typescript.tsserver.maxTsServerMemory": 6000,
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "typescript.tsserver.nodePath": "node"
+}

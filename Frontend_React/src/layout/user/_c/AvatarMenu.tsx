@@ -1,0 +1,168 @@
+import { Avatar, Indicator, Menu } from "@mantine/core";
+import {
+  IconBell,
+  IconBriefcase,
+  IconMessageCircle,
+  IconSettings,
+  IconTrash,
+  IconUserCog,
+} from "@tabler/icons-react";
+import {
+  ChartNoAxesCombinedIcon,
+  CircleUserIcon,
+  GiftIcon,
+  GraduationCap,
+  HistoryIcon,
+  MonitorCheckIcon,
+  PackageIcon,
+} from "lucide-react";
+import { Link } from "react-router";
+import { useGetCurrentUser, useLogout } from "../../../features/auth/identity.hooks";
+import { cn } from "../../../utils/cn";
+import { RoleName } from "../../../features/auth/identity.types";
+
+interface AvatarMenuProps {
+  className?: string;
+}
+
+const AvatarMenu = ({ className }: AvatarMenuProps) => {
+  const { data: currentUser } = useGetCurrentUser();
+  const logout = useLogout();
+  return (
+    <Menu
+      transitionProps={{ transition: "pop-top-right" }}
+      withArrow
+      position="bottom-end"
+      trigger="click"
+      loop={false}
+      withinPortal={false}
+      trapFocus={false}
+      menuItemTabIndex={0}
+    >
+      <Menu.Target>
+        <div className="px-2 hover:bg-blue-light-hover py-1 rounded-md">
+          <Indicator offset={5}>
+            <Avatar
+              className={cn("cursor-pointer shadow-sm border", className)}
+              color="initials"
+              src={currentUser?.avatarUrl}
+              name={
+                `${currentUser?.firstName?.trim()} ${currentUser?.lastName?.trim()}`.trim() ||
+                "Nguyen Khang"
+              }
+            />
+          </Indicator>
+        </div>
+      </Menu.Target>
+
+      <Menu.Dropdown className="shadow-xl max-h-[75dvh] lg:max-h-none overflow-y-auto">
+        <Menu.Label>Personal</Menu.Label>
+        <Menu.Item
+          component={Link}
+          to="/dashboard/my-profile"
+          leftSection={<CircleUserIcon size={15} />}
+        >
+          My profile
+        </Menu.Item>
+        <Menu.Item
+          component={Link}
+          to="/dashboard"
+          leftSection={<ChartNoAxesCombinedIcon size={15} />}
+        >
+          Dashboard
+        </Menu.Item>
+        <Menu.Item
+          component={Link}
+          leftSection={<MonitorCheckIcon size={15} />}
+          to="/dashboard/my-learning"
+        >
+          My learning
+        </Menu.Item>
+        <Menu.Item
+          component={Link}
+          leftSection={<HistoryIcon size={15} />}
+          to="/dashboard/order-history"
+        >
+          Order history
+        </Menu.Item>
+        <Menu.Item
+          component={Link}
+          leftSection={<PackageIcon size={15} />}
+          to="/dashboard/inventory"
+        >
+          Inventory
+        </Menu.Item>
+        <Menu.Item component={Link} leftSection={<GiftIcon size={15} />} to="/dashboard/gifts">
+          Gifts
+        </Menu.Item>
+
+        <Menu.Divider />
+        <Menu.Label>Communication</Menu.Label>
+        <Menu.Item
+          leftSection={<IconBell size={15} />}
+          component={Link}
+          to="/dashboard/notifications"
+        >
+          Notifications
+        </Menu.Item>
+        <Menu.Item leftSection={<IconMessageCircle size={15} />}>Messages</Menu.Item>
+
+        <Menu.Divider />
+
+        {currentUser?.roles && currentUser.roles.length > 0 && (
+          <>
+            <Menu.Label>Sites navigation</Menu.Label>
+
+            {/* menu item as link to /home student */}
+            <Menu.Item
+              className="cursor-pointer"
+              component={Link}
+              to="/"
+              leftSection={<GraduationCap size={15} />}
+            >
+              Student sites
+            </Menu.Item>
+            {currentUser?.roles.includes(RoleName.Instructor) && (
+              <Menu.Item
+                leftSection={<IconBriefcase size={15} />}
+                className="cursor-pointer"
+                component={Link}
+                to="/instructor/dashboard"
+              >
+                Instructor sites
+              </Menu.Item>
+            )}
+            {currentUser?.roles.includes(RoleName.Admin) && (
+              <Menu.Item
+                className="cursor-pointer"
+                component={Link}
+                to="/admin/dashboard"
+                leftSection={<IconUserCog size={15} />}
+              >
+                Admin sites
+              </Menu.Item>
+            )}
+
+            <Menu.Divider />
+          </>
+        )}
+        <Menu.Item
+          leftSection={<IconSettings size={15} />}
+          component={Link}
+          to="/dashboard/settings"
+        >
+          Settings
+        </Menu.Item>
+        <Menu.Item
+          color="red"
+          leftSection={<IconTrash size={15} />}
+          onClick={() => logout.mutate()}
+        >
+          Logout
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
+  );
+};
+
+export default AvatarMenu;

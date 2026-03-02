@@ -1,0 +1,262 @@
+import { Alert, Button, Group, SegmentedControl, Tabs, Text, Title, Tooltip } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { IconAlertTriangle, IconArrowLeft, IconPencil, IconUpload } from "@tabler/icons-react";
+import dayjs from "dayjs";
+import { HelpCircleIcon } from "lucide-react";
+import { parseAsStringEnum, useQueryState } from "nuqs";
+import { Link, Navigate, useParams } from "react-router";
+import CenterLoader from "../../../components/CenterLoader/CenterLoader";
+import {
+  useGetCourseDetail,
+  useResubmitCourse,
+  useSubmitCourse,
+} from "../../../features/course/course.hooks";
+import { CourseStatus } from "../../../features/course/course.types";
+import { usePageSEO } from "../../../hooks/usePageSEO";
+import { cn } from "../../../utils/cn";
+import CurriculumManager from "./_c/CurriculumManager/CurriculumManager";
+import InstructorCourseSubmissionTab from "./_c/InstructorCourseSubmissionTab";
+import OverviewForm from "./_c/OverviewForm/OverviewForm";
+import InstructorReviewManager from "./_c/ReviewManager/InstructorReviewManager";
+import { getCourseStatusBadgeMap } from "../../../features/course/course.utils";
+
+enum CourseDetailTab {
+  Overview = "Overview",
+  Curriculum = "Curriculum",
+  Reviews = "Reviews",
+  Submissions = "Submissions",
+}
+
+export default function InstructorEditCoursePage() {
+  const { courseId } = useParams<{ courseId: string }>();
+  const { data: courseDetail, isPending, error } = useGetCourseDetail(courseId!);
+
+  usePageSEO({ title: courseDetail ? `Edit - ${courseDetail.title}` : "Edit Course" });
+
+  const [activeTab, setActiveTab] = useQueryState(
+    "activeTab",
+    parseAsStringEnum(Object.values(CourseDetailTab)).withDefault(CourseDetailTab.Overview),
+  );
+
+  const submitMutation = useSubmitCourse();
+  const retrySubmitMutation = useResubmitCourse();
+
+  if (isPending) return <CenterLoader height={600} />;
+  if (error || !courseId || !courseDetail) return <Navigate to="/404" replace />;
+
+  const canSubmit = courseDetail.status === CourseStatus.Draft;
+  const canRetry = courseDetail.status === CourseStatus.Rejected;
+
+  const handleConfirmSubmit = () => {
+    modals.openConfirmModal({
+      title: "Submit Course for Review",
+      centered: true,
+      children: (
+        <Text size="sm">
+          This action will submit your course to the admin for review. You won’t be able to edit it
+          while it's pending approval. Do you want to proceed?
+        </Text>
+      ),
+      labels: { confirm: "Submit", cancel: "Cancel" },
+      confirmProps: { color: "blue", leftSection: <IconUpload size={16} /> },
+      onConfirm: () => submitMutation.mutate(courseId!),
+    });
+  };
+
+  const handleConfirmRetry = () => {
+    modals.openConfirmModal({
+      title: "Retry Course Submission",
+      centered: true,
+      children: (
+        <Text size="sm">
+          You are retrying submission of this course after it was rejected. Please make sure all
+          issues have been addressed before proceeding.
+        </Text>
+      ),
+      labels: { confirm: "Retry", cancel: "Cancel" },
+      confirmProps: { color: "blue", leftSection: <IconUpload size={16} /> },
+      onConfirm: () => retrySubmitMutation.mutate(courseId!),
+    });
+  };
+
+  return (
+    <div className="flex-1 p-6 xl:p-8">
+      {/* Back button */}
+      <div className="flex items-center justify-between gap-3 mb-6">
+        <Button
+          component={Link}
+          to="/instructor/courses"
+          variant="default"
+          size="sm"
+          leftSection={<IconArrowLeft size={16} />}
+          className="w-fit"
+        >
+          Back to Courses
+        </Button>
+
+        <Button
+          component={Link}
+          to={`/instructor/courses/${courseId}/preview`}
+          variant="light"
+          size="sm"
+          color="pink"
+          className="w-fit"
+        >
+          Preview as Learner
+        </Button>
+      </div>
+
+      {courseDetail.status === CourseStatus.Banned && (
+        <Alert
+          icon={<IconAlertTriangle size={24} />}
+          title="This course has been banned"
+          color="red"
+          variant="light"
+          radius="lg"
+          className="mb-6 shadow-sm"
+          classNames={{
+            title: "text-sm md:text-md",
+          }}
+        >
+          <div className="flex flex-col gap-3 text-sm md:text-md">
+            <p className="text-gray-800 dark:text-gray-200">
+              Your course has been banned by the admin. Please review the reason below or contact
+              support for more information.
+            </p>
+
+            {courseDetail.bannedReason && (
+              <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-md p-3">
+                <div className="flex items-start gap-2">
+                  <span className="font-semibold text-red-700 dark:text-red-200">Reason:</span>
+                  <span className="italic text-red-800 dark:text-red-100">
+                    {courseDetail.bannedReason}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <Button
+              variant="outline"
+              color="indigo"
+              radius="md"
+              className="self-start mt-1"
+              leftSection={<HelpCircleIcon size={14} />}
+            >
+              Contact support
+            </Button>
+          </div>
+        </Alert>
+      )}
+
+      {/* Course title */}
+      <div className="flex flex-col items-center justify-center text-center mb-6 sm:flex-row sm:gap-2">
+        <IconPencil className="text-blue-600 dark:text-blue-400 size-5 sm:size-6 md:size-7" />
+        <Title className="mt-1 sm:mt-0 text-xl md:text-2xl font-semibold italic">
+          {courseDetail.title}
+        </Title>
+      </div>
+
+      {/* Status bar */}
+      <div
+        className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-between bg-gray-100 dark:bg-dark-6
+          p-4 rounded-xl mb-6 gap-4 text-sm"
+      >
+        <Group gap="xs">
+          <Text>Status:</Text>
+          <span
+            className={cn(
+              "text-md font-medium px-4 py-1 rounded-sm capitalize z-10",
+              getCourseStatusBadgeMap[courseDetail.status],
+            )}
+          >
+            {courseDetail.status}
+          </span>
+        </Group>
+
+        {courseDetail.retryCount > 0 && canRetry && (
+          <Group gap="xs">
+            <Text className="text-red-500">Rejected:</Text>
+            <Text>
+              {courseDetail.retryCount} time
+              {courseDetail.retryCount > 1 ? "s" : ""}
+            </Text>
+            {courseDetail.lastRejectedAt && (
+              <Tooltip label={dayjs(courseDetail.lastRejectedAt).format("YYYY-MM-DD HH:mm")}>
+                <Text c="dimmed">(Last: {dayjs(courseDetail.lastRejectedAt).fromNow()})</Text>
+              </Tooltip>
+            )}
+          </Group>
+        )}
+
+        <Button
+          variant="light"
+          leftSection={<IconUpload size={16} />}
+          onClick={canSubmit ? handleConfirmSubmit : handleConfirmRetry}
+          disabled={
+            (!canSubmit && !canRetry) || submitMutation.isPending || retrySubmitMutation.isPending
+          }
+          loading={submitMutation.isPending || retrySubmitMutation.isPending}
+        >
+          {canRetry ? "Retry Submission" : "Submit for Review"}
+        </Button>
+      </div>
+
+      {/* Navigation */}
+
+      <SegmentedControl
+        value={activeTab}
+        onChange={(val) => setActiveTab(val as CourseDetailTab)}
+        data={Object.values(CourseDetailTab)}
+        transitionDuration={300}
+        size="md"
+        radius={"3xl"}
+        classNames={{
+          root: `w-full p-[10px] mt-7 bg-white dark:bg-dark-6 shadow-lg border grid grid-cols-2 md:grid-flow-col
+          md:auto-cols-fr`,
+          indicator: "bg-linear-to-r bg-blue-5",
+          control: "before:hidden",
+          label: "data-active:text-white hover:data-active:text-white",
+        }}
+      />
+
+      {/* Decoration line */}
+      <div className="h-[3px] w-24 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-full mt-10" />
+
+      {/* Tab Content */}
+      <Tabs variant="pills" value={activeTab} className="mt-7" keepMounted>
+        <div>
+          {/* Overview Tab */}
+          <Tabs.Panel value={CourseDetailTab.Overview}>
+            <OverviewForm courseId={courseId} courseDetail={courseDetail} />
+          </Tabs.Panel>
+
+          {/* Curriculum Tab */}
+          <Tabs.Panel value={CourseDetailTab.Curriculum}>
+            <CurriculumManager courseId={courseId} sections={courseDetail.sections} />
+          </Tabs.Panel>
+
+          {/* Reviews Tab */}
+          <Tabs.Panel value={CourseDetailTab.Reviews}>
+            <InstructorReviewManager
+              courseId={courseId}
+              rating={courseDetail.averageRating}
+              totalReviews={courseDetail.reviewCount}
+              stars={[
+                { stars: 5, percentage: courseDetail.ratingDistribution.star5 },
+                { stars: 4, percentage: courseDetail.ratingDistribution.star4 },
+                { stars: 3, percentage: courseDetail.ratingDistribution.star3 },
+                { stars: 2, percentage: courseDetail.ratingDistribution.star2 },
+                { stars: 1, percentage: courseDetail.ratingDistribution.star1 },
+              ]}
+            />
+          </Tabs.Panel>
+
+          {/* Submissions Tab */}
+          <Tabs.Panel value={CourseDetailTab.Submissions}>
+            <InstructorCourseSubmissionTab history={courseDetail.approvalHistories} />
+          </Tabs.Panel>
+        </div>
+      </Tabs>
+    </div>
+  );
+}

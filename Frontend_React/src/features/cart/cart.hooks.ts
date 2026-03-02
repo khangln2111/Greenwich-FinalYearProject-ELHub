@@ -1,0 +1,94 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { showErrorToast, showSuccessToast } from "../../utils/toastHelper";
+import { useAuthStore } from "../../zustand/stores/authStore";
+import { handleApiError } from "../common-service/handleApiError";
+import { keyFac } from "../common-service/queryKeyFactory";
+import { addCartItem, deleteCartItem, updateCartItem } from "./cart.api";
+import { AddCartItemCommand, CartItemQueryCriteria, UpdateCartItemCommand } from "./cart.types";
+
+export const useGetCartSelf = () => {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  return useQuery({
+    queryKey: keyFac.cart.getCartSelf.queryKey,
+    queryFn: keyFac.cart.getCartSelf.queryFn,
+    enabled: !!accessToken,
+  });
+};
+
+export const useGetCartItemsSelf = (query: CartItemQueryCriteria) => {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  return useQuery({
+    queryKey: keyFac.cart.getCartItemsSelf(query).queryKey,
+    queryFn: keyFac.cart.getCartItemsSelf(query).queryFn,
+    enabled: !!accessToken,
+  });
+};
+
+export const useGetCartItemCountSelf = () => {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  return useQuery({
+    queryKey: keyFac.cart.getCartItemCountSelf.queryKey,
+    queryFn: keyFac.cart.getCartItemCountSelf.queryFn,
+    enabled: !!accessToken,
+  });
+};
+
+export const useAddCartItem = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: AddCartItemCommand) => addCartItem(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.cart._def });
+      showSuccessToast("Item Added", "The item was added to the cart successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The course not found"),
+          },
+        ],
+      }),
+  });
+};
+
+export const useUpdateCartItem = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: UpdateCartItemCommand) => updateCartItem(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.cart._def });
+      showSuccessToast("Item Updated", "The item was updated successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The cart item not found"),
+          },
+        ],
+      }),
+  });
+};
+
+export const useDeleteCartItem = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (cartItemId: string) => deleteCartItem(cartItemId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: keyFac.cart._def });
+      showSuccessToast("Item Deleted", "The item was deleted from the cart successfully.");
+    },
+    onError: (error) =>
+      handleApiError(error, {
+        matchers: [
+          {
+            status: 404,
+            handler: () => showErrorToast("Not Found", "The cart item not found"),
+          },
+        ],
+      }),
+  });
+};

@@ -1,0 +1,126 @@
+/* @layer theme, base, mantine, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "@mantine/core/styles.layer.css";
+@import "tailwind-preset-mantine/theme.css"; */
+@import "tailwind-preset-mantine";
+@import "./generatedTheme.css";
+@import "./customTheme.css";
+@import "swiper/css" layer(components);
+@import "swiper/css/navigation" layer(components);
+@import "mantine-vaul/style.css" layer(components);
+@import "@mantine/notifications/styles.css" layer(components);
+@import "@mantine/dropzone/styles.css" layer(components);
+@import "@mantine/dates/styles.css" layer(components);
+@import "@mantine/charts/styles.css" layer(components);
+@import "@mantine/tiptap/styles.css" layer(components);
+@import "@mantine/nprogress/styles.css" layer(components);
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+@plugin "@tailwindcss/typography";
+
+@theme theme {
+  --spacing: 0.25rem;
+  /* --spacing: 0.0625rem; */
+  --bg-auth-light: url("../assets/authImages/auth-background-light-1.webp");
+  --bg-auth-dark: url("../assets/authImages/auth-background-dark-1.webp");
+  --bgi-auth-light: url("../assets/authImages/auth-background-light-1.webp");
+  --bgi-auth-dark: url("../assets/authImages/auth-background-dark-1.webp");
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--mantine-color-default-border, currentColor);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  img {
+    overflow-clip-margin: unset;
+  }
+
+  ul,
+  ol {
+    list-style: initial;
+    margin-left: initial;
+  }
+}
+
+@layer mantine {
+  .mantine-Drawer-content,
+  .mantine-Drawer-root,
+  .mantine-Modal-content,
+  .mantine-Modal-root,
+  .mantine-VaulRoot-content,
+  .mantine-VaulRoot-body,
+  .mantine-VaulRoot-footer {
+    will-change: initial !important;
+  }
+}
+
+@config "../../tailwind.config.ts";
+
+@utility container {
+  margin-inline: auto;
+}
+
+/* To hide scrollbar */
+@utility hide-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility grid-cols-fit-* {
+  grid-template-columns: repeat(auto-fit, minmax(min(calc(--value(integer) * 1px), 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(--value([length]), 100%), 1fr));
+}
+
+@utility grid-cols-fill-* {
+  grid-template-columns: repeat(auto-fill, minmax(min(calc(--value(integer) * 1px), 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(--value([length]), 100%), 1fr));
+}
+
+@utility bgi-* {
+  background-image: --value(--bgi-*);
+}
+
+@utility items-normal {
+  align-items: normal;
+}
+
+/* custom scrollbar */
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    transition:
+      width 0.2s ease-in-out,
+      height 0.2s ease-in-out;
+  }
+
+  /* Khi hover, scrollbar to hơn */
+  &:hover::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Scrollbar thumb */
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 100, 100, 0.5);
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 100, 100, 0.7);
+  }
+}
