@@ -72,13 +72,13 @@ ELHub is built with modern, enterprise-grade technologies, ensuring high perform
 ### 1. Container Diagram
 *Illustrates the high-level software architecture and the interactions between the Front-end, Back-end, Database, and External Systems.*
 <p align="center">
-  <img width="90%" alt="Container Diagram for ELHub System" src="https://github.com/user-attachments/assets/aa930f2d-5a53-43d9-8e2b-887b7d0e072b" />
+  <img width="1380" height="756" alt="image" src="https://github.com/user-attachments/assets/2b613fb6-81b1-473f-9a09-b60dedec1fef" />
 </p>
 
 ### 2. Entity-Relationship Diagram (ERD)
 *Outlines the database schema, mapping the relationships between Users, Courses, Orders, Categories, and other critical domain entities.*
 <p align="center">
-  <img width="90%" alt="ELHub ERD" src="https://github.com/user-attachments/assets/617d7ca1-0743-4384-a90c-06d738431a8b" />
+  <img width="2620" height="3192" alt="ERD_Final" src="https://github.com/user-attachments/assets/00d55474-cafe-44fb-b050-859070f571c5" />
 </p>
 
 ### 3. Use Case Diagram
